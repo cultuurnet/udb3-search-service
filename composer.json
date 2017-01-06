@@ -1,0 +1,52 @@
+{
+    "name": "cultuurnet/udb3-search-service",
+    "description": "Silex application for indexing UDB3 JSON-LD documents and providing a search api.",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Bert Ramakers",
+            "email": "bert@2dotstwice.be"
+        }
+    ],
+    "require": {
+        "silex/silex": "~1.3",
+        "deralex/yaml-config-service-provider": "~1.0",
+        "knplabs/console-service-provider": "~1.0",
+        "monolog/monolog": "~1.11"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8",
+        "escapestudios/symfony2-coding-standard": "~2.9",
+        "squizlabs/php_codesniffer": "~2.5.1",
+        "phing/phing": "~2.14",
+        "satooshi/php-coveralls": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CultuurNet\\UDB3\\SearchService": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CultuurNet\\UDB3\\SearchService": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
+    },
+    "config": {
+        "preferred-install": {
+            "cultuurnet/*": "source",
+            "2dotstwice/*": "source",
+            "*": "dist"
+        },
+        "platform": {
+            "php": "5.5.9"
+        }
+    }
+}
