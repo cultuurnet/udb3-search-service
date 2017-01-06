@@ -1,2 +1,15 @@
 debug: false
 bootstrap: []
+consumerExecutionDelay: 0
+amqp:
+  host: 127.0.0.1
+  port: 5672
+  vhost: udb3-vagrant
+  user: vagrant
+  password: vagrant
+  consumer_tag: udb3-vagrant
+  consumers:
+    udb3-core:
+      exchange: udb3.vagrant.x.domain-events
+      queue: search.vagrant.q.udb3-domain-events
+udb3_organizer_base_url: http://udb-silex.dev/organizers/
