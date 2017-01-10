@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex\Search;
+namespace CultuurNet\UDB3\SearchService;
 
 use Elasticsearch\ClientBuilder;
 use Silex\Application;

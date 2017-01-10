@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex\Organizer;
+namespace CultuurNet\UDB3\SearchService\Organizer;
 
 use CultuurNet\UDB3\Search\OrganizerSearchProjector;
 use Silex\Application;

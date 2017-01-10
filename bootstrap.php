@@ -128,4 +128,19 @@ foreach ($app['config']['amqp']['consumers'] as $consumerId => $consumerConfig) 
     );
 }
 
+$app->register(
+    new \CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider(),
+    [
+        'elasticsearch.host' => $app['config']['elasticsearch']['host'],
+    ]
+);
+
+$app->register(
+    new \CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider(),
+    [
+        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
+        'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
+    ]
+);
+
 return $app;
