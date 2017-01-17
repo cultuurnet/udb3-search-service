@@ -48,7 +48,9 @@ $app['event_bus.udb3-core'] = $app->share(
         $bus =  new SimpleEventBus();
 
         $bus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
-            $subscribers = [];
+            $subscribers = [
+                'organizer_search_projector',
+            ];
 
             // Allow to override event bus subscribers through configuration.
             if (isset($app['config']['event_bus']) &&
