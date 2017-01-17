@@ -6,6 +6,7 @@ use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
+use GuzzleHttp\Client;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -32,6 +33,12 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
         require __DIR__ . "/bootstrap/{$identifier}.php";
     }
 }
+
+$app['http_client'] = $app->share(
+    function (Application $app) {
+        return new Client();
+    }
+);
 
 $app['event_bus.udb3-core'] = $app->share(
     function (Application $app) {
