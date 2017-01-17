@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Silex\Console;
+namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Migrations\Version20161011000440;
 use Elasticsearch\Client;
