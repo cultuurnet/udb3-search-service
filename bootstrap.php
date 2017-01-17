@@ -4,6 +4,9 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use GuzzleHttp\Client;
@@ -136,18 +139,20 @@ foreach ($app['config']['amqp']['consumers'] as $consumerId => $consumerConfig) 
 }
 
 $app->register(
-    new \CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider(),
+    new ElasticSearchServiceProvider(),
     [
         'elasticsearch.host' => $app['config']['elasticsearch']['host'],
     ]
 );
 
 $app->register(
-    new \CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider(),
+    new OrganizerElasticSearchServiceProvider(),
     [
         'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
         'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
     ]
 );
+
+$app->register(new OrganizerServiceProvider());
 
 return $app;

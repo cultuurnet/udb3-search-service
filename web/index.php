@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\Silex\Organizer\OrganizerControllerProvider;
+use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
 
