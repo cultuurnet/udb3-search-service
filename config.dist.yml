@@ -17,3 +17,7 @@ elasticsearch:
   organizer:
     index_name: udb3_core
     document_type: organizer
+cors:
+  origins:
+    - http://udb-app.dev
+    - http://localhost:9999

@@ -10,6 +10,7 @@ use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use GuzzleHttp\Client;
+use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
@@ -22,6 +23,11 @@ if (!isset($appConfigLocation)) {
     $appConfigLocation =  __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($appConfigLocation . '/config.yml'));
+
+$app->register(new CorsServiceProvider(), array(
+    "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
+    "cors.allowCredentials" => false
+));
 
 /**
  * Turn debug on or off.

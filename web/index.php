@@ -16,4 +16,6 @@ $app->register(new ServiceControllerServiceProvider());
 
 $app->mount('organizers', new OrganizerControllerProvider());
 
+$app->after($app['cors']);
+
 $app->run();
