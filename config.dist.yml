@@ -1,3 +1,5 @@
+imports:
+  - resource: regions.yml
 debug: false
 bootstrap: []
 consumerExecutionDelay: 0

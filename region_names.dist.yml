@@ -1,8 +1,0 @@
-region_names:
-  # ElasticSearch ID: Name to show for auto-complete results.
-  # These are just "labels", they don't influence the actual auto-complete
-  # behaviour. The values that are indexed for completion are stored in the
-  # region JSON files themselves.
-  11002: "2000 Antwerpen"
-  24062: "3000 Leuven"
-  38008: "8660 De Panne"

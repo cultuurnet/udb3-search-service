@@ -179,7 +179,7 @@ $app->register(
 $app->register(
     new RegionServiceProvider(),
     [
-        'region.names' => $app['config']['region_names'],
+        'regions.structure' => $app['config']['regions'],
     ]
 );
 
