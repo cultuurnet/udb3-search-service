@@ -17,6 +17,9 @@ elasticsearch:
   organizer:
     index_name: udb3_core
     document_type: organizer
+  region:
+    index_name: geoshapes
+    document_type: region
 cors:
   origins:
     - http://udb-app.dev
