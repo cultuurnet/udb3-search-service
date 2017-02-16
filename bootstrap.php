@@ -7,6 +7,8 @@ use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Region\RegionElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Region\RegionServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use GuzzleHttp\Client;
@@ -162,5 +164,23 @@ $app->register(
 );
 
 $app->register(new OrganizerServiceProvider());
+
+/**
+ * Regions.
+ */
+$app->register(
+    new RegionElasticSearchServiceProvider(),
+    [
+        'elasticsearch.region.index_name' => $app['config']['elasticsearch']['region']['index_name'],
+        'elasticsearch.region.document_type' => $app['config']['elasticsearch']['region']['document_type'],
+    ]
+);
+
+$app->register(
+    new RegionServiceProvider(),
+    [
+        'region.names' => $app['config']['region_names'],
+    ]
+);
 
 return $app;
