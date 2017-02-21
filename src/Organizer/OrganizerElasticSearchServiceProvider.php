@@ -3,7 +3,8 @@
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchOrganizerSearchService;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,7 +21,8 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
                 return new ElasticSearchOrganizerSearchService(
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.organizer.index_name']),
-                    new StringLiteral($app['elasticsearch.organizer.document_type'])
+                    new StringLiteral($app['elasticsearch.organizer.document_type']),
+                    new ElasticSearchPagedResultSetFactory()
                 );
             }
         );

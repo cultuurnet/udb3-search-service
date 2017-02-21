@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Region;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\ElasticSearchRegionSearchService;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -19,7 +20,8 @@ class RegionElasticSearchServiceProvider implements ServiceProviderInterface
                 return new ElasticSearchRegionSearchService(
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.region.index_name']),
-                    new StringLiteral($app['elasticsearch.region.document_type'])
+                    new StringLiteral($app['elasticsearch.region.document_type']),
+                    new ElasticSearchPagedResultSetFactory()
                 );
             }
         );

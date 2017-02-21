@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
-use CultuurNet\UDB3\Search\OrganizerSearchProjector;
+use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
