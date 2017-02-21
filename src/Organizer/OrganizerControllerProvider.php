@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Symfony\Organizer\EditOrganizerRestController;
-use CultuurNet\UDB3\Symfony\Organizer\ReadOrganizerRestController;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
