@@ -19,6 +19,12 @@ elasticsearch:
   organizer:
     index_name: udb3_core
     document_type: organizer
+  event:
+      index_name: udb3_core
+      document_type: event
+  place:
+      index_name: udb3_core
+      document_type: place
   region:
     index_name: geoshapes
     document_type: region

@@ -5,8 +5,12 @@ use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Event\EventElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\Region\RegionElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Region\RegionServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
@@ -155,6 +159,9 @@ $app->register(
     ]
 );
 
+/**
+ * Organizers.
+ */
 $app->register(
     new OrganizerElasticSearchServiceProvider(),
     [
@@ -164,6 +171,32 @@ $app->register(
 );
 
 $app->register(new OrganizerServiceProvider());
+
+/**
+ * Events.
+ */
+$app->register(
+    new EventElasticSearchServiceProvider(),
+    [
+        'elasticsearch.event.index_name' => $app['config']['elasticsearch']['event']['index_name'],
+        'elasticsearch.event.document_type' => $app['config']['elasticsearch']['event']['document_type'],
+    ]
+);
+
+$app->register(new EventServiceProvider());
+
+/**
+ * Places.
+ */
+$app->register(
+    new PlaceElasticSearchServiceProvider(),
+    [
+        'elasticsearch.place.index_name' => $app['config']['elasticsearch']['place']['index_name'],
+        'elasticsearch.place.document_type' => $app['config']['elasticsearch']['place']['document_type'],
+    ]
+);
+
+$app->register(new PlaceServiceProvider());
 
 /**
  * Regions.
