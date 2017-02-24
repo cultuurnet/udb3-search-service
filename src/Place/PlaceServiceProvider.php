@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\SearchService\Place;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Place\PlaceJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -13,8 +15,11 @@ class PlaceServiceProvider implements ServiceProviderInterface
         $app['place_search_projector'] = $app->share(
             function (Application $app) {
                 return new PlaceSearchProjector(
-                    $app['place_elasticsearch_repository'],
-                    $app['http_client']
+                    new TransformingJsonDocumentIndexService(
+                        $app['http_client'],
+                        new PlaceJsonDocumentTransformer(),
+                        $app['place_elasticsearch_repository']
+                    )
                 );
             }
         );
