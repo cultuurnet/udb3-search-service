@@ -25,6 +25,9 @@ elasticsearch:
   place:
       index_name: udb3_core
       document_type: place
+  offer:
+      index_name: udb3_core
+      document_type: "event,place"
   region:
     index_name: geoshapes
     document_type: region

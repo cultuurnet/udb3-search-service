@@ -7,6 +7,7 @@ use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
+use CultuurNet\UDB3\SearchService\Offer\OfferElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceElasticSearchServiceProvider;
@@ -199,6 +200,17 @@ $app->register(
 );
 
 $app->register(new PlaceServiceProvider());
+
+/**
+ * Offers.
+ */
+$app->register(
+    new OfferElasticSearchServiceProvider(),
+    [
+        'elasticsearch.offer.index_name' => $app['config']['elasticsearch']['offer']['index_name'],
+        'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
+    ]
+);
 
 /**
  * Regions.
