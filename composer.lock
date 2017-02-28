@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5da4cac5cd3b8e4fb7e584b410fe70e5",
-    "content-hash": "1bec6fc838a6bda0f76f4df68bac6ba1",
+    "hash": "b7cbf3fbc90ae481657e5f6cea3fea51",
+    "content-hash": "02e47d7daaa1e22d704e6d41495213d7",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1042,22 +1042,23 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-1937",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "9a5001913dcd5af4efee5ab99ef8a884f1e98dbc"
+                "reference": "4d11908c879842dfbc75f07d840f4e50a1df3f6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/9a5001913dcd5af4efee5ab99ef8a884f1e98dbc",
-                "reference": "9a5001913dcd5af4efee5ab99ef8a884f1e98dbc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/4d11908c879842dfbc75f07d840f4e50a1df3f6a",
+                "reference": "4d11908c879842dfbc75f07d840f4e50a1df3f6a",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/udb3-search": "~0.1",
                 "elasticsearch/elasticsearch": "~2.2",
-                "nicolopignatelli/valueobjects": "~3.0"
+                "nicolopignatelli/valueobjects": "~3.0",
+                "symfony/finder": "~3.2"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -1086,7 +1087,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-02-23 12:46:48"
+            "time": "2017-02-28 14:08:15"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1247,16 +1248,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.3.1",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "bd4461328621bde0ae6b1b2675fbc6aca4ceb558"
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/bd4461328621bde0ae6b1b2675fbc6aca4ceb558",
-                "reference": "bd4461328621bde0ae6b1b2675fbc6aca4ceb558",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/54cacc9b81758b14e3ce750f205a393d52339e97",
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
                 "shasum": ""
             },
             "require": {
@@ -1265,7 +1266,7 @@
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^5.6.1"
+                "phpunit/phpunit": "^5.7"
             },
             "type": "library",
             "extra": {
@@ -1311,7 +1312,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2016-12-30 15:59:45"
+            "time": "2017-02-24 16:22:25"
         },
         {
             "name": "doctrine/cache",
@@ -2798,16 +2799,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v1.4.1",
+            "version": "v2.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774"
+                "reference": "b5ea1ef3d8ff10c307ba8c5945c2f134e503278f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/c7e26a21ba357863de030f0b9e701c7d04593774",
-                "reference": "c7e26a21ba357863de030f0b9e701c7d04593774",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b5ea1ef3d8ff10c307ba8c5945c2f134e503278f",
+                "reference": "b5ea1ef3d8ff10c307ba8c5945c2f134e503278f",
                 "shasum": ""
             },
             "require": {
@@ -2842,7 +2843,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-03-18 20:34:03"
+            "time": "2017-02-27 17:11:23"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -3669,6 +3670,55 @@
             "time": "2017-01-02 20:30:24"
         },
         {
+            "name": "symfony/finder",
+            "version": "v3.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/8c71141cae8e2957946b403cc71a67213c0380d6",
+                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-01-02 20:32:22"
+        },
+        {
             "name": "symfony/http-foundation",
             "version": "v2.7.24",
             "source": {
@@ -3998,20 +4048,19 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.24",
+            "version": "v2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "17fae546bf4be09cf1c012c47830c79d195ffc95"
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/17fae546bf4be09cf1c012c47830c79d195ffc95",
-                "reference": "17fae546bf4be09cf1c012c47830c79d195ffc95",
+                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
                 "shasum": ""
             },
             "require": {
-                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
                 "symfony/http-foundation": "~2.1",
@@ -4037,6 +4086,7 @@
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -4074,7 +4124,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:30:00"
+            "time": "2015-12-23 18:13:52"
         },
         {
             "name": "symfony/serializer",
@@ -4968,25 +5018,30 @@
         },
         {
             "name": "phpunit/php-timer",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-timer.git",
-                "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260"
+                "reference": "3dcf38ca72b158baf0bc245e9184d3fdffa9c46f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/38e9124049cf1a164f1e4537caf19c99bf1eb260",
-                "reference": "38e9124049cf1a164f1e4537caf19c99bf1eb260",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-timer/zipball/3dcf38ca72b158baf0bc245e9184d3fdffa9c46f",
+                "reference": "3dcf38ca72b158baf0bc245e9184d3fdffa9c46f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4|~5"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "classmap": [
                     "src/"
@@ -5008,20 +5063,20 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2016-05-12 18:03:57"
+            "time": "2017-02-26 11:10:40"
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.10",
+            "version": "1.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "284fb0679dd25fb5ffb56dad92c72860c0a22f1b"
+                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/284fb0679dd25fb5ffb56dad92c72860c0a22f1b",
-                "reference": "284fb0679dd25fb5ffb56dad92c72860c0a22f1b",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/e03f8f67534427a787e21a385a67ec3ca6978ea7",
+                "reference": "e03f8f67534427a787e21a385a67ec3ca6978ea7",
                 "shasum": ""
             },
             "require": {
@@ -5057,7 +5112,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-23 06:14:45"
+            "time": "2017-02-27 10:12:30"
         },
         {
             "name": "phpunit/phpunit",
@@ -6053,9 +6108,18 @@
             "time": "2016-11-23 20:04:58"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1937",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search-elasticsearch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
