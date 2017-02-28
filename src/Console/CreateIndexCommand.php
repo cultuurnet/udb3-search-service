@@ -26,6 +26,9 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
         $this->indexName = $indexName;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function configure()
     {
         $this
@@ -37,6 +40,9 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
             );
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $force = (bool) $input->getOption('force');
