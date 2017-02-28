@@ -2,7 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
-use CultuurNet\UDB3\SearchService\Console\CreateIndex;
+use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -28,7 +28,7 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
-    new CreateIndex(
+    new CreateIndexCommand(
         'udb3-core:create',
         'Create the latest udb3-core index.',
         $app['config']['elasticsearch']['udb3_core_index']['latest']

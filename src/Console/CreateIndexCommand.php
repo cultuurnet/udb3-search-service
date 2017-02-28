@@ -7,29 +7,28 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateIndex extends AbstractElasticSearchCommand
+class CreateIndexCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    private $desc;
-
     /**
      * @var string
      */
     private $indexName;
 
-    public function __construct($name, $desc, $indexName)
+    /**
+     * @param string $name
+     * @param string $description
+     * @param string $indexName
+     */
+    public function __construct($name, $description, $indexName)
     {
         parent::__construct($name);
-        $this->desc = $desc;
+        $this->setDescription($description);
         $this->indexName = $indexName;
     }
 
     public function configure()
     {
         $this
-            ->setDescription($this->desc)
             ->addOption(
                 'force',
                 null,
