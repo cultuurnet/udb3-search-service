@@ -2,19 +2,34 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateIndex;
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\IndexNames;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateIndex as CreateIndexOperation;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateUDB3CoreIndex extends AbstractElasticSearchCommand
+class CreateIndex extends AbstractElasticSearchCommand
 {
+    /**
+     * @var string
+     */
+    private $desc;
+
+    /**
+     * @var string
+     */
+    private $indexName;
+
+    public function __construct($name, $desc, $indexName)
+    {
+        parent::__construct($name);
+        $this->desc = $desc;
+        $this->indexName = $indexName;
+    }
+
     public function configure()
     {
         $this
-            ->setName('udb3-core:create')
-            ->setDescription('Create the latest udb3 core index.')
+            ->setDescription($this->desc)
             ->addOption(
                 'force',
                 null,
@@ -27,11 +42,11 @@ class CreateUDB3CoreIndex extends AbstractElasticSearchCommand
     {
         $force = (bool) $input->getOption('force');
 
-        $operation = new CreateIndex(
+        $operation = new CreateIndexOperation(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
 
-        $operation->run(IndexNames::UDB3_CORE_LATEST, $force);
+        $operation->run($this->indexName, $force);
     }
 }
