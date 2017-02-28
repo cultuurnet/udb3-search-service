@@ -26,6 +26,5 @@ $consoleApp->add(
         ->setDescription('Process messages from UDB3 core')
 );
 
-$consoleApp->add(new \CultuurNet\UDB3\SearchService\Console\ElasticsearchCommand());
 
 $consoleApp->run();
