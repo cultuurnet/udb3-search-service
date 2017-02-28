@@ -19,7 +19,7 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ElasticSearchOrganizerSearchService(
                     $app['elasticsearch_client'],
-                    new StringLiteral($app['elasticsearch.organizer.index_name']),
+                    new StringLiteral($app['elasticsearch.organizer.read_index_name']),
                     new StringLiteral($app['elasticsearch.organizer.document_type'])
                 );
             }
@@ -29,7 +29,7 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ElasticSearchDocumentRepository(
                     $app['elasticsearch_client'],
-                    new StringLiteral($app['elasticsearch.organizer.index_name']),
+                    new StringLiteral($app['elasticsearch.organizer.write_index_name']),
                     new StringLiteral($app['elasticsearch.organizer.document_type'])
                 );
             }

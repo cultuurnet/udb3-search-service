@@ -156,7 +156,8 @@ $app->register(
 $app->register(
     new OrganizerElasticSearchServiceProvider(),
     [
-        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
+        'elasticsearch.organizer.read_index_name' => $app['config']['elasticsearch']['organizer']['read_index_name'],
+        'elasticsearch.organizer.write_index_name' => $app['config']['elasticsearch']['organizer']['write_index_name'],
         'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
     ]
 );

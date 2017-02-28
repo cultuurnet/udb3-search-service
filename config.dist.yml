@@ -15,7 +15,8 @@ amqp:
 elasticsearch:
   host: http://elasticsearch.dev:9200
   organizer:
-    index_name: udb3_core
+    read_index_name: udb3_core_read
+    write_index_name: udb3_core_write
     document_type: organizer
 cors:
   origins:
