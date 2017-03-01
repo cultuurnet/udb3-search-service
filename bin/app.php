@@ -92,7 +92,7 @@ $consoleApp->add(
 
 $consoleApp->add(
     new ReindexUDB3CoreCommand(
-        $app['config']['elasticsearch']['udb3_core_index']['read_alias'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
     )

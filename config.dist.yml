@@ -20,6 +20,7 @@ elasticsearch:
     read_alias: udb3_core_read
     write_alias: udb3_core_write
     reindexation:
+      from: udb3_core_20161011000440
       scroll_ttl: '1m'
       scroll_size: 30
   geoshapes_index:
