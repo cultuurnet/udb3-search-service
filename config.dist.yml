@@ -19,6 +19,9 @@ elasticsearch:
     previous: udb3_core_20161011000440
     read_alias: udb3_core_read
     write_alias: udb3_core_write
+    reindexation:
+      scroll_ttl: '1m'
+      scroll_size: 30
   geoshapes_index:
     latest: geoshapes_v1
     previous: null

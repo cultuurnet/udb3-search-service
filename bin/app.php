@@ -5,6 +5,7 @@ use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
+use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
@@ -86,6 +87,14 @@ $consoleApp->add(
     new UpdatePlaceMappingCommand(
         $app['config']['elasticsearch']['udb3_core_index']['latest'],
         $app['config']['elasticsearch']['place']['document_type']
+    )
+);
+
+$consoleApp->add(
+    new ReindexUDB3CoreCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['read_alias'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
     )
 );
 
