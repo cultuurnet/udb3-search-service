@@ -4,6 +4,7 @@
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
@@ -53,4 +54,11 @@ $consoleApp->add(
     )
 );
 
+$consoleApp->add(
+    new DeleteIndexCommand(
+        'udb3-core:delete-previous',
+        'Delete the previous udb3_core index.',
+        $app['config']['elasticsearch']['udb3_core_index']['previous']
+    )
+);
 $consoleApp->run();
