@@ -3,6 +3,7 @@
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -26,6 +27,11 @@ $consoleApp->add(
     (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
         ->setDescription('Process messages from UDB3 core')
 );
+
+/**
+ * Templates.
+ */
+$consoleApp->add(new CreateLowerCaseAnalyzerCommand());
 
 $consoleApp->add(
     new CreateIndexCommand(
