@@ -23,6 +23,22 @@ elasticsearch:
     read_index: udb3_core_read
     write_index: udb3_core_write
     document_type: organizer
+  event:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: event
+  place:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: place
+  offer:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: 'event,place'
+  region:
+    read_index: geoshapes_read
+    write_index: geoshapes_write
+    document_type: region
 cors:
   origins:
     - http://udb-app.dev
