@@ -5,7 +5,7 @@ use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
-use CultuurNet\UDB3\SearchService\Console\MigrateUDB3CoreCommand;
+use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
@@ -49,6 +49,14 @@ $consoleApp->add(
         'udb3-core:test-latest',
         'Tests whether the latest udb3_core index exists or not.',
         $app['config']['elasticsearch']['udb3_core_index']['latest']
+    )
+);
+
+$consoleApp->add(
+    new TestIndexExistsCommand(
+        'udb3-core:test-previous',
+        'Tests whether the previous udb3_core index exists or not.',
+        $app['config']['elasticsearch']['udb3_core_index']['previous']
     )
 );
 
@@ -117,6 +125,6 @@ $consoleApp->add(
     )
 );
 
-$consoleApp->add(new MigrateUDB3CoreCommand());
+$consoleApp->add(new InstallUDB3CoreCommand());
 
 $consoleApp->run();
