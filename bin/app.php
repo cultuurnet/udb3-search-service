@@ -7,6 +7,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use Knp\Provider\ConsoleServiceProvider;
@@ -58,9 +59,11 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
-    new DeleteIndexCommand(
-        'udb3-core:delete-previous',
-        'Delete the previous udb3_core index.',
+    new UpdateIndexAliasCommand(
+        'udb3-core:update-write-alias',
+        'Move the write alias to the latest udb3_core index.',
+        $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
         $app['config']['elasticsearch']['udb3_core_index']['previous']
     )
 );
@@ -83,6 +86,24 @@ $consoleApp->add(
     new UpdatePlaceMappingCommand(
         $app['config']['elasticsearch']['udb3_core_index']['latest'],
         $app['config']['elasticsearch']['place']['document_type']
+    )
+);
+
+$consoleApp->add(
+    new UpdateIndexAliasCommand(
+        'udb3-core:update-read-alias',
+        'Move the read alias to the latest udb3_core index.',
+        $app['config']['elasticsearch']['udb3_core_index']['read_alias'],
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
+        $app['config']['elasticsearch']['udb3_core_index']['previous']
+    )
+);
+
+$consoleApp->add(
+    new DeleteIndexCommand(
+        'udb3-core:delete-previous',
+        'Delete the previous udb3_core index.',
+        $app['config']['elasticsearch']['udb3_core_index']['previous']
     )
 );
 
