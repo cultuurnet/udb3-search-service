@@ -6,6 +6,9 @@ use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -61,4 +64,26 @@ $consoleApp->add(
         $app['config']['elasticsearch']['udb3_core_index']['previous']
     )
 );
+
+$consoleApp->add(
+    new UpdateOrganizerMappingCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
+        $app['config']['elasticsearch']['organizer']['document_type']
+    )
+);
+
+$consoleApp->add(
+    new UpdateEventMappingCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
+        $app['config']['elasticsearch']['event']['document_type']
+    )
+);
+
+$consoleApp->add(
+    new UpdatePlaceMappingCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
+        $app['config']['elasticsearch']['place']['document_type']
+    )
+);
+
 $consoleApp->run();
