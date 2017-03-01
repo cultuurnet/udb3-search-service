@@ -48,8 +48,8 @@ $consoleApp->add(
 
 $consoleApp->add(
     new CreateIndexCommand(
-        'udb3-core:create',
-        'Create the latest udb3-core index.',
+        'udb3-core:create-latest',
+        'Create the latest udb3_core index.',
         $app['config']['elasticsearch']['udb3_core_index']['latest']
     )
 );
