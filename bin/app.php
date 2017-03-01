@@ -4,6 +4,7 @@
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -32,6 +33,17 @@ $consoleApp->add(
  * Templates.
  */
 $consoleApp->add(new CreateLowerCaseAnalyzerCommand());
+
+/**
+ * UDB3 core.
+ */
+$consoleApp->add(
+    new TestIndexExistsCommand(
+        'udb3-core:test-latest',
+        'Tests whether the latest udb3_core index exists or not.',
+        $app['config']['elasticsearch']['udb3_core_index']['latest']
+    )
+);
 
 $consoleApp->add(
     new CreateIndexCommand(
