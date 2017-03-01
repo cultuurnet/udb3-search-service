@@ -19,6 +19,11 @@ elasticsearch:
     previous: udb3_core_20161011000440
     read_alias: udb3_core_read
     write_alias: udb3_core_write
+  geoshapes_index:
+    latest: geoshapes_v1
+    previous: null
+    read_alias: udb3_core_read
+    write_alias: udb3_core_write
   organizer:
     read_index: udb3_core_read
     write_index: udb3_core_write
