@@ -41,18 +41,18 @@ class InstallGeoShapesCommand extends Command
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
         $logger = new ConsoleLogger($output);
 
-        $logger->info('Checking if latest index already exists.');
+        $logger->info('Checking which geoshapes indices exist...');
 
         $previousIndexExists = $consoleApp->find('geoshapes:test-previous')->run($emptyInput, $output) === 0;
         $latestIndexExists = $consoleApp->find('geoshapes:test-latest')->run($emptyInput, $output) === 0;
 
         if ($latestIndexExists && !$force) {
             // Latest index already exists, do nothing.
-            $logger->info('Latest index already exists, aborting installation.');
+            $logger->info('Latest geoshapes index already exists, aborting installation.');
             return;
         } elseif ($latestIndexExists && $force) {
             // Latest index already exists, but force enabled so continue.
-            $logger->warning('Latest index already exists. Force enabled so continuing.');
+            $logger->warning('Latest geoshapes index already exists. Force enabled so continuing.');
         } else {
             // Latest index does not exist, so continue.
             $logger->info('Newer geoshapes index available, starting installation.');

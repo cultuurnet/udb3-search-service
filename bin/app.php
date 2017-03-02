@@ -8,6 +8,7 @@ use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
+use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
@@ -38,6 +39,11 @@ $consoleApp->add(
     (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
         ->setDescription('Process messages from UDB3 core')
 );
+
+/**
+ * Elasticsearch.
+ */
+$consoleApp->add(new MigrateElasticSearchCommand());
 
 /**
  * Templates.
