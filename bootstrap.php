@@ -14,6 +14,7 @@ use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
+use Symfony\Component\Finder\Finder;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -46,6 +47,12 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
 $app['http_client'] = $app->share(
     function (Application $app) {
         return new Client();
+    }
+);
+
+$app['file_finder'] = $app->share(
+    function (Application $app) {
+        return new Finder();
     }
 );
 

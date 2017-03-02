@@ -26,8 +26,12 @@ elasticsearch:
   geoshapes_index:
     latest: geoshapes_v1
     previous: null
-    read_alias: udb3_core_read
-    write_alias: udb3_core_write
+    read_alias: geoshapes_read
+    write_alias: geoshapes_write
+    indexation:
+      to: geoshapes_write
+      path: '../geojson-data/elasticsearch'
+      fileName: '*.json'
   organizer:
     read_index: udb3_core_read
     write_index: udb3_core_write

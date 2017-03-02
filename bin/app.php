@@ -5,6 +5,8 @@ use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
+use CultuurNet\UDB3\SearchService\Console\IndexGeoShapesCommand;
+use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
@@ -12,6 +14,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -126,5 +129,77 @@ $consoleApp->add(
 );
 
 $consoleApp->add(new InstallUDB3CoreCommand());
+
+/**
+ * Geoshapes
+ */
+$consoleApp->add(
+    new TestIndexExistsCommand(
+        'geoshapes:test-latest',
+        'Tests whether the latest geoshapes index exists or not.',
+        $app['config']['elasticsearch']['geoshapes_index']['latest']
+    )
+);
+
+$consoleApp->add(
+    new TestIndexExistsCommand(
+        'geoshapes:test-previous',
+        'Tests whether the previous geoshapes index exists or not.',
+        $app['config']['elasticsearch']['geoshapes_index']['previous']
+    )
+);
+
+$consoleApp->add(
+    new CreateIndexCommand(
+        'geoshapes:create-latest',
+        'Create the latest geoshapes index.',
+        $app['config']['elasticsearch']['geoshapes_index']['latest']
+    )
+);
+
+$consoleApp->add(
+    new UpdateIndexAliasCommand(
+        'geoshapes:update-write-alias',
+        'Move the write alias to the latest geoshapes index.',
+        $app['config']['elasticsearch']['geoshapes_index']['write_alias'],
+        $app['config']['elasticsearch']['geoshapes_index']['latest'],
+        $app['config']['elasticsearch']['geoshapes_index']['previous']
+    )
+);
+
+$consoleApp->add(
+    new UpdateRegionMappingCommand(
+        $app['config']['elasticsearch']['geoshapes_index']['latest'],
+        $app['config']['elasticsearch']['region']['document_type']
+    )
+);
+
+$consoleApp->add(
+    new IndexGeoShapesCommand(
+        $app['config']['elasticsearch']['geoshapes_index']['indexation']['to'],
+        __DIR__ . '/../' . $app['config']['elasticsearch']['geoshapes_index']['indexation']['path'],
+        $app['config']['elasticsearch']['geoshapes_index']['indexation']['fileName']
+    )
+);
+
+$consoleApp->add(
+    new UpdateIndexAliasCommand(
+        'geoshapes:update-read-alias',
+        'Move the read alias to the latest geoshapes index.',
+        $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
+        $app['config']['elasticsearch']['geoshapes_index']['latest'],
+        $app['config']['elasticsearch']['geoshapes_index']['previous']
+    )
+);
+
+$consoleApp->add(
+    new DeleteIndexCommand(
+        'geoshapes:delete-previous',
+        'Delete the previous geoshapes index.',
+        $app['config']['elasticsearch']['geoshapes_index']['previous']
+    )
+);
+
+$consoleApp->add(new InstallGeoShapesCommand());
 
 $consoleApp->run();
