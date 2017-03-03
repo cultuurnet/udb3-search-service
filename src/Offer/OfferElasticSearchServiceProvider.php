@@ -21,7 +21,7 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new ElasticSearchOfferSearchService(
                     $app['elasticsearch_client'],
-                    new StringLiteral($app['elasticsearch.offer.index_name']),
+                    new StringLiteral($app['elasticsearch.offer.read_index']),
                     new StringLiteral($app['elasticsearch.offer.document_type']),
                     new JsonDocumentTransformingPagedResultSetFactory(
                         new ResultSetJsonDocumentTransformer(),

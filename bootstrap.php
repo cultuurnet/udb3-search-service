@@ -21,6 +21,7 @@ use JDesrosiers\Silex\Provider\CorsServiceProvider;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
+use Symfony\Component\Finder\Finder;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -53,6 +54,12 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
 $app['http_client'] = $app->share(
     function (Application $app) {
         return new Client();
+    }
+);
+
+$app['file_finder'] = $app->share(
+    function (Application $app) {
+        return new Finder();
     }
 );
 
@@ -168,7 +175,8 @@ $app->register(
 $app->register(
     new OrganizerElasticSearchServiceProvider(),
     [
-        'elasticsearch.organizer.index_name' => $app['config']['elasticsearch']['organizer']['index_name'],
+        'elasticsearch.organizer.read_index' => $app['config']['elasticsearch']['organizer']['read_index'],
+        'elasticsearch.organizer.write_index' => $app['config']['elasticsearch']['organizer']['write_index'],
         'elasticsearch.organizer.document_type' => $app['config']['elasticsearch']['organizer']['document_type'],
     ]
 );
@@ -181,7 +189,8 @@ $app->register(new OrganizerServiceProvider());
 $app->register(
     new EventElasticSearchServiceProvider(),
     [
-        'elasticsearch.event.index_name' => $app['config']['elasticsearch']['event']['index_name'],
+        'elasticsearch.event.read_index' => $app['config']['elasticsearch']['event']['read_index'],
+        'elasticsearch.event.write_index' => $app['config']['elasticsearch']['event']['write_index'],
         'elasticsearch.event.document_type' => $app['config']['elasticsearch']['event']['document_type'],
     ]
 );
@@ -194,7 +203,8 @@ $app->register(new EventServiceProvider());
 $app->register(
     new PlaceElasticSearchServiceProvider(),
     [
-        'elasticsearch.place.index_name' => $app['config']['elasticsearch']['place']['index_name'],
+        'elasticsearch.place.read_index' => $app['config']['elasticsearch']['place']['read_index'],
+        'elasticsearch.place.write_index' => $app['config']['elasticsearch']['place']['write_index'],
         'elasticsearch.place.document_type' => $app['config']['elasticsearch']['place']['document_type'],
     ]
 );
@@ -207,7 +217,7 @@ $app->register(new PlaceServiceProvider());
 $app->register(
     new OfferElasticSearchServiceProvider(),
     [
-        'elasticsearch.offer.index_name' => $app['config']['elasticsearch']['offer']['index_name'],
+        'elasticsearch.offer.read_index' => $app['config']['elasticsearch']['offer']['read_index'],
         'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
     ]
 );
