@@ -22,7 +22,7 @@ $app->mount('organizers', new OrganizerControllerProvider());
 $app->mount(
     'offers',
     new OfferControllerProvider(
-        new StringLiteral($app['config']['elasticsearch']['region']['index_name']),
+        new StringLiteral($app['config']['elasticsearch']['region']['read_index']),
         new StringLiteral($app['config']['elasticsearch']['region']['document_type'])
     )
 );
