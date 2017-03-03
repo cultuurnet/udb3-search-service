@@ -27,8 +27,6 @@ $app->mount(
     )
 );
 
-$app->mount('regions', new RegionControllerProvider());
-
 $app->after($app['cors']);
 
 $app->run();

@@ -222,22 +222,4 @@ $app->register(
     ]
 );
 
-/**
- * Regions.
- */
-$app->register(
-    new RegionElasticSearchServiceProvider(),
-    [
-        'elasticsearch.region.index_name' => $app['config']['elasticsearch']['region']['index_name'],
-        'elasticsearch.region.document_type' => $app['config']['elasticsearch']['region']['document_type'],
-    ]
-);
-
-$app->register(
-    new RegionServiceProvider(),
-    [
-        'regions.structure' => $app['config']['regions'],
-    ]
-);
-
 return $app;
