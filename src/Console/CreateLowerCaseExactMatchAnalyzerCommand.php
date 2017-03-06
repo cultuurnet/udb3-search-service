@@ -3,10 +3,11 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseAnalyzer;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseExactMatchAnalyzer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateLowerCaseAnalyzerCommand extends AbstractElasticSearchCommand
+class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc
@@ -14,8 +15,8 @@ class CreateLowerCaseAnalyzerCommand extends AbstractElasticSearchCommand
     protected function configure()
     {
         $this
-            ->setName('lowercase-analyzer:create')
-            ->setDescription('Creates or updates the template for a lowercase analyzer.');
+            ->setName('lowercase-exact-match-analyzer:create')
+            ->setDescription('Creates or updates the template for a lowercase & exact match analyzer.');
     }
 
     /**
@@ -23,7 +24,7 @@ class CreateLowerCaseAnalyzerCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $operation = new CreateLowerCaseAnalyzer(
+        $operation = new CreateLowerCaseExactMatchAnalyzer(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );

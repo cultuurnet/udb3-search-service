@@ -3,7 +3,7 @@
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
-use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
@@ -48,7 +48,7 @@ $consoleApp->add(new MigrateElasticSearchCommand());
 /**
  * Templates.
  */
-$consoleApp->add(new CreateLowerCaseAnalyzerCommand());
+$consoleApp->add(new CreateLowerCaseExactMatchAnalyzerCommand());
 
 /**
  * UDB3 core.
