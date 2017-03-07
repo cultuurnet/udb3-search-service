@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\DeleteIndex;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\TestIndexExists;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
