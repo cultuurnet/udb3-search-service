@@ -82,8 +82,7 @@ $consoleApp->add(
         'udb3-core:update-write-alias',
         'Move the write alias to the latest udb3_core index.',
         $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
-        $app['config']['elasticsearch']['udb3_core_index']['latest'],
-        $app['config']['elasticsearch']['udb3_core_index']['previous']
+        $app['config']['elasticsearch']['udb3_core_index']['latest']
     )
 );
 
@@ -121,8 +120,7 @@ $consoleApp->add(
         'udb3-core:update-read-alias',
         'Move the read alias to the latest udb3_core index.',
         $app['config']['elasticsearch']['udb3_core_index']['read_alias'],
-        $app['config']['elasticsearch']['udb3_core_index']['latest'],
-        $app['config']['elasticsearch']['udb3_core_index']['previous']
+        $app['config']['elasticsearch']['udb3_core_index']['latest']
     )
 );
 
@@ -168,8 +166,7 @@ $consoleApp->add(
         'geoshapes:update-write-alias',
         'Move the write alias to the latest geoshapes index.',
         $app['config']['elasticsearch']['geoshapes_index']['write_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['latest'],
-        $app['config']['elasticsearch']['geoshapes_index']['previous']
+        $app['config']['elasticsearch']['geoshapes_index']['latest']
     )
 );
 
@@ -193,8 +190,7 @@ $consoleApp->add(
         'geoshapes:update-read-alias',
         'Move the read alias to the latest geoshapes index.',
         $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['latest'],
-        $app['config']['elasticsearch']['geoshapes_index']['previous']
+        $app['config']['elasticsearch']['geoshapes_index']['latest']
     )
 );
 
