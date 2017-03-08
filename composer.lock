@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "02e47d7daaa1e22d704e6d41495213d7",
+    "content-hash": "1bec6fc838a6bda0f76f4df68bac6ba1",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1041,16 +1041,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-feature/III-1937",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "729c4130ea0374684d4d1c0ff1055d681681c9c6"
+                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/729c4130ea0374684d4d1c0ff1055d681681c9c6",
-                "reference": "729c4130ea0374684d4d1c0ff1055d681681c9c6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
+                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
                 "shasum": ""
             },
             "require": {
@@ -1086,7 +1086,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-08 08:21:34"
+            "time": "2017-03-08 12:27:29"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -6109,18 +6109,9 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1937",
-            "package": "cultuurnet/udb3-search-elasticsearch"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cultuurnet/udb3-search-elasticsearch": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
