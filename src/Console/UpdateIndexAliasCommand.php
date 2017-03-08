@@ -19,24 +19,17 @@ class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
     private $newIndexName;
 
     /**
-     * @var string
-     */
-    private $oldIndexName;
-
-    /**
      * @param string $name
      * @param string $description
      * @param string $aliasName
      * @param string $newIndexName
-     * @param string|null $oldIndexName
      */
-    public function __construct($name, $description, $aliasName, $newIndexName, $oldIndexName = null)
+    public function __construct($name, $description, $aliasName, $newIndexName)
     {
         parent::__construct($name);
         $this->setDescription($description);
         $this->aliasName = $aliasName;
         $this->newIndexName = $newIndexName;
-        $this->oldIndexName = $oldIndexName;
     }
 
     /**
@@ -49,6 +42,6 @@ class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
             $this->getLogger($output)
         );
 
-        $operation->run($this->aliasName, $this->newIndexName, $this->oldIndexName);
+        $operation->run($this->aliasName, $this->newIndexName);
     }
 }
