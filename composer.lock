@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a255d0844772e1368d22f21ac9fbf8c0",
-    "content-hash": "3daa1f08c99e437feea1adaab4807dde",
+    "hash": "5da4cac5cd3b8e4fb7e584b410fe70e5",
+    "content-hash": "1bec6fc838a6bda0f76f4df68bac6ba1",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -994,16 +994,16 @@
         },
         {
             "name": "cultuurnet/udb3-search",
-            "version": "dev-feature/III-1779",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "bde0eaa2772d9d260891c7f99f3fa747ffb07f99"
+                "reference": "9cd70163865d2e0574ddc63dafbf3a74fa8c3352"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/bde0eaa2772d9d260891c7f99f3fa747ffb07f99",
-                "reference": "bde0eaa2772d9d260891c7f99f3fa747ffb07f99",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/9cd70163865d2e0574ddc63dafbf3a74fa8c3352",
+                "reference": "9cd70163865d2e0574ddc63dafbf3a74fa8c3352",
                 "shasum": ""
             },
             "require": {
@@ -1038,27 +1038,26 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-03 09:15:38"
+            "time": "2017-02-23 12:39:41"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-feature/III-1779",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "5c36695dd585f99515bd0bf5c76dcdb74655edaa"
+                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/5c36695dd585f99515bd0bf5c76dcdb74655edaa",
-                "reference": "5c36695dd585f99515bd0bf5c76dcdb74655edaa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
+                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3-search": "dev-feature/III-1779 as 0.1",
+                "cultuurnet/udb3-search": "~0.1",
                 "elasticsearch/elasticsearch": "~5.1.3",
                 "nicolopignatelli/valueobjects": "~3.0",
-                "ongr/elasticsearch-dsl": "~5.0.1",
                 "symfony/finder": "~3.2"
             },
             "require-dev": {
@@ -1088,25 +1087,25 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-06 15:54:28"
+            "time": "2017-03-08 12:27:29"
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-feature/III-1779",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "fbe3ed886c092c82d1f64b584f66eea3c960d85a"
+                "reference": "98fd14b1028a5bcdc2ef7689422884cb3457a8bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/fbe3ed886c092c82d1f64b584f66eea3c960d85a",
-                "reference": "fbe3ed886c092c82d1f64b584f66eea3c960d85a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/98fd14b1028a5bcdc2ef7689422884cb3457a8bd",
+                "reference": "98fd14b1028a5bcdc2ef7689422884cb3457a8bd",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-search": "dev-feature/III-1779 as 0.1",
+                "cultuurnet/udb3-search": "~0.1",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
             },
@@ -1137,7 +1136,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-03 09:42:42"
+            "time": "2017-02-23 12:54:09"
         },
         {
             "name": "danielstjules/stringy",
@@ -2798,56 +2797,6 @@
             ],
             "description": "A PHP library/collection of classes aimed to help developers using and undestanding immutable objects.",
             "time": "2015-05-15 13:19:42"
-        },
-        {
-            "name": "ongr/elasticsearch-dsl",
-            "version": "v5.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ongr-io/ElasticsearchDSL.git",
-                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ongr-io/ElasticsearchDSL/zipball/a9e4bfe361d1a365f151ecf919df47df970b3423",
-                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423",
-                "shasum": ""
-            },
-            "require": {
-                "elasticsearch/elasticsearch": "~5.0",
-                "paragonie/random_compat": "^2.0",
-                "php": ">=5.6",
-                "symfony/serializer": "~2.7|~3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.6",
-                "satooshi/php-coveralls": "~1.0",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ONGR\\ElasticsearchDSL\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "ONGR team",
-                    "homepage": "http://www.ongr.io"
-                }
-            ],
-            "description": "Elasticsearch DSL library",
-            "homepage": "http://ongr.io",
-            "time": "2017-02-03 06:55:42"
         },
         {
             "name": "paragonie/random_compat",
@@ -6161,32 +6110,9 @@
             "time": "2016-11-23 20:04:58"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1779",
-            "package": "cultuurnet/udb3-search"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1779",
-            "package": "cultuurnet/udb3-search-elasticsearch"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1779",
-            "package": "cultuurnet/udb3-search-http"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cultuurnet/udb3-search": 20,
-        "cultuurnet/udb3-search-elasticsearch": 20,
-        "cultuurnet/udb3-search-http": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
