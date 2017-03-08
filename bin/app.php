@@ -10,7 +10,7 @@ use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
-use CultuurNet\UDB3\SearchService\Console\TestIndexExistsCommand;
+use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
@@ -54,17 +54,17 @@ $consoleApp->add(new CreateLowerCaseExactMatchAnalyzerCommand());
  * UDB3 core.
  */
 $consoleApp->add(
-    new TestIndexExistsCommand(
-        'udb3-core:test-latest',
-        'Tests whether the latest udb3_core index exists or not.',
+    new CheckIndexExistsCommand(
+        'udb3-core:check-latest',
+        'Checks whether the latest udb3_core index exists or not.',
         $app['config']['elasticsearch']['udb3_core_index']['latest']
     )
 );
 
 $consoleApp->add(
-    new TestIndexExistsCommand(
-        'udb3-core:test-previous',
-        'Tests whether the previous udb3_core index exists or not.',
+    new CheckIndexExistsCommand(
+        'udb3-core:check-previous',
+        'Checks whether the previous udb3_core index exists or not.',
         $app['config']['elasticsearch']['udb3_core_index']['previous']
     )
 );
@@ -138,17 +138,17 @@ $consoleApp->add(new InstallUDB3CoreCommand());
  * Geoshapes
  */
 $consoleApp->add(
-    new TestIndexExistsCommand(
-        'geoshapes:test-latest',
-        'Tests whether the latest geoshapes index exists or not.',
+    new CheckIndexExistsCommand(
+        'geoshapes:check-latest',
+        'Checks whether the latest geoshapes index exists or not.',
         $app['config']['elasticsearch']['geoshapes_index']['latest']
     )
 );
 
 $consoleApp->add(
-    new TestIndexExistsCommand(
-        'geoshapes:test-previous',
-        'Tests whether the previous geoshapes index exists or not.',
+    new CheckIndexExistsCommand(
+        'geoshapes:check-previous',
+        'Checks whether the previous geoshapes index exists or not.',
         $app['config']['elasticsearch']['geoshapes_index']['previous']
     )
 );

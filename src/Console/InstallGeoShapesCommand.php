@@ -43,8 +43,8 @@ class InstallGeoShapesCommand extends Command
 
         $logger->info('Checking which geoshapes indices exist...');
 
-        $previousIndexExists = $consoleApp->find('geoshapes:test-previous')->run($emptyInput, $output) === 0;
-        $latestIndexExists = $consoleApp->find('geoshapes:test-latest')->run($emptyInput, $output) === 0;
+        $previousIndexExists = $consoleApp->find('geoshapes:check-previous')->run($emptyInput, $output) === 0;
+        $latestIndexExists = $consoleApp->find('geoshapes:check-latest')->run($emptyInput, $output) === 0;
 
         if ($latestIndexExists && !$force) {
             // Latest index already exists, do nothing.

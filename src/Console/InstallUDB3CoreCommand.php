@@ -43,8 +43,8 @@ class InstallUDB3CoreCommand extends Command
 
         $logger->info('Checking which udb3_core indices exist...');
 
-        $previousIndexExists = $consoleApp->find('udb3-core:test-previous')->run($emptyInput, $output) === 0;
-        $latestIndexExists = $consoleApp->find('udb3-core:test-latest')->run($emptyInput, $output) === 0;
+        $previousIndexExists = $consoleApp->find('udb3-core:check-previous')->run($emptyInput, $output) === 0;
+        $latestIndexExists = $consoleApp->find('udb3-core:check-latest')->run($emptyInput, $output) === 0;
 
         if ($latestIndexExists && !$force) {
             // Latest index already exists, do nothing.
