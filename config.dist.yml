@@ -14,9 +14,44 @@ amqp:
       queue: search.vagrant.q.udb3-domain-events
 elasticsearch:
   host: http://elasticsearch.dev:9200
+  udb3_core_index:
+    latest: udb3_core_v1
+    previous: udb3_core_20161011000440
+    read_alias: udb3_core_read
+    write_alias: udb3_core_write
+    reindexation:
+      from: udb3_core_20161011000440
+      scroll_ttl: '1m'
+      scroll_size: 30
+  geoshapes_index:
+    latest: geoshapes_v1
+    previous: null
+    read_alias: geoshapes_read
+    write_alias: geoshapes_write
+    indexation:
+      to: geoshapes_write
+      path: '../geojson-data/elasticsearch'
+      fileName: '*.json'
   organizer:
-    index_name: udb3_core
+    read_index: udb3_core_read
+    write_index: udb3_core_write
     document_type: organizer
+  event:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: event
+  place:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: place
+  offer:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: 'event,place'
+  region:
+    read_index: geoshapes_read
+    write_index: geoshapes_write
+    document_type: region
 cors:
   origins:
     - http://udb-app.dev
