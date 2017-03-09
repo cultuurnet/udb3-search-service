@@ -12,8 +12,6 @@ use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvide
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
-use CultuurNet\UDB3\SearchService\Region\RegionElasticSearchServiceProvider;
-use CultuurNet\UDB3\SearchService\Region\RegionServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use GuzzleHttp\Client;
