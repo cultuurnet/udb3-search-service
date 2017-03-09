@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5da4cac5cd3b8e4fb7e584b410fe70e5",
-    "content-hash": "1bec6fc838a6bda0f76f4df68bac6ba1",
+    "hash": "3f856033ec1ebc9d9fd0147e53f3c5e5",
+    "content-hash": "54d6cea63389b0072a0e9f4cc5ccb0ce",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -994,16 +994,16 @@
         },
         {
             "name": "cultuurnet/udb3-search",
-            "version": "dev-master",
+            "version": "dev-feature/III-1958",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "9cd70163865d2e0574ddc63dafbf3a74fa8c3352"
+                "reference": "8c6d45d146bf5a0a803a04f27d688ad46f369215"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/9cd70163865d2e0574ddc63dafbf3a74fa8c3352",
-                "reference": "9cd70163865d2e0574ddc63dafbf3a74fa8c3352",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/8c6d45d146bf5a0a803a04f27d688ad46f369215",
+                "reference": "8c6d45d146bf5a0a803a04f27d688ad46f369215",
                 "shasum": ""
             },
             "require": {
@@ -1038,26 +1038,27 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-02-23 12:39:41"
+            "time": "2017-03-06 14:20:34"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-1958",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd"
+                "reference": "c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
-                "reference": "91f0fc79c8b3d8b795a1b240d93fbfeaa8ab63dd",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4",
+                "reference": "c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3-search": "~0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1958 as 0.1",
                 "elasticsearch/elasticsearch": "~5.1.3",
                 "nicolopignatelli/valueobjects": "~3.0",
+                "ongr/elasticsearch-dsl": "~5.0.1",
                 "symfony/finder": "~3.2"
             },
             "require-dev": {
@@ -1087,7 +1088,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-08 12:27:29"
+            "time": "2017-03-09 10:24:53"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2799,6 +2800,56 @@
             "time": "2015-05-15 13:19:42"
         },
         {
+            "name": "ongr/elasticsearch-dsl",
+            "version": "v5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ongr-io/ElasticsearchDSL.git",
+                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ongr-io/ElasticsearchDSL/zipball/a9e4bfe361d1a365f151ecf919df47df970b3423",
+                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423",
+                "shasum": ""
+            },
+            "require": {
+                "elasticsearch/elasticsearch": "~5.0",
+                "paragonie/random_compat": "^2.0",
+                "php": ">=5.6",
+                "symfony/serializer": "~2.7|~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.6",
+                "satooshi/php-coveralls": "~1.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ONGR\\ElasticsearchDSL\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ONGR team",
+                    "homepage": "http://www.ongr.io"
+                }
+            ],
+            "description": "Elasticsearch DSL library",
+            "homepage": "http://ongr.io",
+            "time": "2017-02-03 06:55:42"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v2.0.9",
             "source": {
@@ -3672,16 +3723,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6"
+                "reference": "92d7476d2df60cd851a3e13e078664b1deb8ce10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/8c71141cae8e2957946b403cc71a67213c0380d6",
-                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/92d7476d2df60cd851a3e13e078664b1deb8ce10",
+                "reference": "92d7476d2df60cd851a3e13e078664b1deb8ce10",
                 "shasum": ""
             },
             "require": {
@@ -3717,7 +3768,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-02-21 09:12:04"
         },
         {
             "name": "symfony/http-foundation",
@@ -5907,16 +5958,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "9f99453e77771e629af8a25eeb0a6c4ed1e19da2"
+                "reference": "741d6d4cd1414d67d48eb71aba6072b46ba740c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/9f99453e77771e629af8a25eeb0a6c4ed1e19da2",
-                "reference": "9f99453e77771e629af8a25eeb0a6c4ed1e19da2",
+                "url": "https://api.github.com/repos/symfony/config/zipball/741d6d4cd1414d67d48eb71aba6072b46ba740c2",
+                "reference": "741d6d4cd1414d67d48eb71aba6072b46ba740c2",
                 "shasum": ""
             },
             "require": {
@@ -5959,20 +6010,20 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-14 16:27:43"
+            "time": "2017-03-01 18:18:25"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "a0c6ef2dc78d33b58d91d3a49f49797a184d06f4"
+                "reference": "bc0f17bed914df2cceb989972c3b996043c4da4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/a0c6ef2dc78d33b58d91d3a49f49797a184d06f4",
-                "reference": "a0c6ef2dc78d33b58d91d3a49f49797a184d06f4",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/bc0f17bed914df2cceb989972c3b996043c4da4a",
+                "reference": "bc0f17bed914df2cceb989972c3b996043c4da4a",
                 "shasum": ""
             },
             "require": {
@@ -6008,20 +6059,20 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-08 20:47:33"
+            "time": "2017-03-06 19:30:27"
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v3.2.4",
+            "version": "v3.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "9aa0b51889c01bca474853ef76e9394b02264464"
+                "reference": "c5ee0f8650c84b4d36a5f76b3b504233feaabf75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/9aa0b51889c01bca474853ef76e9394b02264464",
-                "reference": "9aa0b51889c01bca474853ef76e9394b02264464",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/c5ee0f8650c84b4d36a5f76b3b504233feaabf75",
+                "reference": "c5ee0f8650c84b4d36a5f76b3b504233feaabf75",
                 "shasum": ""
             },
             "require": {
@@ -6057,7 +6108,7 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-02 20:32:22"
+            "time": "2017-02-18 17:28:00"
         },
         {
             "name": "webmozart/assert",
@@ -6110,9 +6161,25 @@
             "time": "2016-11-23 20:04:58"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1958",
+            "package": "cultuurnet/udb3-search"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1958",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search": 20,
+        "cultuurnet/udb3-search-elasticsearch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],

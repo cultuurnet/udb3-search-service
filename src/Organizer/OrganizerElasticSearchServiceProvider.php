@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\SearchService\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\OrganizerJsonDocumentTransformer;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -34,6 +35,12 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['elasticsearch.organizer.write_index']),
                     new StringLiteral($app['elasticsearch.organizer.document_type'])
                 );
+            }
+        );
+
+        $app['organizer_elasticsearch_transformer'] = $app->share(
+            function (Application $app) {
+                return new OrganizerJsonDocumentTransformer();
             }
         );
     }

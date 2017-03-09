@@ -17,7 +17,7 @@ class PlaceServiceProvider implements ServiceProviderInterface
                 return new PlaceSearchProjector(
                     new TransformingJsonDocumentIndexService(
                         $app['http_client'],
-                        new PlaceJsonDocumentTransformer(),
+                        $app['place_elasticsearch_transformer'],
                         $app['place_elasticsearch_repository']
                     )
                 );

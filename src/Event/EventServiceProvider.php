@@ -17,7 +17,7 @@ class EventServiceProvider implements ServiceProviderInterface
                 return new EventSearchProjector(
                     new TransformingJsonDocumentIndexService(
                         $app['http_client'],
-                        new EventJsonDocumentTransformer(),
+                        $app['event_elasticsearch_transformer'],
                         $app['event_elasticsearch_repository']
                     )
                 );

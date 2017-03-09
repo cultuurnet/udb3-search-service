@@ -17,7 +17,7 @@ class OrganizerServiceProvider implements ServiceProviderInterface
                 return new OrganizerSearchProjector(
                     new TransformingJsonDocumentIndexService(
                         $app['http_client'],
-                        new PassThroughJsonDocumentTransformer(),
+                        $app['organizer_elasticsearch_transformer'],
                         $app['organizer_elasticsearch_repository']
                     )
                 );
