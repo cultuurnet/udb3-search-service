@@ -5,8 +5,13 @@ use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Event\EventElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
+use CultuurNet\UDB3\SearchService\Offer\OfferElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceElasticSearchServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use GuzzleHttp\Client;
@@ -45,13 +50,13 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
 }
 
 $app['http_client'] = $app->share(
-    function (Application $app) {
+    function () {
         return new Client();
     }
 );
 
 $app['file_finder'] = $app->share(
-    function (Application $app) {
+    function () {
         return new Finder();
     }
 );
@@ -63,6 +68,8 @@ $app['event_bus.udb3-core'] = $app->share(
         $bus->beforeFirstPublication(function (EventBusInterface $eventBus) use ($app) {
             $subscribers = [
                 'organizer_search_projector',
+                'event_search_projector',
+                'place_search_projector',
             ];
 
             // Allow to override event bus subscribers through configuration.
@@ -82,7 +89,7 @@ $app['event_bus.udb3-core'] = $app->share(
 );
 
 $app['logger.amqp.udb3_consumer'] = $app->share(
-    function (Application $app) {
+    function () {
         $logger = new Monolog\Logger('amqp.udb3_publisher');
         $logger->pushHandler(new StreamHandler('php://stdout'));
 
@@ -108,7 +115,7 @@ $app->register(
 );
 
 $app['deserializer_locator'] = $app->share(
-    function (Application $app) {
+    function () {
         $deserializerLocator = new SimpleDeserializerLocator();
         $maps =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
@@ -160,6 +167,9 @@ $app->register(
     ]
 );
 
+/**
+ * Organizers.
+ */
 $app->register(
     new OrganizerElasticSearchServiceProvider(),
     [
@@ -170,5 +180,44 @@ $app->register(
 );
 
 $app->register(new OrganizerServiceProvider());
+
+/**
+ * Events.
+ */
+$app->register(
+    new EventElasticSearchServiceProvider(),
+    [
+        'elasticsearch.event.read_index' => $app['config']['elasticsearch']['event']['read_index'],
+        'elasticsearch.event.write_index' => $app['config']['elasticsearch']['event']['write_index'],
+        'elasticsearch.event.document_type' => $app['config']['elasticsearch']['event']['document_type'],
+    ]
+);
+
+$app->register(new EventServiceProvider());
+
+/**
+ * Places.
+ */
+$app->register(
+    new PlaceElasticSearchServiceProvider(),
+    [
+        'elasticsearch.place.read_index' => $app['config']['elasticsearch']['place']['read_index'],
+        'elasticsearch.place.write_index' => $app['config']['elasticsearch']['place']['write_index'],
+        'elasticsearch.place.document_type' => $app['config']['elasticsearch']['place']['document_type'],
+    ]
+);
+
+$app->register(new PlaceServiceProvider());
+
+/**
+ * Offers.
+ */
+$app->register(
+    new OfferElasticSearchServiceProvider(),
+    [
+        'elasticsearch.offer.read_index' => $app['config']['elasticsearch']['offer']['read_index'],
+        'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
+    ]
+);
 
 return $app;
