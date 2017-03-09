@@ -2,13 +2,12 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\DeleteIndex;
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\TestIndexExists;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\CheckIndexExists;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class TestIndexExistsCommand extends AbstractElasticSearchCommand
+class CheckIndexExistsCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string|null
@@ -38,7 +37,7 @@ class TestIndexExistsCommand extends AbstractElasticSearchCommand
             return 1;
         }
 
-        $operation = new TestIndexExists(
+        $operation = new CheckIndexExists(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
