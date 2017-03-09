@@ -50,13 +50,13 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
 }
 
 $app['http_client'] = $app->share(
-    function (Application $app) {
+    function () {
         return new Client();
     }
 );
 
 $app['file_finder'] = $app->share(
-    function (Application $app) {
+    function () {
         return new Finder();
     }
 );
@@ -89,7 +89,7 @@ $app['event_bus.udb3-core'] = $app->share(
 );
 
 $app['logger.amqp.udb3_consumer'] = $app->share(
-    function (Application $app) {
+    function () {
         $logger = new Monolog\Logger('amqp.udb3_publisher');
         $logger->pushHandler(new StreamHandler('php://stdout'));
 
@@ -115,7 +115,7 @@ $app->register(
 );
 
 $app['deserializer_locator'] = $app->share(
-    function (Application $app) {
+    function () {
         $deserializerLocator = new SimpleDeserializerLocator();
         $maps =
             \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
