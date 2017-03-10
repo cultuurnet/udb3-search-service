@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use Elasticsearch\ClientBuilder;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -22,6 +23,12 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
                         ]
                     )
                     ->build();
+            }
+        );
+
+        $app['elasticsearch_query_string_factory'] = $app->share(
+            function (Application $app) {
+                return new LuceneQueryStringFactory();
             }
         );
     }
