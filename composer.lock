@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f856033ec1ebc9d9fd0147e53f3c5e5",
-    "content-hash": "54d6cea63389b0072a0e9f4cc5ccb0ce",
+    "hash": "1b9ad44a18a739e532503059599a092b",
+    "content-hash": "c7024b2632833809411e05abb003000a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -998,12 +998,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "8c6d45d146bf5a0a803a04f27d688ad46f369215"
+                "reference": "48ba09b554de7b3590f7eeaf9c8c29ad0a55621b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/8c6d45d146bf5a0a803a04f27d688ad46f369215",
-                "reference": "8c6d45d146bf5a0a803a04f27d688ad46f369215",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/48ba09b554de7b3590f7eeaf9c8c29ad0a55621b",
+                "reference": "48ba09b554de7b3590f7eeaf9c8c29ad0a55621b",
                 "shasum": ""
             },
             "require": {
@@ -1038,7 +1038,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-06 14:20:34"
+            "time": "2017-03-10 15:52:25"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1046,12 +1046,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4"
+                "reference": "b1c27d37b37cdff0ddf2ed08376f3aa339d74130"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4",
-                "reference": "c95b9fab6ae03352aa62707b2e96dbd6a5ead5f4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b1c27d37b37cdff0ddf2ed08376f3aa339d74130",
+                "reference": "b1c27d37b37cdff0ddf2ed08376f3aa339d74130",
                 "shasum": ""
             },
             "require": {
@@ -1088,25 +1088,25 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-09 10:24:53"
+            "time": "2017-03-10 16:08:35"
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-master",
+            "version": "dev-feature/III-1958",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "98fd14b1028a5bcdc2ef7689422884cb3457a8bd"
+                "reference": "ec6af24b9580c1f3ae3d7667137c5d1d648b8237"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/98fd14b1028a5bcdc2ef7689422884cb3457a8bd",
-                "reference": "98fd14b1028a5bcdc2ef7689422884cb3457a8bd",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ec6af24b9580c1f3ae3d7667137c5d1d648b8237",
+                "reference": "ec6af24b9580c1f3ae3d7667137c5d1d648b8237",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-search": "~0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1958 as 0.1",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
             },
@@ -1137,7 +1137,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-02-23 12:54:09"
+            "time": "2017-03-10 15:53:33"
         },
         {
             "name": "danielstjules/stringy",
@@ -6173,12 +6173,19 @@
             "alias_normalized": "0.1.0.0",
             "version": "dev-feature/III-1958",
             "package": "cultuurnet/udb3-search-elasticsearch"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1958",
+            "package": "cultuurnet/udb3-search-http"
         }
     ],
     "minimum-stability": "dev",
     "stability-flags": {
         "cultuurnet/udb3-search": 20,
-        "cultuurnet/udb3-search-elasticsearch": 20
+        "cultuurnet/udb3-search-elasticsearch": 20,
+        "cultuurnet/udb3-search-http": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
