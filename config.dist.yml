@@ -54,7 +54,6 @@ elasticsearch:
     read_index: geoshapes_read
     write_index: geoshapes_write
     document_type: region
-default_document_language: nl
 cors:
   origins:
     - http://udb-app.dev

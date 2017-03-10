@@ -30,8 +30,7 @@ class PlaceElasticSearchServiceProvider implements ServiceProviderInterface
         $app['place_elasticsearch_transformer'] = $app->share(
             function (Application $app) {
                 return new PlaceJsonDocumentTransformer(
-                    new PathEndIdUrlParser(),
-                    new Language($app['config']['default_document_language'])
+                    new PathEndIdUrlParser()
                 );
             }
         );
