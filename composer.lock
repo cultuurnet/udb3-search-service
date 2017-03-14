@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1b9ad44a18a739e532503059599a092b",
-    "content-hash": "c7024b2632833809411e05abb003000a",
+    "hash": "cbdd0419954cfb81b5e9098a0a1c7ba1",
+    "content-hash": "a3f1b1b262e4e39f298bdd633b931b43",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -994,16 +994,16 @@
         },
         {
             "name": "cultuurnet/udb3-search",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "48ba09b554de7b3590f7eeaf9c8c29ad0a55621b"
+                "reference": "dbc8a929e204a8edcaa636531ff8dd85a0fd5496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/48ba09b554de7b3590f7eeaf9c8c29ad0a55621b",
-                "reference": "48ba09b554de7b3590f7eeaf9c8c29ad0a55621b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/dbc8a929e204a8edcaa636531ff8dd85a0fd5496",
+                "reference": "dbc8a929e204a8edcaa636531ff8dd85a0fd5496",
                 "shasum": ""
             },
             "require": {
@@ -1038,24 +1038,24 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-10 15:52:25"
+            "time": "2017-03-13 15:22:40"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "b1c27d37b37cdff0ddf2ed08376f3aa339d74130"
+                "reference": "d5bc101428693cd17af2fb1b6772d4f09e9abf18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b1c27d37b37cdff0ddf2ed08376f3aa339d74130",
-                "reference": "b1c27d37b37cdff0ddf2ed08376f3aa339d74130",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/d5bc101428693cd17af2fb1b6772d4f09e9abf18",
+                "reference": "d5bc101428693cd17af2fb1b6772d4f09e9abf18",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3-search": "dev-feature/III-1958 as 0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1957 as 0.1",
                 "elasticsearch/elasticsearch": "~5.1.3",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "ongr/elasticsearch-dsl": "~5.0.1",
@@ -1088,25 +1088,25 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-10 16:08:35"
+            "time": "2017-03-14 09:40:44"
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "ec6af24b9580c1f3ae3d7667137c5d1d648b8237"
+                "reference": "67c9f4386e519dd4cbe9971cb02289e6fb8d0358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ec6af24b9580c1f3ae3d7667137c5d1d648b8237",
-                "reference": "ec6af24b9580c1f3ae3d7667137c5d1d648b8237",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/67c9f4386e519dd4cbe9971cb02289e6fb8d0358",
+                "reference": "67c9f4386e519dd4cbe9971cb02289e6fb8d0358",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-search": "dev-feature/III-1958 as 0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1957 as 0.1",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
             },
@@ -1137,7 +1137,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-10 15:53:33"
+            "time": "2017-03-13 16:09:23"
         },
         {
             "name": "danielstjules/stringy",
@@ -2670,16 +2670,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.22.0",
+            "version": "1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558"
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/bad29cb8d18ab0315e6c477751418a82c850d558",
-                "reference": "bad29cb8d18ab0315e6c477751418a82c850d558",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1e044bc4b34e91743943479f1be7a1d5eb93add0",
+                "reference": "1e044bc4b34e91743943479f1be7a1d5eb93add0",
                 "shasum": ""
             },
             "require": {
@@ -2744,7 +2744,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2016-11-26 00:15:39"
+            "time": "2017-03-13 07:08:03"
         },
         {
             "name": "nicolopignatelli/valueobjects",
@@ -2851,16 +2851,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.9",
+            "version": "v2.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b"
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/6968531206671f94377b01dc7888d5d1b858a01b",
-                "reference": "6968531206671f94377b01dc7888d5d1b858a01b",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
                 "shasum": ""
             },
             "require": {
@@ -2895,7 +2895,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-03 20:43:42"
+            "time": "2017-03-13 16:27:32"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -3723,7 +3723,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.2.5",
+            "version": "v3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -5958,7 +5958,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v3.2.5",
+            "version": "v3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
@@ -6014,7 +6014,7 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.2.5",
+            "version": "v3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
@@ -6063,7 +6063,7 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v3.2.5",
+            "version": "v3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
@@ -6165,19 +6165,19 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "package": "cultuurnet/udb3-search"
         },
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "package": "cultuurnet/udb3-search-elasticsearch"
         },
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-1958",
+            "version": "dev-feature/III-1957",
             "package": "cultuurnet/udb3-search-http"
         }
     ],
