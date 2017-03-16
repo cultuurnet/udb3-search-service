@@ -3,6 +3,8 @@
 namespace CultuurNet\UDB3\SearchService\Event;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
+use CultuurNet\UDB3\Search\ElasticSearch\Event\EventJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -20,6 +22,14 @@ class EventElasticSearchServiceProvider implements ServiceProviderInterface
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.event.write_index']),
                     new StringLiteral($app['elasticsearch.event.document_type'])
+                );
+            }
+        );
+
+        $app['event_elasticsearch_transformer'] = $app->share(
+            function (Application $app) {
+                return new EventJsonDocumentTransformer(
+                    new PathEndIdUrlParser()
                 );
             }
         );

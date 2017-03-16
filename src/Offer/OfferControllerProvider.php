@@ -46,6 +46,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                     $app['offer_elasticsearch_service'],
                     $this->regionIndexName,
                     $this->regionDocumentType,
+                    $app['elasticsearch_query_string_factory'],
                     new PagedCollectionFactory(
                         new EmbeddedJsonDocumentTransformer($app['http_client'])
                     )
