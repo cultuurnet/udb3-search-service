@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Place;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Place\PlaceJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use Silex\Application;
