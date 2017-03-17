@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Event;
 
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\Event\EventJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use Silex\Application;

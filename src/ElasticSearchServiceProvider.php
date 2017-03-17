@@ -27,7 +27,7 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
         );
 
         $app['elasticsearch_query_string_factory'] = $app->share(
-            function (Application $app) {
+            function () {
                 return new LuceneQueryStringFactory();
             }
         );

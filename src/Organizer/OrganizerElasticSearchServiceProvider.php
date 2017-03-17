@@ -39,7 +39,7 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
         );
 
         $app['organizer_elasticsearch_transformer'] = $app->share(
-            function (Application $app) {
+            function () {
                 return new OrganizerJsonDocumentTransformer();
             }
         );
