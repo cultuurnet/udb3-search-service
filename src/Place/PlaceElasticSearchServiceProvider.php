@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Place;
 
-use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Place\PlaceJsonDocumentTransformer;
@@ -28,7 +27,7 @@ class PlaceElasticSearchServiceProvider implements ServiceProviderInterface
         );
 
         $app['place_elasticsearch_transformer'] = $app->share(
-            function (Application $app) {
+            function () {
                 return new PlaceJsonDocumentTransformer(
                     new PathEndIdUrlParser()
                 );

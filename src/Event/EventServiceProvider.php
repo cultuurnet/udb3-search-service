@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService\Event;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Event\EventJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Event\EventSearchProjector;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use Silex\Application;
