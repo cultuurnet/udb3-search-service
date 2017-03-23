@@ -997,12 +997,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "910edcdf153491c1da486720a7b2af7d74e7fe4e"
+                "reference": "5ab67d337e652a58d02a05d0b8fb5986dc0b3805"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/910edcdf153491c1da486720a7b2af7d74e7fe4e",
-                "reference": "910edcdf153491c1da486720a7b2af7d74e7fe4e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/5ab67d337e652a58d02a05d0b8fb5986dc0b3805",
+                "reference": "5ab67d337e652a58d02a05d0b8fb5986dc0b3805",
                 "shasum": ""
             },
             "require": {
@@ -1037,7 +1037,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-22 15:11:26"
+            "time": "2017-03-23 15:54:36"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1045,12 +1045,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "af910528a2125c375a72515d0509c5a0216beee2"
+                "reference": "1106163c6713955d1ab88c8ae14bee5b290f8494"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/af910528a2125c375a72515d0509c5a0216beee2",
-                "reference": "af910528a2125c375a72515d0509c5a0216beee2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/1106163c6713955d1ab88c8ae14bee5b290f8494",
+                "reference": "1106163c6713955d1ab88c8ae14bee5b290f8494",
                 "shasum": ""
             },
             "require": {
@@ -1087,7 +1087,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-22 15:16:34"
+            "time": "2017-03-23 15:56:14"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1095,12 +1095,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "44ba372c3904e2cb50b9f410adec04884b35374d"
+                "reference": "2cd9b262048f37f15a20dc32cfc3f24000a5b1fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/44ba372c3904e2cb50b9f410adec04884b35374d",
-                "reference": "44ba372c3904e2cb50b9f410adec04884b35374d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/2cd9b262048f37f15a20dc32cfc3f24000a5b1fe",
+                "reference": "2cd9b262048f37f15a20dc32cfc3f24000a5b1fe",
                 "shasum": ""
             },
             "require": {
@@ -1136,7 +1136,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-22 15:19:58"
+            "time": "2017-03-22 17:17:56"
         },
         {
             "name": "danielstjules/stringy",
@@ -2399,16 +2399,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.36",
+            "version": "1.0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "d9c1698582dfbfbd092ec9c5c3325f862cdb3297"
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/d9c1698582dfbfbd092ec9c5c3325f862cdb3297",
-                "reference": "d9c1698582dfbfbd092ec9c5c3325f862cdb3297",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
+                "reference": "78b5cc4feb61a882302df4fbaf63b7662e5e4ccd",
                 "shasum": ""
             },
             "require": {
@@ -2478,7 +2478,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2017-03-18T16:02:30+00:00"
+            "time": "2017-03-22T15:43:14+00:00"
         },
         {
             "name": "league/geotools",
