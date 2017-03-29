@@ -16,6 +16,16 @@ $app = require __DIR__ . '/../bootstrap.php';
  */
 $app->register(new ServiceControllerServiceProvider());
 
+/**
+ * Return exceptions as APIProblem responses.
+ */
+$app->register(
+    new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider(),
+    [
+        'api_problem.stacktrace' => (bool) $app['config']['debug'],
+    ]
+);
+
 $app->mount('organizers', new OrganizerControllerProvider());
 
 $app->mount(
