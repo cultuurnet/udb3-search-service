@@ -18,13 +18,13 @@ $app->register(new ServiceControllerServiceProvider());
 
 /**
  * Return exceptions as APIProblem responses.
+ * In debug mode the standard Silex error page is shown with stack trace.
  */
-$app->register(
-    new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider(),
-    [
-        'api_problem.stacktrace' => (bool) $app['config']['debug'],
-    ]
-);
+if (!$app['config']['debug']) {
+    $app->register(
+        new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider()
+    );
+}
 
 $app->mount('organizers', new OrganizerControllerProvider());
 

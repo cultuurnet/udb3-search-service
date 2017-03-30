@@ -25,26 +25,20 @@ class HttpErrorHandlerProvider implements ServiceProviderInterface
                     $jsonSerializableException = $e;
                 }
 
-                $problem = $this->createNewApiProblem($app, $jsonSerializableException);
+                $problem = $this->createNewApiProblem($jsonSerializableException);
                 return new ApiProblemJsonResponse($problem);
             }
         );
     }
 
     /**
-     * @param Application $app
      * @param \Exception $e
      * @return ApiProblem
      */
-    protected function createNewApiProblem(Application $app, \Exception $e)
+    protected function createNewApiProblem(\Exception $e)
     {
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
-
-        if (isset($app['api_problem.stacktrace']) && $app['api_problem.stacktrace']) {
-            $problem['stacktrace'] = $e->getTrace();
-        }
-
         return $problem;
     }
 
