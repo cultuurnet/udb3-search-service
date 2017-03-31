@@ -16,6 +16,16 @@ $app = require __DIR__ . '/../bootstrap.php';
  */
 $app->register(new ServiceControllerServiceProvider());
 
+/**
+ * Return exceptions as APIProblem responses.
+ * In debug mode the standard Silex error page is shown with stack trace.
+ */
+if (!$app['config']['debug']) {
+    $app->register(
+        new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider()
+    );
+}
+
 $app->mount('organizers', new OrganizerControllerProvider());
 
 $app->mount(
