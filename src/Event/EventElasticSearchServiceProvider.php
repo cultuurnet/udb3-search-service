@@ -29,7 +29,8 @@ class EventElasticSearchServiceProvider implements ServiceProviderInterface
         $app['event_elasticsearch_transformer'] = $app->share(
             function (Application $app) {
                 return new EventJsonDocumentTransformer(
-                    new PathEndIdUrlParser()
+                    new PathEndIdUrlParser(),
+                    $app['elasticsearch_transformer_logger']
                 );
             }
         );
