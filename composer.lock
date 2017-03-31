@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "eee1db2ab70a3c348492133c883814ac",
+    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -692,18 +692,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "0c28831ba3250f68d9906eafab89abe138b65b46"
+                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/0c28831ba3250f68d9906eafab89abe138b65b46",
-                "reference": "0c28831ba3250f68d9906eafab89abe138b65b46",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
+                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
                 "shasum": ""
             },
             "require-dev": {
                 "doctrine/cache": "~1.6",
                 "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
+                "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
                 "squizlabs/php_codesniffer": "~2.3",
                 "willdurand/geocoder": "~2.8"
@@ -733,7 +733,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-02-23 14:39:19"
+            "time": "2017-03-31 14:39:58"
         },
         {
             "name": "cultuurnet/hydra",
@@ -1086,12 +1086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "f83863ba0d7c99529c96abf64bec1c3833ae386b"
+                "reference": "70ba7b2b302d99af35130aad2fdbf70115a15898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/f83863ba0d7c99529c96abf64bec1c3833ae386b",
-                "reference": "f83863ba0d7c99529c96abf64bec1c3833ae386b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/70ba7b2b302d99af35130aad2fdbf70115a15898",
+                "reference": "70ba7b2b302d99af35130aad2fdbf70115a15898",
                 "shasum": ""
             },
             "require": {
@@ -1126,7 +1126,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-24 14:49:48"
+            "time": "2017-03-31 15:18:37"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1134,12 +1134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "16b7578c0fe17bbdbfb10b1b6acaf3c8fe7ecfeb"
+                "reference": "0e61888af4318d7e56e64aaf79125453220f3b20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/16b7578c0fe17bbdbfb10b1b6acaf3c8fe7ecfeb",
-                "reference": "16b7578c0fe17bbdbfb10b1b6acaf3c8fe7ecfeb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/0e61888af4318d7e56e64aaf79125453220f3b20",
+                "reference": "0e61888af4318d7e56e64aaf79125453220f3b20",
                 "shasum": ""
             },
             "require": {
@@ -1176,7 +1176,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31 08:43:05"
+            "time": "2017-03-31 15:25:25"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1184,15 +1184,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "87d530f2a4ea0330ef8e322861457d18174dfb5f"
+                "reference": "7be55e886d498557bbaeca33aed321870d6da23b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/87d530f2a4ea0330ef8e322861457d18174dfb5f",
-                "reference": "87d530f2a4ea0330ef8e322861457d18174dfb5f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/7be55e886d498557bbaeca33aed321870d6da23b",
+                "reference": "7be55e886d498557bbaeca33aed321870d6da23b",
                 "shasum": ""
             },
             "require": {
+                "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/hydra": "~0.1",
                 "cultuurnet/udb3-search": "~0.1",
                 "nicolopignatelli/valueobjects": "~3.0",
@@ -1225,7 +1226,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-24 14:58:33"
+            "time": "2017-03-31 15:27:39"
         },
         {
             "name": "danielstjules/stringy",
