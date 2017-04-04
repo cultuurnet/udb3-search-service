@@ -920,12 +920,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "9b8b72a60151371a53b9977c39c92480fc3a5f7d"
+                "reference": "ef25a8696d24991fe6e023afa72ed4a049395583"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/9b8b72a60151371a53b9977c39c92480fc3a5f7d",
-                "reference": "9b8b72a60151371a53b9977c39c92480fc3a5f7d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ef25a8696d24991fe6e023afa72ed4a049395583",
+                "reference": "ef25a8696d24991fe6e023afa72ed4a049395583",
                 "shasum": ""
             },
             "require": {
@@ -988,7 +988,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-03-29 09:02:36"
+            "time": "2017-04-03 09:47:37"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1086,12 +1086,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "70ba7b2b302d99af35130aad2fdbf70115a15898"
+                "reference": "3634c96e8e3106b3028e661e91ecb98eb2ff9509"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/70ba7b2b302d99af35130aad2fdbf70115a15898",
-                "reference": "70ba7b2b302d99af35130aad2fdbf70115a15898",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/3634c96e8e3106b3028e661e91ecb98eb2ff9509",
+                "reference": "3634c96e8e3106b3028e661e91ecb98eb2ff9509",
                 "shasum": ""
             },
             "require": {
@@ -1126,7 +1126,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31 15:18:37"
+            "time": "2017-04-04 13:50:42"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1184,12 +1184,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "7be55e886d498557bbaeca33aed321870d6da23b"
+                "reference": "0c29d27975bd462a1d5a875cdcb5268b0ae7a6e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/7be55e886d498557bbaeca33aed321870d6da23b",
-                "reference": "7be55e886d498557bbaeca33aed321870d6da23b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/0c29d27975bd462a1d5a875cdcb5268b0ae7a6e4",
+                "reference": "0c29d27975bd462a1d5a875cdcb5268b0ae7a6e4",
                 "shasum": ""
             },
             "require": {
@@ -1226,7 +1226,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31 15:27:39"
+            "time": "2017-04-04 13:57:49"
         },
         {
             "name": "danielstjules/stringy",
@@ -2890,21 +2890,21 @@
         },
         {
             "name": "ongr/elasticsearch-dsl",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ongr-io/ElasticsearchDSL.git",
-                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423"
+                "reference": "6a08bfa57d0c088c8fc44cde637a1feca145c660"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ongr-io/ElasticsearchDSL/zipball/a9e4bfe361d1a365f151ecf919df47df970b3423",
-                "reference": "a9e4bfe361d1a365f151ecf919df47df970b3423",
+                "url": "https://api.github.com/repos/ongr-io/ElasticsearchDSL/zipball/6a08bfa57d0c088c8fc44cde637a1feca145c660",
+                "reference": "6a08bfa57d0c088c8fc44cde637a1feca145c660",
                 "shasum": ""
             },
             "require": {
                 "elasticsearch/elasticsearch": "~5.0",
-                "paragonie/random_compat": "^2.0",
+                "paragonie/random_compat": "^1.0|^2.0",
                 "php": ">=5.6",
                 "symfony/serializer": "~2.7|~3.0"
             },
@@ -2936,7 +2936,7 @@
             ],
             "description": "Elasticsearch DSL library",
             "homepage": "http://ongr.io",
-            "time": "2017-02-03T06:55:42+00:00"
+            "time": "2017-04-04T12:09:42+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -3864,16 +3864,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.25",
+            "version": "v2.7.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "d45f940f3b55a0c99eae8482c726be264ad1c8dc"
+                "reference": "b234f2c6bffaae15f6af7aa206fe36a25f35c52f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/d45f940f3b55a0c99eae8482c726be264ad1c8dc",
-                "reference": "d45f940f3b55a0c99eae8482c726be264ad1c8dc",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b234f2c6bffaae15f6af7aa206fe36a25f35c52f",
+                "reference": "b234f2c6bffaae15f6af7aa206fe36a25f35c52f",
                 "shasum": ""
             },
             "require": {
@@ -3916,7 +3916,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-04T10:53:31+00:00"
+            "time": "2017-03-24T22:51:36+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -5012,16 +5012,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "4.0.7",
+            "version": "4.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "09e2277d14ea467e5a984010f501343ef29ffc69"
+                "reference": "ef7b2f56815df854e66ceaee8ebe9393ae36a40d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/09e2277d14ea467e5a984010f501343ef29ffc69",
-                "reference": "09e2277d14ea467e5a984010f501343ef29ffc69",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/ef7b2f56815df854e66ceaee8ebe9393ae36a40d",
+                "reference": "ef7b2f56815df854e66ceaee8ebe9393ae36a40d",
                 "shasum": ""
             },
             "require": {
@@ -5071,7 +5071,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-03-01T09:12:17+00:00"
+            "time": "2017-04-02T07:44:40+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -5261,16 +5261,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.17",
+            "version": "5.7.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf"
+                "reference": "69c4f49ff376af2692bad9cebd883d17ebaa98a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/68752b665d3875f9a38a357e3ecb35c79f8673bf",
-                "reference": "68752b665d3875f9a38a357e3ecb35c79f8673bf",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/69c4f49ff376af2692bad9cebd883d17ebaa98a1",
+                "reference": "69c4f49ff376af2692bad9cebd883d17ebaa98a1",
                 "shasum": ""
             },
             "require": {
@@ -5339,7 +5339,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-03-19T16:52:12+00:00"
+            "time": "2017-04-03T02:22:27+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
