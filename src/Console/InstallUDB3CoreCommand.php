@@ -71,8 +71,14 @@ class InstallUDB3CoreCommand extends Command
         // Create the place mapping on the latest index.
         $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
 
+        // Create the region_query mapping on the latest index.
+        $consoleApp->find('udb3-core:region-query-mapping')->run($emptyInput, $output);
+
         // Put the write alias on the latest index.
         $consoleApp->find('udb3-core:update-write-alias')->run($emptyInput, $output);
+
+        // Index the geoshape queries used to check what geoshapes a single document matches with.
+        $consoleApp->find('udb3-core:index-region-queries')->run($emptyInput, $output);
 
         // Reindex from a previous index to the latest index.
         if ($previousIndexExists) {

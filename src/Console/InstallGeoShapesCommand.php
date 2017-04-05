@@ -68,8 +68,8 @@ class InstallGeoShapesCommand extends Command
         // Put the write alias on the latest index.
         $consoleApp->find('geoshapes:update-write-alias')->run($emptyInput, $output);
 
-        // (Re)index geoshape documents.
-        $consoleApp->find('geoshapes:index')->run($emptyInput, $output);
+        // (Re)index region documents.
+        $consoleApp->find('geoshapes:index-regions')->run($emptyInput, $output);
 
         // Put the read alias on the latest index.
         $consoleApp->find('geoshapes:update-read-alias')->run($emptyInput, $output);

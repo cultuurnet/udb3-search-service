@@ -2,17 +2,22 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\IndexGeoShapes;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\IndexRegionQueries;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-class IndexGeoShapesCommand extends AbstractElasticSearchCommand
+class IndexRegionQueriesCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string
      */
-    private $indexName;
+    private $regionQueryIndexName;
+
+    /**
+     * @var string
+     */
+    private $regionIndexName;
 
     /**
      * @var string
@@ -26,13 +31,15 @@ class IndexGeoShapesCommand extends AbstractElasticSearchCommand
 
     /**
      * @param string $indexName
+     * @param string $regionIndexName
      * @param string $pathToScan
      * @param string $fileNameRegex
      */
-    public function __construct($indexName, $pathToScan, $fileNameRegex = '*.json')
+    public function __construct($indexName, $regionIndexName, $pathToScan, $fileNameRegex = '*.json')
     {
         parent::__construct();
-        $this->indexName = $indexName;
+        $this->regionQueryIndexName = $indexName;
+        $this->regionIndexName = $regionIndexName;
         $this->pathToScan = $pathToScan;
         $this->fileNameRegex = $fileNameRegex;
     }
@@ -43,8 +50,8 @@ class IndexGeoShapesCommand extends AbstractElasticSearchCommand
     protected function configure()
     {
         $this
-            ->setName('geoshapes:index')
-            ->setDescription('Indexes all geoshape documents from a given directory.');
+            ->setName('udb3-core:index-region-queries')
+            ->setDescription('Indexes all possible region queries from a given directory with region documents.');
     }
 
     /**
@@ -52,13 +59,13 @@ class IndexGeoShapesCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $operation = new IndexGeoShapes(
+        $operation = new IndexRegionQueries(
             $this->getElasticSearchClient(),
             $this->getLogger($output),
             $this->getFinder()
         );
 
-        $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
+        $operation->run($this->regionQueryIndexName, $this->regionIndexName, $this->pathToScan, $this->fileNameRegex);
     }
 
     /**
