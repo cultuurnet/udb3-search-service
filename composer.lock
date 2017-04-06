@@ -786,16 +786,16 @@
         },
         {
             "name": "cultuurnet/search",
-            "version": "v1.2.2",
+            "version": "v1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Search.git",
-                "reference": "24fcbb1932cfbdc5ce5448158e3df80e7032389e"
+                "reference": "1e632b3bee662ec414235fe8db06886493387888"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/24fcbb1932cfbdc5ce5448158e3df80e7032389e",
-                "reference": "24fcbb1932cfbdc5ce5448158e3df80e7032389e",
+                "url": "https://api.github.com/repos/cultuurnet/Search/zipball/1e632b3bee662ec414235fe8db06886493387888",
+                "reference": "1e632b3bee662ec414235fe8db06886493387888",
                 "shasum": ""
             },
             "require": {
@@ -828,7 +828,7 @@
                 "Apache-2.0"
             ],
             "description": "CultuurNet search service",
-            "time": "2015-11-20 11:50:37"
+            "time": "2017-04-05 13:30:05"
         },
         {
             "name": "cultuurnet/silex-amqp",
@@ -921,12 +921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "ef25a8696d24991fe6e023afa72ed4a049395583"
+                "reference": "14c8847208729cfd2c16270425cfede2ffd2ee39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/ef25a8696d24991fe6e023afa72ed4a049395583",
-                "reference": "ef25a8696d24991fe6e023afa72ed4a049395583",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/14c8847208729cfd2c16270425cfede2ffd2ee39",
+                "reference": "14c8847208729cfd2c16270425cfede2ffd2ee39",
                 "shasum": ""
             },
             "require": {
@@ -989,7 +989,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-04-03 09:47:37"
+            "time": "2017-04-05 10:03:59"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1135,12 +1135,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "ec1f6ff843f1d231c854818b52e54cf6fa161155"
+                "reference": "fb398ca97b933f6614c3d67b16432dc402318b79"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/ec1f6ff843f1d231c854818b52e54cf6fa161155",
-                "reference": "ec1f6ff843f1d231c854818b52e54cf6fa161155",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/fb398ca97b933f6614c3d67b16432dc402318b79",
+                "reference": "fb398ca97b933f6614c3d67b16432dc402318b79",
                 "shasum": ""
             },
             "require": {
@@ -1177,7 +1177,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-05 08:16:22"
+            "time": "2017-04-05 14:05:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -3816,16 +3816,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "92d7476d2df60cd851a3e13e078664b1deb8ce10"
+                "reference": "b20900ce5ea164cd9314af52725b0bb5a758217a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/92d7476d2df60cd851a3e13e078664b1deb8ce10",
-                "reference": "92d7476d2df60cd851a3e13e078664b1deb8ce10",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/b20900ce5ea164cd9314af52725b0bb5a758217a",
+                "reference": "b20900ce5ea164cd9314af52725b0bb5a758217a",
                 "shasum": ""
             },
             "require": {
@@ -3861,7 +3861,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2017-02-21 09:12:04"
+            "time": "2017-03-20 09:32:19"
         },
         {
             "name": "symfony/http-foundation",
@@ -6051,16 +6051,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "741d6d4cd1414d67d48eb71aba6072b46ba740c2"
+                "reference": "8444bde28e3c2a33e571e6f180c2d78bfdc4480d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/741d6d4cd1414d67d48eb71aba6072b46ba740c2",
-                "reference": "741d6d4cd1414d67d48eb71aba6072b46ba740c2",
+                "url": "https://api.github.com/repos/symfony/config/zipball/8444bde28e3c2a33e571e6f180c2d78bfdc4480d",
+                "reference": "8444bde28e3c2a33e571e6f180c2d78bfdc4480d",
                 "shasum": ""
             },
             "require": {
@@ -6103,20 +6103,20 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-01 18:18:25"
+            "time": "2017-04-04 15:30:56"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "bc0f17bed914df2cceb989972c3b996043c4da4a"
+                "reference": "64421e6479c4a8e60d790fb666bd520992861b66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/bc0f17bed914df2cceb989972c3b996043c4da4a",
-                "reference": "bc0f17bed914df2cceb989972c3b996043c4da4a",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/64421e6479c4a8e60d790fb666bd520992861b66",
+                "reference": "64421e6479c4a8e60d790fb666bd520992861b66",
                 "shasum": ""
             },
             "require": {
@@ -6152,11 +6152,11 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2017-03-06 19:30:27"
+            "time": "2017-03-26 15:47:15"
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
