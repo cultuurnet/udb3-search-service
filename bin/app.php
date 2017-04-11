@@ -5,7 +5,8 @@ use CultuurNet\SilexAMQP\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
-use CultuurNet\UDB3\SearchService\Console\IndexGeoShapesCommand;
+use CultuurNet\UDB3\SearchService\Console\IndexRegionQueriesCommand;
+use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
@@ -16,6 +17,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateRegionQueryMappingCommand;
 use Knp\Provider\ConsoleServiceProvider;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -108,10 +110,26 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
+    new UpdateRegionQueryMappingCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
+        $app['config']['elasticsearch']['region_query']['document_type']
+    )
+);
+
+$consoleApp->add(
     new ReindexUDB3CoreCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
+    )
+);
+
+$consoleApp->add(
+    new IndexRegionQueriesCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
+        $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
+        __DIR__ . '/../' . $app['config']['elasticsearch']['geoshapes_index']['indexation']['path'],
+        $app['config']['elasticsearch']['geoshapes_index']['indexation']['fileName']
     )
 );
 
@@ -178,7 +196,7 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
-    new IndexGeoShapesCommand(
+    new IndexRegionsCommand(
         $app['config']['elasticsearch']['geoshapes_index']['indexation']['to'],
         __DIR__ . '/../' . $app['config']['elasticsearch']['geoshapes_index']['indexation']['path'],
         $app['config']['elasticsearch']['geoshapes_index']['indexation']['fileName']

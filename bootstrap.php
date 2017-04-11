@@ -216,6 +216,7 @@ $app->register(
     new OfferElasticSearchServiceProvider(),
     [
         'elasticsearch.offer.read_index' => $app['config']['elasticsearch']['offer']['read_index'],
+        'elasticsearch.offer.write_index' => $app['config']['elasticsearch']['offer']['write_index'],
         'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
     ]
 );

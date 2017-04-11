@@ -1,5 +1,3 @@
-imports:
-  - resource: regions.yml
 debug: false
 bootstrap: []
 consumerExecutionDelay: 0
@@ -46,6 +44,10 @@ elasticsearch:
     read_index: udb3_core_read
     write_index: udb3_core_write
     document_type: place
+  region_query:
+    read_index: udb3_core_read
+    write_index: udb3_core_write
+    document_type: region_query
   offer:
     read_index: udb3_core_read
     write_index: udb3_core_write

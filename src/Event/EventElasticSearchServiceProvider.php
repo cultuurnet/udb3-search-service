@@ -30,6 +30,7 @@ class EventElasticSearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new EventJsonDocumentTransformer(
                     new PathEndIdUrlParser(),
+                    $app['offer_region_service'],
                     $app['elasticsearch_transformer_logger']
                 );
             }
