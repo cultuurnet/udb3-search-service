@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "632cd804f9e4b51ad77c843c26997b5f",
-    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
+    "hash": "5e950b337939bde20746facf51ca9421",
+    "content-hash": "4d1e2e8f3a8c052b0f06526c8d0e438a",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -917,16 +917,16 @@
         },
         {
             "name": "cultuurnet/udb3",
-            "version": "dev-master",
+            "version": "dev-feature/III-1955",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "f48290e61fc9b38afde6096d12ded0d322ced5c4"
+                "reference": "6281eb244561a5101b574d20ba5f3ba8f6b4b6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f48290e61fc9b38afde6096d12ded0d322ced5c4",
-                "reference": "f48290e61fc9b38afde6096d12ded0d322ced5c4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/6281eb244561a5101b574d20ba5f3ba8f6b4b6cf",
+                "reference": "6281eb244561a5101b574d20ba5f3ba8f6b4b6cf",
                 "shasum": ""
             },
             "require": {
@@ -989,7 +989,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-04-12 08:56:36"
+            "time": "2017-04-10 09:16:05"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1083,20 +1083,20 @@
         },
         {
             "name": "cultuurnet/udb3-search",
-            "version": "dev-master",
+            "version": "dev-feature/III-1955",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "820109ce16b3592ebdcf6c1e1e01741de34e339a"
+                "reference": "d26f1446a5fb497cb1bfb7e8c5cbd4a1085af3aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/820109ce16b3592ebdcf6c1e1e01741de34e339a",
-                "reference": "820109ce16b3592ebdcf6c1e1e01741de34e339a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/d26f1446a5fb497cb1bfb7e8c5cbd4a1085af3aa",
+                "reference": "d26f1446a5fb497cb1bfb7e8c5cbd4a1085af3aa",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3": "~0.1",
+                "cultuurnet/udb3": "dev-feature/III-1955 as 0.1",
                 "guzzlehttp/guzzle": "^6.2",
                 "nicolopignatelli/valueobjects": "~3.0"
             },
@@ -1127,24 +1127,24 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-12 12:51:25"
+            "time": "2017-04-12 13:25:16"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-1955",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "5a71b10aa631dc57d069c635085472486259632d"
+                "reference": "465ce836f8b8969444f2c6c51e23a29c8a15892d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/5a71b10aa631dc57d069c635085472486259632d",
-                "reference": "5a71b10aa631dc57d069c635085472486259632d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/465ce836f8b8969444f2c6c51e23a29c8a15892d",
+                "reference": "465ce836f8b8969444f2c6c51e23a29c8a15892d",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3-search": "~0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1955 as 0.1",
                 "elasticsearch/elasticsearch": "~5.1.3",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "ongr/elasticsearch-dsl": "~5.0.1",
@@ -1177,26 +1177,26 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-11 13:45:33"
+            "time": "2017-04-13 16:15:02"
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-master",
+            "version": "dev-feature/III-1955",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb"
+                "reference": "5339014f2d637e4dbbd071127b1c31a694f63a54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb",
-                "reference": "a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/5339014f2d637e4dbbd071127b1c31a694f63a54",
+                "reference": "5339014f2d637e4dbbd071127b1c31a694f63a54",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-search": "~0.1",
+                "cultuurnet/udb3-search": "dev-feature/III-1955 as 0.1",
                 "nicolopignatelli/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
             },
@@ -1227,7 +1227,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-10 09:02:17"
+            "time": "2017-04-12 13:27:31"
         },
         {
             "name": "danielstjules/stringy",
@@ -4669,16 +4669,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
                 "shasum": ""
             },
             "require": {
@@ -4707,7 +4707,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-01-26 22:05:40"
+            "time": "2017-04-12 18:52:22"
         },
         {
             "name": "phing/phing",
@@ -6254,9 +6254,39 @@
             "time": "2016-11-23 20:04:58"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1955",
+            "package": "cultuurnet/udb3"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1955",
+            "package": "cultuurnet/udb3-search"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1955",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        },
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1955",
+            "package": "cultuurnet/udb3-search-http"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3": 20,
+        "cultuurnet/udb3-search": 20,
+        "cultuurnet/udb3-search-elasticsearch": 20,
+        "cultuurnet/udb3-search-http": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
