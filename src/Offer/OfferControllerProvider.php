@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EmbeddedJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\PagedCollectionFactory;
 use Silex\Application;
@@ -49,6 +50,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                     $this->regionDocumentType,
                     $app['elasticsearch_query_string_factory'],
                     new ElasticSearchDistanceFactory(),
+                    new NodeAwareFacetTreeNormalizer(),
                     new PagedCollectionFactory(
                         new EmbeddedJsonDocumentTransformer($app['http_client'])
                     )
