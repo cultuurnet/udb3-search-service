@@ -2,4 +2,4 @@
 /build
 /log
 /config.yml
-/regions.yml
+/region_facet_mapping.yml

@@ -1,3 +1,5 @@
+imports:
+  - resource: region_facet_mapping.yml
 debug: false
 bootstrap: []
 consumerExecutionDelay: 0
