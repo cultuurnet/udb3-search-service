@@ -48,8 +48,8 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
         $app['offer_elasticsearch_region_aggregation_transformer'] = $app->share(
             function (Application $app) {
                 return new NodeMapAggregationTransformer(
-                    'region',
-                    FacetName::REGION(),
+                    'regions',
+                    FacetName::REGIONS(),
                     $app['elasticsearch.facet_maps.region']
                 );
             }
