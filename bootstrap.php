@@ -218,7 +218,7 @@ $app->register(
         'elasticsearch.offer.read_index' => $app['config']['elasticsearch']['offer']['read_index'],
         'elasticsearch.offer.write_index' => $app['config']['elasticsearch']['offer']['write_index'],
         'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
-        'elasticsearch.facet_maps.region' => $app['config']['region_facet_mapping'],
+        'elasticsearch.facet_mapping.regions' => $app['config']['facet_mapping_regions'],
     ]
 );
 

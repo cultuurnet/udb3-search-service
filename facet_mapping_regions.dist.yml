@@ -1,4 +1,4 @@
-region_facet_mapping:
+facet_mapping_regions:
   prv-vlaams-brabant:
     name:
       nl: 'Vlaams-Brabant'

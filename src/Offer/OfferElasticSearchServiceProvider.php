@@ -50,7 +50,7 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                 return new NodeMapAggregationTransformer(
                     'regions',
                     FacetName::REGIONS(),
-                    $app['elasticsearch.facet_maps.region']
+                    $app['elasticsearch.facet_mapping.regions']
                 );
             }
         );
