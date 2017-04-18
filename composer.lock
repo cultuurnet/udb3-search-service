@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "632cd804f9e4b51ad77c843c26997b5f",
-    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
+    "hash": "c3e7477cd9964b0bf75b4fc744cda38b",
+    "content-hash": "49166243bb6e4c843321d93cbbe96fbd",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1131,16 +1131,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-1956",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "5a71b10aa631dc57d069c635085472486259632d"
+                "reference": "7a06024e35daa55d09a5624a690c07cc71175260"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/5a71b10aa631dc57d069c635085472486259632d",
-                "reference": "5a71b10aa631dc57d069c635085472486259632d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7a06024e35daa55d09a5624a690c07cc71175260",
+                "reference": "7a06024e35daa55d09a5624a690c07cc71175260",
                 "shasum": ""
             },
             "require": {
@@ -1177,7 +1177,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-11 13:45:33"
+            "time": "2017-04-18 12:40:26"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1185,12 +1185,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb"
+                "reference": "05febb5c11380fd531a8588cd6acb1bc8145dcc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb",
-                "reference": "a2d8ebcce0a7b01b0a885b72f64d9f8a709853fb",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/05febb5c11380fd531a8588cd6acb1bc8145dcc4",
+                "reference": "05febb5c11380fd531a8588cd6acb1bc8145dcc4",
                 "shasum": ""
             },
             "require": {
@@ -1227,7 +1227,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-04-10 09:02:17"
+            "time": "2017-04-12 13:06:01"
         },
         {
             "name": "danielstjules/stringy",
@@ -4669,16 +4669,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe"
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/5a5a9fc8025a08d8919be87d6884d5a92520cefe",
-                "reference": "5a5a9fc8025a08d8919be87d6884d5a92520cefe",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/8e6e04167378abf1ddb4d3522d8755c5fd90d102",
+                "reference": "8e6e04167378abf1ddb4d3522d8755c5fd90d102",
                 "shasum": ""
             },
             "require": {
@@ -4707,7 +4707,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-01-26 22:05:40"
+            "time": "2017-04-12 18:52:22"
         },
         {
             "name": "phing/phing",
@@ -6254,9 +6254,18 @@
             "time": "2016-11-23 20:04:58"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-1956",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search-elasticsearch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
