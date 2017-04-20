@@ -2,12 +2,14 @@
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ResultSetJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\PercolatorOfferRegionService;
-use CultuurNet\UDB3\SearchService\EmptyOfferRegionService;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -27,8 +29,27 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['elasticsearch.offer.document_type']),
                     new JsonDocumentTransformingPagedResultSetFactory(
                         new ResultSetJsonDocumentTransformer(),
-                        new ElasticSearchPagedResultSetFactory()
+                        new ElasticSearchPagedResultSetFactory(
+                            $app['offer_elasticsearch_aggregation_transformer']
+                        )
                     )
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                $transformer = new CompositeAggregationTransformer();
+                $transformer->register($app['offer_elasticsearch_region_aggregation_transformer']);
+                return $transformer;
+            }
+        );
+
+        $app['offer_elasticsearch_region_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                return new NodeMapAggregationTransformer(
+                    FacetName::REGIONS(),
+                    $app['elasticsearch.facet_mapping.regions']
                 );
             }
         );
