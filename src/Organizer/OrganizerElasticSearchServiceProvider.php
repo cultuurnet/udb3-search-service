@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\SearchService\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ResultSetJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\OrganizerJsonDocumentTransformer;
 use Silex\Application;
@@ -24,8 +26,11 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.organizer.read_index']),
                     new StringLiteral($app['elasticsearch.organizer.document_type']),
-                    new ElasticSearchPagedResultSetFactory(
-                        new NullAggregationTransformer()
+                    new JsonDocumentTransformingPagedResultSetFactory(
+                        new ResultSetJsonDocumentTransformer(),
+                        new ElasticSearchPagedResultSetFactory(
+                            new NullAggregationTransformer()
+                        )
                     )
                 );
             }

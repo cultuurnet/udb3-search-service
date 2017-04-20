@@ -2,6 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
@@ -51,6 +52,7 @@ $consoleApp->add(new MigrateElasticSearchCommand());
  * Templates.
  */
 $consoleApp->add(new CreateLowerCaseExactMatchAnalyzerCommand());
+$consoleApp->add(new CreateAutocompleteAnalyzerCommand());
 
 /**
  * UDB3 core.
