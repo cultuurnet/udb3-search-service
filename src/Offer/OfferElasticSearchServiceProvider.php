@@ -41,6 +41,9 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register($app['offer_elasticsearch_region_aggregation_transformer']);
+                $transformer->register($app['offer_elasticsearch_theme_aggregation_transformer']);
+                $transformer->register($app['offer_elasticsearch_type_aggregation_transformer']);
+                $transformer->register($app['offer_elasticsearch_facility_aggregation_transformer']);
                 return $transformer;
             }
         );
@@ -50,6 +53,33 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                 return new NodeMapAggregationTransformer(
                     FacetName::REGIONS(),
                     $app['elasticsearch.facet_mapping.regions']
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_theme_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                return new NodeMapAggregationTransformer(
+                    FacetName::THEMES(),
+                    $app['elasticsearch.facet_mapping.themes']
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_type_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                return new NodeMapAggregationTransformer(
+                    FacetName::TYPES(),
+                    $app['elasticsearch.facet_mapping.types']
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_facility_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                return new NodeMapAggregationTransformer(
+                    FacetName::FACILITIES(),
+                    $app['elasticsearch.facet_mapping.facilities']
                 );
             }
         );
