@@ -65,5 +65,4 @@ class OfferControllerProvider implements ControllerProviderInterface
 
         return $controllers;
     }
-
 }

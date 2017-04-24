@@ -13,6 +13,7 @@ use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
+use CultuurNet\UDB3\SearchService\Console\TermTaxonomyToFacetMappingsCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
@@ -42,6 +43,8 @@ $consoleApp->add(
     (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
         ->setDescription('Process messages from UDB3 core')
 );
+
+$consoleApp->add(new TermTaxonomyToFacetMappingsCommand());
 
 /**
  * Elasticsearch.
