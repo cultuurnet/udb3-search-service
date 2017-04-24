@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EmbeddedJsonDocumentTransf
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\PagedCollectionFactory;
+use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
@@ -42,10 +43,10 @@ class OfferControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['offer_search_controller'] = $app->share(
-            function (Application $app) {
+        $app['offer_search_controller_factory'] = $app->protect(
+            function (OfferSearchServiceInterface $offerSearchService) use ($app) {
                 return new OfferSearchController(
-                    $app['offer_elasticsearch_service'],
+                    $offerSearchService,
                     $this->regionIndexName,
                     $this->regionDocumentType,
                     $app['elasticsearch_query_string_factory'],
@@ -54,6 +55,14 @@ class OfferControllerProvider implements ControllerProviderInterface
                     new PagedCollectionFactory(
                         new EmbeddedJsonDocumentTransformer($app['http_client'])
                     )
+                );
+            }
+        );
+
+        $app['offer_search_controller'] = $app->share(
+            function (Application $app) {
+                return $app['offer_search_controller_factory'](
+                    $app['offer_elasticsearch_service']
                 );
             }
         );
