@@ -16,6 +16,15 @@ class PlaceElasticSearchServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['place_elasticsearch_service'] = $app->share(
+            function (Application $app) {
+                return $app['offer_elasticsearch_service_factory'](
+                    $app['elasticsearch.place.read_index'],
+                    $app['elasticsearch.place.document_type']
+                );
+            }
+        );
+
         $app['place_elasticsearch_repository'] = $app->share(
             function (Application $app) {
                 return new ElasticSearchDocumentRepository(

@@ -21,18 +21,27 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $app['offer_elasticsearch_service'] = $app->share(
-            function (Application $app) {
+        $app['offer_elasticsearch_service_factory'] = $app->protect(
+            function ($readIndex, $documentType) use ($app) {
                 return new ElasticSearchOfferSearchService(
                     $app['elasticsearch_client'],
-                    new StringLiteral($app['elasticsearch.offer.read_index']),
-                    new StringLiteral($app['elasticsearch.offer.document_type']),
+                    new StringLiteral($readIndex),
+                    new StringLiteral($documentType),
                     new JsonDocumentTransformingPagedResultSetFactory(
                         new ResultSetJsonDocumentTransformer(),
                         new ElasticSearchPagedResultSetFactory(
                             $app['offer_elasticsearch_aggregation_transformer']
                         )
                     )
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_service'] = $app->share(
+            function (Application $app) {
+                return $app['offer_elasticsearch_service_factory'](
+                    $app['elasticsearch.offer.read_index'],
+                    $app['elasticsearch.offer.document_type']
                 );
             }
         );

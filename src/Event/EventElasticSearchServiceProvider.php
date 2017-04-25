@@ -16,6 +16,15 @@ class EventElasticSearchServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['event_elasticsearch_service'] = $app->share(
+            function (Application $app) {
+                return $app['offer_elasticsearch_service_factory'](
+                    $app['elasticsearch.event.read_index'],
+                    $app['elasticsearch.event.document_type']
+                );
+            }
+        );
+
         $app['event_elasticsearch_repository'] = $app->share(
             function (Application $app) {
                 return new ElasticSearchDocumentRepository(
