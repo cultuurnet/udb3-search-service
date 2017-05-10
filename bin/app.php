@@ -11,6 +11,7 @@ use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
+use CultuurNet\UDB3\SearchService\Console\ReindexPermanentOffersCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\TermTaxonomyToFacetMappingsCommand;
@@ -123,6 +124,14 @@ $consoleApp->add(
 
 $consoleApp->add(
     new ReindexUDB3CoreCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
+    )
+);
+
+$consoleApp->add(
+    new ReindexPermanentOffersCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
