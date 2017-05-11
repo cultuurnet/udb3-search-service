@@ -1145,12 +1145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "356178c116c42133e38370b2ca8f7b2e0573d40b"
+                "reference": "0b6e8ea2612de6bd8d3fd0fd0b5124c6dcb4e7a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/356178c116c42133e38370b2ca8f7b2e0573d40b",
-                "reference": "356178c116c42133e38370b2ca8f7b2e0573d40b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/0b6e8ea2612de6bd8d3fd0fd0b5124c6dcb4e7a3",
+                "reference": "0b6e8ea2612de6bd8d3fd0fd0b5124c6dcb4e7a3",
                 "shasum": ""
             },
             "require": {
@@ -1185,7 +1185,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-09 13:31:17"
+            "time": "2017-05-11 09:22:21"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1193,12 +1193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "e29e64ff68fd2b4a7b070fb450738455351da6f4"
+                "reference": "f39351fe22418bb538362d9d629a8c312ace23e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/e29e64ff68fd2b4a7b070fb450738455351da6f4",
-                "reference": "e29e64ff68fd2b4a7b070fb450738455351da6f4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/f39351fe22418bb538362d9d629a8c312ace23e2",
+                "reference": "f39351fe22418bb538362d9d629a8c312ace23e2",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-10 10:00:36"
+            "time": "2017-05-11 10:48:32"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "2640dec0ab070f14f1c744f8f4b488f0727d5add"
+                "reference": "e174209da0409d0a9e140ca09196b4d353f40c0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/2640dec0ab070f14f1c744f8f4b488f0727d5add",
-                "reference": "2640dec0ab070f14f1c744f8f4b488f0727d5add",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/e174209da0409d0a9e140ca09196b4d353f40c0e",
+                "reference": "e174209da0409d0a9e140ca09196b4d353f40c0e",
                 "shasum": ""
             },
             "require": {
@@ -1285,7 +1285,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-09 13:48:51"
+            "time": "2017-05-11 11:00:14"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2529,7 +2529,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
