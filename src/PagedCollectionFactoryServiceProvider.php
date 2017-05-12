@@ -42,7 +42,7 @@ class PagedCollectionFactoryServiceProvider implements ServiceProviderInterface
                 }
 
                 // If embed is true, decorate the paged collection factory used
-                // by offer controllers so it fetches the json-ld of all
+                // by search controllers so it fetches the json-ld of all
                 // results.
                 $app->extend(
                     'paged_collection_factory',
