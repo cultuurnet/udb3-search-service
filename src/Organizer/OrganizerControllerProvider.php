@@ -17,9 +17,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
             function (Application $app) {
                 return new OrganizerSearchController(
                     $app['organizer_elasticsearch_service'],
-                    new PagedCollectionFactory(
-                        new EmbeddedJsonDocumentTransformer($app['http_client'])
-                    )
+                    $app['paged_collection_factory']
                 );
             }
         );
