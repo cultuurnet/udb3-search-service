@@ -798,12 +798,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Hydra.git",
-                "reference": "8ece13a1a2ceb33906cb48f41da875e97041f63b"
+                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/8ece13a1a2ceb33906cb48f41da875e97041f63b",
-                "reference": "8ece13a1a2ceb33906cb48f41da875e97041f63b",
+                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
+                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
                 "shasum": ""
             },
             "require-dev": {
@@ -838,7 +838,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-02-23 10:50:22"
+            "time": "2017-05-15 08:55:52"
         },
         {
             "name": "cultuurnet/search",
@@ -1193,12 +1193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "43111a36f09764772b68bdbab648e835d258b455"
+                "reference": "56ab0979971ceade6487c8d253f7366dc025674d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/43111a36f09764772b68bdbab648e835d258b455",
-                "reference": "43111a36f09764772b68bdbab648e835d258b455",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/56ab0979971ceade6487c8d253f7366dc025674d",
+                "reference": "56ab0979971ceade6487c8d253f7366dc025674d",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-12 09:56:29"
+            "time": "2017-05-15 08:56:23"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "1df4d3b92eeca6c31579e18105d9ea4a473d26a3"
+                "reference": "a7035516252c01ceacd292372db19f22f0873a3b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/1df4d3b92eeca6c31579e18105d9ea4a473d26a3",
-                "reference": "1df4d3b92eeca6c31579e18105d9ea4a473d26a3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/a7035516252c01ceacd292372db19f22f0873a3b",
+                "reference": "a7035516252c01ceacd292372db19f22f0873a3b",
                 "shasum": ""
             },
             "require": {
@@ -1285,7 +1285,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-12 09:57:05"
+            "time": "2017-05-15 09:11:01"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2529,7 +2529,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],

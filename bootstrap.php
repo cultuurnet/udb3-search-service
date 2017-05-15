@@ -10,6 +10,7 @@ use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\PagedCollectionFactoryServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SimpleEventBus;
@@ -166,6 +167,8 @@ $app->register(
         'elasticsearch.host' => $app['config']['elasticsearch']['host'],
     ]
 );
+
+$app->register(new PagedCollectionFactoryServiceProvider());
 
 /**
  * Organizers.
