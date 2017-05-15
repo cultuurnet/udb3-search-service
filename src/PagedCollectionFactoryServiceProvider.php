@@ -5,6 +5,8 @@ namespace CultuurNet\UDB3\SearchService;
 use CultuurNet\UDB3\Search\Http\JsonLdEmbeddingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\Http\PagedCollectionFactoryInterface;
 use CultuurNet\UDB3\Search\Http\ResultSetMappingPagedCollectionFactory;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +18,23 @@ class PagedCollectionFactoryServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['paged_collection_logger'] = $app->share(
+            function () {
+                $logger = new Logger('paged_collection');
+
+                $logger->pushHandler(
+                    new StreamHandler(
+                        __DIR__ . '/../log/paged_collection.log',
+                        Logger::DEBUG
+                    )
+                );
+
+                return $logger;
+            }
+        );
+
         $app['paged_collection_factory'] = $app->share(
-            function (Application $app) {
+            function () {
                 return new ResultSetMappingPagedCollectionFactory();
             }
         );
@@ -52,7 +69,8 @@ class PagedCollectionFactoryServiceProvider implements ServiceProviderInterface
                     ) {
                         return new JsonLdEmbeddingPagedCollectionFactory(
                             $pagedCollectionFactory,
-                            $app['http_client']
+                            $app['http_client'],
+                            $app['paged_collection_logger']
                         );
                     }
                 );
