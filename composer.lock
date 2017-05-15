@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
+    "content-hash": "9423e680eac55bbc0e997bea8abc0e18",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -977,12 +977,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "d1eae8aabb0d11697964d03a11970e0db9f6af56"
+                "reference": "f6867f1e0c5f1162262aba25d51ebdede9cce0c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d1eae8aabb0d11697964d03a11970e0db9f6af56",
-                "reference": "d1eae8aabb0d11697964d03a11970e0db9f6af56",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/f6867f1e0c5f1162262aba25d51ebdede9cce0c7",
+                "reference": "f6867f1e0c5f1162262aba25d51ebdede9cce0c7",
                 "shasum": ""
             },
             "require": {
@@ -1047,7 +1047,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-05-08 13:22:03"
+            "time": "2017-05-15 11:20:36"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1189,16 +1189,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-2080",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "56ab0979971ceade6487c8d253f7366dc025674d"
+                "reference": "7e180c8210cb9305d37a4699f90e893bce41018f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/56ab0979971ceade6487c8d253f7366dc025674d",
-                "reference": "56ab0979971ceade6487c8d253f7366dc025674d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7e180c8210cb9305d37a4699f90e893bce41018f",
+                "reference": "7e180c8210cb9305d37a4699f90e893bce41018f",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-15 08:56:23"
+            "time": "2017-05-15 15:09:05"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2529,7 +2529,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -6369,9 +6369,18 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2080",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search-elasticsearch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
