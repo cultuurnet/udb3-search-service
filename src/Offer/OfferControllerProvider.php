@@ -3,18 +3,12 @@
 namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EmbeddedJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\Http\JsonLdEmbeddingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
-use CultuurNet\UDB3\Search\Http\PagedCollectionFactory;
-use CultuurNet\UDB3\Search\Http\PagedCollectionFactoryInterface;
-use CultuurNet\UDB3\Search\Http\ResultSetMappingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferControllerProvider implements ControllerProviderInterface

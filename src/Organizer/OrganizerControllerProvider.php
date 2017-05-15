@@ -2,9 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EmbeddedJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Search\Http\PagedCollectionFactory;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ControllerProviderInterface;
