@@ -30,7 +30,8 @@ class EventElasticSearchServiceProvider implements ServiceProviderInterface
                 return new ElasticSearchDocumentRepository(
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.event.write_index']),
-                    new StringLiteral($app['elasticsearch.event.document_type'])
+                    new StringLiteral($app['elasticsearch.event.document_type']),
+                    $app['elasticsearch_indexation_strategy']
                 );
             }
         );

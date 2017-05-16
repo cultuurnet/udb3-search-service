@@ -30,7 +30,8 @@ class PlaceElasticSearchServiceProvider implements ServiceProviderInterface
                 return new ElasticSearchDocumentRepository(
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.place.write_index']),
-                    new StringLiteral($app['elasticsearch.place.document_type'])
+                    new StringLiteral($app['elasticsearch.place.document_type']),
+                    $app['elasticsearch_indexation_strategy']
                 );
             }
         );
