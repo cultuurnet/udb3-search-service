@@ -193,6 +193,7 @@ $app->register(
         'elasticsearch.offer.read_index' => $app['config']['elasticsearch']['offer']['read_index'],
         'elasticsearch.offer.write_index' => $app['config']['elasticsearch']['offer']['write_index'],
         'elasticsearch.offer.document_type' => $app['config']['elasticsearch']['offer']['document_type'],
+        'elasticsearch.region.read_index' => $app['config']['elasticsearch']['region']['read_index'],
         'elasticsearch.facet_mapping.regions' => $app['config']['facet_mapping_regions'],
         'elasticsearch.facet_mapping.types' => $app['config']['facet_mapping_types'],
         'elasticsearch.facet_mapping.themes' => $app['config']['facet_mapping_themes'],

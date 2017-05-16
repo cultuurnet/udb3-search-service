@@ -119,7 +119,8 @@ $consoleApp->add(
     new ReindexUDB3CoreCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
-        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['bulk_threshold']
     )
 );
 
@@ -127,16 +128,8 @@ $consoleApp->add(
     new ReindexPermanentOffersCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
-        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
-    )
-);
-
-$consoleApp->add(
-    new IndexRegionQueriesCommand(
-        $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
-        __DIR__ . '/../' . $app['config']['elasticsearch']['geoshapes_index']['indexation']['path'],
-        $app['config']['elasticsearch']['geoshapes_index']['indexation']['fileName']
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['bulk_threshold']
     )
 );
 

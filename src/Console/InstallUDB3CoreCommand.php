@@ -103,15 +103,9 @@ class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         // Create the place mapping on the latest index.
         $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
 
-        // Create the region_query mapping on the latest index.
-        $consoleApp->find('udb3-core:region-query-mapping')->run($emptyInput, $output);
-
         // Move the write alias to the newly created index.
         $writeAliasInput = new ArrayInput(['alias' => $this->writeAlias, 'target' => $this->latestIndexName]);
         $consoleApp->find('index:update-alias')->run($writeAliasInput, $output);
-
-        // Index the geoshape queries (used to check which geoshapes a given document matches with).
-        $consoleApp->find('udb3-core:index-region-queries')->run($emptyInput, $output);
 
         // Get all index names associated with the read alias.
         $getIndexNames = new GetIndexNamesFromAlias($this->getElasticSearchClient(), new NullLogger());
