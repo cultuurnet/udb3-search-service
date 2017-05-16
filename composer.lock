@@ -1193,12 +1193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "7e180c8210cb9305d37a4699f90e893bce41018f"
+                "reference": "55d24352810a35097ba2ebbd68112491d0dcacb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7e180c8210cb9305d37a4699f90e893bce41018f",
-                "reference": "7e180c8210cb9305d37a4699f90e893bce41018f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/55d24352810a35097ba2ebbd68112491d0dcacb8",
+                "reference": "55d24352810a35097ba2ebbd68112491d0dcacb8",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-15 15:09:05"
+            "time": "2017-05-16 09:47:35"
         },
         {
             "name": "cultuurnet/udb3-search-http",
