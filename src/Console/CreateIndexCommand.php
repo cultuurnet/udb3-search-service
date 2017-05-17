@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateIndex as CreateIndexOperation;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,28 +11,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CreateIndexCommand extends AbstractElasticSearchCommand
 {
     /**
-     * @var string
-     */
-    private $indexName;
-
-    /**
-     * @param string $name
-     * @param string $description
-     * @param string $indexName
-     */
-    public function __construct($name, $description, $indexName)
-    {
-        parent::__construct($name);
-        $this->setDescription($description);
-        $this->indexName = $indexName;
-    }
-
-    /**
      * @inheritdoc
      */
     public function configure()
     {
         $this
+            ->setName('index:create')
+            ->setDescription('Creates an empty index.')
+            ->addArgument(
+                'target',
+                InputArgument::REQUIRED,
+                'Name of the index to create.'
+            )
             ->addOption(
                 'force',
                 null,
@@ -45,6 +36,7 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $name = $input->getArgument('target');
         $force = (bool) $input->getOption('force');
 
         $operation = new CreateIndexOperation(
@@ -52,6 +44,6 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
             $this->getLogger($output)
         );
 
-        $operation->run($this->indexName, $force);
+        $operation->run($name, $force);
     }
 }

@@ -2,6 +2,7 @@
 <?php
 
 use CultuurNet\SilexAMQP\Console\ConsumeCommand;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\SchemaVersions;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
@@ -59,41 +60,33 @@ $consoleApp->add(new CreateLowerCaseExactMatchAnalyzerCommand());
 $consoleApp->add(new CreateAutocompleteAnalyzerCommand());
 
 /**
+ * Generic index commands.
+ */
+$consoleApp->add(new CheckIndexExistsCommand());
+$consoleApp->add(new CreateIndexCommand());
+$consoleApp->add(new DeleteIndexCommand());
+$consoleApp->add(new UpdateIndexAliasCommand());
+
+/**
+ * Dynamic config.
+ */
+$app['config'] = array_merge_recursive(
+    $app['config'],
+    [
+        'elasticsearch' => [
+            'udb3_core_index' => [
+                'latest' => $app['config']['elasticsearch']['udb3_core_index']['prefix'] . SchemaVersions::UDB3_CORE,
+            ],
+            'geoshapes_index' => [
+                'latest' => $app['config']['elasticsearch']['geoshapes_index']['prefix'] . SchemaVersions::GEOSHAPES,
+            ],
+        ],
+    ]
+);
+
+/**
  * UDB3 core.
  */
-$consoleApp->add(
-    new CheckIndexExistsCommand(
-        'udb3-core:check-latest',
-        'Checks whether the latest udb3_core index exists or not.',
-        $app['config']['elasticsearch']['udb3_core_index']['latest']
-    )
-);
-
-$consoleApp->add(
-    new CheckIndexExistsCommand(
-        'udb3-core:check-previous',
-        'Checks whether the previous udb3_core index exists or not.',
-        $app['config']['elasticsearch']['udb3_core_index']['previous']
-    )
-);
-
-$consoleApp->add(
-    new CreateIndexCommand(
-        'udb3-core:create-latest',
-        'Create the latest udb3_core index.',
-        $app['config']['elasticsearch']['udb3_core_index']['latest']
-    )
-);
-
-$consoleApp->add(
-    new UpdateIndexAliasCommand(
-        'udb3-core:update-write-alias',
-        'Move the write alias to the latest udb3_core index.',
-        $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
-        $app['config']['elasticsearch']['udb3_core_index']['latest']
-    )
-);
-
 $consoleApp->add(
     new UpdateOrganizerMappingCommand(
         $app['config']['elasticsearch']['udb3_core_index']['latest'],
@@ -126,7 +119,8 @@ $consoleApp->add(
     new ReindexUDB3CoreCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
-        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['bulk_threshold']
     )
 );
 
@@ -134,74 +128,22 @@ $consoleApp->add(
     new ReindexPermanentOffersCommand(
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['from'],
         $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_ttl'],
-        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size']
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['scroll_size'],
+        $app['config']['elasticsearch']['udb3_core_index']['reindexation']['bulk_threshold']
     )
 );
 
 $consoleApp->add(
-    new IndexRegionQueriesCommand(
+    new InstallUDB3CoreCommand(
+        $app['config']['elasticsearch']['udb3_core_index']['latest'],
         $app['config']['elasticsearch']['udb3_core_index']['write_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
-        __DIR__ . '/../' . $app['config']['elasticsearch']['geoshapes_index']['indexation']['path'],
-        $app['config']['elasticsearch']['geoshapes_index']['indexation']['fileName']
+        $app['config']['elasticsearch']['udb3_core_index']['read_alias']
     )
 );
-
-$consoleApp->add(
-    new UpdateIndexAliasCommand(
-        'udb3-core:update-read-alias',
-        'Move the read alias to the latest udb3_core index.',
-        $app['config']['elasticsearch']['udb3_core_index']['read_alias'],
-        $app['config']['elasticsearch']['udb3_core_index']['latest']
-    )
-);
-
-$consoleApp->add(
-    new DeleteIndexCommand(
-        'udb3-core:delete-previous',
-        'Delete the previous udb3_core index.',
-        $app['config']['elasticsearch']['udb3_core_index']['previous']
-    )
-);
-
-$consoleApp->add(new InstallUDB3CoreCommand());
 
 /**
  * Geoshapes
  */
-$consoleApp->add(
-    new CheckIndexExistsCommand(
-        'geoshapes:check-latest',
-        'Checks whether the latest geoshapes index exists or not.',
-        $app['config']['elasticsearch']['geoshapes_index']['latest']
-    )
-);
-
-$consoleApp->add(
-    new CheckIndexExistsCommand(
-        'geoshapes:check-previous',
-        'Checks whether the previous geoshapes index exists or not.',
-        $app['config']['elasticsearch']['geoshapes_index']['previous']
-    )
-);
-
-$consoleApp->add(
-    new CreateIndexCommand(
-        'geoshapes:create-latest',
-        'Create the latest geoshapes index.',
-        $app['config']['elasticsearch']['geoshapes_index']['latest']
-    )
-);
-
-$consoleApp->add(
-    new UpdateIndexAliasCommand(
-        'geoshapes:update-write-alias',
-        'Move the write alias to the latest geoshapes index.',
-        $app['config']['elasticsearch']['geoshapes_index']['write_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['latest']
-    )
-);
-
 $consoleApp->add(
     new UpdateRegionMappingCommand(
         $app['config']['elasticsearch']['geoshapes_index']['latest'],
@@ -218,22 +160,11 @@ $consoleApp->add(
 );
 
 $consoleApp->add(
-    new UpdateIndexAliasCommand(
-        'geoshapes:update-read-alias',
-        'Move the read alias to the latest geoshapes index.',
-        $app['config']['elasticsearch']['geoshapes_index']['read_alias'],
-        $app['config']['elasticsearch']['geoshapes_index']['latest']
+    new InstallGeoShapesCommand(
+        $app['config']['elasticsearch']['geoshapes_index']['latest'],
+        $app['config']['elasticsearch']['geoshapes_index']['write_alias'],
+        $app['config']['elasticsearch']['geoshapes_index']['read_alias']
     )
 );
-
-$consoleApp->add(
-    new DeleteIndexCommand(
-        'geoshapes:delete-previous',
-        'Delete the previous geoshapes index.',
-        $app['config']['elasticsearch']['geoshapes_index']['previous']
-    )
-);
-
-$consoleApp->add(new InstallGeoShapesCommand());
 
 $consoleApp->run();

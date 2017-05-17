@@ -2,41 +2,12 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReindexPermanentOffers;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReindexPermanentOffersCommand extends AbstractElasticSearchCommand
+class ReindexPermanentOffersCommand extends AbstractReindexCommand
 {
-    /**
-     * @var string
-     */
-    private $readIndexName;
-
-    /**
-     * @var string
-     */
-    private $scrollTtl;
-
-    /**
-     * @var int
-     */
-    private $scrollSize;
-
-    /**
-     * @param string $readIndexName
-     * @param string $scrollTtl
-     * @param int $scrollSize
-     */
-    public function __construct($readIndexName, $scrollTtl = '1m', $scrollSize = 50)
-    {
-        parent::__construct();
-        $this->readIndexName = $readIndexName;
-        $this->scrollTtl = $scrollTtl;
-        $this->scrollSize = $scrollSize;
-    }
-
     /**
      * @inheritdoc
      */
@@ -58,19 +29,10 @@ class ReindexPermanentOffersCommand extends AbstractElasticSearchCommand
             $this->getElasticSearchClient(),
             $this->getLogger($output),
             $this->getEventBus(),
-            $this->scrollTtl,
-            $this->scrollSize
+            $this->getScrollTtl(),
+            $this->getScrollSize()
         );
 
-        $operation->run($this->readIndexName);
-    }
-
-    /**
-     * @return EventBusInterface
-     */
-    private function getEventBus()
-    {
-        $app = $this->getSilexApplication();
-        return $app['event_bus.udb3-core'];
+        $this->runOperation($input, $output, $operation);
     }
 }

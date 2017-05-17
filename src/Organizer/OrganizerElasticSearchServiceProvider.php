@@ -41,7 +41,8 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
                 return new ElasticSearchDocumentRepository(
                     $app['elasticsearch_client'],
                     new StringLiteral($app['elasticsearch.organizer.write_index']),
-                    new StringLiteral($app['elasticsearch.organizer.document_type'])
+                    new StringLiteral($app['elasticsearch.organizer.document_type']),
+                    $app['elasticsearch_indexation_strategy']
                 );
             }
         );

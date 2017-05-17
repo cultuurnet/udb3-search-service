@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use Elasticsearch\ClientBuilder;
 use Monolog\Handler\StreamHandler;
@@ -25,6 +27,17 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
                         ]
                     )
                     ->build();
+            }
+        );
+
+        $app['elasticsearch_indexation_strategy'] = $app->share(
+            function (Application $app) {
+                return new MutableIndexationStrategy(
+                    new SingleFileIndexationStrategy(
+                        $app['elasticsearch_client'],
+                        $app['logger.amqp.udb3_consumer']
+                    )
+                );
             }
         );
 

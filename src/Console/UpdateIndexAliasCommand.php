@@ -3,33 +3,30 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateIndexAlias;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
 {
     /**
-     * @var string
+     * @inheritdoc
      */
-    private $aliasName;
-
-    /**
-     * @var string
-     */
-    private $newIndexName;
-
-    /**
-     * @param string $name
-     * @param string $description
-     * @param string $aliasName
-     * @param string $newIndexName
-     */
-    public function __construct($name, $description, $aliasName, $newIndexName)
+    public function configure()
     {
-        parent::__construct($name);
-        $this->setDescription($description);
-        $this->aliasName = $aliasName;
-        $this->newIndexName = $newIndexName;
+        $this
+            ->setName('index:update-alias')
+            ->setDescription('Moves an alias to the given index.')
+            ->addArgument(
+                'alias',
+                InputArgument::REQUIRED,
+                'Name of the alias to move.'
+            )
+            ->addArgument(
+                'target',
+                InputArgument::REQUIRED,
+                'Name of the index to move the alias to.'
+            );
     }
 
     /**
@@ -37,11 +34,14 @@ class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $aliasName = $input->getArgument('alias');
+        $indexName = $input->getArgument('target');
+
         $operation = new UpdateIndexAlias(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
 
-        $operation->run($this->aliasName, $this->newIndexName);
+        $operation->run($aliasName, $indexName);
     }
 }

@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CheckIndexExists;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,20 +11,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CheckIndexExistsCommand extends AbstractElasticSearchCommand
 {
     /**
-     * @var string|null
+     * @inheritdoc
      */
-    private $indexName;
-
-    /**
-     * @param string $name
-     * @param string $description
-     * @param string $indexName
-     */
-    public function __construct($name, $description, $indexName = null)
+    public function configure()
     {
-        parent::__construct($name);
-        $this->setDescription($description);
-        $this->indexName = $indexName;
+        $this
+            ->setName('index:exists')
+            ->setDescription('Checks if an exists or not.')
+            ->addArgument(
+                'target',
+                InputArgument::REQUIRED,
+                'Name of the index to check.'
+            );
     }
 
     /**
@@ -31,18 +30,14 @@ class CheckIndexExistsCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (is_null($this->indexName)) {
-            $logger = new ConsoleLogger($output);
-            $logger->info('No previous index available.');
-            return 1;
-        }
+        $target = $input->getArgument('target');
 
         $operation = new CheckIndexExists(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
 
-        $exists = $operation->run($this->indexName);
+        $exists = $operation->run($target);
 
         return $exists ? 0 : 1;
     }
