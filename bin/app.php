@@ -6,6 +6,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
+use CultuurNet\UDB3\SearchService\Console\FlandersRegionTaxonomyToFacetMappingsCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionQueriesCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
@@ -46,6 +47,7 @@ $consoleApp->add(
 );
 
 $consoleApp->add(new TermTaxonomyToFacetMappingsCommand());
+$consoleApp->add(new FlandersRegionTaxonomyToFacetMappingsCommand());
 
 /**
  * Elasticsearch.
