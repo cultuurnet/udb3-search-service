@@ -1145,12 +1145,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "55df6db46ccc83f6635bd193e3cb576995e6dccc"
+                "reference": "34d9ba2197832ceb1414cb1eca6dced60982e9ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/55df6db46ccc83f6635bd193e3cb576995e6dccc",
-                "reference": "55df6db46ccc83f6635bd193e3cb576995e6dccc",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/34d9ba2197832ceb1414cb1eca6dced60982e9ce",
+                "reference": "34d9ba2197832ceb1414cb1eca6dced60982e9ce",
                 "shasum": ""
             },
             "require": {
@@ -1185,7 +1185,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-17 15:57:02"
+            "time": "2017-05-18 10:06:02"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1193,12 +1193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "3b33c4976e6c8636e7398ddbf29d116a751c0a84"
+                "reference": "c6bdb3082f9e6143a21a0d348a783cfd6d312839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/3b33c4976e6c8636e7398ddbf29d116a751c0a84",
-                "reference": "3b33c4976e6c8636e7398ddbf29d116a751c0a84",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c6bdb3082f9e6143a21a0d348a783cfd6d312839",
+                "reference": "c6bdb3082f9e6143a21a0d348a783cfd6d312839",
                 "shasum": ""
             },
             "require": {
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-17 14:49:55"
+            "time": "2017-05-18 10:42:25"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "ad24e5b4ffa1fd6da9ebdd62ad70298b2f2e19c4"
+                "reference": "ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ad24e5b4ffa1fd6da9ebdd62ad70298b2f2e19c4",
-                "reference": "ad24e5b4ffa1fd6da9ebdd62ad70298b2f2e19c4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7",
+                "reference": "ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7",
                 "shasum": ""
             },
             "require": {
@@ -1285,7 +1285,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-17 08:35:47"
+            "time": "2017-05-18 10:42:28"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2529,7 +2529,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -4610,16 +4610,16 @@
         },
         {
             "name": "zendframework/zend-validator",
-            "version": "2.9.0",
+            "version": "2.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-validator.git",
-                "reference": "b71641582297eab52753b72cd4eb45a5ded4485c"
+                "reference": "c9a8160a0191e34bb98ac1ecd4e453391c424bb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/b71641582297eab52753b72cd4eb45a5ded4485c",
-                "reference": "b71641582297eab52753b72cd4eb45a5ded4485c",
+                "url": "https://api.github.com/repos/zendframework/zend-validator/zipball/c9a8160a0191e34bb98ac1ecd4e453391c424bb3",
+                "reference": "c9a8160a0191e34bb98ac1ecd4e453391c424bb3",
                 "shasum": ""
             },
             "require": {
@@ -4677,7 +4677,7 @@
                 "validator",
                 "zf2"
             ],
-            "time": "2017-03-17T10:15:50+00:00"
+            "time": "2017-05-17T22:06:13+00:00"
         }
     ],
     "packages-dev": [
