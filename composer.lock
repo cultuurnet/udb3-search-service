@@ -1243,12 +1243,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7"
+                "reference": "17d01c1252ebcd4c9ed880d7a51a52ca4b5e8e65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7",
-                "reference": "ddbe8bd7e9c295ab4fb6b2e39c1c8008e2168bf7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/17d01c1252ebcd4c9ed880d7a51a52ca4b5e8e65",
+                "reference": "17d01c1252ebcd4c9ed880d7a51a52ca4b5e8e65",
                 "shasum": ""
             },
             "require": {
@@ -1285,7 +1285,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-18 10:42:28"
+            "time": "2017-05-18 12:07:12"
         },
         {
             "name": "cultuurnet/valueobjects",
