@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransform
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ResultSetJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\PercolatorOfferRegionService;
@@ -22,6 +23,12 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['offer_elasticsearch_query_builder'] = $app->share(
+            function () {
+                return new ElasticSearchOfferQueryBuilder();
+            }
+        );
+
         $app['offer_elasticsearch_service_factory'] = $app->protect(
             function ($readIndex, $documentType) use ($app) {
                 return new ElasticSearchOfferSearchService(
