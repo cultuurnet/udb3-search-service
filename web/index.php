@@ -2,12 +2,14 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\SearchService\Authentication\AuthenticationServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceControllerProvider;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /** @var Application $app */
@@ -27,6 +29,17 @@ if (!$app['config']['debug']) {
         new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider()
     );
 }
+
+/**
+ * API key authentication.
+ */
+$app->register(new AuthenticationServiceProvider());
+
+$app->before(
+    function (Request $request, Application $app) {
+        $app['auth.request_authenticator']->authenticate($request);
+    }
+);
 
 $app->mount('organizers', new OrganizerControllerProvider());
 
