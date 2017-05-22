@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetF
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\PercolatorOfferRegionService;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
