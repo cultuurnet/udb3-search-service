@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
+    "content-hash": "4d366b52d10e0ab1dcac5da93696f8ff",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1239,16 +1239,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-master",
+            "version": "dev-feature/III-2068",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "b7e09912aeed8b095df34eace14f383df1a8990d"
+                "reference": "64c9582824f937862ceb0d628c4cd2df0a042cc9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/b7e09912aeed8b095df34eace14f383df1a8990d",
-                "reference": "b7e09912aeed8b095df34eace14f383df1a8990d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/64c9582824f937862ceb0d628c4cd2df0a042cc9",
+                "reference": "64c9582824f937862ceb0d628c4cd2df0a042cc9",
                 "shasum": ""
             },
             "require": {
@@ -1286,7 +1286,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-22 12:03:32"
+            "time": "2017-05-22 15:59:04"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2530,7 +2530,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -6370,9 +6370,18 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2068",
+            "package": "cultuurnet/udb3-search-http"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search-http": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
