@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ResultSetJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\OrganizerJsonDocumentTransformer;
 use Silex\Application;
@@ -20,6 +21,12 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
+        $app['organizer_elasticsearch_query_builder'] = $app->share(
+            function () {
+                return new ElasticSearchOrganizerQueryBuilder();
+            }
+        );
+
         $app['organizer_elasticsearch_service'] = $app->share(
             function (Application $app) {
                 return new ElasticSearchOrganizerSearchService(

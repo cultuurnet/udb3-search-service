@@ -14,6 +14,7 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $app['organizer_search_controller'] = $app->share(
             function (Application $app) {
                 return new OrganizerSearchController(
+                    $app['organizer_elasticsearch_query_builder'],
                     $app['organizer_elasticsearch_service'],
                     $app['paged_collection_factory']
                 );
