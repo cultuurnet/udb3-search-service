@@ -1,16 +1,16 @@
 <?php
 
-namespace CultuurNet\UDB3\SearchService\Authentication;
+namespace CultuurNet\UDB3\SearchService\ApiGuard;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ApiKey\AllowAnyAuthenticator;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiKey\Reader\CompositeApiKeyReader;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiKey\Reader\CustomHeaderApiKeyReader;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\Search\Http\Authentication\Request\ApiKeyRequestAuthenticator;
+use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-class AuthenticationServiceProvider implements ServiceProviderInterface
+class ApiGuardServiceProvider implements ServiceProviderInterface
 {
     /**
      * @param Application $app

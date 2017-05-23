@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\Search\Http\Authentication\ApiKey\ApiKey;
-use CultuurNet\UDB3\SearchService\Authentication\AuthenticationServiceProvider;
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\SearchService\ApiGuard\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
@@ -52,7 +52,7 @@ $app['request_logger'] = $app->share(
     }
 );
 
-$app->register(new AuthenticationServiceProvider());
+$app->register(new ApiGuardServiceProvider());
 
 $app->before(
     function (Request $request, Application $app) {

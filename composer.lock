@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d366b52d10e0ab1dcac5da93696f8ff",
+    "content-hash": "3daa9c59ff5f45cfda825b999bbece9f",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1050,6 +1050,53 @@
             "time": "2017-05-19 08:21:13"
         },
         {
+            "name": "cultuurnet/udb3-api-guard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-api-guard.git",
+                "reference": "59b2fdc1d063f8561349b3ee863cbadf65055ad3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/59b2fdc1d063f8561349b3ee863cbadf65055ad3",
+                "reference": "59b2fdc1d063f8561349b3ee863cbadf65055ad3",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/valueobjects": "~3.0",
+                "symfony/http-foundation": "~2.7"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\ApiGuard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "time": "2017-05-23 12:12:23"
+        },
+        {
             "name": "cultuurnet/udb3-http-foundation",
             "version": "dev-master",
             "source": {
@@ -1243,12 +1290,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "64c9582824f937862ceb0d628c4cd2df0a042cc9"
+                "reference": "ccf77f4c0ea9583c41478aad54b3ec16bea26a48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/64c9582824f937862ceb0d628c4cd2df0a042cc9",
-                "reference": "64c9582824f937862ceb0d628c4cd2df0a042cc9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ccf77f4c0ea9583c41478aad54b3ec16bea26a48",
+                "reference": "ccf77f4c0ea9583c41478aad54b3ec16bea26a48",
                 "shasum": ""
             },
             "require": {
@@ -1286,7 +1333,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-22 15:59:04"
+            "time": "2017-05-23 12:30:25"
         },
         {
             "name": "cultuurnet/valueobjects",
