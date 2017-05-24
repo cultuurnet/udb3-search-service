@@ -44,6 +44,8 @@ class OfferControllerProvider implements ControllerProviderInterface
         $app['offer_search_controller_factory'] = $app->protect(
             function (OfferSearchServiceInterface $offerSearchService) use ($app) {
                 return new OfferSearchController(
+                    $app['auth.api_key_reader'],
+                    $app['auth.consumer_repository'],
                     $app['offer_elasticsearch_query_builder'],
                     $offerSearchService,
                     $this->regionIndexName,

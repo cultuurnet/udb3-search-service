@@ -6,6 +6,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -41,6 +42,12 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
                     $app['auth.api_key_reader'],
                     $app['auth.api_key_authenticator']
                 );
+            }
+        );
+
+        $app['auth.consumer_repository'] = $app->share(
+            function (Application $app) {
+                return new InMemoryConsumerRepository();
             }
         );
     }
