@@ -1290,17 +1290,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "ccf77f4c0ea9583c41478aad54b3ec16bea26a48"
+                "reference": "b1a5b3fa813cc36773fd15f8b21ea262c8c867aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/ccf77f4c0ea9583c41478aad54b3ec16bea26a48",
-                "reference": "ccf77f4c0ea9583c41478aad54b3ec16bea26a48",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/b1a5b3fa813cc36773fd15f8b21ea262c8c867aa",
+                "reference": "b1a5b3fa813cc36773fd15f8b21ea262c8c867aa",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/hydra": "~0.1",
+                "cultuurnet/udb3-api-guard": "~0.1",
                 "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
@@ -1333,7 +1334,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-05-23 12:30:25"
+            "time": "2017-05-23 14:47:39"
         },
         {
             "name": "cultuurnet/valueobjects",
