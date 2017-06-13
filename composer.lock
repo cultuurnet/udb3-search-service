@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ec581fe6567ad4bb7a187a6c944d5bb4",
+    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -977,12 +977,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "b4894d22716e42ffd8f0d9b13cc527cbf0efa084"
+                "reference": "d118f3962dd96ca797d1a60b7cbacd815a2dc319"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b4894d22716e42ffd8f0d9b13cc527cbf0efa084",
-                "reference": "b4894d22716e42ffd8f0d9b13cc527cbf0efa084",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/d118f3962dd96ca797d1a60b7cbacd815a2dc319",
+                "reference": "d118f3962dd96ca797d1a60b7cbacd815a2dc319",
                 "shasum": ""
             },
             "require": {
@@ -1047,7 +1047,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-06-06 13:09:27"
+            "time": "2017-06-12 08:23:21"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1141,16 +1141,16 @@
         },
         {
             "name": "cultuurnet/udb3-search",
-            "version": "dev-feature/III-2160",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "20e3ca943d49bd0db478f03dc82b0a059f2f499e"
+                "reference": "972b514df1af19dd771f8a122aa979c99b2fad59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/20e3ca943d49bd0db478f03dc82b0a059f2f499e",
-                "reference": "20e3ca943d49bd0db478f03dc82b0a059f2f499e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/972b514df1af19dd771f8a122aa979c99b2fad59",
+                "reference": "972b514df1af19dd771f8a122aa979c99b2fad59",
                 "shasum": ""
             },
             "require": {
@@ -1185,24 +1185,24 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-06 13:42:45"
+            "time": "2017-06-13 09:19:17"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-feature/III-2160",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "c3ccbc010dcff29cf098b6a534c37a0d1ae248e7"
+                "reference": "d7a87c49f046d69d23c2b248df3f94d293b289e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/c3ccbc010dcff29cf098b6a534c37a0d1ae248e7",
-                "reference": "c3ccbc010dcff29cf098b6a534c37a0d1ae248e7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/d7a87c49f046d69d23c2b248df3f94d293b289e5",
+                "reference": "d7a87c49f046d69d23c2b248df3f94d293b289e5",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/udb3-search": "dev-feature/III-2160 as 0.1",
+                "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "elasticsearch/elasticsearch": "~5.2",
                 "ongr/elasticsearch-dsl": "~5.0.1",
@@ -1235,31 +1235,31 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-09 07:46:55"
+            "time": "2017-06-13 09:42:48"
         },
         {
             "name": "cultuurnet/udb3-search-http",
-            "version": "dev-feature/III-2160",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "d55da17d1cf9c49fd51f731aae3944ef95a13100"
+                "reference": "2c5289b1198b80859d3dd66a732cc7545a4e5fad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/d55da17d1cf9c49fd51f731aae3944ef95a13100",
-                "reference": "d55da17d1cf9c49fd51f731aae3944ef95a13100",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/2c5289b1198b80859d3dd66a732cc7545a4e5fad",
+                "reference": "2c5289b1198b80859d3dd66a732cc7545a4e5fad",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-search": "dev-feature/III-2160 as 0.1",
+                "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
             },
             "require-dev": {
-                "cultuurnet/udb3-search-elasticsearch": "dev-feature/III-2160 as 0.1",
+                "cultuurnet/udb3-search-elasticsearch": "~0.1",
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
@@ -1286,7 +1286,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-08 15:42:23"
+            "time": "2017-06-13 09:51:48"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -2530,7 +2530,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -4120,16 +4120,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4"
+                "reference": "f29dca382a6485c3cbe6379f0c61230167681937"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e79d363049d1c2128f133a2667e4f4190904f7f4",
-                "reference": "e79d363049d1c2128f133a2667e4f4190904f7f4",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/f29dca382a6485c3cbe6379f0c61230167681937",
+                "reference": "f29dca382a6485c3cbe6379f0c61230167681937",
                 "shasum": ""
             },
             "require": {
@@ -4141,7 +4141,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -4175,20 +4175,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2017-06-09T14:24:12+00:00"
         },
         {
             "name": "symfony/polyfill-php55",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php55.git",
-                "reference": "03e3f0350bca2220e3623a0e340eef194405fc67"
+                "reference": "94566239a7720cde0820f15f0cc348ddb51ba51d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/03e3f0350bca2220e3623a0e340eef194405fc67",
-                "reference": "03e3f0350bca2220e3623a0e340eef194405fc67",
+                "url": "https://api.github.com/repos/symfony/polyfill-php55/zipball/94566239a7720cde0820f15f0cc348ddb51ba51d",
+                "reference": "94566239a7720cde0820f15f0cc348ddb51ba51d",
                 "shasum": ""
             },
             "require": {
@@ -4198,7 +4198,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3-dev"
+                    "dev-master": "1.4-dev"
                 }
             },
             "autoload": {
@@ -4231,7 +4231,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-11-14T01:06:16+00:00"
+            "time": "2017-06-09T08:25:21+00:00"
         },
         {
             "name": "symfony/routing",
@@ -6375,32 +6375,9 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2160",
-            "package": "cultuurnet/udb3-search"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2160",
-            "package": "cultuurnet/udb3-search-elasticsearch"
-        },
-        {
-            "alias": "0.1",
-            "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2160",
-            "package": "cultuurnet/udb3-search-http"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "cultuurnet/udb3-search": 20,
-        "cultuurnet/udb3-search-elasticsearch": 20,
-        "cultuurnet/udb3-search-http": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
