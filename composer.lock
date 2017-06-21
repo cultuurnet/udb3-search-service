@@ -977,12 +977,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "58593e3d634e2a53c0d2ca3dbade077ed400b683"
+                "reference": "34b479a169345642bdfd745d8d389ca912c978ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/58593e3d634e2a53c0d2ca3dbade077ed400b683",
-                "reference": "58593e3d634e2a53c0d2ca3dbade077ed400b683",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/34b479a169345642bdfd745d8d389ca912c978ea",
+                "reference": "34b479a169345642bdfd745d8d389ca912c978ea",
                 "shasum": ""
             },
             "require": {
@@ -1047,7 +1047,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-06-20 14:28:27"
+            "time": "2017-06-21 08:20:28"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1193,15 +1193,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "40f591ec6333b1cc56e675e177443d76d81b40b7"
+                "reference": "e83285c93df64c18b4af3054834fc0d7c889162d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/40f591ec6333b1cc56e675e177443d76d81b40b7",
-                "reference": "40f591ec6333b1cc56e675e177443d76d81b40b7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/e83285c93df64c18b4af3054834fc0d7c889162d",
+                "reference": "e83285c93df64c18b4af3054834fc0d7c889162d",
                 "shasum": ""
             },
             "require": {
+                "cultuurnet/udb3": "~0.1",
                 "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "elasticsearch/elasticsearch": "~5.2",
@@ -1235,7 +1236,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-20 15:03:35"
+            "time": "2017-06-21 11:19:30"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2530,7 +2531,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
