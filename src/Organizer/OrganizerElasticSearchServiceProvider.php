@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetF
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\OrganizerJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -55,8 +56,11 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
         );
 
         $app['organizer_elasticsearch_transformer'] = $app->share(
-            function () {
-                return new OrganizerJsonDocumentTransformer();
+            function (Application $app) {
+                return new OrganizerJsonDocumentTransformer(
+                    new PathEndIdUrlParser(),
+                    $app['elasticsearch_transformer_logger']
+                );
             }
         );
     }
