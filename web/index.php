@@ -2,18 +2,14 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\SearchService\ApiGuard\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceControllerProvider;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /** @var Application $app */
@@ -37,52 +33,11 @@ if (!$app['config']['debug']) {
 /**
  * API key authentication.
  */
-$app['request_logger'] = $app->share(
-    function () {
-        $logger = new Monolog\Logger('request_logger');
-        $logger->pushHandler(new StreamHandler('php://stdout'));
-
-        $logFileHandler = new StreamHandler(
-            __DIR__ . '/../log/requests.log',
-            Logger::DEBUG
-        );
-        $logger->pushHandler($logFileHandler);
-
-        return $logger;
-    }
-);
-
 $app->register(new ApiGuardServiceProvider());
 
 $app->before(
     function (Request $request, Application $app) {
         $app['auth.request_authenticator']->authenticate($request);
-        $app['request_time'] = microtime(true);
-    }
-);
-
-$app->after(
-    function (Request $request, Response $response, Application $app) {
-        $requestTime = $app['request_time'];
-        $responseTime = microtime(true);
-        $duration = $responseTime - $requestTime;
-        $apiKey = $app['auth.api_key_reader']->read($request);
-
-        if ($apiKey instanceof ApiKey) {
-            $apiKey = $apiKey->toNative();
-        }
-
-        /* @var Logger $logger */
-        $logger = $app['request_logger'];
-        $logger->info(
-            $request->__toString(),
-            [
-                'api_key' => $apiKey,
-                'request_time' => $requestTime,
-                'response_time' => $responseTime,
-                'duration' => $duration,
-            ]
-        );
     }
 );
 
