@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use Silex\Application;
@@ -47,6 +48,7 @@ class OfferControllerProvider implements ControllerProviderInterface
                     $app['auth.api_key_reader'],
                     $app['auth.consumer_repository'],
                     $app['offer_elasticsearch_query_builder'],
+                    new CompositeOfferRequestParser(),
                     $offerSearchService,
                     $this->regionIndexName,
                     $this->regionDocumentType,
