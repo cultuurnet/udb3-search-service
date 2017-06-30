@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\SearchService\ApiGuard;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\AllowAnyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -32,7 +32,10 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
 
         $app['auth.api_key_authenticator'] = $app->share(
             function (Application $app) {
-                return new AllowAnyAuthenticator();
+                return new CultureFeedApiKeyAuthenticator(
+                    $app['culturefeed'],
+                    $app['auth.consumer_repository']
+                );
             }
         );
 

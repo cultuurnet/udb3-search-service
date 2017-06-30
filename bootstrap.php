@@ -4,6 +4,7 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\SearchService\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
@@ -49,6 +50,18 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
         require __DIR__ . "/bootstrap/{$identifier}.php";
     }
 }
+
+/**
+ * CultureFeed services.
+ */
+$app->register(
+    new CultureFeedServiceProvider(),
+    [
+        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
+        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
+        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
+    ]
+);
 
 $app['http_client'] = $app->share(
     function () {
