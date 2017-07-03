@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0995d074c263cba86f8d8cfdd914e139",
+    "content-hash": "8a4aa7d4011d9649f3a94427e456c88b",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -55,6 +55,48 @@
             ],
             "description": " Library for creating collection classes with strict typing.",
             "time": "2015-12-16 09:28:40"
+        },
+        {
+            "name": "2dotstwice/silex-feature-toggles-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2dotstwice/silex-feature-toggles-provider.git",
+                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2dotstwice/silex-feature-toggles-provider/zipball/1d90390bf037114d6c17f166022c2efa68e3cec7",
+                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7",
+                "shasum": ""
+            },
+            "require": {
+                "qandidate/toggle": "0.4.0",
+                "silex/silex": "~1.2"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TwoDotsTwice\\SilexFeatureToggles\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Feature toggles for Silex",
+            "time": "2017-07-03 14:15:24"
         },
         {
             "name": "beberlei/assert",
@@ -630,16 +672,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.6.3",
+            "version": "1.7.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8"
+                "reference": "3a22730ec079d7533f858130e5b0226dc9d9d4dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9e90cd8b646dd598155da36c4c8835b03b3a13c8",
-                "reference": "9e90cd8b646dd598155da36c4c8835b03b3a13c8",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/3a22730ec079d7533f858130e5b0226dc9d9d4dc",
+                "reference": "3a22730ec079d7533f858130e5b0226dc9d9d4dc",
                 "shasum": ""
             },
             "require": {
@@ -694,7 +736,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-02-23T10:02:29+00:00"
+            "time": "2017-07-03 15:18:29"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1050,6 +1092,57 @@
             "time": "2017-06-29 13:15:20"
         },
         {
+            "name": "cultuurnet/udb3-api-guard",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-api-guard.git",
+                "reference": "8db5ee13d15d4633a73b4f5e7d11037b1d738bd6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/8db5ee13d15d4633a73b4f5e7d11037b1d738bd6",
+                "reference": "8db5ee13d15d4633a73b4f5e7d11037b1d738bd6",
+                "shasum": ""
+            },
+            "require": {
+                "cultuurnet/valueobjects": "~3.0",
+                "symfony/http-foundation": "~2.7"
+            },
+            "require-dev": {
+                "cultuurnet/culturefeed-php": "dev-feature/III-2068 as 1.6",
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "suggest": {
+                "cultuurnet/culturefeed-php": "To use the CultureFeed implementations of ApiKey and Consumer interfaces."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\ApiGuard\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "time": "2017-06-28 13:25:17"
+        },
+        {
             "name": "cultuurnet/udb3-http-foundation",
             "version": "dev-master",
             "source": {
@@ -1244,17 +1337,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "2c5289b1198b80859d3dd66a732cc7545a4e5fad"
+                "reference": "5e0c7b95b7ff02a9786761d508cc3e584a33d371"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/2c5289b1198b80859d3dd66a732cc7545a4e5fad",
-                "reference": "2c5289b1198b80859d3dd66a732cc7545a4e5fad",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/5e0c7b95b7ff02a9786761d508cc3e584a33d371",
+                "reference": "5e0c7b95b7ff02a9786761d508cc3e584a33d371",
                 "shasum": ""
             },
             "require": {
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/hydra": "~0.1",
+                "cultuurnet/udb3-api-guard": "~0.1",
                 "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "symfony/http-foundation": "~2.7.2"
@@ -1287,7 +1381,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-13 09:51:48"
+            "time": "2017-07-03 15:31:24"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -3523,6 +3617,63 @@
             "time": "2016-10-10T12:19:37+00:00"
         },
         {
+            "name": "qandidate/toggle",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qandidate-labs/qandidate-toggle.git",
+                "reference": "c38b16fa252470e331475964400e466555382df1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/c38b16fa252470e331475964400e466555382df1",
+                "reference": "c38b16fa252470e331475964400e466555382df1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "predis/predis": "~0.8",
+                "symfony/expression-language": "~2.4"
+            },
+            "suggest": {
+                "predis/predis": "To use the PredisCollection to persist toggles in redis",
+                "symfony/expression-language": "To use the ExpressionCondition to add conditions as a symfony language expression"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qandidate\\Toggle\\": "lib/Qandidate/Toggle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                },
+                {
+                    "name": "Qandidate.com",
+                    "homepage": "http://labs.qandidate.com/"
+                }
+            ],
+            "description": "Feature toggling for your PHP application.",
+            "keywords": [
+                "bits",
+                "feature",
+                "flip",
+                "flipping",
+                "switch",
+                "toggle",
+                "trigger"
+            ],
+            "time": "2015-12-28T15:54:08+00:00"
+        },
+        {
             "name": "ramsey/uuid",
             "version": "2.9.0",
             "source": {
@@ -3982,16 +4133,16 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v2.7.29",
+            "version": "v2.7.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "dff67542358c302a0dbc3fc3e5e9b7b0445b5224"
+                "reference": "37317dd4d377a36ecc84bd7c9638d7c09c9d5837"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/dff67542358c302a0dbc3fc3e5e9b7b0445b5224",
-                "reference": "dff67542358c302a0dbc3fc3e5e9b7b0445b5224",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/37317dd4d377a36ecc84bd7c9638d7c09c9d5837",
+                "reference": "37317dd4d377a36ecc84bd7c9638d7c09c9d5837",
                 "shasum": ""
             },
             "require": {
@@ -4034,7 +4185,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-01T20:44:56+00:00"
+            "time": "2017-06-14T19:35:44+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -4311,16 +4462,16 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.29",
+            "version": "v2.7.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4"
+                "reference": "e8d3a67bbf09285267489e7a361455bf8f7d326a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
-                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
+                "url": "https://api.github.com/repos/symfony/security/zipball/e8d3a67bbf09285267489e7a361455bf8f7d326a",
+                "reference": "e8d3a67bbf09285267489e7a361455bf8f7d326a",
                 "shasum": ""
             },
             "require": {
@@ -4387,7 +4538,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-02T14:34:38+00:00"
+            "time": "2017-07-03T07:38:34+00:00"
         },
         {
             "name": "symfony/serializer",

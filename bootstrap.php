@@ -4,6 +4,7 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\SearchService\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventElasticSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
@@ -21,6 +22,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Symfony\Component\Finder\Finder;
+use TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -30,6 +32,12 @@ if (!isset($appConfigLocation)) {
     $appConfigLocation =  __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($appConfigLocation . '/config.yml'));
+
+$app->register(
+    new FeatureTogglesProvider(
+        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
+    )
+);
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),
@@ -49,6 +57,18 @@ foreach ($app['config']['bootstrap'] as $identifier => $enabled) {
         require __DIR__ . "/bootstrap/{$identifier}.php";
     }
 }
+
+/**
+ * CultureFeed services.
+ */
+$app->register(
+    new CultureFeedServiceProvider(),
+    [
+        'culturefeed.endpoint' => $app['config']['uitid']['base_url'],
+        'culturefeed.consumer.key' => $app['config']['uitid']['consumer']['key'],
+        'culturefeed.consumer.secret' => $app['config']['uitid']['consumer']['secret'],
+    ]
+);
 
 $app['http_client'] = $app->share(
     function () {

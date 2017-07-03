@@ -2,12 +2,15 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\SearchService\ApiGuard\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceControllerProvider;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /** @var Application $app */
@@ -25,6 +28,22 @@ $app->register(new ServiceControllerServiceProvider());
 if (!$app['config']['debug']) {
     $app->register(
         new \CultuurNet\UDB3\SearchService\Error\HttpErrorHandlerProvider()
+    );
+}
+
+/**
+ * API key authentication.
+ */
+$app->register(new ApiGuardServiceProvider());
+
+/** @var ToggleManager $toggles */
+$toggles = $app['toggles'];
+
+if ($toggles->active('authentication', $app['toggles.context'])) {
+    $app->before(
+        function (Request $request, Application $app) {
+            $app['auth.request_authenticator']->authenticate($request);
+        }
     );
 }
 
