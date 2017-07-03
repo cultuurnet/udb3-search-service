@@ -630,7 +630,7 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-master",
+            "version": "v1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
@@ -694,7 +694,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-02-23 10:02:29"
+            "time": "2017-02-23T10:02:29+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -977,12 +977,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "41d03153cbe830d76c6b7f70358f2f6f201263d6"
+                "reference": "def748f85b3019845819f72ae815d1a0b76c470e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/41d03153cbe830d76c6b7f70358f2f6f201263d6",
-                "reference": "41d03153cbe830d76c6b7f70358f2f6f201263d6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/def748f85b3019845819f72ae815d1a0b76c470e",
+                "reference": "def748f85b3019845819f72ae815d1a0b76c470e",
                 "shasum": ""
             },
             "require": {
@@ -994,7 +994,7 @@
                 "cultuurnet/auth": "~1.2",
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/clock": "~0.1",
-                "cultuurnet/culturefeed-php": "dev-master as 1.6",
+                "cultuurnet/culturefeed-php": "~1.6",
                 "cultuurnet/deserializer": "~0.1",
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
@@ -1047,7 +1047,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2017-06-27 12:54:20"
+            "time": "2017-06-29 13:15:20"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1193,12 +1193,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "2eaa15ca46bb9a8eda593f74adf32c75522de71b"
+                "reference": "7c6823c3cfb83343650c25995893262648692cf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/2eaa15ca46bb9a8eda593f74adf32c75522de71b",
-                "reference": "2eaa15ca46bb9a8eda593f74adf32c75522de71b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7c6823c3cfb83343650c25995893262648692cf4",
+                "reference": "7c6823c3cfb83343650c25995893262648692cf4",
                 "shasum": ""
             },
             "require": {
@@ -1236,7 +1236,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-27 13:21:57"
+            "time": "2017-07-03 13:11:48"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2531,7 +2531,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -3058,16 +3058,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.10",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/965cdeb01fdcab7653253aa81d40441d261f1e66",
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66",
                 "shasum": ""
             },
             "require": {
@@ -3102,7 +3102,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:27:32+00:00"
+            "time": "2017-03-13T16:22:52+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -4311,19 +4311,20 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.8",
+            "version": "v2.7.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
+                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "url": "https://api.github.com/repos/symfony/security/zipball/b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
+                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
                 "shasum": ""
             },
             "require": {
+                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
                 "symfony/http-foundation": "~2.1",
@@ -4344,12 +4345,11 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.5,>=2.5.9"
+                "symfony/validator": "~2.7.25|^2.8.18"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -4387,7 +4387,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-23T18:13:52+00:00"
+            "time": "2017-06-02T14:34:38+00:00"
         },
         {
             "name": "symfony/serializer",
