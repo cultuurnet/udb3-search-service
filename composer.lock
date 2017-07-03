@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "79ee4ef1cdb8c3a7a3264dcb4e46be47",
+    "content-hash": "4161a27b4e8722d7485df22a86af437c",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -55,6 +55,48 @@
             ],
             "description": " Library for creating collection classes with strict typing.",
             "time": "2015-12-16 09:28:40"
+        },
+        {
+            "name": "2dotstwice/silex-feature-toggles-provider",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2dotstwice/silex-feature-toggles-provider.git",
+                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2dotstwice/silex-feature-toggles-provider/zipball/1d90390bf037114d6c17f166022c2efa68e3cec7",
+                "reference": "1d90390bf037114d6c17f166022c2efa68e3cec7",
+                "shasum": ""
+            },
+            "require": {
+                "qandidate/toggle": "0.4.0",
+                "silex/silex": "~1.2"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~4.8",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TwoDotsTwice\\SilexFeatureToggles\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Feature toggles for Silex",
+            "time": "2017-07-03 14:15:24"
         },
         {
             "name": "beberlei/assert",
@@ -634,12 +676,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "d42b0d01aadca4ea43d0f6fa99a6ca040d8e28ca"
+                "reference": "f12d6e4cb867ec6b08b6817abd13f7ec876955b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/d42b0d01aadca4ea43d0f6fa99a6ca040d8e28ca",
-                "reference": "d42b0d01aadca4ea43d0f6fa99a6ca040d8e28ca",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/f12d6e4cb867ec6b08b6817abd13f7ec876955b5",
+                "reference": "f12d6e4cb867ec6b08b6817abd13f7ec876955b5",
                 "shasum": ""
             },
             "require": {
@@ -652,7 +694,6 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-feature/III-2068": "1.6.x-dev",
                     "dev-master": "1.6.x-dev",
                     "dev-develop": "1.2.x-dev"
                 }
@@ -695,7 +736,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-06-29 12:34:04"
+            "time": "2017-06-29 13:32:21"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1245,12 +1286,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "2eaa15ca46bb9a8eda593f74adf32c75522de71b"
+                "reference": "7c6823c3cfb83343650c25995893262648692cf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/2eaa15ca46bb9a8eda593f74adf32c75522de71b",
-                "reference": "2eaa15ca46bb9a8eda593f74adf32c75522de71b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7c6823c3cfb83343650c25995893262648692cf4",
+                "reference": "7c6823c3cfb83343650c25995893262648692cf4",
                 "shasum": ""
             },
             "require": {
@@ -1288,7 +1329,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-27 13:21:57"
+            "time": "2017-07-03 13:11:48"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2584,7 +2625,7 @@
             ],
             "authors": [
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -3111,16 +3152,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.10",
+            "version": "v1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/965cdeb01fdcab7653253aa81d40441d261f1e66",
+                "reference": "965cdeb01fdcab7653253aa81d40441d261f1e66",
                 "shasum": ""
             },
             "require": {
@@ -3155,7 +3196,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:27:32+00:00"
+            "time": "2017-03-13T16:22:52+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -3574,6 +3615,63 @@
                 "psr-3"
             ],
             "time": "2016-10-10T12:19:37+00:00"
+        },
+        {
+            "name": "qandidate/toggle",
+            "version": "0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qandidate-labs/qandidate-toggle.git",
+                "reference": "c38b16fa252470e331475964400e466555382df1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qandidate-labs/qandidate-toggle/zipball/c38b16fa252470e331475964400e466555382df1",
+                "reference": "c38b16fa252470e331475964400e466555382df1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "predis/predis": "~0.8",
+                "symfony/expression-language": "~2.4"
+            },
+            "suggest": {
+                "predis/predis": "To use the PredisCollection to persist toggles in redis",
+                "symfony/expression-language": "To use the ExpressionCondition to add conditions as a symfony language expression"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qandidate\\Toggle\\": "lib/Qandidate/Toggle/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
+                },
+                {
+                    "name": "Qandidate.com",
+                    "homepage": "http://labs.qandidate.com/"
+                }
+            ],
+            "description": "Feature toggling for your PHP application.",
+            "keywords": [
+                "bits",
+                "feature",
+                "flip",
+                "flipping",
+                "switch",
+                "toggle",
+                "trigger"
+            ],
+            "time": "2015-12-28T15:54:08+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -4364,19 +4462,20 @@
         },
         {
             "name": "symfony/security",
-            "version": "v2.7.8",
+            "version": "v2.7.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security.git",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb"
+                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security/zipball/88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
-                "reference": "88b9dd021f396ecea0ed312b26e2e8fe5b98feeb",
+                "url": "https://api.github.com/repos/symfony/security/zipball/b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
+                "reference": "b27ee15f6219df4ff3731af8bdfc6b45b3a238b4",
                 "shasum": ""
             },
             "require": {
+                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "symfony/event-dispatcher": "~2.2",
                 "symfony/http-foundation": "~2.1",
@@ -4397,12 +4496,11 @@
                 "symfony/finder": "~2.3",
                 "symfony/intl": "~2.3",
                 "symfony/routing": "~2.2",
-                "symfony/validator": "~2.5,>=2.5.9"
+                "symfony/validator": "~2.7.25|^2.8.18"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
                 "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-                "paragonie/random_compat": "",
                 "symfony/class-loader": "For using the ACL generateSql script",
                 "symfony/expression-language": "For using the expression voter",
                 "symfony/finder": "For using the ACL generateSql script",
@@ -4440,7 +4538,7 @@
             ],
             "description": "Symfony Security Component",
             "homepage": "https://symfony.com",
-            "time": "2015-12-23T18:13:52+00:00"
+            "time": "2017-06-02T14:34:38+00:00"
         },
         {
             "name": "symfony/serializer",

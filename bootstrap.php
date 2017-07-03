@@ -22,6 +22,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Symfony\Component\Finder\Finder;
+use TwoDotsTwice\SilexFeatureToggles\FeatureTogglesProvider;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -31,6 +32,12 @@ if (!isset($appConfigLocation)) {
     $appConfigLocation =  __DIR__;
 }
 $app->register(new YamlConfigServiceProvider($appConfigLocation . '/config.yml'));
+
+$app->register(
+    new FeatureTogglesProvider(
+        isset($app['config']['toggles']) ? $app['config']['toggles'] : []
+    )
+);
 
 $app->register(new CorsServiceProvider(), array(
     "cors.allowOrigin" => implode(" ", $app['config']['cors']['origins']),

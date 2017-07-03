@@ -7,6 +7,7 @@ use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerControllerProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceControllerProvider;
+use Qandidate\Toggle\ToggleManager;
 use Silex\Application;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,11 +36,16 @@ if (!$app['config']['debug']) {
  */
 $app->register(new ApiGuardServiceProvider());
 
-$app->before(
-    function (Request $request, Application $app) {
-        $app['auth.request_authenticator']->authenticate($request);
-    }
-);
+/** @var ToggleManager $toggles */
+$toggles = $app['toggles'];
+
+if ($toggles->active('authentication', $app['toggles.context'])) {
+    $app->before(
+        function (Request $request, Application $app) {
+            $app['auth.request_authenticator']->authenticate($request);
+        }
+    );
+}
 
 $app->mount('organizers', new OrganizerControllerProvider());
 
