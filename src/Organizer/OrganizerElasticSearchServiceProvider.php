@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBu
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\OrganizerJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -35,7 +36,7 @@ class OrganizerElasticSearchServiceProvider implements ServiceProviderInterface
                     new StringLiteral($app['elasticsearch.organizer.read_index']),
                     new StringLiteral($app['elasticsearch.organizer.document_type']),
                     new JsonDocumentTransformingPagedResultSetFactory(
-                        new ResultSetJsonDocumentTransformer(),
+                        new PassThroughJsonDocumentTransformer(),
                         new ElasticSearchPagedResultSetFactory(
                             new NullAggregationTransformer()
                         )
