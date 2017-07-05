@@ -5,11 +5,11 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ResultSetJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
+use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
@@ -35,7 +35,7 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                     new StringLiteral($readIndex),
                     new StringLiteral($documentType),
                     new JsonDocumentTransformingPagedResultSetFactory(
-                        new ResultSetJsonDocumentTransformer(),
+                        new PassThroughJsonDocumentTransformer(),
                         new ElasticSearchPagedResultSetFactory(
                             $app['offer_elasticsearch_aggregation_transformer']
                         )

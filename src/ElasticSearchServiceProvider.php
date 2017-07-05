@@ -4,12 +4,15 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use Elasticsearch\ClientBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class ElasticSearchServiceProvider implements ServiceProviderInterface
 {
@@ -59,6 +62,42 @@ class ElasticSearchServiceProvider implements ServiceProviderInterface
                 );
 
                 return $logger;
+            }
+        );
+
+        $app['elasticsearch_result_transformer'] = $app->share(
+            function () {
+                return new MinimalRequiredInfoJsonDocumentTransformer();
+            }
+        );
+
+        $app->before(
+            function (Request $request, Application $app) {
+                // Check if the incoming request has an embed parameter.
+                $embed = $request->query->get('embed', null);
+
+                // Don't do anything if the embed parameter is null or an empty
+                // string.
+                if (is_null($embed) || (is_string($embed) && empty($embed))) {
+                    return;
+                }
+
+                // Convert to a boolean.
+                $embed = filter_var($embed, FILTER_VALIDATE_BOOLEAN);
+
+                if (!$embed) {
+                    // Don't do anything if embed is explicitly set to false.
+                    return;
+                }
+
+                // If embed is true, replace the json document transformer used
+                // by paged collection factory so it fetches the json-ld of all
+                // results.
+                $app['elasticsearch_result_transformer'] = $app->share(
+                    function () {
+                        return new JsonLdEmbeddingJsonDocumentTransformer();
+                    }
+                );
             }
         );
     }
