@@ -44,7 +44,7 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
         $this->readIndexName = $readIndexName;
         $this->scrollTtl = $scrollTtl;
         $this->scrollSize = $scrollSize;
-        $this->bulkThreshold = 10;
+        $this->bulkThreshold = $bulkThreshold;
     }
 
     /**
