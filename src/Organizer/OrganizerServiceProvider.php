@@ -13,13 +13,14 @@ class OrganizerServiceProvider implements ServiceProviderInterface
     {
         $app['organizer_search_projector'] = $app->share(
             function (Application $app) {
-                return new OrganizerSearchProjector(
-                    new TransformingJsonDocumentIndexService(
-                        $app['http_client'],
-                        $app['organizer_elasticsearch_transformer'],
-                        $app['organizer_elasticsearch_repository']
-                    )
+                $service = new TransformingJsonDocumentIndexService(
+                    $app['http_client'],
+                    $app['organizer_elasticsearch_transformer'],
+                    $app['organizer_elasticsearch_repository']
                 );
+                $service->setLogger($app['logger.amqp.udb3_consumer']);
+
+                return new OrganizerSearchProjector($service);
             }
         );
     }
