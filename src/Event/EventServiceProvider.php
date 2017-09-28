@@ -13,13 +13,14 @@ class EventServiceProvider implements ServiceProviderInterface
     {
         $app['event_search_projector'] = $app->share(
             function (Application $app) {
-                return new EventSearchProjector(
-                    new TransformingJsonDocumentIndexService(
-                        $app['http_client'],
-                        $app['event_elasticsearch_transformer'],
-                        $app['event_elasticsearch_repository']
-                    )
+                $service = new TransformingJsonDocumentIndexService(
+                    $app['http_client'],
+                    $app['event_elasticsearch_transformer'],
+                    $app['event_elasticsearch_repository']
                 );
+                $service->setLogger($app['logger.amqp.udb3_consumer']);
+
+                return new EventSearchProjector($service);
             }
         );
     }
