@@ -3,6 +3,7 @@ imports:
   - resource: facet_mapping_types.yml
   - resource: facet_mapping_themes.yml
   - resource: facet_mapping_facilities.yml
+  - resource: features.yml
 debug: false
 bootstrap: []
 uitid:
