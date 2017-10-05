@@ -42,6 +42,9 @@ $toggles = $app['toggles'];
 if ($toggles->active('authentication', $app['toggles.context'])) {
     $app->before(
         function (Request $request, Application $app) {
+            if ($request->getMethod() === "OPTIONS" && $request->headers->has("Access-Control-Request-Method")) {
+                return;
+            }
             $app['auth.request_authenticator']->authenticate($request);
         }
     );
