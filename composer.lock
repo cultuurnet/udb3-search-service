@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16 09:28:40"
+            "time": "2015-12-16T09:28:40+00:00"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,54 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03 14:15:24"
+            "time": "2017-07-03T14:15:24+00:00"
+        },
+        {
+            "name": "2dotstwice/value-objects",
+            "version": "v1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2dotstwice/value-objects.git",
+                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2dotstwice/value-objects/zipball/3e881256a988465a383efdb4a7a7856c6bc76a11",
+                "reference": "3e881256a988465a383efdb4a7a7856c6bc76a11",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.3",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TwoDotsTwice\\ValueObject\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Bert Ramakers",
+                    "email": "bert@2dotstwice.be"
+                }
+            ],
+            "description": "Classes, traits, interfaces, ... to work with value objects.",
+            "time": "2018-03-06T11:57:41+00:00"
         },
         {
             "name": "beberlei/assert",
@@ -542,7 +589,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24 20:22:37"
+            "time": "2015-08-24T20:22:37+00:00"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -550,12 +597,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "2e195059374b19b95485293cc3da8ae25ad7ca2f"
+                "reference": "f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/2e195059374b19b95485293cc3da8ae25ad7ca2f",
-                "reference": "2e195059374b19b95485293cc3da8ae25ad7ca2f",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9",
+                "reference": "f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9",
                 "shasum": ""
             },
             "require": {
@@ -589,7 +636,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2017-04-20 12:39:24"
+            "time": "2018-04-03T11:29:30+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -627,7 +674,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05 12:13:57"
+            "time": "2017-07-05T12:13:57+00:00"
         },
         {
             "name": "cultuurnet/clock",
@@ -668,20 +715,20 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08 16:12:34"
+            "time": "2015-06-08T16:12:34+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "1.7.x-dev",
+            "version": "1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "5d96da2fdf298e923dfd83f2721a22e5d860cf2b"
+                "reference": "5b7d83a2f0c78e63f59e96479b41b5e3c89b3984"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/5d96da2fdf298e923dfd83f2721a22e5d860cf2b",
-                "reference": "5d96da2fdf298e923dfd83f2721a22e5d860cf2b",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/5b7d83a2f0c78e63f59e96479b41b5e3c89b3984",
+                "reference": "5b7d83a2f0c78e63f59e96479b41b5e3c89b3984",
                 "shasum": ""
             },
             "require": {
@@ -736,7 +783,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2017-11-13 08:15:19"
+            "time": "2017-11-20T08:54:20+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -783,7 +830,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19 11:56:39"
+            "time": "2017-04-19T11:56:39+00:00"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -791,12 +838,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9"
+                "reference": "865d8498cbd3bdf355128af7381e148e5ff03bee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
-                "reference": "014de0628ab88ffd2e10c85164eaedbbffe9e0c9",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/865d8498cbd3bdf355128af7381e148e5ff03bee",
+                "reference": "865d8498cbd3bdf355128af7381e148e5ff03bee",
                 "shasum": ""
             },
             "require-dev": {
@@ -832,7 +879,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-03-31 14:39:58"
+            "time": "2018-01-24T21:26:16+00:00"
         },
         {
             "name": "cultuurnet/hydra",
@@ -880,7 +927,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15 08:55:52"
+            "time": "2017-05-15T08:55:52+00:00"
         },
         {
             "name": "cultuurnet/search",
@@ -934,12 +981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "a63eebb9453e6538dffca0151b5d773526f18c13"
+                "reference": "2faa25b915e91ebdb01e31f5b24444f74016497c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/a63eebb9453e6538dffca0151b5d773526f18c13",
-                "reference": "a63eebb9453e6538dffca0151b5d773526f18c13",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/2faa25b915e91ebdb01e31f5b24444f74016497c",
+                "reference": "2faa25b915e91ebdb01e31f5b24444f74016497c",
                 "shasum": ""
             },
             "require": {
@@ -969,7 +1016,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2017-02-23 10:54:33"
+            "time": "2018-04-03T11:40:23+00:00"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1011,7 +1058,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23 11:20:01"
+            "time": "2017-02-23T11:20:01+00:00"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1019,12 +1066,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "96a58da9efd19166ad66cfa27eb582864819f7aa"
+                "reference": "4867738be2cffafa1dcea1f1ada7b68f24cbddc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/96a58da9efd19166ad66cfa27eb582864819f7aa",
-                "reference": "96a58da9efd19166ad66cfa27eb582864819f7aa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/4867738be2cffafa1dcea1f1ada7b68f24cbddc1",
+                "reference": "4867738be2cffafa1dcea1f1ada7b68f24cbddc1",
                 "shasum": ""
             },
             "require": {
@@ -1041,6 +1088,7 @@
                 "cultuurnet/geocoding": "~0.1",
                 "cultuurnet/search": "~1.1",
                 "cultuurnet/symfony-security-jwt": "~0.1",
+                "cultuurnet/udb3-models": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
@@ -1090,7 +1138,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-02-26 12:54:41"
+            "time": "2018-04-10T11:02:58+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1098,12 +1146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "8db5ee13d15d4633a73b4f5e7d11037b1d738bd6"
+                "reference": "b446184455ba8b07012716b61af7237aad99e35a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/8db5ee13d15d4633a73b4f5e7d11037b1d738bd6",
-                "reference": "8db5ee13d15d4633a73b4f5e7d11037b1d738bd6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/b446184455ba8b07012716b61af7237aad99e35a",
+                "reference": "b446184455ba8b07012716b61af7237aad99e35a",
                 "shasum": ""
             },
             "require": {
@@ -1111,7 +1159,7 @@
                 "symfony/http-foundation": "~2.7"
             },
             "require-dev": {
-                "cultuurnet/culturefeed-php": "dev-feature/III-2068 as 1.6",
+                "cultuurnet/culturefeed-php": "~1.8",
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
@@ -1141,7 +1189,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-06-28 13:25:17"
+            "time": "2017-11-13T08:36:01+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1182,7 +1230,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 11:57:27"
+            "time": "2017-02-23T11:57:27+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1231,7 +1279,52 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19 11:59:07"
+            "time": "2017-04-19T11:59:07+00:00"
+        },
+        {
+            "name": "cultuurnet/udb3-models",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/udb3-models.git",
+                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
+                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
+                "shasum": ""
+            },
+            "require": {
+                "2dotstwice/value-objects": "~1.0",
+                "cultuurnet/geocoding": "~0.1",
+                "moneyphp/money": "~1.3",
+                "php": "~5.6 || >=7.0",
+                "respect/validation": "~1.1",
+                "symfony/serializer": "~2.3"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\UDB3\\Model\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2018-04-06T10:27:17+00:00"
         },
         {
             "name": "cultuurnet/udb3-search",
@@ -1279,7 +1372,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-03-14 13:47:26"
+            "time": "2018-03-14T13:47:26+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1330,7 +1423,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-03-09 12:08:02"
+            "time": "2018-03-09T12:08:02+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1382,7 +1475,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-07-05 13:17:18"
+            "time": "2017-07-05T13:17:18+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
@@ -3024,6 +3117,61 @@
             "time": "2016-01-16T22:03:46+00:00"
         },
         {
+            "name": "moneyphp/money",
+            "version": "v1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/moneyphp/money.git",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/1926c54143da8eec322ae4985014cd73a98b0792",
+                "reference": "1926c54143da8eec322ae4985014cd73a98b0792",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "Sylius/SyliusMoneyBundle": "Sylius' Symfony2 integration with Money library",
+                "TheBigBrainsCompany/TbbcMoneyBundle": "Very complete Symfony2 bundle with support for Twig, Doctrine, Forms, ...",
+                "pink-tie/money-bundle": "Pink-Tie's Symfony2 integration with Money library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Money": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mathias Verraes",
+                    "email": "mathias@verraes.net"
+                }
+            ],
+            "description": "PHP implementation of Fowler's Money pattern",
+            "homepage": "http://verraes.net/2011/04/fowler-money-pattern-in-php/",
+            "keywords": [
+                "Generic Sub-domain",
+                "Value Object",
+                "money"
+            ],
+            "time": "2016-01-16T22:03:46+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.23.0",
             "source": {
@@ -3828,6 +3976,69 @@
                 "promises"
             ],
             "time": "2017-03-25T12:08:31+00:00"
+        },
+        {
+            "name": "respect/validation",
+            "version": "1.1.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Respect/Validation.git",
+                "reference": "ee9e69776a8e875ac1b5b00d8cf2d2c801c42181"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Respect/Validation/zipball/ee9e69776a8e875ac1b5b00d8cf2d2c801c42181",
+                "reference": "ee9e69776a8e875ac1b5b00d8cf2d2c801c42181",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "symfony/polyfill-mbstring": "^1.2"
+            },
+            "require-dev": {
+                "egulias/email-validator": "~1.2",
+                "mikey179/vfsstream": "^1.5",
+                "phpunit/phpunit": "~4.0",
+                "symfony/validator": "~2.6.9",
+                "zendframework/zend-validator": "~2.3"
+            },
+            "suggest": {
+                "egulias/email-validator": "Strict (RFC compliant) email validation",
+                "ext-bcmath": "Arbitrary Precision Mathematics",
+                "ext-mbstring": "Multibyte String Functions",
+                "fabpot/php-cs-fixer": "Fix PSR2 and other coding style issues",
+                "symfony/validator": "Use Symfony validator through Respect\\Validation",
+                "zendframework/zend-validator": "Use Zend Framework validator through Respect\\Validation"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Respect\\Validation\\": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD Style"
+            ],
+            "authors": [
+                {
+                    "name": "Respect/Validation Contributors",
+                    "homepage": "https://github.com/Respect/Validation/graphs/contributors"
+                }
+            ],
+            "description": "The most awesome validation engine ever created for PHP",
+            "homepage": "http://respect.github.io/Validation/",
+            "keywords": [
+                "respect",
+                "validation",
+                "validator"
+            ],
+            "time": "2018-01-02T21:47:22+00:00"
         },
         {
             "name": "silex/silex",
