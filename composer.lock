@@ -597,12 +597,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9"
+                "reference": "6ec5539f0299627e8a5840f62b7ad9d4868b73c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9",
-                "reference": "f709ad6f19a9ca0c24ceab10341c7411ae2ab9c9",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/6ec5539f0299627e8a5840f62b7ad9d4868b73c0",
+                "reference": "6ec5539f0299627e8a5840f62b7ad9d4868b73c0",
                 "shasum": ""
             },
             "require": {
@@ -636,7 +636,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2018-04-03 11:29:30"
+            "time": "2018-06-29 14:20:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -644,12 +644,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "cd9db3898ea73034a5acfc78a3d2a3c891a945b5"
+                "reference": "e6305e724b5e827ddec8a03bd961ea817d7c05a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/cd9db3898ea73034a5acfc78a3d2a3c891a945b5",
-                "reference": "cd9db3898ea73034a5acfc78a3d2a3c891a945b5",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/e6305e724b5e827ddec8a03bd961ea817d7c05a0",
+                "reference": "e6305e724b5e827ddec8a03bd961ea817d7c05a0",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +674,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2017-07-05 12:13:57"
+            "time": "2018-07-03 09:18:11"
         },
         {
             "name": "cultuurnet/clock",
@@ -791,12 +791,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/deserializer.git",
-                "reference": "62d7572ec0dd9dec48ecb6cc43117849202f24a9"
+                "reference": "ec7830eb860ea83f7c28c38649b0057177ade784"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/62d7572ec0dd9dec48ecb6cc43117849202f24a9",
-                "reference": "62d7572ec0dd9dec48ecb6cc43117849202f24a9",
+                "url": "https://api.github.com/repos/cultuurnet/deserializer/zipball/ec7830eb860ea83f7c28c38649b0057177ade784",
+                "reference": "ec7830eb860ea83f7c28c38649b0057177ade784",
                 "shasum": ""
             },
             "require": {
@@ -830,7 +830,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2017-04-19 11:56:39"
+            "time": "2018-06-29 14:27:41"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -838,12 +838,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/geocoding.git",
-                "reference": "865d8498cbd3bdf355128af7381e148e5ff03bee"
+                "reference": "52ed3674afae4078faecf5ab492cd626b3505442"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/865d8498cbd3bdf355128af7381e148e5ff03bee",
-                "reference": "865d8498cbd3bdf355128af7381e148e5ff03bee",
+                "url": "https://api.github.com/repos/cultuurnet/geocoding/zipball/52ed3674afae4078faecf5ab492cd626b3505442",
+                "reference": "52ed3674afae4078faecf5ab492cd626b3505442",
                 "shasum": ""
             },
             "require-dev": {
@@ -879,7 +879,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-01-24 21:26:16"
+            "time": "2018-06-29 14:21:16"
         },
         {
             "name": "cultuurnet/hydra",
@@ -887,12 +887,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Hydra.git",
-                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9"
+                "reference": "1309afe7583632ac12d3bd2ab567fcf1c7d21b62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
-                "reference": "3649ab7b60a1283bc9d7c3ab892001c79b0d2fe9",
+                "url": "https://api.github.com/repos/cultuurnet/Hydra/zipball/1309afe7583632ac12d3bd2ab567fcf1c7d21b62",
+                "reference": "1309afe7583632ac12d3bd2ab567fcf1c7d21b62",
                 "shasum": ""
             },
             "require-dev": {
@@ -927,7 +927,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2017-05-15 08:55:52"
+            "time": "2018-06-29 14:26:23"
         },
         {
             "name": "cultuurnet/search",
@@ -981,12 +981,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/silex-amqp.git",
-                "reference": "2faa25b915e91ebdb01e31f5b24444f74016497c"
+                "reference": "4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/2faa25b915e91ebdb01e31f5b24444f74016497c",
-                "reference": "2faa25b915e91ebdb01e31f5b24444f74016497c",
+                "url": "https://api.github.com/repos/cultuurnet/silex-amqp/zipball/4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649",
+                "reference": "4d5f4a81e0b2f0a1ce509080aae6130e6d0a3649",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1016,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2018-04-03 11:40:23"
+            "time": "2018-06-29 14:15:23"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1024,12 +1024,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/symfony-security-jwt.git",
-                "reference": "8b599e0ce1cbf56de5f516fcf5e494735dacd744"
+                "reference": "f155d6cbd89aa5faef1b122d8d36b60b40ebd8db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/8b599e0ce1cbf56de5f516fcf5e494735dacd744",
-                "reference": "8b599e0ce1cbf56de5f516fcf5e494735dacd744",
+                "url": "https://api.github.com/repos/cultuurnet/symfony-security-jwt/zipball/f155d6cbd89aa5faef1b122d8d36b60b40ebd8db",
+                "reference": "f155d6cbd89aa5faef1b122d8d36b60b40ebd8db",
                 "shasum": ""
             },
             "require": {
@@ -1058,7 +1058,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2017-02-23 11:20:01"
+            "time": "2018-06-29 14:29:57"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1066,12 +1066,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "cc850f8c60d15c16e9739c51ccf7c579cd728c9e"
+                "reference": "3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/cc850f8c60d15c16e9739c51ccf7c579cd728c9e",
-                "reference": "cc850f8c60d15c16e9739c51ccf7c579cd728c9e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862",
+                "reference": "3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862",
                 "shasum": ""
             },
             "require": {
@@ -1138,7 +1138,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-04-16 07:07:03"
+            "time": "2018-07-04 11:23:39"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1146,12 +1146,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "b446184455ba8b07012716b61af7237aad99e35a"
+                "reference": "1221070aa0306c45c559e170c5a74bb51046b30b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/b446184455ba8b07012716b61af7237aad99e35a",
-                "reference": "b446184455ba8b07012716b61af7237aad99e35a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/1221070aa0306c45c559e170c5a74bb51046b30b",
+                "reference": "1221070aa0306c45c559e170c5a74bb51046b30b",
                 "shasum": ""
             },
             "require": {
@@ -1189,7 +1189,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2017-11-13 08:36:01"
+            "time": "2018-06-29 14:14:19"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1197,12 +1197,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-http-foundation.git",
-                "reference": "85281d5e146bc4139fe2ae6153dc073f125b6dc9"
+                "reference": "96f234a269ae988785df8a27d9d19868ea1efdf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/85281d5e146bc4139fe2ae6153dc073f125b6dc9",
-                "reference": "85281d5e146bc4139fe2ae6153dc073f125b6dc9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-http-foundation/zipball/96f234a269ae988785df8a27d9d19868ea1efdf1",
+                "reference": "96f234a269ae988785df8a27d9d19868ea1efdf1",
                 "shasum": ""
             },
             "require": {
@@ -1230,7 +1230,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2017-02-23 11:57:27"
+            "time": "2018-06-29 14:28:42"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1238,12 +1238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-jwt.git",
-                "reference": "df4932e232533184c9854bfb02783f32f1098945"
+                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/df4932e232533184c9854bfb02783f32f1098945",
-                "reference": "df4932e232533184c9854bfb02783f32f1098945",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-jwt/zipball/5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
+                "reference": "5c4e4ec6a1ff9db779f3818e0d78f1c9fc454ccc",
                 "shasum": ""
             },
             "require": {
@@ -1279,7 +1279,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2017-04-19 11:59:07"
+            "time": "2018-06-29 14:15:52"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1287,12 +1287,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-models.git",
-                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6"
+                "reference": "744ee6ee0d1354f99784df742d50119f074a23fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
-                "reference": "1c90ed3842c5b2746a571dde2a8db6a4d40fdfb6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-models/zipball/744ee6ee0d1354f99784df742d50119f074a23fb",
+                "reference": "744ee6ee0d1354f99784df742d50119f074a23fb",
                 "shasum": ""
             },
             "require": {
@@ -1324,7 +1324,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-04-06 10:27:17"
+            "time": "2018-06-29 14:08:37"
         },
         {
             "name": "cultuurnet/udb3-search",
@@ -1332,12 +1332,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "701abfe53a354c4f929152b70e9fbb6c047f12f9"
+                "reference": "2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/701abfe53a354c4f929152b70e9fbb6c047f12f9",
-                "reference": "701abfe53a354c4f929152b70e9fbb6c047f12f9",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2",
+                "reference": "2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-27 13:15:48"
+            "time": "2018-06-29 14:06:44"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1380,12 +1380,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "5fb91d63bcb98d5cb56ada99f3e2057b0f677f1d"
+                "reference": "73065ced12393ac97dc466d01fa8cd8240a1eeb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/5fb91d63bcb98d5cb56ada99f3e2057b0f677f1d",
-                "reference": "5fb91d63bcb98d5cb56ada99f3e2057b0f677f1d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/73065ced12393ac97dc466d01fa8cd8240a1eeb3",
+                "reference": "73065ced12393ac97dc466d01fa8cd8240a1eeb3",
                 "shasum": ""
             },
             "require": {
@@ -1423,7 +1423,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-27 13:24:09"
+            "time": "2018-07-10 12:33:15"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1431,12 +1431,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "8aae4b4b7fc522d85441293a611fb87ef159212c"
+                "reference": "cd1a8a454b1e77fb1c670a7f21710a266e5bbd6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/8aae4b4b7fc522d85441293a611fb87ef159212c",
-                "reference": "8aae4b4b7fc522d85441293a611fb87ef159212c",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/cd1a8a454b1e77fb1c670a7f21710a266e5bbd6e",
+                "reference": "cd1a8a454b1e77fb1c670a7f21710a266e5bbd6e",
                 "shasum": ""
             },
             "require": {
@@ -1475,7 +1475,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-27 13:31:55"
+            "time": "2018-06-29 14:04:57"
         },
         {
             "name": "cultuurnet/valueobjects",
