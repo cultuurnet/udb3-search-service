@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
@@ -60,6 +61,7 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                 $transformer->register($app['offer_elasticsearch_theme_aggregation_transformer']);
                 $transformer->register($app['offer_elasticsearch_type_aggregation_transformer']);
                 $transformer->register($app['offer_elasticsearch_facility_aggregation_transformer']);
+                $transformer->register($app['offer_elasticsearch_label_aggregation_transformer']);
                 return $transformer;
             }
         );
@@ -96,6 +98,14 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
                 return new NodeMapAggregationTransformer(
                     FacetName::FACILITIES(),
                     $app['elasticsearch.facet_mapping.facilities']
+                );
+            }
+        );
+
+        $app['offer_elasticsearch_label_aggregation_transformer'] = $app->share(
+            function (Application $app) {
+                return new LabelsAggregationTransformer(
+                    FacetName::LABELS()
                 );
             }
         );

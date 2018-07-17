@@ -1332,12 +1332,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2"
+                "reference": "499e52f98efb0d7758fad9526e23b0754acda40a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2",
-                "reference": "2de2d3c75b8e2bd07bffbff4a4f012b41e011bb2",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/499e52f98efb0d7758fad9526e23b0754acda40a",
+                "reference": "499e52f98efb0d7758fad9526e23b0754acda40a",
                 "shasum": ""
             },
             "require": {
@@ -1372,7 +1372,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-29 14:06:44"
+            "time": "2018-07-17 09:45:47"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1380,12 +1380,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "73065ced12393ac97dc466d01fa8cd8240a1eeb3"
+                "reference": "7bfa7291c25a34f286042e4f1a5696af3c60bc45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/73065ced12393ac97dc466d01fa8cd8240a1eeb3",
-                "reference": "73065ced12393ac97dc466d01fa8cd8240a1eeb3",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7bfa7291c25a34f286042e4f1a5696af3c60bc45",
+                "reference": "7bfa7291c25a34f286042e4f1a5696af3c60bc45",
                 "shasum": ""
             },
             "require": {
@@ -1419,11 +1419,15 @@
             ],
             "authors": [
                 {
+                    "name": "Kristof Coomans",
+                    "email": "kristof@2dotstwice.be"
+                },
+                {
                     "name": "Bert Ramakers",
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-07-10 12:33:15"
+            "time": "2018-07-17 09:51:56"
         },
         {
             "name": "cultuurnet/udb3-search-http",
