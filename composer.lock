@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a4aa7d4011d9649f3a94427e456c88b",
+    "content-hash": "827234c444350edae86ebd451d988091",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1380,12 +1380,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "7bfa7291c25a34f286042e4f1a5696af3c60bc45"
+                "reference": "88f2afdbdc34bb48644209e36717581350b3d623"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/7bfa7291c25a34f286042e4f1a5696af3c60bc45",
-                "reference": "7bfa7291c25a34f286042e4f1a5696af3c60bc45",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/88f2afdbdc34bb48644209e36717581350b3d623",
+                "reference": "88f2afdbdc34bb48644209e36717581350b3d623",
                 "shasum": ""
             },
             "require": {
@@ -1427,7 +1427,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-07-17 09:51:56"
+            "time": "2018-07-20 09:48:47"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -6752,6 +6752,8 @@
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^7.1"
+    },
     "platform-dev": []
 }
