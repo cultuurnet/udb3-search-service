@@ -25,6 +25,7 @@ amqp:
       queue: search.vagrant.q.udb3-domain-events
 elasticsearch:
   host: http://elasticsearch.dev:9200
+  aggregation_size: 100
   udb3_core_index:
     prefix: udb3_core_v
     read_alias: udb3_core_read

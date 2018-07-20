@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "php": "^7.1",
         "cultuurnet/culturefeed-php": "^1.7",
         "cultuurnet/udb3": "~0.1",
         "cultuurnet/silex-amqp": "~0.1",

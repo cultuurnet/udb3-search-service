@@ -218,6 +218,7 @@ $app->register(
         'elasticsearch.facet_mapping.types' => $app['config']['facet_mapping_types'],
         'elasticsearch.facet_mapping.themes' => $app['config']['facet_mapping_themes'],
         'elasticsearch.facet_mapping.facilities' => $app['config']['facet_mapping_facilities'],
+        'elasticsearch.aggregation_size' => $app['config']['elasticsearch']['aggregation_size'] ?? null,
     ]
 );
 

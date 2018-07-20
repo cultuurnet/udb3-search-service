@@ -24,8 +24,8 @@ class OfferElasticSearchServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['offer_elasticsearch_query_builder'] = $app->share(
-            function () {
-                return new ElasticSearchOfferQueryBuilder();
+            function () use ($app) {
+                return new ElasticSearchOfferQueryBuilder($app['elasticsearch.aggregation_size']);
             }
         );
 
