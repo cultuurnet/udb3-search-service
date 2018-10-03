@@ -16,7 +16,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
                 return new OrganizerSearchController(
                     $app['organizer_elasticsearch_query_builder'],
                     $app['organizer_elasticsearch_service'],
-                    $app['paged_collection_factory']
+                    $app['paged_collection_factory'],
+                    $app['elasticsearch_query_string_factory']
                 );
             }
         );
