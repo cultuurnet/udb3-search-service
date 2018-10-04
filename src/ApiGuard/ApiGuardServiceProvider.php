@@ -5,9 +5,11 @@ namespace CultuurNet\UDB3\SearchService\ApiGuard;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
+use CultuurNet\UDB3\ApiGuard\Doctrine\ConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
+use Doctrine\Common\Cache\PredisCache;
+use Predis\Client;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
@@ -34,6 +36,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CultureFeedApiKeyAuthenticator(
                     $app['culturefeed'],
+                    $app['auth.consumer_repository'],
                     $app['auth.consumer_repository']
                 );
             }
@@ -48,9 +51,29 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             }
         );
 
+        $app['auth.redis_cache'] = $app->share(
+            function (Application $app) {
+                $parameters = $app['config']['cache']['redis'];
+
+                $redisClient = new Client(
+                    $parameters,
+                    [
+                        'prefix' => 'consumer_',
+                    ]
+                );
+
+                $cache = new PredisCache($redisClient);
+
+                return $cache;
+            }
+        );
+
         $app['auth.consumer_repository'] = $app->share(
             function (Application $app) {
-                return new InMemoryConsumerRepository();
+                return new ConsumerRepository(
+                    $app['auth.redis_cache'],
+                    $app['config']['cache']['lifetime'] ?? 86400
+                );
             }
         );
     }
