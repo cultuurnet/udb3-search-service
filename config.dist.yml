@@ -71,3 +71,8 @@ cors:
   origins:
     - http://udb-app.dev
     - http://localhost:9999
+cache:
+  redis:
+    host: 127.0.0.1
+    database: 1
+  lifetime: 86400

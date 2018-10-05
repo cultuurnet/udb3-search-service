@@ -25,7 +25,9 @@
         "deralex/yaml-config-service-provider": "~1.0",
         "knplabs/console-service-provider": "~1.0",
         "monolog/monolog": "~1.11",
-        "jdesrosiers/silex-cors-provider": "~0.1.4"
+        "jdesrosiers/silex-cors-provider": "~0.1.4",
+        "predis/predis": "~1.0",
+        "doctrine/cache": "~1.8"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7",
