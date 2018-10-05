@@ -15,6 +15,8 @@ use Silex\ServiceProviderInterface;
 
 class ApiGuardServiceProvider implements ServiceProviderInterface
 {
+    const REPOSITORY = 'auth.consumer_repository';
+
     /**
      * @param Application $app
      */
@@ -68,7 +70,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app['auth.consumer_repository'] = $app->share(
+        $app[self::REPOSITORY] = $app->share(
             function (Application $app) {
                 return new ConsumerRepository(
                     $app['auth.redis_cache'],

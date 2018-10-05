@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use CultuurNet\UDB3\SearchService\ApiGuard\ApiGuardControllerProvider;
 use CultuurNet\UDB3\SearchService\ApiGuard\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventControllerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferControllerProvider;
@@ -74,6 +75,11 @@ $app->mount(
         new StringLiteral($app['config']['elasticsearch']['region']['read_index']),
         new StringLiteral($app['config']['elasticsearch']['region']['document_type'])
     )
+);
+
+$app->mount(
+    'api-keys',
+    new ApiGuardControllerProvider()
 );
 
 $app->after($app['cors']);
