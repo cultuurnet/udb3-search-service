@@ -639,17 +639,58 @@
             "time": "2018-06-29T14:20:00+00:00"
         },
         {
+            "name": "cultuurnet/broadway-tools",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cultuurnet/broadway-tools.git",
+                "reference": "93d0100408a5f84e6d14645350eec1e548d30bc6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-tools/zipball/93d0100408a5f84e6d14645350eec1e548d30bc6",
+                "reference": "93d0100408a5f84e6d14645350eec1e548d30bc6",
+                "shasum": ""
+            },
+            "require": {
+                "broadway/broadway": "~0.10.",
+                "php": "~5.6 || >=7.0"
+            },
+            "require-dev": {
+                "phing/phing": "~2.11",
+                "phpunit/phpunit": "~5.7",
+                "satooshi/php-coveralls": "~0.7",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CultuurNet\\Broadway\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "time": "2018-09-28T12:46:42+00:00"
+        },
+        {
             "name": "cultuurnet/cdb",
             "version": "2.2.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "e6305e724b5e827ddec8a03bd961ea817d7c05a0"
+                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/e6305e724b5e827ddec8a03bd961ea817d7c05a0",
-                "reference": "e6305e724b5e827ddec8a03bd961ea817d7c05a0",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
+                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
                 "shasum": ""
             },
             "require": {
@@ -674,7 +715,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2018-07-03T09:18:11+00:00"
+            "time": "2018-10-17T12:47:54+00:00"
         },
         {
             "name": "cultuurnet/clock",
@@ -1066,12 +1107,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862"
+                "reference": "b76062379beecf9718eaaf2c0edd9ce64db35d7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862",
-                "reference": "3d0ea0ebff1f8cd7a24e8bc43a12b93c6c2b0862",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b76062379beecf9718eaaf2c0edd9ce64db35d7e",
+                "reference": "b76062379beecf9718eaaf2c0edd9ce64db35d7e",
                 "shasum": ""
             },
             "require": {
@@ -1081,6 +1122,7 @@
                 "chrisboulton/php-resque": "~1.2",
                 "commerceguys/intl": "^0.7.1",
                 "cultuurnet/auth": "~1.2",
+                "cultuurnet/broadway-tools": "~0.1",
                 "cultuurnet/cdb": "~2.2.0",
                 "cultuurnet/clock": "~0.1",
                 "cultuurnet/culturefeed-php": "~1.7",
@@ -1092,12 +1134,13 @@
                 "cultuurnet/valueobjects": "~3.0",
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
+                "ext-json": "*",
                 "ext-tidy": "*",
                 "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
                 "league/flysystem": "~1.0",
                 "league/period": "^3.3",
-                "php": "~5.6 || >=7.0",
+                "php": ">=7.1",
                 "php-http/httplug": "^1.0",
                 "predis/predis": "~1.0",
                 "psr/log": "~1.0",
@@ -1138,7 +1181,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-07-04T11:23:39+00:00"
+            "time": "2018-10-17T17:58:53+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1333,12 +1376,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "e3e625429ca43dd9531ca76679a7181c64eac222"
+                "reference": "39eafa21b8d702de9934e4a9a12082b714dac902"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/e3e625429ca43dd9531ca76679a7181c64eac222",
-                "reference": "e3e625429ca43dd9531ca76679a7181c64eac222",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/39eafa21b8d702de9934e4a9a12082b714dac902",
+                "reference": "39eafa21b8d702de9934e4a9a12082b714dac902",
                 "shasum": ""
             },
             "require": {
@@ -1373,7 +1416,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-02T14:18:53+00:00"
+            "time": "2018-10-23T06:14:42+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1381,12 +1424,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "e3a882278102383bf8c9c037a15581ad2d7e9dcd"
+                "reference": "b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/e3a882278102383bf8c9c037a15581ad2d7e9dcd",
-                "reference": "e3a882278102383bf8c9c037a15581ad2d7e9dcd",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4",
+                "reference": "b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4",
                 "shasum": ""
             },
             "require": {
@@ -1429,7 +1472,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-02T14:19:07+00:00"
+            "time": "2018-10-23T06:15:00+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1437,12 +1480,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "18dd86a2463b652e4d7faa6a7926a3fbfce6333e"
+                "reference": "5e264c4cfe91ec52ea00c2d73a8590d235c2a096"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/18dd86a2463b652e4d7faa6a7926a3fbfce6333e",
-                "reference": "18dd86a2463b652e4d7faa6a7926a3fbfce6333e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/5e264c4cfe91ec52ea00c2d73a8590d235c2a096",
+                "reference": "5e264c4cfe91ec52ea00c2d73a8590d235c2a096",
                 "shasum": ""
             },
             "require": {
@@ -1451,10 +1494,12 @@
                 "cultuurnet/udb3-api-guard": "~0.1",
                 "cultuurnet/udb3-search": "~0.1",
                 "cultuurnet/valueobjects": "~3.0",
+                "ext-json": "*",
+                "php": ">=7.1",
                 "symfony/http-foundation": "~2.7.2"
             },
             "require-dev": {
-                "cultuurnet/udb3-search-elasticsearch": "dev-feature/III-2289 as 0.1",
+                "cultuurnet/udb3-search-elasticsearch": "~0.1",
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
@@ -1485,7 +1530,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-02T14:23:55+00:00"
+            "time": "2018-10-23T06:58:49+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
