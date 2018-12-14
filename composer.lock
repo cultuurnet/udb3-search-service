@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fa9d67c9675e4599ebfe33bb2c4a2d5",
+    "content-hash": "af596675a54031c00451d0ab9167dd33",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -419,6 +419,7 @@
                 "redis",
                 "resque"
             ],
+            "abandoned": "resque/php-resque",
             "time": "2012-10-13T07:28:16+00:00"
         },
         {
@@ -764,12 +765,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "740595e45150f7f7eb3712e9a13ddb572f6dedee"
+                "reference": "533281235f8772c49198ce03e7281fda4ca82f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/740595e45150f7f7eb3712e9a13ddb572f6dedee",
-                "reference": "740595e45150f7f7eb3712e9a13ddb572f6dedee",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/533281235f8772c49198ce03e7281fda4ca82f8d",
+                "reference": "533281235f8772c49198ce03e7281fda4ca82f8d",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +825,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2018-10-03T08:55:30+00:00"
+            "time": "2018-11-08T09:30:52+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -1107,12 +1108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-php.git",
-                "reference": "b76062379beecf9718eaaf2c0edd9ce64db35d7e"
+                "reference": "70b047b1550a22f6546664ca381eaf629e0b5c02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/b76062379beecf9718eaaf2c0edd9ce64db35d7e",
-                "reference": "b76062379beecf9718eaaf2c0edd9ce64db35d7e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-php/zipball/70b047b1550a22f6546664ca381eaf629e0b5c02",
+                "reference": "70b047b1550a22f6546664ca381eaf629e0b5c02",
                 "shasum": ""
             },
             "require": {
@@ -1135,6 +1136,7 @@
                 "danielstjules/stringy": "~1.9",
                 "doctrine/dbal": "~2.4",
                 "ext-json": "*",
+                "ext-pdo": "*",
                 "ext-tidy": "*",
                 "guzzlehttp/psr7": "~1.2.3",
                 "justinrainbow/json-schema": "1.4.3",
@@ -1181,7 +1183,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2018-10-17T17:58:53+00:00"
+            "time": "2018-12-13T16:50:53+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1420,16 +1422,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-master",
+            "version": "dev-feature/III-2808",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4"
+                "reference": "b92ff46fdfed4018eaca3b7fe3cd2369c40b6271"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4",
-                "reference": "b8cd3130c0c2b7d2b2d2588bb5a3a3a316f7aab4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b92ff46fdfed4018eaca3b7fe3cd2369c40b6271",
+                "reference": "b92ff46fdfed4018eaca3b7fe3cd2369c40b6271",
                 "shasum": ""
             },
             "require": {
@@ -1472,7 +1474,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-23T06:15:00+00:00"
+            "time": "2018-12-14T09:45:41+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -2779,7 +2781,7 @@
             ],
             "authors": [
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 }
             ],
@@ -6804,9 +6806,18 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.1",
+            "alias_normalized": "0.1.0.0",
+            "version": "dev-feature/III-2808",
+            "package": "cultuurnet/udb3-search-elasticsearch"
+        }
+    ],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/udb3-search-elasticsearch": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
