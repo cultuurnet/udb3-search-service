@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "af596675a54031c00451d0ab9167dd33",
+    "content-hash": "ef81453fec49a0d11564fb8ea30ac9d9",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1422,16 +1422,16 @@
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
-            "version": "dev-feature/III-2808",
+            "version": "dev-feature/III-2839",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "b92ff46fdfed4018eaca3b7fe3cd2369c40b6271"
+                "reference": "532902d4c2b026be63f2649f17b3dc32d3055e2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/b92ff46fdfed4018eaca3b7fe3cd2369c40b6271",
-                "reference": "b92ff46fdfed4018eaca3b7fe3cd2369c40b6271",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/532902d4c2b026be63f2649f17b3dc32d3055e2e",
+                "reference": "532902d4c2b026be63f2649f17b3dc32d3055e2e",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-12-14T09:45:41+00:00"
+            "time": "2019-01-11 13:00:17"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -6810,7 +6810,7 @@
         {
             "alias": "0.1",
             "alias_normalized": "0.1.0.0",
-            "version": "dev-feature/III-2808",
+            "version": "dev-feature/III-2839",
             "package": "cultuurnet/udb3-search-elasticsearch"
         }
     ],
