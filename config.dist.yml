@@ -11,7 +11,6 @@ uitid:
     key: ***
     secret: ***
   base_url: http://www.uitid.be/uitid/rest/
-consumerExecutionDelay: 0
 amqp:
   host: 127.0.0.1
   port: 5672

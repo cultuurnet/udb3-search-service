@@ -157,7 +157,7 @@ $app['deserializer_locator'] = $app->share(
 $app['event_bus_forwarding_consumer_factory'] = $app->share(
     function (Application $app) {
         return new EventBusForwardingConsumerFactory(
-            Natural::fromNative($app['config']['consumerExecutionDelay']),
+            new Natural(0),
             $app['amqp.connection'],
             $app['logger.amqp.udb3_consumer'],
             $app['deserializer_locator'],
