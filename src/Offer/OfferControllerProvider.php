@@ -4,7 +4,11 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use Silex\Application;
@@ -42,18 +46,29 @@ class OfferControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        $app['offer_search_request_parser'] = $app->share(
+            function () {
+                return (new CompositeOfferRequestParser())
+                    ->withParser(new AgeRangeOfferRequestParser())
+                    ->withParser(new DistanceOfferRequestParser(
+                        new ElasticSearchDistanceFactory()
+                    ))
+                    ->withParser(new DocumentLanguageOfferRequestParser())
+                    ->withParser(new SortByOfferRequestParser());
+            }
+        );
+
         $app['offer_search_controller_factory'] = $app->protect(
             function (OfferSearchServiceInterface $offerSearchService) use ($app) {
                 return new OfferSearchController(
                     $app['auth.api_key_reader'],
                     $app['auth.consumer_repository'],
                     $app['offer_elasticsearch_query_builder'],
-                    new CompositeOfferRequestParser(),
+                    $app['offer_search_request_parser'],
                     $offerSearchService,
                     $this->regionIndexName,
                     $this->regionDocumentType,
                     $app['elasticsearch_query_string_factory'],
-                    new ElasticSearchDistanceFactory(),
                     new NodeAwareFacetTreeNormalizer(),
                     $app['paged_collection_factory']
                 );
