@@ -46,25 +46,21 @@ class OfferControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
-        $app['offer_search_request_parser'] = $app->share(
-            function () {
-                return (new CompositeOfferRequestParser())
+        $app['offer_search_controller_factory'] = $app->protect(
+            function (OfferSearchServiceInterface $offerSearchService) use ($app) {
+                $requestParser = (new CompositeOfferRequestParser())
                     ->withParser(new AgeRangeOfferRequestParser())
                     ->withParser(new DistanceOfferRequestParser(
                         new ElasticSearchDistanceFactory()
                     ))
                     ->withParser(new DocumentLanguageOfferRequestParser())
                     ->withParser(new GeoBoundsOfferRequestParser());
-            }
-        );
 
-        $app['offer_search_controller_factory'] = $app->protect(
-            function (OfferSearchServiceInterface $offerSearchService) use ($app) {
                 return new OfferSearchController(
                     $app['auth.api_key_reader'],
                     $app['auth.consumer_repository'],
                     $app['offer_elasticsearch_query_builder'],
-                    $app['offer_search_request_parser'],
+                    $requestParser,
                     $offerSearchService,
                     $this->regionIndexName,
                     $this->regionDocumentType,
