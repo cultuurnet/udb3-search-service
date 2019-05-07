@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use Silex\Application;
@@ -54,7 +55,8 @@ class OfferControllerProvider implements ControllerProviderInterface
                         new ElasticSearchDistanceFactory()
                     ))
                     ->withParser(new DocumentLanguageOfferRequestParser())
-                    ->withParser(new GeoBoundsOfferRequestParser());
+                    ->withParser(new GeoBoundsOfferRequestParser())
+                    ->withParser(new SortByOfferRequestParser());
 
                 return new OfferSearchController(
                     $app['auth.api_key_reader'],
