@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "1fa9d67c9675e4599ebfe33bb2c4a2d5",
@@ -54,7 +54,7 @@
                 }
             ],
             "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16 09:28:40"
+            "time": "2015-12-16T09:28:40+00:00"
         },
         {
             "name": "2dotstwice/silex-feature-toggles-provider",
@@ -96,7 +96,7 @@
                 "MIT"
             ],
             "description": "Feature toggles for Silex",
-            "time": "2017-07-03 14:15:24"
+            "time": "2017-07-03T14:15:24+00:00"
         },
         {
             "name": "2dotstwice/value-objects",
@@ -590,7 +590,7 @@
                 "Apache-2.0"
             ],
             "description": "Authentication service for CultuurNet web services",
-            "time": "2015-08-24 20:22:37"
+            "time": "2015-08-24T20:22:37+00:00"
         },
         {
             "name": "cultuurnet/broadway-amqp",
@@ -637,7 +637,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2018-06-29 14:20:00"
+            "time": "2018-06-29T14:20:00+00:00"
         },
         {
             "name": "cultuurnet/broadway-tools",
@@ -678,7 +678,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-09-28 12:46:42"
+            "time": "2018-09-28T12:46:42+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -716,7 +716,7 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2018-10-17 12:47:54"
+            "time": "2018-10-17T12:47:54+00:00"
         },
         {
             "name": "cultuurnet/clock",
@@ -757,7 +757,7 @@
                 }
             ],
             "description": "Clock abstraction library",
-            "time": "2015-06-08 16:12:34"
+            "time": "2015-06-08T16:12:34+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -825,7 +825,7 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2018-11-08 09:30:52"
+            "time": "2018-11-08T09:30:52+00:00"
         },
         {
             "name": "cultuurnet/deserializer",
@@ -872,7 +872,7 @@
                 }
             ],
             "description": "Internet media type deserialization library",
-            "time": "2018-06-29 14:27:41"
+            "time": "2018-06-29T14:27:41+00:00"
         },
         {
             "name": "cultuurnet/geocoding",
@@ -921,7 +921,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-06-29 14:21:16"
+            "time": "2018-06-29T14:21:16+00:00"
         },
         {
             "name": "cultuurnet/hydra",
@@ -969,7 +969,7 @@
                 }
             ],
             "description": "PHP library implementing concepts of http://www.hydra-cg.com/",
-            "time": "2018-06-29 14:26:23"
+            "time": "2018-06-29T14:26:23+00:00"
         },
         {
             "name": "cultuurnet/search",
@@ -1058,7 +1058,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Silex projects",
-            "time": "2018-06-29 14:15:23"
+            "time": "2018-06-29T14:15:23+00:00"
         },
         {
             "name": "cultuurnet/symfony-security-jwt",
@@ -1100,7 +1100,7 @@
                 "Apache-2.0"
             ],
             "description": "JWT implementation for the Symfony Security component",
-            "time": "2018-06-29 14:29:57"
+            "time": "2018-06-29T14:29:57+00:00"
         },
         {
             "name": "cultuurnet/udb3",
@@ -1183,7 +1183,7 @@
                 }
             ],
             "description": "UDB3 PHP libraries",
-            "time": "2019-04-18 07:36:26"
+            "time": "2019-04-18T07:36:26+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -1235,7 +1235,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2018-10-05 13:39:13"
+            "time": "2018-10-05T13:39:13+00:00"
         },
         {
             "name": "cultuurnet/udb3-http-foundation",
@@ -1276,7 +1276,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29 14:28:42"
+            "time": "2018-06-29T14:28:42+00:00"
         },
         {
             "name": "cultuurnet/udb3-jwt",
@@ -1325,7 +1325,7 @@
                 }
             ],
             "description": "Provides JWT service classes",
-            "time": "2018-06-29 14:15:52"
+            "time": "2018-06-29T14:15:52+00:00"
         },
         {
             "name": "cultuurnet/udb3-models",
@@ -1370,7 +1370,7 @@
             "license": [
                 "Apache-2.0"
             ],
-            "time": "2018-06-29 14:08:37"
+            "time": "2018-06-29T14:08:37+00:00"
         },
         {
             "name": "cultuurnet/udb3-search",
@@ -1378,12 +1378,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "1366b1e060ce544e88e093f8dae2f37d16d9ac9d"
+                "reference": "5281d15eff3c7e47a255c182a14fefa612eb3b84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/1366b1e060ce544e88e093f8dae2f37d16d9ac9d",
-                "reference": "1366b1e060ce544e88e093f8dae2f37d16d9ac9d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/5281d15eff3c7e47a255c182a14fefa612eb3b84",
+                "reference": "5281d15eff3c7e47a255c182a14fefa612eb3b84",
                 "shasum": ""
             },
             "require": {
@@ -1418,7 +1418,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07 08:58:01"
+            "time": "2019-05-07T09:46:21+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1426,12 +1426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "6e23452c6335dae2a558cb9ac587003eecb446f4"
+                "reference": "cafc0f9c30135acadef3722d876569547aaa64ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/6e23452c6335dae2a558cb9ac587003eecb446f4",
-                "reference": "6e23452c6335dae2a558cb9ac587003eecb446f4",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/cafc0f9c30135acadef3722d876569547aaa64ed",
+                "reference": "cafc0f9c30135acadef3722d876569547aaa64ed",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07 09:03:42"
+            "time": "2019-05-07T10:12:37+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1482,12 +1482,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "928dd62a6abd98b498803e8d0559d03644077b4d"
+                "reference": "77f88b9f287a363c124251fef61ea8ec27b68961"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/928dd62a6abd98b498803e8d0559d03644077b4d",
-                "reference": "928dd62a6abd98b498803e8d0559d03644077b4d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/77f88b9f287a363c124251fef61ea8ec27b68961",
+                "reference": "77f88b9f287a363c124251fef61ea8ec27b68961",
                 "shasum": ""
             },
             "require": {
@@ -1532,7 +1532,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07 09:14:33"
+            "time": "2019-05-07T10:43:27+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
