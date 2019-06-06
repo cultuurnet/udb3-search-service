@@ -1378,12 +1378,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search.git",
-                "reference": "5281d15eff3c7e47a255c182a14fefa612eb3b84"
+                "reference": "ee26ea463a479d7aebc525e12470cf294d32f1cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/5281d15eff3c7e47a255c182a14fefa612eb3b84",
-                "reference": "5281d15eff3c7e47a255c182a14fefa612eb3b84",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search/zipball/ee26ea463a479d7aebc525e12470cf294d32f1cc",
+                "reference": "ee26ea463a479d7aebc525e12470cf294d32f1cc",
                 "shasum": ""
             },
             "require": {
@@ -1418,7 +1418,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07T09:46:21+00:00"
+            "time": "2019-05-24T08:35:19+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-elasticsearch",
@@ -1426,12 +1426,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-elasticsearch.git",
-                "reference": "cafc0f9c30135acadef3722d876569547aaa64ed"
+                "reference": "be100e32adbfec0c01b2a6c0ffaa454710ec65af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/cafc0f9c30135acadef3722d876569547aaa64ed",
-                "reference": "cafc0f9c30135acadef3722d876569547aaa64ed",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-elasticsearch/zipball/be100e32adbfec0c01b2a6c0ffaa454710ec65af",
+                "reference": "be100e32adbfec0c01b2a6c0ffaa454710ec65af",
                 "shasum": ""
             },
             "require": {
@@ -1474,7 +1474,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07T10:12:37+00:00"
+            "time": "2019-06-06T08:38:25+00:00"
         },
         {
             "name": "cultuurnet/udb3-search-http",
@@ -1482,12 +1482,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "77f88b9f287a363c124251fef61ea8ec27b68961"
+                "reference": "fc3702ca698a38bb46b2b44efc0e0c22a8339d63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/77f88b9f287a363c124251fef61ea8ec27b68961",
-                "reference": "77f88b9f287a363c124251fef61ea8ec27b68961",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/fc3702ca698a38bb46b2b44efc0e0c22a8339d63",
+                "reference": "fc3702ca698a38bb46b2b44efc0e0c22a8339d63",
                 "shasum": ""
             },
             "require": {
@@ -1501,7 +1501,6 @@
                 "symfony/http-foundation": "~2.7.2"
             },
             "require-dev": {
-                "cultuurnet/udb3-search-elasticsearch": "~0.1",
                 "phing/phing": "~2.11",
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7",
@@ -1532,7 +1531,7 @@
                     "email": "bert@2dotstwice.be"
                 }
             ],
-            "time": "2019-05-07T10:43:27+00:00"
+            "time": "2019-06-06T08:38:31+00:00"
         },
         {
             "name": "cultuurnet/valueobjects",
