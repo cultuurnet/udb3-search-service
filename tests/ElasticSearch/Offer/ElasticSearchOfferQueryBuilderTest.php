@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -2850,7 +2851,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
      */
     private function createUnknownFacetName()
     {
-        /** @var FacetName|\PHPUnit_Framework_MockObject_MockObject $facetName */
+        /** @var FacetName|MockObject $facetName */
         $facetName = $this->createMock(FacetName::class);
 
         $facetName->method('toNative')

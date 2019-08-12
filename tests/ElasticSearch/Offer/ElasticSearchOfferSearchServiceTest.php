@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -14,7 +15,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ElasticSearchOfferSearchServiceTest extends TestCase
 {
     /**
-     * @var Client|\PHPUnit_Framework_MockObject_MockObject
+     * @var Client|MockObject
      */
     private $client;
 

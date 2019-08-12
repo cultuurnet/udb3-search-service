@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use Elasticsearch\Client;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -13,7 +14,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class ElasticSearchDocumentRepositoryTest extends TestCase
 {
     /**
-     * @var Client|\PHPUnit_Framework_MockObject_MockObject
+     * @var Client|MockObject
      */
     private $client;
 

@@ -3,23 +3,24 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class MutableIndexationStrategyTest extends TestCase
 {
     /**
-     * @var IndexationStrategyInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IndexationStrategyInterface|MockObject
      */
     private $mockStrategy1;
 
     /**
-     * @var IndexationStrategyInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var IndexationStrategyInterface|MockObject
      */
     private $mockStrategy2;
 
     /**
-     * @var BulkIndexationStrategy|\PHPUnit_Framework_MockObject_MockObject
+     * @var BulkIndexationStrategy|MockObject
      */
     private $mockBulkStrategy;
 

@@ -9,11 +9,12 @@ use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
+use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
     /**
-     * @var EventBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var EventBusInterface|MockObject
      */
     private $eventBus;
 
@@ -54,7 +55,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     }
 
     /**
-     * @return EventBusInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return EventBusInterface|MockObject
      */
     public function getEventBus()
     {

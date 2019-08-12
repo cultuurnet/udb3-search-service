@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\Testing\AssertJsonDocumentTrait;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PlaceJsonDocumentTransformerTest extends TestCase
@@ -16,7 +17,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
     use AssertJsonDocumentTrait;
 
     /**
-     * @var OfferRegionServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OfferRegionServiceInterface|MockObject
      */
     private $offerRegionService;
 

@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Elasticsearch\Client;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -11,7 +12,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class SingleFileIndexationStrategyTest extends TestCase
 {
     /**
-     * @var Client|\PHPUnit_Framework_MockObject_MockObject
+     * @var Client|MockObject
      */
     private $client;
 
@@ -26,7 +27,7 @@ class SingleFileIndexationStrategyTest extends TestCase
     private $documentType;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
