@@ -52,9 +52,7 @@ class OfferControllerProvider implements ControllerProviderInterface
             function (OfferSearchServiceInterface $offerSearchService) use ($app) {
                 $requestParser = (new CompositeOfferRequestParser())
                     ->withParser(new AgeRangeOfferRequestParser())
-                    ->withParser(new DistanceOfferRequestParser(
-                        new ElasticSearchDistanceFactory()
-                    ))
+                    ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
                     ->withParser(new DocumentLanguageOfferRequestParser())
                     ->withParser(new GeoBoundsOfferRequestParser())
                     ->withParser(new SortByOfferRequestParser())

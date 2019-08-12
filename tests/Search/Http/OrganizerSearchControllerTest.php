@@ -80,7 +80,7 @@ class OrganizerSearchControllerTest extends TestCase
                     'foo',
                 ],
                 'workflowStatus' => 'ACTIVE,DELETED',
-                'domain' => 'www.publiq.be'
+                'domain' => 'www.publiq.be',
             ]
         );
 
@@ -205,7 +205,7 @@ class OrganizerSearchControllerTest extends TestCase
                         ],
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): frog'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): frog',
             ],
             'multiple unknown parameter' => [
                 'request' => Request::create(
@@ -220,7 +220,7 @@ class OrganizerSearchControllerTest extends TestCase
                         ],
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): frog, bat'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): frog, bat',
             ],
             'unknown and whitelisted parameter' => [
                 'request' => Request::create(
@@ -235,7 +235,7 @@ class OrganizerSearchControllerTest extends TestCase
                         ],
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): bat'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): bat',
             ],
         ];
     }

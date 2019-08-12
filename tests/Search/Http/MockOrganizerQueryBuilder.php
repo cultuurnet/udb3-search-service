@@ -79,9 +79,12 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses)
     {
         $c = clone $this;
-        $c->mockQuery['workflowStatus'] = array_map(function (WorkflowStatus $workflowStatus) {
-            return (string) $workflowStatus;
-        }, $workflowStatuses);
+        $c->mockQuery['workflowStatus'] = array_map(
+            function (WorkflowStatus $workflowStatus) {
+                return (string) $workflowStatus;
+            },
+            $workflowStatuses
+        );
         return $c;
     }
 
@@ -89,9 +92,12 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = (string) $queryString;
-        $c->mockQuery['advancedQuery']['language'] = array_map(function (Language $language) {
-            return (string) $language;
-        }, $textLanguages);
+        $c->mockQuery['advancedQuery']['language'] = array_map(
+            function (Language $language) {
+                return (string) $language;
+            },
+            $textLanguages
+        );
         return $c;
     }
 
@@ -99,9 +105,12 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = (string) $text;
-        $c->mockQuery['textQuery']['language'] = array_map(function (Language $language) {
-            return (string) $language;
-        }, $textLanguages);
+        $c->mockQuery['textQuery']['language'] = array_map(
+            function (Language $language) {
+                return (string) $language;
+            },
+            $textLanguages
+        );
         return $c;
     }
 

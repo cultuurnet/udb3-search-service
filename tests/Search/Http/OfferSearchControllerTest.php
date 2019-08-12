@@ -342,7 +342,7 @@ class OfferSearchControllerTest extends TestCase
                     'regions' => [
                         'gem-leuven' => [
                             'name' => [
-                                'nl' => 'Leuven'
+                                'nl' => 'Leuven',
                             ],
                             'count' => 7,
                             'children' => [
@@ -784,7 +784,7 @@ class OfferSearchControllerTest extends TestCase
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'disableDefaultFilters' => 'true',
-                'addressCountry' => 'nl'
+                'addressCountry' => 'nl',
             ]
         );
 
@@ -845,7 +845,7 @@ class OfferSearchControllerTest extends TestCase
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
-                'sort' => 'availableTo asc'
+                'sort' => 'availableTo asc',
             ]
         );
 
@@ -866,7 +866,7 @@ class OfferSearchControllerTest extends TestCase
                     'availableTo' => 'asc',
                     'name.nl' => 'asc',
                     'score' => 'desc',
-                ]
+                ],
             ]
         );
 
@@ -886,7 +886,7 @@ class OfferSearchControllerTest extends TestCase
                 'sort' => [
                     'availableTo' => 'ascending',
                     'score' => 'descending',
-                ]
+                ],
             ]
         );
 
@@ -905,7 +905,7 @@ class OfferSearchControllerTest extends TestCase
             [
                 'sort' => [
                     'distance' => 'asc',
-                ]
+                ],
             ]
         );
 
@@ -941,7 +941,7 @@ class OfferSearchControllerTest extends TestCase
                         'fat' => 'lip',
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): fat'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): fat',
             ],
             'multiple unknown parameter' => [
                 'request' => $this->getSearchRequestWithQueryParameters(
@@ -950,7 +950,7 @@ class OfferSearchControllerTest extends TestCase
                         'bat' => 'cave',
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): fat, bat'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): fat, bat',
             ],
             'unknown and whitelisted parameter' => [
                 'request' => $this->getSearchRequestWithQueryParameters(
@@ -959,7 +959,7 @@ class OfferSearchControllerTest extends TestCase
                         'bat' => 'cave',
                     ]
                 ),
-                'expectedExceptionMessage' => 'Unknown query parameter(s): bat'
+                'expectedExceptionMessage' => 'Unknown query parameter(s): bat',
             ],
         ];
     }
