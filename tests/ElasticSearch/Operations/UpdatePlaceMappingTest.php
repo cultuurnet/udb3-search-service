@@ -31,7 +31,7 @@ class UpdatePlaceMappingTest extends AbstractMappingTestCase
     protected function getExpectedMappingBody()
     {
         return json_decode(
-            file_get_contents(__DIR__ . '/../../src/Operations/json/mapping_place.json'),
+            file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_place.json'),
             true
         );
     }
