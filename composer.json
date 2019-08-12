@@ -11,39 +11,42 @@
     ],
     "require": {
         "php": "^7.1",
+        "2dotstwice/silex-feature-toggles-provider": "~0.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
-        "cultuurnet/udb3": "~0.1",
+        "cultuurnet/geocoding": "~0.1",
+        "cultuurnet/hydra": "~0.1",
         "cultuurnet/silex-amqp": "~0.1",
+        "cultuurnet/udb3": "~0.1",
         "cultuurnet/udb3-api-guard": "~0.1",
+        "cultuurnet/udb3-http-foundation": "~0.1",
         "cultuurnet/udb3-search": "~0.1",
         "cultuurnet/udb3-search-elasticsearch": "~0.1",
-        "cultuurnet/udb3-search-http": "~0.1",
-        "cultuurnet/geocoding": "~0.1",
-        "cultuurnet/udb3-http-foundation": "~0.1",
-        "2dotstwice/silex-feature-toggles-provider": "~0.1",
-        "silex/silex": "~1.3",
+        "cultuurnet/valueobjects": "~3.0",
         "deralex/yaml-config-service-provider": "~1.0",
+        "doctrine/cache": "~1.8",
+        "jdesrosiers/silex-cors-provider": "~0.1.4",
         "knplabs/console-service-provider": "~1.0",
         "monolog/monolog": "~1.11",
-        "jdesrosiers/silex-cors-provider": "~0.1.4",
         "predis/predis": "~1.0",
-        "doctrine/cache": "~1.8"
+        "silex/silex": "~1.3",
+        "symfony/http-foundation": "~2.7"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.7",
         "escapestudios/symfony2-coding-standard": "~2.9",
-        "squizlabs/php_codesniffer": "~2.5.1",
         "phing/phing": "~2.14",
-        "satooshi/php-coveralls": "~1.0"
+        "phpunit/phpunit": "^7.5",
+        "satooshi/php-coveralls": "~1.0",
+        "squizlabs/php_codesniffer": "~2.5.1"
     },
     "autoload": {
         "psr-4": {
-            "CultuurNet\\UDB3\\SearchService\\": "src/"
+            "CultuurNet\\UDB3\\Search\\": "src/",
+            "CultuurNet\\UDB3\\SearchService\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CultuurNet\\UDB3\\SearchService\\": "tests/"
+            "CultuurNet\\UDB3\\Search\\": "tests/"
         }
     },
     "minimum-stability": "dev",
@@ -58,6 +61,7 @@
             "cultuurnet/*": "source",
             "2dotstwice/*": "source",
             "*": "dist"
-        }
+        },
+        "sort-packages": true
     }
 }
