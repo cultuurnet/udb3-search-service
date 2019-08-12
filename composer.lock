@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "89474b3c2e9ea93d07e0c09303dca716",
+    "content-hash": "8691cd7261665894ff64d7a1e469f911",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -1475,63 +1475,6 @@
                 }
             ],
             "time": "2019-06-19 04:59:57"
-        },
-        {
-            "name": "cultuurnet/udb3-search-http",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-search-http.git",
-                "reference": "fc3702ca698a38bb46b2b44efc0e0c22a8339d63"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-search-http/zipball/fc3702ca698a38bb46b2b44efc0e0c22a8339d63",
-                "reference": "fc3702ca698a38bb46b2b44efc0e0c22a8339d63",
-                "shasum": ""
-            },
-            "require": {
-                "cultuurnet/geocoding": "~0.1",
-                "cultuurnet/hydra": "~0.1",
-                "cultuurnet/udb3-api-guard": "~0.1",
-                "cultuurnet/udb3-search": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "ext-json": "*",
-                "php": ">=7.1",
-                "symfony/http-foundation": "~2.7.2"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\Search\\Http\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Kristof Coomans",
-                    "email": "kristof@2dotstwice.be"
-                },
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be"
-                }
-            ],
-            "time": "2019-06-06 08:38:31"
         },
         {
             "name": "cultuurnet/valueobjects",
