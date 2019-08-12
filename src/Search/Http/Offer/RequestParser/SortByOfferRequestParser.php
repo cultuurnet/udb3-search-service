@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Search\DistanceFactoryInterface;
-use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use Symfony\Component\HttpFoundation\Request;

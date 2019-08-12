@@ -5,9 +5,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Search\DistanceFactoryInterface;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
-use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
