@@ -4,10 +4,11 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Elasticsearch\Client;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class BulkIndexationStrategyTest extends \PHPUnit_Framework_TestCase
+class BulkIndexationStrategyTest extends TestCase
 {
     /**
      * @var Client|\PHPUnit_Framework_MockObject_MockObject

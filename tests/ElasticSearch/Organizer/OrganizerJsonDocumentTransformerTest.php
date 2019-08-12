@@ -6,8 +6,9 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\Testing\AssertJsonDocumentTrait;
+use PHPUnit\Framework\TestCase;
 
-class OrganizerJsonDocumentTransformerTest extends \PHPUnit_Framework_TestCase
+class OrganizerJsonDocumentTransformerTest extends TestCase
 {
     use AssertJsonDocumentTrait;
 

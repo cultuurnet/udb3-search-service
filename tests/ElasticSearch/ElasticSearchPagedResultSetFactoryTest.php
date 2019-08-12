@@ -10,10 +10,11 @@ use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchPagedResultSetFactoryTest extends \PHPUnit_Framework_TestCase
+class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
     /**
      * @var NodeMapAggregationTransformer

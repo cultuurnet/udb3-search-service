@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractElasticSearchQueryBuilderTest extends PHPUnit_Framework_TestCase
+abstract class AbstractElasticSearchQueryBuilderTest extends TestCase
 {
     /**
      * @param $value

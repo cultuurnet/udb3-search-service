@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging;
 
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class CopyJsonPsrLoggerTest extends \PHPUnit_Framework_TestCase
+class CopyJsonPsrLoggerTest extends TestCase
 {
     /**
      * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject

@@ -2,9 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 
-class LuceneQueryStringFactoryTest extends \PHPUnit_Framework_TestCase
+class LuceneQueryStringFactoryTest extends TestCase
 {
     /**
      * @var LuceneQueryStringFactory

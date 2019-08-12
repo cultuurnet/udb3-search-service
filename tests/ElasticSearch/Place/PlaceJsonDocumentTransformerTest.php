@@ -9,8 +9,9 @@ use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\Testing\AssertJsonDocumentTrait;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use PHPUnit\Framework\TestCase;
 
-class PlaceJsonDocumentTransformerTest extends \PHPUnit_Framework_TestCase
+class PlaceJsonDocumentTransformerTest extends TestCase
 {
     use AssertJsonDocumentTrait;
 

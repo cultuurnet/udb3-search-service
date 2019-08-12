@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Elasticsearch\Namespaces\IndicesNamespace;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-abstract class AbstractOperationTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractOperationTestCase extends TestCase
 {
     /**
      * @var Client|\PHPUnit_Framework_MockObject_MockObject

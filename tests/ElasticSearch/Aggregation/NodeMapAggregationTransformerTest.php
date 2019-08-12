@@ -7,9 +7,10 @@ use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeMapAggregationTransformerTest extends \PHPUnit_Framework_TestCase
+class NodeMapAggregationTransformerTest extends TestCase
 {
     /**
      * @var FacetName

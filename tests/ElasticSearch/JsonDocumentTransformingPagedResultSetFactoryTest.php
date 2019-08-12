@@ -11,10 +11,11 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class JsonDocumentTransformingPagedResultSetFactoryTest extends \PHPUnit_Framework_TestCase
+class JsonDocumentTransformingPagedResultSetFactoryTest extends TestCase
 {
     /**
      * @var JsonDocumentTransformerInterface|\PHPUnit_Framework_MockObject_MockObject

@@ -6,9 +6,10 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class GeoShapeQueryOfferRegionServiceTest extends \PHPUnit_Framework_TestCase
+class GeoShapeQueryOfferRegionServiceTest extends TestCase
 {
     /**
      * @var Client|\PHPUnit_Framework_MockObject_MockObject

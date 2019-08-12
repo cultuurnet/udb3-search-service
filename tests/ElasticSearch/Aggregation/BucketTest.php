@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-class BucketTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BucketTest extends TestCase
 {
     /**
      * @test

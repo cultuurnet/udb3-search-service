@@ -2,7 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class SchemaVersionsTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SchemaVersionsTest extends TestCase
 {
     /**
      * @test
