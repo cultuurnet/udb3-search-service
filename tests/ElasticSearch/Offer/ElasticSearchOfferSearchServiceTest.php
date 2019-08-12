@@ -86,7 +86,7 @@ class ElasticSearchOfferSearchServiceTest extends TestCase
                             'name' => 'Harmoniezaal Sint-Quintinus',
                         ],
                     ],
-                ]
+                ],
             ],
         ];
 

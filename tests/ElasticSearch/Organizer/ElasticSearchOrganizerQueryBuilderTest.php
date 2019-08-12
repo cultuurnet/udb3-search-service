@@ -99,7 +99,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
                         [
                             'query_string' => $this->expectedTextQuery(
                                 '(foo OR baz) AND bar AND labels\\:test'
-                            )
+                            ),
                         ],
                     ],
                 ],
@@ -437,7 +437,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
                         [
                             'match' => [
                                 'creator' => [
-                                    'query' => 'John Doe'
+                                    'query' => 'John Doe',
                                 ],
                             ],
                         ],

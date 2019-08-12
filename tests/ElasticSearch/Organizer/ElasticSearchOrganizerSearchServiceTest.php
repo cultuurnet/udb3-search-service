@@ -93,7 +93,7 @@ class ElasticSearchOrganizerSearchServiceTest extends TestCase
                         '_id' => $idCollectiefAC,
                         '_source' => $sourceAC,
                     ],
-                ]
+                ],
             ],
         ];
 
@@ -117,7 +117,7 @@ class ElasticSearchOrganizerSearchServiceTest extends TestCase
                                     [
                                         'match_phrase' => [
                                             'name.nl.autocomplete' => [
-                                                'query' => 'Collectief'
+                                                'query' => 'Collectief',
                                             ],
                                         ],
                                     ],
@@ -126,7 +126,7 @@ class ElasticSearchOrganizerSearchServiceTest extends TestCase
                                     [
                                         'match_phrase' => [
                                             'name.nl.autocomplete' => [
-                                                'query' => 'Collectief'
+                                                'query' => 'Collectief',
                                             ],
                                         ],
                                     ],

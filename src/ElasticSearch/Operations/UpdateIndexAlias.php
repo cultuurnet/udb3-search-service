@@ -13,7 +13,7 @@ class UpdateIndexAlias extends AbstractElasticSearchOperation
         $newIndexName
     ) {
         $getAliasParams = [
-            'name' => $aliasName
+            'name' => $aliasName,
         ];
 
         $aliasOnNewIndex = [
@@ -28,7 +28,7 @@ class UpdateIndexAlias extends AbstractElasticSearchOperation
             foreach ($aliases as $key => $index) {
                 $deleteAlias = [
                     'index' => $key,
-                    'name' => $aliasName
+                    'name' => $aliasName,
                 ];
                 $this->client->indices()->deleteAlias($deleteAlias);
                 $this->logger->info("Deleted alias {$deleteAlias['name']} from index {$deleteAlias['index']}.");

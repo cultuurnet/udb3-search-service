@@ -73,7 +73,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
                 'sort' => [
                     '_doc',
                 ],
-            ]
+            ],
         ];
 
         $results = $this->client->search($query);

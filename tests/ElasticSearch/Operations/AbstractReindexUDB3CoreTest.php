@@ -78,7 +78,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
                 'sort' => [
                     '_doc',
                 ],
-            ]
+            ],
         ];
 
         // @codingStandardsIgnoreStart
@@ -197,7 +197,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
                 'sort' => [
                     '_doc',
                 ],
-            ]
+            ],
         ];
 
         // @codingStandardsIgnoreStart
@@ -291,7 +291,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
                 'sort' => [
                     '_doc',
                 ],
-            ]
+            ],
         ];
 
         // @codingStandardsIgnoreStart

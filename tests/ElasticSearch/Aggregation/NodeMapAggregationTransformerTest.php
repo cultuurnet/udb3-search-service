@@ -46,7 +46,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                             'deelgem-leuven' => [
                                 'name' => [
                                     'nl' => 'Leuven centrum',
-                                    'fr' => 'Louvain central'
+                                    'fr' => 'Louvain central',
                                 ],
                             ],
                             'deelgem-wijgmaal' => [
@@ -78,7 +78,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                 'name' => [
                     'nl' => 'Antwerpen',
                     'fr' => 'Anvers',
-                ]
+                ],
             ],
         ];
 
@@ -213,7 +213,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                     [
                         'name' => [
                             'nl' => 'Antwerpen',
-                        ]
+                        ],
                     ],
                 ],
                 'exception_message' => 'Facet node 0 has an invalid key.',
@@ -240,7 +240,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                 'node_map' => [
                     'prv-antwerpen' => [
                         'name' => [
-                            'Antwerpen'
+                            'Antwerpen',
                         ],
                     ],
                 ],
@@ -251,7 +251,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                 'node_map' => [
                     'prv-antwerpen' => [
                         'name' => [
-                            'dutch' => 'Antwerpen'
+                            'dutch' => 'Antwerpen',
                         ],
                     ],
                 ],
@@ -267,7 +267,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                         'children' => 'gem-berchem',
                     ],
                 ],
-                'exception_message' => 'Children of facet node prv-antwerpen should be an associative array.'
+                'exception_message' => 'Children of facet node prv-antwerpen should be an associative array.',
             ],
 
             'invalid_child_name' => [

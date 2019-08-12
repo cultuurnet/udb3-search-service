@@ -11,7 +11,7 @@ class ReindexUDB3Core extends AbstractReindexUDB3CoreOperation
     {
         return [
             // @see https://github.com/elastic/elasticsearch-php/issues/495
-            'match_all' => (object) []
+            'match_all' => (object) [],
         ];
     }
 }

@@ -48,7 +48,7 @@ class IndexRegionsTest extends AbstractOperationTestCase
                         'body' => json_decode(
                             file_get_contents(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json'),
                             true
-                        )
+                        ),
                     ],
                 ],
                 [
@@ -59,7 +59,7 @@ class IndexRegionsTest extends AbstractOperationTestCase
                         'body' => json_decode(
                             file_get_contents(__DIR__ . '/data/regions/municipalities/gem-leuven.json'),
                             true
-                        )
+                        ),
                     ],
                 ],
                 [
@@ -70,7 +70,7 @@ class IndexRegionsTest extends AbstractOperationTestCase
                         'body' => json_decode(
                             file_get_contents(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json'),
                             true
-                        )
+                        ),
                     ],
                 ]
             );

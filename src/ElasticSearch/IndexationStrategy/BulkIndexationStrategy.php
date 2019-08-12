@@ -85,7 +85,7 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
                     '_index' => $queuedDocument['index'],
                     '_type' => $queuedDocument['type'],
                     '_id' => $queuedDocument['id'],
-                ]
+                ],
             ];
 
             $parameters['body'][] = $queuedDocument['body'];

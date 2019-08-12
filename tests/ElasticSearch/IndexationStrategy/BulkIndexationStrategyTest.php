@@ -195,7 +195,7 @@ class BulkIndexationStrategyTest extends TestCase
                     'index' => [
                         '_index' => $this->indexName->toNative(),
                         '_type' => $this->documentType->toNative(),
-                        '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7'
+                        '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7',
                     ],
                 ],
                 [

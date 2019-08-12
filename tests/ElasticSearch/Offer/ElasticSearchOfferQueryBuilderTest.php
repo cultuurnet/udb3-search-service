@@ -175,8 +175,8 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                                 'fields' => $this->getPredefinedQueryStringFields(
                                     $nl,
                                     $fr
-                                )
-                            ]
+                                ),
+                            ],
                         ],
                     ],
                 ],
@@ -2243,7 +2243,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                         [
                             'match' => [
                                 'creator' => [
-                                    'query' => 'Jane Doe'
+                                    'query' => 'Jane Doe',
                                 ],
                             ],
                         ],

@@ -92,7 +92,7 @@ class PagedResultSetResponseValidatorTest extends TestCase
                                 '_source' => [
                                     'foo' => 'bar',
                                 ],
-                            ]
+                            ],
                         ],
                     ],
                 ],
@@ -105,7 +105,7 @@ class PagedResultSetResponseValidatorTest extends TestCase
                         'hits' => [
                             [
                                 '_id' => '36fb2f03-b0b6-4805-9ef0-17c94dee2457',
-                            ]
+                            ],
                         ],
                     ],
                 ],
