@@ -40,13 +40,13 @@
     },
     "autoload": {
         "psr-4": {
-            "CultuurNet\\UDB3\\": "src/",
+            "CultuurNet\\UDB3\\Search\\": "src/",
             "CultuurNet\\UDB3\\SearchService\\": "app/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CultuurNet\\UDB3\\": "tests/",
+            "CultuurNet\\UDB3\\Search\\": "tests/"
         }
     },
     "minimum-stability": "dev",
