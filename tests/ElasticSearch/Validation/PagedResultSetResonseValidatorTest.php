@@ -36,6 +36,7 @@ class PagedResultSetResponseValidatorTest extends TestCase
         ];
 
         $this->validator->validate($response);
+        $this->expectNotToPerformAssertions();
     }
 
     /**
