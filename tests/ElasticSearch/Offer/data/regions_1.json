@@ -1,0 +1,85 @@
+{
+    "took": 7,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 20,
+        "max_score": 1.0,
+        "hits": [
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-nieuwerkerken",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-oostkamp",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-oostrozebeke",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-opglabbeek",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-peer",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-pittem",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-putte",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-ronse",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-roosdaal",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-ruiselede",
+                "_score": 1.0,
+                "_source": {}
+            }
+        ]
+    }
+}

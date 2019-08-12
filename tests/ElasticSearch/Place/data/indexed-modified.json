@@ -1,0 +1,34 @@
+{
+    "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "@type": "Place",
+    "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "calendarType": "permanent",
+    "dateRange": [
+        {}
+    ],
+    "workflowStatus": "DRAFT",
+    "name": {
+        "nl": "Hungaria"
+    },
+    "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
+    "audienceType": "everyone",
+    "mediaObjectsCount": 0,
+    "address": {
+        "nl": {
+            "addressCountry": "BE",
+            "addressLocality": "Leuven",
+            "postalCode": "3000",
+            "streetAddress": "Vaartkom 35"
+        }
+    },
+    "created": "2017-04-22T13:33:37+02:00",
+    "modified": "2017-04-22T13:33:37+02:00",
+    "originalEncodedJsonLd": "{\"@type\":\"Place\",\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"mainLanguage\":\"nl\",\"calendarType\":\"permanent\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"modified\":\"2017-04-22T13:33:37+02:00\"}",
+    "availableTo": "2100-01-01T00:00:00+00:00"
+}

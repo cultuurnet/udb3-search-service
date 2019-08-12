@@ -1,0 +1,99 @@
+{
+    "_scroll_id": "cXVlcnlUaGVuRmV0Y2g7NTsxOlhVSUxlOFQ2UXl1V1FfcWNSQmVabEE7MjpYVUlMZThUNlF5dVdRX3FjUkJlWmxBOzM6WFVJTGU4VDZReXVXUV9xY1JCZVpsQTs0OlhVSUxlOFQ2UXl1V1FfcWNSQmVabEE7NTpYVUlMZThUNlF5dVdRX3FjUkJlWmxBOzA7",
+    "took": 26,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 11,
+        "max_score": 1.0,
+        "hits": [
+            {
+                "_index": "udb3_core",
+                "_type": "place",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/39e6d5ee-c3d6-453a-bcb5-4e6e0eaf7054",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.7190535,
+                            50.8865259
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "event",
+                "_id": "23017cb7-e515-47b4-87c4-780735acc942",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942",
+                    "@type": "Event",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.70373,
+                            50.8876694
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_id": "a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.3649051,
+                            50.8468457
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "place",
+                "_id": "fb43ae3d-d297-4c4a-8479-488fc028c8c8",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/fb43ae3d-d297-4c4a-8479-488fc028c8c8",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.6998502,
+                            50.883045
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "organizer",
+                "_id": "5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/organizers\/5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83",
+                    "@context": "\/contexts\/organizer",
+                    "url": "https:\/\/www.meetup.com\/PHP-Leuven-Web-Innovation-Group\/events\/234638670\/",
+                    "name": "PHPLeuven",
+                    "created": "2017-02-08T14:06:55+00:00",
+                    "creator": "96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc (bert2dotstwice)",
+                    "labels": [
+                        "UiTPAS"
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,102 @@
+{
+    "_scroll_id": "cXVlcnlUaGVuRmV0Y2g7NTsxOlhVSUxlOFQ2UXl1V1FfcWNSQmVabEE7MjpYVUlMZThUNlF5dVdRX3FjUkJlWmxBOzM6WFVJTGU4VDZReXVXUV9xY1JCZVpsQTs0OlhVSUxlOFQ2UXl1V1FfcWNSQmVabEE7NTpYVUlMZThUNlF5dVdRX3FjUkJlWmxBOzA7",
+    "took": 12,
+    "timed_out": false,
+    "terminated_early": true,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 11,
+        "max_score": 1.0,
+        "hits": [
+            {
+                "_index": "udb3_core",
+                "_type": "place",
+                "_id": "a6b0ab58-67a5-496a-8ef8-ac2da14828c2",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/a6b0ab58-67a5-496a-8ef8-ac2da14828c2",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.6912699,
+                            50.8778217
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "place",
+                "_id": "8cc3b0d4-bc97-4c17-b3d4-072ccc58b242",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/8cc3b0d4-bc97-4c17-b3d4-072ccc58b242",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            5.099275,
+                            51.1115704
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "event",
+                "_id": "02ca9526-f7d6-4338-80fe-88a346fdd118",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/event\/02ca9526-f7d6-4338-80fe-88a346fdd118",
+                    "@type": "Event",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            5.099275,
+                            51.1115704
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "place",
+                "_id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+                    "@type": "Place",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.70373,
+                            50.8876694
+                        ]
+                    }
+                }
+            },
+            {
+                "_index": "udb3_core",
+                "_type": "event",
+                "_id": "441a5831-a65e-44fa-81ef-5c47e9c57a05",
+                "_score": 1.0,
+                "_source": {
+                    "@id": "http:\/\/udb-silex.dev\/event\/441a5831-a65e-44fa-81ef-5c47e9c57a05",
+                    "@type": "Event",
+                    "geo": {
+                        "type": "Point",
+                        "coordinates": [
+                            4.6998502,
+                            50.883045
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}
