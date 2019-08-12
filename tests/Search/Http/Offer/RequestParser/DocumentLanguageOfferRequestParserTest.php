@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class DocumentLanguageOfferRequestParserTest extends \PHPUnit_Framework_TestCase
+class DocumentLanguageOfferRequestParserTest extends TestCase
 {
     /**
      * @var DocumentLanguageOfferRequestParser

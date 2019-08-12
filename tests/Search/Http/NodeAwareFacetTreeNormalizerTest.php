@@ -6,9 +6,10 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeAwareFacetTreeNormalizerTest extends \PHPUnit_Framework_TestCase
+class NodeAwareFacetTreeNormalizerTest extends TestCase
 {
     /**
      * @var NodeAwareFacetTreeNormalizer

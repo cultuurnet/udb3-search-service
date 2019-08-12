@@ -4,10 +4,11 @@ namespace CultuurNet\UDB3\Search\Http\Parameters;
 
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class SymfonyParameterBagAdapterTest extends \PHPUnit_Framework_TestCase
+class SymfonyParameterBagAdapterTest extends TestCase
 {
     /**
      * @test

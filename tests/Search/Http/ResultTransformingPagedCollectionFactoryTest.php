@@ -6,9 +6,10 @@ use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 
-class ResultTransformingPagedCollectionFactoryTest extends \PHPUnit_Framework_TestCase
+class ResultTransformingPagedCollectionFactoryTest extends TestCase
 {
     /**
      * @var JsonDocumentTransformerInterface|\PHPUnit_Framework_MockObject_MockObject
