@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Number\Natural;
@@ -15,7 +16,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
     private $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OfferQueryBuilderInterface|MockObject
      */
     private $queryBuilder;
 

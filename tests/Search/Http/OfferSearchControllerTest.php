@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
@@ -68,7 +69,7 @@ class OfferSearchControllerTest extends TestCase
     private $requestParser;
 
     /**
-     * @var OfferSearchServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OfferSearchServiceInterface|MockObject
      */
     private $searchService;
 
@@ -972,7 +973,7 @@ class OfferSearchControllerTest extends TestCase
         $apiKey = new ApiKey('d568d2e9-3b53-4704-82a1-eaccf91a6337');
         $defaultQuery = new StringLiteral('labels:foo');
 
-        /* @var ConsumerInterface|\PHPUnit_Framework_MockObject_MockObject $consumer */
+        /* @var ConsumerInterface|MockObject $consumer */
         $consumer = $this->createMock(ConsumerInterface::class);
 
         $consumer->expects($this->any())

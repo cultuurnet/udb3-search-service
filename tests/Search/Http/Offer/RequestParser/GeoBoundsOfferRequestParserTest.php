@@ -10,6 +10,7 @@ use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +22,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     private $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OfferQueryBuilderInterface|MockObject
      */
     private $offerQueryBuilder;
 

@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
@@ -30,7 +31,7 @@ class OrganizerSearchControllerTest extends TestCase
     private $queryBuilder;
 
     /**
-     * @var OrganizerSearchServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var OrganizerSearchServiceInterface|MockObject
      */
     private $searchService;
 

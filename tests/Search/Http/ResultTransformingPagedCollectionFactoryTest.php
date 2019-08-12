@@ -6,13 +6,14 @@ use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 
 class ResultTransformingPagedCollectionFactoryTest extends TestCase
 {
     /**
-     * @var JsonDocumentTransformerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var JsonDocumentTransformerInterface|MockObject
      */
     private $transformer;
 
