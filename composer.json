@@ -25,6 +25,8 @@
         "deralex/yaml-config-service-provider": "~1.0",
         "doctrine/cache": "~1.8",
         "elasticsearch/elasticsearch": "~5.2",
+        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/psr7": "^1.4",
         "jdesrosiers/silex-cors-provider": "~0.1.4",
         "knplabs/console-service-provider": "~1.0",
         "monolog/monolog": "~1.11",
