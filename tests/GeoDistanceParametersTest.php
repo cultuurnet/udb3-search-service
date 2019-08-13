@@ -5,8 +5,9 @@ namespace CultuurNet\UDB3\Search;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
+use PHPUnit\Framework\TestCase;
 
-class GeoDistanceParametersTest extends \PHPUnit_Framework_TestCase
+class GeoDistanceParametersTest extends TestCase
 {
     /**
      * @test

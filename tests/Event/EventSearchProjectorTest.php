@@ -8,8 +8,9 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentIndexServiceInterface;
+use PHPUnit\Framework\TestCase;
 
-class EventSearchProjectorTest extends \PHPUnit_Framework_TestCase
+class EventSearchProjectorTest extends TestCase
 {
     /**
      * @var JsonDocumentIndexServiceInterface|\PHPUnit_Framework_MockObject_MockObject

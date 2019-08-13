@@ -4,8 +4,9 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\Testing\AssertJsonDocumentTrait;
+use PHPUnit\Framework\TestCase;
 
-class PassThroughJsonDocumentTransformerTest extends \PHPUnit_Framework_TestCase
+class PassThroughJsonDocumentTransformerTest extends TestCase
 {
     use AssertJsonDocumentTrait;
 

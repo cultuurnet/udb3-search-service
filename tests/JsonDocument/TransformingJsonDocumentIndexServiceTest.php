@@ -6,9 +6,10 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class TransformingJsonDocumentIndexServiceTest extends \PHPUnit_Framework_TestCase
+class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
      * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject

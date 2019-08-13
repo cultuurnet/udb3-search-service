@@ -7,10 +7,11 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PagedResultSetTest extends \PHPUnit_Framework_TestCase
+class PagedResultSetTest extends TestCase
 {
     /**
      * @test

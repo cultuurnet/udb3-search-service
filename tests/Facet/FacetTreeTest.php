@@ -4,9 +4,10 @@ namespace CultuurNet\UDB3\Search\Facet;
 
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ValueObject\MultilingualString;
+use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class FacetTreeTest extends \PHPUnit_Framework_TestCase
+class FacetTreeTest extends TestCase
 {
     /**
      * @test
