@@ -18,14 +18,14 @@ class AssertJsonDocumentTest extends TestCase
             [
                 'first' => 'gold',
                 'second' =>  'silver',
-                'third' => 'bronze'
+                'third' => 'bronze',
             ]
         );
         $orderless = json_encode(
             [
                 'second' =>  'silver',
                 'first' => 'gold',
-                'third' => 'bronze'
+                'third' => 'bronze',
             ]
         );
 

@@ -73,7 +73,7 @@ class TransformingJsonDocumentIndexService implements
                 [
                     'id' => $documentId,
                     'url' => $documentIri,
-                    'response' => $response
+                    'response' => $response,
                 ]
             );
         }

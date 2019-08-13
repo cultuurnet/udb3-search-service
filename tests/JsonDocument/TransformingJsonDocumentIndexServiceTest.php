@@ -106,7 +106,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
                 [
                     'id' => $documentId,
                     'url' => $documentUrl,
-                    'response' => $response
+                    'response' => $response,
                 ]
             );
 
