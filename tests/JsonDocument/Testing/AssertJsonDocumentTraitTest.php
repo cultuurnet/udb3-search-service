@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\JsonDocument\Testing;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Search\Json\AssertJsonDocumentTrait;
 
 class AssertJsonDocumentTraitTest extends TestCase
 {
