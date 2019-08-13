@@ -3,12 +3,12 @@
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Search\Json\AssertJsonDocumentTrait;
+use CultuurNet\UDB3\Search\Json\AssertJsonDocument;
 use PHPUnit\Framework\TestCase;
 
 class PassThroughJsonDocumentTransformerTest extends TestCase
 {
-    use AssertJsonDocumentTrait;
+    use AssertJsonDocument;
 
     /**
      * @var PassThroughJsonDocumentTransformer

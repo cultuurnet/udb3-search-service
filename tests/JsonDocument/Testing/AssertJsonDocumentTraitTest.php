@@ -3,11 +3,11 @@
 namespace CultuurNet\UDB3\Search\JsonDocument\Testing;
 
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Search\Json\AssertJsonDocumentTrait;
+use CultuurNet\UDB3\Search\Json\AssertJsonDocument;
 
 class AssertJsonDocumentTraitTest extends TestCase
 {
-    use AssertJsonDocumentTrait;
+    use AssertJsonDocument;
 
     /**
      * @test
