@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Search\Json\AssertJsonDocument;
+use CultuurNet\UDB3\Search\JsonDocument\AssertJsonDocument;
 use PHPUnit\Framework\TestCase;
 
 class MinimalRequiredInfoJsonDocumentTransformerTest extends TestCase

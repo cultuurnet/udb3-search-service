@@ -7,7 +7,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
-use CultuurNet\UDB3\Search\Json\AssertJsonDocument;
+use CultuurNet\UDB3\Search\JsonDocument\AssertJsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
