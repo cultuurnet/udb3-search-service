@@ -8,12 +8,13 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Place\Events\PlaceDeleted;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentIndexServiceInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class PlaceSearchProjectorTest extends TestCase
 {
     /**
-     * @var JsonDocumentIndexServiceInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var JsonDocumentIndexServiceInterface|MockObject
      */
     private $indexService;
 

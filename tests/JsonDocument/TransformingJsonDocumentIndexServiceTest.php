@@ -6,28 +6,29 @@ use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
-     * @var ClientInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var ClientInterface|MockObject
      */
     private $httpClient;
 
     /**
-     * @var DocumentRepositoryInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var DocumentRepositoryInterface|MockObject
      */
     private $searchRepository;
 
     /**
-     * @var JsonDocumentTransformerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var JsonDocumentTransformerInterface|MockObject
      */
     private $transformer;
 
     /**
-     * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var LoggerInterface|MockObject
      */
     private $logger;
 
