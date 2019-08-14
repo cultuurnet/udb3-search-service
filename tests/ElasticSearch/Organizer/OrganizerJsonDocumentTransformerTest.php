@@ -5,12 +5,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
-use CultuurNet\UDB3\Search\JsonDocument\AssertJsonDocument;
+use CultuurNet\UDB3\Search\JsonDocument\AssertsJsonDocuments;
 use PHPUnit\Framework\TestCase;
 
 class OrganizerJsonDocumentTransformerTest extends TestCase
 {
-    use AssertJsonDocument;
+    use AssertsJsonDocuments;
 
     /**
      * @var SimpleArrayLogger

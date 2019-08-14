@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class PassThroughJsonDocumentTransformerTest extends TestCase
 {
-    use AssertJsonDocument;
+    use AssertsJsonDocuments;
 
     /**
      * @var PassThroughJsonDocumentTransformer

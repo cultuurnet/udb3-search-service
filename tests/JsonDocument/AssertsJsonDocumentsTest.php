@@ -5,9 +5,9 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-class AssertJsonDocumentTest extends TestCase
+class AssertsJsonDocumentsTest extends TestCase
 {
-    use AssertJsonDocument;
+    use AssertsJsonDocuments;
 
     /**
      * @test
