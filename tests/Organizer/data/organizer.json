@@ -1,0 +1,16 @@
+{
+    "name": "STUK",
+    "address": {
+        "addressCountry": "BE",
+        "addressLocality": "Leuven",
+        "postalCode": 3000,
+        "streetAddress": "Sluisstraat 79"
+    },
+    "email": "info@stuk.be",
+    "phone": [
+        "016 320 300"
+    ],
+    "creator": "evenementen@stad.diksmuide.be",
+    "created": "2015-05-07T12:02:53+00:00",
+    "modified": "2015-05-07T12:02:53+00:00"
+}

@@ -7,14 +7,14 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
-use CultuurNet\UDB3\Search\Json\AssertJsonDocumentTrait;
+use CultuurNet\UDB3\Search\JsonDocument\AssertsJsonDocuments;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class EventJsonDocumentTransformerTest extends TestCase
 {
-    use AssertJsonDocumentTrait;
+    use AssertsJsonDocuments;
 
     /**
      * @var OfferRegionServiceInterface|MockObject
