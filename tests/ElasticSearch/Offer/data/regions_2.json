@@ -1,0 +1,85 @@
+{
+    "took": 4,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 20,
+        "max_score": 1.0,
+        "hits": [
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-rumst",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-sint-amands",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-sint-genesius-rode",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-sint-laureins",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-ternat",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-tervuren",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-kalmthout",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-kinrooi",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-kluisbergen",
+                "_score": 1.0,
+                "_source": {}
+            },
+            {
+                "_index": "udb3_core_v2",
+                "_type": "region",
+                "_id": "gem-kortenaken",
+                "_score": 1.0,
+                "_source": {}
+            }
+        ]
+    }
+}
