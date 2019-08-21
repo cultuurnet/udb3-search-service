@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\SchemaVersions;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\FlandersRegionTaxonomyToFacetMappingsCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
@@ -58,6 +59,7 @@ $consoleApp->add(new MigrateElasticSearchCommand());
  * Templates.
  */
 $consoleApp->add(new CreateLowerCaseExactMatchAnalyzerCommand());
+$consoleApp->add(new CreateLowerCaseStandardAnalyzerCommand());
 $consoleApp->add(new CreateAutocompleteAnalyzerCommand());
 
 /**
