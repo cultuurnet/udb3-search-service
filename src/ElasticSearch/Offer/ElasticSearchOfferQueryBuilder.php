@@ -44,7 +44,9 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
      *
      * @var int|null
      *
+     * @codingStandardsIgnoreStart
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
+     * @codingStandardsIgnoreEnd
      */
     private $aggregationSize;
 

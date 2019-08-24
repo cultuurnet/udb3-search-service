@@ -63,6 +63,22 @@ class EventJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_events_with_duplicated_locations()
+    {
+        $original = file_get_contents(__DIR__ . '/data/original-with-duplicated-location.json');
+        $originalDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $original);
+
+        $expected = file_get_contents(__DIR__ . '/data/indexed-with-multiple-location-ids.json');
+        $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
+
+        $actualDocument = $this->transformer->transform($originalDocument);
+
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_missing_required_fields()
     {
         $id = 'a9c2c833-5311-44bd-8cb8-b959196cb4b9';

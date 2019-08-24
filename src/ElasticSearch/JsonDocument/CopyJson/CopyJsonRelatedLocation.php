@@ -14,6 +14,11 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonL
 class CopyJsonRelatedLocation implements CopyJsonInterface
 {
     /**
+     * @var IdUrlParserInterface
+     */
+    private $idUrlParser;
+
+    /**
      * @var CopyJsonIdentifier
      */
     private $copyJsonIdentifier;
@@ -54,6 +59,7 @@ class CopyJsonRelatedLocation implements CopyJsonInterface
         FallbackType $fallbackType
     ) {
         $this->logger = $logger;
+        $this->idUrlParser = $idUrlParser;
 
         $this->copyJsonIdentifier = new CopyJsonIdentifier(
             $logger,
@@ -85,6 +91,17 @@ class CopyJsonRelatedLocation implements CopyJsonInterface
         }
 
         $this->copyJsonIdentifier->copy($from->location, $to->location);
+
+        if (isset($from->location->duplicatedBy)) {
+            $idsOfDuplicates = array_map(
+                function (string $iriOfDuplicate) {
+                    return $this->idUrlParser->getIdFromUrl($iriOfDuplicate);
+                },
+                $from->location->duplicatedBy
+            );
+
+            $to->location->id = array_merge([$to->location->id], $idsOfDuplicates);
+        }
 
         $this->copyJsonName->copy($from->location, $to->location);
 
