@@ -5,7 +5,7 @@
             "properties": {
                 "nl": {
                     "type": "string",
-                    "analyzer": "dutch",
+                    "analyzer": "lowercase_standard_analyzer",
                     "fields": {
                         "autocomplete": {
                             "type": "string",
@@ -16,15 +16,15 @@
                 },
                 "fr": {
                     "type": "string",
-                    "analyzer": "french"
+                    "analyzer": "lowercase_standard_analyzer"
                 },
                 "en": {
                     "type": "string",
-                    "analyzer": "english"
+                    "analyzer": "lowercase_standard_analyzer"
                 },
                 "de": {
                     "type": "string",
-                    "analyzer": "german"
+                    "analyzer": "lowercase_standard_analyzer"
                 }
             }
         },
@@ -51,7 +51,7 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "dutch"
+                            "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
                             "type": "string",
@@ -60,7 +60,7 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "dutch"
+                            "analyzer": "lowercase_standard_analyzer"
                         }
                     }
                 },
@@ -74,7 +74,7 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "french"
+                            "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
                             "type": "string",
@@ -83,7 +83,7 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "french"
+                            "analyzer": "lowercase_standard_analyzer"
                         }
                     }
                 },
@@ -97,7 +97,7 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "german"
+                            "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
                             "type": "string",
@@ -106,7 +106,7 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "german"
+                            "analyzer": "lowercase_standard_analyzer"
                         }
                     }
                 },
@@ -120,7 +120,7 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "english"
+                            "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
                             "type": "string",
@@ -129,7 +129,7 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "english"
+                            "analyzer": "lowercase_standard_analyzer"
                         }
                     }
                 }

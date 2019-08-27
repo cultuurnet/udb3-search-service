@@ -40,6 +40,7 @@ class MigrateElasticSearchCommand extends Command
         $consoleApp = $this->getApplication();
 
         $consoleApp->find('lowercase-exact-match-analyzer:create')->run($emptyInput, $output);
+        $consoleApp->find('lowercase-standard-analyzer:create')->run($emptyInput, $output);
         $consoleApp->find('autocomplete-analyzer:create')->run($emptyInput, $output);
 
         $consoleApp->find('geoshapes:install')->run($inputWithForceOption, $output);
