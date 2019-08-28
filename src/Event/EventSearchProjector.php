@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\Event;
 
-use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
 
 class EventSearchProjector extends AbstractSearchProjector

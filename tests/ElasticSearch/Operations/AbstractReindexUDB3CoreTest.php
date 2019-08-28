@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
