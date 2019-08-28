@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Place;
 
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonAddress;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLabels;
@@ -12,6 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombinati
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonOffer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
+use CultuurNet\UDB3\Search\Place\PlaceJsonDocumentLanguageAnalyzer;
 
 class CopyJsonPlace extends CopyJsonCombination
 {

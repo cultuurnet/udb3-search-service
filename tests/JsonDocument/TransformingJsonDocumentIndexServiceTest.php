@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +18,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     private $httpClient;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var ElasticSearchDocumentRepository|MockObject
      */
     private $searchRepository;
 
@@ -40,7 +40,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     public function setUp()
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->searchRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->searchRepository = $this->createMock(ElasticSearchDocumentRepository::class);
         $this->transformer = $this->createMock(JsonDocumentTransformerInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 

@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\Hydra\PagedCollection;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 

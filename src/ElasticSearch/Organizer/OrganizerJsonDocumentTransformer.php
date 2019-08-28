@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonPsrLogger;

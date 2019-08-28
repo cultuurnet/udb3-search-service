@@ -4,12 +4,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
 use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepository implements DocumentRepositoryInterface
+class ElasticSearchDocumentRepository
 {
     use HasElasticSearchClient;
 

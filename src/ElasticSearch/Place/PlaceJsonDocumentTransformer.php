@@ -3,10 +3,9 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Place;
 
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\Place\ReadModel\JSONLD\PlaceJsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Place\PlaceJsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonPsrLogger;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\AbstractOfferJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 class PassThroughJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {

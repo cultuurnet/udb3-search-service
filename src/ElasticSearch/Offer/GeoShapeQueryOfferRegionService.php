@@ -3,7 +3,7 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;

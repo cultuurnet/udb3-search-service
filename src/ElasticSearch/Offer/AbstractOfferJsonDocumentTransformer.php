@@ -4,8 +4,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Offer\OfferType;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageAnalyzerInterface;
+use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -29,7 +29,7 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
     protected $logger;
 
     /**
-     * @var JsonDocumentLanguageAnalyzerInterface
+     * @var JsonDocumentLanguageAnalyzer
      */
     protected $languageAnalyzer;
 
@@ -37,13 +37,13 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param IdUrlParserInterface $idUrlParser
      * @param OfferRegionServiceInterface $offerRegionService
      * @param LoggerInterface $logger
-     * @param JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
+     * @param JsonDocumentLanguageAnalyzer $languageAnalyzer
      */
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
         LoggerInterface $logger,
-        JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
+        JsonDocumentLanguageAnalyzer $languageAnalyzer
     ) {
         $this->idUrlParser = $idUrlParser;
         $this->offerRegionService = $offerRegionService;
