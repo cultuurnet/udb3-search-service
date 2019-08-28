@@ -12,7 +12,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\PriceInfo\Price;
+use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
