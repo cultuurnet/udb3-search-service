@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use function property_exists;
 use Stringy\Stringy;
-use function strpos;
 use ValueObjects\Web\Url;
 
 class CopyJsonUrl implements CopyJsonInterface

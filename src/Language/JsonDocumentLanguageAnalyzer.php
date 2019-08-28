@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\Language;
 
-use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 interface JsonDocumentLanguageAnalyzer
