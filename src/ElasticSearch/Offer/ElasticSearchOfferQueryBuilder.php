@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Creator;

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
+use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\ParameterBag;
