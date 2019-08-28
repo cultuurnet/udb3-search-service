@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Offer\FacetName;

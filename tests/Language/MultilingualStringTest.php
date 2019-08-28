@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Language;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 

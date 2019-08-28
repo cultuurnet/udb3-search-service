@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Search\Offer;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;

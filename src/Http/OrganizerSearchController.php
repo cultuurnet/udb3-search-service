@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerParameterWhiteList;

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Place;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 

@@ -25,7 +25,7 @@ class EventJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLanguage
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
      * @param JsonDocument $jsonDocument
-     * @return \CultuurNet\UDB3\Language[]
+     * @return \CultuurNet\UDB3\Search\Language\Language[]
      */
     public function determineAvailableLanguages(JsonDocument $jsonDocument)
     {
@@ -39,7 +39,7 @@ class EventJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLanguage
      * @see https://jira.uitdatabank.be/browse/III-2201
      *
      * @param JsonDocument $jsonDocument
-     * @return \CultuurNet\UDB3\Language[]
+     * @return \CultuurNet\UDB3\Search\Language\Language[]
      */
     public function determineCompletedLanguages(JsonDocument $jsonDocument)
     {
