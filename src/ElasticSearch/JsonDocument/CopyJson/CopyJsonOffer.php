@@ -41,6 +41,7 @@ class CopyJsonOffer extends CopyJsonCombination
                 FallbackType::ORGANIZER()
             ),
             new CopyJsonCreator($logger),
+            new CopyJsonCreatedModified($logger),
             new CopyJsonLabels(),
             new CopyJsonWorkflowStatus($logger),
             new CopyOriginalEncodedJsonLd()

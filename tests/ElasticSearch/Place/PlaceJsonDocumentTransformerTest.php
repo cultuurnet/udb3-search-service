@@ -80,11 +80,11 @@ class PlaceJsonDocumentTransformerTest extends TestCase
             ['warning', "Missing expected field '@id'.", []],
             ['warning', "Missing expected field 'name'.", []],
             ['warning', "Missing expected field 'creator'.", []],
+            ['warning', "Missing expected field 'created'.", []],
             ['warning', "Missing expected field 'workflowStatus'.", []],
             ['warning', "Missing expected field 'address'.", []],
             ['warning', "Missing expected field 'calendarType'.", []],
             ['warning', "Missing expected field 'mainLanguage'.", []],
-            ['warning', "Missing expected field 'created'.", []],
             ['debug', "Transformation of place $id finished.", []],
         ];
 
