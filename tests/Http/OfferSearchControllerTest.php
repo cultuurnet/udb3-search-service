@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

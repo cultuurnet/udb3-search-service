@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use CultuurNet\UDB3\Search\Offer\FacetName;
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Search\Language\MultilingualString;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelsAggregationTransformer implements AggregationTransformerInterface
