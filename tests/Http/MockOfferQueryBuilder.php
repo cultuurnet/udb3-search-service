@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;

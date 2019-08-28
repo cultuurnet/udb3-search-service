@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Address\PostalCode;
+use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
