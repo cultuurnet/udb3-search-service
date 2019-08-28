@@ -611,47 +611,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
     }
 
     /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    protected function copyCreated(\stdClass $from, \stdClass $to)
-    {
-        if (!isset($from->created)) {
-            $this->logMissingExpectedField('created');
-            return;
-        }
-
-        $created = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->created);
-
-        if (!$created) {
-            $this->logger->error('Could not parse created as an ISO-8601 datetime.');
-            return;
-        }
-
-        $to->created = $created->format(\DateTime::ATOM);
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    protected function copyModified(\stdClass $from, \stdClass $to)
-    {
-        if (!isset($from->modified)) {
-            return;
-        }
-
-        $modified = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->modified);
-
-        if (!$modified) {
-            $this->logger->error('Could not parse modified as an ISO-8601 datetime.');
-            return;
-        }
-
-        $to->modified = $modified->format(\DateTime::ATOM);
-    }
-
-    /**
      * @param $fieldName
      */
     protected function logMissingExpectedField($fieldName)

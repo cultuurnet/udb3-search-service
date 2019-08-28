@@ -5,7 +5,9 @@ namespace CultuurNet\UDB3\Search\Organizer;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Label\ValueObjects\LabelName;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
@@ -60,4 +62,10 @@ interface OrganizerQueryBuilderInterface extends QueryBuilderInterface
      * @return static
      */
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses);
+
+    public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
+
+    public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
+
+    public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 }

@@ -8,11 +8,13 @@ use CultuurNet\UDB3\Language;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\SortOrder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +56,8 @@ class OrganizerSearchControllerTest extends TestCase
             $this->queryBuilder,
             $this->searchService,
             (new CompositeOrganizerRequestParser())
-                ->withParser(new WorkflowStatusOrganizerRequestParser()),
+                ->withParser(new WorkflowStatusOrganizerRequestParser())
+                ->withParser(new SortByOrganizerRequestParser()),
             $this->queryStringFactory
         );
     }
@@ -81,6 +84,11 @@ class OrganizerSearchControllerTest extends TestCase
                 ],
                 'workflowStatus' => 'ACTIVE,DELETED',
                 'domain' => 'www.publiq.be',
+                'sort' => [
+                    'score' => 'desc',
+                    'created' => 'asc',
+                    'modified' => 'desc',
+                ],
             ]
         );
 
@@ -96,6 +104,9 @@ class OrganizerSearchControllerTest extends TestCase
             ->withPostalCodeFilter(new PostalCode("3000"))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('NL')))
             ->withCreatorFilter(new Creator('Jan Janssens'))
+            ->withSortByScore(SortOrder::DESC())
+            ->withSortByCreated(SortOrder::ASC())
+            ->withSortByModified(SortOrder::DESC())
             ->withLabelFilter(new LabelName('Uitpas'))
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))

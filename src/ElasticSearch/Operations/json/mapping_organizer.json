@@ -142,6 +142,16 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "created": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+
+        "modified": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+
         "labels": {
             "type": "string",
             "analyzer": "lowercase_exact_match_analyzer",

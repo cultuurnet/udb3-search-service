@@ -17,11 +17,13 @@ class CopyJsonPsrLogger implements CopyJsonLoggerInterface
         $this->psrLogger = $psrLogger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function logMissingExpectedField($fieldName)
+    public function logMissingExpectedField(string $fieldName): void
     {
         $this->psrLogger->warning("Missing expected field '{$fieldName}'.");
+    }
+
+    public function logError(string $message): void
+    {
+        $this->psrLogger->error($message);
     }
 }

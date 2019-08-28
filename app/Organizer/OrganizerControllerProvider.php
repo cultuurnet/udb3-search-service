@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use Silex\Application;
@@ -16,7 +17,8 @@ class OrganizerControllerProvider implements ControllerProviderInterface
         $app['organizer_search_controller'] = $app->share(
             function (Application $app) {
                 $requestParser = (new CompositeOrganizerRequestParser())
-                    ->withParser(new WorkflowStatusOrganizerRequestParser());
+                    ->withParser(new WorkflowStatusOrganizerRequestParser())
+                    ->withParser(new SortByOrganizerRequestParser());
 
                 return new OrganizerSearchController(
                     $app['organizer_elasticsearch_query_builder'],
