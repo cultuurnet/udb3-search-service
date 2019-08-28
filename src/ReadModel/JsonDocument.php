@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ReadModel;
 
 use Broadway\ReadModel\ReadModelInterface;
+use stdClass;
 
 final class JsonDocument implements ReadModelInterface
 {
@@ -41,7 +42,7 @@ final class JsonDocument implements ReadModelInterface
         return $this->body;
     }
 
-    public function withBody(stdClass $body): JsonDocument
+    public function withBody($body): JsonDocument
     {
         return new self($this->id, json_encode($body));
     }
