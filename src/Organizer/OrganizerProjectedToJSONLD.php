@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Organizer;
+namespace CultuurNet\UDB3\Search\Organizer;
 
 use Broadway\Serializer\SerializableInterface;
 
