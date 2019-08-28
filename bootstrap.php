@@ -4,6 +4,9 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\BroadwayAMQP\DomainMessageJSONDeserializer;
 use CultuurNet\BroadwayAMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\Deserializer\SimpleDeserializerLocator;
+use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Search\SimpleEventBus;
 use CultuurNet\UDB3\SearchService\CultureFeed\CultureFeedServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchServiceProvider;
@@ -138,13 +141,13 @@ $app->register(
 $app['deserializer_locator'] = $app->share(
     function () {
         $deserializerLocator = new SimpleDeserializerLocator();
-        $maps =
-            \CultuurNet\UDB3\Event\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Place\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Label\Events\ContentTypes::map() +
-            \CultuurNet\UDB3\Organizer\Events\ContentTypes::map();
+        $deserializerMapping = [
+            EventProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+            PlaceProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+            OrganizerProjectedToJSONLD::class => 'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+        ];
 
-        foreach ($maps as $payloadClass => $contentType) {
+        foreach ($deserializerMapping as $payloadClass => $contentType) {
             $deserializerLocator->registerDeserializer(
                 new StringLiteral($contentType),
                 new DomainMessageJSONDeserializer($payloadClass)
