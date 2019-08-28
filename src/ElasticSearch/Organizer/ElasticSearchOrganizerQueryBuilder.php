@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\SortOrder;
 use Stringy\Stringy;
 use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -84,5 +85,20 @@ class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuild
                 $workflowStatuses
             )
         );
+    }
+
+    public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        return $this->withFieldSort('_score', $sortOrder->toNative());
+    }
+
+    public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        return $this->withFieldSort('created', $sortOrder->toNative());
+    }
+
+    public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        return $this->withFieldSort('modified', $sortOrder->toNative());
     }
 }

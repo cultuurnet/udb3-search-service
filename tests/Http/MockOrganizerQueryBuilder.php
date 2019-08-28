@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -125,6 +126,27 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['limit'] = $limit->toNative();
+        return $c;
+    }
+
+    public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['score'] = $sortOrder->toNative();
+        return $c;
+    }
+
+    public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['created'] = $sortOrder->toNative();
+        return $c;
+    }
+
+    public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['modified'] = $sortOrder->toNative();
         return $c;
     }
 

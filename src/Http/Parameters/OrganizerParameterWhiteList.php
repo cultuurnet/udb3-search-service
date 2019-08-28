@@ -21,6 +21,7 @@ class OrganizerParameterWhiteList extends AbstractParameterWhiteList
             'textLanguages',
             'workflowStatus',
             'disableDefaultFilters',
+            'sort',
         ];
     }
 }
