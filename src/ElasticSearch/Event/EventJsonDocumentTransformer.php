@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Event;
 
-use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\Search\Offer\OfferType;
 use CultuurNet\UDB3\Search\Event\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
