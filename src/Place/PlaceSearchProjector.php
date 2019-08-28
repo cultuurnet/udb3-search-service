@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\Place;
 
-use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
 
 class PlaceSearchProjector extends AbstractSearchProjector

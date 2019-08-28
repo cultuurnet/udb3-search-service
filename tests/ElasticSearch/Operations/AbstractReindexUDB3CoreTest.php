@@ -6,7 +6,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
 use PHPUnit\Framework\MockObject\MockObject;

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\Organizer;
 
-use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
 
 class OrganizerSearchProjector extends AbstractSearchProjector
