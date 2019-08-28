@@ -15,6 +15,7 @@
         "broadway/broadway": "~0.10",
         "cakephp/chronos": "^1.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
+        "cultuurnet/deserializer": "~0.1",
         "cultuurnet/geocoding": "~0.1",
         "cultuurnet/hydra": "~0.1",
         "cultuurnet/silex-amqp": "~0.1",
