@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
+use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use Elasticsearch\Client;
@@ -163,7 +163,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
             ->with($parameters)
             ->willReturn($response);
 
-        $this->expectException(DocumentGoneException::class);
+        $this->expectException(DocumentGone::class);
 
         $this->repository->get($id);
     }

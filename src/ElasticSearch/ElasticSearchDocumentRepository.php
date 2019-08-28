@@ -2,8 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentGoneException;
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
+use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
 use Elasticsearch\Client;
@@ -53,7 +52,7 @@ class ElasticSearchDocumentRepository
 
         if (!$found) {
             if ($version > 0) {
-                throw new DocumentGoneException();
+                throw new DocumentGone();
             } else {
                 return null;
             }
