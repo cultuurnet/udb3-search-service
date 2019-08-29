@@ -3,12 +3,13 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
+use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepository
+class ElasticSearchDocumentRepository implements DocumentRepository
 {
     use HasElasticSearchClient;
 
@@ -17,12 +18,6 @@ class ElasticSearchDocumentRepository
      */
     private $indexationStrategy;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param IndexationStrategyInterface $indexationStrategy
-     */
     public function __construct(
         Client $elasticSearchClient,
         StringLiteral $indexName,
@@ -35,13 +30,7 @@ class ElasticSearchDocumentRepository
         $this->indexationStrategy = $indexationStrategy;
     }
 
-    /**
-     * @param string $id
-     * @return JsonDocument
-     *
-     * @throws DocumentGoneException
-     */
-    public function get($id)
+    public function get(string $id): ?JsonDocument
     {
         $response = $this->elasticSearchClient->get(
             $this->createParameters(['id' => $id])
@@ -62,18 +51,12 @@ class ElasticSearchDocumentRepository
             ->withBody($response['_source']);
     }
 
-    /**
-     * @param JsonDocument $readModel
-     */
-    public function save(JsonDocument $readModel)
+    public function save(JsonDocument $readModel): void
     {
         $this->indexationStrategy->indexDocument($this->indexName, $this->documentType, $readModel);
     }
 
-    /**
-     * @param string $id
-     */
-    public function remove($id)
+    public function remove(string $id): void
     {
         $this->elasticSearchClient->delete(
             $this->createParameters(['id' => $id])
