@@ -33,7 +33,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
      */
     private $repository;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
@@ -56,7 +56,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_json_documents()
+    public function it_indexes_json_documents(): void
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
@@ -85,7 +85,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_deletes_documents_on_remove()
+    public function it_deletes_documents_on_remove(): void
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
@@ -105,7 +105,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_stored_documents()
+    public function it_returns_stored_documents(): void
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
@@ -140,7 +140,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_a_document_gone_exception_when_loading_a_deleted_document()
+    public function it_throws_a_document_gone_exception_when_loading_a_deleted_document(): void
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
@@ -171,7 +171,7 @@ class ElasticSearchDocumentRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_null_for_unknown_documents()
+    public function it_returns_null_for_unknown_documents(): void
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
