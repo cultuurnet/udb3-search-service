@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Label\ValueObjects\LabelName;
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;

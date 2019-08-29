@@ -12,11 +12,14 @@
     "require": {
         "php": "^7.1",
         "2dotstwice/silex-feature-toggles-provider": "~0.1",
+        "broadway/broadway": "~0.10",
+        "cakephp/chronos": "^1.1",
+        "cultuurnet/broadway-amqp": "~0.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
+        "cultuurnet/deserializer": "~0.1",
         "cultuurnet/geocoding": "~0.1",
         "cultuurnet/hydra": "~0.1",
         "cultuurnet/silex-amqp": "~0.1",
-        "cultuurnet/udb3": "~0.1",
         "cultuurnet/udb3-api-guard": "~0.1",
         "cultuurnet/udb3-http-foundation": "~0.1",
         "cultuurnet/valueobjects": "~3.0",
@@ -38,8 +41,8 @@
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "~2.9",
         "phing/phing": "~2.14",
+        "php-coveralls/php-coveralls": "^2.1",
         "phpunit/phpunit": "^7.5",
-        "satooshi/php-coveralls": "~1.0",
         "squizlabs/php_codesniffer": "~2.5.1"
     },
     "autoload": {

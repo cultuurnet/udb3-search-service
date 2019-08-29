@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use ValueObjects\Number\Natural;
 

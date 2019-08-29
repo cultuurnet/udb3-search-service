@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Facet;
 
-use CultuurNet\UDB3\ValueObject\MultilingualString;
+use CultuurNet\UDB3\Search\Language\MultilingualString;
 
 class FacetNode extends AbstractFacetTree
 {

@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;

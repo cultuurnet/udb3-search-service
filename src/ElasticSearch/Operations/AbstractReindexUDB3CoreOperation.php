@@ -6,9 +6,9 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
-use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
-use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 

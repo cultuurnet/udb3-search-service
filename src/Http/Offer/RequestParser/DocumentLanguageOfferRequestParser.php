@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;

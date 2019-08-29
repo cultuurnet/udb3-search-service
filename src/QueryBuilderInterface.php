@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Language;
+use CultuurNet\UDB3\Search\Language\Language;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 

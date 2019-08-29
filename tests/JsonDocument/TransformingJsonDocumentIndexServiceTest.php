@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Event\ReadModel\DocumentRepositoryInterface;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,7 +18,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     private $httpClient;
 
     /**
-     * @var DocumentRepositoryInterface|MockObject
+     * @var DocumentRepository|MockObject
      */
     private $searchRepository;
 
@@ -37,10 +37,10 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
      */
     private $indexService;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->searchRepository = $this->createMock(DocumentRepositoryInterface::class);
+        $this->searchRepository = $this->createMock(DocumentRepository::class);
         $this->transformer = $this->createMock(JsonDocumentTransformerInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -56,7 +56,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_fetches_the_jsonld_from_the_given_url_and_indexes_it_after_transformation()
+    public function it_fetches_the_jsonld_from_the_given_url_and_indexes_it_after_transformation(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
@@ -87,7 +87,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_an_error_when_the_jsonld_can_not_be_found()
+    public function it_logs_an_error_when_the_jsonld_can_not_be_found(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
@@ -116,7 +116,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_the_given_document_by_id()
+    public function it_removes_the_given_document_by_id(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
 

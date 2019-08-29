@@ -2,23 +2,23 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 
-use CultuurNet\UDB3\Language;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageAnalyzerInterface;
+use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use Rhumsaa\Uuid\Uuid;
 
 class CopyJsonLanguages implements CopyJsonInterface
 {
     /**
-     * @var JsonDocumentLanguageAnalyzerInterface
+     * @var JsonDocumentLanguageAnalyzer
      */
     private $languageAnalyzer;
 
     /**
-     * @param JsonDocumentLanguageAnalyzerInterface $languageAnalyzer
+     * @param JsonDocumentLanguageAnalyzer $languageAnalyzer
      */
-    public function __construct(JsonDocumentLanguageAnalyzerInterface $languageAnalyzer)
+    public function __construct(JsonDocumentLanguageAnalyzer $languageAnalyzer)
     {
         $this->languageAnalyzer = $languageAnalyzer;
     }
