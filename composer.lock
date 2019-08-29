@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "abe16b8dcdf3e52b4719fe3cc55f399c",
+    "content-hash": "82122a848d74f81b26dbc451e1ae0d08",
     "packages": [
         {
             "name": "2dotstwice/collection",
@@ -416,12 +416,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "6ec5539f0299627e8a5840f62b7ad9d4868b73c0"
+                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/6ec5539f0299627e8a5840f62b7ad9d4868b73c0",
-                "reference": "6ec5539f0299627e8a5840f62b7ad9d4868b73c0",
+                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/743ce678f246acc5309f102feda9eb14ebd1d6a3",
+                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3",
                 "shasum": ""
             },
             "require": {
@@ -434,9 +434,8 @@
             },
             "require-dev": {
                 "phing/phing": "~2.11",
-                "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7",
+                "php-coveralls/php-coveralls": "^2.1",
+                "phpunit/phpunit": "^7.5",
                 "squizlabs/php_codesniffer": "2.6.1"
             },
             "type": "library",
@@ -455,7 +454,7 @@
                 "Apache-2.0"
             ],
             "description": "AMQP integration for Broadway library",
-            "time": "2018-06-29 14:20:00"
+            "time": "2019-08-29 07:58:48"
         },
         {
             "name": "cultuurnet/cdb",
