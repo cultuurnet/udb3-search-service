@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
+use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -16,7 +16,7 @@ class TransformingJsonDocumentIndexService implements
     use LoggerAwareTrait;
 
     /**
-     * @var ElasticSearchDocumentRepository
+     * @var DocumentRepository
      */
     private $searchRepository;
 
@@ -33,12 +33,12 @@ class TransformingJsonDocumentIndexService implements
     /**
      * @param ClientInterface $httpClient
      * @param JsonDocumentTransformerInterface $jsonDocumentTransformer
-     * @param ElasticSearchDocumentRepository $searchRepository
+     * @param DocumentRepository $searchRepository
      */
     public function __construct(
         ClientInterface $httpClient,
         JsonDocumentTransformerInterface $jsonDocumentTransformer,
-        ElasticSearchDocumentRepository $searchRepository
+        DocumentRepository $searchRepository
     ) {
         $this->httpClient = $httpClient;
         $this->jsonDocumentTransformer = $jsonDocumentTransformer;
