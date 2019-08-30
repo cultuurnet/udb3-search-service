@@ -14,6 +14,7 @@
         "2dotstwice/silex-feature-toggles-provider": "~0.1",
         "broadway/broadway": "~0.10",
         "cakephp/chronos": "^1.1",
+        "cultuurnet/auth": "~1.2",
         "cultuurnet/broadway-amqp": "~0.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
         "cultuurnet/deserializer": "~0.1",
