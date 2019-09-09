@@ -13,7 +13,7 @@ use Silex\ServiceProviderInterface;
 
 class ApiGuardServiceProvider implements ServiceProviderInterface
 {
-    private const REPOSITORY = 'auth.consumer_repository';
+    private const CONSUMER_REPOSITORY = 'auth.consumer_repository';
 
     /**
      * @param Application $app
@@ -51,7 +51,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::REPOSITORY] = $app->share(
+        $app[self::CONSUMER_REPOSITORY] = $app->share(
             function (Application $app) {
                 return new InMemoryConsumerRepository();
             }
