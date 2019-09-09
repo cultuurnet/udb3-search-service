@@ -37,7 +37,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
                 return new CultureFeedApiKeyAuthenticator(
                     $app['culturefeed'],
                     $app['auth.consumer_repository'],
-                    $app['auth.consumer_repository']
+                    true
                 );
             }
         );
