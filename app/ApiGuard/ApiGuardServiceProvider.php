@@ -13,8 +13,6 @@ use Silex\ServiceProviderInterface;
 
 class ApiGuardServiceProvider implements ServiceProviderInterface
 {
-    private const CONSUMER_REPOSITORY = 'auth.consumer_repository';
-
     /**
      * @param Application $app
      */
@@ -36,7 +34,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             function (Application $app) {
                 return new CultureFeedApiKeyAuthenticator(
                     $app['culturefeed'],
-                    $app[self::CONSUMER_REPOSITORY],
+                    $app[InMemoryConsumerRepository::class],
                     true
                 );
             }
@@ -51,7 +49,7 @@ class ApiGuardServiceProvider implements ServiceProviderInterface
             }
         );
 
-        $app[self::CONSUMER_REPOSITORY] = $app->share(
+        $app[InMemoryConsumerRepository::class] = $app->share(
             function (Application $app) {
                 return new InMemoryConsumerRepository();
             }
