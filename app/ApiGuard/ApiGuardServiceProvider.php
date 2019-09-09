@@ -13,7 +13,7 @@ use Silex\ServiceProviderInterface;
 
 class ApiGuardServiceProvider implements ServiceProviderInterface
 {
-    const REPOSITORY = 'auth.consumer_repository';
+    private const REPOSITORY = 'auth.consumer_repository';
 
     /**
      * @param Application $app
