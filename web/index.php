@@ -1,5 +1,6 @@
 <?php
 
+use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -13,6 +14,7 @@ $container = new Container();
 
 $container->delegate(new ReflectionContainer());
 $container->addServiceProvider(RoutingServiceProvider::class);
+$container->addServiceProvider(LeagueOrganizerServiceProvider::class);
 
 $router = $container->get(Router::class);
 
