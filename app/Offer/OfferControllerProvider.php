@@ -60,7 +60,7 @@ class OfferControllerProvider implements ControllerProviderInterface
 
                 return new OfferSearchController(
                     $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
+                    $app[InMemoryConsumerRepository::class],
                     $app['offer_elasticsearch_query_builder'],
                     $requestParser,
                     $offerSearchService,
