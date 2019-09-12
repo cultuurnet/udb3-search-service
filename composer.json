@@ -30,6 +30,7 @@
         "elasticsearch/elasticsearch": "~5.2",
         "guzzlehttp/guzzle": "^6.3",
         "guzzlehttp/psr7": "^1.4",
+        "hassankhan/config": "^2.1",
         "jdesrosiers/silex-cors-provider": "~0.1.4",
         "knplabs/console-service-provider": "~1.0",
         "league/container": "^3.3",
