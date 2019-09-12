@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -108,6 +109,7 @@ class OfferSearchControllerTest extends TestCase
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(new MockDistanceFactory()))
             ->withParser(new DocumentLanguageOfferRequestParser())
+            ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new WorkflowStatusOfferRequestParser());
 
@@ -185,6 +187,7 @@ class OfferSearchControllerTest extends TestCase
                 'organizerTermLabels' => ['foo2', 'bar2'],
                 'facets' => ['regions'],
                 'creator' => 'Jane Doe',
+                'isDuplicate' => false,
                 'sort' => [
                     'distance' => 'asc',
                     'availableTo' => 'asc',
@@ -293,6 +296,7 @@ class OfferSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('bar'))
             ->withLocationLabelFilter(new LabelName('lorem'))
             ->withOrganizerLabelFilter(new LabelName('ipsum'))
+            ->withDuplicateFilter(false)
             ->withFacet(FacetName::REGIONS())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10));
@@ -406,7 +410,8 @@ class OfferSearchControllerTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-26T08:34:21+00:00')
             )
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
-            ->withAudienceTypeFilter(new AudienceType('everyone'));
+            ->withAudienceTypeFilter(new AudienceType('everyone'))
+            ->withDuplicateFilter(false);
 
         $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
 
@@ -440,6 +445,7 @@ class OfferSearchControllerTest extends TestCase
                 'addressCountry' => '*',
                 'workflowStatus' => '*',
                 'audienceType' => '*',
+                'isDuplicate' => '*',
             ]
         );
 
