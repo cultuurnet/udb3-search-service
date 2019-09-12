@@ -301,6 +301,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withDuplicateFilter(bool $isDuplicate)
+    {
+        $c = clone $this;
+        $c->mockQuery['isDuplicate'] = $isDuplicate;
+        return $c;
+    }
+
     public function withFacet(FacetName $facetName)
     {
         $c = clone $this;

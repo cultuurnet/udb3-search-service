@@ -240,6 +240,14 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     public function withOrganizerLabelFilter(LabelName $organizerLabel);
 
     /**
+     * @param bool $isDuplicate
+     *   When set to true only offers marked as duplicate will be included.
+     *   When set to false only canonical offers will be included.
+     * @return OfferQueryBuilderInterface
+     */
+    public function withDuplicateFilter(bool $isDuplicate);
+
+    /**
      * @param FacetName $facetName
      * @return OfferQueryBuilderInterface
      */

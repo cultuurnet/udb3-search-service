@@ -2859,4 +2859,41 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
 
         return $facetName;
     }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_an_is_duplicate_filter()
+    {
+        /* @var ElasticSearchOfferQueryBuilder $builder */
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withDuplicateFilter(true);
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'isDuplicate' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build()->toArray();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
 }
