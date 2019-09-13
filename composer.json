@@ -14,7 +14,7 @@
         "2dotstwice/silex-feature-toggles-provider": "~0.1",
         "broadway/broadway": "~0.10",
         "cakephp/chronos": "^1.1",
-        "cultuurnet/auth": "~1.2",
+        "cultuurnet/auth": "~3.0",
         "cultuurnet/broadway-amqp": "~0.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
         "cultuurnet/deserializer": "~0.1",
@@ -23,9 +23,8 @@
         "cultuurnet/silex-amqp": "~0.1",
         "cultuurnet/udb3-api-guard": "~0.1",
         "cultuurnet/udb3-http-foundation": "~0.1",
-        "cultuurnet/valueobjects": "~3.0",
+        "cultuurnet/valueobjects": "~3.2",
         "danielstjules/stringy": "~1.9",
-        "deralex/yaml-config-service-provider": "~1.0",
         "doctrine/cache": "~1.8",
         "elasticsearch/elasticsearch": "~5.2",
         "guzzlehttp/guzzle": "^6.3",
@@ -42,6 +41,7 @@
         "slim/psr7": "^0.5.0",
         "symfony/finder": "~3.2",
         "symfony/http-foundation": "~2.7",
+        "symfony/yaml": "^4.3",
         "zendframework/zend-httphandlerrunner": "^1.1"
     },
     "require-dev": {
