@@ -7,12 +7,21 @@ use League\Container\ReflectionContainer;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
+use Noodlehaus\Config;
+use Noodlehaus\Parser\Yaml;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $container = new Container();
+$container->add(
+    Config::class,
+    function () {
+        return Config::load(__DIR__ . '/../config.yml', new Yaml());
+    }
+);
 
 $container->delegate(new ReflectionContainer());
+
 $container->addServiceProvider(RoutingServiceProvider::class);
 $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
 
@@ -23,3 +32,4 @@ $response = $router->dispatch($request);
 
 $emitter = new SapiStreamEmitter();
 $emitter->emit($response);
+
