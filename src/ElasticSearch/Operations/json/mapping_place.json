@@ -353,6 +353,10 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "isDuplicate": {
+            "type": "boolean"
+        },
+
         "originalEncodedJsonLd": {
             "type": "string",
             "index": "not_analyzed"

@@ -418,6 +418,14 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
     }
 
     /**
+     * @inheritDoc
+     */
+    public function withDuplicateFilter(bool $isDuplicate)
+    {
+        return $this->withTermQuery('isDuplicate', (bool) $isDuplicate);
+    }
+
+    /**
      * @inheritdoc
      */
     public function withFacet(FacetName $facetName)
