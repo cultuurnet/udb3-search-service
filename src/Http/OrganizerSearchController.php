@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,7 +82,18 @@ class OrganizerSearchController
         $this->queryStringFactory = $queryStringFactory;
         $this->organizerRequestParser = $organizerRequestParser;
     }
-
+    
+    /**
+     * @param ServerRequestInterface $request
+     * @return \Slim\Psr7\Response
+     * @todo:  Implement -> move search to this method
+     */
+    public function __invoke(ServerRequestInterface $request)
+    {
+        return new \Slim\Psr7\Response();
+    }
+    
+    
     /**
      * @param Request $request
      * @return Response

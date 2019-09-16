@@ -18,8 +18,8 @@ class RoutingServiceProvider extends AbstractServiceProvider
             Router::class,
             function () {
                 $router = new Router();
-
-                // $router->get('/organizers/', OrganizerSearchController::class);
+                
+                $router->get('/organizers/', \CultuurNet\UDB3\Search\Http\OrganizerSearchController::class);
 
                 return $router;
             }
