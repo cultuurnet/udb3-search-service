@@ -68,16 +68,9 @@ class LeagueOrganizerServiceProvider extends AbstractServiceProvider
                         )
                     ),
                     $requestParser,
-                    $this->get(QueryStringFactoryInterface::class),
+                    new LuceneQueryStringFactory(),
                     $this->get('paged_collection_factory')
                 );
-            }
-        );
-        
-        $this->add(
-            QueryStringFactoryInterface::class,
-            function () {
-                return new LuceneQueryStringFactory();
             }
         );
         
