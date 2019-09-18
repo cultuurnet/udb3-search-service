@@ -1,6 +1,7 @@
 <?php
 
 use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use League\Route\Router;
@@ -14,7 +15,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 try {
     $container = new Container();
     $container->delegate(new ReflectionContainer());
-    
     $container->add(
         Config::class,
         function () {
@@ -22,12 +22,13 @@ try {
         }
     );
 
-    $container->addServiceProvider(\CultuurNet\UDB3\SearchService\RoutingServiceProvider::class);
+    $container->addServiceProvider(RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
     
     
+    $request = ServerRequestFactory::createFromGlobals();
     $response = $container->get(Router::class)->dispatch(
-        ServerRequestFactory::createFromGlobals()
+        $request
     );
     
     (new SapiStreamEmitter())->emit($response);
