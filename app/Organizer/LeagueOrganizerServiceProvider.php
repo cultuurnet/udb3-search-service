@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerR
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use League\Container\ServiceProvider\AbstractServiceProvider;
