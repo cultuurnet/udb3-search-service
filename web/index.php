@@ -1,11 +1,9 @@
 <?php
 
-use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use League\Route\Router;
-use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Noodlehaus\Config;
@@ -23,16 +21,12 @@ try {
             return Config::load(__DIR__ . '/../config.yml', new Yaml());
         }
     );
-    
+
+    $container->addServiceProvider(\CultuurNet\UDB3\SearchService\RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
     
-    $router = new Router();
-    $strategy = (new ApplicationStrategy())->setContainer($container);
-    $router->setStrategy($strategy);
-   
-    $router->get('/organizers/', OrganizerSearchController::class);
     
-    $response = $router->dispatch(
+    $response = $container->get(Router::class)->dispatch(
         ServerRequestFactory::createFromGlobals()
     );
     
