@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerR
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -67,14 +68,14 @@ class LeagueOrganizerServiceProvider extends AbstractServiceProvider
                         )
                     ),
                     $requestParser,
-                    $this->get('elasticsearch_query_string_factory'),
+                    $this->get(QueryStringFactoryInterface::class),
                     $this->get('paged_collection_factory')
                 );
             }
         );
         
         $this->add(
-            'elasticsearch_query_string_factory',
+            QueryStringFactoryInterface::class,
             function () {
                 return new LuceneQueryStringFactory();
             }
