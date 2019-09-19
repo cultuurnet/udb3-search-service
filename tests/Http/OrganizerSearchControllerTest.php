@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -58,7 +59,10 @@ class OrganizerSearchControllerTest extends TestCase
             (new CompositeOrganizerRequestParser())
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory
+            $this->queryStringFactory,
+            new ResultTransformingPagedCollectionFactory(
+                new PassThroughJsonDocumentTransformer()
+            )
         );
     }
 
