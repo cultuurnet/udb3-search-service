@@ -15,7 +15,7 @@ class SortByOrganizerRequestParser implements OrganizerRequestParser
     ): OrganizerQueryBuilderInterface {
         
         $parameters = $request->getQueryParams();
-        $sorts = $parameters['sort'] === null ? [] : $parameters['sort'];
+        $sorts = !empty($parameters['sort']) ? $parameters['sort'] : [];
 
         if (!is_array($sorts)) {
             throw new InvalidArgumentException('Invalid sorting syntax given.');

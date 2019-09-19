@@ -72,7 +72,6 @@ class OrganizerSearchController
     public function __invoke(Request $request, Response $response): Response
     {
         $parameters = $request->getQueryParams();
-        
         $this->organizerParameterWhiteList->validateParameters(
             array_keys($request->getQueryParams())
         );
@@ -118,10 +117,9 @@ class OrganizerSearchController
             );
         }
         
-        $postalCode = (string)$parameters['postalCode'];
-        if (!empty($postalCode)) {
+        if (!empty($parameters['postalCode'])) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
-                new PostalCode($postalCode)
+                new PostalCode((string) $parameters['postalCode'])
             );
         }
         $country = (new CountryExtractor())->getCountryFromQuery(
@@ -131,7 +129,7 @@ class OrganizerSearchController
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
-        if ($parameters['creator']) {
+        if (!empty($parameters['creator'])) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
                 new Creator($parameters['creator'])
             );
