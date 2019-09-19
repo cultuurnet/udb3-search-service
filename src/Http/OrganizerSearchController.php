@@ -76,8 +76,8 @@ class OrganizerSearchController
         $this->organizerParameterWhiteList->validateParameters(
             array_keys($request->getQueryParams())
         );
-        $start = (int)$parameters['start'] === null ? $parameters['start'] : 0;
-        $limit = (int)$parameters['limit'] === null ? $parameters['limit'] : 30;
+        $start = (int) isset($parameters['start']) ? $parameters['start'] : 0;
+        $limit = (int) isset($parameters['limit']) ? $parameters['limit'] : 30;
         
         if ($limit === 0) {
             $limit = 30;
