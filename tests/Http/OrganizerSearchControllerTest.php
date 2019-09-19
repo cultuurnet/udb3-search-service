@@ -144,7 +144,7 @@ class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $actualJsonResponse = $this->controller->__invoke($request, new Response())->getBody()->__toString();
+        $actualJsonResponse = $this->controller->__invoke( new ApiRequest($request))->getBody()->__toString();
 
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
     }
@@ -170,7 +170,7 @@ class OrganizerSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $this->controller->__invoke($request, new Response());
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**
@@ -189,14 +189,14 @@ class OrganizerSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $this->controller->__invoke($request, new Response());
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param Request $request
+     * @param ApiRequestInterface $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -206,7 +206,7 @@ class OrganizerSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->controller->__invoke($request, new Response());
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     public function unknownParameterProvider()

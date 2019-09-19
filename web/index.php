@@ -1,5 +1,6 @@
 <?php
 
+use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Container\Container;
@@ -25,10 +26,9 @@ try {
     $container->addServiceProvider(RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
     
-    
     $request = ServerRequestFactory::createFromGlobals();
     $response = $container->get(Router::class)->dispatch(
-        $request
+        new ApiRequest($request)
     );
     
     (new SapiStreamEmitter())->emit($response);

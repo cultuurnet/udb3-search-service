@@ -54,7 +54,7 @@ class OrganizerSearchController
      * @var OrganizerRequestParser
      */
     private $organizerRequestParser;
-
+    
     public function __construct(
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
@@ -69,15 +69,17 @@ class OrganizerSearchController
         $this->pagedCollectionFactory = $pagedCollectionFactory;
         $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
     }
-
-    public function __invoke(Request $request) : ResponseInterface
+    
+    public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
         $parameters = $request->getQueryParams();
+        
         $this->organizerParameterWhiteList->validateParameters(
             array_keys($request->getQueryParams())
         );
-        $start = (int) isset($parameters['start']) ? $parameters['start'] : 0;
-        $limit = (int) isset($parameters['limit']) ? $parameters['limit'] : 30;
+        
+        $start = $request->getQueryParam('start', 0);
+        $limit = $request->getQueryParam('limit', 30);
         
         if ($limit === 0) {
             $limit = 30;
@@ -93,34 +95,34 @@ class OrganizerSearchController
         
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
         
-        if (!empty($parameters['q'])) {
+        if ($request->hasQueryParam('q')) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString($parameters['q']),
+                $this->queryStringFactory->fromString($request->getQueryParam('q')),
                 ...$textLanguages
             );
         }
         
-        if (!empty($parameters['name'])) {
+        if ($request->hasQueryParam('name')) {
             $queryBuilder = $queryBuilder->withAutoCompleteFilter(
-                new StringLiteral($parameters['name'])
+                new StringLiteral($request->getQueryParam('name'))
             );
         }
         
-        if (!empty($parameters['website'])) {
+        if ($request->hasQueryParam('website')) {
             $queryBuilder = $queryBuilder->withWebsiteFilter(
-                Url::fromNative($parameters['website'])
+                Url::fromNative($request->getQueryParam('website'))
             );
         }
         
-        if (!empty($parameters['domain'])) {
+        if ($request->hasQueryParam('domain')) {
             $queryBuilder = $queryBuilder->withDomainFilter(
-                Domain::specifyType($parameters['domain'])
+                Domain::specifyType($request->getQueryParam('domain'))
             );
         }
         
-        if (!empty($parameters['postalCode'])) {
+        if ($request->hasQueryParam('postalCode')) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
-                new PostalCode((string) $parameters['postalCode'])
+                new PostalCode((string)$request->getQueryParam('postalCode'))
             );
         }
         $country = (new CountryExtractor())->getCountryFromQuery(
@@ -130,9 +132,9 @@ class OrganizerSearchController
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
-        if (!empty($parameters['creator'])) {
+        if ($request->hasQueryParam('creator')) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
-                new Creator($parameters['creator'])
+                new Creator($request->getQueryParam('creator'))
             );
         }
         
@@ -148,7 +150,7 @@ class OrganizerSearchController
             $start,
             $limit
         );
-
+        
         /**
          * @todo add cache control to headers
          */
