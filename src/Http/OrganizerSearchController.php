@@ -59,14 +59,8 @@ class OrganizerSearchController
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactoryInterface $queryStringFactory,
-        PagedCollectionFactoryInterface $pagedCollectionFactory = null
+        PagedCollectionFactoryInterface $pagedCollectionFactory
     ) {
-        if (is_null($pagedCollectionFactory)) {
-            $pagedCollectionFactory = new ResultTransformingPagedCollectionFactory(
-                new PassThroughJsonDocumentTransformer()
-            );
-        }
-        
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->pagedCollectionFactory = $pagedCollectionFactory;
