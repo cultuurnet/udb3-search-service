@@ -14,8 +14,8 @@ use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
-use Slim\Psr7\Headers;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -81,12 +81,8 @@ class OrganizerSearchController
         $this->queryStringFactory = $queryStringFactory;
         $this->organizerRequestParser = $organizerRequestParser;
     }
-    
-    /**
-     * @param \Slim\Psr7\Request $request
-     * @return JsonResponse
-     */
-    public function __invoke(\Slim\Psr7\Request $request)
+
+    public function __invoke(Request $request, Response $response): Response
     {
         $parameters = $request->getQueryParams();
         
@@ -166,12 +162,11 @@ class OrganizerSearchController
             $start,
             $limit
         );
-        
-        $response = new \Slim\Psr7\Response(
-            200,
-            new Headers(['Content-Type' => 'application/ld+json'])
-        );
-        return $response;
+
+        /**
+         * @todo add cache control to headers
+         */
+        return JsonLdResponse::fromPsr7Response($response)->withData($pagedCollection);
 //        return (new JsonResponse($pagedCollection, 200, ['Content-Type' => 'application/ld+json']))
 //            ->setPublic()
 //            ->setClientTtl(60 * 1)
