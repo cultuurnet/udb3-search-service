@@ -27,7 +27,10 @@ class JsonLdResponse implements ResponseInterface
 
     public function withData($data)
     {
-        return $this->response->getBody()->write(json_encode($data, self::JSON_OPTIONS));
+        $body = $this->response->getBody();
+        $body->write(json_encode($data, self::JSON_OPTIONS));
+
+        return $this->response->withBody($body);
     }
 
     public function getProtocolVersion()
