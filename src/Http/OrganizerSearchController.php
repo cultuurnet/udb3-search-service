@@ -53,14 +53,7 @@ class OrganizerSearchController
      * @var OrganizerRequestParser
      */
     private $organizerRequestParser;
-    
-    /**
-     * @param OrganizerQueryBuilderInterface $queryBuilder
-     * @param OrganizerSearchServiceInterface $searchService
-     * @param OrganizerRequestParser $organizerRequestParser
-     * @param QueryStringFactoryInterface $queryStringFactory
-     * @param PagedCollectionFactoryInterface|null $pagedCollectionFactory
-     */
+
     public function __construct(
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
