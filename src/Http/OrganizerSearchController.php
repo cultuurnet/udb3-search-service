@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Request;
 use Slim\Psr7\Response;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -69,7 +70,7 @@ class OrganizerSearchController
         $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
     }
 
-    public function __invoke(Request $request, Response $response): Response
+    public function __invoke(Request $request) : ResponseInterface
     {
         $parameters = $request->getQueryParams();
         $this->organizerParameterWhiteList->validateParameters(
@@ -151,7 +152,7 @@ class OrganizerSearchController
         /**
          * @todo add cache control to headers
          */
-        return JsonLdResponse::fromPsr7Response($response)->withData($pagedCollection);
+        return ResponseFactory::jsonLd($pagedCollection);
 //        return (new JsonResponse($pagedCollection, 200, ['Content-Type' => 'application/ld+json']))
 //            ->setPublic()
 //            ->setClientTtl(60 * 1)
