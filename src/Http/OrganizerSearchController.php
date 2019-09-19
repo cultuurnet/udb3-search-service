@@ -63,10 +63,10 @@ class OrganizerSearchController
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
+        $this->organizerRequestParser = $organizerRequestParser;
+        $this->queryStringFactory = $queryStringFactory;
         $this->pagedCollectionFactory = $pagedCollectionFactory;
         $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
-        $this->queryStringFactory = $queryStringFactory;
-        $this->organizerRequestParser = $organizerRequestParser;
     }
 
     public function __invoke(Request $request, Response $response): Response
