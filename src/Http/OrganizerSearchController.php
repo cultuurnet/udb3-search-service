@@ -112,9 +112,7 @@ class OrganizerSearchController
         
         if (!empty($parameters['q'])) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString(
-                    $request->query->get('q')
-                ),
+                $this->queryStringFactory->fromString($parameters['q']),
                 ...$textLanguages
             );
         }
