@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpComposerExtensionStubsInspection */
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
@@ -15,7 +16,7 @@ class ResponseFactory
     /**
      * @param $data
      * @param int $code
-     * @return \Slim\Psr7\Message|Response
+     * @return ResponseInterface
      *
      * @todo: add additional parameters if needed
      */

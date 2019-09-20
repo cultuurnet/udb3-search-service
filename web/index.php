@@ -22,13 +22,14 @@ try {
             return Config::load(__DIR__ . '/../config.yml', new Yaml());
         }
     );
-
+    
     $container->addServiceProvider(RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
     
-    $request = ServerRequestFactory::createFromGlobals();
     $response = $container->get(Router::class)->dispatch(
-        new ApiRequest($request)
+        new ApiRequest(
+            ServerRequestFactory::createFromGlobals()
+        )
     );
     
     (new SapiStreamEmitter())->emit($response);
