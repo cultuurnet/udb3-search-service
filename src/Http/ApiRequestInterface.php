@@ -17,4 +17,8 @@ interface ApiRequestInterface extends ServerRequestInterface
     public function getQueryParam(string $name, $default = null);
     
     public function hasQueryParam(string $name): bool;
+    
+    public function getQueryParamsKeys() : ?array;
+    
+    public function getServerParam(string $name, $default = null);
 }

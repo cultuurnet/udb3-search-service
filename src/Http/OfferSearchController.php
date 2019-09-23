@@ -24,7 +24,9 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use ValueObjects\Geography\CountryCode;
@@ -42,57 +44,57 @@ class OfferSearchController
      * @var ApiKeyReaderInterface
      */
     private $apiKeyReader;
-
+    
     /**
      * @var ConsumerReadRepositoryInterface
      */
     private $consumerReadRepository;
-
+    
     /**
      * @var OfferQueryBuilderInterface
      */
     private $queryBuilder;
-
+    
     /**
      * @var OfferRequestParserInterface
      */
     private $requestParser;
-
+    
     /**
      * @var OfferSearchServiceInterface
      */
     private $searchService;
-
+    
     /**
      * @var StringLiteral
      */
     private $regionIndexName;
-
+    
     /**
      * @var StringLiteral
      */
     private $regionDocumentType;
-
+    
     /**
      * @var QueryStringFactoryInterface
      */
     private $queryStringFactory;
-
+    
     /**
      * @var FacetTreeNormalizerInterface
      */
     private $facetTreeNormalizer;
-
+    
     /**
      * @var PagedCollectionFactoryInterface
      */
     private $pagedCollectionFactory;
-
+    
     /**
      * @var OfferParameterWhiteList
      */
     private $offerParameterWhiteList;
-
+    
     /**
      * @param ApiKeyReaderInterface $apiKeyReader
      * @param ConsumerReadRepositoryInterface $consumerReadRepository
@@ -122,7 +124,7 @@ class OfferSearchController
                 new PassThroughJsonDocumentTransformer()
             );
         }
-
+        
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->queryBuilder = $queryBuilder;
@@ -135,35 +137,40 @@ class OfferSearchController
         $this->pagedCollectionFactory = $pagedCollectionFactory;
         $this->offerParameterWhiteList = new OfferParameterWhiteList();
     }
-
+    
     /**
      * @param Request $request
      * @return Response
      */
-    public function search(Request $request)
+    public function search(ApiRequest $request)
     {
         $this->offerParameterWhiteList->validateParameters(
-            $request->query->keys()
+            $request->getQueryParamsKeys()
         );
-
-        $start = (int) $request->query->get('start', 0);
-        $limit = (int) $request->query->get('limit', 30);
-
+        
+        $start = (int)$request->getQueryParam('start', 0);
+        $limit = (int)$request->getQueryParam('limit', 30);
+        
         if ($limit == 0) {
             $limit = 30;
         }
-
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
             ->withLimit(new Natural($limit));
-
+        
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
-
-        $parameterBag = new SymfonyParameterBagAdapter($request->query);
-
+        
+        $parameterBag = new SymfonyParameterBagAdapter(
+            new ParameterBag($request->getQueryParams())
+        );
+        
+        
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
-
-        $consumerApiKey = $this->apiKeyReader->read($request);
+        $consumerApiKey = $this->apiKeyReader->read(Request::create(
+            $request->getUri(),
+            $request->getMethod(),
+            $request->getQueryParams()
+        ));
         $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
         if ($defaultQuery) {
@@ -174,47 +181,47 @@ class OfferSearchController
                 ...$textLanguages
             );
         }
-
-        if (!empty($request->query->get('q'))) {
+        
+        if ($request->hasQueryParam('q')) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
                 $this->queryStringFactory->fromString(
-                    $request->query->get('q')
+                    $request->getQueryParam('q')
                 ),
                 ...$textLanguages
             );
         }
-
-        if (!empty($request->query->get('text'))) {
+        
+        if ($request->hasQueryParam('text')) {
             $queryBuilder = $queryBuilder->withTextQuery(
-                new StringLiteral($request->query->get('text')),
+                new StringLiteral($request->getQueryParam('text')),
                 ...$textLanguages
             );
         }
-
-        if (!empty($request->query->get('id'))) {
+        
+        if ($request->hasQueryParam('id')) {
             $queryBuilder = $queryBuilder->withCdbIdFilter(
-                new Cdbid($request->query->get('id'))
+                new Cdbid($request->getQueryParam('id'))
             );
         }
-
-        if (!empty($request->query->get('locationId'))) {
+        
+        if ($request->hasQueryParam('locationId')) {
             $queryBuilder = $queryBuilder->withLocationCdbIdFilter(
-                new Cdbid($request->query->get('locationId'))
+                new Cdbid($request->getQueryParam('locationId'))
             );
         }
-
-        if (!empty($request->query->get('organizerId'))) {
+        
+        if ($request->hasQueryParam('organizerId')) {
             $queryBuilder = $queryBuilder->withOrganizerCdbIdFilter(
-                new Cdbid($request->query->get('organizerId'))
+                new Cdbid($request->getQueryParam('organizerId'))
             );
         }
-
+        
         $availableFrom = $this->getAvailabilityFromQuery($request, 'availableFrom');
         $availableTo = $this->getAvailabilityFromQuery($request, 'availableTo');
         if ($availableFrom || $availableTo) {
             $queryBuilder = $queryBuilder->withAvailableRangeFilter($availableFrom, $availableTo);
         }
-
+        
         $regionIds = $this->getRegionIdsFromQuery($parameterBag, 'regions');
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
@@ -223,14 +230,14 @@ class OfferSearchController
                 $regionId
             );
         }
-
-        $postalCode = (string) $request->query->get('postalCode');
+        
+        $postalCode = (string)$request->getQueryParam('postalCode');
         if (!empty($postalCode)) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
                 new PostalCode($postalCode)
             );
         }
-
+        
         $country = (new CountryExtractor())->getCountryFromQuery(
             $parameterBag,
             CountryCode::fromNative('BE')
@@ -238,157 +245,156 @@ class OfferSearchController
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
-
+        
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
         if (!empty($audienceType)) {
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
-
-        $price = $request->query->get('price', null);
-        $minPrice = $request->query->get('minPrice', null);
-        $maxPrice = $request->query->get('maxPrice', null);
-
+        
+        $price = $request->getQueryParam('price',null);
+        $minPrice = $request->getQueryParam('minPrice',null);
+        $maxPrice = $request->getQueryParam('maxPrice',null);
+        
         if (!is_null($price)) {
-            $price = Price::fromFloat((float) $price);
+            $price = Price::fromFloat((float)$price);
             $queryBuilder = $queryBuilder->withPriceRangeFilter($price, $price);
         } elseif (!is_null($minPrice) || !is_null($maxPrice)) {
-            $minPrice = is_null($minPrice) ? null : Price::fromFloat((float) $minPrice);
-            $maxPrice = is_null($maxPrice) ? null : Price::fromFloat((float) $maxPrice);
-
+            $minPrice = is_null($minPrice) ? null : Price::fromFloat((float)$minPrice);
+            $maxPrice = is_null($maxPrice) ? null : Price::fromFloat((float)$maxPrice);
+            
             $queryBuilder = $queryBuilder->withPriceRangeFilter($minPrice, $maxPrice);
         }
-
+        
         $includeMediaObjects = $parameterBag->getBooleanFromParameter('hasMediaObjects');
         if (!is_null($includeMediaObjects)) {
             $queryBuilder = $queryBuilder->withMediaObjectsFilter($includeMediaObjects);
         }
-
+        
         $includeUiTPAS = $parameterBag->getBooleanFromParameter('uitpas');
         if (!is_null($includeUiTPAS)) {
             $queryBuilder = $queryBuilder->withUiTPASFilter($includeUiTPAS);
         }
-
-        if ($request->query->get('creator')) {
+        
+        if ($request->hasQueryParam('creator')) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
-                new Creator($request->query->get('creator'))
+                new Creator($request->getQueryParam('creator'))
             );
         }
-
+        
         $createdFrom = $parameterBag->getDateTimeFromParameter('createdFrom');
         $createdTo = $parameterBag->getDateTimeFromParameter('createdTo');
         if ($createdFrom || $createdTo) {
             $queryBuilder = $queryBuilder->withCreatedRangeFilter($createdFrom, $createdTo);
         }
-
+        
         $modifiedFrom = $parameterBag->getDateTimeFromParameter('modifiedFrom');
         $modifiedTo = $parameterBag->getDateTimeFromParameter('modifiedTo');
         if ($modifiedFrom || $modifiedTo) {
             $queryBuilder = $queryBuilder->withModifiedRangeFilter($modifiedFrom, $modifiedTo);
         }
-
+        
         $calendarTypes = $this->getCalendarTypesFromQuery($parameterBag);
         if (!empty($calendarTypes)) {
             $queryBuilder = $queryBuilder->withCalendarTypeFilter(...$calendarTypes);
         }
-
+        
         $dateFrom = $parameterBag->getDateTimeFromParameter('dateFrom');
         $dateTo = $parameterBag->getDateTimeFromParameter('dateTo');
         if ($dateFrom || $dateTo) {
             $queryBuilder = $queryBuilder->withDateRangeFilter($dateFrom, $dateTo);
         }
-
+        
         $termIds = $this->getTermIdsFromQuery($parameterBag, 'termIds');
         foreach ($termIds as $termId) {
             $queryBuilder = $queryBuilder->withTermIdFilter($termId);
         }
-
+        
         $termLabels = $this->getTermLabelsFromQuery($parameterBag, 'termLabels');
         foreach ($termLabels as $termLabel) {
             $queryBuilder = $queryBuilder->withTermLabelFilter($termLabel);
         }
-
+        
         $locationTermIds = $this->getTermIdsFromQuery($parameterBag, 'locationTermIds');
         foreach ($locationTermIds as $locationTermId) {
             $queryBuilder = $queryBuilder->withLocationTermIdFilter($locationTermId);
         }
-
+        
         $locationTermLabels = $this->getTermLabelsFromQuery($parameterBag, 'locationTermLabels');
         foreach ($locationTermLabels as $locationTermLabel) {
             $queryBuilder = $queryBuilder->withLocationTermLabelFilter($locationTermLabel);
         }
-
+        
         $labels = $this->getLabelsFromQuery($parameterBag, 'labels');
         foreach ($labels as $label) {
             $queryBuilder = $queryBuilder->withLabelFilter($label);
         }
-
+        
         $locationLabels = $this->getLabelsFromQuery($parameterBag, 'locationLabels');
         foreach ($locationLabels as $locationLabel) {
             $queryBuilder = $queryBuilder->withLocationLabelFilter($locationLabel);
         }
-
+        
         $organizerLabels = $this->getLabelsFromQuery($parameterBag, 'organizerLabels');
         foreach ($organizerLabels as $organizerLabel) {
             $queryBuilder = $queryBuilder->withOrganizerLabelFilter($organizerLabel);
         }
-
+        
         $facets = $this->getFacetsFromQuery($parameterBag, 'facets');
         foreach ($facets as $facet) {
             $queryBuilder = $queryBuilder->withFacet($facet);
         }
-
         $resultSet = $this->searchService->search($queryBuilder);
-
+        
         $pagedCollection = $this->pagedCollectionFactory->fromPagedResultSet(
             $resultSet,
             $start,
             $limit
         );
-
+        
         $jsonArray = $pagedCollection->jsonSerialize();
-
+        
         foreach ($resultSet->getFacets() as $facetFilter) {
             // Singular "facet" to be consistent with "member" in Hydra
             // PagedCollection.
             $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
         }
-
+        
         return (new JsonResponse($jsonArray, 200, ['Content-Type' => 'application/ld+json']))
             ->setPublic()
             ->setClientTtl(60 * 1)
             ->setTtl(60 * 5);
     }
-
+    
     /**
-     * @param Request $request
+     * @param ApiRequestInterface $request
      * @param $queryParameter
      * @return \DateTimeImmutable|null
      */
-    private function getAvailabilityFromQuery(Request $request, $queryParameter)
+    private function getAvailabilityFromQuery(ApiRequestInterface $request, $queryParameter)
     {
-        $defaultDateTime = \DateTimeImmutable::createFromFormat('U', $request->server->get('REQUEST_TIME'));
+        $defaultDateTime = \DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
-
-        $parameterBag = new SymfonyParameterBagAdapter($request->query);
-
+        
+        $parameterBag = new SymfonyParameterBagAdapter(new ParameterBag($request->getQueryParams()));
+        
         return $parameterBag->getStringFromParameter(
             $queryParameter,
             $defaultDateTimeString,
             function ($dateTimeString) use ($queryParameter) {
                 $dateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
-
+                
                 if (!$dateTime) {
                     throw new \InvalidArgumentException(
                         "{$queryParameter} should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00"
                     );
                 }
-
+                
                 return $dateTime;
             }
         );
     }
-
-
+    
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
@@ -403,7 +409,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
@@ -418,7 +424,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
@@ -433,7 +439,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
@@ -448,7 +454,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
@@ -463,7 +469,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @return CalendarType[]
@@ -478,7 +484,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @return AudienceType|null
@@ -493,7 +499,7 @@ class OfferSearchController
             }
         );
     }
-
+    
     /**
      * @param ParameterBagInterface $parameterBag
      * @param $queryParameter

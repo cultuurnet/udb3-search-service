@@ -37,6 +37,18 @@ class ApiRequest implements ApiRequestInterface
         return isset($params[$name]) ? $params[$name] : $default;
     }
     
+    public function getQueryParamsKeys(): ?array
+    {
+        $params = $this->request->getQueryParams();
+        return $params === null ? null : array_keys($params);
+    }
+    
+    public function getServerParam(string $name, $default = null)
+    {
+        $params = $this->request->getServerParams();
+        return isset($params[$name]) ? $params[$name] : $default;
+    }
+    
     /**
      * Retrieves the HTTP protocol version as a string.
      *
@@ -380,7 +392,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function getServerParams()
     {
-        return $this->getServerParams();
+        return $this->request->getServerParams();
     }
     
     /**
@@ -395,7 +407,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function getCookieParams()
     {
-        return $this->getCookieParams();
+        return $this->request->getCookieParams();
     }
     
     /**
