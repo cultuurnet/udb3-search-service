@@ -28,6 +28,7 @@ use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
+use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\ClientBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -89,13 +90,15 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add(
             'auth.api_key_reader',
             function (){
-                return new CompositeApiKeyReader(
-                    new QueryParameterApiKeyReader('apiKey'),
-                    new CustomHeaderApiKeyReader('X-Api-Key')
+                return new ApiKeyReaderSymfonyAdapter(
+                    new CompositeApiKeyReader(
+                        new QueryParameterApiKeyReader('apiKey'),
+                        new CustomHeaderApiKeyReader('X-Api-Key')
+                    )
                 );
             }
         );
