@@ -1,6 +1,7 @@
 <?php
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\SearchService\LeagueElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Offer\LeagueOfferProvider;
 use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
@@ -34,6 +35,7 @@ try {
     $container->addServiceProvider(RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
     $container->addServiceProvider(LeagueOfferProvider::class);
+    $container->addServiceProvider(LeagueElasticSearchProvider::class);
     
     $response = $container->get(Router::class)->dispatch(
         new ApiRequest(
