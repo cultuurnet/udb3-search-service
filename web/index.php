@@ -1,6 +1,7 @@
 <?php
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\SearchService\Offer\LeagueOfferProvider;
 use CultuurNet\UDB3\SearchService\Organizer\LeagueOrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Container\Container;
@@ -12,7 +13,6 @@ use Noodlehaus\Config;
 use Noodlehaus\Parser\Yaml;
 
 require_once __DIR__ . '/../vendor/autoload.php';
-
 try {
     $container = new Container();
     $container->delegate(new ReflectionContainer());
@@ -33,6 +33,7 @@ try {
     
     $container->addServiceProvider(RoutingServiceProvider::class);
     $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
+    $container->addServiceProvider(LeagueOfferProvider::class);
     
     $response = $container->get(Router::class)->dispatch(
         new ApiRequest(

@@ -13,15 +13,15 @@ use Symfony\Component\HttpFoundation\Request;
 class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 {
     private const BOUNDS_REGEX = '([0-9\.-]+),([0-9\.-]+)\|([0-9\.-]+),([0-9\.-]+)';
-
+    
     /**
-     * @param Request $request
+     * @param ApiRequestInterface $request
      * @param OfferQueryBuilderInterface $offerQueryBuilder
      * @return OfferQueryBuilderInterface
      */
     public function parse(ApiRequestInterface $request, OfferQueryBuilderInterface $offerQueryBuilder)
     {
-        $bounds = $request->query->get('bounds', false);
+        $bounds = $request->getQueryParam('bounds', false);
         if (!$bounds) {
             return $offerQueryBuilder;
         }

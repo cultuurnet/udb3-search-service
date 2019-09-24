@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -139,10 +140,10 @@ class OfferSearchController
     }
     
     /**
-     * @param Request $request
-     * @return Response
+     * @param ApiRequest $request
+     * @return ResponseInterface
      */
-    public function search(ApiRequest $request)
+    public function __invoke(ApiRequest $request)
     {
         $this->offerParameterWhiteList->validateParameters(
             $request->getQueryParamsKeys()
@@ -358,11 +359,13 @@ class OfferSearchController
             // PagedCollection.
             $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
         }
-        
-        return (new JsonResponse($jsonArray, 200, ['Content-Type' => 'application/ld+json']))
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
+    
+        return ResponseFactory::jsonLd($jsonArray);
+    
+//        return (new JsonResponse($jsonArray, 200, ['Content-Type' => 'application/ld+json']))
+//            ->setPublic()
+//            ->setClientTtl(60 * 1)
+//            ->setTtl(60 * 5);
     }
     
     /**

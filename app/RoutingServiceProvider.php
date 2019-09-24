@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\Router;
@@ -23,6 +24,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $router->setStrategy($strategy);
 
                 $router->get('/organizers/', OrganizerSearchController::class);
+                $router->get('/offers/', OfferSearchController::class);
 
                 return $router;
             }
