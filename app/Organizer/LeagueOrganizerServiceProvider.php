@@ -15,16 +15,15 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerR
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
+use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use League\Container\ServiceProvider\AbstractServiceProvider;
-use Noodlehaus\Config;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * @todo: rename
  */
-class LeagueOrganizerServiceProvider extends AbstractServiceProvider
+class LeagueOrganizerServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
@@ -88,23 +87,5 @@ class LeagueOrganizerServiceProvider extends AbstractServiceProvider
                 return new MinimalRequiredInfoJsonDocumentTransformer();
             }
         );
-    }
-    
-    protected function add(string $serviceName, $function)
-    {
-        $this->getContainer()->add(
-            $serviceName,
-            $function
-        );
-    }
-    
-    protected function parameter(string $parameter)
-    {
-        return $this->getContainer()->get(Config::class)->get($parameter);
-    }
-    
-    protected function get(string $name)
-    {
-        return $this->getContainer()->get($name);
     }
 }

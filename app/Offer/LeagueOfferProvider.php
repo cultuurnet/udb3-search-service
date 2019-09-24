@@ -1,6 +1,5 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
@@ -29,12 +28,11 @@ use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
+use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\ClientBuilder;
-use League\Container\ServiceProvider\AbstractServiceProvider;
-use Noodlehaus\Config;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LeagueOfferProvider extends AbstractServiceProvider
+class LeagueOfferProvider extends BaseServiceProvider
 {
     protected $provides = [
         OfferSearchController::class,
@@ -158,21 +156,4 @@ class LeagueOfferProvider extends AbstractServiceProvider
             }
         );
     }
-    protected function parameter(string $parameter)
-    {
-        return $this->getContainer()->get(Config::class)->get($parameter);
-    }
-    
-    protected function get(string $name)
-    {
-        return $this->getContainer()->get($name);
-    }
-    protected function add(string $serviceName, $function)
-    {
-        $this->getContainer()->add(
-            $serviceName,
-            $function
-        );
-    }
-    
 }
