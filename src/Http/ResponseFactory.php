@@ -1,5 +1,4 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 

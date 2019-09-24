@@ -28,9 +28,10 @@ use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
+use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\ClientBuilder;
+use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LeagueOfferProvider extends BaseServiceProvider
@@ -58,28 +59,13 @@ class LeagueOfferProvider extends BaseServiceProvider
                     ->withParser(new GeoBoundsOfferRequestParser())
                     ->withParser(new SortByOfferRequestParser())
                     ->withParser(new WorkflowStatusOfferRequestParser());
+                
                 return new OfferSearchController(
                     $this->get('auth.api_key_reader'),
                     new InMemoryConsumerRepository(),
                     new ElasticSearchOfferQueryBuilder($this->parameter('elasticsearch.aggregation_size')),
                     $requestParser,
-                    new ElasticSearchOfferSearchService(
-                        ClientBuilder::create()
-                            ->setHosts(
-                                [
-                                    $this->parameter('elasticsearch.host'),
-                                ]
-                            )
-                            ->build(),
-                        new StringLiteral($this->parameter('elasticsearch.offer.read_index')),
-                        new StringLiteral($this->parameter('elasticsearch.offer.document_type')),
-                        new JsonDocumentTransformingPagedResultSetFactory(
-                            new PassThroughJsonDocumentTransformer(),
-                            new ElasticSearchPagedResultSetFactory(
-                                $this->get('offer_elasticsearch_aggregation_transformer')
-                            )
-                        )
-                    ),
+                    $this->get(OfferSearchServiceInterface::class),
                     new StringLiteral($this->parameter('elasticsearch.region.read_index')),
                     new StringLiteral($this->parameter('elasticsearch.region.document_type')),
                     new LuceneQueryStringFactory(),
@@ -93,7 +79,7 @@ class LeagueOfferProvider extends BaseServiceProvider
         
         $this->add(
             'auth.api_key_reader',
-            function (){
+            function () {
                 return new ApiKeyReaderSymfonyAdapter(
                     new CompositeApiKeyReader(
                         new QueryParameterApiKeyReader('apiKey'),
@@ -102,7 +88,7 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add('offer_elasticsearch_aggregation_transformer',
             function () {
                 $transformer = new CompositeAggregationTransformer();
@@ -114,7 +100,7 @@ class LeagueOfferProvider extends BaseServiceProvider
                 return $transformer;
             }
         );
-    
+        
         $this->add('offer_elasticsearch_region_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
@@ -123,7 +109,7 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add('offer_elasticsearch_theme_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
@@ -132,7 +118,7 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add('offer_elasticsearch_type_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
@@ -141,7 +127,7 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add('offer_elasticsearch_facility_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
@@ -150,11 +136,27 @@ class LeagueOfferProvider extends BaseServiceProvider
                 );
             }
         );
-    
+        
         $this->add('offer_elasticsearch_label_aggregation_transformer',
             function () {
                 return new LabelsAggregationTransformer(
                     FacetName::LABELS()
+                );
+            }
+        );
+        
+        $this->add(OfferSearchServiceInterface::class,
+            function () {
+                return new ElasticSearchOfferSearchService(
+                    $this->get(Client::class),
+                    new StringLiteral($this->parameter('elasticsearch.offer.read_index')),
+                    new StringLiteral($this->parameter('elasticsearch.offer.document_type')),
+                    new JsonDocumentTransformingPagedResultSetFactory(
+                        new PassThroughJsonDocumentTransformer(),
+                        new ElasticSearchPagedResultSetFactory(
+                            $this->get('offer_elasticsearch_aggregation_transformer')
+                        )
+                    )
                 );
             }
         );

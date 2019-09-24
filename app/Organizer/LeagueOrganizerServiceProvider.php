@@ -32,18 +32,6 @@ class LeagueOrganizerServiceProvider extends BaseServiceProvider
     
     public function register()
     {
-        $this->add(
-            Client::class,
-            function () {
-                return ClientBuilder::create()
-                    ->setHosts(
-                        [
-                            $this->parameter('elasticsearch.host'),
-                        ]
-                    )
-                    ->build();
-            }
-        );
         
         $this->add(
             OrganizerSearchController::class,
