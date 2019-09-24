@@ -19,7 +19,15 @@ try {
     $container->add(
         Config::class,
         function () {
-            return Config::load(__DIR__ . '/../config.yml', new Yaml());
+            $configFiles = [
+                __DIR__ . '/../config.yml',
+                __DIR__ . '/../facet_mapping_facilities.yml',
+                __DIR__ . '/../facet_mapping_regions.yml',
+                __DIR__ . '/../facet_mapping_themes.yml',
+                __DIR__ . '/../facet_mapping_types.yml',
+                __DIR__ . '/../features.yml',
+            ];
+            return Config::load($configFiles, new Yaml());
         }
     );
     
