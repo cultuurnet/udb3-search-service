@@ -42,7 +42,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -622,11 +621,8 @@ class OfferSearchControllerTest extends TestCase
         
         $this->controller->__invoke(new ApiRequest($request));
     }
-    
-    /**
-     * @return Request[]
-     */
-    public function booleanStringDataProvider()
+
+    public function booleanStringDataProvider(): array
     {
         return [
             [
