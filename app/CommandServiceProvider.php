@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\SearchService;
-
 
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
@@ -30,46 +28,37 @@ use Symfony\Component\Console\Application;
 class CommandServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Application::class
+        Application::class,
     ];
-    
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     * @return void
-     */
+
     public function register()
     {
         $this->add(Application::class,
             function () {
                 $application = new Application('udb3-search');
                 $application->add($this->get(TermTaxonomyToFacetMappingsCommand::class));
-                
                 $application->add($this->get(FlandersRegionTaxonomyToFacetMappingsCommand::class));
-                
+
                 /** Elasticsearch */
                 $application->add($this->get(MigrateElasticSearchCommand::class));
-                
+
                 /** Templates */
                 $application->add($this->get(CreateLowerCaseExactMatchAnalyzerCommand::class));
                 $application->add($this->get(CreateLowerCaseStandardAnalyzerCommand::class));
                 $application->add($this->get(CreateAutocompleteAnalyzerCommand::class));
-                
+
                 /** Generic index commands. */
                 $application->add($this->get(CheckIndexExistsCommand::class));
                 $application->add($this->get(CreateIndexCommand::class));
                 $application->add($this->get(DeleteIndexCommand::class));
                 $application->add($this->get(UpdateIndexAliasCommand::class));
-                
+
                 /** UDB3 core. */
                 $application->add($this->get(UpdateOrganizerMappingCommand::class));
                 $application->add($this->get(UpdateEventMappingCommand::class));
                 
                 $application->add($this->get(UpdatePlaceMappingCommand::class));
-    
-    
+
                 $application->add(
                     new UpdateRegionQueryMappingCommand(
                         $this->get(Client::class),
@@ -77,7 +66,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.region_query.document_type')
                     )
                 );
-    
+
                 $application->add(
                     new ReindexUDB3CoreCommand(
                         $this->get(Client::class),
@@ -87,7 +76,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                     )
                 );
-    
+
                 $application->add(
                     new ReindexPermanentOffersCommand(
                         $this->get(Client::class),
@@ -97,7 +86,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                     )
                 );
-    
+
                 $application->add(
                     new InstallUDB3CoreCommand(
                         $this->get(Client::class),
@@ -106,7 +95,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.udb3_core_index.read_alias')
                     )
                 );
-    
+
                 /**
                  * Geoshapes
                  */
@@ -117,7 +106,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.region.document_type')
                     )
                 );
-    
+
                 $application->add(
                     new IndexRegionsCommand(
                         $this->get(Client::class),
@@ -126,7 +115,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                     )
                 );
-    
+
                 $application->add(
                     new InstallGeoShapesCommand(
                         $this->get(Client::class),
@@ -138,7 +127,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 
                 return $application;
             });
-        
+
         $this->add(
             UpdateOrganizerMappingCommand::class,
             function () {
@@ -149,7 +138,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             UpdateEventMappingCommand::class,
             function () {
@@ -160,6 +149,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 );
             }
         );
+
         $this->add(
             UpdatePlaceMappingCommand::class,
             function () {
@@ -170,6 +160,5 @@ class CommandServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
     }
 }
