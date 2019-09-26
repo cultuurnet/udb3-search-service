@@ -30,7 +30,6 @@ class ContainerFactory
             }
         );
 
-        $container->addServiceProvider(RoutingServiceProvider::class);
         $container->addServiceProvider(LeagueOrganizerServiceProvider::class);
         $container->addServiceProvider(LeagueOfferProvider::class);
         $container->addServiceProvider(LeagueElasticSearchProvider::class);

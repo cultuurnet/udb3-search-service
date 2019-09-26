@@ -2,6 +2,7 @@
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\SearchService\ContainerFactory;
+use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
@@ -10,6 +11,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
     $container = ContainerFactory::build();
+    $container->addServiceProvider(RoutingServiceProvider::class);
+
     $response = $container->get(Router::class)->dispatch(
         new ApiRequest(
             ServerRequestFactory::createFromGlobals()
