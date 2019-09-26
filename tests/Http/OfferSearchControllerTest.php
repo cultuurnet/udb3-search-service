@@ -37,6 +37,7 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
+use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -101,7 +102,7 @@ class OfferSearchControllerTest extends TestCase
     
     public function setUp()
     {
-        $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
+        $this->apiKeyReader = new ApiKeyReaderSymfonyAdapter(new QueryParameterApiKeyReader('apiKey'));
         $this->consumerRepository = new InMemoryConsumerRepository();
         
         $this->queryBuilder = new MockOfferQueryBuilder();
@@ -361,8 +362,8 @@ class OfferSearchControllerTest extends TestCase
             ]
         );
         
-        $actualJsonResponse = $this->controller->search(new ApiRequest($request))
-            ->getContent();
+        $actualJsonResponse = $this->controller->__invoke(new ApiRequest($request))
+            ->getBody();
         
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
     }
@@ -388,7 +389,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -414,7 +415,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -449,7 +450,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -471,7 +472,7 @@ class OfferSearchControllerTest extends TestCase
             'availableFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00'
         );
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -486,7 +487,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "distance" parameter missing when searching by coordinates.');
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -501,7 +502,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when searching by distance.');
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -528,7 +529,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -555,7 +556,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -587,7 +588,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -619,7 +620,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -719,7 +720,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -745,7 +746,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -760,7 +761,7 @@ class OfferSearchControllerTest extends TestCase
             ['facets' => ['regions', 'bla']]
         );
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -775,7 +776,7 @@ class OfferSearchControllerTest extends TestCase
             ['addressCountry' => 'foobar']
         );
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -797,7 +798,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -815,7 +816,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('dateFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00');
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -854,7 +855,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid sorting syntax given.');
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -875,7 +876,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid sort field 'name.nl' given.");
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -895,7 +896,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid sort order 'ascending' given.");
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -914,7 +915,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when sorting by distance.');
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
@@ -931,7 +932,7 @@ class OfferSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     public function unknownParameterProvider()
@@ -1013,7 +1014,7 @@ class OfferSearchControllerTest extends TestCase
         
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
         
-        $this->controller->search(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
     
     /**
