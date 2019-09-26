@@ -9,6 +9,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractElasticSearchCommand extends Command
 {
+    /**
+     * @var Client
+     */
+    private $client;
+    
+    public function __construct(Client $client)
+    {
+        parent::__construct();
+        $this->client = $client;
+    }
+    
     
     /**
      * @return Client

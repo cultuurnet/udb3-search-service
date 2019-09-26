@@ -16,9 +16,9 @@ abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
      */
     protected $documentType;
     
-    public function __construct($indexName, $documentType)
+    public function __construct(Client $client, $indexName, $documentType)
     {
-        parent::__construct();
+        parent::__construct($client);
         $this->indexName = $indexName;
         $this->documentType = $documentType;
     }

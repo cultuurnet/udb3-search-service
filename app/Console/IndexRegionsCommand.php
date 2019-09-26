@@ -26,13 +26,14 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
     private $fileNameRegex;
     
     /**
+     * @param Client $client
      * @param string $indexName
      * @param string $pathToScan
      * @param string $fileNameRegex
      */
-    public function __construct($indexName, $pathToScan, $fileNameRegex = '*.json')
+    public function __construct(Client $client, $indexName, $pathToScan, $fileNameRegex = '*.json')
     {
-        parent::__construct();
+        parent::__construct($client);
         $this->indexName = $indexName;
         $this->pathToScan = $pathToScan;
         $this->fileNameRegex = $fileNameRegex;

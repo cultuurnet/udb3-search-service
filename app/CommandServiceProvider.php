@@ -24,6 +24,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionQueryMappingCommand;
+use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 
 class CommandServiceProvider extends BaseServiceProvider
@@ -71,6 +72,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new UpdateRegionQueryMappingCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.udb3_core_index.latest'),
                         $this->parameter('elasticsearch.region_query.document_type')
                     )
@@ -78,6 +80,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new ReindexUDB3CoreCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
@@ -87,6 +90,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new ReindexPermanentOffersCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
@@ -96,6 +100,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new InstallUDB3CoreCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.udb3_core_index.latest'),
                         $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                         $this->parameter('elasticsearch.udb3_core_index.read_alias')
@@ -107,6 +112,7 @@ class CommandServiceProvider extends BaseServiceProvider
                  */
                 $application->add(
                     new UpdateRegionMappingCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.geoshapes_index.latest'),
                         $this->parameter('elasticsearch.region.document_type')
                     )
@@ -114,6 +120,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new IndexRegionsCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
                         __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                         $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
@@ -122,6 +129,7 @@ class CommandServiceProvider extends BaseServiceProvider
     
                 $application->add(
                     new InstallGeoShapesCommand(
+                        $this->get(Client::class),
                         $this->parameter('elasticsearch.geoshapes_index.latest'),
                         $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                         $this->parameter('elasticsearch.geoshapes_index.read_alias')
@@ -135,6 +143,7 @@ class CommandServiceProvider extends BaseServiceProvider
             UpdateOrganizerMappingCommand::class,
             function () {
                 return new UpdateOrganizerMappingCommand(
+                    $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.latest'),
                     $this->parameter('elasticsearch.organizer.document_type')
                 );
@@ -145,6 +154,7 @@ class CommandServiceProvider extends BaseServiceProvider
             UpdateEventMappingCommand::class,
             function () {
                 return new UpdateEventMappingCommand(
+                    $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.latest'),
                     $this->parameter('elasticsearch.event.document_type')
                 );
@@ -154,6 +164,7 @@ class CommandServiceProvider extends BaseServiceProvider
             UpdatePlaceMappingCommand::class,
             function () {
                 return new UpdatePlaceMappingCommand(
+                    $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.latest'),
                     $this->parameter('elasticsearch.place.document_type')
                 );

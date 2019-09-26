@@ -34,18 +34,20 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
     private $bulkThreshold;
     
     /**
+     * @param Client $client
      * @param string $readIndexName
      * @param string $scrollTtl
      * @param int $scrollSize
      * @param int $bulkThreshold
      */
     public function __construct(
+        Client $client,
         $readIndexName,
         $scrollTtl = '1m',
         $scrollSize = 50,
         $bulkThreshold = 10
     ) {
-        parent::__construct();
+        parent::__construct($client);
         $this->readIndexName = $readIndexName;
         $this->scrollTtl = $scrollTtl;
         $this->scrollSize = $scrollSize;

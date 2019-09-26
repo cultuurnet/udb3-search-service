@@ -29,16 +29,18 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     private $readAlias;
     
     /**
+     * @param Client $client
      * @param string $latestIndexName
      * @param string $writeAlias
      * @param string $readAlias
      */
     public function __construct(
+        Client $client,
         $latestIndexName,
         $writeAlias,
         $readAlias
     ) {
-        parent::__construct();
+        parent::__construct($client);
         $this->latestIndexName = $latestIndexName;
         $this->writeAlias = $writeAlias;
         $this->readAlias = $readAlias;
