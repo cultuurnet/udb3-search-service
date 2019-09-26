@@ -6,17 +6,13 @@ use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
-use Symfony\Component\HttpFoundation\Request;
 
 class SortByOfferRequestParser implements OfferRequestParserInterface
 {
-    /**
-     * @param ApiRequestInterface $request
-     * @param OfferQueryBuilderInterface $offerQueryBuilder
-     * @return OfferQueryBuilderInterface
-     */
-    public function parse(ApiRequestInterface $request, OfferQueryBuilderInterface $offerQueryBuilder)
-    {
+    public function parse(
+        ApiRequestInterface $request,
+        OfferQueryBuilderInterface $offerQueryBuilder
+    ): OfferQueryBuilderInterface {
         $sorts = $request->getQueryParam('sort',[]);
 
         if (!is_array($sorts)) {

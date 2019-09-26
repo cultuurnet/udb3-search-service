@@ -23,14 +23,11 @@ class CompositeOfferRequestParser implements OfferRequestParserInterface
         $c->parsers[] = $parser;
         return $c;
     }
-    
-    /**
-     * @param ApiRequestInterface $request
-     * @param OfferQueryBuilderInterface $offerQueryBuilder
-     * @return OfferQueryBuilderInterface
-     */
-    public function parse(ApiRequestInterface $request, OfferQueryBuilderInterface $offerQueryBuilder)
-    {
+
+    public function parse(
+        ApiRequestInterface $request,
+        OfferQueryBuilderInterface $offerQueryBuilder
+    ): OfferQueryBuilderInterface {
         foreach ($this->parsers as $parser) {
             $offerQueryBuilder = $parser->parse($request, $offerQueryBuilder);
         }

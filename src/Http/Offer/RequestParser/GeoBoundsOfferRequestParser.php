@@ -8,19 +8,15 @@ use CultuurNet\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 {
     private const BOUNDS_REGEX = '([0-9\.-]+),([0-9\.-]+)\|([0-9\.-]+),([0-9\.-]+)';
-    
-    /**
-     * @param ApiRequestInterface $request
-     * @param OfferQueryBuilderInterface $offerQueryBuilder
-     * @return OfferQueryBuilderInterface
-     */
-    public function parse(ApiRequestInterface $request, OfferQueryBuilderInterface $offerQueryBuilder)
-    {
+
+    public function parse(
+        ApiRequestInterface $request,
+        OfferQueryBuilderInterface $offerQueryBuilder
+    ): OfferQueryBuilderInterface {
         $bounds = $request->getQueryParam('bounds', false);
         if (!$bounds) {
             return $offerQueryBuilder;
