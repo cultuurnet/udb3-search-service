@@ -1016,28 +1016,17 @@ class OfferSearchControllerTest extends TestCase
         
         $this->controller->__invoke(new ApiRequest($request));
     }
-    
-    /**
-     * @param array $queryParameters
-     * @return ServerRequestInterface
-     */
-    private function getSearchRequestWithQueryParameters(array $queryParameters)
+
+    private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface
     {
+        $_SERVER['REQUEST_TIME'] = 1493195661;
         $request = ServerRequestFactory::createFromGlobals()
             ->withRequestTarget('http://search.uitdatabank.be/offers/')
             ->withQueryParams($queryParameters)
             ->withMethod('GET');
         return  new ApiRequest($request);
-//        return Request::create(
-//            'http://search.uitdatabank.be/offers/',
-//            'GET',
-//            $queryParameters,
-//            [],
-//            [],
-//            ['REQUEST_TIME' => 1493195661]
-//        );
     }
-    
+
     /**
      * @param OfferQueryBuilderInterface $expectedQueryBuilder
      * @param PagedResultSet $pagedResultSet
