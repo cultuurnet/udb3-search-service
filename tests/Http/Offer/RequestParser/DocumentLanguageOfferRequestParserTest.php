@@ -2,11 +2,12 @@
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
+use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Slim\Psr7\Factory\ServerRequestFactory;
 
 class DocumentLanguageOfferRequestParserTest extends TestCase
 {
@@ -31,8 +32,8 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
      */
     public function it_should_add_a_main_language_filter()
     {
-        $request = new Request(
-            [
+        $request = $this->request(
+                        [
                 'mainLanguage' => 'nl',
             ]
         );
@@ -50,8 +51,8 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
      */
     public function it_should_add_language_filters()
     {
-        $request = new Request(
-            [
+        $request = $this->request(
+                        [
                 'languages' => ['nl', 'fr', 'de'],
             ]
         );
@@ -73,8 +74,8 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
      */
     public function it_should_add_completed_language_filters()
     {
-        $request = new Request(
-            [
+        $request = $this->request(
+                        [
                 'completedLanguages' => ['nl', 'fr', 'de'],
             ]
         );
@@ -89,5 +90,11 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
+    }
+    
+    private function request(array $params): ApiRequest
+    {
+        $request = ServerRequestFactory::createFromGlobals();
+        return new ApiRequest($request->withQueryParams($params));
     }
 }
