@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+
 use CultuurNet\UDB3\SearchService\ContainerFactory;
 use Symfony\Component\Console\Application;
 
