@@ -19,12 +19,12 @@ class ContainerFactory
             Config::class,
             function () {
                 $configFiles = [
-                    __DIR__ . '/config.yml',
-                    __DIR__ . '/facet_mapping_facilities.yml',
-                    __DIR__ . '/facet_mapping_regions.yml',
-                    __DIR__ . '/facet_mapping_themes.yml',
-                    __DIR__ . '/facet_mapping_types.yml',
-                    __DIR__ . '/features.yml',
+                    __DIR__ . '/../config.yml',
+                    __DIR__ . '/../facet_mapping_facilities.yml',
+                    __DIR__ . '/../facet_mapping_regions.yml',
+                    __DIR__ . '/../facet_mapping_themes.yml',
+                    __DIR__ . '/../facet_mapping_types.yml',
+                    __DIR__ . '/../features.yml',
                 ];
                 return Config::load($configFiles, new Yaml());
             }
