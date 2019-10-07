@@ -34,7 +34,7 @@ use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LeagueOfferProvider extends BaseServiceProvider
+class OfferProvider extends BaseServiceProvider
 {
     protected $provides = [
         OfferSearchController::class,

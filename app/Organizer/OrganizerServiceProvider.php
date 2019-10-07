@@ -20,10 +20,7 @@ use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
-/**
- * @todo: rename
- */
-class LeagueOrganizerServiceProvider extends BaseServiceProvider
+class OrganizerServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,

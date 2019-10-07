@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
-class LeagueElasticSearchProvider extends BaseServiceProvider
+class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
