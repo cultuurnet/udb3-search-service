@@ -1,6 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\SearchService;
+namespace CultuurNet\UDB3\SearchService\Factory;
+
+use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\EventProvider\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferProvider;
@@ -19,12 +21,12 @@ class ContainerFactory
             Config::class,
             function () {
                 $configFiles = [
-                    __DIR__ . '/../config.yml',
-                    __DIR__ . '/../facet_mapping_facilities.yml',
-                    __DIR__ . '/../facet_mapping_regions.yml',
-                    __DIR__ . '/../facet_mapping_themes.yml',
-                    __DIR__ . '/../facet_mapping_types.yml',
-                    __DIR__ . '/../features.yml',
+                    __DIR__ . '/../../config.yml',
+                    __DIR__ . '/../../facet_mapping_facilities.yml',
+                    __DIR__ . '/../../facet_mapping_regions.yml',
+                    __DIR__ . '/../../facet_mapping_themes.yml',
+                    __DIR__ . '/../../facet_mapping_types.yml',
+                    __DIR__ . '/../../features.yml',
                 ];
                 return Config::load($configFiles, new Yaml());
             }
