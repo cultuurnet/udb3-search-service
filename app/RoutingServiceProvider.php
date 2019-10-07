@@ -29,7 +29,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 );
 
                 $router->get('/organizers/', OrganizerSearchController::class);
-                $router->get('/offers/', OfferSearchController::class);
+                $router->get('/offers/', ['offer_controller','__invoke']);
 
                 return $router;
             }
