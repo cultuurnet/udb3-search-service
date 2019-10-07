@@ -5,39 +5,21 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
-use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\OfferSearchController;
-use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
-use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
+use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
+use CultuurNet\UDB3\SearchService\Factory\OfferSearchControllerFactory;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferProvider extends BaseServiceProvider
 {
     protected $provides = [
-        OfferSearchController::class,
+        'offer_controller',
+        OfferSearchControllerFactory::class,
     ];
     
     /**
@@ -50,30 +32,29 @@ class OfferProvider extends BaseServiceProvider
     public function register()
     {
         $this->add(
-            OfferSearchController::class,
+            'offer_controller',
             function () {
-                $requestParser = (new CompositeOfferRequestParser())
-                    ->withParser(new AgeRangeOfferRequestParser())
-                    ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
-                    ->withParser(new DocumentLanguageOfferRequestParser())
-                    ->withParser(new GeoBoundsOfferRequestParser())
-                    ->withParser(new SortByOfferRequestParser())
-                    ->withParser(new WorkflowStatusOfferRequestParser());
-                
-                return new OfferSearchController(
-                    $this->get('auth.api_key_reader'),
-                    new InMemoryConsumerRepository(),
-                    new ElasticSearchOfferQueryBuilder($this->parameter('elasticsearch.aggregation_size')),
-                    $requestParser,
-                    $this->get(OfferSearchServiceInterface::class),
-                    new StringLiteral($this->parameter('elasticsearch.region.read_index')),
-                    new StringLiteral($this->parameter('elasticsearch.region.document_type')),
-                    new LuceneQueryStringFactory(),
-                    new NodeAwareFacetTreeNormalizer(),
-                    new ResultTransformingPagedCollectionFactory(
-                        new MinimalRequiredInfoJsonDocumentTransformer()
-                    )
+                /** @var OfferSearchControllerFactory $offerControllerFactory */
+                $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
+               
+                return $offerControllerFactory->createFor(
+                    $this->parameter('elasticsearch.offer.read_index'),
+                    $this->parameter('elasticsearch.offer.document_type')
                 );
+            }
+        );
+        
+        $this->add(OfferSearchControllerFactory::class,
+            function () {
+                $agregationSize = $this->parameter('elasticsearch.aggregation_size');
+                $offerSearchControllerFactory = new OfferSearchControllerFactory(
+                    $agregationSize,
+                    $this->parameter('elasticsearch.region.read_index'),
+                    $this->parameter('elasticsearch.region.document_type'),
+                    $this->get('auth.api_key_reader'),
+                    $this->get(OfferSearchServiceFactory::class)
+                );
+                return $offerSearchControllerFactory;
             }
         );
         
@@ -144,19 +125,11 @@ class OfferProvider extends BaseServiceProvider
                 );
             }
         );
-        
-        $this->add(OfferSearchServiceInterface::class,
+        $this->add(OfferSearchServiceFactory::class,
             function () {
-                return new ElasticSearchOfferSearchService(
+                return new OfferSearchServiceFactory(
                     $this->get(Client::class),
-                    new StringLiteral($this->parameter('elasticsearch.offer.read_index')),
-                    new StringLiteral($this->parameter('elasticsearch.offer.document_type')),
-                    new JsonDocumentTransformingPagedResultSetFactory(
-                        new PassThroughJsonDocumentTransformer(),
-                        new ElasticSearchPagedResultSetFactory(
-                            $this->get('offer_elasticsearch_aggregation_transformer')
-                        )
-                    )
+                    $this->get('offer_elasticsearch_aggregation_transformer')
                 );
             }
         );
