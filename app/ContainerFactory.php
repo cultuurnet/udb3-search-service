@@ -1,9 +1,9 @@
 <?php
 
 namespace CultuurNet\UDB3\SearchService;
-
-use CultuurNet\UDB3\SearchService\Offer\OfferProvider;
+use CultuurNet\UDB3\SearchService\EventProvider\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Offer\OfferProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
@@ -33,6 +33,7 @@ class ContainerFactory
         $container->addServiceProvider(OrganizerServiceProvider::class);
         $container->addServiceProvider(OfferProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
+        $container->addServiceProvider(EventServiceProvider::class);
 
         return $container;
     }
