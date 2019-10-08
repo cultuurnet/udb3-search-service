@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
+use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactoryFactory;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -52,14 +53,19 @@ class OfferSearchControllerFactory
      * @var OfferSearchServiceFactory
      */
     private $offerSearchServiceFactory;
-
+    /**
+     * @var ResultTransformingPagedCollectionFactoryFactory
+     */
+    private $resultTransformingPagedCollectionFactoryFactory;
+    
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository,
-        OfferSearchServiceFactory $offerSearchServiceFactory
+        OfferSearchServiceFactory $offerSearchServiceFactory,
+        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
@@ -67,6 +73,7 @@ class OfferSearchControllerFactory
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
+        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
     
     public function createFor(
@@ -94,9 +101,7 @@ class OfferSearchControllerFactory
             new StringLiteral($this->documentType),
             new LuceneQueryStringFactory(),
             new NodeAwareFacetTreeNormalizer(),
-            new ResultTransformingPagedCollectionFactory(
-                new MinimalRequiredInfoJsonDocumentTransformer()
-            )
+            $this->resultTransformingPagedCollectionFactoryFactory
         );
     }
 }

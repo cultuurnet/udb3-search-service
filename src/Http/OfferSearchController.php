@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\Search\Http\Value\Embedded;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -13,7 +14,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferParameterWhiteList;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -91,6 +91,10 @@ class OfferSearchController
      * @var OfferParameterWhiteList
      */
     private $offerParameterWhiteList;
+    /**
+     * @var ResultTransformingPagedCollectionFactoryFactory
+     */
+    private $resultTransformingPagedCollectionFactoryFactory;
     
     /**
      * @param ApiKeyReaderInterface $apiKeyReader
@@ -102,7 +106,7 @@ class OfferSearchController
      * @param StringLiteral $regionDocumentType
      * @param QueryStringFactoryInterface $queryStringFactory
      * @param FacetTreeNormalizerInterface $facetTreeNormalizer
-     * @param PagedCollectionFactoryInterface|null $pagedCollectionFactory
+     * @param ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
      */
     public function __construct(
         ApiKeyReaderInterface $apiKeyReader,
@@ -114,13 +118,8 @@ class OfferSearchController
         StringLiteral $regionDocumentType,
         QueryStringFactoryInterface $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
-        PagedCollectionFactoryInterface $pagedCollectionFactory = null
+        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
-        if (is_null($pagedCollectionFactory)) {
-            $pagedCollectionFactory = new ResultTransformingPagedCollectionFactory(
-                new PassThroughJsonDocumentTransformer()
-            );
-        }
         
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
@@ -131,8 +130,8 @@ class OfferSearchController
         $this->regionDocumentType = $regionDocumentType;
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
-        $this->pagedCollectionFactory = $pagedCollectionFactory;
         $this->offerParameterWhiteList = new OfferParameterWhiteList();
+        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
     
     /**
@@ -162,7 +161,7 @@ class OfferSearchController
         );
         
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
-
+        
         $symfonyRequest = $request->toSymfonyRequest();
         $consumerApiKey = $this->apiKeyReader->read($symfonyRequest);
         
@@ -339,8 +338,12 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withFacet($facet);
         }
         $resultSet = $this->searchService->search($queryBuilder);
+    
+        $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
+            Embedded::create($request->getQueryParam('embed'))
+        );
         
-        $pagedCollection = $this->pagedCollectionFactory->fromPagedResultSet(
+        $pagedCollection = $resultTransformingPagedCollectionFactory->fromPagedResultSet(
             $resultSet,
             $start,
             $limit
@@ -353,7 +356,7 @@ class OfferSearchController
             // PagedCollection.
             $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
         }
-    
+        
         return ResponseFactory::jsonLd($jsonArray);
     }
     

@@ -98,6 +98,11 @@ class OfferSearchControllerTest extends TestCase
      */
     private $controller;
     
+    /**
+     * @var ResultTransformingPagedCollectionFactoryFactory
+     */
+    private $resultTransformingPagedCollectionFactoryFactory;
+    
     public function setUp()
     {
         $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
@@ -121,6 +126,8 @@ class OfferSearchControllerTest extends TestCase
         
         $this->facetTreeNormalizer = new NodeAwareFacetTreeNormalizer();
         
+        $this->resultTransformingPagedCollectionFactoryFactory = new ResultTransformingPagedCollectionFactoryFactory();
+        
         $this->controller = new OfferSearchController(
             $this->apiKeyReader,
             $this->consumerRepository,
@@ -130,7 +137,8 @@ class OfferSearchControllerTest extends TestCase
             $this->regionIndexName,
             $this->regionDocumentType,
             $this->queryStringFactory,
-            $this->facetTreeNormalizer
+            $this->facetTreeNormalizer,
+            $this->resultTransformingPagedCollectionFactoryFactory
         );
     }
     
@@ -362,7 +370,6 @@ class OfferSearchControllerTest extends TestCase
         
         $actualJsonResponse = $this->controller->__invoke(new ApiRequest($request))
             ->getBody();
-        
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
     }
     
