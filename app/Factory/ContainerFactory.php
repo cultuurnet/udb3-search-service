@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Factory;
 
+use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
@@ -48,7 +49,8 @@ class ContainerFactory
                 return Config::load($configFiles, new Yaml());
             }
         );
-        
+
+        $container->addServiceProvider(ApiKeyReaderServiceProvider::class);
         $container->addServiceProvider(OrganizerServiceProvider::class);
         $container->addServiceProvider(OfferServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
