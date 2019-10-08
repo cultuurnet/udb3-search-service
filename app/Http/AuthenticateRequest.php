@@ -2,31 +2,23 @@
 
 namespace CultuurNet\UDB3\SearchService\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticationException;
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticatorInterface;
-use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class AuthenticateRequest implements MiddlewareInterface
 {
     /**
-     * @var ApiKeyReaderInterface
+     * @var ApiKeyRequestAuthenticator
      */
-    private $apiKeyReader;
+    private $apiKeyRequestAuthenticator;
 
-    /**
-     * @var ApiKeyAuthenticatorInterface
-     */
-    private $apiKeyAuthenticator;
-
-    public function __construct(ApiKeyReaderInterface $apiKeyReader, ApiKeyAuthenticatorInterface $apiKeyAuthenticator)
+    public function __construct(ApiKeyRequestAuthenticator $apiKeyRequestAuthenticator)
     {
-        $this->apiKeyReader = $apiKeyReader;
-        $this->apiKeyAuthenticator = $apiKeyAuthenticator;
+        $this->apiKeyRequestAuthenticator = $apiKeyRequestAuthenticator;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -35,17 +27,13 @@ class AuthenticateRequest implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $apiKey = $this->apiKeyReader->read($request);
+        $symfonyRequest = SymfonyRequest::create(
+            $request->getUri(),
+            $request->getMethod(),
+            $request->getQueryParams()
+        );
 
-        if (is_null($apiKey)) {
-            throw new RequestAuthenticationException('No API key provided.');
-        }
-
-        try {
-            $this->apiKeyAuthenticator->authenticate($apiKey);
-        } catch (ApiKeyAuthenticationException $e) {
-            throw new RequestAuthenticationException("Invalid API key provided ({$apiKey->toNative()}).");
-        }
+        $this->apiKeyRequestAuthenticator->authenticate($symfonyRequest);
 
         return $handler->handle($request);
     }
