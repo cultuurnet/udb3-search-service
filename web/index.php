@@ -19,6 +19,9 @@ try {
     (new SapiStreamEmitter())->emit($response);
 } catch (Throwable $throwable) {
     // @todo: this is temporary, remove when not needed anymore
+    ini_set('xdebug.var_display_max_depth', -1);
+    ini_set('xdebug.var_display_max_children', -1);
+    ini_set('xdebug.var_display_max_data', -1);
     var_dump($throwable);
     echo $throwable->getTraceAsString();
 }

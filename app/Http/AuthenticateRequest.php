@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Http;
 
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
+use CultuurNet\UDB3\Search\Http\ApiRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -23,17 +24,13 @@ class AuthenticateRequest implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $request = new ApiRequest($request);
+
         if ($request->getMethod() === "OPTIONS" && $request->hasHeader("Access-Control-Request-Method")) {
             return $handler->handle($request);
         }
 
-        $symfonyRequest = SymfonyRequest::create(
-            $request->getUri(),
-            $request->getMethod(),
-            $request->getQueryParams()
-        );
-
-        $this->apiKeyRequestAuthenticator->authenticate($symfonyRequest);
+        $this->apiKeyRequestAuthenticator->authenticate($request->toSymfonyRequest());
 
         return $handler->handle($request);
     }
