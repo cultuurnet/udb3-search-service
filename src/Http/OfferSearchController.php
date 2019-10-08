@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
@@ -23,7 +24,6 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use ValueObjects\Geography\CountryCode;
@@ -38,7 +38,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class OfferSearchController
 {
     /**
-     * @var \CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderInterface
+     * @var ApiKeyReaderInterface
      */
     private $apiKeyReader;
     
@@ -161,9 +161,10 @@ class OfferSearchController
             new ParameterBag($request->getQueryParams())
         );
         
-        
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
-        $consumerApiKey = $this->apiKeyReader->read($request);
+
+        $symfonyRequest = $request->toSymfonyRequest();
+        $consumerApiKey = $this->apiKeyReader->read($symfonyRequest);
         
         $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
@@ -354,11 +355,6 @@ class OfferSearchController
         }
     
         return ResponseFactory::jsonLd($jsonArray);
-    
-//        return (new JsonResponse($jsonArray, 200, ['Content-Type' => 'application/ld+json']))
-//            ->setPublic()
-//            ->setClientTtl(60 * 1)
-//            ->setTtl(60 * 5);
     }
     
     /**

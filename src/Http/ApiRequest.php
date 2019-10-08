@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Search\Http;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class ApiRequest implements ApiRequestInterface
 {
@@ -44,6 +45,15 @@ class ApiRequest implements ApiRequestInterface
     {
         $params = $this->request->getServerParams();
         return isset($params[$name]) ? $params[$name] : $default;
+    }
+
+    public function toSymfonyRequest(): SymfonyRequest
+    {
+        return SymfonyRequest::create(
+            $this->getUri(),
+            $this->getMethod(),
+            $this->getQueryParams()
+        );
     }
     
     /**

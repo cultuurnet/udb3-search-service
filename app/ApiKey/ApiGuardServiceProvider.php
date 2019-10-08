@@ -23,6 +23,7 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
         ApiKeyReaderInterface::class,
         ApiKeyAuthenticatorInterface::class,
         RequestAuthenticatorInterface::class,
+        InMemoryConsumerRepository::class,
     ];
 
     public function register()
@@ -56,7 +57,7 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
 
                 return new CultureFeedApiKeyAuthenticator(
                     new CultureFeed($oauthClient),
-                    new InMemoryConsumerRepository(),
+                    $this->get(InMemoryConsumerRepository::class),
                     true
                 );
             }
@@ -69,6 +70,13 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
                     $this->get(ApiKeyReaderInterface::class),
                     $this->get(ApiKeyAuthenticatorInterface::class)
                 );
+            }
+        );
+
+        $this->add(
+            InMemoryConsumerRepository::class,
+            function () {
+                return new InMemoryConsumerRepository();
             }
         );
     }

@@ -37,7 +37,6 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -101,7 +100,7 @@ class OfferSearchControllerTest extends TestCase
     
     public function setUp()
     {
-        $this->apiKeyReader = new ApiKeyReaderSymfonyAdapter(new QueryParameterApiKeyReader('apiKey'));
+        $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
         $this->consumerRepository = new InMemoryConsumerRepository();
         
         $this->queryBuilder = new MockOfferQueryBuilder();

@@ -2,7 +2,8 @@
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
@@ -18,7 +19,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestPa
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class OfferSearchControllerFactory
@@ -42,7 +42,12 @@ class OfferSearchControllerFactory
      * @var ApiKeyReaderInterface
      */
     private $apiKeyReader;
-    
+
+    /**
+     * @var ConsumerReadRepositoryInterface
+     */
+    private $consumerReadRepository;
+
     /**
      * @var OfferSearchServiceFactory
      */
@@ -53,12 +58,14 @@ class OfferSearchControllerFactory
         string $regionIndex,
         string $documentType,
         ApiKeyReaderInterface $apiKeyReader,
+        ConsumerReadRepositoryInterface $consumerReadRepository,
         OfferSearchServiceFactory $offerSearchServiceFactory
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->apiKeyReader = $apiKeyReader;
+        $this->consumerReadRepository = $consumerReadRepository;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
     }
     
@@ -76,7 +83,7 @@ class OfferSearchControllerFactory
 
         return new OfferSearchController(
             $this->apiKeyReader,
-            new InMemoryConsumerRepository(),
+            $this->consumerReadRepository,
             new ElasticSearchOfferQueryBuilder($this->aggregationSize),
             $requestParser,
             $this->offerSearchServiceFactory->createFor(

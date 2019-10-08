@@ -2,15 +2,13 @@
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 
@@ -44,22 +42,11 @@ class OfferServiceProvider extends BaseServiceProvider
                     $agregationSize,
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
-                    $this->get('auth.api_key_reader'),
+                    $this->get(ApiKeyReaderInterface::class),
+                    $this->get(InMemoryConsumerRepository::class),
                     $this->get(OfferSearchServiceFactory::class)
                 );
                 return $offerSearchControllerFactory;
-            }
-        );
-        
-        $this->add(
-            'auth.api_key_reader',
-            function () {
-                return new ApiKeyReaderSymfonyAdapter(
-                    new CompositeApiKeyReader(
-                        new QueryParameterApiKeyReader('apiKey'),
-                        new CustomHeaderApiKeyReader('X-Api-Key')
-                    )
-                );
             }
         );
         

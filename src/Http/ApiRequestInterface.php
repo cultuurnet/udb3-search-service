@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
  * Interface ApiRequestInterface
@@ -21,4 +22,6 @@ interface ApiRequestInterface extends ServerRequestInterface
     public function getQueryParamsKeys(): ?array;
     
     public function getServerParam(string $name, $default = null);
+
+    public function toSymfonyRequest(): SymfonyRequest;
 }
