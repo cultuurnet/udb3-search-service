@@ -5,10 +5,6 @@ namespace CultuurNet\UDB3\SearchService;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Noodlehaus\Config;
 
-/**
- * Class BaseServiceProvider
- * @package CultuurNet\UDB3\SearchService
- */
 abstract class BaseServiceProvider extends AbstractServiceProvider
 {
     /**

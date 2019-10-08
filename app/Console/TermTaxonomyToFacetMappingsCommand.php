@@ -90,13 +90,13 @@ class TermTaxonomyToFacetMappingsCommand extends Command
         foreach ($simpleXmlNodes as $simpleXmlNode) {
             $attributes = $simpleXmlNode->attributes();
             
-            $id = (string)$attributes['id'];
+            $id = (string) $attributes['id'];
             
             $name = [
-                'nl' => (string)$attributes['labelnl'],
-                'fr' => (string)$attributes['labelfr'],
-                'de' => (string)$attributes['labelde'],
-                'en' => (string)$attributes['labelen'],
+                'nl' => (string) $attributes['labelnl'],
+                'fr' => (string) $attributes['labelfr'],
+                'de' => (string) $attributes['labelde'],
+                'en' => (string) $attributes['labelen'],
             ];
             
             $name = array_filter(

@@ -119,7 +119,7 @@ class OrganizerSearchController
         
         if ($request->hasQueryParam('postalCode')) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
-                new PostalCode((string)$request->getQueryParam('postalCode'))
+                new PostalCode((string) $request->getQueryParam('postalCode'))
             );
         }
         $country = (new CountryExtractor())->getCountryFromQuery(

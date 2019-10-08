@@ -72,5 +72,4 @@ class OrganizerJsonDocumentLanguageAnalyzer extends ConfigurableJsonDocumentLang
 
         return $jsonDocument->withBody($body);
     }
-
 }

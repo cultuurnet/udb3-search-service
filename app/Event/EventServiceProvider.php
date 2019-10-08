@@ -1,26 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\SearchService\EventProvider;
+namespace CultuurNet\UDB3\SearchService\Event;
 
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use CultuurNet\UDB3\SearchService\Factory\OfferSearchControllerFactory;
+use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 
 class EventServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        'event_controller'
+        'event_controller',
     ];
-    
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     * @return void
-     */
-    public function register()
+
+    public function register(): void
     {
-        $this->add('event_controller',
+        $this->add(
+            'event_controller',
             function () {
                 /** @var OfferSearchControllerFactory $offerControllerFactory */
                 $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);

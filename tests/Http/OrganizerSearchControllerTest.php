@@ -144,7 +144,10 @@ class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $actualJsonResponse = $this->controller->__invoke( new ApiRequest($request))->getBody()->__toString();
+        $actualJsonResponse = $this->controller
+            ->__invoke(new ApiRequest($request))
+            ->getBody()
+            ->__toString();
 
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
     }

@@ -24,8 +24,8 @@ class DistanceOfferRequestParser implements OfferRequestParserInterface
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $coordinates = $request->getQueryParam('coordinates',false);
-        $distance = $request->getQueryParam('distance',false);
+        $coordinates = $request->getQueryParam('coordinates', false);
+        $distance = $request->getQueryParam('distance', false);
 
         if ($coordinates && !$distance) {
             throw new \InvalidArgumentException('Required "distance" parameter missing when searching by coordinates.');

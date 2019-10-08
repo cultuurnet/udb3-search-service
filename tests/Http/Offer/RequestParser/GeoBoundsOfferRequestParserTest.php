@@ -72,7 +72,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
             ->method('withGeoBoundsFilter')
             ->with(
                 new GeoBoundsParameters(
-                // North-East
+                    // North-East
                     new Coordinates(
                         new Latitude(34.236144),
                         new Longitude(-118.500938)

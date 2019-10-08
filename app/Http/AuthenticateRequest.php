@@ -32,7 +32,7 @@ class AuthenticateRequest implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($request->getMethod() === "OPTIONS" && $request->hasHeader("Access-Control-Request-Method")) {
-            return;
+            return $handler->handle($request);
         }
 
         $apiKey = $this->apiKeyReader->read($request);

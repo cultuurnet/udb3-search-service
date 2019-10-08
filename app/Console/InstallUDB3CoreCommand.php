@@ -68,7 +68,7 @@ class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $force = (bool)$input->getOption('force');
+        $force = (bool) $input->getOption('force');
         
         $emptyInput = new ArrayInput([]);
         $consoleApp = $this->getApplication();

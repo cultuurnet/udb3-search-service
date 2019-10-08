@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Http\AuthenticateRequest;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -12,7 +11,7 @@ use League\Route\Strategy\ApplicationStrategy;
 class RoutingServiceProvider extends AbstractServiceProvider
 {
     protected $provides = [
-        Router::class
+        Router::class,
     ];
 
     public function register()
@@ -29,8 +28,8 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 );
                 
                 $router->get('/organizers/', OrganizerSearchController::class);
-                $router->get('/offers/', ['offer_controller','__invoke']);
-                $router->get('/events/', ['event_controller','__invoke']);
+                $router->get('/offers/', ['offer_controller', '__invoke']);
+                $router->get('/events/', ['event_controller', '__invoke']);
 
                 return $router;
             }

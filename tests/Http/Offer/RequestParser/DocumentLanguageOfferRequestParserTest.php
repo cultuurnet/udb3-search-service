@@ -33,7 +33,7 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
     public function it_should_add_a_main_language_filter()
     {
         $request = $this->request(
-                        [
+            [
                 'mainLanguage' => 'nl',
             ]
         );
@@ -52,7 +52,7 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
     public function it_should_add_language_filters()
     {
         $request = $this->request(
-                        [
+            [
                 'languages' => ['nl', 'fr', 'de'],
             ]
         );
@@ -75,7 +75,7 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
     public function it_should_add_completed_language_filters()
     {
         $request = $this->request(
-                        [
+            [
                 'completedLanguages' => ['nl', 'fr', 'de'],
             ]
         );

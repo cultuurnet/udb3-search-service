@@ -1,8 +1,6 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\Search\Http;
-
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -14,8 +12,7 @@ class ApiRequest implements ApiRequestInterface
      * @var ServerRequestInterface
      */
     private $request;
-    
-    
+
     /**
      * ApiRequest constructor.
      * @param ServerRequestInterface $request
@@ -642,5 +639,4 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withoutAttribute($name);
         return new self($request);
     }
-    
 }

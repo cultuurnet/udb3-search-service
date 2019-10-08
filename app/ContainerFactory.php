@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultuurNet\UDB3\SearchService\Offer\OfferProvider;
+use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -31,7 +31,7 @@ class ContainerFactory
         );
 
         $container->addServiceProvider(OrganizerServiceProvider::class);
-        $container->addServiceProvider(OfferProvider::class);
+        $container->addServiceProvider(OfferServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
 
         return $container;

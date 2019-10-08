@@ -76,7 +76,6 @@ class AgeRangeOfferRequestParserTest extends TestCase
                 'minAge' => '7',
                 'maxAge' => '12',
             ]
-        
         );
         
         $this->queryBuilder->expects($this->once())

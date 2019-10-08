@@ -12,11 +12,7 @@ class ApiKeyReaderSymfonyAdapter implements ApiKeyReaderInterface
      * @var SymfonyApiKeyReaderInterface
      */
     private $apiKeyReader;
-    
-    /**
-     * ReaderSymfonyAdapter constructor.
-     * @param SymfonyApiKeyReaderInterface $apiKeyReader
-     */
+
     public function __construct(SymfonyApiKeyReaderInterface $apiKeyReader)
     {
         $this->apiKeyReader = $apiKeyReader;
@@ -32,5 +28,4 @@ class ApiKeyReaderSymfonyAdapter implements ApiKeyReaderInterface
             )
         );
     }
-    
 }

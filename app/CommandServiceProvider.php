@@ -33,7 +33,8 @@ class CommandServiceProvider extends BaseServiceProvider
 
     public function register()
     {
-        $this->add(Application::class,
+        $this->add(
+            Application::class,
             function () {
                 $application = new Application('udb3-search');
                 $application->add($this->get(TermTaxonomyToFacetMappingsCommand::class));
@@ -126,7 +127,8 @@ class CommandServiceProvider extends BaseServiceProvider
                 );
                 
                 return $application;
-            });
+            }
+        );
 
         $this->add(
             UpdateOrganizerMappingCommand::class,

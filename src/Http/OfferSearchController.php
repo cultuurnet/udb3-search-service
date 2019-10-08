@@ -145,8 +145,8 @@ class OfferSearchController
             $request->getQueryParamsKeys()
         );
         
-        $start = (int)$request->getQueryParam('start', 0);
-        $limit = (int)$request->getQueryParam('limit', 30);
+        $start = (int) $request->getQueryParam('start', 0);
+        $limit = (int) $request->getQueryParam('limit', 30);
         
         if ($limit == 0) {
             $limit = 30;
@@ -225,7 +225,7 @@ class OfferSearchController
             );
         }
         
-        $postalCode = (string)$request->getQueryParam('postalCode');
+        $postalCode = (string) $request->getQueryParam('postalCode');
         if (!empty($postalCode)) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
                 new PostalCode($postalCode)
@@ -245,16 +245,16 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
         
-        $price = $request->getQueryParam('price',null);
-        $minPrice = $request->getQueryParam('minPrice',null);
-        $maxPrice = $request->getQueryParam('maxPrice',null);
+        $price = $request->getQueryParam('price', null);
+        $minPrice = $request->getQueryParam('minPrice', null);
+        $maxPrice = $request->getQueryParam('maxPrice', null);
         
         if (!is_null($price)) {
-            $price = Price::fromFloat((float)$price);
+            $price = Price::fromFloat((float) $price);
             $queryBuilder = $queryBuilder->withPriceRangeFilter($price, $price);
         } elseif (!is_null($minPrice) || !is_null($maxPrice)) {
-            $minPrice = is_null($minPrice) ? null : Price::fromFloat((float)$minPrice);
-            $maxPrice = is_null($maxPrice) ? null : Price::fromFloat((float)$maxPrice);
+            $minPrice = is_null($minPrice) ? null : Price::fromFloat((float) $minPrice);
+            $maxPrice = is_null($maxPrice) ? null : Price::fromFloat((float) $maxPrice);
             
             $queryBuilder = $queryBuilder->withPriceRangeFilter($minPrice, $maxPrice);
         }

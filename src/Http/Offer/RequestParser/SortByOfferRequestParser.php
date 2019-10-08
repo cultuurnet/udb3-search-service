@@ -13,7 +13,7 @@ class SortByOfferRequestParser implements OfferRequestParserInterface
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $sorts = $request->getQueryParam('sort',[]);
+        $sorts = $request->getQueryParam('sort', []);
 
         if (!is_array($sorts)) {
             throw new \InvalidArgumentException('Invalid sorting syntax given.');
@@ -27,7 +27,7 @@ class SortByOfferRequestParser implements OfferRequestParserInterface
                 return $queryBuilder->withSortByAvailableTo($sortOrder);
             },
             'distance' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
-                $coordinates = $request->getQueryParam('coordinates',false);
+                $coordinates = $request->getQueryParam('coordinates', false);
                 if (!$coordinates) {
                     throw new \InvalidArgumentException(
                         'Required "coordinates" parameter missing when sorting by distance.'

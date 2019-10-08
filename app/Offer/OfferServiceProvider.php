@@ -12,24 +12,16 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\ApiKey\ApiKeyReaderSymfonyAdapter;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use CultuurNet\UDB3\SearchService\Factory\OfferSearchControllerFactory;
 use Elasticsearch\Client;
 
-class OfferProvider extends BaseServiceProvider
+class OfferServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'offer_controller',
         OfferSearchControllerFactory::class,
     ];
-    
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     * @return void
-     */
-    public function register()
+
+    public function register(): void
     {
         $this->add(
             'offer_controller',
@@ -44,7 +36,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add(OfferSearchControllerFactory::class,
+        $this->add(
+            OfferSearchControllerFactory::class,
             function () {
                 $agregationSize = $this->parameter('elasticsearch.aggregation_size');
                 $offerSearchControllerFactory = new OfferSearchControllerFactory(
@@ -70,7 +63,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_aggregation_transformer',
             function () {
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register($this->get('offer_elasticsearch_region_aggregation_transformer'));
@@ -82,7 +76,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_region_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_region_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
                     FacetName::REGIONS(),
@@ -91,7 +86,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_theme_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_theme_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
                     FacetName::THEMES(),
@@ -100,7 +96,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_type_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_type_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
                     FacetName::TYPES(),
@@ -109,7 +106,8 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_facility_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_facility_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
                     FacetName::FACILITIES(),
@@ -118,14 +116,16 @@ class OfferProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_elasticsearch_label_aggregation_transformer',
+        $this->add(
+            'offer_elasticsearch_label_aggregation_transformer',
             function () {
                 return new LabelsAggregationTransformer(
                     FacetName::LABELS()
                 );
             }
         );
-        $this->add(OfferSearchServiceFactory::class,
+        $this->add(
+            OfferSearchServiceFactory::class,
             function () {
                 return new OfferSearchServiceFactory(
                     $this->get(Client::class),

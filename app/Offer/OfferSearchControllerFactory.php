@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace CultuurNet\UDB3\SearchService\Factory;
+namespace CultuurNet\UDB3\SearchService\Offer;
 
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
@@ -26,7 +26,7 @@ class OfferSearchControllerFactory
     /**
      * @var int
      */
-    private $agregationSize;
+    private $aggregationSize;
     
     /**
      * @var string
@@ -47,23 +47,15 @@ class OfferSearchControllerFactory
      * @var OfferSearchServiceFactory
      */
     private $offerSearchServiceFactory;
-    
-    /**
-     * OfferSearchControllerFactory constructor.
-     * @param int $agregationSize
-     * @param string $regionIndex
-     * @param string $documentType
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param OfferSearchServiceFactory $offerSearchServiceFactory
-     */
+
     public function __construct(
-        ?int $agregationSize,
+        ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         ApiKeyReaderInterface $apiKeyReader,
         OfferSearchServiceFactory $offerSearchServiceFactory
     ) {
-        $this->agregationSize = $agregationSize;
+        $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->apiKeyReader = $apiKeyReader;
@@ -74,34 +66,30 @@ class OfferSearchControllerFactory
         string $readIndex,
         string $documentType
     ) {
-        {
-            $requestParser = (new CompositeOfferRequestParser())
-                ->withParser(new AgeRangeOfferRequestParser())
-                ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
-                ->withParser(new DocumentLanguageOfferRequestParser())
-                ->withParser(new GeoBoundsOfferRequestParser())
-                ->withParser(new SortByOfferRequestParser())
-                ->withParser(new WorkflowStatusOfferRequestParser());
-            
-            
-            return new OfferSearchController(
-                $this->apiKeyReader,
-                new InMemoryConsumerRepository(),
-                new ElasticSearchOfferQueryBuilder($this->agregationSize),
-                $requestParser,
-                $this->offerSearchServiceFactory->createFor(
-                    $readIndex,
-                    $documentType
-                ),
-                new StringLiteral($this->regionIndex),
-                new StringLiteral($this->documentType),
-                new LuceneQueryStringFactory(),
-                new NodeAwareFacetTreeNormalizer(),
-                new ResultTransformingPagedCollectionFactory(
-                    new MinimalRequiredInfoJsonDocumentTransformer()
-                )
-            );
-        }
-        
+        $requestParser = (new CompositeOfferRequestParser())
+            ->withParser(new AgeRangeOfferRequestParser())
+            ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
+            ->withParser(new DocumentLanguageOfferRequestParser())
+            ->withParser(new GeoBoundsOfferRequestParser())
+            ->withParser(new SortByOfferRequestParser())
+            ->withParser(new WorkflowStatusOfferRequestParser());
+
+        return new OfferSearchController(
+            $this->apiKeyReader,
+            new InMemoryConsumerRepository(),
+            new ElasticSearchOfferQueryBuilder($this->aggregationSize),
+            $requestParser,
+            $this->offerSearchServiceFactory->createFor(
+                $readIndex,
+                $documentType
+            ),
+            new StringLiteral($this->regionIndex),
+            new StringLiteral($this->documentType),
+            new LuceneQueryStringFactory(),
+            new NodeAwareFacetTreeNormalizer(),
+            new ResultTransformingPagedCollectionFactory(
+                new MinimalRequiredInfoJsonDocumentTransformer()
+            )
+        );
     }
 }
