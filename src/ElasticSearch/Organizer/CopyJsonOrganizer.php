@@ -32,7 +32,8 @@ class CopyJsonOrganizer extends CopyJsonCombination
             new CopyJsonIdentifier(
                 $logger,
                 $idUrlParser,
-                FallbackType::ORGANIZER()
+                FallbackType::ORGANIZER(),
+                false
             ),
             new CopyJsonName($logger),
             new CopyJsonLanguages(
