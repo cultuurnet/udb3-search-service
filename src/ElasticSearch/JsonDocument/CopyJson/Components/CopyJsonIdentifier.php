@@ -19,24 +19,25 @@ class CopyJsonIdentifier implements CopyJsonInterface
     private $idUrlParser;
 
     /**
-     * @var string
+     * @var FallbackType
      */
     private $fallbackType;
 
     /**
-     * CopyJsonName constructor.
-     * @param CopyJsonLoggerInterface $logger
-     * @param IdUrlParserInterface $idUrlParser
-     * @param $fallbackType
+     * @var bool
      */
+    private $setMainId;
+
     public function __construct(
         CopyJsonLoggerInterface $logger,
         IdUrlParserInterface $idUrlParser,
-        FallbackType $fallbackType
+        FallbackType $fallbackType,
+        bool $setMainId = false
     ) {
         $this->logger = $logger;
         $this->idUrlParser = $idUrlParser;
         $this->fallbackType = $fallbackType;
+        $this->setMainId = $setMainId;
     }
 
     /**
@@ -59,6 +60,10 @@ class CopyJsonIdentifier implements CopyJsonInterface
         // missing @id twice.
         if (isset($from->{"@id"})) {
             $to->id = $this->idUrlParser->getIdFromUrl($from->{"@id"});
+
+            if ($this->setMainId) {
+                $to->mainId = $this->idUrlParser->getIdFromUrl($from->{"@id"});
+            }
         }
     }
 }

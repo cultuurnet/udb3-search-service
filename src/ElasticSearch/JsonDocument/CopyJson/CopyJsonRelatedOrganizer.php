@@ -39,7 +39,8 @@ class CopyJsonRelatedOrganizer implements CopyJsonInterface
         $this->copyJsonIdentifier = new CopyJsonIdentifier(
             $logger,
             $idUrlParser,
-            $fallbackType
+            $fallbackType,
+            false
         );
 
         $this->copyJsonName = new CopyJsonName($logger);

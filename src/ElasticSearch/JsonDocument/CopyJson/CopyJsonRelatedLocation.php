@@ -64,7 +64,8 @@ class CopyJsonRelatedLocation implements CopyJsonInterface
         $this->copyJsonIdentifier = new CopyJsonIdentifier(
             $logger,
             $idUrlParser,
-            $fallbackType
+            $fallbackType,
+            true
         );
 
         $this->copyJsonName = new CopyJsonName($logger);

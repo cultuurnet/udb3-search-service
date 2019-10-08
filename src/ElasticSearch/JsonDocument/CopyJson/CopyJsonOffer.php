@@ -31,7 +31,8 @@ class CopyJsonOffer extends CopyJsonCombination
             new CopyJsonIdentifier(
                 $logger,
                 $idUrlParser,
-                $fallbackType
+                $fallbackType,
+                false
             ),
             new CopyJsonName($logger),
             new CopyJsonTerms(),
