@@ -72,24 +72,24 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new ReindexUDB3CoreCommand(
                         $this->get(Client::class),
+                        $this->get(EventBusInterface::class),
+                        $this->get('elasticsearch_indexation_strategy'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold'),
-                        $this->get(EventBusInterface::class),
-                        $this->get('elasticsearch_indexation_strategy')
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                     )
                 );
 
                 $application->add(
                     new ReindexPermanentOffersCommand(
                         $this->get(Client::class),
+                        $this->get(EventBusInterface::class),
+                        $this->get('elasticsearch_indexation_strategy'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold'),
-                        $this->get(EventBusInterface::class),
-                        $this->get('elasticsearch_indexation_strategy')
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                     )
                 );
 

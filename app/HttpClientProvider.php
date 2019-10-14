@@ -16,7 +16,8 @@ class HttpClientProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add('http_client',
+        $this->add(
+            'http_client',
             function () {
                 return new Client();
             }

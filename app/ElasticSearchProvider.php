@@ -34,7 +34,8 @@ class ElasticSearchProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('elasticsearch_indexation_strategy',
+        $this->add(
+            'elasticsearch_indexation_strategy',
             function () {
                 return new MutableIndexationStrategy(
                     new SingleFileIndexationStrategy(
@@ -45,7 +46,8 @@ class ElasticSearchProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('elasticsearch_transformer_logger',
+        $this->add(
+            'elasticsearch_transformer_logger',
             function () {
                 $logger = new Logger('elasticsearch.transformer');
                 
@@ -61,7 +63,8 @@ class ElasticSearchProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('offer_region_service',
+        $this->add(
+            'offer_region_service',
             function () {
                 return new GeoShapeQueryOfferRegionService(
                     $this->get(Client::class),

@@ -78,7 +78,8 @@ class OrganizerServiceProvider extends BaseServiceProvider
         );
     
     
-        $this->add('organizer_search_projector',
+        $this->add(
+            'organizer_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
                     $this->get('http_client'),
@@ -92,7 +93,8 @@ class OrganizerServiceProvider extends BaseServiceProvider
             }
         );
     
-        $this->add('organizer_elasticsearch_transformer',
+        $this->add(
+            'organizer_elasticsearch_transformer',
             function () {
                 return new OrganizerJsonDocumentTransformer(
                     new PathEndIdUrlParser(),
@@ -101,7 +103,8 @@ class OrganizerServiceProvider extends BaseServiceProvider
             }
         );
     
-        $this->add('organizer_elasticsearch_repository',
+        $this->add(
+            'organizer_elasticsearch_repository',
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),

@@ -21,7 +21,8 @@ class EventBusProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add(EventBusInterface::class,
+        $this->add(
+            EventBusInterface::class,
             function () {
                 $bus = new SimpleEventBus();
                 $bus->beforeFirstPublication(function (EventBusInterface $eventBus) {

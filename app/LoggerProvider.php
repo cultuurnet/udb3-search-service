@@ -1,10 +1,7 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\SearchService;
 
-
-use Broadway\EventHandling\EventBusInterface;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -23,7 +20,8 @@ class LoggerProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $this->add('logger.amqp.udb3_consumer',
+        $this->add(
+            'logger.amqp.udb3_consumer',
             function () {
                 $logger = new Logger('amqp.udb3_publisher');
                 $logger->pushHandler(new StreamHandler('php://stdout'));

@@ -33,7 +33,8 @@ class PlaceServiceProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('place_search_projector',
+        $this->add(
+            'place_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
                     $this->get('http_client'),
@@ -46,7 +47,8 @@ class PlaceServiceProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('place_elasticsearch_transformer',
+        $this->add(
+            'place_elasticsearch_transformer',
             function () {
                 return new PlaceJsonDocumentTransformer(
                     new PathEndIdUrlParser(),
@@ -56,7 +58,8 @@ class PlaceServiceProvider extends BaseServiceProvider
             }
         );
         
-        $this->add('place_elasticsearch_repository',
+        $this->add(
+            'place_elasticsearch_repository',
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),

@@ -33,7 +33,8 @@ class EventServiceProvider extends BaseServiceProvider
             }
         );
     
-        $this->add('event_search_projector',
+        $this->add(
+            'event_search_projector',
             function ()
             {
                 $service = new TransformingJsonDocumentIndexService(
@@ -47,7 +48,8 @@ class EventServiceProvider extends BaseServiceProvider
             }
         );
     
-        $this->add('event_elasticsearch_transformer',
+        $this->add(
+            'event_elasticsearch_transformer',
             function () {
                 return new EventJsonDocumentTransformer(
                     new PathEndIdUrlParser(),
@@ -57,7 +59,8 @@ class EventServiceProvider extends BaseServiceProvider
             }
         );
     
-        $this->add('event_elasticsearch_repository',
+        $this->add(
+            'event_elasticsearch_repository',
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
