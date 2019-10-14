@@ -7,6 +7,7 @@ use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\EventBusProvider;
+use CultuurNet\UDB3\SearchService\HttpClientProvider;
 use CultuurNet\UDB3\SearchService\LoggerProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
@@ -60,6 +61,7 @@ class ContainerFactory
         $container->addServiceProvider(PlaceServiceProvider::class);
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(LoggerProvider::class);
+        $container->addServiceProvider(HttpClientProvider::class);
         
         return $container;
     }
