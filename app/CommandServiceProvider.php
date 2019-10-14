@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
+use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
@@ -74,7 +75,9 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold'),
+                        $this->get(EventBusInterface::class),
+                        $this->get('elasticsearch_indexation_strategy')
                     )
                 );
 
@@ -84,7 +87,9 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold'),
+                        $this->get(EventBusInterface::class),
+                        $this->get('elasticsearch_indexation_strategy')
                     )
                 );
 

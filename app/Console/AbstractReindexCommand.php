@@ -34,24 +34,40 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
     private $bulkThreshold;
     
     /**
+     * @var EventBusInterface
+     */
+    private $eventBus;
+    
+    /**
+     * @var IndexationStrategyInterface
+     */
+    private $indexationStrategy;
+    
+    /**
      * @param Client $client
      * @param string $readIndexName
      * @param string $scrollTtl
      * @param int $scrollSize
      * @param int $bulkThreshold
+     * @param EventBusInterface $eventBus
+     * @param IndexationStrategyInterface $indexationStrategy
      */
     public function __construct(
         Client $client,
         $readIndexName,
         $scrollTtl = '1m',
         $scrollSize = 50,
-        $bulkThreshold = 10
+        $bulkThreshold = 10,
+        EventBusInterface $eventBus,
+        IndexationStrategyInterface $indexationStrategy
     ) {
         parent::__construct($client);
         $this->readIndexName = $readIndexName;
         $this->scrollTtl = $scrollTtl;
         $this->scrollSize = $scrollSize;
         $this->bulkThreshold = $bulkThreshold;
+        $this->eventBus = $eventBus;
+        $this->indexationStrategy = $indexationStrategy;
     }
     
     /**
@@ -82,36 +98,22 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
         }
     }
     
-    /**
-     * @return EventBusInterface
-     */
-    protected function getEventBus()
+    protected function getEventBus(): EventBusInterface
     {
-        $app = $this->getSilexApplication();
-        return $app['event_bus.udb3-core'];
+        return $this->eventBus;
     }
     
-    /**
-     * @return IndexationStrategyInterface
-     */
-    protected function getIndexationStrategy()
+    protected function getIndexationStrategy(): IndexationStrategyInterface
     {
-        $app = $this->getSilexApplication();
-        return $app['elasticsearch_indexation_strategy'];
+        return $this->indexationStrategy;
     }
     
-    /**
-     * @return string
-     */
-    protected function getScrollTtl()
+    protected function getScrollTtl(): string
     {
         return $this->scrollTtl;
     }
     
-    /**
-     * @return int
-     */
-    protected function getScrollSize()
+    protected function getScrollSize(): int
     {
         return $this->scrollSize;
     }
