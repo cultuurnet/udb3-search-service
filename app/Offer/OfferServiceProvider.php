@@ -7,6 +7,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
+use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactoryFactory;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -44,7 +45,8 @@ class OfferServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.document_type'),
                     $this->get(ApiKeyReaderInterface::class),
                     $this->get(InMemoryConsumerRepository::class),
-                    $this->get(OfferSearchServiceFactory::class)
+                    $this->get(OfferSearchServiceFactory::class),
+                    $this->get(ResultTransformingPagedCollectionFactoryFactory::class)
                 );
                 return $offerSearchControllerFactory;
             }
