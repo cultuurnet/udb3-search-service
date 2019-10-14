@@ -6,6 +6,7 @@ use CultuurNet\UDB3\SearchService\ApiKey\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
+use CultuurNet\UDB3\SearchService\EventBusProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
@@ -56,6 +57,7 @@ class ContainerFactory
         $container->addServiceProvider(ElasticSearchProvider::class);
         $container->addServiceProvider(EventServiceProvider::class);
         $container->addServiceProvider(PlaceServiceProvider::class);
+        $container->addServiceProvider(EventBusProvider::class);
         
         return $container;
     }
