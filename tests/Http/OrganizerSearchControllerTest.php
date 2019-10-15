@@ -63,9 +63,7 @@ class OrganizerSearchControllerTest extends TestCase
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
             $this->queryStringFactory,
-            new ResultTransformingPagedCollectionFactory(
-                new PassThroughJsonDocumentTransformer()
-            )
+            new ResultTransformingPagedCollectionFactoryFactory()
         );
     }
 
@@ -124,8 +122,8 @@ class OrganizerSearchControllerTest extends TestCase
             new Natural(32),
             new Natural(10),
             [
-                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"name": "Foo"}'),
-                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"name": "Foobar"}'),
+                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id":"1","@type":"Organizer"}'),
+                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id":"2","@type":"Organizer"}'),
             ]
         );
 
@@ -138,8 +136,8 @@ class OrganizerSearchControllerTest extends TestCase
                 'itemsPerPage' => 10,
                 'totalItems' => 32,
                 'member' => [
-                    ['name' => 'Foo'],
-                    ['name' => 'Foobar'],
+                    ['@id' => '1', '@type' => 'Organizer'],
+                    ['@id' => '2', '@type' => 'Organizer'],
                 ],
             ]
         );

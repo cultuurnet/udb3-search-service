@@ -33,9 +33,9 @@ class OrganizerSearchController
     private $searchService;
 
     /**
-     * @var PagedCollectionFactoryInterface
+     * @var ResultTransformingPagedCollectionFactoryFactory
      */
-    private $pagedCollectionFactory;
+    private $resultTransformingPagedCollectionFactoryFactory;
 
     /**
      * @var OrganizerParameterWhiteList
@@ -57,13 +57,13 @@ class OrganizerSearchController
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactoryInterface $queryStringFactory,
-        PagedCollectionFactoryInterface $pagedCollectionFactory
+        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
-        $this->pagedCollectionFactory = $pagedCollectionFactory;
+        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
         $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
     }
 
@@ -140,11 +140,13 @@ class OrganizerSearchController
 
         $resultSet = $this->searchService->search($queryBuilder);
 
-        $pagedCollection = $this->pagedCollectionFactory->fromPagedResultSet(
-            $resultSet,
-            $start,
-            $limit
-        );
+        $pagedCollection = $this->resultTransformingPagedCollectionFactoryFactory
+            ->create((bool) $parameterBag->getBooleanFromParameter('embed'))
+            ->fromPagedResultSet(
+                $resultSet,
+                $start,
+                $limit
+            );
 
         /**
          * @todo add cache control to headers

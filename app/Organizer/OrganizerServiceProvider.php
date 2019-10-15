@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\SearchService\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
@@ -16,7 +15,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
+use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactoryFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
@@ -34,7 +33,6 @@ class OrganizerServiceProvider extends BaseServiceProvider
 
     public function register()
     {
-
         $this->add(
             OrganizerSearchController::class,
             function () {
@@ -57,27 +55,10 @@ class OrganizerServiceProvider extends BaseServiceProvider
                     ),
                     $requestParser,
                     new LuceneQueryStringFactory(),
-                    $this->get('paged_collection_factory')
+                    $this->get(ResultTransformingPagedCollectionFactoryFactory::class)
                 );
             }
         );
-
-        $this->add(
-            'paged_collection_factory',
-            function () {
-                return new ResultTransformingPagedCollectionFactory(
-                    $this->get('elasticsearch_result_transformer')
-                );
-            }
-        );
-
-        $this->add(
-            'elasticsearch_result_transformer',
-            function () {
-                return new MinimalRequiredInfoJsonDocumentTransformer();
-            }
-        );
-
 
         $this->add(
             'organizer_search_projector',
