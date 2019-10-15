@@ -127,7 +127,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function hasHeader($name)
     {
-        return $this->request->hasHeader();
+        return $this->request->hasHeader($name);
     }
     
     /**
@@ -190,7 +190,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function withHeader($name, $value)
     {
-        $request = $this->request->withHeader($name);
+        $request = $this->request->withHeader($name, $value);
         return new self($request);
     }
     
@@ -212,7 +212,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function withAddedHeader($name, $value)
     {
-        $request = $this->request->withAddedHeader($name);
+        $request = $this->request->withAddedHeader($name, $value);
         return new self($request);
     }
     
@@ -606,7 +606,7 @@ class ApiRequest implements ApiRequestInterface
      */
     public function getAttribute($name, $default = null)
     {
-        return $this->request->getAttribute($name, $default = null);
+        return $this->request->getAttribute($name, $default);
     }
     
     /**
