@@ -7,11 +7,11 @@ use CultuurNet\UDB3\Search\SimpleEventBus;
 
 class EventBusProvider extends BaseServiceProvider
 {
-    
+
     protected $provides = [
         EventBusInterface::class,
     ];
-    
+
     /**
      * Use the register method to register items with the container via the
      * protected $this->leagueContainer property or the `getLeagueContainer` method
@@ -31,19 +31,19 @@ class EventBusProvider extends BaseServiceProvider
                         'event_search_projector',
                         'place_search_projector',
                     ];
-                    
+
                     if (!(is_null($this->parameter('config.event_bus'))) &&
                         !(is_null($this->parameter('config.event_bus.subscribers')))) {
-                        
+
                         $subscribers = $this->parameter('config.event_bus.subscribers');
                     }
-                    
+
                     foreach ($subscribers as $subscriberServiceId) {
                         $eventBus->subscribe($this->get($subscriberServiceId));
                     }
-                    
+
                 });
-                
+
                 return $bus;
             }
         );

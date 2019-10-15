@@ -10,7 +10,7 @@ class LoggerProvider extends BaseServiceProvider
     protected $provides = [
         'logger.amqp.udb3_consumer',
     ];
-    
+
     /**
      * Use the register method to register items with the container via the
      * protected $this->leagueContainer property or the `getLeagueContainer` method
@@ -25,13 +25,13 @@ class LoggerProvider extends BaseServiceProvider
             function () {
                 $logger = new Logger('amqp.udb3_publisher');
                 $logger->pushHandler(new StreamHandler('php://stdout'));
-                
+
                 $logFileHandler = new StreamHandler(
                     __DIR__ . '/log/amqp.log',
                     Logger::DEBUG
                 );
                 $logger->pushHandler($logFileHandler);
-                
+
                 return $logger;
             }
         );

@@ -16,6 +16,7 @@ class EmbeddedTest extends TestCase
         $this->assertEquals($embedded->isTrue(), false);
         $this->assertEquals($embedded->isFalse(), true);
     }
+
     /**
      * @dataProvider providerForTrue
      * @param $value
@@ -26,7 +27,7 @@ class EmbeddedTest extends TestCase
         $this->assertEquals($embedded->isTrue(), true);
         $this->assertEquals($embedded->isFalse(), false);
     }
-    
+
     public function provider()
     {
         return array(
@@ -35,7 +36,7 @@ class EmbeddedTest extends TestCase
             ['some-string'],
         );
     }
-    
+
     public function providerForTrue()
     {
         return array(

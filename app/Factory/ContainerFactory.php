@@ -26,14 +26,14 @@ class ContainerFactory
         $container->addServiceProvider(CommandServiceProvider::class);
         return $container;
     }
-    
+
     public static function forWeb(): Container
     {
         $container = self::build();
         $container->addServiceProvider(RoutingServiceProvider::class);
         return $container;
     }
-    
+
     private static function build(): Container
     {
         $container = new Container();
@@ -62,7 +62,7 @@ class ContainerFactory
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(LoggerProvider::class);
         $container->addServiceProvider(HttpClientProvider::class);
-        
+
         return $container;
     }
 }

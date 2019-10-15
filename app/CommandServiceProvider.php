@@ -58,7 +58,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 /** UDB3 core. */
                 $application->add($this->get(UpdateOrganizerMappingCommand::class));
                 $application->add($this->get(UpdateEventMappingCommand::class));
-                
+
                 $application->add($this->get(UpdatePlaceMappingCommand::class));
 
                 $application->add(
@@ -130,7 +130,7 @@ class CommandServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.geoshapes_index.read_alias')
                     )
                 );
-                
+
                 return $application;
             }
         );

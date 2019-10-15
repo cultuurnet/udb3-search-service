@@ -17,7 +17,7 @@ class PlaceServiceProvider extends BaseServiceProvider
     protected $provides = [
         'place_controller',
     ];
-    
+
     public function register(): void
     {
         $this->add(
@@ -25,14 +25,14 @@ class PlaceServiceProvider extends BaseServiceProvider
             function () {
                 /** @var OfferSearchControllerFactory $offerControllerFactory */
                 $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
-                
+
                 return $offerControllerFactory->createFor(
                     $this->parameter('elasticsearch.place.read_index'),
                     $this->parameter('elasticsearch.place.document_type')
                 );
             }
         );
-        
+
         $this->add(
             'place_search_projector',
             function () {
@@ -42,11 +42,11 @@ class PlaceServiceProvider extends BaseServiceProvider
                     $this->get('place_elasticsearch_repository')
                 );
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
-                
+
                 return new PlaceSearchProjector($service);
             }
         );
-        
+
         $this->add(
             'place_elasticsearch_transformer',
             function () {
@@ -57,7 +57,7 @@ class PlaceServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'place_elasticsearch_repository',
             function () {

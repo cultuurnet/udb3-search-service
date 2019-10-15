@@ -338,7 +338,7 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withFacet($facet);
         }
         $resultSet = $this->searchService->search($queryBuilder);
-    
+        
         $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
             Embedded::create($request->getQueryParam('embed'))
         );

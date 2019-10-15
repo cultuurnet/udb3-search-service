@@ -27,7 +27,7 @@ class RoutingServiceProvider extends BaseServiceProvider
                         $this->getLeagueContainer()->get(AuthenticateRequest::class)
                     );
                 }
-                
+
                 $router->get('/organizers/', OrganizerSearchController::class);
                 $router->get('/offers/', ['offer_controller', '__invoke']);
                 $router->get('/events/', ['event_controller', '__invoke']);

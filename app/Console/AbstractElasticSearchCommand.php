@@ -13,14 +13,14 @@ abstract class AbstractElasticSearchCommand extends Command
      * @var Client
      */
     private $client;
-    
+
     public function __construct(Client $client)
     {
         parent::__construct();
         $this->client = $client;
     }
-    
-    
+
+
     /**
      * @return Client
      */
@@ -28,7 +28,7 @@ abstract class AbstractElasticSearchCommand extends Command
     {
         return $this->client;
     }
-    
+
     /**
      * @param OutputInterface $output
      * @return ConsoleLogger

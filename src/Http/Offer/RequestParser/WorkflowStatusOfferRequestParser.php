@@ -14,7 +14,7 @@ final class WorkflowStatusOfferRequestParser implements OfferRequestParserInterf
 {
     private const PARAMETER = 'workflowStatus';
     private const DEFAULT = 'APPROVED,READY_FOR_VALIDATION';
-    
+
     public function parse(
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
@@ -22,7 +22,7 @@ final class WorkflowStatusOfferRequestParser implements OfferRequestParserInterf
         $parameterBagReader = new SymfonyParameterBagAdapter(
             new ParameterBag($request->getQueryParams())
         );
-        
+
         $workflowStatuses = $parameterBagReader->getExplodedStringFromParameter(
             self::PARAMETER,
             self::DEFAULT,
@@ -30,7 +30,7 @@ final class WorkflowStatusOfferRequestParser implements OfferRequestParserInterf
                 return new WorkflowStatus($workflowStatus);
             }
         );
-        
+
         return $offerQueryBuilder->withWorkflowStatusFilter(...$workflowStatuses);
     }
 }

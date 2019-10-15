@@ -18,7 +18,7 @@ class ElasticSearchProvider extends BaseServiceProvider
     protected $provides = [
         Client::class,
     ];
-    
+
     public function register()
     {
         $this->add(
@@ -33,7 +33,7 @@ class ElasticSearchProvider extends BaseServiceProvider
                     ->build();
             }
         );
-        
+
         $this->add(
             'elasticsearch_indexation_strategy',
             function () {
@@ -45,12 +45,12 @@ class ElasticSearchProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'elasticsearch_transformer_logger',
             function () {
                 $logger = new Logger('elasticsearch.transformer');
-                
+
                 /** @TODO: fix dir path */
                 $logger->pushHandler(
                     new StreamHandler(
@@ -58,11 +58,11 @@ class ElasticSearchProvider extends BaseServiceProvider
                         Logger::DEBUG
                     )
                 );
-                
+
                 return $logger;
             }
         );
-        
+
         $this->add(
             'offer_region_service',
             function () {

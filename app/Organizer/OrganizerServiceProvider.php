@@ -30,17 +30,17 @@ class OrganizerServiceProvider extends BaseServiceProvider
         Client::class,
         OrganizerSearchController::class,
     ];
-    
+
     public function register()
     {
-        
+
         $this->add(
             OrganizerSearchController::class,
             function () {
                 $requestParser = (new CompositeOrganizerRequestParser())
                     ->withParser(new WorkflowStatusOrganizerRequestParser())
                     ->withParser(new SortByOrganizerRequestParser());
-                
+
                 return new OrganizerSearchController(
                     new ElasticSearchOrganizerQueryBuilder(),
                     new ElasticSearchOrganizerSearchService(
@@ -60,7 +60,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'paged_collection_factory',
             function () {
@@ -69,15 +69,15 @@ class OrganizerServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'elasticsearch_result_transformer',
             function () {
                 return new MinimalRequiredInfoJsonDocumentTransformer();
             }
         );
-    
-    
+
+
         $this->add(
             'organizer_search_projector',
             function () {
@@ -86,13 +86,13 @@ class OrganizerServiceProvider extends BaseServiceProvider
                     $this->get('organizer_elasticsearch_transformer'),
                     $this->get('organizer_elasticsearch_repository')
                 );
-            
+
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
-            
+
                 return new OrganizerSearchProjector($service);
             }
         );
-    
+
         $this->add(
             'organizer_elasticsearch_transformer',
             function () {
@@ -102,7 +102,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
                 );
             }
         );
-    
+
         $this->add(
             'organizer_elasticsearch_repository',
             function () {

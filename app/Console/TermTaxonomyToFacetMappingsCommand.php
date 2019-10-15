@@ -23,7 +23,7 @@ class TermTaxonomyToFacetMappingsCommand extends Command
     const TYPES_XPATH = "//*[name()='term'][@domain='eventtype'][@parentid]";
     const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
     const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
-    
+
     public function configure()
     {
         $this
@@ -36,7 +36,7 @@ class TermTaxonomyToFacetMappingsCommand extends Command
                 'http://taxonomy.uitdatabank.be/api/term'
             );
     }
-    
+
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -45,24 +45,24 @@ class TermTaxonomyToFacetMappingsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = new ConsoleLogger($output);
-        
+
         $xmlFileUrl = $input->getArgument('xmlFileUrl');
-        
+
         $xmlString = @file_get_contents($xmlFileUrl);
-        
+
         if (!$xmlString) {
             $logger->error("Could not load taxonomy terms XML from $xmlFileUrl");
             return 1;
         }
-        
+
         $xml = new \SimpleXmlElement($xmlString);
-        
+
         $this->generateYmlMapping('facet_mapping_types', $xml, self::TYPES_XPATH);
         $this->generateYmlMapping('facet_mapping_themes', $xml, self::THEMES_XPATH);
         $this->generateYmlMapping('facet_mapping_facilities', $xml, self::FACILITIES_XPATH);
         return 0;
     }
-    
+
     /**
      * @param string $mappingName
      * @param \SimpleXmlElement $xml
@@ -78,7 +78,7 @@ class TermTaxonomyToFacetMappingsCommand extends Command
         $yml = Yaml::dump($mapping, 4, 2);
         file_put_contents(__DIR__ . "/../../{$mappingName}.yml", $yml);
     }
-    
+
     /**
      * @param \SimpleXMLElement[] $simpleXmlNodes
      * @return array
@@ -86,29 +86,29 @@ class TermTaxonomyToFacetMappingsCommand extends Command
     private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)
     {
         $mapping = [];
-        
+
         foreach ($simpleXmlNodes as $simpleXmlNode) {
             $attributes = $simpleXmlNode->attributes();
-            
+
             $id = (string) $attributes['id'];
-            
+
             $name = [
                 'nl' => (string) $attributes['labelnl'],
                 'fr' => (string) $attributes['labelfr'],
                 'de' => (string) $attributes['labelde'],
                 'en' => (string) $attributes['labelen'],
             ];
-            
+
             $name = array_filter(
                 $name,
                 function ($translation) {
                     return !empty($translation);
                 }
             );
-            
+
             $mapping[$id] = ['name' => $name];
         }
-        
+
         return $mapping;
     }
 }

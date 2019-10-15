@@ -15,38 +15,38 @@ class AgeRangeOfferRequestParserTest extends TestCase
      * @var DocumentLanguageOfferRequestParser
      */
     private $parser;
-    
+
     /**
      * @var OfferQueryBuilderInterface|MockObject
      */
     private $queryBuilder;
-    
+
     public function setUp()
     {
         $this->parser = new AgeRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
     }
-    
+
     /**
      * @test
      */
     public function it_should_add_an_age_range_filter_with_a_min_age()
     {
-        
+
         $request = $this->request(
             [
                 'minAge' => '7',
             ]
         );
-        
+
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
             ->with(new Natural(7), null)
             ->willReturn($this->queryBuilder);
-        
+
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }
-    
+
     /**
      * @test
      */
@@ -57,15 +57,15 @@ class AgeRangeOfferRequestParserTest extends TestCase
                 'maxAge' => '12',
             ]
         );
-        
+
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
             ->with(null, new Natural(12))
             ->willReturn($this->queryBuilder);
-        
+
         $this->parser->parse($request, $this->queryBuilder);
     }
-    
+
     /**
      * @test
      */
@@ -77,15 +77,15 @@ class AgeRangeOfferRequestParserTest extends TestCase
                 'maxAge' => '12',
             ]
         );
-        
+
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
             ->with(new Natural(7), new Natural(12))
             ->willReturn($this->queryBuilder);
-        
+
         $this->parser->parse($request, $this->queryBuilder);
     }
-    
+
     /**
      * @test
      */
@@ -96,15 +96,15 @@ class AgeRangeOfferRequestParserTest extends TestCase
                 'allAges' => 'true',
             ]
         );
-        
+
         $this->queryBuilder->expects($this->once())
             ->method('withAllAgesFilter')
             ->with(true)
             ->willReturn($this->queryBuilder);
-        
+
         $this->parser->parse($request, $this->queryBuilder);
     }
-    
+
     private function request(array $params): ApiRequest
     {
         $request = ServerRequestFactory::createFromGlobals();

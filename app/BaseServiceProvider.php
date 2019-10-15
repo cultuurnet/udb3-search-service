@@ -20,7 +20,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
             $function
         );
     }
-    
+
     /**
      * Get parameter from config
      *
@@ -31,7 +31,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     {
         return $this->getContainer()->get(Config::class)->get($parameter);
     }
-    
+
     /**
      * Get service from container
      *

@@ -21,30 +21,30 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
      * @var GeoBoundsOfferRequestParser
      */
     private $parser;
-    
+
     /**
      * @var OfferQueryBuilderInterface|MockObject
      */
     private $offerQueryBuilder;
-    
+
     protected function setUp()
     {
         $this->parser = new GeoBoundsOfferRequestParser();
         $this->offerQueryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
     }
-    
+
     /**
      * @test
      */
     public function it_should_not_add_a_bounds_filter_if_no_bounds_parameter_is_given()
     {
-        
+
         $this->offerQueryBuilder->expects($this->never())
             ->method('withGeoBoundsFilter');
-        
+
         $this->parser->parse($this->request([]), $this->offerQueryBuilder);
     }
-    
+
     /**
      * @test
      */
@@ -56,7 +56,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
         );
         $this->parser->parse($request, $this->offerQueryBuilder);
     }
-    
+
     /**
      * @test
      */
@@ -67,12 +67,12 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
                 'bounds' => '34.172684,-118.604794|34.236144,-118.500938', // South-West | North-East
             ]
         );
-        
+
         $this->offerQueryBuilder->expects($this->once())
             ->method('withGeoBoundsFilter')
             ->with(
                 new GeoBoundsParameters(
-                    // North-East
+                // North-East
                     new Coordinates(
                         new Latitude(34.236144),
                         new Longitude(-118.500938)
@@ -85,10 +85,10 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
                 )
             )
             ->willReturn($this->offerQueryBuilder);
-        
+
         $this->parser->parse($request, $this->offerQueryBuilder);
     }
-    
+
     private function request(array $params): ApiRequest
     {
         $request = ServerRequestFactory::createFromGlobals();

@@ -17,32 +17,32 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
      * @var string
      */
     private $readIndexName;
-    
+
     /**
      * @var string
      */
     private $scrollTtl;
-    
+
     /**
      * @var int
      */
     private $scrollSize;
-    
+
     /**
      * @var int
      */
     private $bulkThreshold;
-    
+
     /**
      * @var EventBusInterface
      */
     private $eventBus;
-    
+
     /**
      * @var IndexationStrategyInterface
      */
     private $indexationStrategy;
-    
+
     /**
      * @param Client $client
      * @param string $readIndexName
@@ -69,7 +69,7 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
         $this->eventBus = $eventBus;
         $this->indexationStrategy = $indexationStrategy;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -80,39 +80,39 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
     ) {
         $indexationStrategy = $this->getIndexationStrategy();
         $logger = $this->getLogger($output);
-        
+
         if ($indexationStrategy instanceof MutableIndexationStrategy) {
             $bulkIndexationStrategy = new BulkIndexationStrategy(
                 $this->getElasticSearchClient(),
                 $logger,
                 $this->bulkThreshold
             );
-            
+
             $indexationStrategy->setIndexationStrategy($bulkIndexationStrategy);
         }
-        
+
         $operation->run($this->readIndexName);
-        
+
         if (isset($bulkIndexationStrategy)) {
             $bulkIndexationStrategy->flush();
         }
     }
-    
+
     protected function getEventBus(): EventBusInterface
     {
         return $this->eventBus;
     }
-    
+
     protected function getIndexationStrategy(): IndexationStrategyInterface
     {
         return $this->indexationStrategy;
     }
-    
+
     protected function getScrollTtl(): string
     {
         return $this->scrollTtl;
     }
-    
+
     protected function getScrollSize(): int
     {
         return $this->scrollSize;

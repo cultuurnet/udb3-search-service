@@ -10,12 +10,12 @@ abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
      * @var string
      */
     protected $indexName;
-    
+
     /**
      * @var string
      */
     protected $documentType;
-    
+
     public function __construct(Client $client, $indexName, $documentType)
     {
         parent::__construct($client);

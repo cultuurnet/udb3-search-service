@@ -25,29 +25,28 @@ class EventServiceProvider extends BaseServiceProvider
             function () {
                 /** @var OfferSearchControllerFactory $offerControllerFactory */
                 $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
-                
+
                 return $offerControllerFactory->createFor(
                     $this->parameter('elasticsearch.event.read_index'),
                     $this->parameter('elasticsearch.event.document_type')
                 );
             }
         );
-    
+
         $this->add(
             'event_search_projector',
-            function ()
-            {
+            function () {
                 $service = new TransformingJsonDocumentIndexService(
                     $this->get('http_client'),
                     $this->get('event_elasticsearch_transformer'),
                     $this->get('event_elasticsearch_repository')
                 );
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
-            
+
                 return new EventSearchProjector($service);
             }
         );
-    
+
         $this->add(
             'event_elasticsearch_transformer',
             function () {
@@ -58,7 +57,7 @@ class EventServiceProvider extends BaseServiceProvider
                 );
             }
         );
-    
+
         $this->add(
             'event_elasticsearch_repository',
             function () {

@@ -91,7 +91,7 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
 
         $this->parser->parse($request, $this->queryBuilder);
     }
-    
+
     private function request(array $params): ApiRequest
     {
         $request = ServerRequestFactory::createFromGlobals();

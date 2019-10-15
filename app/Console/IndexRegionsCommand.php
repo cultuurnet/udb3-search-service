@@ -14,17 +14,17 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
      * @var string
      */
     private $indexName;
-    
+
     /**
      * @var string
      */
     private $pathToScan;
-    
+
     /**
      * @var string
      */
     private $fileNameRegex;
-    
+
     /**
      * @param Client $client
      * @param string $indexName
@@ -38,7 +38,7 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
         $this->pathToScan = $pathToScan;
         $this->fileNameRegex = $fileNameRegex;
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -48,7 +48,7 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
             ->setName('geoshapes:index-regions')
             ->setDescription('Indexes all region documents from a given directory.');
     }
-    
+
     /**
      * @inheritdoc
      */
@@ -59,10 +59,10 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
             $this->getLogger($output),
             $this->getFinder()
         );
-        
+
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
     }
-    
+
     /**
      * @return Finder
      */

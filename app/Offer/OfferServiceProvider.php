@@ -27,14 +27,14 @@ class OfferServiceProvider extends BaseServiceProvider
             function () {
                 /** @var OfferSearchControllerFactory $offerControllerFactory */
                 $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
-               
+
                 return $offerControllerFactory->createFor(
                     $this->parameter('elasticsearch.offer.read_index'),
                     $this->parameter('elasticsearch.offer.document_type')
                 );
             }
         );
-        
+
         $this->add(
             OfferSearchControllerFactory::class,
             function () {
@@ -51,7 +51,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 return $offerSearchControllerFactory;
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_aggregation_transformer',
             function () {
@@ -64,7 +64,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 return $transformer;
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_region_aggregation_transformer',
             function () {
@@ -74,7 +74,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_theme_aggregation_transformer',
             function () {
@@ -84,7 +84,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_type_aggregation_transformer',
             function () {
@@ -94,7 +94,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_facility_aggregation_transformer',
             function () {
@@ -104,7 +104,7 @@ class OfferServiceProvider extends BaseServiceProvider
                 );
             }
         );
-        
+
         $this->add(
             'offer_elasticsearch_label_aggregation_transformer',
             function () {

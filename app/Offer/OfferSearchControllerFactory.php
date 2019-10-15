@@ -28,17 +28,17 @@ class OfferSearchControllerFactory
      * @var int
      */
     private $aggregationSize;
-    
+
     /**
      * @var string
      */
     private $regionIndex;
-    
+
     /**
      * @var string
      */
     private $documentType;
-    
+
     /**
      * @var ApiKeyReaderInterface
      */
@@ -57,7 +57,7 @@ class OfferSearchControllerFactory
      * @var ResultTransformingPagedCollectionFactoryFactory
      */
     private $resultTransformingPagedCollectionFactoryFactory;
-    
+
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
@@ -75,7 +75,7 @@ class OfferSearchControllerFactory
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
-    
+
     public function createFor(
         string $readIndex,
         string $documentType

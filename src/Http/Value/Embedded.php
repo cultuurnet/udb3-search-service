@@ -8,14 +8,14 @@ class Embedded
      * @var bool $value
      */
     private $value = false;
-    
+
     /**
      * Embedded constructor.
      */
     private function __construct()
     {
     }
-    
+
     public static function create(?string $value): Embedded
     {
         $instance = new self();
@@ -24,12 +24,12 @@ class Embedded
         }
         return $instance;
     }
-    
+
     public function isTrue(): bool
     {
         return $this->value === true;
     }
-    
+
     public function isFalse(): bool
     {
         return $this->value === false;
