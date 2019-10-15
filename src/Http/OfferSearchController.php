@@ -337,7 +337,7 @@ class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
-            $parameterBag->getBooleanFromParameter('embed', 'false')
+            (bool) $parameterBag->getBooleanFromParameter('embed')
         );
 
         $pagedCollection = $resultTransformingPagedCollectionFactory->fromPagedResultSet(
