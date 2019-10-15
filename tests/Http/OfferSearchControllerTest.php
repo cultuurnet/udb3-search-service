@@ -310,8 +310,8 @@ class OfferSearchControllerTest extends TestCase
             new Natural(32),
             new Natural(10),
             [
-                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id": "events/1"}'),
-                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id": "places/2"}'),
+                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id": "events/1","@type":"Event"}'),
+                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id": "places/2","@type":"Place"}'),
             ]
         );
         
@@ -344,8 +344,14 @@ class OfferSearchControllerTest extends TestCase
                 'itemsPerPage' => 10,
                 'totalItems' => 32,
                 'member' => [
-                    ['@id' => 'events/1'],
-                    ['@id' => 'places/2'],
+                    [
+                        '@id' => 'events/1',
+                        '@type' => 'Event',
+                    ],
+                    [
+                        '@id' => 'places/2',
+                        '@type' => 'Place',
+                    ],
                 ],
                 'facet' => [
                     'regions' => [
