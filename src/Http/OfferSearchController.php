@@ -83,14 +83,10 @@ class OfferSearchController
     private $facetTreeNormalizer;
 
     /**
-     * @var PagedCollectionFactoryInterface
-     */
-    private $pagedCollectionFactory;
-
-    /**
      * @var OfferParameterWhiteList
      */
     private $offerParameterWhiteList;
+
     /**
      * @var ResultTransformingPagedCollectionFactoryFactory
      */
