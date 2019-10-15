@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\Search\Http\Value\Embedded;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -338,7 +337,7 @@ class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
-            Embedded::create($request->getQueryParam('embed'))
+            $parameterBag->getBooleanFromParameter('embed')
         );
 
         $pagedCollection = $resultTransformingPagedCollectionFactory->fromPagedResultSet(
