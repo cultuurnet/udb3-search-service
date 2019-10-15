@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
+use CultuurNet\UDB3\SearchService\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
@@ -38,6 +39,12 @@ class CommandServiceProvider extends BaseServiceProvider
             Application::class,
             function () {
                 $application = new Application('udb3-search');
+
+                $application->add(
+                    (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
+                        ->setDescription('Process messages from UDB3 core')
+                );
+
                 $application->add($this->get(TermTaxonomyToFacetMappingsCommand::class));
                 $application->add($this->get(FlandersRegionTaxonomyToFacetMappingsCommand::class));
 
