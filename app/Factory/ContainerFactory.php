@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Factory;
 
+use CultuurNet\UDB3\SearchService\AmqpProvider;
 use CultuurNet\UDB3\SearchService\ApiKey\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
@@ -62,6 +63,7 @@ class ContainerFactory
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(LoggerProvider::class);
         $container->addServiceProvider(HttpClientProvider::class);
+        $container->addServiceProvider(AmqpProvider::class);
 
         return $container;
     }

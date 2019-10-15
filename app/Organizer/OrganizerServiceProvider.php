@@ -29,6 +29,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
     protected $provides = [
         Client::class,
         OrganizerSearchController::class,
+        'organizer_search_projector',
     ];
 
     public function register()

@@ -2,7 +2,6 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
@@ -10,13 +9,13 @@ use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Silex\Application;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
+        'elasticsearch_transformer_logger',
     ];
 
     public function register()

@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
+use CultuurNet\UDB3\SearchService\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
@@ -38,6 +39,12 @@ class CommandServiceProvider extends BaseServiceProvider
             Application::class,
             function () {
                 $application = new Application('udb3-search');
+
+                $application->add(
+                    (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
+                        ->setDescription('Process messages from UDB3 core')
+                );
+
                 $application->add($this->get(TermTaxonomyToFacetMappingsCommand::class));
                 $application->add($this->get(FlandersRegionTaxonomyToFacetMappingsCommand::class));
 
@@ -72,9 +79,9 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new ReindexUDB3CoreCommand(
                         $this->get(Client::class),
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->get(EventBusInterface::class),
                         $this->get('elasticsearch_indexation_strategy'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
@@ -84,9 +91,9 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new ReindexPermanentOffersCommand(
                         $this->get(Client::class),
+                        $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->get(EventBusInterface::class),
                         $this->get('elasticsearch_indexation_strategy'),
-                        $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                         $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
