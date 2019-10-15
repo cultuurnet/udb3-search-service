@@ -4,30 +4,26 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\Http\Value\Embedded;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 
 /**
- * Class ResultTransformingPagedCollectionFactoryFactory
- * @package CultuurNet\UDB3\Search\Http
  * @TODO: Rename
  */
 class ResultTransformingPagedCollectionFactoryFactory
 {
-    
-    public function create(Embedded $embedded): ResultTransformingPagedCollectionFactory
+    public function create(bool $embedded): ResultTransformingPagedCollectionFactory
     {
         return new ResultTransformingPagedCollectionFactory(
             $this->createTransformer($embedded)
         );
     }
     
-    private function createTransformer(Embedded $embedded): JsonDocumentTransformerInterface
+    private function createTransformer(bool $embedded): JsonDocumentTransformerInterface
     {
-        if ($embedded->isTrue()) {
+        if ($embedded) {
             return new JsonLdEmbeddingJsonDocumentTransformer();
         }
-        
+
         return new MinimalRequiredInfoJsonDocumentTransformer();
     }
 }

@@ -69,14 +69,12 @@ class OrganizerSearchController
 
     public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
-        $parameters = $request->getQueryParams();
-
         $this->organizerParameterWhiteList->validateParameters(
             array_keys($request->getQueryParams())
         );
 
-        $start = $request->getQueryParam('start', 0);
-        $limit = $request->getQueryParam('limit', 30);
+        $start = (int) $request->getQueryParam('start', 0);
+        $limit = (int) $request->getQueryParam('limit', 30);
 
         if ($limit === 0) {
             $limit = 30;
