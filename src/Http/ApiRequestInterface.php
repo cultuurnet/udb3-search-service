@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
  * Interface ApiRequestInterface
@@ -25,6 +24,4 @@ interface ApiRequestInterface extends ServerRequestInterface
     public function getQueryParameterBag(): ParameterBagInterface;
     
     public function getServerParam(string $name, $default = null);
-
-    public function toSymfonyRequest(): SymfonyRequest;
 }

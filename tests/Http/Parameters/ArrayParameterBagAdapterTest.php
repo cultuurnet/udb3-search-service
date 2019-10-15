@@ -8,8 +8,6 @@ use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
 
 class ArrayParameterBagAdapterTest extends TestCase
 {
@@ -332,9 +330,6 @@ class ArrayParameterBagAdapterTest extends TestCase
         $this->assertSame($expectedValue, $actualValue);
     }
 
-    /**
-     * @return Request[]
-     */
     public function booleanDataProvider(): array
     {
         return [

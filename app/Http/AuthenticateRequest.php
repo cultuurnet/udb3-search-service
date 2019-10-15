@@ -29,7 +29,7 @@ class AuthenticateRequest implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $this->apiKeyRequestAuthenticator->authenticate($request->toSymfonyRequest());
+        $this->apiKeyRequestAuthenticator->authenticate($request);
 
         return $handler->handle($request);
     }

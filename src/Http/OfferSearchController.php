@@ -154,8 +154,7 @@ class OfferSearchController
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
-        $symfonyRequest = $request->toSymfonyRequest();
-        $consumerApiKey = $this->apiKeyReader->read($symfonyRequest);
+        $consumerApiKey = $this->apiKeyReader->read($request);
 
         $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
