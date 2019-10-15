@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
-use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
@@ -69,7 +68,7 @@ class OrganizerSearchController
     public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
         $this->organizerParameterWhiteList->validateParameters(
-            array_keys($request->getQueryParams())
+            $request->getQueryParamsKeys()
         );
 
         $start = (int) $request->getQueryParam('start', 0);
@@ -79,7 +78,7 @@ class OrganizerSearchController
             $limit = 30;
         }
 
-        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
+        $parameterBag = $request->getQueryParameterBag();
 
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 
@@ -18,9 +17,7 @@ final class WorkflowStatusOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $parameterBagReader = new ArrayParameterBagAdapter(
-            $request->getQueryParams()
-        );
+        $parameterBagReader = $request->getQueryParameterBag();
 
         $workflowStatuses = $parameterBagReader->getExplodedStringFromParameter(
             self::PARAMETER,

@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -135,8 +134,6 @@ class OfferSearchController
      */
     public function __invoke(ApiRequest $request)
     {
-
-
         $this->offerParameterWhiteList->validateParameters(
             $request->getQueryParamsKeys()
         );
@@ -153,7 +150,7 @@ class OfferSearchController
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
 
-        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
+        $parameterBag = $request->getQueryParameterBag();
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
@@ -365,12 +362,10 @@ class OfferSearchController
         $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
 
-        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
-
-        return $parameterBag->getStringFromParameter(
+        return $request->getQueryParameterBag()->getStringFromParameter(
             $queryParameter,
             $defaultDateTimeString,
-            function ($dateTimeString) use ($queryParameter) {
+            static function ($dateTimeString) use ($queryParameter) {
                 $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
 
                 if (!$dateTime) {

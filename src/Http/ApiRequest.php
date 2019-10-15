@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
+use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
@@ -22,23 +24,28 @@ class ApiRequest implements ApiRequestInterface
     {
         $this->request = $request;
     }
-    
+
     public function hasQueryParam(string $name): bool
     {
         $params = $this->request->getQueryParams();
         return isset($params[$name]);
     }
-    
+
     public function getQueryParam(string $name, $default = null)
     {
         $params = $this->request->getQueryParams();
         return isset($params[$name]) ? $params[$name] : $default;
     }
-    
+
     public function getQueryParamsKeys(): ?array
     {
         $params = $this->request->getQueryParams();
         return $params === null ? null : array_keys($params);
+    }
+
+    public function getQueryParameterBag(): ParameterBagInterface
+    {
+        return new ArrayParameterBagAdapter($this->request->getQueryParams());
     }
     
     public function getServerParam(string $name, $default = null)

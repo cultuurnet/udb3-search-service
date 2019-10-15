@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use ValueObjects\Number\Natural;
 
@@ -13,7 +12,7 @@ class AgeRangeOfferRequestParser implements OfferRequestParserInterface
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $parameterBagReader = new ArrayParameterBagAdapter($request->getQueryParams());
+        $parameterBagReader = $request->getQueryParameterBag();
 
         $ageCallback = function ($age) {
             return new Natural($age);
