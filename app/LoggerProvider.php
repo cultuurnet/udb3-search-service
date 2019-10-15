@@ -27,7 +27,7 @@ class LoggerProvider extends BaseServiceProvider
                 $logger->pushHandler(new StreamHandler('php://stdout'));
 
                 $logFileHandler = new StreamHandler(
-                    __DIR__ . '/log/amqp.log',
+                    __DIR__ . '/../log/amqp.log',
                     Logger::DEBUG
                 );
                 $logger->pushHandler($logFileHandler);
