@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
+use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
@@ -19,7 +20,7 @@ final class WorkflowStatusOrganizerRequestParser implements OrganizerRequestPars
         ServerRequestInterface $request,
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
-        $parameterBagReader = new SymfonyParameterBagAdapter(new ParameterBag($request->getQueryParams()));
+        $parameterBagReader = new ArrayParameterBagAdapter($request->getQueryParams());
 
         $workflowStatuses = $parameterBagReader->getExplodedStringFromParameter(
             self::PARAMETER,

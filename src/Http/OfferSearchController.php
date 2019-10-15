@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -12,7 +13,6 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferParameterWhiteList;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -23,8 +23,8 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -144,7 +144,7 @@ class OfferSearchController
         $start = (int) $request->getQueryParam('start', 0);
         $limit = (int) $request->getQueryParam('limit', 30);
 
-        if ($limit == 0) {
+        if ($limit === 0) {
             $limit = 30;
         }
         $queryBuilder = $this->queryBuilder
@@ -153,9 +153,7 @@ class OfferSearchController
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
 
-        $parameterBag = new SymfonyParameterBagAdapter(
-            new ParameterBag($request->getQueryParams())
-        );
+        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
@@ -360,20 +358,20 @@ class OfferSearchController
     /**
      * @param ApiRequestInterface $request
      * @param $queryParameter
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    private function getAvailabilityFromQuery(ApiRequestInterface $request, $queryParameter)
+    private function getAvailabilityFromQuery(ApiRequestInterface $request, $queryParameter): ?DateTimeImmutable
     {
-        $defaultDateTime = \DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
+        $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
 
-        $parameterBag = new SymfonyParameterBagAdapter(new ParameterBag($request->getQueryParams()));
+        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
 
         return $parameterBag->getStringFromParameter(
             $queryParameter,
             $defaultDateTimeString,
             function ($dateTimeString) use ($queryParameter) {
-                $dateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
+                $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
 
                 if (!$dateTime) {
                     throw new \InvalidArgumentException(

@@ -3,10 +3,9 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
+use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class DocumentLanguageOfferRequestParser implements OfferRequestParserInterface
 {
@@ -14,7 +13,7 @@ class DocumentLanguageOfferRequestParser implements OfferRequestParserInterface
         ApiRequestInterface$request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $parameterBagReader = new SymfonyParameterBagAdapter(new ParameterBag($request->getQueryParams()));
+        $parameterBagReader = new ArrayParameterBagAdapter($request->getQueryParams());
 
         $languageCallback = function ($value) {
             return new Language($value);

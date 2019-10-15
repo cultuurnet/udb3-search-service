@@ -3,18 +3,17 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerParameterWhiteList;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
@@ -80,7 +79,7 @@ class OrganizerSearchController
             $limit = 30;
         }
 
-        $parameterBag = new SymfonyParameterBagAdapter(new ParameterBag($request->getQueryParams()));
+        $parameterBag = new ArrayParameterBagAdapter($request->getQueryParams());
 
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
