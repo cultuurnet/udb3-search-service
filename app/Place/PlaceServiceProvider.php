@@ -9,13 +9,14 @@ use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
-use Predis\Client;
+use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class PlaceServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'place_controller',
+        'place_search_projector',
     ];
 
     public function register(): void

@@ -16,6 +16,7 @@ class EventServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'event_controller',
+        'event_search_projector',
     ];
 
     public function register(): void
