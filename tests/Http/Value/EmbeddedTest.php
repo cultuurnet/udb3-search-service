@@ -21,7 +21,7 @@ class EmbeddedTest extends TestCase
      * @dataProvider providerForTrue
      * @param $value
      */
-    public function test_it_can_be_initilized_to_true($value)
+    public function test_it_can_be_initialized_to_true($value)
     {
         $embedded = Embedded::create($value);
         $this->assertEquals($embedded->isTrue(), true);
