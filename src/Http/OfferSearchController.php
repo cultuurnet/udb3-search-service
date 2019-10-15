@@ -364,7 +364,7 @@ class OfferSearchController
         return $request->getQueryParameterBag()->getStringFromParameter(
             $queryParameter,
             $defaultDateTimeString,
-            static function ($dateTimeString) use ($queryParameter) {
+            function ($dateTimeString) use ($queryParameter) {
                 $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
 
                 if (!$dateTime) {
