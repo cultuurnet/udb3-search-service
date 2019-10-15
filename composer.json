@@ -42,6 +42,7 @@
         "symfony/finder": "~3.2",
         "symfony/http-foundation": "~2.7",
         "symfony/yaml": "^4.3",
+        "tuupola/cors-middleware": "^1.1",
         "zendframework/zend-httphandlerrunner": "^1.1"
     },
     "require-dev": {
