@@ -34,6 +34,7 @@
         "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
         "@type": "Place",
         "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "mainId": "179c89c5-dba4-417b-ae96-62e7a12c2405",
         "name": {
             "nl": "Hungaria"
         }
@@ -45,5 +46,6 @@
         "gte": "2017-04-20T00:00:00+00:00",
         "lte": "2017-04-22T18:00:00+02:00"
     },
-    "availableTo": "2017-04-22T18:00:00+02:00"
+    "availableTo": "2017-04-22T18:00:00+02:00",
+    "isDuplicate": false
 }

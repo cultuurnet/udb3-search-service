@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
+use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
@@ -9,6 +10,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
@@ -55,12 +57,13 @@ class OfferControllerProvider implements ControllerProviderInterface
                     ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
                     ->withParser(new DocumentLanguageOfferRequestParser())
                     ->withParser(new GeoBoundsOfferRequestParser())
+                    ->withParser(new IsDuplicateOfferRequestParser())
                     ->withParser(new SortByOfferRequestParser())
                     ->withParser(new WorkflowStatusOfferRequestParser());
 
                 return new OfferSearchController(
                     $app['auth.api_key_reader'],
-                    $app['auth.consumer_repository'],
+                    $app[InMemoryConsumerRepository::class],
                     $app['offer_elasticsearch_query_builder'],
                     $requestParser,
                     $offerSearchService,

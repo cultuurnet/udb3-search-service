@@ -71,7 +71,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreStart
         $expectedDocument = new JsonDocument(
             $id,
-            '{"@type":"Place","originalEncodedJsonLd":"{}","mainLanguage":"nl","audienceType":"everyone","mediaObjectsCount":0}'
+            '{"@type":"Place","isDuplicate":false,"originalEncodedJsonLd":"{}","mainLanguage":"nl","audienceType":"everyone","mediaObjectsCount":0}'
         );
         // @codingStandardsIgnoreEnd
 
@@ -324,6 +324,22 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expected = file_get_contents(__DIR__ . '/data/indexed-from-deprecated-address.json');
+        $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
+
+        $actualDocument = $this->transformer->transform($originalDocument);
+
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_duplicateOf_to_isDuplicate()
+    {
+        $original = file_get_contents(__DIR__ . '/data/original-with-duplicate-of.json');
+        $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
+
+        $expected = file_get_contents(__DIR__ . '/data/indexed-duplicate.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);

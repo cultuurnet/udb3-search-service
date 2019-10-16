@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonCreator;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonDuplicateFlag;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonIdentifier;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLabels;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonName;
@@ -30,7 +31,8 @@ class CopyJsonOffer extends CopyJsonCombination
             new CopyJsonIdentifier(
                 $logger,
                 $idUrlParser,
-                $fallbackType
+                $fallbackType,
+                false
             ),
             new CopyJsonName($logger),
             new CopyJsonTerms(),
@@ -44,6 +46,7 @@ class CopyJsonOffer extends CopyJsonCombination
             new CopyJsonCreatedModified($logger),
             new CopyJsonLabels(),
             new CopyJsonWorkflowStatus($logger),
+            new CopyJsonDuplicateFlag(),
             new CopyOriginalEncodedJsonLd()
         );
     }
