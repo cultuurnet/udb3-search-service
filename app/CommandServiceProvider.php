@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBusInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\SchemaVersions;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
@@ -103,7 +104,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new InstallUDB3CoreCommand(
                         $this->get(Client::class),
-                        $this->parameter('elasticsearch.udb3_core_index.latest'),
+                        $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                         $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                         $this->parameter('elasticsearch.udb3_core_index.read_alias')
                     )
@@ -115,7 +116,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new UpdateRegionMappingCommand(
                         $this->get(Client::class),
-                        $this->parameter('elasticsearch.geoshapes_index.latest'),
+                        $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
                         $this->parameter('elasticsearch.region.document_type')
                     )
                 );
@@ -132,7 +133,7 @@ class CommandServiceProvider extends BaseServiceProvider
                 $application->add(
                     new InstallGeoShapesCommand(
                         $this->get(Client::class),
-                        $this->parameter('elasticsearch.geoshapes_index.latest'),
+                        $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
                         $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                         $this->parameter('elasticsearch.geoshapes_index.read_alias')
                     )
@@ -147,7 +148,7 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 return new UpdateOrganizerMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.latest'),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                     $this->parameter('elasticsearch.organizer.document_type')
                 );
             }
@@ -158,7 +159,7 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 return new UpdateEventMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.latest'),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix' . SchemaVersions::UDB3_CORE),
                     $this->parameter('elasticsearch.event.document_type')
                 );
             }
@@ -169,7 +170,7 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 return new UpdatePlaceMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.latest'),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix' . SchemaVersions::UDB3_CORE),
                     $this->parameter('elasticsearch.place.document_type')
                 );
             }
