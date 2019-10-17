@@ -17,41 +17,30 @@ use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
-use Noodlehaus\Parser\Yaml;
 
 class ContainerFactory
 {
-    public static function forCli(): Container
+    public static function forCli(Config $config): Container
     {
-        $container = self::build();
+        $container = self::build($config);
         $container->addServiceProvider(CommandServiceProvider::class);
         return $container;
     }
 
-    public static function forWeb(): Container
+    public static function forWeb(Config $config): Container
     {
-        $container = self::build();
+        $container = self::build($config);
         $container->addServiceProvider(RoutingServiceProvider::class);
         return $container;
     }
 
-    private static function build(): Container
+    private static function build(Config $config): Container
     {
         $container = new Container();
         $container->delegate(new ReflectionContainer());
         $container->add(
             Config::class,
-            function () {
-                $configFiles = [
-                    __DIR__ . '/../../config.yml',
-                    __DIR__ . '/../../facet_mapping_facilities.yml',
-                    __DIR__ . '/../../facet_mapping_regions.yml',
-                    __DIR__ . '/../../facet_mapping_themes.yml',
-                    __DIR__ . '/../../facet_mapping_types.yml',
-                    __DIR__ . '/../../features.yml',
-                ];
-                return Config::load($configFiles, new Yaml());
-            }
+            $config
         );
 
         $container->addServiceProvider(ApiGuardServiceProvider::class);
