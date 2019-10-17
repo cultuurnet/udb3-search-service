@@ -2,10 +2,11 @@
 
 namespace CultuurNet\UDB3\SearchService\Factory;
 
-use Whoops\Handler\JsonResponseHandler;
+use CultuurNet\UDB3\SearchService\Error\ApiExceptionHandler;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
+use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 class ErrorHandlerFactory
 {
@@ -31,6 +32,6 @@ class ErrorHandlerFactory
             return;
         }
 
-        $whoops->prependHandler(new JsonResponseHandler());
+        $whoops->prependHandler(new ApiExceptionHandler(new SapiStreamEmitter()));
     }
 }
