@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\BroadwayAMQP\ConsumerInterface;
+use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
 use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
 use League\Container\Container;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -124,8 +125,12 @@ class ConsumeCommand extends Command
         return $heartBeat;
     }
 
+    /**
+     * @return Container
+     * @TODO: Inject these dependencies (this is a temp fix)
+     */
     private function getSilexApplication(): Container
     {
-        return ContainerFactory::forCli();
+        return ContainerFactory::forCli(ConfigFactory::create(__DIR__.'/../../'));
     }
 }
