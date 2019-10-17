@@ -15,9 +15,17 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AmqpProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'amqp.udb3-core',
-    ];
+
+    public function provides(string $alias): bool
+    {
+        foreach ($this->consumers() as $consumerId => $consumerConfig) {
+            if ($alias === (string) $this->consumerName($consumerId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Use the register method to register items with the container via the
@@ -29,9 +37,9 @@ class AmqpProvider extends BaseServiceProvider
     public function register()
     {
 
-        foreach ($this->parameter('amqp.consumers') as $consumerId => $consumerConfig) {
+        foreach ($this->consumers() as $consumerId => $consumerConfig) {
             $this->add(
-                'amqp.' . $consumerId,
+                $this->consumerName($consumerId),
                 function () use ($consumerId, $consumerConfig) {
                     $exchange = new StringLiteral($consumerConfig['exchange']);
                     $queue = new StringLiteral($consumerConfig['queue']);
@@ -95,5 +103,16 @@ class AmqpProvider extends BaseServiceProvider
                 return $deserializerLocator;
             }
         );
+    }
+
+    private function consumerName(string $consumerId): string
+    {
+        return 'amqp.' . $consumerId;
+    }
+
+    public function consumers(): array
+    {
+        $value = $this->parameter('amqp.consumers');
+        return is_array($value) ? $value : [];
     }
 }
