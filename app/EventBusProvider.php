@@ -25,21 +25,22 @@ class EventBusProvider extends BaseServiceProvider
             EventBusInterface::class,
             function () {
                 $bus = new SimpleEventBus();
+
                 $bus->beforeFirstPublication(function (EventBusInterface $eventBus) {
-                    $subscribers = [
-                        'organizer_search_projector',
-                        'event_search_projector',
-                        'place_search_projector',
-                    ];
+                    $subscribers = $this->get('event_bus_subscribers');
 
                     if (!(is_null($this->parameter('config.event_bus'))) &&
                         !(is_null($this->parameter('config.event_bus.subscribers')))) {
 
-                        $subscribers = $this->parameter('config.event_bus.subscribers');
+                        $subscriberIds = $this->parameter('config.event_bus.subscribers');
+                        $subscribers = [];
+                        foreach ($subscriberIds as $subscriberServiceId) {
+                            $subscribers[] = $subscriberServiceId;
+                        }
                     }
 
-                    foreach ($subscribers as $subscriberServiceId) {
-                        $eventBus->subscribe($this->get($subscriberServiceId));
+                    foreach ($subscribers as $subscriber) {
+                        $eventBus->subscribe($subscriber);
                     }
 
                 });

@@ -12,13 +12,16 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
      *
      * @param string $serviceName
      * @param $function
+     * @param string|null $tag
      */
-    protected function add(string $serviceName, $function)
+    protected function add(string $serviceName, $function, ?string $tag = null)
     {
-        $this->getContainer()->add(
-            $serviceName,
-            $function
-        );
+        $definition = $this->getLeagueContainer()
+            ->add($serviceName, $function);
+
+        if ($tag !== null) {
+            $definition->addTag($tag);
+        }
     }
 
     /**

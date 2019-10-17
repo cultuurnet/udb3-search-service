@@ -17,6 +17,7 @@ class PlaceServiceProvider extends BaseServiceProvider
     protected $provides = [
         'place_controller',
         'place_search_projector',
+        'event_bus_subscribers',
     ];
 
     public function register(): void
@@ -45,7 +46,8 @@ class PlaceServiceProvider extends BaseServiceProvider
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
 
                 return new PlaceSearchProjector($service);
-            }
+            },
+            'event_bus_subscribers'
         );
 
         $this->add(

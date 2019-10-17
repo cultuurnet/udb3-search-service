@@ -16,6 +16,7 @@ class ElasticSearchProvider extends BaseServiceProvider
     protected $provides = [
         Client::class,
         'elasticsearch_transformer_logger',
+        'offer_region_service',
     ];
 
     public function register()

@@ -17,6 +17,7 @@ class EventServiceProvider extends BaseServiceProvider
     protected $provides = [
         'event_controller',
         'event_search_projector',
+        'event_bus_subscribers',
     ];
 
     public function register(): void
@@ -45,7 +46,8 @@ class EventServiceProvider extends BaseServiceProvider
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
 
                 return new EventSearchProjector($service);
-            }
+            },
+            'event_bus_subscribers'
         );
 
         $this->add(

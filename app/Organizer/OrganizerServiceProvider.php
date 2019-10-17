@@ -29,6 +29,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
         Client::class,
         OrganizerSearchController::class,
         'organizer_search_projector',
+        'event_bus_subscribers',
     ];
 
     public function register()
@@ -72,7 +73,8 @@ class OrganizerServiceProvider extends BaseServiceProvider
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
 
                 return new OrganizerSearchProjector($service);
-            }
+            },
+            'event_bus_subscribers'
         );
 
         $this->add(
