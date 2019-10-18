@@ -26,17 +26,29 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
     private $fileNameRegex;
 
     /**
+     * @var Finder
+     */
+    private $finder;
+
+    /**
      * @param Client $client
+     * @param Finder $finder
      * @param string $indexName
      * @param string $pathToScan
      * @param string $fileNameRegex
      */
-    public function __construct(Client $client, $indexName, $pathToScan, $fileNameRegex = '*.json')
-    {
+    public function __construct(
+        Client $client,
+        Finder $finder,
+        string $indexName,
+        string $pathToScan,
+        string $fileNameRegex = '*.json'
+    ) {
         parent::__construct($client);
         $this->indexName = $indexName;
         $this->pathToScan = $pathToScan;
         $this->fileNameRegex = $fileNameRegex;
+        $this->finder = $finder;
     }
 
     /**
@@ -57,18 +69,9 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
         $operation = new IndexRegions(
             $this->getElasticSearchClient(),
             $this->getLogger($output),
-            $this->getFinder()
+            $this->finder
         );
 
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
-    }
-
-    /**
-     * @return Finder
-     */
-    private function getFinder()
-    {
-        $app = $this->getSilexApplication();
-        return $app['file_finder'];
     }
 }

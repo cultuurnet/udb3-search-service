@@ -28,6 +28,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateRegionQueryMappingCommand;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
+use Symfony\Component\Finder\Finder;
 
 class CommandServiceProvider extends BaseServiceProvider
 {
@@ -179,6 +180,7 @@ class CommandServiceProvider extends BaseServiceProvider
             function () {
                 return new IndexRegionsCommand(
                     $this->get(Client::class),
+                    $this->get(Finder::class),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
                     __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
