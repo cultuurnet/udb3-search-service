@@ -35,7 +35,7 @@ class EventBusProvider extends BaseServiceProvider
                         $subscriberIds = $this->parameter('config.event_bus.subscribers');
                         $subscribers = [];
                         foreach ($subscriberIds as $subscriberServiceId) {
-                            $subscribers[] = $subscriberServiceId;
+                            $subscribers[] = $this->get($subscriberServiceId);
                         }
                     }
 
