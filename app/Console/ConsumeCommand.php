@@ -16,9 +16,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsumeCommand extends Command
 {
     /**
-     * @var string
+     * @var ConsumerInterface
      */
-    private $consumerName;
+    private $consumer;
 
     /**
      * @var string
@@ -27,12 +27,13 @@ class ConsumeCommand extends Command
 
     /**
      * @param string $name
-     * @param string $consumerName
+     * @param ConsumerInterface $consumer
      */
-    public function __construct($name, $consumerName)
+    public function __construct($name, ConsumerInterface $consumer)
     {
         parent::__construct($name);
-        $this->consumerName = $consumerName;
+
+        $this->consumer = $consumer;
     }
 
     public function withHeartBeat($heartBeatServiceName)
@@ -89,10 +90,8 @@ class ConsumeCommand extends Command
      */
     protected function getChannel()
     {
-        $app = $this->getSilexApplication();
-
         /** @var ConsumerInterface $consumer */
-        $consumer = $app->get($this->consumerName);
+        $consumer = $this->consumer;
         $channel = $consumer->getChannel();
 
         if (!$channel instanceof AMQPChannel) {

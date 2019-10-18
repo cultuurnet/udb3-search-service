@@ -203,7 +203,7 @@ class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             ConsumeCommand::class,
             function () {
-                return (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
+                return (new ConsumeCommand('consume-udb3-core', $this->get('amqp.udb3-core')))
                     ->setDescription('Process messages from UDB3 core');
             }
         );
