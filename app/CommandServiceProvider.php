@@ -27,7 +27,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionQueryMappingCommand;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\CommandLoader\FactoryCommandLoader;
+use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 
 class CommandServiceProvider extends BaseServiceProvider
 {
@@ -40,117 +40,39 @@ class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             Application::class,
             function () {
+                $commandMap = [
+                    'consume-udb3-core' => ConsumeCommand::class,
+                    'facet-mapping:generate-from-taxonomy-terms' => TermTaxonomyToFacetMappingsCommand::class,
+                    'facet-mapping:generate-regions-from-flandersregion-terms' => FlandersRegionTaxonomyToFacetMappingsCommand::class,
+                    'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
+                    'lowercase-exact-match-analyzer:create' => CreateLowerCaseExactMatchAnalyzerCommand::class,
+                    'lowercase-standard-analyzer:create' => CreateLowerCaseStandardAnalyzerCommand::class,
+                    'autocomplete-analyzer:create' => CreateAutocompleteAnalyzerCommand::class,
+                    'index:exists' => CheckIndexExistsCommand::class,
+                    'index:create' => CreateIndexCommand::class,
+                    'index:delete' => DeleteIndexCommand::class,
+                    'index:update-alias' => UpdateIndexAliasCommand::class,
+                    'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
+                    'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
+                    'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
+                    'udb3-core:region-query-mapping' => UpdateRegionQueryMappingCommand::class,
+                    'udb3-core:reindex' => ReindexUDB3CoreCommand::class,
+                    'udb3-core:reindex-permanent' => ReindexPermanentOffersCommand::class,
+                    'udb3-core:install' => InstallUDB3CoreCommand::class,
+                    'geoshapes:region-mapping' => UpdateRegionMappingCommand::class,
+                    'geoshapes:index-regions' => IndexRegionsCommand::class,
+                    'geoshapes:install' => InstallGeoShapesCommand::class,
+                ];
+
                 $application = new Application('udb3-search');
 
-                $commandLoader = new FactoryCommandLoader(
-                    [
-                        'consume-udb3-core' => function () {
-                            return (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
-                                ->setDescription('Process messages from UDB3 core');
-                        },
-                        'facet-mapping:generate-from-taxonomy-terms' => function () {
-                            return $this->get(TermTaxonomyToFacetMappingsCommand::class);
-                        },
-                        'facet-mapping:generate-regions-from-flandersregion-terms' => function () {
-                            return $this->get(FlandersRegionTaxonomyToFacetMappingsCommand::class);
-                        },
-                        'elasticsearch:migrate' => function () {
-                            return $this->get(MigrateElasticSearchCommand::class);
-                        },
-                        'lowercase-exact-match-analyzer:create' => function () {
-                            return $this->get(CreateLowerCaseExactMatchAnalyzerCommand::class);
-                        },
-                        'lowercase-standard-analyzer:create' => function () {
-                            return $this->get(CreateLowerCaseStandardAnalyzerCommand::class);
-                        },
-                        'autocomplete-analyzer:create' => function () {
-                            return $this->get(CreateAutocompleteAnalyzerCommand::class);
-                        },
-                        'index:exists' => function () {
-                            return $this->get(CheckIndexExistsCommand::class);
-                        },
-                        'index:create' => function () {
-                            return $this->get(CreateIndexCommand::class);
-                        },
-                        'index:delete' => function () {
-                            return $this->get(DeleteIndexCommand::class);
-                        },
-                        'index:update-alias' => function () {
-                            return $this->get(UpdateIndexAliasCommand::class);
-                        },
-                        'udb3-core:organizer-mapping' => function () {
-                            return $this->get(UpdateOrganizerMappingCommand::class);
-                        },
-                        'udb3-core:event-mapping' => function () {
-                            return $this->get(UpdateEventMappingCommand::class);
-                        },
-
-                        'udb3-core:place-mapping' => function () {
-                            return $this->get(UpdatePlaceMappingCommand::class);
-                        },
-                        'udb3-core:region-query-mapping' => function () {
-                            return new UpdateRegionQueryMappingCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.udb3_core_index.latest'),
-                                $this->parameter('elasticsearch.region_query.document_type')
-                            );
-                        },
-                        'udb3-core:reindex' => function () {
-                            return new ReindexUDB3CoreCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                                $this->get(EventBusInterface::class),
-                                $this->get('elasticsearch_indexation_strategy'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-                            );
-                        },
-                        'udb3-core:reindex-permanent' => function () {
-                            return new ReindexPermanentOffersCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                                $this->get(EventBusInterface::class),
-                                $this->get('elasticsearch_indexation_strategy'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-                            );
-                        },
-                        'udb3-core:install' => function () {
-                            return new InstallUDB3CoreCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                                $this->parameter('elasticsearch.udb3_core_index.write_alias'),
-                                $this->parameter('elasticsearch.udb3_core_index.read_alias')
-                            );
-                        },
-                        'geoshapes:region-mapping' => function () {
-                            return new UpdateRegionMappingCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                                $this->parameter('elasticsearch.region.document_type')
-                            );
-                        },
-                        'geoshapes:index-regions' => function () {
-                            return new IndexRegionsCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
-                                __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
-                                $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
-                            );
-                        },
-                        'geoshapes:install' => function () {
-                            return new InstallGeoShapesCommand(
-                                $this->get(Client::class),
-                                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                                $this->parameter('elasticsearch.geoshapes_index.write_alias'),
-                                $this->parameter('elasticsearch.geoshapes_index.read_alias')
-                            );
-                        },
-                    ]
+                $application->setCommandLoader(
+                    new ContainerCommandLoader(
+                        $this->getContainer(),
+                        $commandMap
+                    )
                 );
-                $application->setCommandLoader($commandLoader);
+
                 return $application;
             }
         );
@@ -187,5 +109,102 @@ class CommandServiceProvider extends BaseServiceProvider
                 );
             }
         );
+
+        $this->add(
+            UpdateRegionQueryMappingCommand::class,
+            function () {
+                return new UpdateRegionQueryMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.latest'),
+                    $this->parameter('elasticsearch.region_query.document_type')
+                );
+            }
+        );
+
+        $this->add(
+            ReindexUDB3CoreCommand::class,
+            function () {
+                return new ReindexUDB3CoreCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                    $this->get(EventBusInterface::class),
+                    $this->get('elasticsearch_indexation_strategy'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                );
+            }
+        );
+
+        $this->add(
+            ReindexPermanentOffersCommand::class,
+            function () {
+                return new ReindexPermanentOffersCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                    $this->get(EventBusInterface::class),
+                    $this->get('elasticsearch_indexation_strategy'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                );
+            }
+        );
+
+        $this->add(
+            InstallUDB3CoreCommand::class,
+            function () {
+                return new InstallUDB3CoreCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.write_alias'),
+                    $this->parameter('elasticsearch.udb3_core_index.read_alias')
+                );
+            }
+        );
+
+        $this->add(
+            UpdateRegionMappingCommand::class,
+            function () {
+                return new UpdateRegionMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                    $this->parameter('elasticsearch.region.document_type')
+                );
+            }
+        );
+
+        $this->add(
+            IndexRegionsCommand::class,
+            function () {
+                return new IndexRegionsCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
+                    __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
+                    $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
+                );
+            }
+        );
+
+        $this->add(
+            InstallGeoShapesCommand::class,
+            function () {
+                return new InstallGeoShapesCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                    $this->parameter('elasticsearch.geoshapes_index.write_alias'),
+                    $this->parameter('elasticsearch.geoshapes_index.read_alias')
+                );
+            }
+        );
+
+        $this->add(
+            ConsumeCommand::class,
+            function () {
+                return (new ConsumeCommand('consume-udb3-core', 'amqp.udb3-core'))
+                    ->setDescription('Process messages from UDB3 core');
+            }
+        );
+
     }
 }
