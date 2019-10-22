@@ -10,7 +10,7 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = ConfigFactory::create(__DIR__ . '/../');
+$config = ConfigFactory::create(__DIR__ . '/../config');
 
 $container = ContainerFactory::forWeb($config);
 $errorHandler = ErrorHandlerFactory::forWeb($config->get('debug'));

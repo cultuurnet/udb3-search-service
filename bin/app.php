@@ -8,7 +8,7 @@ use Symfony\Component\Console\Application;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$config = ConfigFactory::create(__DIR__ . '/../');
+$config = ConfigFactory::create(__DIR__ . '/../config');
 
 $errorHandler = ErrorHandlerFactory::forCli();
 $errorHandler->register();
