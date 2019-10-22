@@ -15,16 +15,13 @@ $config = ConfigFactory::create(__DIR__ . '/../');
 $container = ContainerFactory::forWeb($config);
 $errorHandler = ErrorHandlerFactory::forWeb($config->get('debug'));
 $errorHandler->register();
-//try{
-    $response = $container->get(Router::class)->dispatch(
-        new ApiRequest(
-            ServerRequestFactory::createFromGlobals()
-        )
-    );
-    (new SapiStreamEmitter())->emit($response);
-//}catch (Throwable $throwable){
-//    var_dump($throwable);
-//}
+
+$response = $container->get(Router::class)->dispatch(
+    new ApiRequest(
+        ServerRequestFactory::createFromGlobals()
+    )
+);
+(new SapiStreamEmitter())->emit($response);
 
 
 
