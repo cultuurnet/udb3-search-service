@@ -1,5 +1,5 @@
 /vendor
 /build
 /log
-/config/config.yml
-/config/features.yml
+/config.yml
+/features.yml
