@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonAvailability;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonCreator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonDuplicateFlag;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonIdentifier;
@@ -35,6 +36,7 @@ class CopyJsonOffer extends CopyJsonCombination
                 false
             ),
             new CopyJsonName($logger),
+            new CopyJsonAvailability($logger),
             new CopyJsonTerms(),
             new CopyJsonTypicalAgeRange(),
             new CopyJsonRelatedOrganizer(

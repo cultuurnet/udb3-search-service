@@ -26,4 +26,9 @@ class CopyJsonPsrLogger implements CopyJsonLoggerInterface
     {
         $this->psrLogger->error($message);
     }
+
+    public function logWarning(string $message): void
+    {
+        $this->psrLogger->warning($message);
+    }
 }
