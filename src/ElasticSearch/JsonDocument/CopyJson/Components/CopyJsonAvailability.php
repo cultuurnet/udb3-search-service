@@ -48,6 +48,14 @@ final class CopyJsonAvailability implements CopyJsonInterface
             $availableTo = DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2100-01-01T00:00:00+00:00');
         }
 
+        if ($availableFrom > $availableTo) {
+            // In some test cases of external developers, an event is created with very old calendar data and then
+            // published, resulting in an availableFrom (publication date) that's higher than the availableTo (end date
+            // of the event). We cannot index a range that starts with a higher from than to, so we set the availableTo
+            // to the same date as the availableFrom so it gets indexed and appears in the developer's dashboard.
+            $availableTo = $availableFrom;
+        }
+
         if ($availableTo) {
             $to->availableTo = $availableTo->format(\DateTime::ATOM);
         }
