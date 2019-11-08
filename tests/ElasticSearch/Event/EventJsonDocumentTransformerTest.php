@@ -465,7 +465,7 @@ class EventJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_makes_sure_availableFrom_is_never_higher_than_availableTo(): void
+    public function it_makes_sure_availableFrom_is_never_higher_than_availableTo(): void
     {
         $original = file_get_contents(__DIR__ . '/data/original-with-higher-available-from.json');
         $originalDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $original);
