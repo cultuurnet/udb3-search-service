@@ -465,6 +465,30 @@ class EventJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_makes_sure_availableFrom_is_never_higher_than_availableTo(): void
+    {
+        $original = file_get_contents(__DIR__ . '/data/original-with-higher-available-from.json');
+        $originalDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $original);
+
+        $expected = file_get_contents(__DIR__ . '/data/indexed-with-same-available-from-and-to.json');
+        $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
+
+        $expectedLogs = [
+            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
+            ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
+            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
+        ];
+
+        $actualDocument = $this->transformer->transform($originalDocument);
+        $actualLogs = $this->simpleArrayLogger->getLogs();
+
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
+        $this->assertEquals($expectedLogs, $actualLogs);
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_regions_if_there_are_any_matching()
     {
         $original = file_get_contents(__DIR__ . '/data/original-with-optional-fields.json');
