@@ -4,7 +4,6 @@
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\HttpFoundation\Response\ApiProblemJsonResponse;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Whoops\Handler\Handler;
@@ -12,6 +11,8 @@ use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
 class ApiExceptionHandler extends Handler
 {
+    private const HTTP_BAD_REQUEST = 400;
+
     /**
      * @var EmitterInterface
      */
@@ -52,7 +53,7 @@ class ApiExceptionHandler extends Handler
     private function createNewApiProblem(\Exception $e)
     {
         $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ? $e->getCode() : ApiProblemJsonResponse::HTTP_BAD_REQUEST);
+        $problem->setStatus($e->getCode() ?: self::HTTP_BAD_REQUEST);
         return $problem;
     }
 }
