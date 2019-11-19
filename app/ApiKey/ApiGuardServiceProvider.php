@@ -45,15 +45,15 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
             ApiKeyAuthenticatorInterface::class,
             function () {
                 $consumerCredentials = new ConsumerCredentials(
-                    $this->parameter('culturefeed.consumer.key'),
-                    $this->parameter('culturefeed.consumer.secret')
+                    $this->parameter('uitid.consumer.key'),
+                    $this->parameter('uitid.consumer.secret')
                 );
 
                 $oauthClient = new \CultureFeed_DefaultOAuthClient(
                     $consumerCredentials->getKey(),
                     $consumerCredentials->getSecret()
                 );
-                $oauthClient->setEndpoint($this->parameter('culturefeed.endpoint'));
+                $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
                 return new CultureFeedApiKeyAuthenticator(
                     new CultureFeed($oauthClient),
