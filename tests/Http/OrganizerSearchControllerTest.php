@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -17,7 +18,10 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\SortOrder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
+use Slim\Psr7\Factory\ServerRequestFactory;
+use Slim\Psr7\Factory\UriFactory;
+use Slim\Psr7\Request;
+use Slim\Psr7\Response;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -58,7 +62,8 @@ class OrganizerSearchControllerTest extends TestCase
             (new CompositeOrganizerRequestParser())
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory
+            $this->queryStringFactory,
+            new ResultTransformingPagedCollectionFactoryFactory()
         );
     }
 
@@ -67,7 +72,7 @@ class OrganizerSearchControllerTest extends TestCase
      */
     public function it_returns_a_paged_collection_of_search_results_based_on_request_query_parameters()
     {
-        $request = new Request(
+        $request = ServerRequestFactory::createFromGlobals()->withQueryParams(
             [
                 'start' => 30,
                 'limit' => 10,
@@ -117,8 +122,8 @@ class OrganizerSearchControllerTest extends TestCase
             new Natural(32),
             new Natural(10),
             [
-                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"name": "Foo"}'),
-                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"name": "Foobar"}'),
+                new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id":"1","@type":"Organizer"}'),
+                new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id":"2","@type":"Organizer"}'),
             ]
         );
 
@@ -131,14 +136,16 @@ class OrganizerSearchControllerTest extends TestCase
                 'itemsPerPage' => 10,
                 'totalItems' => 32,
                 'member' => [
-                    ['name' => 'Foo'],
-                    ['name' => 'Foobar'],
+                    ['@id' => '1', '@type' => 'Organizer'],
+                    ['@id' => '2', '@type' => 'Organizer'],
                 ],
             ]
         );
 
-        $actualJsonResponse = $this->controller->search($request)
-            ->getContent();
+        $actualJsonResponse = $this->controller
+            ->__invoke(new ApiRequest($request))
+            ->getBody()
+            ->__toString();
 
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
     }
@@ -148,7 +155,7 @@ class OrganizerSearchControllerTest extends TestCase
      */
     public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given()
     {
-        $request = new Request(
+        $request = ServerRequestFactory::createFromGlobals()->withQueryParams(
             [
                 'start' => 0,
                 'limit' => 0,
@@ -164,7 +171,7 @@ class OrganizerSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $this->controller->search($request);
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**
@@ -172,7 +179,7 @@ class OrganizerSearchControllerTest extends TestCase
      */
     public function it_filters_out_deleted_organizers_by_default()
     {
-        $request = new Request([]);
+        $request = ServerRequestFactory::createFromGlobals();
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStart(new Natural(0))
@@ -183,14 +190,14 @@ class OrganizerSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $this->controller->search($request);
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param Request $request
+     * @param ApiRequestInterface $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -200,16 +207,16 @@ class OrganizerSearchControllerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->controller->search($request);
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     public function unknownParameterProvider()
     {
+        $uri = (new UriFactory())->createUri('http://search.uitdatabank.be/organizers/');
+        $request = ServerRequestFactory::createFromGlobals()->withUri($uri);
         return [
             'single unknown parameter' => [
-                'request' => Request::create(
-                    'http://search.uitdatabank.be/organizers/',
-                    'GET',
+                'request' => $request->withQueryParams(
                     [
                         'frog' => [
                             'face',
@@ -219,9 +226,7 @@ class OrganizerSearchControllerTest extends TestCase
                 'expectedExceptionMessage' => 'Unknown query parameter(s): frog',
             ],
             'multiple unknown parameter' => [
-                'request' => Request::create(
-                    'http://search.uitdatabank.be/organizers/',
-                    'GET',
+                'request' => $request->withQueryParams(
                     [
                         'frog' => [
                             'face',
@@ -234,9 +239,7 @@ class OrganizerSearchControllerTest extends TestCase
                 'expectedExceptionMessage' => 'Unknown query parameter(s): frog, bat',
             ],
             'unknown and whitelisted parameter' => [
-                'request' => Request::create(
-                    'http://search.uitdatabank.be/organizers/',
-                    'GET',
+                'request' => $request->withQueryParams(
                     [
                         'website' => [
                             'https://du.de',

@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
+use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -12,8 +12,6 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferParameterWhiteList;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -24,9 +22,8 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use DateTimeImmutable;
+use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -84,14 +81,14 @@ class OfferSearchController
     private $facetTreeNormalizer;
 
     /**
-     * @var PagedCollectionFactoryInterface
-     */
-    private $pagedCollectionFactory;
-
-    /**
      * @var OfferParameterWhiteList
      */
     private $offerParameterWhiteList;
+
+    /**
+     * @var ResultTransformingPagedCollectionFactoryFactory
+     */
+    private $resultTransformingPagedCollectionFactoryFactory;
 
     /**
      * @param ApiKeyReaderInterface $apiKeyReader
@@ -103,7 +100,7 @@ class OfferSearchController
      * @param StringLiteral $regionDocumentType
      * @param QueryStringFactoryInterface $queryStringFactory
      * @param FacetTreeNormalizerInterface $facetTreeNormalizer
-     * @param PagedCollectionFactoryInterface|null $pagedCollectionFactory
+     * @param ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
      */
     public function __construct(
         ApiKeyReaderInterface $apiKeyReader,
@@ -115,13 +112,8 @@ class OfferSearchController
         StringLiteral $regionDocumentType,
         QueryStringFactoryInterface $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
-        PagedCollectionFactoryInterface $pagedCollectionFactory = null
+        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
-        if (is_null($pagedCollectionFactory)) {
-            $pagedCollectionFactory = new ResultTransformingPagedCollectionFactory(
-                new PassThroughJsonDocumentTransformer()
-            );
-        }
 
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
@@ -132,38 +124,38 @@ class OfferSearchController
         $this->regionDocumentType = $regionDocumentType;
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
-        $this->pagedCollectionFactory = $pagedCollectionFactory;
         $this->offerParameterWhiteList = new OfferParameterWhiteList();
+        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
 
     /**
-     * @param Request $request
-     * @return Response
+     * @param ApiRequest $request
+     * @return ResponseInterface
      */
-    public function search(Request $request)
+    public function __invoke(ApiRequest $request)
     {
         $this->offerParameterWhiteList->validateParameters(
-            $request->query->keys()
+            $request->getQueryParamsKeys()
         );
 
-        $start = (int) $request->query->get('start', 0);
-        $limit = (int) $request->query->get('limit', 30);
+        $start = (int) $request->getQueryParam('start', 0);
+        $limit = (int) $request->getQueryParam('limit', 30);
 
-        if ($limit == 0) {
+        if ($limit === 0) {
             $limit = 30;
         }
-
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
             ->withLimit(new Natural($limit));
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
 
-        $parameterBag = new SymfonyParameterBagAdapter($request->query);
+        $parameterBag = $request->getQueryParameterBag();
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
         $consumerApiKey = $this->apiKeyReader->read($request);
+
         $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
         if ($defaultQuery) {
@@ -175,37 +167,37 @@ class OfferSearchController
             );
         }
 
-        if (!empty($request->query->get('q'))) {
+        if ($request->hasQueryParam('q')) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
                 $this->queryStringFactory->fromString(
-                    $request->query->get('q')
+                    $request->getQueryParam('q')
                 ),
                 ...$textLanguages
             );
         }
 
-        if (!empty($request->query->get('text'))) {
+        if ($request->hasQueryParam('text')) {
             $queryBuilder = $queryBuilder->withTextQuery(
-                new StringLiteral($request->query->get('text')),
+                new StringLiteral($request->getQueryParam('text')),
                 ...$textLanguages
             );
         }
 
-        if (!empty($request->query->get('id'))) {
+        if ($request->hasQueryParam('id')) {
             $queryBuilder = $queryBuilder->withCdbIdFilter(
-                new Cdbid($request->query->get('id'))
+                new Cdbid($request->getQueryParam('id'))
             );
         }
 
-        if (!empty($request->query->get('locationId'))) {
+        if ($request->hasQueryParam('locationId')) {
             $queryBuilder = $queryBuilder->withLocationCdbIdFilter(
-                new Cdbid($request->query->get('locationId'))
+                new Cdbid($request->getQueryParam('locationId'))
             );
         }
 
-        if (!empty($request->query->get('organizerId'))) {
+        if ($request->hasQueryParam('organizerId')) {
             $queryBuilder = $queryBuilder->withOrganizerCdbIdFilter(
-                new Cdbid($request->query->get('organizerId'))
+                new Cdbid($request->getQueryParam('organizerId'))
             );
         }
 
@@ -224,7 +216,7 @@ class OfferSearchController
             );
         }
 
-        $postalCode = (string) $request->query->get('postalCode');
+        $postalCode = (string) $request->getQueryParam('postalCode');
         if (!empty($postalCode)) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
                 new PostalCode($postalCode)
@@ -244,9 +236,9 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
 
-        $price = $request->query->get('price', null);
-        $minPrice = $request->query->get('minPrice', null);
-        $maxPrice = $request->query->get('maxPrice', null);
+        $price = $request->getQueryParam('price', null);
+        $minPrice = $request->getQueryParam('minPrice', null);
+        $maxPrice = $request->getQueryParam('maxPrice', null);
 
         if (!is_null($price)) {
             $price = Price::fromFloat((float) $price);
@@ -268,9 +260,9 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withUiTPASFilter($includeUiTPAS);
         }
 
-        if ($request->query->get('creator')) {
+        if ($request->hasQueryParam('creator')) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
-                new Creator($request->query->get('creator'))
+                new Creator($request->getQueryParam('creator'))
             );
         }
 
@@ -336,10 +328,13 @@ class OfferSearchController
         foreach ($facets as $facet) {
             $queryBuilder = $queryBuilder->withFacet($facet);
         }
-
         $resultSet = $this->searchService->search($queryBuilder);
 
-        $pagedCollection = $this->pagedCollectionFactory->fromPagedResultSet(
+        $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
+            (bool) $parameterBag->getBooleanFromParameter('embed')
+        );
+
+        $pagedCollection = $resultTransformingPagedCollectionFactory->fromPagedResultSet(
             $resultSet,
             $start,
             $limit
@@ -353,29 +348,24 @@ class OfferSearchController
             $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
         }
 
-        return (new JsonResponse($jsonArray, 200, ['Content-Type' => 'application/ld+json']))
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
+        return ResponseFactory::jsonLd($jsonArray);
     }
 
     /**
-     * @param Request $request
+     * @param ApiRequestInterface $request
      * @param $queryParameter
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
-    private function getAvailabilityFromQuery(Request $request, $queryParameter)
+    private function getAvailabilityFromQuery(ApiRequestInterface $request, $queryParameter): ?DateTimeImmutable
     {
-        $defaultDateTime = \DateTimeImmutable::createFromFormat('U', $request->server->get('REQUEST_TIME'));
+        $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
 
-        $parameterBag = new SymfonyParameterBagAdapter($request->query);
-
-        return $parameterBag->getStringFromParameter(
+        return $request->getQueryParameterBag()->getStringFromParameter(
             $queryParameter,
             $defaultDateTimeString,
             function ($dateTimeString) use ($queryParameter) {
-                $dateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
+                $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
 
                 if (!$dateTime) {
                     throw new \InvalidArgumentException(

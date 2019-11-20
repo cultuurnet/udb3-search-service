@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Knp\Command\Command;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
@@ -60,7 +60,6 @@ class TermTaxonomyToFacetMappingsCommand extends Command
         $this->generateYmlMapping('facet_mapping_types', $xml, self::TYPES_XPATH);
         $this->generateYmlMapping('facet_mapping_themes', $xml, self::THEMES_XPATH);
         $this->generateYmlMapping('facet_mapping_facilities', $xml, self::FACILITIES_XPATH);
-
         return 0;
     }
 
