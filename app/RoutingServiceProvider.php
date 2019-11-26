@@ -49,6 +49,11 @@ class RoutingServiceProvider extends BaseServiceProvider
                     return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
                 });
 
+                $router->get('/organizers', OrganizerSearchController::class);
+                $router->get('/offers', ['offer_controller', '__invoke']);
+                $router->get('/events', ['event_controller', '__invoke']);
+                $router->get('/places', ['place_controller', '__invoke']);
+
                 $router->get('/organizers/', OrganizerSearchController::class);
                 $router->get('/offers/', ['offer_controller', '__invoke']);
                 $router->get('/events/', ['event_controller', '__invoke']);
