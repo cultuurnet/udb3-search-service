@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
+use InvalidArgumentException;
 
-class SymfonyParameterBagAdapter implements ParameterBagInterface
+class ArrayParameterBagAdapter implements ParameterBagInterface
 {
     /**
-     * @var ParameterBag
+     * @var array
      */
     private $parameterBag;
 
@@ -17,10 +17,10 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
     private $resetValue;
 
     /**
-     * @param ParameterBag $parameterBag
+     * @param array $parameterBag
      * @param string $resetValue
      */
-    public function __construct(ParameterBag $parameterBag, $resetValue = '*')
+    public function __construct(array $parameterBag, $resetValue = '*')
     {
         $this->parameterBag = $parameterBag;
         $this->resetValue = $resetValue;
@@ -33,12 +33,12 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
      */
     public function getArrayFromParameter($queryParameter, callable $callback = null)
     {
-        if (empty($this->parameterBag->get($queryParameter))) {
+        if (empty($this->get($queryParameter))) {
             return [];
         }
 
         $callback = $this->ensureCallback($callback);
-        $values = (array) $this->parameterBag->get($queryParameter);
+        $values = (array) $this->get($queryParameter);
 
         return array_map($callback, $values);
     }
@@ -54,11 +54,11 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
         $defaultValue = null,
         callable $callback = null
     ) {
-        $parameterValue = $this->parameterBag->get($parameterName, null);
+        $parameterValue = $this->get($parameterName);
         $callback = $this->ensureCallback($callback);
 
         if (is_array($parameterValue)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 "The parameter \"{$parameterName}\" can only have a single value."
             );
         }
@@ -67,15 +67,15 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
             return null;
         }
 
-        if (is_null($parameterValue) && !is_null($defaultValue) && $this->areDefaultFiltersEnabled()) {
+        if ($parameterValue === null && $defaultValue !== null && $this->areDefaultFiltersEnabled()) {
             $parameterValue = $defaultValue;
         }
 
-        if (is_null($parameterValue)) {
+        if ($parameterValue === null) {
             return null;
         }
 
-        return call_user_func($callback, $parameterValue);
+        return $callback($parameterValue);
     }
 
     /**
@@ -91,9 +91,9 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
     ) {
         $callback = $this->ensureCallback($callback);
 
-        $intCallback = function ($value) use ($callback) {
+        $intCallback = static function ($value) use ($callback) {
             $int = (int) $value;
-            return call_user_func($callback, $int);
+            return $callback($int);
         };
 
         return $this->getStringFromParameter($parameterName, $defaultValue, $intCallback);
@@ -119,7 +119,7 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
             $defaultValueAsString
         );
 
-        if (is_null($asString)) {
+        if ($asString === null) {
             return [];
         }
 
@@ -137,8 +137,8 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
         $parameterName,
         $defaultValueAsString = null
     ) {
-        $callback = function ($mixed) {
-            if (is_null($mixed) || (is_string($mixed) && strlen($mixed) === 0)) {
+        $callback = static function ($mixed) {
+            if ($mixed === null || $mixed === '') {
                 return null;
             }
 
@@ -155,11 +155,11 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
      */
     public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
     {
-        $callback = function ($asString) use ($queryParameter) {
+        $callback = static function ($asString) use ($queryParameter) {
             $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     "{$queryParameter} should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00"
                 );
             }
@@ -170,35 +170,37 @@ class SymfonyParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
     }
 
-    /**
-     * @return bool
-     */
-    private function areDefaultFiltersEnabled()
+    private function get(string $queryParameter, $default = null)
+    {
+        if (!isset($this->parameterBag[$queryParameter])) {
+            return $default;
+        }
+
+        return $this->parameterBag[$queryParameter];
+    }
+
+    private function areDefaultFiltersEnabled(): bool
     {
         // Don't pass a default value here as it will cause an infinite loop.
         $disabled = $this->getBooleanFromParameter('disableDefaultFilters');
 
         // Instead check if the returned value is null, and if so always set it
         // to false as it means the disableDefaultFilters parameter is not set.
-        $disabled = is_null($disabled) ? false : $disabled;
+        $disabled = $disabled === null ? false : $disabled;
 
         return !$disabled;
     }
 
-    /**
-     * @param callable|null $callback
-     * @return callable
-     */
-    private function ensureCallback(callable $callback = null)
+    private function ensureCallback(callable $callback = null): callable
     {
-        if (!is_null($callback)) {
+        if ($callback !== null) {
             return $callback;
         }
 
-        $passthroughCallback = function ($value) {
+        $passThroughCallback = static function ($value) {
             return $value;
         };
 
-        return $passthroughCallback;
+        return $passThroughCallback;
     }
 }

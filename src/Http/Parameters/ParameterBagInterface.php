@@ -28,6 +28,18 @@ interface ParameterBagInterface
 
     /**
      * @param string $parameterName
+     * @param string|null $defaultValue
+     * @param callable $callback
+     * @return mixed|null
+     */
+    public function getIntegerFromParameter(
+        $parameterName,
+        $defaultValue = null,
+        callable $callback = null
+    );
+
+    /**
+     * @param string $parameterName
      * @param string|null $defaultValueAsString
      * @param callable|null $callback
      * @param string $delimiter

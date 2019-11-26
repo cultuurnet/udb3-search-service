@@ -9,14 +9,10 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerParameterWhiteList;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\SymfonyParameterBagAdapter;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
@@ -35,9 +31,9 @@ class OrganizerSearchController
     private $searchService;
 
     /**
-     * @var PagedCollectionFactoryInterface
+     * @var ResultTransformingPagedCollectionFactoryFactory
      */
-    private $pagedCollectionFactory;
+    private $resultTransformingPagedCollectionFactoryFactory;
 
     /**
      * @var OrganizerParameterWhiteList
@@ -54,52 +50,35 @@ class OrganizerSearchController
      */
     private $organizerRequestParser;
 
-    /**
-     * @param OrganizerQueryBuilderInterface $queryBuilder
-     * @param OrganizerSearchServiceInterface $searchService
-     * @param OrganizerRequestParser $organizerRequestParser
-     * @param QueryStringFactoryInterface $queryStringFactory
-     * @param PagedCollectionFactoryInterface|null $pagedCollectionFactory
-     */
     public function __construct(
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactoryInterface $queryStringFactory,
-        PagedCollectionFactoryInterface $pagedCollectionFactory = null
+        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
-        if (is_null($pagedCollectionFactory)) {
-            $pagedCollectionFactory = new ResultTransformingPagedCollectionFactory(
-                new PassThroughJsonDocumentTransformer()
-            );
-        }
-
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
-        $this->pagedCollectionFactory = $pagedCollectionFactory;
-        $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
-        $this->queryStringFactory = $queryStringFactory;
         $this->organizerRequestParser = $organizerRequestParser;
+        $this->queryStringFactory = $queryStringFactory;
+        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
+        $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
     }
 
-    /**
-     * @param Request $request
-     * @return Response
-     */
-    public function search(Request $request)
+    public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
         $this->organizerParameterWhiteList->validateParameters(
-            $request->query->keys()
+            $request->getQueryParamsKeys()
         );
 
-        $start = (int) $request->query->get('start', 0);
-        $limit = (int) $request->query->get('limit', 30);
+        $start = (int) $request->getQueryParam('start', 0);
+        $limit = (int) $request->getQueryParam('limit', 30);
 
-        if ($limit == 0) {
+        if ($limit === 0) {
             $limit = 30;
         }
 
-        $parameterBag = new SymfonyParameterBagAdapter($request->query);
+        $parameterBag = $request->getQueryParameterBag();
 
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
@@ -109,40 +88,36 @@ class OrganizerSearchController
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
-        if (!empty($request->query->get('q'))) {
+        if ($request->hasQueryParam('q')) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString(
-                    $request->query->get('q')
-                ),
+                $this->queryStringFactory->fromString($request->getQueryParam('q')),
                 ...$textLanguages
             );
         }
 
-        if (!empty($request->query->get('name'))) {
+        if ($request->hasQueryParam('name')) {
             $queryBuilder = $queryBuilder->withAutoCompleteFilter(
-                new StringLiteral($request->query->get('name'))
+                new StringLiteral($request->getQueryParam('name'))
             );
         }
 
-        if (!empty($request->query->get('website'))) {
+        if ($request->hasQueryParam('website')) {
             $queryBuilder = $queryBuilder->withWebsiteFilter(
-                Url::fromNative($request->query->get('website'))
+                Url::fromNative($request->getQueryParam('website'))
             );
         }
 
-        if (!empty($request->query->get('domain'))) {
+        if ($request->hasQueryParam('domain')) {
             $queryBuilder = $queryBuilder->withDomainFilter(
-                Domain::specifyType($request->query->get('domain'))
+                Domain::specifyType($request->getQueryParam('domain'))
             );
         }
 
-        $postalCode = (string) $request->query->get('postalCode');
-        if (!empty($postalCode)) {
+        if ($request->hasQueryParam('postalCode')) {
             $queryBuilder = $queryBuilder->withPostalCodeFilter(
-                new PostalCode($postalCode)
+                new PostalCode((string) $request->getQueryParam('postalCode'))
             );
         }
-
         $country = (new CountryExtractor())->getCountryFromQuery(
             $parameterBag,
             null
@@ -150,10 +125,9 @@ class OrganizerSearchController
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
-
-        if ($request->query->get('creator')) {
+        if ($request->hasQueryParam('creator')) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
-                new Creator($request->query->get('creator'))
+                new Creator($request->getQueryParam('creator'))
             );
         }
 
@@ -164,17 +138,24 @@ class OrganizerSearchController
 
         $resultSet = $this->searchService->search($queryBuilder);
 
-        $pagedCollection = $this->pagedCollectionFactory->fromPagedResultSet(
-            $resultSet,
-            $start,
-            $limit
-        );
+        $pagedCollection = $this->resultTransformingPagedCollectionFactoryFactory
+            ->create((bool) $parameterBag->getBooleanFromParameter('embed'))
+            ->fromPagedResultSet(
+                $resultSet,
+                $start,
+                $limit
+            );
 
-        return (new JsonResponse($pagedCollection, 200, ['Content-Type' => 'application/ld+json']))
-            ->setPublic()
-            ->setClientTtl(60 * 1)
-            ->setTtl(60 * 5);
+        /**
+         * @todo add cache control to headers
+         */
+        return ResponseFactory::jsonLd($pagedCollection);
+//        return (new JsonResponse($pagedCollection, 200, ['Content-Type' => 'application/ld+json']))
+//            ->setPublic()
+//            ->setClientTtl(60 * 1)
+//            ->setTtl(60 * 5);
     }
+
 
     /**
      * @param ParameterBagInterface $parameterBag

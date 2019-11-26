@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\GetIndexNamesFromAlias;
+use Elasticsearch\Client;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,16 +29,18 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     private $readAlias;
 
     /**
+     * @param Client $client
      * @param string $latestIndexName
      * @param string $writeAlias
      * @param string $readAlias
      */
     public function __construct(
+        Client $client,
         $latestIndexName,
         $writeAlias,
         $readAlias
     ) {
-        parent::__construct();
+        parent::__construct($client);
         $this->latestIndexName = $latestIndexName;
         $this->writeAlias = $writeAlias;
         $this->readAlias = $readAlias;

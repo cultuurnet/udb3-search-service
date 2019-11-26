@@ -3,20 +3,17 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
-use Symfony\Component\HttpFoundation\Request;
 
 class SortByOfferRequestParser implements OfferRequestParserInterface
 {
-    /**
-     * @param Request $request
-     * @param OfferQueryBuilderInterface $offerQueryBuilder
-     * @return OfferQueryBuilderInterface
-     */
-    public function parse(Request $request, OfferQueryBuilderInterface $offerQueryBuilder)
-    {
-        $sorts = $request->query->get('sort', []);
+    public function parse(
+        ApiRequestInterface $request,
+        OfferQueryBuilderInterface $offerQueryBuilder
+    ): OfferQueryBuilderInterface {
+        $sorts = $request->getQueryParam('sort', []);
 
         if (!is_array($sorts)) {
             throw new \InvalidArgumentException('Invalid sorting syntax given.');
@@ -30,7 +27,7 @@ class SortByOfferRequestParser implements OfferRequestParserInterface
                 return $queryBuilder->withSortByAvailableTo($sortOrder);
             },
             'distance' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
-                $coordinates = $request->query->get('coordinates', false);
+                $coordinates = $request->getQueryParam('coordinates', false);
                 if (!$coordinates) {
                     throw new \InvalidArgumentException(
                         'Required "coordinates" parameter missing when sorting by distance.'

@@ -5,15 +5,17 @@ namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 class SortByOrganizerRequestParser implements OrganizerRequestParser
 {
     public function parse(
-        Request $request,
+        ServerRequestInterface $request,
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
-        $sorts = $request->query->get('sort', []);
+        
+        $parameters = $request->getQueryParams();
+        $sorts = !empty($parameters['sort']) ? $parameters['sort'] : [];
 
         if (!is_array($sorts)) {
             throw new InvalidArgumentException('Invalid sorting syntax given.');

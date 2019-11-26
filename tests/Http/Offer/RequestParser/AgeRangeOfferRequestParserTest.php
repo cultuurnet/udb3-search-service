@@ -2,10 +2,11 @@
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
+use CultuurNet\UDB3\Search\Http\ApiRequest;
+use Slim\Psr7\Factory\ServerRequestFactory;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 use ValueObjects\Number\Natural;
 
 class AgeRangeOfferRequestParserTest extends TestCase
@@ -31,7 +32,8 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_age_range_filter_with_a_min_age()
     {
-        $request = new Request(
+
+        $request = $this->request(
             [
                 'minAge' => '7',
             ]
@@ -42,7 +44,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
             ->with(new Natural(7), null)
             ->willReturn($this->queryBuilder);
 
-        $this->parser->parse($request, $this->queryBuilder);
+        $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }
 
     /**
@@ -50,7 +52,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_age_range_filter_with_a_max_age()
     {
-        $request = new Request(
+        $request = $this->request(
             [
                 'maxAge' => '12',
             ]
@@ -69,7 +71,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_age_range_filter_with_a_min_and_max_age()
     {
-        $request = new Request(
+        $request = $this->request(
             [
                 'minAge' => '7',
                 'maxAge' => '12',
@@ -89,7 +91,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_all_ages_filter()
     {
-        $request = new Request(
+        $request = $this->request(
             [
                 'allAges' => 'true',
             ]
@@ -101,5 +103,11 @@ class AgeRangeOfferRequestParserTest extends TestCase
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
+    }
+
+    private function request(array $params): ApiRequest
+    {
+        $request = ServerRequestFactory::createFromGlobals();
+        return new ApiRequest($request->withQueryParams($params));
     }
 }
