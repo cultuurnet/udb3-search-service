@@ -11,6 +11,8 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CustomHeaderApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerWriteRepositoryInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;
@@ -24,6 +26,8 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
         ApiKeyAuthenticatorInterface::class,
         RequestAuthenticatorInterface::class,
         InMemoryConsumerRepository::class,
+        ConsumerWriteRepositoryInterface::class,
+        ConsumerReadRepositoryInterface::class,
     ];
 
     public function register()
@@ -73,7 +77,21 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
+            ConsumerReadRepositoryInterface::class,
+            function () {
+                return $this->get(InMemoryConsumerRepository::class);
+            }
+        );
+
+        $this->addShared(
+            ConsumerWriteRepositoryInterface::class,
+            function () {
+                return $this->get(InMemoryConsumerRepository::class);
+            }
+        );
+
+        $this->addShared(
             InMemoryConsumerRepository::class,
             function () {
                 return new InMemoryConsumerRepository();
