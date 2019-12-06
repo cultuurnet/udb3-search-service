@@ -14,10 +14,27 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
      * @param $function
      * @param string|null $tag
      */
-    protected function add(string $serviceName, $function, ?string $tag = null)
+    protected function add(string $serviceName, $function, ?string $tag = null): void
     {
         $definition = $this->getLeagueContainer()
             ->add($serviceName, $function);
+
+        if ($tag !== null) {
+            $definition->addTag($tag);
+        }
+    }
+
+    /**
+     * Add Service definition to container
+     *
+     * @param string $serviceName
+     * @param $function
+     * @param string|null $tag
+     */
+    protected function addShared(string $serviceName, $function, ?string $tag = null): void
+    {
+        $definition = $this->getLeagueContainer()
+            ->share($serviceName, $function);
 
         if ($tag !== null) {
             $definition->addTag($tag);
