@@ -356,4 +356,15 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         $queryBuilder->shardPreference = $preference;
         return $queryBuilder;
     }
+
+    public function createUrlParameters(): array
+    {
+        $parameters = [];
+
+        if ($this->shardPreference !== null) {
+            $parameters['preference'] = $this->shardPreference;
+        }
+
+        return $parameters;
+    }
 }
