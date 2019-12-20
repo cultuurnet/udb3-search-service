@@ -29,6 +29,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
      */
     protected $boolQuery;
 
+    /**
+     * @var ?string
+     */
+    private $shardPreference = null;
+
     public function __construct()
     {
         $this->boolQuery = new BoolQuery();
@@ -343,5 +348,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         $c = $this->getClone();
         $c->search->addSort($sort);
         return $c;
+    }
+
+    public function withShardPreference(string $preference): self
+    {
+        $queryBuilder = clone $this;
+        $queryBuilder->shardPreference = $preference;
+        return $queryBuilder;
     }
 }
