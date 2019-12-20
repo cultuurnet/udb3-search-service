@@ -2,7 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
@@ -20,6 +23,11 @@ use ValueObjects\Web\Url;
 
 class OrganizerSearchController
 {
+    /**
+     * @var ApiKeyReaderInterface
+     */
+    private $apiKeyReader;
+
     /**
      * @var OrganizerQueryBuilderInterface
      */
@@ -51,12 +59,14 @@ class OrganizerSearchController
     private $organizerRequestParser;
 
     public function __construct(
+        ApiKeyReaderInterface $apiKeyReader,
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactoryInterface $queryStringFactory,
         ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
     ) {
+        $this->apiKeyReader = $apiKeyReader;
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->organizerRequestParser = $organizerRequestParser;
@@ -83,6 +93,13 @@ class OrganizerSearchController
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
             ->withLimit(new Natural($limit));
+
+        $consumerApiKey = $this->apiKeyReader->read($request);
+
+        if ($consumerApiKey instanceof ApiKey &&
+            $queryBuilder instanceof ElasticSearchOrganizerQueryBuilder) {
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toNative());
+        }
 
         $queryBuilder = $this->organizerRequestParser->parse($request, $queryBuilder);
 
@@ -146,14 +163,7 @@ class OrganizerSearchController
                 $limit
             );
 
-        /**
-         * @todo add cache control to headers
-         */
         return ResponseFactory::jsonLd($pagedCollection);
-//        return (new JsonResponse($pagedCollection, 200, ['Content-Type' => 'application/ld+json']))
-//            ->setPublic()
-//            ->setClientTtl(60 * 1)
-//            ->setTtl(60 * 5);
     }
 
 

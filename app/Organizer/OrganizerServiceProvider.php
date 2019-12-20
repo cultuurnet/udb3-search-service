@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
@@ -42,6 +43,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
                     ->withParser(new SortByOrganizerRequestParser());
 
                 return new OrganizerSearchController(
+                    $this->get(ApiKeyReaderInterface::class),
                     new ElasticSearchOrganizerQueryBuilder(),
                     new ElasticSearchOrganizerSearchService(
                         $this->get(Client::class),
