@@ -37,12 +37,12 @@ trait HasElasticSearchClient
      * @param array $body
      * @return array
      */
-    private function executeQuery(array $body)
+    private function executeQuery(array $body, array $parameters = [])
     {
+        $parameters['body'] = $body;
+
         return $this->elasticSearchClient->search(
-            $this->createParameters(
-                ['body' => $body]
-            )
+            $this->createParameters($parameters)
         );
     }
 

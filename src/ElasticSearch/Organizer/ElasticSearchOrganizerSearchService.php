@@ -2,6 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
+use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
@@ -47,7 +48,12 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
         /* @var \ONGR\ElasticsearchDSL\Search $search */
         $search = $queryBuilder->build();
 
-        $response = $this->executeQuery($search->toArray());
+        $parameters = [];
+        if ($queryBuilder instanceof AbstractElasticSearchQueryBuilder) {
+            $parameters = $queryBuilder->createUrlParameters();
+        }
+
+        $response = $this->executeQuery($search->toArray(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
             new Natural($search->getSize()),

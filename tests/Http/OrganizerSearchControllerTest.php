@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -21,7 +21,6 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Request;
-use Slim\Psr7\Response;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -31,6 +30,11 @@ use ValueObjects\Web\Url;
 
 class OrganizerSearchControllerTest extends TestCase
 {
+    /**
+     * @var ApiKeyReaderInterface|MockObject
+     */
+    private $apiKeyReader;
+
     /**
      * @var MockOrganizerQueryBuilder
      */
@@ -53,10 +57,12 @@ class OrganizerSearchControllerTest extends TestCase
 
     public function setUp()
     {
+        $this->apiKeyReader = $this->createMock(ApiKeyReaderInterface::class);
         $this->queryBuilder = new MockOrganizerQueryBuilder();
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
         $this->queryStringFactory = new MockQueryStringFactory();
         $this->controller = new OrganizerSearchController(
+            $this->apiKeyReader,
             $this->queryBuilder,
             $this->searchService,
             (new CompositeOrganizerRequestParser())

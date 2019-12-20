@@ -2,9 +2,11 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -148,13 +150,18 @@ class OfferSearchController
             ->withStart(new Natural($start))
             ->withLimit(new Natural($limit));
 
+        $consumerApiKey = $this->apiKeyReader->read($request);
+
+        if ($consumerApiKey instanceof ApiKey &&
+            $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toNative());
+        }
+
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
 
         $parameterBag = $request->getQueryParameterBag();
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
-
-        $consumerApiKey = $this->apiKeyReader->read($request);
 
         $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
