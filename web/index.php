@@ -22,6 +22,3 @@ $response = $container->get(Router::class)->dispatch(
     )
 );
 (new SapiStreamEmitter())->emit($response);
-
-
-
