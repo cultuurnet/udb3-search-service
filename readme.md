@@ -52,3 +52,22 @@ This is intentional, because we might have to index a field with multiple analyz
 
 So the JSON-LD returned by SAPI3 in HTTP responses is not the JSON document that's indexed inside ElasticSearch. Instead, we also index the original JSON-LD as an un-analyzed field and use that to return the original JSON-LD in HTTP responses.  
 
+### Indexing a new field
+
+The field mapping of all documents can be found in `src/ElasticSearch/Operations/json` as `mapping_*.json` files.
+
+Add your new field mapping in those files as [per the ElasticSearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping.html). As noted above, you don't have to follow the JSON-LD structure or naming 100%, but try to use the same kind of names where possible for reasons documented below about the `q` URL parameter.
+
+After adding your field(s) to the mapping, update the `UDB3_CORE` version number in `src/ElasticSearch/Operations/SchemaVersions.php`
+
+An example of a valid version number is `20191008132400`. This is simply the current date time in the `YYYYMMDDHHIISS` format (year, month, day, hour, minute, second without anything in-between).
+
+This change would make the migration script see the new mapping and create a new index for it. However, we're still missing a way to convert the property from the JSON-LD document to the property on the ElasticSearch document.
+
+This conversion happens in the `CopyJson` class located in:
+
+- `src/ElasticSearch/JsonDocument/CopyJsonOffer.php` (for events and places)
+- `src/ElasticSearch/Organizer/CopyJsonOrganizer.php`
+
+After adding the logic to copy the property from the one format to the other, you can run the migration script to re-index all the documents in your index with the new field(s).
+
