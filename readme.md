@@ -71,3 +71,12 @@ This conversion happens in the `CopyJson` class located in:
 
 After adding the logic to copy the property from the one format to the other, you can run the migration script to re-index all the documents in your index with the new field(s).
 
+### Adding a filter
+
+#### URL parameters
+
+[TODO]
+
+#### The `q` parameter
+
+[TODO]
