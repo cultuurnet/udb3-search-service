@@ -44,3 +44,11 @@ After the new index is re-indexed, the migration script will move the `udb3_core
 
 With this approach the only side effect of migrating is that users might get some outdated search results while the new indexation is happening.
 
+### JSON document structure
+
+The structure of the JSON documents in ElasticSearch for events, places and organizers is different from the JSON-LD structure in UDB3.
+
+This is intentional, because we might have to index a field with multiple analyzers and/or make changes to the data structure before indexing.
+
+So the JSON-LD returned by SAPI3 in HTTP responses is not the JSON document that's indexed inside ElasticSearch. Instead, we also index the original JSON-LD as an un-analyzed field and use that to return the original JSON-LD in HTTP responses.  
+
