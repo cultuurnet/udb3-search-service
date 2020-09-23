@@ -77,7 +77,63 @@ After adding the logic to copy the property from the one format to the other, yo
 
 #### URL parameters
 
-[TODO]
+To keep the ElasticSearch implementation of SAPI3 separate from the rest of the code, we work with the concept of query builders.
+
+There's a query builder for offers, and one for organizers. Each of these has an interface, with an ElasticSearch implementation.
+
+The HTTP controllers and other code only depend on the query builder interfaces. 
+When bootstrapping and running the app we inject the actual ElasticSearch implementation classes.
+This way we could theoretically swap out ElasticSearch with another search engine.
+
+So to add a new URL parameter to filter on, you need to make the following changes:
+
+1. Add a new method on the relevant query builder interface(s) (offer and/or organizer)
+2. Implement the new method on the ElasticSearch implementation class(es)
+3. Change the HTTP controller(s) to look for a new query parameter and use that to call the new query builder method(s)
+
+**Query builder interface(s)**
+
+The query builder interfaces are located at:
+
+- `src/Offer/OfferQueryBuilderInterface.php`
+- `src/Organizer/OrganizerQueryBuilderInterface.php`
+
+Note that the implementations are supposed to be immutable, so we use chain-able `with` methods that return a copy of the called object with a new property.
+
+**ElasticSearch implementations**
+
+The ElasticSearch implementations of the query builder interfaces are located at:
+
+- `src/ElasticSearch/Offer/ElasticSearchOfferQueryBuilder`
+- `src/ElasticSearch/Organizer/ElasticSearchOrganizerQueryBuilder`
+
+These classes use the `ongr/elasticsearch-dsl` package to build queries. 
+Note however that they both extend a `AbstractElasticSearchQueryBuilder` class which provides a lot of convenience methods for common queries like match, term, etc.
+
+**HTTP controllers**
+
+The HTTP controllers are located at:
+
+- `src/Http/OfferSearchController.php`
+- `src/Http/OrganizerSearchController.php`
+
+In the past, the controllers did a lot of parsing of query parameters themselves. 
+However, we later introduced the concept of "request parsers" that take an API request object and query builder object, and then look for a specific query parameter and add the necessary filters on the query builder object.
+This way we can better divide the responsibilities of each class.
+
+If you need to add logic for a completely new URL parameter, start by creating a request parser in either:
+ 
+- `src/Http/Offer/RequestParser`
+- `src/Http/Organizer/RequestParser`
+
+Then, add it to the collection of request parsers in the app's controller providers, so it gets injected in the relevant controller:
+
+- `app/Offer/OfferSearchControllerFactory.php` (We need to make multiple instances of this controller for the `/offers/`, `/events/` and `/places/` endpoints, thus a factory.)
+- `app/Organizer/OrganizerServiceProvider.php`
+
+Note that you will also need to change the unit tests to include the new request parser(s) in the controller(s).
+
+**If you need to make changes to an existing URL parameter and there's no request parser for it yet, it's best to move the logic from the controller to a request parser first!** 
 
 #### The `q` parameter
 
