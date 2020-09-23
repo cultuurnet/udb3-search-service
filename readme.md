@@ -72,6 +72,36 @@ This conversion happens in the `CopyJson` class located in:
 - `src/ElasticSearch/JsonDocument/CopyJsonOffer.php` (for events and places)
 - `src/ElasticSearch/Organizer/CopyJsonOrganizer.php`
 
+When copying a nested property from the JSON-LD to the ElasticSearch JSON, don't copy the whole object in which it's nested. 
+Only copy the (sub-)properties for which we have explicit mapping.
+Otherwise, the other sub-properties like name will also be indexed with automated mapping which would expose it in the q parameter used for advanced queries.
+
+For example, events in JSON-LD have a `production` property like this:
+
+```json
+{
+  "@type": "Event",
+  "@id": "https://io.uitdatabank.dev/events/bcd9242d-ef85-4a32-8ad0-01af6f675634",
+  ...
+  "production": {
+    "id": "08314739-ab47-4e89-a80c-ce46ef07ba1d",
+    "name": "Test production",
+    "otherEvents": [ ... ]
+  }
+}
+```
+
+When we want to index the production id, but not necessarily the production name, we have to make the resulting ElasticSearch JSON look like this:
+
+```json
+{
+  ...
+  "production": {
+    "id": "08314739-ab47-4e89-a80c-ce46ef07ba1d"
+  }
+}
+```
+
 After adding the logic to copy the property from the one format to the other, you can run the migration script to re-index all the documents in your index with the new field(s).
 
 ### Adding a filter
