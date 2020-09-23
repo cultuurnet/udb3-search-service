@@ -606,4 +606,20 @@ class EventJsonDocumentTransformerTest extends TestCase
 
         $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_copy_production_id_if_present_on_the_json_ld()
+    {
+        $original = file_get_contents(__DIR__ . '/data/original-with-production.json');
+        $originalDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $original);
+
+        $expected = file_get_contents(__DIR__ . '/data/indexed-with-production.json');
+        $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
+
+        $actualDocument = $this->transformer->transform($originalDocument);
+
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
+    }
 }
