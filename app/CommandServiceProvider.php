@@ -24,7 +24,6 @@ use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdateRegionQueryMappingCommand;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -56,7 +55,6 @@ class CommandServiceProvider extends BaseServiceProvider
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
                     'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
-                    'udb3-core:region-query-mapping' => UpdateRegionQueryMappingCommand::class,
                     'udb3-core:reindex' => ReindexUDB3CoreCommand::class,
                     'udb3-core:reindex-permanent' => ReindexPermanentOffersCommand::class,
                     'udb3-core:install' => InstallUDB3CoreCommand::class,
@@ -107,17 +105,6 @@ class CommandServiceProvider extends BaseServiceProvider
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                     $this->parameter('elasticsearch.place.document_type')
-                );
-            }
-        );
-
-        $this->add(
-            UpdateRegionQueryMappingCommand::class,
-            function () {
-                return new UpdateRegionQueryMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.latest'),
-                    $this->parameter('elasticsearch.region_query.document_type')
                 );
             }
         );
