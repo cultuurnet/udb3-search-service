@@ -56,7 +56,9 @@ So the JSON-LD returned by SAPI3 in HTTP responses is not the JSON document that
 
 The field mapping of all documents can be found in `src/ElasticSearch/Operations/json` as `mapping_*.json` files.
 
-Add your new field mapping in those files as [per the ElasticSearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping.html). As noted above, you don't have to follow the JSON-LD structure or naming 100%, but try to use the same kind of names where possible for reasons documented below about the `q` URL parameter.
+Add your new field mapping in those files as [per the ElasticSearch documentation](https://www.elastic.co/guide/en/elasticsearch/reference/6.8/mapping.html). 
+As noted above, you don't have to follow the JSON-LD structure or naming 100%, since it would make querying very hard in some situations.
+For example, because it's hard to do a range query on separate `availableFrom` and `availableTo` fields, we instead index them as a single `availableRange` field.
 
 After adding your field(s) to the mapping, update the `UDB3_CORE` version number in `src/ElasticSearch/Operations/SchemaVersions.php`
 
