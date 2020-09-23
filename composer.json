@@ -42,6 +42,7 @@
         "escapestudios/symfony2-coding-standard": "~2.9",
         "phing/phing": "~2.14",
         "php-coveralls/php-coveralls": "^2.1",
+        "phpstan/phpstan": "^0.12.43",
         "phpunit/phpunit": "^7.5",
         "squizlabs/php_codesniffer": "~2.5.1"
     },
