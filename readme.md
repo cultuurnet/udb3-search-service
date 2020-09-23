@@ -26,6 +26,7 @@ An actual migration will only occur if the script detects a new version number i
 
 This means that this command is idempotent. You can run it as much as you want without doing any checks beforehand, e.g. after every deploy or git pull.
 
+**How it works**
 
 To keep the search index live while re-indexing in production (and other environments), we work with two aliases:
 
