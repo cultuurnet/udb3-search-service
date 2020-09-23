@@ -34,7 +34,7 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $name = $input->getArgument('target');
         $force = (bool) $input->getOption('force');
@@ -45,5 +45,7 @@ class CreateIndexCommand extends AbstractElasticSearchCommand
         );
 
         $operation->run($name, $force);
+
+        return 0;
     }
 }

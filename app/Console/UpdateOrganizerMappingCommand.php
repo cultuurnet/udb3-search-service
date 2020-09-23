@@ -21,7 +21,7 @@ class UpdateOrganizerMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new UpdateOrganizerMapping(
             $this->getElasticSearchClient(),
@@ -29,5 +29,7 @@ class UpdateOrganizerMappingCommand extends AbstractMappingCommand
         );
 
         $operation->run($this->indexName, $this->documentType);
+
+        return 0;
     }
 }

@@ -66,7 +66,7 @@ class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $force = (bool) $input->getOption('force');
         
@@ -84,8 +84,10 @@ class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         if ($latestIndexExists && !$force) {
             // Latest index already exists, do nothing.
             $logger->info('Latest udb3_core index exists already. Aborting installation.');
-            return;
-        } elseif ($latestIndexExists && $force) {
+            return 0;
+        }
+
+        if ($latestIndexExists && $force) {
             // Latest index already exists, but force enabled so continue.
             $logger->warning('Latest udb3_core index exists already. Force enabled so continuing installation.');
         } else {
@@ -130,5 +132,7 @@ class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         $consoleApp->find('index:update-alias')->run($readAliasInput, $output);
         
         $logger->info('Installation completed.');
+
+        return 0;
     }
 }

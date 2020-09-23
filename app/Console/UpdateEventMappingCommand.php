@@ -21,7 +21,7 @@ class UpdateEventMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new UpdateEventMapping(
             $this->getElasticSearchClient(),
@@ -29,5 +29,7 @@ class UpdateEventMappingCommand extends AbstractMappingCommand
         );
 
         $operation->run($this->indexName, $this->documentType);
+
+        return 0;
     }
 }

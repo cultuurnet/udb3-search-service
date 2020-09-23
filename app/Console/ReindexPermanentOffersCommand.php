@@ -23,7 +23,7 @@ class ReindexPermanentOffersCommand extends AbstractReindexCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new ReindexPermanentOffers(
             $this->getElasticSearchClient(),
@@ -34,5 +34,7 @@ class ReindexPermanentOffersCommand extends AbstractReindexCommand
         );
 
         $this->runOperation($input, $output, $operation);
+
+        return 0;
     }
 }

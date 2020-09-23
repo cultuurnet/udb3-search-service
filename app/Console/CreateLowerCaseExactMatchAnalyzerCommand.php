@@ -21,7 +21,7 @@ class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSearchComm
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new CreateLowerCaseExactMatchAnalyzer(
             $this->getElasticSearchClient(),
@@ -29,5 +29,7 @@ class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSearchComm
         );
 
         $operation->run();
+
+        return 0;
     }
 }
