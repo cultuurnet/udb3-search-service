@@ -20,7 +20,7 @@ class CountryExtractor
         return $parameterBag->getStringFromParameter(
             'addressCountry',
             null !== $defaultCountryCode ? $defaultCountryCode->toNative() : null,
-            function ($country) use ($defaultCountryCode) {
+            function ($country) {
                 try {
                     $countryCode = CountryCode::fromNative(strtoupper((string) $country));
                     return new Country($countryCode);

@@ -40,7 +40,7 @@ class AmqpProvider extends BaseServiceProvider
         foreach ($this->consumers() as $consumerId => $consumerConfig) {
             $this->add(
                 $this->consumerName($consumerId),
-                function () use ($consumerId, $consumerConfig) {
+                function () use ($consumerConfig) {
                     $exchange = new StringLiteral($consumerConfig['exchange']);
                     $queue = new StringLiteral($consumerConfig['queue']);
 
