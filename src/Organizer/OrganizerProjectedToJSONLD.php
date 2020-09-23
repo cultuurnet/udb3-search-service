@@ -12,6 +12,11 @@ final class OrganizerProjectedToJSONLD implements SerializableInterface
      */
     private $id;
 
+    /**
+     * @var string
+     */
+    private $iri;
+
     public function __construct(string $id, string $iri)
     {
         $this->id = (string) $id;
