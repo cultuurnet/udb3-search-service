@@ -7,7 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
 
 class OfferPredefinedQueryStringFields implements PredefinedQueryFieldsInterface
 {
-    public function getPredefinedFields(Language ...$languages)
+    public function getPredefinedFields(Language ...$languages): array
     {
         $fields = [
             'id',

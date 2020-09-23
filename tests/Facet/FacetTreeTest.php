@@ -113,12 +113,7 @@ class FacetTreeTest extends TestCase
         new FacetNode('test', new MultilingualString(new Language('nl'), new StringLiteral('test')), 'count', []);
     }
 
-    /**
-     * @param $expectedKey
-     * @param array $expectedChildren
-     * @param FacetFilter $actual
-     */
-    private function assertFilterEquals($expectedKey, array $expectedChildren, FacetFilter $actual)
+    private function assertFilterEquals(string $expectedKey, array $expectedChildren, FacetFilter $actual): void
     {
         $this->assertEquals($expectedKey, $actual->getKey());
         $this->assertChildrenEquals($expectedChildren, $actual->getChildren());

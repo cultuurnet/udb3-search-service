@@ -107,10 +107,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     }
 
     /**
-     * @param Language[] $languages
+     * @param Language ...$languages
      * @return string[]
      */
-    abstract protected function getPredefinedQueryStringFields(Language ...$languages);
+    abstract protected function getPredefinedQueryStringFields(Language ...$languages): array;
 
     /**
      * @return static

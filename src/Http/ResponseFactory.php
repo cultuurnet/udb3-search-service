@@ -12,11 +12,9 @@ class ResponseFactory
     private const JSON_OPTIONS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
     
     /**
-     * @param $data
+     * @param array|object $data
      * @param int $code
      * @return ResponseInterface
-     *
-     * @todo: add additional parameters if needed
      */
     public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK) : ResponseInterface
     {

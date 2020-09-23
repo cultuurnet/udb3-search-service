@@ -203,7 +203,7 @@ class OrganizerSearchControllerTest extends TestCase
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param ApiRequestInterface $request
+     * @param Request $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(

@@ -536,10 +536,7 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
         );
     }
 
-    /**
-     * @param $fieldName
-     */
-    protected function logMissingExpectedField($fieldName)
+    protected function logMissingExpectedField(string $fieldName): void
     {
         $this->logger->warning("Missing expected field '{$fieldName}'.");
     }

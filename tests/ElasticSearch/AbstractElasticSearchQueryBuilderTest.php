@@ -6,11 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractElasticSearchQueryBuilderTest extends TestCase
 {
-    /**
-     * @param $value
-     * @return array
-     */
-    protected function expectedTextQuery($value, array $fields = [])
+    protected function expectedTextQuery(string $value, array $fields = []): array
     {
         $textQuery = [
             'query' => $value,

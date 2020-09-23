@@ -46,12 +46,7 @@ class TransformingJsonDocumentIndexService implements
         $this->logger = new NullLogger();
     }
 
-    /**
-     * @param string $documentId
-     * @param string $documentIri
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function index($documentId, $documentIri)
+    public function index(string $documentId, string $documentIri): void
     {
         $response = $this->httpClient->request('GET', $documentIri);
 
@@ -79,10 +74,7 @@ class TransformingJsonDocumentIndexService implements
         }
     }
 
-    /**
-     * @param string $documentId
-     */
-    public function remove($documentId)
+    public function remove(string $documentId): void
     {
         try {
             $this->searchRepository->remove($documentId);

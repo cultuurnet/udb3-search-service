@@ -61,10 +61,7 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         $this->aggregationSize = $aggregationSize;
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function getPredefinedQueryStringFields(Language ...$languages)
+    protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         return $this->predefinedQueryStringFields->getPredefinedFields(...$languages);
     }

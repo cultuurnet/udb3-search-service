@@ -10,14 +10,14 @@ interface QueryBuilderInterface
 {
     /**
      * @param AbstractQueryString $queryString
-     * @param Language[] $textLanguages
+     * @param Language ...$textLanguages
      * @return static
      */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages);
 
     /**
      * @param StringLiteral $text
-     * @param Language[] $textLanguages
+     * @param Language ...$textLanguages
      * @return static
      */
     public function withTextQuery(StringLiteral $text, Language ...$textLanguages);
