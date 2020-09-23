@@ -81,4 +81,11 @@ After adding the logic to copy the property from the one format to the other, yo
 
 #### The `q` parameter
 
-[TODO]
+The `q` URL parameter ([usage documentation](https://documentatie.uitdatabank.be/content/search_api_3/latest/reference/advanced-queries.html)) is basically an ElasticSearch ["query string" query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html).
+
+This query also supports the [Lucene query syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax) to query specific fields.
+
+So we don't process this query ourselves, we only pass it through to ElasticSearch. 
+To "add" a way to filter on a specific field in the `q` parameter, you simply need to index the field with the right analyzer(s) for the intended purpose. 
+**For this reason, it's best to stick to a _similar_ naming (if not the same) for the indexed fields as in the JSON-LD documents.**
+
