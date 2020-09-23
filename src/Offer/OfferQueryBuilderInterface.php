@@ -70,7 +70,7 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     );
 
     /**
-     * @param WorkflowStatus[] $workflowStatuses
+     * @param WorkflowStatus ...$workflowStatuses
      * @return OfferQueryBuilderInterface
      */
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses);
@@ -112,7 +112,7 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     );
 
     /**
-     * @param CalendarType[] $calendarTypes
+     * @param CalendarType ...$calendarTypes
      * @return OfferQueryBuilderInterface
      */
     public function withCalendarTypeFilter(CalendarType ...$calendarTypes);

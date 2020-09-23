@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Search\Event\EventJsonDocumentLanguageAnalyzer;
 class CopyJsonEvent implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonLoggerInterface
+     * @var CopyJsonOffer
      */
     private $copyJsonOffer;
 

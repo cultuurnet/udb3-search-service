@@ -21,7 +21,7 @@ class CreateAutocompleteAnalyzerCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new CreateAutocompleteAnalyzer(
             $this->getElasticSearchClient(),
@@ -29,5 +29,7 @@ class CreateAutocompleteAnalyzerCommand extends AbstractElasticSearchCommand
         );
 
         $operation->run();
+
+        return 0;
     }
 }

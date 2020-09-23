@@ -22,7 +22,7 @@ class Aggregation
 
     /**
      * @param FacetName $name
-     * @param Bucket[] $buckets
+     * @param Bucket ...$buckets
      */
     public function __construct(FacetName $name, Bucket ...$buckets)
     {

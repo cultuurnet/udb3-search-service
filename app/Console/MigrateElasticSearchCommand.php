@@ -30,7 +30,7 @@ class MigrateElasticSearchCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $force = (bool) $input->getOption('force');
 
@@ -45,5 +45,7 @@ class MigrateElasticSearchCommand extends Command
 
         $consoleApp->find('geoshapes:install')->run($inputWithForceOption, $output);
         $consoleApp->find('udb3-core:install')->run($inputWithForceOption, $output);
+
+        return 0;
     }
 }

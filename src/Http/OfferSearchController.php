@@ -358,12 +358,7 @@ class OfferSearchController
         return ResponseFactory::jsonLd($jsonArray);
     }
 
-    /**
-     * @param ApiRequestInterface $request
-     * @param $queryParameter
-     * @return DateTimeImmutable|null
-     */
-    private function getAvailabilityFromQuery(ApiRequestInterface $request, $queryParameter): ?DateTimeImmutable
+    private function getAvailabilityFromQuery(ApiRequestInterface $request, string $queryParameter): ?DateTimeImmutable
     {
         $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
@@ -493,10 +488,10 @@ class OfferSearchController
 
     /**
      * @param ParameterBagInterface $parameterBag
-     * @param $queryParameter
+     * @param string $queryParameter
      * @return FacetName[]
      */
-    private function getFacetsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getFacetsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,

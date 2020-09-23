@@ -27,7 +27,7 @@ class DeleteIndexCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $target = $input->getArgument('target');
 
@@ -37,5 +37,7 @@ class DeleteIndexCommand extends AbstractElasticSearchCommand
         );
 
         $operation->run($target);
+
+        return 0;
     }
 }

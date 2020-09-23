@@ -21,7 +21,7 @@ class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchComman
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new CreateLowerCaseStandardAnalyzer(
             $this->getElasticSearchClient(),
@@ -29,5 +29,7 @@ class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchComman
         );
 
         $operation->run();
+
+        return 0;
     }
 }

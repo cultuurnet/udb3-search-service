@@ -20,7 +20,7 @@ use ValueObjects\Web\Url;
 class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
-    protected function getPredefinedQueryStringFields(Language ...$languages)
+    protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         return [];
     }

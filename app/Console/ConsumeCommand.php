@@ -60,7 +60,7 @@ class ConsumeCommand extends Command
         }
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $this->registerSignalHandlers($output);
 
@@ -83,6 +83,8 @@ class ConsumeCommand extends Command
                 // Ignore this one.
             }
         }
+
+        return 0;
     }
 
     /**

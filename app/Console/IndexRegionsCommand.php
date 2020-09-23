@@ -64,7 +64,7 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new IndexRegions(
             $this->getElasticSearchClient(),
@@ -73,5 +73,7 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
         );
 
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
+
+        return 0;
     }
 }

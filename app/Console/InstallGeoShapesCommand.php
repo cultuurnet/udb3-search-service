@@ -66,7 +66,7 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $force = (bool) $input->getOption('force');
 
@@ -84,8 +84,10 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
         if ($latestIndexExists && !$force) {
             // Latest index already exists, do nothing.
             $logger->info('Latest geoshapes index exists already. Aborting installation.');
-            return;
-        } elseif ($latestIndexExists && $force) {
+            return 0;
+        }
+
+        if ($latestIndexExists && $force) {
             // Latest index already exists, but force enabled so continue.
             $logger->warning('Latest geoshapes index exists Already. Force enabled so continuing installation.');
         } else {
@@ -122,5 +124,7 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
         $consoleApp->find('index:update-alias')->run($readAliasInput, $output);
 
         $logger->info('Installation completed.');
+
+        return 0;
     }
 }

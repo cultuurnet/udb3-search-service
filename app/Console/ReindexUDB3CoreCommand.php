@@ -21,7 +21,7 @@ class ReindexUDB3CoreCommand extends AbstractReindexCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new ReindexUDB3Core(
             $this->getElasticSearchClient(),
@@ -32,5 +32,7 @@ class ReindexUDB3CoreCommand extends AbstractReindexCommand
         );
 
         $this->runOperation($input, $output, $operation);
+
+        return 0;
     }
 }
