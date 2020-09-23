@@ -10,7 +10,7 @@ class ResponseFactory
 {
     // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
     private const JSON_OPTIONS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
-    
+
     /**
      * @param array|object $data
      * @param int $code
@@ -19,12 +19,12 @@ class ResponseFactory
     public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK) : ResponseInterface
     {
         $response = new Response($code);
-        
+
         $response = $response->withAddedHeader('Content-Type', 'application/ld+json');
-        
+
         $body = $response->getBody();
         $body->write(json_encode($data, self::JSON_OPTIONS));
-        
+
         return $response->withBody($body);
     }
 }
