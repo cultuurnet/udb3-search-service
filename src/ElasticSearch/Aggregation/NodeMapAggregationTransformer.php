@@ -144,6 +144,10 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
                 }
             }
 
+            if (!isset($name)) {
+                continue;
+            }
+
             $children = [];
             if (isset($nodeData['children'])) {
                 $children = $this->transformNodeMapToFacetNodes($nodeData['children'], $buckets);
