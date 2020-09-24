@@ -56,8 +56,6 @@ class CopyJsonEvent implements CopyJsonInterface
 
         $this->copyRelatedProduction = new CopyRelatedProduction();
 
-        // Needs to go last for a fallback to calculate the completedLanguages based on the properties on the new
-        // document if it's missing in the original.
         $this->copyJsonLanguages = new CopyJsonLanguages(
             new EventJsonDocumentLanguageAnalyzer()
         );
@@ -75,6 +73,8 @@ class CopyJsonEvent implements CopyJsonInterface
 
         $this->copyRelatedProduction->copy($from, $to);
 
+        // Needs to go last for a fallback to calculate the completedLanguages based on the properties on the new
+        // document if it's missing in the original.
         $this->copyJsonLanguages->copy($from, $to);
     }
 }
