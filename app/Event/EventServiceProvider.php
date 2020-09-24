@@ -15,6 +15,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class EventServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
+        Client::class,
         'event_controller',
         'event_search_projector',
         'event_bus_subscribers',

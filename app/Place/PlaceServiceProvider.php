@@ -15,6 +15,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 class PlaceServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
+        Client::class,
         'place_controller',
         'place_search_projector',
         'event_bus_subscribers',
