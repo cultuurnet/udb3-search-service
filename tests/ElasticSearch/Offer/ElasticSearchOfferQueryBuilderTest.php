@@ -2896,4 +2896,44 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_production_id_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withProductionIdFilter(
+                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
+            );
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'production.id' => [
+                                    'query' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build()->toArray();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
 }
