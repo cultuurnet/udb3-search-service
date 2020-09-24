@@ -2,12 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-class OfferParameterWhiteList extends AbstractParameterWhiteList
+class OfferSupportedParameters extends AbstractSupportedParameters
 {
-    /**
-     * @inheritdoc
-     */
-    protected function getParameterWhiteList()
+    protected function getSupportedParameters(): array
     {
         return [
             'q',

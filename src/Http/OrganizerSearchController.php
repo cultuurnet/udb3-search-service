@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
-use CultuurNet\UDB3\Search\Http\Parameters\OrganizerParameterWhiteList;
+use CultuurNet\UDB3\Search\Http\Parameters\OrganizerSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
@@ -44,7 +44,7 @@ class OrganizerSearchController
     private $resultTransformingPagedCollectionFactoryFactory;
 
     /**
-     * @var OrganizerParameterWhiteList
+     * @var OrganizerSupportedParameters
      */
     private $organizerParameterWhiteList;
 
@@ -72,12 +72,12 @@ class OrganizerSearchController
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
         $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
-        $this->organizerParameterWhiteList = new OrganizerParameterWhiteList();
+        $this->organizerParameterWhiteList = new OrganizerSupportedParameters();
     }
 
     public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
-        $this->organizerParameterWhiteList->validateParameters(
+        $this->organizerParameterWhiteList->guardAgainstUnsupportedParameters(
             $request->getQueryParamsKeys()
         );
 

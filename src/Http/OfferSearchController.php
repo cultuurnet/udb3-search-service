@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
-use CultuurNet\UDB3\Search\Http\Parameters\OfferParameterWhiteList;
+use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
@@ -83,7 +83,7 @@ class OfferSearchController
     private $facetTreeNormalizer;
 
     /**
-     * @var OfferParameterWhiteList
+     * @var OfferSupportedParameters
      */
     private $offerParameterWhiteList;
 
@@ -126,7 +126,7 @@ class OfferSearchController
         $this->regionDocumentType = $regionDocumentType;
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
-        $this->offerParameterWhiteList = new OfferParameterWhiteList();
+        $this->offerParameterWhiteList = new OfferSupportedParameters();
         $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
 
@@ -136,7 +136,7 @@ class OfferSearchController
      */
     public function __invoke(ApiRequest $request)
     {
-        $this->offerParameterWhiteList->validateParameters(
+        $this->offerParameterWhiteList->guardAgainstUnsupportedParameters(
             $request->getQueryParamsKeys()
         );
 
