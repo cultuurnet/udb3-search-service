@@ -166,6 +166,11 @@ Note that you will also need to change the unit tests to include the new request
 
 **If you need to make changes to an existing URL parameter and there's no request parser for it yet, it's best to move the logic from the controller to a request parser first!** 
 
+Lastly, add your new URL parameter(s) to the list(s) of supported query parameters:
+
+- `app/Parameters/OfferSupportedParameters.php`
+- `app/Parameters/OrganizerSupportedParameters.php`
+
 #### The `q` parameter
 
 The `q` URL parameter ([usage documentation](https://documentatie.uitdatabank.be/content/search_api_3/latest/reference/advanced-queries.html)) is basically an ElasticSearch ["query string" query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html).
