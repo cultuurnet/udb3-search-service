@@ -34,7 +34,7 @@ class ElasticSearchProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
+        $this->addShared(
             'elasticsearch_indexation_strategy',
             function () {
                 return new MutableIndexationStrategy(
