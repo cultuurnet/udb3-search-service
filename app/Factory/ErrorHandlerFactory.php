@@ -18,7 +18,7 @@ class ErrorHandlerFactory
         return $whoops;
     }
 
-    public static function forCli()
+    public static function forCli(): Run
     {
         $whoops = new Run();
         $whoops->prependHandler(new PlainTextHandler());
