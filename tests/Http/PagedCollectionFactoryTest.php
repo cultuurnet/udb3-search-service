@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\Hydra\PagedCollection;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -13,21 +13,19 @@ use ValueObjects\Number\Natural;
 class PagedCollectionFactoryTest extends TestCase
 {
     /**
-     * @var JsonDocumentTransformerInterface|MockObject
+     * @var JsonTransformer|MockObject
      */
     private $transformer;
 
     public function setUp(): void
     {
-        $this->transformer = $this->createMock(JsonDocumentTransformerInterface::class);
+        $this->transformer = $this->createMock(JsonTransformer::class);
 
-        $this->transformer->expects($this->any())
-            ->method('transform')
+        $this->transformer->method('transform')
             ->willReturnCallback(
-                function (JsonDocument $jsonDocument) {
-                    $body = $jsonDocument->getBody();
-                    $body->transformed = true;
-                    return $jsonDocument->withBody($body);
+                function (array $original) {
+                    $original['transformed'] = true;
+                    return $original;
                 }
             );
     }
