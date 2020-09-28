@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer\JsonTransformer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class JsonDocumentTransformer

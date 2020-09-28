@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer\JsonTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 

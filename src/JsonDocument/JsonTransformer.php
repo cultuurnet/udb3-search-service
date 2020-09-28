@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
+namespace CultuurNet\UDB3\Search\JsonDocument;
 
 interface JsonTransformer
 {
