@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactoryFactory;
 use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
@@ -57,8 +56,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
                         )
                     ),
                     $requestParser,
-                    new LuceneQueryStringFactory(),
-                    $this->get(ResultTransformingPagedCollectionFactoryFactory::class)
+                    new LuceneQueryStringFactory()
                 );
             }
         );

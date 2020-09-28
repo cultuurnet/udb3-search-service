@@ -10,25 +10,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 
-class ResultTransformingPagedCollectionFactoryTest extends TestCase
+class PagedCollectionFactoryTest extends TestCase
 {
     /**
      * @var JsonDocumentTransformerInterface|MockObject
      */
     private $transformer;
 
-    /**
-     * @var ResultTransformingPagedCollectionFactory
-     */
-    private $factory;
-
-    public function setUp()
+    public function setUp(): void
     {
         $this->transformer = $this->createMock(JsonDocumentTransformerInterface::class);
-
-        $this->factory = new ResultTransformingPagedCollectionFactory(
-            $this->transformer
-        );
 
         $this->transformer->expects($this->any())
             ->method('transform')
@@ -44,7 +35,7 @@ class ResultTransformingPagedCollectionFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_paged_collection_from_a_paged_result_set()
+    public function it_creates_a_paged_collection_from_a_paged_result_set(): void
     {
         $start = 10;
         $limit = 10;
@@ -83,7 +74,12 @@ class ResultTransformingPagedCollectionFactoryTest extends TestCase
             $total
         );
 
-        $actualCollection = $this->factory->fromPagedResultSet($pagedResultSet, $start, $limit);
+        $actualCollection = PagedCollectionFactory::fromPagedResultSet(
+            $this->transformer,
+            $pagedResultSet,
+            $start,
+            $limit
+        );
 
         $this->assertEquals($expectedCollection, $actualCollection);
     }

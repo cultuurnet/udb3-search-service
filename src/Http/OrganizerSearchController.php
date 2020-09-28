@@ -39,11 +39,6 @@ class OrganizerSearchController
     private $searchService;
 
     /**
-     * @var ResultTransformingPagedCollectionFactoryFactory
-     */
-    private $resultTransformingPagedCollectionFactoryFactory;
-
-    /**
      * @var OrganizerSupportedParameters
      */
     private $organizerParameterWhiteList;
@@ -63,15 +58,13 @@ class OrganizerSearchController
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
-        QueryStringFactoryInterface $queryStringFactory,
-        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
+        QueryStringFactoryInterface $queryStringFactory
     ) {
         $this->apiKeyReader = $apiKeyReader;
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
-        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
         $this->organizerParameterWhiteList = new OrganizerSupportedParameters();
     }
 
@@ -155,13 +148,16 @@ class OrganizerSearchController
 
         $resultSet = $this->searchService->search($queryBuilder);
 
-        $pagedCollection = $this->resultTransformingPagedCollectionFactoryFactory
-            ->create((bool) $parameterBag->getBooleanFromParameter('embed'))
-            ->fromPagedResultSet(
-                $resultSet,
-                $start,
-                $limit
-            );
+        $resultTransformer = ResultTransformerFactory::create(
+            (bool) $parameterBag->getBooleanFromParameter('embed')
+        );
+
+        $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
+            $resultTransformer,
+            $resultSet,
+            $start,
+            $limit
+        );
 
         return ResponseFactory::jsonLd($pagedCollection);
     }

@@ -68,8 +68,7 @@ class OrganizerSearchControllerTest extends TestCase
             (new CompositeOrganizerRequestParser())
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory,
-            new ResultTransformingPagedCollectionFactoryFactory()
+            $this->queryStringFactory
         );
     }
 

@@ -6,19 +6,9 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonDocumen
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 
-/**
- * @TODO: Rename
- */
-class ResultTransformingPagedCollectionFactoryFactory
+class ResultTransformerFactory
 {
-    public function create(bool $embedded): ResultTransformingPagedCollectionFactory
-    {
-        return new ResultTransformingPagedCollectionFactory(
-            $this->createTransformer($embedded)
-        );
-    }
-    
-    private function createTransformer(bool $embedded): JsonDocumentTransformerInterface
+    public static function create(bool $embedded): JsonDocumentTransformerInterface
     {
         if ($embedded) {
             return new JsonLdEmbeddingJsonDocumentTransformer();
