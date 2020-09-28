@@ -22,12 +22,6 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
      */
     private $copyJsonPlace;
 
-    /**
-     * PlaceJsonDocumentTransformer constructor.
-     * @param IdUrlParserInterface $idUrlParser
-     * @param OfferRegionServiceInterface $offerRegionService
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
@@ -43,11 +37,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         );
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $id = $jsonDocument->getId();
         $body = $jsonDocument->getBody();
@@ -63,7 +53,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         $this->copyDescription($body, $newBody);
 
         $this->copyMainLanguage($body, $newBody);
-        
+
         $this->copyLabelsForFreeTextSearch($body, $newBody);
         $this->copyTermsForFreeTextSearch($body, $newBody);
         $this->copyTermsForAggregations($body, $newBody);

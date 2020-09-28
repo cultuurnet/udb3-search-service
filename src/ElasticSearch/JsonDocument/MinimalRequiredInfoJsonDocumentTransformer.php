@@ -12,11 +12,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
  */
 class MinimalRequiredInfoJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $body = $jsonDocument->getBody();
 

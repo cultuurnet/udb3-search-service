@@ -16,28 +16,17 @@ class OrganizerJsonDocumentTransformer implements JsonDocumentTransformerInterfa
      */
     private $jsonCopier;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         LoggerInterface $logger
     ) {
-        $this->logger = $logger;
-
         $this->jsonCopier = new CopyJsonOrganizer(
-            new CopyJsonPsrLogger($this->logger),
+            new CopyJsonPsrLogger($logger),
             $idUrlParser
         );
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $body = $jsonDocument->getBody();
 

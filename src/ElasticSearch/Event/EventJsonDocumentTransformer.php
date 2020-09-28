@@ -22,12 +22,6 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
      */
     private $copyJsonEvent;
 
-    /**
-     * EventJsonDocumentTransformer constructor.
-     * @param IdUrlParserInterface $idUrlParser
-     * @param OfferRegionServiceInterface $offerRegionService
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
@@ -43,11 +37,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         );
     }
 
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $id = $jsonDocument->getId();
         $body = $jsonDocument->getBody();
@@ -92,11 +82,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         return $jsonDocument->withBody($newBody);
     }
 
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    private function copyPerformer(\stdClass $from, \stdClass $to)
+    private function copyPerformer(\stdClass $from, \stdClass $to): void
     {
         if (isset($from->performer) && is_array($from->performer)) {
             $to->performer_free_text = array_map(

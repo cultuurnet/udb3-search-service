@@ -6,11 +6,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 class PassThroughJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         return $jsonDocument;
     }

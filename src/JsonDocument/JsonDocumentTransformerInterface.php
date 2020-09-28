@@ -6,9 +6,5 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 interface JsonDocumentTransformerInterface
 {
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument);
+    public function transform(JsonDocument $jsonDocument): JsonDocument;
 }

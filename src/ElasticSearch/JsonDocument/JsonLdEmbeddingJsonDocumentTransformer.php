@@ -7,11 +7,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 
 class JsonLdEmbeddingJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {
-    /**
-     * @param JsonDocument $jsonDocument
-     * @return JsonDocument
-     */
-    public function transform(JsonDocument $jsonDocument)
+    public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $body = $jsonDocument->getBody();
 
