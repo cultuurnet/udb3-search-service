@@ -12,5 +12,5 @@ interface JsonTransformer
      * @return array
      *   Resulting json
      */
-    public function transform(array $from, array $draft): array;
+    public function transform(array $from, array $draft = []): array;
 }
