@@ -2,17 +2,17 @@
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-abstract class AbstractParameterWhiteList
+abstract class AbstractSupportedParameters
 {
     /**
      * @return string[] The list of parameters on the white list.
      */
-    abstract protected function getParameterWhiteList();
+    abstract protected function getSupportedParameters(): array;
 
     /**
      * @return string[]
      */
-    protected function getGlobalWhiteList()
+    protected function getGloballySupportedParameters(): array
     {
         return [
             'apiKey',
@@ -27,9 +27,9 @@ abstract class AbstractParameterWhiteList
      * @param string[] $parameters
      * @throws \InvalidArgumentException
      */
-    public function validateParameters(array $parameters)
+    public function guardAgainstUnsupportedParameters(array $parameters): void
     {
-        $whiteList = array_merge($this->getGlobalWhiteList(), $this->getParameterWhiteList());
+        $whiteList = array_merge($this->getGloballySupportedParameters(), $this->getSupportedParameters());
         $unknownParameters = array_diff($parameters, $whiteList);
         if (count($unknownParameters) > 0) {
             throw new \InvalidArgumentException(

@@ -422,6 +422,11 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withTermQuery('isDuplicate', (bool) $isDuplicate);
     }
 
+    public function withProductionIdFilter(string $productionId): ElasticSearchOfferQueryBuilder
+    {
+        return $this->withMatchQuery('production.id', $productionId);
+    }
+
     /**
      * @inheritdoc
      */

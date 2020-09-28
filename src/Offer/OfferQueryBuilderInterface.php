@@ -248,6 +248,12 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     public function withDuplicateFilter(bool $isDuplicate);
 
     /**
+     * @param string $productionId
+     * @return static
+     */
+    public function withProductionIdFilter(string $productionId);
+
+    /**
      * @param FacetName $facetName
      * @return OfferQueryBuilderInterface
      */

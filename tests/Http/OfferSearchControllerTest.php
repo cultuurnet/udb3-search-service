@@ -11,6 +11,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
@@ -117,6 +118,7 @@ class OfferSearchControllerTest extends TestCase
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
+            ->withParser(new RelatedProductionRequestParser())
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         $this->searchService = $this->createMock(OfferSearchServiceInterface::class);
@@ -197,6 +199,7 @@ class OfferSearchControllerTest extends TestCase
                 'facets' => ['regions'],
                 'creator' => 'Jane Doe',
                 'isDuplicate' => false,
+                'productionId' => '5df0d426-84b3-4d2b-a7fc-e51270d84643',
                 'sort' => [
                     'distance' => 'asc',
                     'availableTo' => 'asc',
@@ -306,6 +309,7 @@ class OfferSearchControllerTest extends TestCase
             ->withLocationLabelFilter(new LabelName('lorem'))
             ->withOrganizerLabelFilter(new LabelName('ipsum'))
             ->withDuplicateFilter(false)
+            ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
             ->withFacet(FacetName::REGIONS())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10));

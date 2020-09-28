@@ -308,6 +308,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withProductionIdFilter(string $productionId): MockOfferQueryBuilder
+    {
+        $c = clone $this;
+        $c->mockQuery['productionId'] = $productionId;
+        return $c;
+    }
+
     public function withFacet(FacetName $facetName)
     {
         $c = clone $this;
