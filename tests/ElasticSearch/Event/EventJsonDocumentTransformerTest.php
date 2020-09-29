@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Event;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EventJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;

@@ -1,20 +1,20 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\AddressTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CreatorTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\IdentifierTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LabelsTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LanguagesTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\NameTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\UrlTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\WorkflowStatusTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\OriginalEncodedJsonLdTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LabelsTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\UrlTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CreatedAndModifiedTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
 class OrganizerTransformer extends CopyJsonCombination

@@ -1,7 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerTransformer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;

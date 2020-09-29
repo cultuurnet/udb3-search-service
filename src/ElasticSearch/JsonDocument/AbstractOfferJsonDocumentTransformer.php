@@ -1,8 +1,9 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\Offer\OfferType;
 use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;

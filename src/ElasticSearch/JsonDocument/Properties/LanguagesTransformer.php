@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 use CultuurNet\UDB3\Search\Language\Language;

@@ -1,11 +1,11 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CreatorTransformer implements CopyJsonInterface
+class NameTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface
@@ -13,8 +13,7 @@ class CreatorTransformer implements CopyJsonInterface
     private $logger;
 
     /**
-     * CopyJsonCreator constructor.
-     *
+     * CopyJsonName constructor.
      * @param CopyJsonLoggerInterface $logger
      */
     public function __construct(CopyJsonLoggerInterface $logger)
@@ -22,17 +21,22 @@ class CreatorTransformer implements CopyJsonInterface
         $this->logger = $logger;
     }
 
-
     /**
      * @inheritdoc
      */
     public function copy(\stdClass $from, \stdClass $to)
     {
-        if (!isset($from->creator)) {
-            $this->logger->logMissingExpectedField('creator');
+        $mainLanguage = isset($from->mainLanguage) ? $from->mainLanguage : 'nl';
+
+        if (!isset($from->name)) {
+            $this->logger->logMissingExpectedField('name');
             return;
         }
 
-        $to->creator = $from->creator;
+        if (!isset($from->name->nl)) {
+            $this->logger->logMissingExpectedField('name.nl');
+        }
+
+        $to->name = $from->name;
     }
 }
