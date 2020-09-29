@@ -1,6 +1,12 @@
 {
     "@id": "http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942",
     "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
     "name": {
         "nl": "Punkfest"
     },
@@ -14,10 +20,12 @@
             "nl": "Hungaria"
         },
         "address": {
-            "addressCountry": "BE",
-            "addressLocality": "Leuven",
-            "postalCode": "3000",
-            "streetAddress": "Vaartkom 35"
+            "nl": {
+                "addressCountry": "BE",
+                "addressLocality": "Leuven",
+                "postalCode": "3000",
+                "streetAddress": "Vaartkom 35"
+            }
         }
     },
     "workflowStatus": "DRAFT",

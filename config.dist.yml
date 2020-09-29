@@ -75,3 +75,6 @@ cache:
     host: 127.0.0.1
     database: 1
   lifetime: 86400
+sentry:
+  dsn: *
+  environment: development

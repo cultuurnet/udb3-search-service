@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Place;
 
 use CultuurNet\UDB3\Search\Offer\OfferType;
-use CultuurNet\UDB3\Search\Place\PlaceJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonPsrLogger;
@@ -27,9 +26,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         OfferRegionServiceInterface $offerRegionService,
         LoggerInterface $logger
     ) {
-        $languageAnalyzer = new PlaceJsonDocumentLanguageAnalyzer();
-
-        parent::__construct($idUrlParser, $offerRegionService, $logger, $languageAnalyzer);
+        parent::__construct($idUrlParser, $offerRegionService, $logger);
 
         $this->copyJsonPlace = new CopyJsonPlace(
             new CopyJsonPsrLogger($this->logger),

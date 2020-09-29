@@ -28,14 +28,7 @@ class CopyJsonAddress implements CopyJsonInterface
      */
     public function copy(\stdClass $from, \stdClass $to)
     {
-        $mainLanguage = isset($from->mainLanguage) ? $from->mainLanguage : 'nl';
-
-        if (isset($from->address->streetAddress)) {
-            // Old JSON-LD does not have a multilingual address.
-            // @replay_i18n
-            // @see https://jira.uitdatabank.be/browse/III-2201
-            $from->address = (object) [$mainLanguage => $from->address];
-        }
+        $mainLanguage = $from->mainLanguage ?? 'nl';
 
         if (!isset($from->address)) {
             if ($this->addressRequired) {

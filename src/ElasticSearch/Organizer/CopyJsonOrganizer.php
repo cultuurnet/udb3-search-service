@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\Fallba
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCreatedModified;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
-use CultuurNet\UDB3\Search\Organizer\OrganizerJsonDocumentLanguageAnalyzer;
 
 class CopyJsonOrganizer extends CopyJsonCombination
 {
@@ -36,9 +35,7 @@ class CopyJsonOrganizer extends CopyJsonCombination
                 false
             ),
             new CopyJsonName($logger),
-            new CopyJsonLanguages(
-                new OrganizerJsonDocumentLanguageAnalyzer()
-            ),
+            new CopyJsonLanguages($logger),
             new CopyJsonAddress($logger, false),
             new CopyJsonCreator($logger),
             new CopyJsonCreatedModified($logger),

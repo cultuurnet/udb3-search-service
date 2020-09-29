@@ -29,26 +29,18 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
     protected $logger;
 
     /**
-     * @var JsonDocumentLanguageAnalyzer
-     */
-    protected $languageAnalyzer;
-
-    /**
      * @param IdUrlParserInterface $idUrlParser
      * @param OfferRegionServiceInterface $offerRegionService
      * @param LoggerInterface $logger
-     * @param JsonDocumentLanguageAnalyzer $languageAnalyzer
      */
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
-        LoggerInterface $logger,
-        JsonDocumentLanguageAnalyzer $languageAnalyzer
+        LoggerInterface $logger
     ) {
         $this->idUrlParser = $idUrlParser;
         $this->offerRegionService = $offerRegionService;
         $this->logger = $logger;
-        $this->languageAnalyzer = $languageAnalyzer;
     }
 
     /**
@@ -317,9 +309,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
         if (isset($from->mainLanguage)) {
             $to->mainLanguage = $from->mainLanguage;
         } else {
-            // @replay_i18n: Once a full replay is done the fallback to 'nl' can be removed.
-            // @see: https://jira.uitdatabank.be/browse/III-2201
-            $to->mainLanguage = 'nl';
             $this->logMissingExpectedField('mainLanguage');
         }
     }
