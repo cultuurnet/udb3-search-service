@@ -3,6 +3,8 @@
 namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\Error\ApiExceptionHandler;
+use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
+use Sentry\State\HubInterface;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -10,18 +12,19 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 class ErrorHandlerFactory
 {
-
-    public static function forWeb(bool $isDebugEnvironment): Run
+    public static function forWeb(HubInterface $hubInterface, bool $isDebugEnvironment): Run
     {
         $whoops = new Run();
         self::prependWebHandler($whoops, $isDebugEnvironment);
+        $whoops->prependHandler(new SentryExceptionHandler($hubInterface));
         return $whoops;
     }
 
-    public static function forCli()
+    public static function forCli(HubInterface $hubInterface): Run
     {
         $whoops = new Run();
         $whoops->prependHandler(new PlainTextHandler());
+        $whoops->prependHandler(new SentryExceptionHandler($hubInterface));
         return $whoops;
     }
 

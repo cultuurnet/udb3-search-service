@@ -14,6 +14,7 @@ use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
+use CultuurNet\UDB3\SearchService\SentryServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
@@ -43,6 +44,7 @@ class ContainerFactory
             $config
         );
 
+        $container->addServiceProvider(SentryServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
         $container->addServiceProvider(OrganizerServiceProvider::class);
         $container->addServiceProvider(OfferServiceProvider::class);
