@@ -1,8 +1,7 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\AssertsJsonDocuments;
@@ -38,10 +37,10 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_copies_the_required_properties()
     {
-        $original = file_get_contents(__DIR__ . '/data/original.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/original.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed.json');
+        $expected = file_get_contents(__DIR__ . '/data/organizer/indexed.json');
         $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -54,10 +53,10 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_handles_all_known_languages()
     {
-        $original = file_get_contents(__DIR__ . '/data/all_languages_original.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/all_languages_original.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/all_languages_indexed.json');
+        $expected = file_get_contents(__DIR__ . '/data/organizer/all_languages_indexed.json');
         $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -70,10 +69,10 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_logs_missing_required_name_for_main_language()
     {
-        $original = file_get_contents(__DIR__ . '/data/missing_main_language_original.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/missing_main_language_original.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/missing_main_language_indexed.json');
+        $expected = file_get_contents(__DIR__ . '/data/organizer/missing_main_language_indexed.json');
         $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
 
         $expectedLogs = [
@@ -92,10 +91,10 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_handles_translated_address()
     {
-        $original = file_get_contents(__DIR__ . '/data/original_with_translated_address.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/original_with_translated_address.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed_with_translated_address.json');
+        $expected = file_get_contents(__DIR__ . '/data/organizer/indexed_with_translated_address.json');
         $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -108,10 +107,10 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_copies_workflow_status_if_provided()
     {
-        $original = file_get_contents(__DIR__ . '/data/original_with_workflowstatus_deleted.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/original_with_workflowstatus_deleted.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed_with_workflowstatus_deleted.json');
+        $expected = file_get_contents(__DIR__ . '/data/organizer/indexed_with_workflowstatus_deleted.json');
         $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -124,7 +123,7 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
      */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete()
     {
-        $original = file_get_contents(__DIR__ . '/data/original_with_incomplete_translated_address.json');
+        $original = file_get_contents(__DIR__ . '/data/organizer/original_with_incomplete_translated_address.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
 
         $expectedLogs = [

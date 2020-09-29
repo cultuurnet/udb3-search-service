@@ -1,9 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Place;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
@@ -50,10 +49,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_required_fields()
     {
-        $original = file_get_contents(__DIR__ . '/data/original.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -103,7 +102,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_should_log_a_warning_if_address_is_not_found_in_the_main_language()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-without-address-in-main-language.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-without-address-in-main-language.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expectedLogs = [
@@ -122,7 +121,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-incomplete-address-translation.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-incomplete-address-translation.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expectedLogs = [
@@ -144,10 +143,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_optional_fields_if_present()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-optional-fields.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-optional-fields.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-optional-fields.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-optional-fields.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -160,10 +159,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_typical_age_range_for_everyone_to_all_ages_true()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-for-all-ages.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-for-all-ages.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-for-all-ages.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-for-all-ages.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -176,10 +175,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_a_periodic_place_to_a_date_range()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-period.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-period.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-period.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-period.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -192,10 +191,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_a_periodic_place_with_opening_hours_to_a_date_range()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-period-and-opening-hours.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-period-and-opening-hours.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-period-and-opening-hours.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-period-and-opening-hours.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -215,10 +214,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
             )
         );
 
-        $original = file_get_contents(__DIR__ . '/data/original-with-opening-hours.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-opening-hours.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-opening-hours.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-opening-hours.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -231,10 +230,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_adds_regions_if_there_are_any_matching()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-optional-fields.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-optional-fields.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-regions.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-regions.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $this->offerRegionService->expects($this->once())
@@ -256,10 +255,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_skips_wrong_available_from()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-wrong-available-from.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-wrong-available-from.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-without-available-from.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-without-available-from.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $expectedLogs = [
@@ -281,10 +280,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_uses_endDate_if_availableTo_is_malformed()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-wrong-available-to.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-wrong-available-to.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-with-end-date-as-available-to.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-with-end-date-as-available-to.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $expectedLogs = [
@@ -306,10 +305,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_modified_metadata_date()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-modified.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-modified.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-modified.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-modified.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -322,10 +321,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
      */
     public function it_transforms_duplicateOf_to_isDuplicate()
     {
-        $original = file_get_contents(__DIR__ . '/data/original-with-duplicate-of.json');
+        $original = file_get_contents(__DIR__ . '/data/place/original-with-duplicate-of.json');
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/indexed-duplicate.json');
+        $expected = file_get_contents(__DIR__ . '/data/place/indexed-duplicate.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);
