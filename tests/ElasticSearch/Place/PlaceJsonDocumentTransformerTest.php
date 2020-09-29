@@ -71,7 +71,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreStart
         $expectedDocument = new JsonDocument(
             $id,
-            '{"@type":"Place","isDuplicate":false,"originalEncodedJsonLd":"{}","mainLanguage":"nl","audienceType":"everyone","mediaObjectsCount":0}'
+            '{"@type":"Place","isDuplicate":false,"originalEncodedJsonLd":"{}","audienceType":"everyone","mediaObjectsCount":0}'
         );
         // @codingStandardsIgnoreEnd
 

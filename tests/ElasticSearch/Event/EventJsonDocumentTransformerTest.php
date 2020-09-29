@@ -87,7 +87,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreStart
         $expectedDocument = new JsonDocument(
             $id,
-            '{"@type":"Event","isDuplicate":false,"originalEncodedJsonLd":"{}","mainLanguage":"nl","audienceType":"everyone","mediaObjectsCount":0}'
+            '{"@type":"Event","isDuplicate":false,"originalEncodedJsonLd":"{}","audienceType":"everyone","mediaObjectsCount":0}'
         );
         // @codingStandardsIgnoreEnd
 

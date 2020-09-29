@@ -317,9 +317,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
         if (isset($from->mainLanguage)) {
             $to->mainLanguage = $from->mainLanguage;
         } else {
-            // @replay_i18n: Once a full replay is done the fallback to 'nl' can be removed.
-            // @see: https://jira.uitdatabank.be/browse/III-2201
-            $to->mainLanguage = 'nl';
             $this->logMissingExpectedField('mainLanguage');
         }
     }
