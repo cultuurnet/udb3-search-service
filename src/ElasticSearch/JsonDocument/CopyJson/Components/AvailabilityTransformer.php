@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonL
 use DateTimeImmutable;
 use stdClass;
 
-final class CopyJsonAvailability implements CopyJsonInterface
+final class AvailabilityTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface

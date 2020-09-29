@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonIdentifier implements CopyJsonInterface
+class IdentifierTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface

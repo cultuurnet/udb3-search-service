@@ -3,33 +3,33 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Event;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLanguages;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyRelatedProduction;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LanguagesTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\RelatedProductionTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonOffer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonRelatedLocation;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\OfferTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\RelatedLocationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonEvent implements CopyJsonInterface
+class EventTransformer implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonOffer
+     * @var OfferTransformer
      */
     private $copyJsonOffer;
 
     /**
-     * @var CopyJsonRelatedLocation
+     * @var RelatedLocationTransformer
      */
     private $copyJsonRelatedLocation;
 
     /**
-     * @var CopyRelatedProduction
+     * @var RelatedProductionTransformer
      */
     private $copyRelatedProduction;
 
     /**
-     * @var CopyJsonLanguages
+     * @var LanguagesTransformer
      */
     private $copyJsonLanguages;
 
@@ -41,21 +41,21 @@ class CopyJsonEvent implements CopyJsonInterface
         CopyJsonLoggerInterface $logger,
         IdUrlParserInterface $idUrlParser
     ) {
-        $this->copyJsonOffer = new CopyJsonOffer(
+        $this->copyJsonOffer = new OfferTransformer(
             $logger,
             $idUrlParser,
             FallbackType::EVENT()
         );
 
-        $this->copyJsonRelatedLocation = new CopyJsonRelatedLocation(
+        $this->copyJsonRelatedLocation = new RelatedLocationTransformer(
             $logger,
             $idUrlParser,
             FallbackType::PLACE()
         );
 
-        $this->copyRelatedProduction = new CopyRelatedProduction();
+        $this->copyRelatedProduction = new RelatedProductionTransformer();
 
-        $this->copyJsonLanguages = new CopyJsonLanguages($logger);
+        $this->copyJsonLanguages = new LanguagesTransformer($logger);
     }
 
     /**

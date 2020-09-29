@@ -3,26 +3,26 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonIdentifier;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLabels;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonName;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\IdentifierTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LabelsTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\NameTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonRelatedOrganizer implements CopyJsonInterface
+class RelatedOrganizerTransformer implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonIdentifier
+     * @var IdentifierTransformer
      */
     private $copyJsonIdentifier;
 
     /**
-     * @var CopyJsonName
+     * @var NameTransformer
      */
     private $copyJsonName;
 
     /**
-     * @var CopyJsonLabels
+     * @var LabelsTransformer
      */
     private $copyJsonLabels;
 
@@ -36,16 +36,16 @@ class CopyJsonRelatedOrganizer implements CopyJsonInterface
         IdUrlParserInterface $idUrlParser,
         FallbackType $fallbackType
     ) {
-        $this->copyJsonIdentifier = new CopyJsonIdentifier(
+        $this->copyJsonIdentifier = new IdentifierTransformer(
             $logger,
             $idUrlParser,
             $fallbackType,
             false
         );
 
-        $this->copyJsonName = new CopyJsonName($logger);
+        $this->copyJsonName = new NameTransformer($logger);
 
-        $this->copyJsonLabels = new CopyJsonLabels();
+        $this->copyJsonLabels = new LabelsTransformer();
     }
 
     /**

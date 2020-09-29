@@ -3,14 +3,14 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Place;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonAddress;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLanguages;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\AddressTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LanguagesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonOffer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\OfferTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonPlace extends CopyJsonCombination
+class PlaceTransformer extends CopyJsonCombination
 {
     /**
      * @param CopyJsonLoggerInterface $logger
@@ -21,13 +21,13 @@ class CopyJsonPlace extends CopyJsonCombination
         IdUrlParserInterface $idUrlParser
     ) {
         parent::__construct(
-            new CopyJsonOffer(
+            new OfferTransformer(
                 $logger,
                 $idUrlParser,
                 FallbackType::PLACE()
             ),
-            new CopyJsonLanguages($logger),
-            new CopyJsonAddress($logger, true)
+            new LanguagesTransformer($logger),
+            new AddressTransformer($logger, true)
         );
     }
 }

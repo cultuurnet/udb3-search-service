@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 
-class CopyJsonTypicalAgeRange implements CopyJsonInterface
+class TypicalAgeRangeTransformer implements CopyJsonInterface
 {
     /**
      * @inheritdoc

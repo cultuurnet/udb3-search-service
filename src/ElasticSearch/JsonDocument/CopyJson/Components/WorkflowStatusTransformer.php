@@ -6,7 +6,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 use stdClass;
 
-class CopyJsonWorkflowStatus implements CopyJsonInterface
+class WorkflowStatusTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface

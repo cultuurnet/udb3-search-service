@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 {
     /**
-     * @var CopyJsonPlace
+     * @var PlaceTransformer
      */
     private $copyJsonPlace;
 
@@ -28,7 +28,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     ) {
         parent::__construct($idUrlParser, $offerRegionService, $logger);
 
-        $this->copyJsonPlace = new CopyJsonPlace(
+        $this->copyJsonPlace = new PlaceTransformer(
             new CopyJsonPsrLogger($this->logger),
             $this->idUrlParser
         );

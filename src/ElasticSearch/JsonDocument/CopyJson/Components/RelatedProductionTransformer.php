@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use stdClass;
 
-class CopyRelatedProduction implements CopyJsonInterface
+class RelatedProductionTransformer implements CopyJsonInterface
 {
     public function copy(stdClass $from, stdClass $to): void
     {

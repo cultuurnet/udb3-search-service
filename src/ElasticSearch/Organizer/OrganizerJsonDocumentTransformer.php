@@ -20,7 +20,7 @@ class OrganizerJsonDocumentTransformer implements JsonDocumentTransformerInterfa
         IdUrlParserInterface $idUrlParser,
         LoggerInterface $logger
     ) {
-        $this->jsonCopier = new CopyJsonOrganizer(
+        $this->jsonCopier = new OrganizerTransformer(
             new CopyJsonPsrLogger($logger),
             $idUrlParser
         );

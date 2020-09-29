@@ -5,7 +5,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonAddress implements CopyJsonInterface
+class AddressTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface

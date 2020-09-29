@@ -7,7 +7,7 @@ use function property_exists;
 use Stringy\Stringy;
 use ValueObjects\Web\Url;
 
-class CopyJsonUrl implements CopyJsonInterface
+class UrlTransformer implements CopyJsonInterface
 {
     public function copy(\stdClass $from, \stdClass $to)
     {

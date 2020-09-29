@@ -3,15 +3,15 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonAddress;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonIdentifier;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonLabels;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonName;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\CopyJsonTerms;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\AddressTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\IdentifierTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\LabelsTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\NameTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
-class CopyJsonRelatedLocation implements CopyJsonInterface
+class RelatedLocationTransformer implements CopyJsonInterface
 {
     /**
      * @var IdUrlParserInterface
@@ -19,27 +19,27 @@ class CopyJsonRelatedLocation implements CopyJsonInterface
     private $idUrlParser;
 
     /**
-     * @var CopyJsonIdentifier
+     * @var IdentifierTransformer
      */
     private $copyJsonIdentifier;
 
     /**
-     * @var CopyJsonName
+     * @var NameTransformer
      */
     private $copyJsonName;
 
     /**
-     * @var CopyJsonTerms
+     * @var TermsTransformer
      */
     private $copyJsonTerms;
 
     /**
-     * @var CopyJsonLabels
+     * @var LabelsTransformer
      */
     private $copyJsonLabels;
 
     /**
-     * @var CopyJsonAddress
+     * @var AddressTransformer
      */
     private $copyJsonAddress;
 
@@ -61,20 +61,20 @@ class CopyJsonRelatedLocation implements CopyJsonInterface
         $this->logger = $logger;
         $this->idUrlParser = $idUrlParser;
 
-        $this->copyJsonIdentifier = new CopyJsonIdentifier(
+        $this->copyJsonIdentifier = new IdentifierTransformer(
             $logger,
             $idUrlParser,
             $fallbackType,
             true
         );
 
-        $this->copyJsonName = new CopyJsonName($logger);
+        $this->copyJsonName = new NameTransformer($logger);
 
-        $this->copyJsonTerms = new CopyJsonTerms();
+        $this->copyJsonTerms = new TermsTransformer();
 
-        $this->copyJsonLabels = new CopyJsonLabels();
+        $this->copyJsonLabels = new LabelsTransformer();
 
-        $this->copyJsonAddress = new CopyJsonAddress($logger, true);
+        $this->copyJsonAddress = new AddressTransformer($logger, true);
     }
 
     /**

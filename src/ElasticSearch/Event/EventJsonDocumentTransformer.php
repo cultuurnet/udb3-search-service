@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 {
     /**
-     * @var CopyJsonEvent
+     * @var EventTransformer
      */
     private $copyJsonEvent;
 
@@ -28,7 +28,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     ) {
         parent::__construct($idUrlParser, $offerRegionService, $logger);
 
-        $this->copyJsonEvent = new CopyJsonEvent(
+        $this->copyJsonEvent = new EventTransformer(
             new CopyJsonPsrLogger($this->logger),
             $this->idUrlParser
         );

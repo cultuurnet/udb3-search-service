@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 use Rhumsaa\Uuid\Uuid;
 
-class CopyJsonLanguages implements CopyJsonInterface
+class LanguagesTransformer implements CopyJsonInterface
 {
     /**
      * @var CopyJsonLoggerInterface

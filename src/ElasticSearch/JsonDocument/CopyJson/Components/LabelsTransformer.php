@@ -4,7 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
 
-class CopyJsonLabels implements CopyJsonInterface
+class LabelsTransformer implements CopyJsonInterface
 {
     /**
      * @param \stdClass $from
