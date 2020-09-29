@@ -3,12 +3,11 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OfferTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
 
 class PlaceTransformer extends CopyJsonCombination
 {

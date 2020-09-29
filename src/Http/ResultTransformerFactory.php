@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonTransfo
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\RegionEmbeddingJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 class ResultTransformerFactory

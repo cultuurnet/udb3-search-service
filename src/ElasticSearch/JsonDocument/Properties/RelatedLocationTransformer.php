@@ -4,12 +4,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LabelsTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
 class RelatedLocationTransformer implements CopyJsonInterface

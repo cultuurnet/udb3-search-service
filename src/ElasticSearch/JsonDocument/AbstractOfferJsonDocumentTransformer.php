@@ -3,12 +3,11 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
-use CultuurNet\UDB3\Search\Offer\OfferType;
-use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
+use CultuurNet\UDB3\Search\Offer\OfferType;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Psr\Log\LoggerInterface;
 

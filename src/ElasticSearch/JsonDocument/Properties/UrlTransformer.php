@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use function property_exists;
 use Stringy\Stringy;
 use ValueObjects\Web\Url;
+use function property_exists;
 
 class UrlTransformer implements CopyJsonInterface
 {

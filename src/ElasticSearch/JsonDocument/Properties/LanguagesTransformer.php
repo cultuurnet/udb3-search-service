@@ -2,11 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
-use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\Language\JsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use Rhumsaa\Uuid\Uuid;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
 class LanguagesTransformer implements CopyJsonInterface
 {

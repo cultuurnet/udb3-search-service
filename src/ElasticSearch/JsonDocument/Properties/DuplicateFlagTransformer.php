@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 
 class DuplicateFlagTransformer implements CopyJsonInterface
 {
