@@ -35,7 +35,7 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_keeps_the_properties_that_are_required_to_maintain_backwards_compatibility_with_the_api()
+    public function it_copies_the_required_properties()
     {
         $original = file_get_contents(__DIR__ . '/data/original.json');
         $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);

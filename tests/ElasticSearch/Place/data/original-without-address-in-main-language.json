@@ -2,6 +2,12 @@
     "@type": "Place",
     "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
     "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
     "calendarType": "permanent",
     "availableTo": "2017-05-01T23:59:59+00:00",
     "name": {

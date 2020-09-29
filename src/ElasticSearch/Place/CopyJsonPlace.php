@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\Fallba
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonOffer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
-use CultuurNet\UDB3\Search\Place\PlaceJsonDocumentLanguageAnalyzer;
 
 class CopyJsonPlace extends CopyJsonCombination
 {
@@ -27,9 +26,7 @@ class CopyJsonPlace extends CopyJsonCombination
                 $idUrlParser,
                 FallbackType::PLACE()
             ),
-            new CopyJsonLanguages(
-                new PlaceJsonDocumentLanguageAnalyzer()
-            ),
+            new CopyJsonLanguages($logger),
             new CopyJsonAddress($logger, true)
         );
     }

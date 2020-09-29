@@ -29,26 +29,18 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
     protected $logger;
 
     /**
-     * @var JsonDocumentLanguageAnalyzer
-     */
-    protected $languageAnalyzer;
-
-    /**
      * @param IdUrlParserInterface $idUrlParser
      * @param OfferRegionServiceInterface $offerRegionService
      * @param LoggerInterface $logger
-     * @param JsonDocumentLanguageAnalyzer $languageAnalyzer
      */
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
-        LoggerInterface $logger,
-        JsonDocumentLanguageAnalyzer $languageAnalyzer
+        LoggerInterface $logger
     ) {
         $this->idUrlParser = $idUrlParser;
         $this->offerRegionService = $offerRegionService;
         $this->logger = $logger;
-        $this->languageAnalyzer = $languageAnalyzer;
     }
 
     /**

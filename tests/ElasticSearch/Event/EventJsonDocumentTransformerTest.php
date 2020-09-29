@@ -99,6 +99,8 @@ class EventJsonDocumentTransformerTest extends TestCase
             ['warning', "Missing expected field 'created'.", []],
             ['warning', "Missing expected field 'workflowStatus'.", []],
             ['warning', "Missing expected field 'location'.", []],
+            ['warning', "Missing expected field 'languages'.", []],
+            ['warning', "Missing expected field 'completedLanguages'.", []],
             ['warning', "Missing expected field 'calendarType'.", []],
             ['warning', "Missing expected field 'mainLanguage'.", []],
             ['debug', "Transformation of event $id finished.", []],
