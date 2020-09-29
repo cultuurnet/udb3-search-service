@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
@@ -18,16 +17,17 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganize
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 class OfferTransformer extends CopyJsonCombination
 {
     /**
-     * @param CopyJsonLoggerInterface $logger
+     * @param JsonTransformerLogger $logger
      * @param IdUrlParserInterface $idUrlParser
      * @param FallbackType $fallbackType
      */
     public function __construct(
-        CopyJsonLoggerInterface $logger,
+        JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
         FallbackType $fallbackType
     ) {

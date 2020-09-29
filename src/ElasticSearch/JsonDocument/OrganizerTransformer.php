@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
@@ -16,15 +15,16 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\UrlTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 class OrganizerTransformer extends CopyJsonCombination
 {
     /**
-     * @param CopyJsonLoggerInterface $logger
+     * @param JsonTransformerLogger $logger
      * @param IdUrlParserInterface $idUrlParser
      */
     public function __construct(
-        CopyJsonLoggerInterface $logger,
+        JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser
     ) {
         parent::__construct(

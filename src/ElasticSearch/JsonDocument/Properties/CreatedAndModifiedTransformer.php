@@ -3,22 +3,22 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateTimeImmutable;
 use stdClass;
 
 class CreatedAndModifiedTransformer implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonLoggerInterface
+     * @var JsonTransformerLogger
      */
     private $logger;
 
     /**
-     * @param CopyJsonLoggerInterface $logger
+     * @param JsonTransformerLogger $logger
      */
     public function __construct(
-        CopyJsonLoggerInterface $logger
+        JsonTransformerLogger $logger
     ) {
         $this->logger = $logger;
     }

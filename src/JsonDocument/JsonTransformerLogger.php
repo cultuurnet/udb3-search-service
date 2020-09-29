@@ -1,8 +1,8 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging;
+namespace CultuurNet\UDB3\Search\JsonDocument;
 
-interface CopyJsonLoggerInterface
+interface JsonTransformerLogger
 {
     public function logMissingExpectedField(string $fieldName): void;
 

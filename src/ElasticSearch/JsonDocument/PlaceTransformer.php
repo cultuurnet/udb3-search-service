@@ -4,19 +4,19 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 class PlaceTransformer extends CopyJsonCombination
 {
     /**
-     * @param CopyJsonLoggerInterface $logger
+     * @param JsonTransformerLogger $logger
      * @param IdUrlParserInterface $idUrlParser
      */
     public function __construct(
-        CopyJsonLoggerInterface $logger,
+        JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser
     ) {
         parent::__construct(

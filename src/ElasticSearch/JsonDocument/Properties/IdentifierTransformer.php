@@ -4,12 +4,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 class IdentifierTransformer implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonLoggerInterface
+     * @var JsonTransformerLogger
      */
     private $logger;
 
@@ -29,7 +29,7 @@ class IdentifierTransformer implements CopyJsonInterface
     private $setMainId;
 
     public function __construct(
-        CopyJsonLoggerInterface $logger,
+        JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
         FallbackType $fallbackType,
         bool $setMainId = false

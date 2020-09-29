@@ -3,16 +3,16 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 class LanguagesTransformer implements CopyJsonInterface
 {
     /**
-     * @var CopyJsonLoggerInterface
+     * @var JsonTransformerLogger
      */
     private $logger;
 
-    public function __construct(CopyJsonLoggerInterface $logger)
+    public function __construct(JsonTransformerLogger $logger)
     {
         $this->logger = $logger;
     }

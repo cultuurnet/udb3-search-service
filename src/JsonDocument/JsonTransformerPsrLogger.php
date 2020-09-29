@@ -1,10 +1,10 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging;
+namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use Psr\Log\LoggerInterface;
 
-class CopyJsonPsrLogger implements CopyJsonLoggerInterface
+class JsonTransformerPsrLogger implements JsonTransformerLogger
 {
     /** @var  LoggerInterface */
     private $psrLogger;
