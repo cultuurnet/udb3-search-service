@@ -4,11 +4,11 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Event;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EventJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\AssertsJsonDocuments;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
