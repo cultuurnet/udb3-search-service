@@ -578,22 +578,6 @@ class EventJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_transform_addresses_in_a_deprecated_format()
-    {
-        $original = file_get_contents(__DIR__ . '/data/original-with-deprecated-address-format.json');
-        $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
-
-        $expected = file_get_contents(__DIR__ . '/data/indexed-from-deprecated-address-format.json');
-        $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
-
-        $actualDocument = $this->transformer->transform($originalDocument);
-
-        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_copy_languages_and_completed_languages_if_present_on_the_json_ld()
     {
         $original = file_get_contents(__DIR__ . '/data/original-with-languages.json');
