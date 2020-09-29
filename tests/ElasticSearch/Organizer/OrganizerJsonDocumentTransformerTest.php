@@ -89,22 +89,6 @@ class OrganizerJsonDocumentTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_name_as_string()
-    {
-        $original = file_get_contents(__DIR__ . '/data/original_with_name_as_string.json');
-        $originalDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $original);
-
-        $expected = file_get_contents(__DIR__ . '/data/indexed_with_name_as_string.json');
-        $expectedDocument = new JsonDocument('5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83', $expected);
-
-        $actualDocument = $this->transformer->transform($originalDocument);
-
-        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
-    }
-
-    /**
-     * @test
-     */
     public function it_handles_translated_address()
     {
         $original = file_get_contents(__DIR__ . '/data/original_with_translated_address.json');
