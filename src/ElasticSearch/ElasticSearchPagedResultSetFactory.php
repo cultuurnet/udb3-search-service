@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\Aggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\AggregationTransformerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Validation\ElasticSearchResponseValidatorInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Validation\PagedResultSetResponseValidator;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use ValueObjects\Number\Natural;
 
 class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface

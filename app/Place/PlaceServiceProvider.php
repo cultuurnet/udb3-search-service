@@ -3,8 +3,8 @@
 namespace CultuurNet\UDB3\SearchService\Place;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
-use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;

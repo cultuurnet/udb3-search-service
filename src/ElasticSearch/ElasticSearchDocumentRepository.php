@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 

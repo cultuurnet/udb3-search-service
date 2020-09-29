@@ -5,8 +5,8 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\Hydra\PagedCollection;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 class PagedCollectionFactory
 {

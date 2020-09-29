@@ -4,13 +4,13 @@ namespace CultuurNet\UDB3\Search\Offer;
 
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\GeoBoundsParameters;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
-use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
