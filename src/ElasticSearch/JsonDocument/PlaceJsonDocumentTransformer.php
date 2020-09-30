@@ -18,7 +18,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     /**
      * @var PlaceTransformer
      */
-    private $copyJsonPlace;
+    private $placeTransformer;
 
     public function __construct(
         IdUrlParserInterface $idUrlParser,
@@ -27,7 +27,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     ) {
         parent::__construct($idUrlParser, $offerRegionService, $logger);
 
-        $this->copyJsonPlace = new PlaceTransformer(
+        $this->placeTransformer = new PlaceTransformer(
             new JsonTransformerPsrLogger($this->logger),
             $this->idUrlParser
         );
@@ -41,7 +41,7 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 
         $this->logger->debug("Transforming place {$id} for indexation.");
 
-        $this->copyJsonPlace->copy($body, $newBody);
+        $this->placeTransformer->copy($body, $newBody);
 
         $this->copyCalendarType($body, $newBody);
         $this->copyDateRange($body, $newBody);

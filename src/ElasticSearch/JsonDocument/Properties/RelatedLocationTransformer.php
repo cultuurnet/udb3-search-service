@@ -16,27 +16,27 @@ class RelatedLocationTransformer implements CopyJsonInterface
     /**
      * @var IdentifierTransformer
      */
-    private $copyJsonIdentifier;
+    private $identifierTransformer;
 
     /**
      * @var NameTransformer
      */
-    private $copyJsonName;
+    private $nameTransformer;
 
     /**
      * @var TermsTransformer
      */
-    private $copyJsonTerms;
+    private $termsTransformer;
 
     /**
      * @var LabelsTransformer
      */
-    private $copyJsonLabels;
+    private $labelsTransformer;
 
     /**
      * @var AddressTransformer
      */
-    private $copyJsonAddress;
+    private $addressTransformer;
 
     /**
      * @var JsonTransformerLogger
@@ -56,20 +56,20 @@ class RelatedLocationTransformer implements CopyJsonInterface
         $this->logger = $logger;
         $this->idUrlParser = $idUrlParser;
 
-        $this->copyJsonIdentifier = new IdentifierTransformer(
+        $this->identifierTransformer = new IdentifierTransformer(
             $logger,
             $idUrlParser,
             $fallbackType,
             true
         );
 
-        $this->copyJsonName = new NameTransformer($logger);
+        $this->nameTransformer = new NameTransformer($logger);
 
-        $this->copyJsonTerms = new TermsTransformer();
+        $this->termsTransformer = new TermsTransformer();
 
-        $this->copyJsonLabels = new LabelsTransformer();
+        $this->labelsTransformer = new LabelsTransformer();
 
-        $this->copyJsonAddress = new AddressTransformer($logger, true);
+        $this->addressTransformer = new AddressTransformer($logger, true);
     }
 
     /**
@@ -86,7 +86,7 @@ class RelatedLocationTransformer implements CopyJsonInterface
             $to->location = new \stdClass();
         }
 
-        $this->copyJsonIdentifier->copy($from->location, $to->location);
+        $this->identifierTransformer->copy($from->location, $to->location);
 
         if (isset($from->location->duplicatedBy)) {
             $idsOfDuplicates = array_map(
@@ -99,12 +99,12 @@ class RelatedLocationTransformer implements CopyJsonInterface
             $to->location->id = array_merge([$to->location->id], $idsOfDuplicates);
         }
 
-        $this->copyJsonName->copy($from->location, $to->location);
+        $this->nameTransformer->copy($from->location, $to->location);
 
-        $this->copyJsonTerms->copy($from->location, $to->location);
+        $this->termsTransformer->copy($from->location, $to->location);
 
-        $this->copyJsonLabels->copy($from->location, $to->location);
+        $this->labelsTransformer->copy($from->location, $to->location);
 
-        $this->copyJsonAddress->copy($from->location, $to);
+        $this->addressTransformer->copy($from->location, $to);
     }
 }

@@ -17,13 +17,13 @@ class JsonTransformerPsrLoggerTest extends TestCase
     /**
      * @var JsonTransformerPsrLogger
      */
-    private $copyJsonPsrLogger;
+    private $jsonTransformerPsrLogger;
 
     protected function setUp()
     {
         $this->psrLogger = $this->createMock(LoggerInterface::class);
 
-        $this->copyJsonPsrLogger = new JsonTransformerPsrLogger(
+        $this->jsonTransformerPsrLogger = new JsonTransformerPsrLogger(
             $this->psrLogger
         );
     }
@@ -37,6 +37,6 @@ class JsonTransformerPsrLoggerTest extends TestCase
             ->method('warning')
             ->with("Missing expected field 'name.nl'.");
 
-        $this->copyJsonPsrLogger->logMissingExpectedField('name.nl');
+        $this->jsonTransformerPsrLogger->logMissingExpectedField('name.nl');
     }
 }

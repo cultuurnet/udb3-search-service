@@ -12,15 +12,15 @@ use Psr\Log\LoggerInterface;
 class OrganizerJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {
     /**
-     * @var CopyJsonInterface
+     * @var OrganizerTransformer
      */
-    private $jsonCopier;
+    private $organizerTransformer;
 
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         LoggerInterface $logger
     ) {
-        $this->jsonCopier = new OrganizerTransformer(
+        $this->organizerTransformer = new OrganizerTransformer(
             new JsonTransformerPsrLogger($logger),
             $idUrlParser
         );
@@ -32,7 +32,7 @@ class OrganizerJsonDocumentTransformer implements JsonDocumentTransformerInterfa
 
         $newBody = new \stdClass();
 
-        $this->jsonCopier->copy($body, $newBody);
+        $this->organizerTransformer->copy($body, $newBody);
 
         return $jsonDocument->withBody($newBody);
     }

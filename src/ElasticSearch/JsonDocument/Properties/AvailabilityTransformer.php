@@ -14,17 +14,17 @@ final class AvailabilityTransformer implements CopyJsonInterface
     /**
      * @var JsonTransformerLogger
      */
-    private $copyLogger;
+    private $logger;
 
-    public function __construct(JsonTransformerLogger $copyLogger)
+    public function __construct(JsonTransformerLogger $logger)
     {
-        $this->copyLogger = $copyLogger;
+        $this->logger = $logger;
     }
 
     public function copy(stdClass $from, stdClass $to): void
     {
         if (isset($from->availableFrom, $from->workflowStatus) && $from->workflowStatus === 'DRAFT') {
-            $this->copyLogger->logWarning('Found availableFrom but workflowStatus is DRAFT.');
+            $this->logger->logWarning('Found availableFrom but workflowStatus is DRAFT.');
         }
 
         $availableFrom = $this->getAvailableDate($from, 'availableFrom');
@@ -82,7 +82,7 @@ final class AvailabilityTransformer implements CopyJsonInterface
         $date = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->{$propertyName});
 
         if (!$date) {
-            $this->copyLogger->logError("Could not parse {$propertyName} as an ISO-8601 datetime.");
+            $this->logger->logError("Could not parse {$propertyName} as an ISO-8601 datetime.");
             return null;
         }
 

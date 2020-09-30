@@ -15,22 +15,22 @@ class EventTransformer implements CopyJsonInterface
     /**
      * @var OfferTransformer
      */
-    private $copyJsonOffer;
+    private $offerTransformer;
 
     /**
      * @var RelatedLocationTransformer
      */
-    private $copyJsonRelatedLocation;
+    private $relatedLocationTransformer;
 
     /**
      * @var RelatedProductionTransformer
      */
-    private $copyRelatedProduction;
+    private $relatedProductionTransformer;
 
     /**
      * @var LanguagesTransformer
      */
-    private $copyJsonLanguages;
+    private $languagesTransformer;
 
     /**
      * @param JsonTransformerLogger $logger
@@ -40,21 +40,21 @@ class EventTransformer implements CopyJsonInterface
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser
     ) {
-        $this->copyJsonOffer = new OfferTransformer(
+        $this->offerTransformer = new OfferTransformer(
             $logger,
             $idUrlParser,
             FallbackType::EVENT()
         );
 
-        $this->copyJsonRelatedLocation = new RelatedLocationTransformer(
+        $this->relatedLocationTransformer = new RelatedLocationTransformer(
             $logger,
             $idUrlParser,
             FallbackType::PLACE()
         );
 
-        $this->copyRelatedProduction = new RelatedProductionTransformer();
+        $this->relatedProductionTransformer = new RelatedProductionTransformer();
 
-        $this->copyJsonLanguages = new LanguagesTransformer($logger);
+        $this->languagesTransformer = new LanguagesTransformer($logger);
     }
 
     /**
@@ -63,12 +63,12 @@ class EventTransformer implements CopyJsonInterface
      */
     public function copy(\stdClass $from, \stdClass $to)
     {
-        $this->copyJsonOffer->copy($from, $to);
+        $this->offerTransformer->copy($from, $to);
 
-        $this->copyJsonRelatedLocation->copy($from, $to);
+        $this->relatedLocationTransformer->copy($from, $to);
 
-        $this->copyRelatedProduction->copy($from, $to);
+        $this->relatedProductionTransformer->copy($from, $to);
 
-        $this->copyJsonLanguages->copy($from, $to);
+        $this->languagesTransformer->copy($from, $to);
     }
 }

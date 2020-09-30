@@ -18,7 +18,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     /**
      * @var EventTransformer
      */
-    private $copyJsonEvent;
+    private $eventTransformer;
 
     public function __construct(
         IdUrlParserInterface $idUrlParser,
@@ -27,7 +27,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     ) {
         parent::__construct($idUrlParser, $offerRegionService, $logger);
 
-        $this->copyJsonEvent = new EventTransformer(
+        $this->eventTransformer = new EventTransformer(
             new JsonTransformerPsrLogger($this->logger),
             $this->idUrlParser
         );
@@ -41,7 +41,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 
         $this->logger->debug("Transforming event {$id} for indexation.");
 
-        $this->copyJsonEvent->copy($body, $newBody);
+        $this->eventTransformer->copy($body, $newBody);
 
         $this->copyCalendarType($body, $newBody);
         $this->copyDateRange($body, $newBody);

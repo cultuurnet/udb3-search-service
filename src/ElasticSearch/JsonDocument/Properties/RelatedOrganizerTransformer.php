@@ -11,17 +11,17 @@ class RelatedOrganizerTransformer implements CopyJsonInterface
     /**
      * @var IdentifierTransformer
      */
-    private $copyJsonIdentifier;
+    private $identifierTransformer;
 
     /**
      * @var NameTransformer
      */
-    private $copyJsonName;
+    private $nameTransformer;
 
     /**
      * @var LabelsTransformer
      */
-    private $copyJsonLabels;
+    private $labelsTransformer;
 
     /**
      * @param JsonTransformerLogger $logger
@@ -33,16 +33,16 @@ class RelatedOrganizerTransformer implements CopyJsonInterface
         IdUrlParserInterface $idUrlParser,
         FallbackType $fallbackType
     ) {
-        $this->copyJsonIdentifier = new IdentifierTransformer(
+        $this->identifierTransformer = new IdentifierTransformer(
             $logger,
             $idUrlParser,
             $fallbackType,
             false
         );
 
-        $this->copyJsonName = new NameTransformer($logger);
+        $this->nameTransformer = new NameTransformer($logger);
 
-        $this->copyJsonLabels = new LabelsTransformer();
+        $this->labelsTransformer = new LabelsTransformer();
     }
 
     /**
@@ -59,10 +59,10 @@ class RelatedOrganizerTransformer implements CopyJsonInterface
             $to->organizer = new \stdClass();
         }
 
-        $this->copyJsonIdentifier->copy($from->organizer, $to->organizer);
+        $this->identifierTransformer->copy($from->organizer, $to->organizer);
 
-        $this->copyJsonName->copy($from->organizer, $to->organizer);
+        $this->nameTransformer->copy($from->organizer, $to->organizer);
 
-        $this->copyJsonLabels->copy($from->organizer, $to->organizer);
+        $this->labelsTransformer->copy($from->organizer, $to->organizer);
     }
 }
