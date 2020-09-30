@@ -71,7 +71,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreStart
         $expectedDocument = new JsonDocument(
             $id,
-            '{"@type":"Place","isDuplicate":false,"originalEncodedJsonLd":"{}","mainLanguage":"nl","audienceType":"everyone","mediaObjectsCount":0}'
+            '{"@type":"Place","isDuplicate":false,"originalEncodedJsonLd":"{}","audienceType":"everyone","mediaObjectsCount":0}'
         );
         // @codingStandardsIgnoreEnd
 
@@ -82,6 +82,8 @@ class PlaceJsonDocumentTransformerTest extends TestCase
             ['warning', "Missing expected field 'creator'.", []],
             ['warning', "Missing expected field 'created'.", []],
             ['warning', "Missing expected field 'workflowStatus'.", []],
+            ['warning', "Missing expected field 'languages'.", []],
+            ['warning', "Missing expected field 'completedLanguages'.", []],
             ['warning', "Missing expected field 'address'.", []],
             ['warning', "Missing expected field 'calendarType'.", []],
             ['warning', "Missing expected field 'mainLanguage'.", []],
@@ -307,23 +309,6 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expected = file_get_contents(__DIR__ . '/data/indexed-modified.json');
-        $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
-
-        $actualDocument = $this->transformer->transform($originalDocument);
-
-        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
-    }
-
-    /**
-     * @test
-     * @group tmp
-     */
-    public function it_should_transform_addresses_in_a_deprecated_format()
-    {
-        $original = file_get_contents(__DIR__ . '/data/original-with-deprecated-address-format.json');
-        $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
-
-        $expected = file_get_contents(__DIR__ . '/data/indexed-from-deprecated-address.json');
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $actualDocument = $this->transformer->transform($originalDocument);

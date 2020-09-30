@@ -28,13 +28,6 @@ class CopyJsonName implements CopyJsonInterface
     {
         $mainLanguage = isset($from->mainLanguage) ? $from->mainLanguage : 'nl';
 
-        // @replay_i18n
-        // @see https://jira.uitdatabank.be/browse/III-2201
-        if (isset($from->name) && is_string($from->name)) {
-            $from = clone $from;
-            $from->name = (object) [$mainLanguage => $from->name];
-        }
-
         if (!isset($from->name)) {
             $this->logger->logMissingExpectedField('name');
             return;

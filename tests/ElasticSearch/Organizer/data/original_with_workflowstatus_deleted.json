@@ -10,5 +10,7 @@
     "labels": [
         "UiTPAS"
     ],
-    "workflowStatus": "DELETED"
+    "workflowStatus": "DELETED",
+    "languages": ["nl"],
+    "completedLanguages": ["nl"]
 }

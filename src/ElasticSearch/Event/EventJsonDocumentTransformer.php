@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\Event;
 
 use CultuurNet\UDB3\Search\Offer\OfferType;
-use CultuurNet\UDB3\Search\Event\EventJsonDocumentLanguageAnalyzer;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonPsrLogger;
@@ -33,9 +32,7 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         OfferRegionServiceInterface $offerRegionService,
         LoggerInterface $logger
     ) {
-        $languageAnalyzer = new EventJsonDocumentLanguageAnalyzer();
-
-        parent::__construct($idUrlParser, $offerRegionService, $logger, $languageAnalyzer);
+        parent::__construct($idUrlParser, $offerRegionService, $logger);
 
         $this->copyJsonEvent = new CopyJsonEvent(
             new CopyJsonPsrLogger($this->logger),

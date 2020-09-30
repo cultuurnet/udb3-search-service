@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonOffer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonRelatedLocation;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Components\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging\CopyJsonLoggerInterface;
-use CultuurNet\UDB3\Search\Event\EventJsonDocumentLanguageAnalyzer;
 
 class CopyJsonEvent implements CopyJsonInterface
 {
@@ -56,9 +55,7 @@ class CopyJsonEvent implements CopyJsonInterface
 
         $this->copyRelatedProduction = new CopyRelatedProduction();
 
-        $this->copyJsonLanguages = new CopyJsonLanguages(
-            new EventJsonDocumentLanguageAnalyzer()
-        );
+        $this->copyJsonLanguages = new CopyJsonLanguages($logger);
     }
 
     /**
@@ -73,8 +70,6 @@ class CopyJsonEvent implements CopyJsonInterface
 
         $this->copyRelatedProduction->copy($from, $to);
 
-        // Needs to go last for a fallback to calculate the completedLanguages based on the properties on the new
-        // document if it's missing in the original.
         $this->copyJsonLanguages->copy($from, $to);
     }
 }

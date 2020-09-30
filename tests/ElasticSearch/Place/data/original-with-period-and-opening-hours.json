@@ -2,6 +2,12 @@
     "@type": "Place",
     "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
     "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
     "calendarType": "periodic",
     "startDate": "2017-04-22T10:00:00+02:00",
     "endDate": "2017-05-09T23:00:00+02:00",
