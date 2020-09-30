@@ -12,9 +12,6 @@ final class CreatorTransformer implements JsonTransformer
      */
     private $logger;
 
-    /**
-     * @param JsonTransformerLogger $logger
-     */
     public function __construct(JsonTransformerLogger $logger)
     {
         $this->logger = $logger;

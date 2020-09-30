@@ -18,10 +18,6 @@ final class EventTransformer implements JsonTransformer
      */
     private $compositeTransformer;
 
-    /**
-     * @param JsonTransformerLogger $logger
-     * @param IdUrlParserInterface $idUrlParser
-     */
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser

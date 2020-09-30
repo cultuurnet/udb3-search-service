@@ -13,9 +13,6 @@ final class CreatedAndModifiedTransformer implements JsonTransformer
      */
     private $logger;
 
-    /**
-     * @param JsonTransformerLogger $logger
-     */
     public function __construct(
         JsonTransformerLogger $logger
     ) {

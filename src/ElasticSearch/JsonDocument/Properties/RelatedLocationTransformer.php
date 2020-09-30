@@ -43,11 +43,6 @@ final class RelatedLocationTransformer implements JsonTransformer
      */
     private $logger;
 
-    /**
-     * @param JsonTransformerLogger $logger
-     * @param IdUrlParserInterface $idUrlParser
-     * @param FallbackType $fallbackType
-     */
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
