@@ -13,7 +13,6 @@ final class NameTransformer implements JsonTransformer
     private $logger;
 
     /**
-     * CopyJsonName constructor.
      * @param JsonTransformerLogger $logger
      */
     public function __construct(JsonTransformerLogger $logger)

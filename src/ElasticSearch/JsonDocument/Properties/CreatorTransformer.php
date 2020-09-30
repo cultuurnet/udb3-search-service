@@ -13,8 +13,6 @@ final class CreatorTransformer implements JsonTransformer
     private $logger;
 
     /**
-     * CopyJsonCreator constructor.
-     *
      * @param JsonTransformerLogger $logger
      */
     public function __construct(JsonTransformerLogger $logger)
