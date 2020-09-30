@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\Logging;
+namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use PHPUnit\Framework\MockObject\MockObject;
