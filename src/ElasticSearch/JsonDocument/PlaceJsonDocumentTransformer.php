@@ -36,12 +36,18 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
     public function transform(JsonDocument $jsonDocument): JsonDocument
     {
         $id = $jsonDocument->getId();
-        $body = $jsonDocument->getBody();
-        $newBody = new \stdClass();
 
         $this->logger->debug("Transforming place {$id} for indexation.");
 
-        $this->placeTransformer->copy($body, $newBody);
+        // @todo refactor copy methods to transformer classes and remove workaround to make newBody an stdClass
+        $from = json_decode($jsonDocument->getRawBody(), true);
+        $to = [];
+        $body = $jsonDocument->getBody();
+        $newBody = json_decode(
+            json_encode(
+                $this->placeTransformer->transform($from, $to)
+            )
+        );
 
         $this->copyCalendarType($body, $newBody);
         $this->copyDateRange($body, $newBody);

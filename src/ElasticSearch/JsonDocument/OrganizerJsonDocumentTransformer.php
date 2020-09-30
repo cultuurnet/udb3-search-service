@@ -28,12 +28,9 @@ class OrganizerJsonDocumentTransformer implements JsonDocumentTransformerInterfa
 
     public function transform(JsonDocument $jsonDocument): JsonDocument
     {
-        $body = $jsonDocument->getBody();
+        $from = json_decode($jsonDocument->getRawBody(), true);
 
-        $newBody = new \stdClass();
-
-        $this->organizerTransformer->copy($body, $newBody);
-
-        return $jsonDocument->withBody($newBody);
+        return (new JsonDocument($jsonDocument->getId()))
+            ->withBody($this->organizerTransformer->transform($from));
     }
 }
