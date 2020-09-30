@@ -2,15 +2,13 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-class DuplicateFlagTransformer implements CopyJsonInterface
+final class DuplicateFlagTransformer implements JsonTransformer
 {
-    /**
-     * @inheritdoc
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        $to->isDuplicate = isset($from->duplicateOf);
+        $draft['isDuplicate'] = isset($from['duplicateOf']);
+        return $draft;
     }
 }

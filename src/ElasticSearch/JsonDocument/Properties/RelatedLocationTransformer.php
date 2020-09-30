@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class RelatedLocationTransformer implements CopyJsonInterface
+final class RelatedLocationTransformer implements JsonTransformer
 {
     /**
      * @var IdUrlParserInterface
@@ -72,39 +72,33 @@ class RelatedLocationTransformer implements CopyJsonInterface
         $this->addressTransformer = new AddressTransformer($logger, true);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (!isset($from->location)) {
+        if (!isset($from['location'])) {
             $this->logger->logMissingExpectedField('location');
-            return;
+            return $draft;
         }
 
-        if (!isset($to->location)) {
-            $to->location = new \stdClass();
-        }
+        $draft['location'] = $draft['location'] ?? [];
+        $draft['location'] = $this->identifierTransformer->transform($from['location'], $draft['location']);
 
-        $this->identifierTransformer->copy($from->location, $to->location);
-
-        if (isset($from->location->duplicatedBy)) {
+        if (isset($from['location']['duplicatedBy'])) {
             $idsOfDuplicates = array_map(
                 function (string $iriOfDuplicate) {
                     return $this->idUrlParser->getIdFromUrl($iriOfDuplicate);
                 },
-                $from->location->duplicatedBy
+                $from['location']['duplicatedBy']
             );
 
-            $to->location->id = array_merge([$to->location->id], $idsOfDuplicates);
+            $draft['location']['id'] = array_merge([$draft['location']['id']], $idsOfDuplicates);
         }
 
-        $this->nameTransformer->copy($from->location, $to->location);
+        $draft['location'] = $this->nameTransformer->transform($from['location'], $draft['location']);
+        $draft['location'] = $this->termsTransformer->transform($from['location'], $draft['location']);
+        $draft['location'] = $this->labelsTransformer->transform($from['location'], $draft['location']);
 
-        $this->termsTransformer->copy($from->location, $to->location);
+        $draft = $this->addressTransformer->transform($from['location'], $draft);
 
-        $this->labelsTransformer->copy($from->location, $to->location);
-
-        $this->addressTransformer->copy($from->location, $to);
+        return $draft;
     }
 }

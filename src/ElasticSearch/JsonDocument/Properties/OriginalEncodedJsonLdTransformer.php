@@ -2,15 +2,13 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-class OriginalEncodedJsonLdTransformer implements CopyJsonInterface
+final class OriginalEncodedJsonLdTransformer implements JsonTransformer
 {
-    /**
-     * @inheritdoc
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        $to->originalEncodedJsonLd = json_encode($from, JSON_UNESCAPED_SLASHES);
+        $draft['originalEncodedJsonLd'] = json_encode((object) $from, JSON_UNESCAPED_SLASHES);
+        return $draft;
     }
 }

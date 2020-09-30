@@ -2,22 +2,21 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use Stringy\Stringy;
 use ValueObjects\Web\Url;
-use function property_exists;
 
-class UrlTransformer implements CopyJsonInterface
+final class UrlTransformer implements JsonTransformer
 {
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (!property_exists($from, 'url')) {
-            return;
+        if (!isset($from['url'])) {
+            return $draft;
         }
 
-        $to->url = $from->url;
-
-        $to->domain = $this->extractDomain($from->url);
+        $draft['url'] = $from['url'];
+        $draft['domain'] = $this->extractDomain($from['url']);
+        return $draft;
     }
 
     private function extractDomain(string $url): string

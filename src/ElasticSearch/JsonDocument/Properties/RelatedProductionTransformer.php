@@ -2,19 +2,20 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
-use stdClass;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-class RelatedProductionTransformer implements CopyJsonInterface
+final class RelatedProductionTransformer implements JsonTransformer
 {
-    public function copy(stdClass $from, stdClass $to): void
+    public function transform(array $from, array $draft = []): array
     {
-        if (!isset($from->production->id)) {
-            return;
+        if (!isset($from['production']['id'])) {
+            return $draft;
         }
 
-        $to->production = (object) [
-          'id' => $from->production->id,
+        $draft['production'] = [
+          'id' => $from['production']['id'],
         ];
+
+        return $draft;
     }
 }

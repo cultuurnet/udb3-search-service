@@ -2,39 +2,24 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-class LabelsTransformer implements CopyJsonInterface
+final class LabelsTransformer implements JsonTransformer
 {
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
         $labels = $this->getLabels($from);
 
         if (!empty($labels)) {
-            $to->labels = $labels;
+            $draft['labels'] = $labels;
         }
+        return $draft;
     }
 
-    /**
-     * @param \stdClass $object
-     * @return array
-     */
-    private function getLabels(\stdClass $object)
+    private function getLabels(array $from): array
     {
-        $labels = [];
-
-        if (isset($object->labels)) {
-            $labels = array_merge($labels, $object->labels);
-        }
-
-        if (isset($object->hiddenLabels)) {
-            $labels = array_merge($labels, $object->hiddenLabels);
-        }
-
-        return $labels;
+        $labels = $from['labels'] ?? [];
+        $hiddenLabels = $from['hiddenLabels'] ?? [];
+        return array_merge($labels, $hiddenLabels);
     }
 }

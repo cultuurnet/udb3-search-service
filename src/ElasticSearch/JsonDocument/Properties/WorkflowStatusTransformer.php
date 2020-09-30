@@ -2,11 +2,11 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use stdClass;
 
-class WorkflowStatusTransformer implements CopyJsonInterface
+final class WorkflowStatusTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -24,21 +24,19 @@ class WorkflowStatusTransformer implements CopyJsonInterface
         $this->default = $default;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function copy(stdClass $from, stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (isset($from->workflowStatus)) {
-            $to->workflowStatus = $from->workflowStatus;
-            return;
+        if (isset($from['workflowStatus'])) {
+            $draft['workflowStatus'] = $from['workflowStatus'];
+            return $draft;
         }
 
         if (!is_null($this->default)) {
-            $to->workflowStatus = $this->default;
-            return;
+            $draft['workflowStatus'] = $this->default;
+            return $draft;
         }
 
         $this->logger->logMissingExpectedField('workflowStatus');
+        return $draft;
     }
 }

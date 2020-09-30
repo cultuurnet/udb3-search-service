@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class NameTransformer implements CopyJsonInterface
+final class NameTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -21,22 +21,20 @@ class NameTransformer implements CopyJsonInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        $mainLanguage = isset($from->mainLanguage) ? $from->mainLanguage : 'nl';
+        $mainLanguage = $from['mainLanguage'] ?? 'nl';
 
-        if (!isset($from->name)) {
+        if (!isset($from['name'])) {
             $this->logger->logMissingExpectedField('name');
-            return;
+            return $draft;
         }
 
-        if (!isset($from->name->nl)) {
-            $this->logger->logMissingExpectedField('name.nl');
+        if (!isset($from['name'][$mainLanguage])) {
+            $this->logger->logMissingExpectedField('name.' . $mainLanguage);
         }
 
-        $to->name = $from->name;
+        $draft['name'] = $from['name'];
+        return $draft;
     }
 }

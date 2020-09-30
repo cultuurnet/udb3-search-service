@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateTimeImmutable;
-use stdClass;
 
-final class AvailabilityTransformer implements CopyJsonInterface
+final class AvailabilityTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -21,9 +20,9 @@ final class AvailabilityTransformer implements CopyJsonInterface
         $this->logger = $logger;
     }
 
-    public function copy(stdClass $from, stdClass $to): void
+    public function transform(array $from, array $draft = []): array
     {
-        if (isset($from->availableFrom, $from->workflowStatus) && $from->workflowStatus === 'DRAFT') {
+        if (isset($from['availableFrom'], $from['workflowStatus']) && $from['workflowStatus'] === 'DRAFT') {
             $this->logger->logWarning('Found availableFrom but workflowStatus is DRAFT.');
         }
 
@@ -38,7 +37,7 @@ final class AvailabilityTransformer implements CopyJsonInterface
             // Generally the availableTo is the same as the endDate, so try to use that instead.
             $availableTo = $this->getAvailableDate($from, 'endDate');
         }
-        if (!$availableTo && isset($from->calendarType) && $from->calendarType === 'permanent') {
+        if (!$availableTo && isset($from['calendarType']) && $from['calendarType'] === 'permanent') {
             // If the offer has no endDate either, it's probably a "permanent" offer.
             // In that case the availableTo is generally '2100-01-01T00:00:00+00:00' on the JSON-LD.
             // It's just missing for offer imported from UDB2.
@@ -57,29 +56,30 @@ final class AvailabilityTransformer implements CopyJsonInterface
         }
 
         if ($availableTo) {
-            $to->availableTo = $availableTo->format(\DateTime::ATOM);
+            $draft['availableTo'] = $availableTo->format(\DateTime::ATOM);
         }
 
         if (!$availableFrom) {
-            return;
+            return $draft;
         }
 
-        $to->availableRange = new stdClass();
-        $to->availableRange->gte = $availableFrom->format(\DateTime::ATOM);
+        $draft['availableRange']['gte'] = $availableFrom->format(\DateTime::ATOM);
 
         if ($availableTo) {
-            $to->availableRange->lte = $availableTo->format(\DateTime::ATOM);
+            $draft['availableRange']['lte'] = $availableTo->format(\DateTime::ATOM);
         }
+
+        return $draft;
     }
 
-    private function getAvailableDate(stdClass $from, string $propertyName): ?DateTimeImmutable
+    private function getAvailableDate(array $from, string $propertyName): ?DateTimeImmutable
     {
-        if (!isset($from->{$propertyName})) {
+        if (!isset($from[$propertyName])) {
             return null;
         }
 
         // Convert to DateTimeImmutable to verify the format is correct.
-        $date = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->{$propertyName});
+        $date = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from[$propertyName]);
 
         if (!$date) {
             $this->logger->logError("Could not parse {$propertyName} as an ISO-8601 datetime.");

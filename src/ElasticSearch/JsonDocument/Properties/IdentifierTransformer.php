@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class IdentifierTransformer implements CopyJsonInterface
+final class IdentifierTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -40,30 +40,27 @@ class IdentifierTransformer implements CopyJsonInterface
         $this->setMainId = $setMainId;
     }
 
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (isset($from->{"@id"})) {
-            $to->{"@id"} = $from->{"@id"};
+        if (isset($from["@id"])) {
+            $draft["@id"] = $from["@id"];
         } else {
             $this->logger->logMissingExpectedField("@id");
         }
 
-        $to->{"@type"} = isset($from->{"@type"}) ? $from->{"@type"} :
-            $this->fallbackType->toNative();
+        $draft["@type"] = $from["@type"] ?? $this->fallbackType->toNative();
 
         // Not included in the if statement above because it should be under
         // @type in the JSON. No else statement because we don't want to log a
         // missing @id twice.
-        if (isset($from->{"@id"})) {
-            $to->id = $this->idUrlParser->getIdFromUrl($from->{"@id"});
+        if (isset($from["@id"])) {
+            $draft['id'] = $this->idUrlParser->getIdFromUrl($from["@id"]);
 
             if ($this->setMainId) {
-                $to->mainId = $this->idUrlParser->getIdFromUrl($from->{"@id"});
+                $draft['mainId'] = $this->idUrlParser->getIdFromUrl($from["@id"]);
             }
         }
+
+        return $draft;
     }
 }

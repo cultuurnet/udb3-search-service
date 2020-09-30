@@ -3,7 +3,6 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonCombination;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
@@ -15,10 +14,17 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\UrlTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class OrganizerTransformer extends CopyJsonCombination
+final class OrganizerTransformer implements JsonTransformer
 {
+    /**
+     * @var CompositeJsonTransformer
+     */
+    private $compositeTransformer;
+
     /**
      * @param JsonTransformerLogger $logger
      * @param IdUrlParserInterface $idUrlParser
@@ -27,7 +33,7 @@ class OrganizerTransformer extends CopyJsonCombination
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser
     ) {
-        parent::__construct(
+        $this->compositeTransformer = new CompositeJsonTransformer(
             new IdentifierTransformer(
                 $logger,
                 $idUrlParser,
@@ -44,5 +50,10 @@ class OrganizerTransformer extends CopyJsonCombination
             new WorkflowStatusTransformer($logger, 'ACTIVE'),
             new OriginalEncodedJsonLdTransformer()
         );
+    }
+
+    public function transform(array $from, array $draft = []): array
+    {
+        return $this->compositeTransformer->transform($from, $draft);
     }
 }

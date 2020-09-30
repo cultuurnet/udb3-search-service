@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class AddressTransformer implements CopyJsonInterface
+final class AddressTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -23,48 +23,42 @@ class AddressTransformer implements CopyJsonInterface
         $this->addressRequired = $addressRequired;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        $mainLanguage = $from->mainLanguage ?? 'nl';
+        $mainLanguage = $from['mainLanguage'] ?? 'nl';
 
-        if (!isset($from->address)) {
+        if (!isset($from['address'])) {
             if ($this->addressRequired) {
                 $this->logger->logMissingExpectedField('address');
             }
-            return;
+            return $draft;
         }
 
-        if (!isset($from->address->{$mainLanguage})) {
+        if (!isset($from['address'][$mainLanguage])) {
             $this->logger->logMissingExpectedField("address.{$mainLanguage}");
         }
 
-        $addressLanguages = array_keys(get_object_vars($from->address));
+        $addressLanguages = array_keys($from['address']);
         $fields = ['addressCountry', 'addressLocality', 'postalCode', 'streetAddress'];
         $copiedAddresses = [];
 
         foreach ($addressLanguages as $addressLanguage) {
-            $address = $from->address->{$addressLanguage};
-            $copiedAddress = [];
+            $address = $from['address'][$addressLanguage];
 
             foreach ($fields as $field) {
-                if (!isset($address->{$field})) {
+                if (!isset($address[$field])) {
                     $this->logger->logMissingExpectedField("address.{$addressLanguage}.{$field}");
                     continue;
                 }
 
-                $copiedAddress[$field] = $address->{$field};
-            }
-
-            if (!empty($copiedAddress)) {
-                $copiedAddresses[$addressLanguage] = (object) $copiedAddress;
+                $copiedAddresses[$addressLanguage][$field] = $address[$field];
             }
         }
 
         if (!empty($copiedAddresses)) {
-            $to->address = (object) $copiedAddresses;
+            $draft['address'] = $copiedAddresses;
         }
+
+        return $draft;
     }
 }

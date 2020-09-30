@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
-class RelatedOrganizerTransformer implements CopyJsonInterface
+final class RelatedOrganizerTransformer implements JsonTransformer
 {
     /**
      * @var IdentifierTransformer
@@ -45,24 +45,17 @@ class RelatedOrganizerTransformer implements CopyJsonInterface
         $this->labelsTransformer = new LabelsTransformer();
     }
 
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
-    public function copy(\stdClass $from, \stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (!isset($from->organizer)) {
-            return;
+        if (!isset($from['organizer'])) {
+            return $draft;
         }
 
-        if (!isset($to->organizer)) {
-            $to->organizer = new \stdClass();
-        }
+        $draft['organizer'] = $draft['organizer'] ?? [];
+        $draft['organizer'] = $this->identifierTransformer->transform($from['organizer'], $draft['organizer']);
+        $draft['organizer'] = $this->nameTransformer->transform($from['organizer'], $draft['organizer']);
+        $draft['organizer'] = $this->labelsTransformer->transform($from['organizer'], $draft['organizer']);
 
-        $this->identifierTransformer->copy($from->organizer, $to->organizer);
-
-        $this->nameTransformer->copy($from->organizer, $to->organizer);
-
-        $this->labelsTransformer->copy($from->organizer, $to->organizer);
+        return $draft;
     }
 }

@@ -2,12 +2,11 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CopyJson\CopyJsonInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateTimeImmutable;
-use stdClass;
 
-class CreatedAndModifiedTransformer implements CopyJsonInterface
+final class CreatedAndModifiedTransformer implements JsonTransformer
 {
     /**
      * @var JsonTransformerLogger
@@ -23,36 +22,35 @@ class CreatedAndModifiedTransformer implements CopyJsonInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function copy(stdClass $from, stdClass $to)
+    public function transform(array $from, array $draft = []): array
     {
-        if (!isset($from->created)) {
+        if (!isset($from['created'])) {
             $this->logger->logMissingExpectedField('created');
-            return;
+            return $draft;
         }
 
-        $created = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->created);
+        $created = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from['created']);
 
         if (!$created) {
             $this->logger->logError('Could not parse created as an ISO-8601 datetime.');
-            return;
+            return $draft;
         }
 
-        $to->created = $created->format(\DateTime::ATOM);
+        $draft['created'] = $created->format(\DateTime::ATOM);
 
-        if (!isset($from->modified)) {
-            return;
+        if (!isset($from['modified'])) {
+            return $draft;
         }
 
-        $modified = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from->modified);
+        $modified = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from['modified']);
 
         if (!$modified) {
             $this->logger->logError('Could not parse modified as an ISO-8601 datetime.');
-            return;
+            return $draft;
         }
 
-        $to->modified = $modified->format(\DateTime::ATOM);
+        $draft['modified'] = $modified->format(\DateTime::ATOM);
+
+        return $draft;
     }
 }
