@@ -29,7 +29,8 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 
         $this->eventTransformer = new EventTransformer(
             new JsonTransformerPsrLogger($this->logger),
-            $this->idUrlParser
+            $this->idUrlParser,
+            $offerRegionService
         );
     }
 
@@ -48,19 +49,6 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
                 $this->eventTransformer->transform($from, $to)
             )
         );
-
-        if (isset($body->location)) {
-            $this->copyGeoInformation($body->location, $newBody);
-
-            $regionIds = $this->getRegionIds(
-                OfferType::EVENT(),
-                $jsonDocument->withBody($newBody)
-            );
-
-            if (!empty($regionIds)) {
-                $newBody->regions = $regionIds;
-            }
-        }
 
         $this->logger->debug("Transformation of event {$id} finished.");
 

@@ -29,7 +29,8 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
 
         $this->placeTransformer = new PlaceTransformer(
             new JsonTransformerPsrLogger($this->logger),
-            $this->idUrlParser
+            $this->idUrlParser,
+            $offerRegionService
         );
     }
 
@@ -48,17 +49,6 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
                 $this->placeTransformer->transform($from, $to)
             )
         );
-
-        $this->copyGeoInformation($body, $newBody);
-
-        $regionIds = $this->getRegionIds(
-            OfferType::PLACE(),
-            $jsonDocument->withBody($newBody)
-        );
-
-        if (!empty($regionIds)) {
-            $newBody->regions = $regionIds;
-        }
 
         $this->logger->debug("Transformation of place {$id} finished.");
 
