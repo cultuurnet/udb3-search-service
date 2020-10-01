@@ -49,7 +49,6 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyPriceInfo($body, $newBody);
         $this->copyAudienceType($body, $newBody);
 
         $this->copyMediaObjectsCount($body, $newBody);

@@ -47,22 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyPriceInfo(\stdClass $from, \stdClass $to)
-    {
-        if (isset($from->priceInfo) && is_array($from->priceInfo)) {
-            foreach ($from->priceInfo as $priceInfo) {
-                if ($priceInfo->category === 'base') {
-                    $to->price = $priceInfo->price;
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyAudienceType(\stdClass $from, \stdClass $to)
     {
         $audienceType = isset($from->audience->audienceType) ? (string) $from->audience->audienceType : 'everyone';

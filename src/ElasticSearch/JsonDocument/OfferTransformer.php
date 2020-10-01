@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LabelsTransform
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PriceInfoTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganizerTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeTransformer;
@@ -49,6 +50,7 @@ final class OfferTransformer implements JsonTransformer
             new AvailabilityTransformer($logger),
             new TermsTransformer(true, true),
             new TypicalAgeRangeTransformer(),
+            new PriceInfoTransformer(),
             new RelatedOrganizerTransformer(
                 $logger,
                 $idUrlParser,
