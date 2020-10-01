@@ -7,7 +7,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerJsonDocumentTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocumentTransformingPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
@@ -16,7 +15,6 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Search\JsonDocument\PassThroughJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -48,11 +46,8 @@ class OrganizerServiceProvider extends BaseServiceProvider
                         $this->get(Client::class),
                         new StringLiteral($this->parameter('elasticsearch.organizer.read_index')),
                         new StringLiteral($this->parameter('elasticsearch.organizer.document_type')),
-                        new JsonDocumentTransformingPagedResultSetFactory(
-                            new PassThroughJsonDocumentTransformer(),
-                            new ElasticSearchPagedResultSetFactory(
-                                new NullAggregationTransformer()
-                            )
+                        new ElasticSearchPagedResultSetFactory(
+                            new NullAggregationTransformer()
                         )
                     ),
                     $requestParser,
