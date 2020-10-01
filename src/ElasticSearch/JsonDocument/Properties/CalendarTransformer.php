@@ -70,7 +70,7 @@ final class CalendarTransformer implements JsonTransformer
 
     private function polyFillJsonLdSubEvents(array $from): array
     {
-        if ($from['calendarType'] === 'single' || $from['calendarType'] ==='periodic') {
+        if ($from['calendarType'] === 'single' || $from['calendarType'] === 'periodic') {
             if (!isset($from['startDate'])) {
                 $this->logger->logMissingExpectedField('startDate');
                 return $from;
@@ -106,7 +106,9 @@ final class CalendarTransformer implements JsonTransformer
                 break;
 
             default:
-                $this->logger->logWarning("Could not polyfill subEvent for unknown calendarType '{$from['calendarType']}'.");
+                $this->logger->logWarning(
+                    "Could not polyfill subEvent for unknown calendarType '{$from['calendarType']}'."
+                );
                 return $from;
                 break;
         }

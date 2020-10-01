@@ -448,7 +448,9 @@ class EventJsonDocumentTransformerTest extends TestCase
         $original = file_get_contents(__DIR__ . '/data/event/original-with-available-to-missing.json');
         $originalDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $original);
 
-        $expected = file_get_contents(__DIR__ . '/data/event/indexed-with-end-date-as-available-to-which-was-missing.json');
+        $expected = file_get_contents(
+            __DIR__ . '/data/event/indexed-with-end-date-as-available-to-which-was-missing.json'
+        );
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
