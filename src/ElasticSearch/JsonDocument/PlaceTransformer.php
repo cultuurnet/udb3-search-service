@@ -27,7 +27,6 @@ final class PlaceTransformer implements JsonTransformer
                 $idUrlParser,
                 FallbackType::PLACE()
             ),
-            new LanguagesTransformer($logger),
             new AddressTransformer($logger, true)
         );
     }

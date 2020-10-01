@@ -47,19 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyMainLanguage(\stdClass $from, \stdClass $to)
-    {
-        if (isset($from->mainLanguage)) {
-            $to->mainLanguage = $from->mainLanguage;
-        } else {
-            $this->logMissingExpectedField('mainLanguage');
-        }
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyLabelsForFreeTextSearch(\stdClass $from, \stdClass $to)
     {
         $labels = $this->getLabels($from);

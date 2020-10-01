@@ -37,7 +37,7 @@ final class OrganizerTransformer implements JsonTransformer
                 false
             ),
             new NameTransformer($logger),
-            new LanguagesTransformer($logger),
+            new LanguagesTransformer($logger, false),
             new AddressTransformer($logger, false),
             new CreatorTransformer($logger),
             new CreatedAndModifiedTransformer($logger),

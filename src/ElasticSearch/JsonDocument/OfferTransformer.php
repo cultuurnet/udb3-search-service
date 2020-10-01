@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DuplicateFlagTr
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LabelsTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganizerTransformer;
@@ -41,6 +42,7 @@ final class OfferTransformer implements JsonTransformer
                 $fallbackType,
                 false
             ),
+            new LanguagesTransformer($logger, true),
             new NameTransformer($logger),
             new DescriptionTransformer(),
             new CalendarTransformer($logger),

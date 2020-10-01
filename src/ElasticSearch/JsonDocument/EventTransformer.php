@@ -33,8 +33,7 @@ final class EventTransformer implements JsonTransformer
                 $idUrlParser,
                 FallbackType::PLACE()
             ),
-            new RelatedProductionTransformer(),
-            new LanguagesTransformer($logger)
+            new RelatedProductionTransformer()
         );
     }
 
