@@ -49,7 +49,7 @@ class ApiExceptionHandler extends Handler
         return Handler::QUIT;
     }
 
-    private function createNewApiProblem(\Exception $e)
+    private function createNewApiProblem(\Throwable $e)
     {
         $problem = new ApiProblem($e->getMessage());
         $problem->setStatus($e->getCode() ?: StatusCodeInterface::STATUS_BAD_REQUEST);
