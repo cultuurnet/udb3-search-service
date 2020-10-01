@@ -47,17 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyDescription(\stdClass $from, \stdClass $to)
-    {
-        if (isset($from->description)) {
-            $to->description = $from->description;
-        }
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyMainLanguage(\stdClass $from, \stdClass $to)
     {
         if (isset($from->mainLanguage)) {

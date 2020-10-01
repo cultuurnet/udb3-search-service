@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTra
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DescriptionTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DuplicateFlagTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
@@ -41,6 +42,7 @@ final class OfferTransformer implements JsonTransformer
                 false
             ),
             new NameTransformer($logger),
+            new DescriptionTransformer(),
             new CalendarTransformer($logger),
             new AvailabilityTransformer($logger),
             new TermsTransformer(),
