@@ -17,7 +17,7 @@ final class AddressTransformer implements JsonTransformer
      */
     private $addressRequired;
 
-    public function __construct(JsonTransformerLogger $logger, $addressRequired)
+    public function __construct(JsonTransformerLogger $logger, bool $addressRequired)
     {
         $this->logger = $logger;
         $this->addressRequired = $addressRequired;
