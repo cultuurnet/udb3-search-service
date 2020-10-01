@@ -49,7 +49,6 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyPerformer($body, $newBody);
         $this->copyPriceInfo($body, $newBody);
         $this->copyAudienceType($body, $newBody);
 
@@ -71,21 +70,5 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
         $this->logger->debug("Transformation of event {$id} finished.");
 
         return $jsonDocument->withBody($newBody);
-    }
-
-    private function copyPerformer(\stdClass $from, \stdClass $to): void
-    {
-        if (isset($from->performer) && is_array($from->performer)) {
-            $to->performer_free_text = array_map(
-                function ($performer) {
-                    // Don't copy all properties, just those we're interested
-                    // in.
-                    $newPerformer = new \stdClass();
-                    $newPerformer->name = $performer->name;
-                    return $newPerformer;
-                },
-                $from->performer
-            );
-        }
     }
 }
