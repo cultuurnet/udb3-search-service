@@ -9,9 +9,8 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 interface OfferRegionServiceInterface
 {
     /**
-     * @param OfferType $offerType
-     * @param JsonDocument $jsonDocument
+     * @param array $geoShape
      * @return RegionId[]
      */
-    public function getRegionIds(OfferType $offerType, JsonDocument $jsonDocument);
+    public function getRegionIds(array $geoShape): array;
 }

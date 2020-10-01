@@ -43,18 +43,6 @@ class GeoShapeQueryOfferRegionServiceTest extends TestCase
      */
     public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries()
     {
-        $id = '0ec56b06-d854-4a4b-8aeb-4848433170bc';
-        $jsonData = [
-            '@id' => 'http://mock.io/event/0ec56b06-d854-4a4b-8aeb-4848433170bc',
-            '@type' => 'Event',
-            'geo' => [
-                'type' => 'Point',
-                'coordinates' => [80.9, -4.5],
-            ],
-        ];
-
-        $jsonDocument = new JsonDocument($id, json_encode($jsonData));
-
         $this->client->expects($this->exactly(2))
             ->method('search')
             ->withConsecutive(
@@ -141,7 +129,12 @@ class GeoShapeQueryOfferRegionServiceTest extends TestCase
             new RegionId('gem-kortenaken'),
         ];
 
-        $actualRegionIds = $this->offerRegionService->getRegionIds(OfferType::EVENT(), $jsonDocument);
+        $actualRegionIds = $this->offerRegionService->getRegionIds(
+            [
+                'type' => 'Point',
+                'coordinates' => [80.9, -4.5],
+            ]
+        );
 
         $this->assertEquals($expectedRegionIds, $actualRegionIds);
     }
@@ -149,23 +142,19 @@ class GeoShapeQueryOfferRegionServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_it_gets_an_invalid_response_from_elasticsearch()
+    public function it_throws_an_exception_if_it_gets_an_invalid_response_from_elasticsearch(): void
     {
-        $id = '0ec56b06-d854-4a4b-8aeb-4848433170bc';
-        $jsonData = [
-            '@id' => 'http://mock.io/event/0ec56b06-d854-4a4b-8aeb-4848433170bc',
-            '@type' => 'Event',
-            'geo' => [80.9, -4.5],
-        ];
-
-        $jsonDocument = new JsonDocument($id, json_encode($jsonData));
-
         $this->client->expects($this->once())
             ->method('search')
             ->willReturn(json_decode(file_get_contents(__DIR__ . '/data/regions_invalid.json'), true));
 
         $this->expectException(\RuntimeException::class);
 
-        $this->offerRegionService->getRegionIds(OfferType::EVENT(), $jsonDocument);
+        $this->offerRegionService->getRegionIds(
+            [
+                'type' => 'Point',
+                'coordinates' => [80.9, -4.5],
+            ]
+        );
     }
 }

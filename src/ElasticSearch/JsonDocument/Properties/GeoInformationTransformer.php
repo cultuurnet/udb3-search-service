@@ -62,13 +62,11 @@ final class GeoInformationTransformer implements JsonTransformer
 
     private function getRegionIds(array $json): array
     {
-        $jsonDocument = (new JsonDocument(Uuid::NIL))
-            ->withBody($json);
+        if (!isset($json['geo'])) {
+            return [];
+        }
 
-        $regionIds = $this->offerRegionService->getRegionIds(
-            $this->offerType,
-            $jsonDocument
-        );
+        $regionIds = $this->offerRegionService->getRegionIds($json['geo']);
 
         if (empty($regionIds)) {
             return [];
