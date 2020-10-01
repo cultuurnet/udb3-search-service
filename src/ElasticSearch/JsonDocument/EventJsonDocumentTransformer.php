@@ -4,6 +4,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformerInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Offer\OfferType;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -13,23 +14,28 @@ use Psr\Log\LoggerInterface;
  * Converts Event JSON-LD to a format more ideal for searching.
  * Should be used when indexing Events.
  */
-class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
+class EventJsonDocumentTransformer implements JsonDocumentTransformerInterface
 {
     /**
      * @var EventTransformer
      */
     private $eventTransformer;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
         LoggerInterface $logger
     ) {
-        parent::__construct($idUrlParser, $offerRegionService, $logger);
+        $this->logger = $logger;
 
         $this->eventTransformer = new EventTransformer(
             new JsonTransformerPsrLogger($this->logger),
-            $this->idUrlParser,
+            $idUrlParser,
             $offerRegionService
         );
     }
