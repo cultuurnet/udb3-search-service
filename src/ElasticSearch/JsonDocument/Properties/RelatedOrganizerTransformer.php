@@ -37,7 +37,7 @@ final class RelatedOrganizerTransformer implements JsonTransformer
 
         $this->nameTransformer = new NameTransformer($logger);
 
-        $this->labelsTransformer = new LabelsTransformer();
+        $this->labelsTransformer = new LabelsTransformer(false);
     }
 
     public function transform(array $from, array $draft = []): array

@@ -47,38 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyLabelsForFreeTextSearch(\stdClass $from, \stdClass $to)
-    {
-        $labels = $this->getLabels($from);
-
-        if (!empty($labels)) {
-            $to->labels_free_text = $labels;
-        }
-    }
-
-    /**
-     * @param \stdClass $object
-     * @return array
-     */
-    protected function getLabels(\stdClass $object)
-    {
-        $labels = [];
-
-        if (isset($object->labels)) {
-            $labels = array_merge($labels, $object->labels);
-        }
-
-        if (isset($object->hiddenLabels)) {
-            $labels = array_merge($labels, $object->hiddenLabels);
-        }
-
-        return $labels;
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyTermsForFreeTextSearch(\stdClass $from, \stdClass $to)
     {
         $terms = $this->getTerms($from);

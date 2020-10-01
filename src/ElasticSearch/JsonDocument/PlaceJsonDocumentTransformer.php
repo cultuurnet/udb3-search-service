@@ -49,7 +49,6 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyLabelsForFreeTextSearch($body, $newBody);
         $this->copyTermsForFreeTextSearch($body, $newBody);
         $this->copyTermsForAggregations($body, $newBody);
 

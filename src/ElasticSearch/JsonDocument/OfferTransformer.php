@@ -56,7 +56,7 @@ final class OfferTransformer implements JsonTransformer
             ),
             new CreatorTransformer($logger),
             new CreatedAndModifiedTransformer($logger),
-            new LabelsTransformer(),
+            new LabelsTransformer(true),
             new WorkflowStatusTransformer($logger),
             new DuplicateFlagTransformer(),
             new OriginalEncodedJsonLdTransformer()

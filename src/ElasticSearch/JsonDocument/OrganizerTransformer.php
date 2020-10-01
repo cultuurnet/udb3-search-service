@@ -41,7 +41,7 @@ final class OrganizerTransformer implements JsonTransformer
             new AddressTransformer($logger, false),
             new CreatorTransformer($logger),
             new CreatedAndModifiedTransformer($logger),
-            new LabelsTransformer(),
+            new LabelsTransformer(false),
             new UrlTransformer(),
             new WorkflowStatusTransformer($logger, 'ACTIVE'),
             new OriginalEncodedJsonLdTransformer()
