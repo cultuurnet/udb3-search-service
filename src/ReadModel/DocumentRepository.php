@@ -9,4 +9,6 @@ interface DocumentRepository
     public function save(JsonDocument $readModel): void;
 
     public function remove(string $id): void;
+
+    public function getDocumentType(): string;
 }

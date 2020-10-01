@@ -58,8 +58,14 @@ class TransformingJsonDocumentIndexService implements
                 $jsonLd
             );
 
+            $documentType = $this->searchRepository->getDocumentType();
+
+            $this->logger->debug("Transforming {$documentType} {$documentId} for indexation.");
+
             $jsonDocument = $this->jsonDocumentTransformer
                 ->transform($jsonDocument);
+
+            $this->logger->debug("Transformation of {$documentType} {$documentId} finished.");
 
             $this->searchRepository->save($jsonDocument);
         } else {

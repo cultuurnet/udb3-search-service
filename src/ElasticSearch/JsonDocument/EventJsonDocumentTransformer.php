@@ -21,20 +21,13 @@ class EventJsonDocumentTransformer implements JsonDocumentTransformerInterface
      */
     private $eventTransformer;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
     public function __construct(
         IdUrlParserInterface $idUrlParser,
         OfferRegionServiceInterface $offerRegionService,
         LoggerInterface $logger
     ) {
-        $this->logger = $logger;
-
         $this->eventTransformer = new EventTransformer(
-            new JsonTransformerPsrLogger($this->logger),
+            new JsonTransformerPsrLogger($logger),
             $idUrlParser,
             $offerRegionService
         );
@@ -42,10 +35,6 @@ class EventJsonDocumentTransformer implements JsonDocumentTransformerInterface
 
     public function transform(JsonDocument $jsonDocument): JsonDocument
     {
-        $id = $jsonDocument->getId();
-
-        $this->logger->debug("Transforming event {$id} for indexation.");
-
         // @todo refactor copy methods to transformer classes and remove workaround to make newBody an stdClass
         $from = json_decode($jsonDocument->getRawBody(), true);
         $to = [];
@@ -55,8 +44,6 @@ class EventJsonDocumentTransformer implements JsonDocumentTransformerInterface
                 $this->eventTransformer->transform($from, $to)
             )
         );
-
-        $this->logger->debug("Transformation of event {$id} finished.");
 
         return $jsonDocument->withBody($newBody);
     }

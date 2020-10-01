@@ -42,10 +42,6 @@ class PlaceJsonDocumentTransformer implements JsonDocumentTransformerInterface
 
     public function transform(JsonDocument $jsonDocument): JsonDocument
     {
-        $id = $jsonDocument->getId();
-
-        $this->logger->debug("Transforming place {$id} for indexation.");
-
         // @todo refactor copy methods to transformer classes and remove workaround to make newBody an stdClass
         $from = json_decode($jsonDocument->getRawBody(), true);
         $to = [];
@@ -55,8 +51,6 @@ class PlaceJsonDocumentTransformer implements JsonDocumentTransformerInterface
                 $this->placeTransformer->transform($from, $to)
             )
         );
-
-        $this->logger->debug("Transformation of place {$id} finished.");
 
         return $jsonDocument->withBody($newBody);
     }

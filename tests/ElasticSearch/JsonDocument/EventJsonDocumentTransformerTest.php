@@ -92,7 +92,6 @@ class EventJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreEnd
 
         $expectedLogs = [
-            ['debug', "Transforming event $id for indexation.", []],
             ['warning', "Missing expected field '@id'.", []],
             ['warning', "Missing expected field 'mainLanguage'.", []],
             ['warning', "Missing expected field 'languages'.", []],
@@ -103,7 +102,6 @@ class EventJsonDocumentTransformerTest extends TestCase
             ['warning', "Missing expected field 'created'.", []],
             ['warning', "Missing expected field 'workflowStatus'.", []],
             ['warning', "Missing expected field 'location'.", []],
-            ['debug', "Transformation of event $id finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -172,10 +170,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expected = file_get_contents(__DIR__ . '/data/event/indexed-periodic-with-opening-hours.json');
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
-        $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
-        ];
+        $expectedLogs = [];
 
         $actualDocument = $this->transformer->transform($originalDocument);
         $actualLogs = $this->simpleArrayLogger->getLogs();
@@ -202,10 +197,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expected = file_get_contents(__DIR__ . '/data/event/indexed-permanent-with-opening-hours.json');
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
-        $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
-        ];
+        $expectedLogs = [];
 
         $actualDocument = $this->transformer->transform($originalDocument);
         $actualLogs = $this->simpleArrayLogger->getLogs();
@@ -226,13 +218,11 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Missing expected field 'openingHours[0].dayOfWeek'.", []],
             ['warning', "Missing expected field 'openingHours[1].closes'.", []],
             ['warning', "Missing expected field 'openingHours[2].opens'.", []],
             ['warning', "Unknown day 'st. patrick's day' in opening hours.", []],
             ['warning', "Missing expected field 'subEvent'.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -254,10 +244,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Could not polyfill subEvent for unknown calendarType 'foobar'.", []],
             ['warning', "Missing expected field 'subEvent'.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -279,10 +267,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Missing expected field 'startDate'.", []],
             ['warning', "Missing expected field 'subEvent'.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -304,10 +290,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Missing expected field 'endDate'.", []],
             ['warning', "Missing expected field 'subEvent'.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -329,10 +313,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Missing expected field 'subEvent[0].startDate'.", []],
             ['warning', "Missing expected field 'subEvent[1].endDate'.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -402,10 +384,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
             ['error', "Could not parse availableFrom as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -427,10 +407,8 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
             ['error', "Could not parse availableTo as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -454,9 +432,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -478,9 +454,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -543,9 +517,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['error', "Could not parse created as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -567,9 +539,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('23017cb7-e515-47b4-87c4-780735acc942', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming event 23017cb7-e515-47b4-87c4-780735acc942 for indexation.", []],
             ['error', "Could not parse modified as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of event 23017cb7-e515-47b4-87c4-780735acc942 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);

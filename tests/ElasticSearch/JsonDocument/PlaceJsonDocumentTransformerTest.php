@@ -76,7 +76,6 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         // @codingStandardsIgnoreEnd
 
         $expectedLogs = [
-            ['debug', "Transforming place $id for indexation.", []],
             ['warning', "Missing expected field '@id'.", []],
             ['warning', "Missing expected field 'mainLanguage'.", []],
             ['warning', "Missing expected field 'languages'.", []],
@@ -87,7 +86,6 @@ class PlaceJsonDocumentTransformerTest extends TestCase
             ['warning', "Missing expected field 'created'.", []],
             ['warning', "Missing expected field 'workflowStatus'.", []],
             ['warning', "Missing expected field 'address'.", []],
-            ['debug', "Transformation of place $id finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -106,9 +104,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expectedLogs = [
-            ['debug', "Transforming place 179c89c5-dba4-417b-ae96-62e7a12c2405 for indexation.", []],
             ['warning', "Missing expected field 'address.nl'.", []],
-            ['debug', "Transformation of place 179c89c5-dba4-417b-ae96-62e7a12c2405 finished.", []],
         ];
 
         $this->transformer->transform($originalDocument);
@@ -125,12 +121,10 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $originalDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $original);
 
         $expectedLogs = [
-            ['debug', "Transforming place 179c89c5-dba4-417b-ae96-62e7a12c2405 for indexation.", []],
             ['warning', "Missing expected field 'address.fr.addressCountry'.", []],
             ['warning', "Missing expected field 'address.fr.addressLocality'.", []],
             ['warning', "Missing expected field 'address.fr.postalCode'.", []],
             ['warning', "Missing expected field 'address.fr.streetAddress'.", []],
-            ['debug', "Transformation of place 179c89c5-dba4-417b-ae96-62e7a12c2405 finished.", []],
         ];
 
         $this->transformer->transform($originalDocument);
@@ -262,10 +256,8 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming place 179c89c5-dba4-417b-ae96-62e7a12c2405 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
             ['error', "Could not parse availableFrom as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of place 179c89c5-dba4-417b-ae96-62e7a12c2405 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);
@@ -287,10 +279,8 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $expectedDocument = new JsonDocument('179c89c5-dba4-417b-ae96-62e7a12c2405', $expected);
 
         $expectedLogs = [
-            ['debug', "Transforming place 179c89c5-dba4-417b-ae96-62e7a12c2405 for indexation.", []],
             ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
             ['error', "Could not parse availableTo as an ISO-8601 datetime.", []],
-            ['debug', "Transformation of place 179c89c5-dba4-417b-ae96-62e7a12c2405 finished.", []],
         ];
 
         $actualDocument = $this->transformer->transform($originalDocument);

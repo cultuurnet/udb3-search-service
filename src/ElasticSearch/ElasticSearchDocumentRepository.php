@@ -62,4 +62,9 @@ class ElasticSearchDocumentRepository implements DocumentRepository
             $this->createParameters(['id' => $id])
         );
     }
+
+    public function getDocumentType(): string
+    {
+        return $this->documentType;
+    }
 }
