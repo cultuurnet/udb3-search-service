@@ -47,61 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyTermsForAggregations(\stdClass $from, \stdClass $to)
-    {
-        $typeIds = $this->getTermIdsByDomain($from, 'eventtype');
-        $themeIds = $this->getTermIdsByDomain($from, 'theme');
-        $facilityIds = $this->getTermIdsByDomain($from, 'facility');
-
-        if (!empty($typeIds)) {
-            $to->typeIds = $typeIds;
-        }
-
-        if (!empty($themeIds)) {
-            $to->themeIds = $themeIds;
-        }
-
-        if (!empty($facilityIds)) {
-            $to->facilityIds = $facilityIds;
-        }
-    }
-
-    /**
-     * @param \stdClass $object
-     * @param string $domain
-     * @return array
-     */
-    protected function getTermIdsByDomain(\stdClass $object, $domain)
-    {
-        // Don't use $this->getTerms() here as the resulting terms do not
-        // contain the "domain" property.
-        $terms = isset($object->terms) ? $object->terms : [];
-
-        $filteredByDomain = array_filter(
-            $terms,
-            function ($term) use ($domain) {
-                return isset($term->domain) && $term->domain == $domain && isset($term->id);
-            }
-        );
-
-        $mappedToIds = array_map(
-            function ($term) {
-                return $term->id;
-            },
-            $filteredByDomain
-        );
-
-        $uniqueIds = array_unique($mappedToIds);
-
-        $uniqueIdsWithConsecutiveKeys = array_values($uniqueIds);
-
-        return $uniqueIdsWithConsecutiveKeys;
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyPriceInfo(\stdClass $from, \stdClass $to)
     {
         if (isset($from->priceInfo) && is_array($from->priceInfo)) {

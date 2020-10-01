@@ -49,8 +49,6 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyTermsForAggregations($body, $newBody);
-
         $this->copyPriceInfo($body, $newBody);
         $this->copyAudienceType($body, $newBody);
 
