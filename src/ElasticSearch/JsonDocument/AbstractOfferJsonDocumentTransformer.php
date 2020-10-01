@@ -47,16 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyAudienceType(\stdClass $from, \stdClass $to)
-    {
-        $audienceType = isset($from->audience->audienceType) ? (string) $from->audience->audienceType : 'everyone';
-        $to->audienceType = $audienceType;
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyMediaObjectsCount(\stdClass $from, \stdClass $to)
     {
         $mediaObjectsCount = isset($from->mediaObject) ? count($from->mediaObject) : 0;

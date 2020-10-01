@@ -49,8 +49,6 @@ class PlaceJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyAudienceType($body, $newBody);
-
         $this->copyMediaObjectsCount($body, $newBody);
 
         $this->copyGeoInformation($body, $newBody);

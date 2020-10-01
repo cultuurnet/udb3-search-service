@@ -3,6 +3,7 @@
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AudienceTypeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
@@ -51,6 +52,7 @@ final class OfferTransformer implements JsonTransformer
             new TermsTransformer(true, true),
             new TypicalAgeRangeTransformer(),
             new PriceInfoTransformer(),
+            new AudienceTypeTransformer(),
             new RelatedOrganizerTransformer(
                 $logger,
                 $idUrlParser,

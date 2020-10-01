@@ -93,7 +93,7 @@ class PlaceJsonDocumentTransformerTest extends TestCase
         $actualDocument = $this->transformer->transform($originalDocument);
         $actualLogs = $this->logger->getLogs();
 
-        $this->assertEquals($expectedDocument, $actualDocument);
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
         $this->assertEquals($expectedLogs, $actualLogs);
     }
 

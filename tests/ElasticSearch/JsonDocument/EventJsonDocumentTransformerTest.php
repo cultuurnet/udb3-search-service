@@ -109,7 +109,7 @@ class EventJsonDocumentTransformerTest extends TestCase
         $actualDocument = $this->transformer->transform($originalDocument);
         $actualLogs = $this->simpleArrayLogger->getLogs();
 
-        $this->assertEquals($expectedDocument, $actualDocument);
+        $this->assertJsonDocumentPropertiesEquals($this, $expectedDocument, $actualDocument);
         $this->assertEquals($expectedLogs, $actualLogs);
     }
 
