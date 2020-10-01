@@ -6,12 +6,30 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 final class TermsTransformer implements JsonTransformer
 {
+    /**
+     * @var bool
+     */
+    private $includeTermsForFreeText;
+
+    public function __construct(bool $includeTermsForFreeText)
+    {
+        $this->includeTermsForFreeText = $includeTermsForFreeText;
+    }
+
     public function transform(array $from, array $draft = []): array
     {
         $terms = $this->getTerms($from);
-        if (!empty($terms)) {
-            $draft['terms'] = $terms;
+
+        if (empty($terms)) {
+            return $draft;
         }
+
+        $draft['terms'] = $terms;
+
+        if ($this->includeTermsForFreeText) {
+            $draft['terms_free_text'] = $terms;
+        }
+
         return $draft;
     }
 

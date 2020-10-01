@@ -60,7 +60,7 @@ final class RelatedLocationTransformer implements JsonTransformer
 
         $this->nameTransformer = new NameTransformer($logger);
 
-        $this->termsTransformer = new TermsTransformer();
+        $this->termsTransformer = new TermsTransformer(false);
 
         $this->labelsTransformer = new LabelsTransformer(false);
 

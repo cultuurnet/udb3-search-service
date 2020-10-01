@@ -47,7 +47,7 @@ final class OfferTransformer implements JsonTransformer
             new DescriptionTransformer(),
             new CalendarTransformer($logger),
             new AvailabilityTransformer($logger),
-            new TermsTransformer(),
+            new TermsTransformer(true),
             new TypicalAgeRangeTransformer(),
             new RelatedOrganizerTransformer(
                 $logger,

@@ -47,40 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyTermsForFreeTextSearch(\stdClass $from, \stdClass $to)
-    {
-        $terms = $this->getTerms($from);
-        if (!empty($terms)) {
-            $to->terms_free_text = $to->terms;
-        }
-    }
-
-    /**
-     * @param \stdClass $object
-     * @return \stdClass[]
-     */
-    protected function getTerms(\stdClass $object)
-    {
-        if (!isset($object->terms)) {
-            return [];
-        }
-
-        return array_map(
-            function (\stdClass $term) {
-                // Don't copy all properties, just those we're interested in.
-                $copy = new \stdClass();
-                $copy->id = $term->id;
-                $copy->label = $term->label;
-                return $copy;
-            },
-            $object->terms
-        );
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyTermsForAggregations(\stdClass $from, \stdClass $to)
     {
         $typeIds = $this->getTermIdsByDomain($from, 'eventtype');
