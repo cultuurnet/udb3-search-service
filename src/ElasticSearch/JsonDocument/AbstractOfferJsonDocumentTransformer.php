@@ -47,16 +47,6 @@ abstract class AbstractOfferJsonDocumentTransformer implements JsonDocumentTrans
      * @param \stdClass $from
      * @param \stdClass $to
      */
-    protected function copyMediaObjectsCount(\stdClass $from, \stdClass $to)
-    {
-        $mediaObjectsCount = isset($from->mediaObject) ? count($from->mediaObject) : 0;
-        $to->mediaObjectsCount = $mediaObjectsCount;
-    }
-
-    /**
-     * @param \stdClass $from
-     * @param \stdClass $to
-     */
     protected function copyGeoInformation(\stdClass $from, \stdClass $to)
     {
         if (isset($from->geo)) {

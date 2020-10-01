@@ -49,8 +49,6 @@ class EventJsonDocumentTransformer extends AbstractOfferJsonDocumentTransformer
             )
         );
 
-        $this->copyMediaObjectsCount($body, $newBody);
-
         if (isset($body->location)) {
             $this->copyGeoInformation($body->location, $newBody);
 
