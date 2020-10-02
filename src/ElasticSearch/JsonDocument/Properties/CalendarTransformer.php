@@ -55,7 +55,7 @@ final class CalendarTransformer implements JsonTransformer
             $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
         } elseif (!isset($from['subEvent']) && $from['calendarType'] === 'permanent') {
             // Index a single range without any bounds.
-            $dateRange = [[]];
+            $dateRange = [new stdClass()];
         } else {
             $this->logger->logMissingExpectedField('subEvent');
             $dateRange = [];
