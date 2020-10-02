@@ -6,7 +6,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -75,9 +76,11 @@ class OrganizerServiceProvider extends BaseServiceProvider
         $this->add(
             'organizer_elasticsearch_transformer',
             function () {
-                return new OrganizerJsonDocumentTransformer(
-                    new PathEndIdUrlParser(),
-                    $this->get('elasticsearch_transformer_logger')
+                return new JsonDocumentTransformer(
+                    new OrganizerTransformer(
+                        $this->get('elasticsearch_transformer_logger'),
+                        new PathEndIdUrlParser()
+                    )
                 );
             }
         );

@@ -23,7 +23,7 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     private $searchRepository;
 
     /**
-     * @var JsonDocumentTransformerInterface|MockObject
+     * @var JsonTransformer|MockObject
      */
     private $transformer;
 
@@ -41,12 +41,12 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
         $this->searchRepository = $this->createMock(DocumentRepository::class);
-        $this->transformer = $this->createMock(JsonDocumentTransformerInterface::class);
+        $this->transformer = $this->createMock(JsonTransformer::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->indexService = new TransformingJsonDocumentIndexService(
             $this->httpClient,
-            $this->transformer,
+            new JsonDocumentTransformer($this->transformer),
             $this->searchRepository
         );
 
@@ -61,21 +61,20 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
 
-        $jsonLd = '{"foo":"bar"}';
-        $jsonDocument = new JsonDocument($documentId, $jsonLd);
-
-        $transformedJsonLd = '{"foo":"baz"}';
-        $transformedJsonDocument = new JsonDocument($documentId, $transformedJsonLd);
+        $jsonLd = ['foo' => 'bar'];
+        $transformedJsonLd = ['foo' => 'baz'];
+        $transformedJsonDocument = (new JsonDocument($documentId))
+            ->withBody($transformedJsonLd);
 
         $this->httpClient->expects($this->once())
             ->method('request')
             ->with('GET', $documentUrl)
-            ->willReturn(new Response(200, [], $jsonLd));
+            ->willReturn(new Response(200, [], json_encode($jsonLd)));
 
         $this->transformer->expects($this->once())
             ->method('transform')
-            ->with($jsonDocument)
-            ->willReturn($transformedJsonDocument);
+            ->with($jsonLd, [])
+            ->willReturn($transformedJsonLd);
 
         $this->searchRepository->expects($this->once())
             ->method('save')

@@ -26,18 +26,18 @@ class TransformingJsonDocumentIndexService implements
     private $httpClient;
 
     /**
-     * @var JsonDocumentTransformerInterface
+     * @var JsonDocumentTransformer
      */
     private $jsonDocumentTransformer;
 
     /**
      * @param ClientInterface $httpClient
-     * @param JsonDocumentTransformerInterface $jsonDocumentTransformer
+     * @param JsonDocumentTransformer $jsonDocumentTransformer
      * @param DocumentRepository $searchRepository
      */
     public function __construct(
         ClientInterface $httpClient,
-        JsonDocumentTransformerInterface $jsonDocumentTransformer,
+        JsonDocumentTransformer $jsonDocumentTransformer,
         DocumentRepository $searchRepository
     ) {
         $this->httpClient = $httpClient;
