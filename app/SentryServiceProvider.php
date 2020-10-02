@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use Sentry\ClientBuilder;
-use Sentry\State\Hub;
+use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
+use function Sentry\init;
 
 class SentryServiceProvider extends BaseServiceProvider
 {
@@ -19,14 +19,12 @@ class SentryServiceProvider extends BaseServiceProvider
         $this->add(
             HubInterface::class,
             function () {
-                return new Hub(
-                    ClientBuilder::create(
-                        [
-                            'dsn' => $this->parameter('sentry.dsn'),
-                            'environment' => $this->parameter('sentry.environment'),
-                        ]
-                    )->getClient()
-                );
+                init([
+                    'dsn' => $this->parameter('sentry.dsn'),
+                    'environment' => $this->parameter('sentry.environment'),
+                ]);
+
+                return SentrySdk::getCurrentHub();
             }
         );
     }
