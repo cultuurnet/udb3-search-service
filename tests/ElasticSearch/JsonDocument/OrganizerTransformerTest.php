@@ -94,7 +94,10 @@ class OrganizerTransformerTest extends TestCase
      */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete(): void
     {
-        $original = json_decode(file_get_contents(__DIR__ . '/data/organizer/original_with_incomplete_translated_address.json'), true);
+        $original = json_decode(
+            file_get_contents(__DIR__ . '/data/organizer/original_with_incomplete_translated_address.json'),
+            true
+        );
 
         $expectedLogs = [
             ['warning', "Missing expected field 'address.nl.addressCountry'.", []],
