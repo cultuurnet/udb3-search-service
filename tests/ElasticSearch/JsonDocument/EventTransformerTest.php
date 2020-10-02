@@ -6,7 +6,6 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
-use CultuurNet\UDB3\Search\JsonDocument\AssertsJsonDocuments;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use DateTime;
@@ -15,8 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class EventTransformerTest extends TestCase
 {
-    use AssertsJsonDocuments;
-
     /**
      * @var OfferRegionServiceInterface|MockObject
      */
