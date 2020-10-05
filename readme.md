@@ -67,10 +67,11 @@ An example of a valid version number is `20191008132400`. This is simply the cur
 
 This change would make the migration script see the new mapping and create a new index for it. However, we're still missing a way to convert the property from the JSON-LD document to the property on the ElasticSearch document.
 
-This conversion happens in the `CopyJson` class located in:
+This conversion happens in the `JsonTransformer` implementations located in:
 
-- `src/ElasticSearch/JsonDocument/CopyJsonOffer.php` (for events and places)
-- `src/ElasticSearch/Organizer/CopyJsonOrganizer.php`
+- `src/ElasticSearch/JsonDocument/EventTransformer.php`
+- `src/ElasticSearch/JsonDocument/PlaceTransformer.php`
+- `src/ElasticSearch/JsonDocument/OrganizerTransformer.php`
 
 When copying a nested property from the JSON-LD to the ElasticSearch JSON, don't copy the whole object in which it's nested. 
 Only copy the (sub-)properties for which we have explicit mapping.
