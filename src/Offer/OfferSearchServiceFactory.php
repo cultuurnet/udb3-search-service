@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\Search\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\AggregationTransformerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 

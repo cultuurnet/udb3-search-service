@@ -4,7 +4,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use stdClass;
 
 final class WorkflowStatusTransformer implements JsonTransformer
 {

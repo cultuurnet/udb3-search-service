@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;

@@ -5,9 +5,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\OfferType;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Rhumsaa\Uuid\Uuid;
 
 final class GeoInformationTransformer implements JsonTransformer
 {
