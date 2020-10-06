@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
+use Error;
 use Fig\Http\Message\StatusCodeInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
@@ -16,7 +16,6 @@ class ApiExceptionHandler extends Handler
      * @var EmitterInterface
      */
     private $emitter;
-
 
     /**
      * ApiExceptionHandler constructor.
@@ -49,10 +48,15 @@ class ApiExceptionHandler extends Handler
         return Handler::QUIT;
     }
 
-    private function createNewApiProblem(\Throwable $e)
+    private function createNewApiProblem(\Throwable $throwable)
     {
-        $problem = new ApiProblem($e->getMessage());
-        $problem->setStatus($e->getCode() ?: StatusCodeInterface::STATUS_BAD_REQUEST);
+        if ($throwable instanceof Error) {
+            return (new ApiProblem('Internal server error'))
+                ->setStatus(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        }
+
+        $problem = new ApiProblem($throwable->getMessage());
+        $problem->setStatus($throwable->getCode() ?: StatusCodeInterface::STATUS_BAD_REQUEST);
         return $problem;
     }
 }
