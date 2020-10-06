@@ -3,9 +3,8 @@
 namespace CultuurNet\UDB3\Search\Organizer;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
-use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;

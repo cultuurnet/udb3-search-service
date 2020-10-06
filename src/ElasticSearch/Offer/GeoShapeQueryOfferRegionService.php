@@ -2,8 +2,6 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
-use CultuurNet\UDB3\Search\Offer\OfferType;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -40,17 +38,9 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
     /**
      * @inheritdoc
      */
-    public function getRegionIds(OfferType $offerType, JsonDocument $jsonDocument)
+    public function getRegionIds(array $geoShape): array
     {
         $regionIds = [];
-
-        $id = $jsonDocument->getId();
-        $documentSource = json_decode($jsonDocument->getRawBody(), true);
-        $documentType = strtolower($offerType->toNative());
-
-        if (!isset($documentSource['geo'])) {
-            return [];
-        }
 
         $query = [
             'query' => [
@@ -61,7 +51,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
                     'filter' => [
                         'geo_shape' => [
                             'location' => [
-                                'shape' => $documentSource['geo'],
+                                'shape' => $geoShape,
                                 'relation' => 'contains',
                             ],
                         ],
@@ -85,7 +75,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
 
             if (!isset($response['hits']) || !isset($response['hits']['total']) || !isset($response['hits']['hits'])) {
                 throw new \RuntimeException(
-                    "Got invalid response from ElasticSearch when trying to find regions for $documentType $id."
+                    "Got invalid response from ElasticSearch when trying to find matching regions."
                 );
             }
 

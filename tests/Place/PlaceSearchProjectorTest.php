@@ -21,7 +21,7 @@ class PlaceSearchProjectorTest extends TestCase
      */
     private $projector;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->indexService = $this->createMock(JsonDocumentIndexServiceInterface::class);
         $this->projector = new PlaceSearchProjector($this->indexService);

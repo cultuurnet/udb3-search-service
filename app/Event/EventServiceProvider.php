@@ -3,9 +3,11 @@
 namespace CultuurNet\UDB3\SearchService\Event;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
-use CultuurNet\UDB3\Search\ElasticSearch\Event\EventJsonDocumentTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EventTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\Event\EventSearchProjector;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
+use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
@@ -54,10 +56,14 @@ class EventServiceProvider extends BaseServiceProvider
         $this->add(
             'event_elasticsearch_transformer',
             function () {
-                return new EventJsonDocumentTransformer(
-                    new PathEndIdUrlParser(),
-                    $this->get('offer_region_service'),
-                    $this->get('elasticsearch_transformer_logger')
+                return new JsonDocumentTransformer(
+                    new EventTransformer(
+                        new JsonTransformerPsrLogger(
+                            $this->get('logger.amqp.udb3_consumer')
+                        ),
+                        new PathEndIdUrlParser(),
+                        $this->get('offer_region_service')
+                    )
                 );
             }
         );

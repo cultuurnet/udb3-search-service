@@ -4,16 +4,15 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
-use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\PriceInfo\Price;
+use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
+use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -22,6 +21,7 @@ use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
+use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use DateTimeImmutable;
@@ -87,23 +87,6 @@ class OfferSearchController
      */
     private $offerParameterWhiteList;
 
-    /**
-     * @var ResultTransformingPagedCollectionFactoryFactory
-     */
-    private $resultTransformingPagedCollectionFactoryFactory;
-
-    /**
-     * @param ApiKeyReaderInterface $apiKeyReader
-     * @param ConsumerReadRepositoryInterface $consumerReadRepository
-     * @param OfferQueryBuilderInterface $queryBuilder
-     * @param OfferRequestParserInterface $offerRequestParser
-     * @param OfferSearchServiceInterface $searchService
-     * @param StringLiteral $regionIndexName
-     * @param StringLiteral $regionDocumentType
-     * @param QueryStringFactoryInterface $queryStringFactory
-     * @param FacetTreeNormalizerInterface $facetTreeNormalizer
-     * @param ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
-     */
     public function __construct(
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository,
@@ -113,8 +96,7 @@ class OfferSearchController
         StringLiteral $regionIndexName,
         StringLiteral $regionDocumentType,
         QueryStringFactoryInterface $queryStringFactory,
-        FacetTreeNormalizerInterface $facetTreeNormalizer,
-        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
+        FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {
 
         $this->apiKeyReader = $apiKeyReader;
@@ -127,7 +109,6 @@ class OfferSearchController
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
-        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
 
     /**
@@ -337,11 +318,12 @@ class OfferSearchController
         }
         $resultSet = $this->searchService->search($queryBuilder);
 
-        $resultTransformingPagedCollectionFactory = $this->resultTransformingPagedCollectionFactoryFactory->create(
+        $resultTransformer = ResultTransformerFactory::create(
             (bool) $parameterBag->getBooleanFromParameter('embed')
         );
 
-        $pagedCollection = $resultTransformingPagedCollectionFactory->fromPagedResultSet(
+        $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
+            $resultTransformer,
             $resultSet,
             $start,
             $limit

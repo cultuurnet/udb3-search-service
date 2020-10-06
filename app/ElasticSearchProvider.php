@@ -15,7 +15,6 @@ class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
-        'elasticsearch_transformer_logger',
         'offer_region_service',
     ];
 
@@ -43,23 +42,6 @@ class ElasticSearchProvider extends BaseServiceProvider
                         $this->get('logger.amqp.udb3_consumer')
                     )
                 );
-            }
-        );
-
-        $this->add(
-            'elasticsearch_transformer_logger',
-            function () {
-                $logger = new Logger('elasticsearch.transformer');
-
-                /** @TODO: fix dir path */
-                $logger->pushHandler(
-                    new StreamHandler(
-                        __DIR__ . '/../log/elasticsearch_transformer.log',
-                        Logger::DEBUG
-                    )
-                );
-
-                return $logger;
             }
         );
 

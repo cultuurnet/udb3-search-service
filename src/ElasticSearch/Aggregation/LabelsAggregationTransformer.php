@@ -2,12 +2,12 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
-use CultuurNet\UDB3\Search\Offer\FacetName;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class LabelsAggregationTransformer implements AggregationTransformerInterface

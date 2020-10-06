@@ -12,7 +12,7 @@ class NullAggregationTransformerTest extends TestCase
      */
     private $transformer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->transformer = new NullAggregationTransformer();
     }

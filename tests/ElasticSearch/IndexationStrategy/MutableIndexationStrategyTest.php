@@ -29,7 +29,7 @@ class MutableIndexationStrategyTest extends TestCase
      */
     private $mutableStrategy;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->mockStrategy1 = $this->createMock(IndexationStrategyInterface::class);
         $this->mockStrategy2 = $this->createMock(IndexationStrategyInterface::class);

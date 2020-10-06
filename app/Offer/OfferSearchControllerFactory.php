@@ -5,7 +5,6 @@ namespace CultuurNet\UDB3\SearchService\Offer;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonDocumentTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
@@ -19,8 +18,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestPars
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
-use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactory;
-use CultuurNet\UDB3\Search\Http\ResultTransformingPagedCollectionFactoryFactory;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
@@ -55,10 +52,6 @@ class OfferSearchControllerFactory
      * @var OfferSearchServiceFactory
      */
     private $offerSearchServiceFactory;
-    /**
-     * @var ResultTransformingPagedCollectionFactoryFactory
-     */
-    private $resultTransformingPagedCollectionFactoryFactory;
 
     public function __construct(
         ?int $aggregationSize,
@@ -66,8 +59,7 @@ class OfferSearchControllerFactory
         string $documentType,
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository,
-        OfferSearchServiceFactory $offerSearchServiceFactory,
-        ResultTransformingPagedCollectionFactoryFactory $resultTransformingPagedCollectionFactoryFactory
+        OfferSearchServiceFactory $offerSearchServiceFactory
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
@@ -75,7 +67,6 @@ class OfferSearchControllerFactory
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
-        $this->resultTransformingPagedCollectionFactoryFactory = $resultTransformingPagedCollectionFactoryFactory;
     }
 
     public function createFor(
@@ -104,8 +95,7 @@ class OfferSearchControllerFactory
             new StringLiteral($this->regionIndex),
             new StringLiteral($this->documentType),
             new LuceneQueryStringFactory(),
-            new NodeAwareFacetTreeNormalizer(),
-            $this->resultTransformingPagedCollectionFactoryFactory
+            new NodeAwareFacetTreeNormalizer()
         );
     }
 }

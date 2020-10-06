@@ -13,7 +13,7 @@ class IndexRegionsTest extends AbstractOperationTestCase
      */
     private $finder;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->finder = new Finder();
         parent::setUp();

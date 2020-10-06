@@ -4,17 +4,17 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
-use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\SortOrder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -55,7 +55,7 @@ class OrganizerSearchControllerTest extends TestCase
      */
     private $queryStringFactory;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->apiKeyReader = $this->createMock(ApiKeyReaderInterface::class);
         $this->queryBuilder = new MockOrganizerQueryBuilder();
@@ -68,8 +68,7 @@ class OrganizerSearchControllerTest extends TestCase
             (new CompositeOrganizerRequestParser())
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory,
-            new ResultTransformingPagedCollectionFactoryFactory()
+            $this->queryStringFactory
         );
     }
 

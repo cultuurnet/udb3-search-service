@@ -11,7 +11,7 @@ class PagedResultSetResponseValidatorTest extends TestCase
      */
     private $validator;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->validator = new PagedResultSetResponseValidator();
     }

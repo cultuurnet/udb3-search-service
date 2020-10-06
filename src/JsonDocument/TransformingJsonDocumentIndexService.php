@@ -26,18 +26,18 @@ class TransformingJsonDocumentIndexService implements
     private $httpClient;
 
     /**
-     * @var JsonDocumentTransformerInterface
+     * @var JsonDocumentTransformer
      */
     private $jsonDocumentTransformer;
 
     /**
      * @param ClientInterface $httpClient
-     * @param JsonDocumentTransformerInterface $jsonDocumentTransformer
+     * @param JsonDocumentTransformer $jsonDocumentTransformer
      * @param DocumentRepository $searchRepository
      */
     public function __construct(
         ClientInterface $httpClient,
-        JsonDocumentTransformerInterface $jsonDocumentTransformer,
+        JsonDocumentTransformer $jsonDocumentTransformer,
         DocumentRepository $searchRepository
     ) {
         $this->httpClient = $httpClient;
@@ -58,8 +58,14 @@ class TransformingJsonDocumentIndexService implements
                 $jsonLd
             );
 
+            $documentType = $this->searchRepository->getDocumentType();
+
+            $this->logger->debug("Transforming {$documentType} {$documentId} for indexation.");
+
             $jsonDocument = $this->jsonDocumentTransformer
                 ->transform($jsonDocument);
+
+            $this->logger->debug("Transformation of {$documentType} {$documentId} finished.");
 
             $this->searchRepository->save($jsonDocument);
         } else {

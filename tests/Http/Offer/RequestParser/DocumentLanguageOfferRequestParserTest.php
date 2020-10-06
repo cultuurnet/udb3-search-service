@@ -21,7 +21,7 @@ class DocumentLanguageOfferRequestParserTest extends TestCase
      */
     private $queryBuilder;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->parser = new DocumentLanguageOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);

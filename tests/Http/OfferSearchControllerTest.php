@@ -5,17 +5,11 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\Geocoding\Coordinate\Coordinates;
 use CultuurNet\Geocoding\Coordinate\Latitude;
 use CultuurNet\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
-use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
@@ -24,21 +18,27 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
+use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
-use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
+use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\PriceInfo\Price;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
-use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -100,12 +100,7 @@ class OfferSearchControllerTest extends TestCase
      */
     private $controller;
 
-    /**
-     * @var ResultTransformingPagedCollectionFactoryFactory
-     */
-    private $resultTransformingPagedCollectionFactoryFactory;
-
-    public function setUp()
+    protected function setUp()
     {
         $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
         $this->consumerRepository = new InMemoryConsumerRepository();
@@ -130,8 +125,6 @@ class OfferSearchControllerTest extends TestCase
 
         $this->facetTreeNormalizer = new NodeAwareFacetTreeNormalizer();
 
-        $this->resultTransformingPagedCollectionFactoryFactory = new ResultTransformingPagedCollectionFactoryFactory();
-
         $this->controller = new OfferSearchController(
             $this->apiKeyReader,
             $this->consumerRepository,
@@ -141,8 +134,7 @@ class OfferSearchControllerTest extends TestCase
             $this->regionIndexName,
             $this->regionDocumentType,
             $this->queryStringFactory,
-            $this->facetTreeNormalizer,
-            $this->resultTransformingPagedCollectionFactoryFactory
+            $this->facetTreeNormalizer
         );
     }
 

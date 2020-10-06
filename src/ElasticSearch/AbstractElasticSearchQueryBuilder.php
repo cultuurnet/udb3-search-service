@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\AbstractQueryString;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;

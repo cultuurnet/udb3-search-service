@@ -3,10 +3,10 @@
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
-use Slim\Psr7\Factory\ServerRequestFactory;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\Number\Natural;
 
 class AgeRangeOfferRequestParserTest extends TestCase
@@ -21,7 +21,7 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     private $queryBuilder;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->parser = new AgeRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);

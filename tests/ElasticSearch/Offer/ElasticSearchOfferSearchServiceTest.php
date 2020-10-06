@@ -2,10 +2,10 @@
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +34,7 @@ class ElasticSearchOfferSearchServiceTest extends TestCase
      */
     private $service;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()

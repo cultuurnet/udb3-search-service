@@ -23,7 +23,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
      */
     private $logMessages;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->eventBus = $this->createMock(EventBusInterface::class);
 
