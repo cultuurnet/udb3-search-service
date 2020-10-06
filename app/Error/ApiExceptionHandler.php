@@ -51,7 +51,8 @@ class ApiExceptionHandler extends Handler
     private function createNewApiProblem(\Throwable $throwable)
     {
         if ($throwable instanceof Error) {
-            return (new ApiProblem('Internal server error'))->setStatus(500);
+            return (new ApiProblem('Internal server error'))
+                ->setStatus(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
         }
 
         $problem = new ApiProblem($throwable->getMessage());
