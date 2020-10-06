@@ -34,7 +34,7 @@ class ElasticSearchOfferSearchServiceTest extends TestCase
      */
     private $service;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()

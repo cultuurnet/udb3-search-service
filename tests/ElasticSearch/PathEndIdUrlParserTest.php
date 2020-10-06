@@ -11,7 +11,7 @@ class PathEndIdUrlParserTest extends TestCase
      */
     private $parser;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->parser = new PathEndIdUrlParser();
     }

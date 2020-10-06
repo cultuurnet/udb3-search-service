@@ -25,7 +25,7 @@ class LabelsAggregationTransformerTest extends TestCase
     /**
      * @inheritdoc
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->facetName = FacetName::LABELS();
 

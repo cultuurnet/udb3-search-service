@@ -100,7 +100,7 @@ class OfferSearchControllerTest extends TestCase
      */
     private $controller;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
         $this->consumerRepository = new InMemoryConsumerRepository();

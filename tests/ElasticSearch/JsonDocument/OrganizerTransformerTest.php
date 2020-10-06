@@ -19,7 +19,7 @@ class OrganizerTransformerTest extends TestCase
      */
     private $transformer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->logger = new SimpleArrayLogger();
 

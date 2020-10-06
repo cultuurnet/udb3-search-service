@@ -16,7 +16,7 @@ class NodeAwareFacetTreeNormalizerTest extends TestCase
      */
     private $normalizer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->normalizer = new NodeAwareFacetTreeNormalizer();
     }

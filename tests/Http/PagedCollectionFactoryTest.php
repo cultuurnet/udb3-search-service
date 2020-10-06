@@ -17,7 +17,7 @@ class PagedCollectionFactoryTest extends TestCase
      */
     private $transformer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->transformer = $this->createMock(JsonTransformer::class);
 

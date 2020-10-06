@@ -55,7 +55,7 @@ class OrganizerSearchControllerTest extends TestCase
      */
     private $queryStringFactory;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->apiKeyReader = $this->createMock(ApiKeyReaderInterface::class);
         $this->queryBuilder = new MockOrganizerQueryBuilder();

@@ -44,7 +44,7 @@ class CompositeAggregationTransformerTest extends TestCase
      */
     private $compositeTransformer;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->transformer1 = $this->createMock(AggregationTransformerInterface::class);
         $this->transformer2 = $this->createMock(AggregationTransformerInterface::class);

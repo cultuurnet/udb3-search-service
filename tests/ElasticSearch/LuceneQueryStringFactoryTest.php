@@ -12,7 +12,7 @@ class LuceneQueryStringFactoryTest extends TestCase
      */
     private $factory;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = new LuceneQueryStringFactory();
     }

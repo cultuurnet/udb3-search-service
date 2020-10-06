@@ -25,7 +25,7 @@ class GeoShapeQueryOfferRegionServiceTest extends TestCase
      */
     private $offerRegionService;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = new StringLiteral('mock');

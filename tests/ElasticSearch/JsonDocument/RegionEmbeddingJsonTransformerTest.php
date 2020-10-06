@@ -13,7 +13,7 @@ final class RegionEmbeddingJsonTransformerTest extends TestCase
      */
     private $transformer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->transformer = new RegionEmbeddingJsonTransformer();
     }

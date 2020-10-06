@@ -29,7 +29,7 @@ class EventTransformerTest extends TestCase
      */
     private $transformer;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->offerRegionService = $this->createMock(OfferRegionServiceInterface::class);
 

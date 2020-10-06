@@ -36,7 +36,7 @@ class SingleFileIndexationStrategyTest extends TestCase
      */
     private $strategy;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
