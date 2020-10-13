@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
@@ -21,12 +20,6 @@ class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
      */
     private $pagedResultSetFactory;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory
-     */
     public function __construct(
         Client $elasticSearchClient,
         StringLiteral $indexName,
@@ -39,10 +32,6 @@ class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
         $this->pagedResultSetFactory = $pagedResultSetFactory;
     }
 
-    /**
-     * @param OfferQueryBuilderInterface $queryBuilder
-     * @return PagedResultSet
-     */
     public function search(OfferQueryBuilderInterface $queryBuilder): PagedResultSet
     {
         $parameters = [];

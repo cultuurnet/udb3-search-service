@@ -46,9 +46,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         $this->search->setSize(30);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -61,9 +58,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -78,9 +72,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withStart(Natural $start)
     {
         $c = $this->getClone();
@@ -88,9 +79,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLimit(Natural $limit)
     {
         $c = $this->getClone();
