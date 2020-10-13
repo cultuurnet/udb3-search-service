@@ -43,7 +43,7 @@ class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
      * @param OfferQueryBuilderInterface $queryBuilder
      * @return PagedResultSet
      */
-    public function search(OfferQueryBuilderInterface $queryBuilder)
+    public function search(OfferQueryBuilderInterface $queryBuilder): PagedResultSet
     {
         $parameters = [];
         if ($queryBuilder instanceof AbstractElasticSearchQueryBuilder) {

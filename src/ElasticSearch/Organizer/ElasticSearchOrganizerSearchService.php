@@ -43,7 +43,7 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
      * @param OrganizerQueryBuilderInterface $queryBuilder
      * @return PagedResultSet
      */
-    public function search(OrganizerQueryBuilderInterface $queryBuilder)
+    public function search(OrganizerQueryBuilderInterface $queryBuilder): PagedResultSet
     {
         $parameters = [];
         if ($queryBuilder instanceof AbstractElasticSearchQueryBuilder) {
