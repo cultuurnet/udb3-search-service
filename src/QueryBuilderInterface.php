@@ -38,9 +38,5 @@ interface QueryBuilderInterface
 
     public function getLimit(): Natural;
 
-    /**
-     * @return mixed
-     *   Return type depends on the implementation.
-     */
-    public function build();
+    public function build(): array;
 }

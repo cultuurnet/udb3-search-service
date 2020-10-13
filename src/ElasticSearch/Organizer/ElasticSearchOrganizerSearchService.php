@@ -45,15 +45,12 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
      */
     public function search(OrganizerQueryBuilderInterface $queryBuilder)
     {
-        /* @var \ONGR\ElasticsearchDSL\Search $search */
-        $search = $queryBuilder->build();
-
         $parameters = [];
         if ($queryBuilder instanceof AbstractElasticSearchQueryBuilder) {
             $parameters = $queryBuilder->createUrlParameters();
         }
 
-        $response = $this->executeQuery($search->toArray(), $parameters);
+        $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
             $queryBuilder->getLimit(),

@@ -409,7 +409,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return new Natural($this->mockQuery['limit']);
     }
 
-    public function build()
+    public function build(): array
     {
         $build = $this->mockQuery;
         ksort($build);

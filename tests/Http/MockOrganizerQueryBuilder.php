@@ -160,7 +160,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function build()
+    public function build(): array
     {
         $build = $this->mockQuery;
         ksort($build);

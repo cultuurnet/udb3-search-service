@@ -104,12 +104,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $size ? new Natural($size) : new Natural(QueryBuilderInterface::DEFAULT_LIMIT);
     }
 
-    /**
-     * @return Search
-     */
-    public function build()
+    public function build(): array
     {
-        return $this->search;
+        return $this->search->toArray();
     }
 
     /**
