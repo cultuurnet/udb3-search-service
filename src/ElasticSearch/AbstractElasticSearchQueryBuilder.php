@@ -32,7 +32,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     /**
      * @var ?string
      */
-    private $shardPreference = null;
+    private $shardPreference;
 
     public function __construct()
     {
