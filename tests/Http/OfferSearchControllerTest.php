@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
@@ -111,6 +112,7 @@ class OfferSearchControllerTest extends TestCase
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(new MockDistanceFactory()))
             ->withParser(new DocumentLanguageOfferRequestParser())
+            ->withParser(new GroupByOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
@@ -199,6 +201,7 @@ class OfferSearchControllerTest extends TestCase
                     'created' => 'asc',
                     'modified' => 'desc',
                 ],
+                'groupBy' => 'productionId',
             ]
         );
 
@@ -304,7 +307,8 @@ class OfferSearchControllerTest extends TestCase
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
             ->withFacet(FacetName::REGIONS())
             ->withStart(new Natural(30))
-            ->withLimit(new Natural(10));
+            ->withLimit(new Natural(10))
+            ->withGroupByProductionId();
 
         $expectedResultSet = new PagedResultSet(
             new Natural(32),
