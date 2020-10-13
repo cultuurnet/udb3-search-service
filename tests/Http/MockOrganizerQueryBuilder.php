@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\QueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
@@ -127,6 +128,15 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['limit'] = $limit->toNative();
         return $c;
+    }
+
+    public function getLimit(): Natural
+    {
+        if (!isset($this->mockQuery['limit'])) {
+            return new Natural(QueryBuilderInterface::DEFAULT_LIMIT);
+        }
+
+        return new Natural($this->mockQuery['limit']);
     }
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface

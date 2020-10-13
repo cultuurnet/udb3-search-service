@@ -8,6 +8,8 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface QueryBuilderInterface
 {
+    public const DEFAULT_LIMIT = 10;
+
     /**
      * @param AbstractQueryString $queryString
      * @param Language ...$textLanguages
@@ -33,6 +35,8 @@ interface QueryBuilderInterface
      * @return static
      */
     public function withLimit(Natural $limit);
+
+    public function getLimit(): Natural;
 
     /**
      * @return mixed

@@ -56,7 +56,7 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
         $response = $this->executeQuery($search->toArray(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            new Natural($search->getSize()),
+            $queryBuilder->getLimit(),
             $response
         );
     }
