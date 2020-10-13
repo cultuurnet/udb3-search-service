@@ -2939,4 +2939,30 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_group_by_production_id(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withGroupByProductionId();
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'collapse' => [
+                'field' => 'production.id',
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
 }

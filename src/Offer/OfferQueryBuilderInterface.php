@@ -289,4 +289,9 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
      * @return OfferQueryBuilderInterface
      */
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder);
+
+    /**
+     * @return static
+     */
+    public function withGroupByProductionId();
 }

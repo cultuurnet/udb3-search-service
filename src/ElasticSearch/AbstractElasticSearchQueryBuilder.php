@@ -34,6 +34,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
      */
     private $shardPreference;
 
+    /**
+     * @var array
+     */
+    protected $extraQueryParameters = [];
+
     public function __construct()
     {
         $this->boolQuery = new BoolQuery();
@@ -94,7 +99,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     public function build(): array
     {
-        return $this->search->toArray();
+        return array_merge(
+            $this->search->toArray(),
+            $this->extraQueryParameters
+        );
     }
 
     /**

@@ -360,6 +360,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withGroupByProductionId()
+    {
+        $c = clone $this;
+        $c->mockQuery['group'][] = 'productionId';
+        return $c;
+    }
+
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         $c = clone $this;
