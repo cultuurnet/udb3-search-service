@@ -56,14 +56,15 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
         );
 
         $aggregations = isset($response['aggregations']) ? $response['aggregations'] : [];
-        array_walk(
-            $aggregations,
-            function (array &$aggregationData, $aggregationName) {
-                $aggregationData = Aggregation::fromElasticSearchResponseAggregationData(
+        $aggregations = array_map(
+            function (array $aggregationData, $aggregationName) {
+                return Aggregation::fromElasticSearchResponseAggregationData(
                     $aggregationName,
                     $aggregationData
                 );
-            }
+            },
+            $aggregations,
+            array_keys($aggregations)
         );
 
         $facets = array_values(
