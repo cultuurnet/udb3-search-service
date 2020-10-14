@@ -58,6 +58,10 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
 
         $aggregations = isset($response['aggregations']) ? $response['aggregations'] : [];
 
+        if (isset($aggregations['total'])) {
+            $total = new Natural($aggregations['total']['value']);
+        }
+
         $bucketAggregations = array_filter(
             array_map(
                 function (array $aggregationData, $aggregationName) {
