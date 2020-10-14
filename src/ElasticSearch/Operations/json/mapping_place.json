@@ -357,6 +357,10 @@
             "type": "boolean"
         },
 
+        "productionCollapseValue": {
+            "type": "keyword"
+        },
+
         "originalEncodedJsonLd": {
             "type": "string",
             "index": "not_analyzed"
