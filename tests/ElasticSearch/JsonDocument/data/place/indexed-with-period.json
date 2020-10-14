@@ -33,5 +33,6 @@
     "created": "2017-04-22T13:33:37+02:00",
     "originalEncodedJsonLd": "{\"@type\":\"Place\",\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"calendarType\":\"periodic\",\"startDate\":\"2017-04-22T10:00:00+02:00\",\"endDate\":\"2017-04-25T23:00:00+02:00\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\"}",
     "availableTo": "2017-04-25T23:00:00+02:00",
-    "isDuplicate": false
+    "isDuplicate": false,
+    "productionCollapseValue": "single-offer-179c89c5-dba4-417b-ae96-62e7a12c2405"
 }
