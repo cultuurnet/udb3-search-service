@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Validation\ElasticSearchResponseValidat
 use CultuurNet\UDB3\Search\ElasticSearch\Validation\PagedResultSetResponseValidator;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use InvalidArgumentException;
 use ValueObjects\Number\Natural;
 
 class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
@@ -56,15 +57,24 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
         );
 
         $aggregations = isset($response['aggregations']) ? $response['aggregations'] : [];
-        $aggregations = array_map(
-            function (array $aggregationData, $aggregationName) {
-                return Aggregation::fromElasticSearchResponseAggregationData(
-                    $aggregationName,
-                    $aggregationData
-                );
-            },
-            $aggregations,
-            array_keys($aggregations)
+
+        $bucketAggregations = array_filter(
+            array_map(
+                function (array $aggregationData, $aggregationName) {
+                    try {
+                        return Aggregation::fromElasticSearchResponseAggregationData(
+                            $aggregationName,
+                            $aggregationData
+                        );
+                    } catch (InvalidArgumentException $e) {
+                        // If the aggregation has no buckets it will result in an InvalidArgumentException, and it's not
+                        // an aggregation used for facets.
+                        return null;
+                    }
+                },
+                $aggregations,
+                array_keys($aggregations)
+            )
         );
 
         $facets = array_values(
@@ -76,7 +86,7 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
                         }
                         return $this->aggregationTransformer->toFacetTree($aggregation);
                     },
-                    $aggregations
+                    $bucketAggregations
                 )
             )
         );

@@ -166,4 +166,110 @@ class ElasticSearchPagedResultSetFactoryTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_ignores_aggregations_without_buckets(): void
+    {
+        $response = [
+            'hits' => [
+                'total' => 962,
+                'hits' => [
+                    [
+                        '_index' => 'udb3-core',
+                        '_type' => 'organizer',
+                        '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
+                        '_source' => [
+                            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
+                            'name' => 'Collectief Cursief',
+                        ],
+                    ],
+                    [
+                        '_index' => 'udb3-core',
+                        '_type' => 'organizer',
+                        '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
+                        '_source' => [
+                            '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
+                            'name' => 'Anoniem Collectief',
+                        ],
+                    ],
+                ],
+            ],
+            'aggregations' => [
+                'total' => [
+                    'value' => 962,
+                ],
+                'regions' => [
+                    'doc_count_error_upper_bound' => 0,
+                    'sum_other_doc_count' => 0,
+                    'buckets' => [
+                        [
+                            'key' => 'gem-leuven',
+                            'doc_count' => 10,
+                        ],
+                        [
+                            'key' => 'gem-antwerpen',
+                            'doc_count' => 12,
+                        ],
+                        [
+                            'key' => 'gem-brussel',
+                            'doc_count' => 5,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $perPage = new Natural(30);
+
+        $expected = new PagedResultSet(
+            new Natural(962),
+            new Natural(30),
+            [
+                (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
+                    ->withBody(
+                        (object) [
+                            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
+                            'name' => 'Collectief Cursief',
+                        ]
+                    ),
+                (new JsonDocument('bdc0f4ce-a211-463e-a8d1-d8b699fb1159'))
+                    ->withBody(
+                        (object) [
+                            '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
+                            'name' => 'Anoniem Collectief',
+                        ]
+                    ),
+            ]
+        );
+
+        $expected = $expected->withFacets(
+            new FacetFilter(
+                FacetName::REGIONS()->toNative(),
+                [
+                    new FacetNode(
+                        'gem-leuven',
+                        new MultilingualString(
+                            new Language('nl'),
+                            new StringLiteral('Leuven')
+                        ),
+                        10
+                    ),
+                    new FacetNode(
+                        'gem-antwerpen',
+                        new MultilingualString(
+                            new Language('nl'),
+                            new StringLiteral('Antwerpen')
+                        ),
+                        12
+                    ),
+                ]
+            )
+        );
+
+        $actual = $this->factory->createPagedResultSet($perPage, $response);
+
+        $this->assertEquals($expected, $actual);
+    }
 }
