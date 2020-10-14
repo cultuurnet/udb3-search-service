@@ -401,7 +401,7 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
     public function withGroupByProductionId()
     {
         $c = clone $this;
-        $c->extraQueryParameters['collapse']['field'] = 'production.id';
+        $c->extraQueryParameters['collapse']['field'] = 'productionCollapseValue';
         return $c;
     }
 }

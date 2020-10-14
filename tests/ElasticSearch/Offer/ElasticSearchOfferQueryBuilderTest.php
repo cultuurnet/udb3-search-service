@@ -2957,7 +2957,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                 'match_all' => (object) [],
             ],
             'collapse' => [
-                'field' => 'production.id',
+                'field' => 'productionCollapseValue',
             ],
         ];
 
