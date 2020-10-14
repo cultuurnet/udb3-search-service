@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
@@ -402,6 +403,14 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
     {
         $c = clone $this;
         $c->extraQueryParameters['collapse']['field'] = 'productionCollapseValue';
+
+        // Add a "total" aggregation based on the number of results with a distinct value for productionCollapseValue
+        // to calculate the correct number of total results. (The normal total number of hits is unaffected by a
+        // collapse. See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-collapse.html)
+        $aggregation = new CardinalityAggregation('total');
+        $aggregation->setField('productionCollapseValue');
+        $c->search->addAggregation($aggregation);
+
         return $c;
     }
 }

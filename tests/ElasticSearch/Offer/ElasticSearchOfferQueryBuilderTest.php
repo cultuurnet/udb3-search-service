@@ -2959,6 +2959,13 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             'collapse' => [
                 'field' => 'productionCollapseValue',
             ],
+            'aggregations' => [
+                'total' => [
+                    'cardinality' => [
+                        'field' => 'productionCollapseValue',
+                    ],
+                ],
+            ],
         ];
 
         $actualQueryArray = $builder->build();
