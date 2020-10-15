@@ -13,7 +13,7 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 class ErrorHandlerFactory
 {
-    public static function forWeb(HubInterface $hubInterface, ApiKey $apiKey, bool $isDebugEnvironment): Run
+    public static function forWeb(HubInterface $hubInterface, ?ApiKey $apiKey, bool $isDebugEnvironment): Run
     {
         $whoops = new Run();
         self::prependWebHandler($whoops, $isDebugEnvironment);
