@@ -64,8 +64,7 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
 
         $bucketAggregations = array_filter(
             array_map(
-                function (array $aggregationData, string $aggregationName): ?Aggregation
-                {
+                function (array $aggregationData, string $aggregationName): ?Aggregation {
                     try {
                         return Aggregation::fromElasticSearchResponseAggregationData(
                             $aggregationName,

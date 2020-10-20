@@ -14,8 +14,10 @@ final class GroupByOfferRequestParser implements OfferRequestParserInterface
         'productionId',
     ];
 
-    public function parse(ApiRequestInterface $request, OfferQueryBuilderInterface $offerQueryBuilder): OfferQueryBuilderInterface
-    {
+    public function parse(
+        ApiRequestInterface $request,
+        OfferQueryBuilderInterface $offerQueryBuilder
+    ): OfferQueryBuilderInterface {
         $groupField = $request->getQueryParam('groupBy', null);
         if ($groupField === null) {
             return $offerQueryBuilder;
