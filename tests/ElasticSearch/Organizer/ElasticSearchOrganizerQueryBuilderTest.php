@@ -20,7 +20,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_pagination_parameters()
+    public function it_should_build_a_query_with_pagination_parameters(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -34,7 +34,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -42,7 +42,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_advanced_query()
+    public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -70,7 +70,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -78,7 +78,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_free_text_query()
+    public function it_should_build_a_query_with_a_free_text_query(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -106,7 +106,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -114,7 +114,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_autocomplete_filter()
+    public function it_should_build_a_query_with_an_autocomplete_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withAutoCompleteFilter(new StringLiteral('Collectief Cursief'));
@@ -151,7 +151,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -159,7 +159,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_website_filter()
+    public function it_should_build_a_query_with_a_website_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
@@ -187,7 +187,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -195,7 +195,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_builds_a_query_to_filter_on_the_domain_name()
+    public function it_builds_a_query_to_filter_on_the_domain_name(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withDomainFilter(
@@ -223,7 +223,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -231,7 +231,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_multiple_filters()
+    public function it_should_build_a_query_with_multiple_filters(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -278,7 +278,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -286,7 +286,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_postal_code_filter()
+    public function it_should_build_a_query_with_a_postal_code_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -343,7 +343,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -351,7 +351,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_can_build_a_query_to_filter_on_country()
+    public function it_can_build_a_query_to_filter_on_country(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -408,7 +408,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -416,7 +416,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_creator_filter()
+    public function it_should_build_a_query_with_a_creator_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -446,7 +446,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -454,7 +454,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_label_filter()
+    public function it_should_build_a_query_with_a_label_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -496,7 +496,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -504,7 +504,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given()
+    public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -519,7 +519,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -527,7 +527,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value()
+    public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -557,7 +557,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -565,7 +565,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values()
+    public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
@@ -611,7 +611,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -619,7 +619,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
     /**
      * @test
      */
-    public function it_should_always_return_a_clone_for_each_mutation()
+    public function it_should_always_return_a_clone_for_each_mutation(): void
     {
         $originalBuilder = new ElasticSearchOrganizerQueryBuilder();
 
@@ -637,8 +637,8 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
             ],
         ];
 
-        $actualQueryArray = $originalBuilder->build()->toArray();
-        $mutatedQueryArray = $mutatedBuilder->build()->toArray();
+        $actualQueryArray = $originalBuilder->build();
+        $mutatedQueryArray = $mutatedBuilder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
         $this->assertNotEquals($expectedQueryArray, $mutatedQueryArray);

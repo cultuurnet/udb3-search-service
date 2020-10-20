@@ -24,6 +24,9 @@ use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTime;
+use DateTimeImmutable;
+use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
@@ -49,7 +52,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_pagination_parameters()
+    public function it_should_build_a_query_with_pagination_parameters(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
@@ -63,7 +66,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -71,7 +74,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_advanced_query()
+    public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
@@ -100,7 +103,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -108,7 +111,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_free_text_query()
+    public function it_should_build_a_query_with_a_free_text_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
@@ -137,7 +140,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -145,7 +148,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_query_string_query_and_a_subset_of_text_languages()
+    public function it_should_build_a_query_with_a_query_string_query_and_a_subset_of_text_languages(): void
     {
         $nl = new Language('nl');
         $fr = new Language('fr');
@@ -183,7 +186,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -191,7 +194,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_cdbid_filter()
+    public function it_should_build_a_query_with_a_cdbid_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -224,7 +227,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -232,7 +235,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_location_cdbid_filter()
+    public function it_should_build_a_query_with_a_location_cdbid_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -265,7 +268,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -273,7 +276,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_organizer_cdbid_filter()
+    public function it_should_build_a_query_with_a_organizer_cdbid_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -306,7 +309,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -314,7 +317,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_without_calendar_type_filter_if_no_value_was_given()
+    public function it_should_build_a_query_without_calendar_type_filter_if_no_value_was_given(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -330,7 +333,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -338,7 +341,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_calendar_type_filter_with_a_single_value()
+    public function it_should_build_a_query_with_a_calendar_type_filter_with_a_single_value(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -369,7 +372,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -377,7 +380,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_calendar_type_filter_with_multiple_values()
+    public function it_should_build_a_query_with_a_calendar_type_filter_with_multiple_values(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -424,7 +427,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -432,14 +435,14 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_date_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_a_date_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
             );
 
@@ -466,7 +469,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -474,7 +477,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_date_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_a_date_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -482,7 +485,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withLimit(new Natural(10))
             ->withDateRangeFilter(
                 null,
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -508,7 +511,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -516,15 +519,15 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_date_range_filter()
+    public function it_should_build_a_query_with_a_complete_date_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -551,7 +554,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -559,7 +562,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given()
+    public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -575,7 +578,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -583,7 +586,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value()
+    public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -614,7 +617,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -622,7 +625,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values()
+    public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -669,7 +672,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -677,14 +680,14 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_available_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_an_available_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withAvailableRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
             );
 
@@ -711,7 +714,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -719,7 +722,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_available_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_an_available_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -727,7 +730,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withLimit(new Natural(10))
             ->withAvailableRangeFilter(
                 null,
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -753,7 +756,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -761,15 +764,15 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_available_range_filter()
+    public function it_should_build_a_query_with_a_complete_available_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withAvailableRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -796,7 +799,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -804,24 +807,24 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_throw_an_exception_for_an_invalid_available_range()
+    public function it_should_throw_an_exception_for_an_invalid_available_range(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Start available date should be equal to or smaller than end available date.'
         );
 
         (new ElasticSearchOfferQueryBuilder())
             ->withAvailableRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00')
             );
     }
 
     /**
      * @test
      */
-    public function it_should_ignore_a_range_filter_without_any_lower_or_upper_bounds()
+    public function it_should_ignore_a_range_filter_without_any_lower_or_upper_bounds(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -840,7 +843,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -848,7 +851,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_geoshape_filter()
+    public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -905,7 +908,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -913,7 +916,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_geodistance_filter()
+    public function it_should_build_a_query_with_a_geodistance_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -954,7 +957,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -962,7 +965,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_geo_bounds_filter()
+    public function it_should_build_a_query_with_a_geo_bounds_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1011,7 +1014,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1019,7 +1022,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_postal_code_filter()
+    public function it_should_build_a_query_with_a_postal_code_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1077,7 +1080,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1085,7 +1088,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_country_filter()
+    public function it_should_build_a_query_with_a_country_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1143,7 +1146,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1151,7 +1154,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_age_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_an_age_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1182,7 +1185,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1190,7 +1193,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_age_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_an_age_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1221,7 +1224,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1229,7 +1232,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_age_range_filter()
+    public function it_should_build_a_query_with_a_complete_age_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1261,7 +1264,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1269,7 +1272,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_inclusive_all_ages_filter()
+    public function it_should_build_a_query_with_an_inclusive_all_ages_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1306,7 +1309,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1314,7 +1317,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_exclusive_all_ages_filter()
+    public function it_should_build_a_query_with_an_exclusive_all_ages_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1351,7 +1354,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1359,7 +1362,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_price_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_a_price_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1390,7 +1393,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1398,7 +1401,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_price_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_a_price_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1429,7 +1432,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1437,7 +1440,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_price_range_filter()
+    public function it_should_build_a_query_with_a_complete_price_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1469,7 +1472,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1477,9 +1480,9 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_throw_an_exception_for_an_invalid_price_range()
+    public function it_should_throw_an_exception_for_an_invalid_price_range(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Minimum price should be smaller or equal to maximum price.'
         );
@@ -1491,7 +1494,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_audience_type_filter()
+    public function it_should_build_a_query_with_an_audience_type_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1522,7 +1525,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1530,7 +1533,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_inclusive_media_objects_filter()
+    public function it_should_build_a_query_with_an_inclusive_media_objects_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1561,7 +1564,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1569,7 +1572,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_exclusive_media_objects_filter()
+    public function it_should_build_a_query_with_an_exclusive_media_objects_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1600,7 +1603,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1608,7 +1611,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_inclusive_uitpas_filter()
+    public function it_should_build_a_query_with_an_inclusive_uitpas_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1637,7 +1640,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1645,7 +1648,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_exclusive_uitpas_filter()
+    public function it_should_build_a_query_with_an_exclusive_uitpas_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1674,7 +1677,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1682,7 +1685,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_term_id_filter()
+    public function it_should_build_a_query_with_a_term_id_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1725,7 +1728,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1733,7 +1736,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_term_label_filter()
+    public function it_should_build_a_query_with_a_term_label_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1776,7 +1779,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1784,7 +1787,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_location_term_id_filter()
+    public function it_should_build_a_query_with_a_location_term_id_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1827,7 +1830,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1835,7 +1838,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_location_term_label_filter()
+    public function it_should_build_a_query_with_a_location_term_label_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1878,7 +1881,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1886,7 +1889,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_label_filter()
+    public function it_should_build_a_query_with_a_label_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1929,7 +1932,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1937,7 +1940,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_location_label_filter()
+    public function it_should_build_a_query_with_a_location_label_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1980,7 +1983,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -1988,7 +1991,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_organizer_label_filter()
+    public function it_should_build_a_query_with_an_organizer_label_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2031,7 +2034,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2039,7 +2042,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_main_language_filter_with_a_single_value()
+    public function it_should_build_a_query_with_a_main_language_filter_with_a_single_value(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2070,7 +2073,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2078,7 +2081,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_main_language_filter()
+    public function it_should_build_a_query_with_a_main_language_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2111,7 +2114,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2119,7 +2122,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_language_filter()
+    public function it_should_build_a_query_with_a_language_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2162,7 +2165,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2170,7 +2173,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_completed_language_filter()
+    public function it_should_build_a_query_with_a_completed_language_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2213,7 +2216,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2221,7 +2224,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_creator_filter()
+    public function it_should_build_a_query_with_a_creator_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2252,7 +2255,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2260,14 +2263,14 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_created_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_a_created_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withCreatedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
             );
 
@@ -2294,7 +2297,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2302,7 +2305,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_created_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_a_created_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2310,7 +2313,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withLimit(new Natural(10))
             ->withCreatedRangeFilter(
                 null,
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2336,7 +2339,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2344,15 +2347,15 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_created_range_filter()
+    public function it_should_build_a_query_with_a_complete_created_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withCreatedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2379,7 +2382,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2387,14 +2390,14 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_modified_range_filter_without_upper_bound()
+    public function it_should_build_a_query_with_a_modified_range_filter_without_upper_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withModifiedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
             );
 
@@ -2421,7 +2424,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2429,7 +2432,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_modified_range_filter_without_lower_bound()
+    public function it_should_build_a_query_with_a_modified_range_filter_without_lower_bound(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2437,7 +2440,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withLimit(new Natural(10))
             ->withModifiedRangeFilter(
                 null,
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2463,7 +2466,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2471,15 +2474,15 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_complete_modified_range_filter()
+    public function it_should_build_a_query_with_a_complete_modified_range_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withModifiedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2506,7 +2509,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2514,7 +2517,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_single_facet()
+    public function it_should_build_a_query_with_a_single_facet(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2539,7 +2542,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2547,7 +2550,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_multiple_facets()
+    public function it_should_build_a_query_with_multiple_facets(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2580,7 +2583,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2588,7 +2591,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_all_facets()
+    public function it_should_build_a_query_with_all_facets(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2637,7 +2640,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2645,7 +2648,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_can_use_a_custom_aggregation_size_for_facets()
+    public function it_can_use_a_custom_aggregation_size_for_facets(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder(100))
@@ -2680,7 +2683,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2688,7 +2691,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_ignore_unmapped_facets()
+    public function it_should_ignore_unmapped_facets(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2724,7 +2727,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2732,7 +2735,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_multiple_sorts()
+    public function it_should_build_a_query_with_multiple_sorts(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2779,7 +2782,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2787,7 +2790,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_sort_by_created()
+    public function it_should_build_a_query_with_sort_by_created(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2810,7 +2813,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2818,7 +2821,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_sort_by_modified()
+    public function it_should_build_a_query_with_sort_by_modified(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2841,7 +2844,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2863,7 +2866,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_a_query_with_an_is_duplicate_filter()
+    public function it_should_build_a_query_with_an_is_duplicate_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2892,7 +2895,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
@@ -2932,7 +2935,40 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ],
         ];
 
-        $actualQueryArray = $builder->build()->toArray();
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_group_by_production_id(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withGroupByProductionId();
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'collapse' => [
+                'field' => 'productionCollapseValue',
+            ],
+            'aggregations' => [
+                'total' => [
+                    'cardinality' => [
+                        'field' => 'productionCollapseValue',
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }

@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
+use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
@@ -50,9 +51,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
      */
     private $aggregationSize;
 
-    /**
-     * @inheritdoc
-     */
     public function __construct(int $aggregationSize = null)
     {
         parent::__construct();
@@ -66,57 +64,36 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->predefinedQueryStringFields->getPredefinedFields(...$languages);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCdbIdFilter(Cdbid $cdbid)
     {
         return $this->withMatchQuery('id', $cdbid->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLocationCdbIdFilter(Cdbid $locationCdbid)
     {
         return $this->withMatchQuery('location.id', $locationCdbid->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId)
     {
         return $this->withMatchQuery('organizer.id', $organizerCdbId);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withMainLanguageFilter(Language $mainLanguages)
     {
         return $this->withMatchQuery('mainLanguage', $mainLanguages->getCode());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLanguageFilter(Language $language)
     {
         return $this->withMatchQuery('languages', $language->getCode());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCompletedLanguageFilter(Language $language)
     {
         return $this->withMatchQuery('completedLanguages', $language->getCode());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAvailableRangeFilter(
         \DateTimeImmutable $from = null,
         \DateTimeImmutable $to = null
@@ -125,9 +102,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withDateRangeQuery('availableRange', $from, $to);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses)
     {
         return $this->withMultiValueMatchQuery(
@@ -141,9 +115,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCreatedRangeFilter(
         \DateTimeImmutable $from = null,
         \DateTimeImmutable $to = null
@@ -152,9 +123,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withDateRangeQuery('created', $from, $to);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withModifiedRangeFilter(
         \DateTimeImmutable $from = null,
         \DateTimeImmutable $to = null
@@ -163,17 +131,11 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withDateRangeQuery('modified', $from, $to);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCreatorFilter(Creator $creator)
     {
         return $this->withMatchQuery('creator', $creator->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withDateRangeFilter(
         \DateTimeImmutable $from = null,
         \DateTimeImmutable $to = null
@@ -182,9 +144,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withDateRangeQuery('dateRange', $from, $to);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withCalendarTypeFilter(CalendarType ...$calendarTypes)
     {
         return $this->withMultiValueMatchQuery(
@@ -198,9 +157,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withPostalCodeFilter(PostalCode $postalCode)
     {
         return $this->withMultiFieldMatchQuery(
@@ -211,9 +167,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAddressCountryFilter(Country $country)
     {
         return $this->withMultiFieldMatchQuery(
@@ -224,9 +177,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withRegionFilter(
         StringLiteral $regionIndexName,
         StringLiteral $regionDocumentType,
@@ -247,9 +197,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters)
     {
         $geoDistanceQuery = new GeoDistanceQuery(
@@ -266,9 +213,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters)
     {
         $northWest = $geoBoundsParameters->getNorthWestCoordinates();
@@ -291,17 +235,11 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAudienceTypeFilter(AudienceType $audienceType)
     {
         return $this->withMatchQuery('audienceType', $audienceType->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null)
     {
         $this->guardNaturalIntegerRange('age', $minimum, $maximum);
@@ -312,17 +250,11 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withRangeQuery('typicalAgeRange', $minimum, $maximum);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAllAgesFilter($include)
     {
         return $this->withTermQuery('allAges', (bool) $include);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null)
     {
         $this->guardNaturalIntegerRange('price', $minimum, $maximum);
@@ -333,9 +265,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withRangeQuery('price', $minimum, $maximum);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withMediaObjectsFilter($include)
     {
         $min = $include ? 1 : null;
@@ -344,9 +273,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withRangeQuery('mediaObjectsCount', $min, $max);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withUiTPASFilter($include)
     {
         $uitpasQuery = 'organizer.labels:(UiTPAS* OR Paspartoe)';
@@ -358,57 +284,36 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withTermIdFilter(TermId $termId)
     {
         return $this->withMatchQuery('terms.id', $termId->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withTermLabelFilter(TermLabel $termLabel)
     {
         return $this->withMatchQuery('terms.label', $termLabel->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLocationTermIdFilter(TermId $locationTermId)
     {
         return $this->withMatchQuery('location.terms.id', $locationTermId->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLocationTermLabelFilter(TermLabel $locationTermLabel)
     {
         return $this->withMatchQuery('location.terms.label', $locationTermLabel->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLabelFilter(LabelName $label)
     {
         return $this->withMatchQuery('labels', $label->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLocationLabelFilter(LabelName $locationLabel)
     {
         return $this->withMatchQuery('location.labels', $locationLabel->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withOrganizerLabelFilter(LabelName $organizerLabel)
     {
         return $this->withMatchQuery('organizer.labels', $organizerLabel->toNative());
@@ -427,9 +332,6 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withMatchQuery('production.id', $productionId);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withFacet(FacetName $facetName)
     {
         $facetName = $facetName->toNative();
@@ -458,41 +360,27 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withSortByScore(SortOrder $sortOrder)
     {
         return $this->withFieldSort('_score', $sortOrder->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withSortByAvailableTo(SortOrder $sortOrder)
     {
         return $this->withFieldSort('availableTo', $sortOrder->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withSortByCreated(SortOrder $sortOrder)
     {
         return $this->withFieldSort('created', $sortOrder->toNative());
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withSortByModified(SortOrder $sortOrder)
     {
         return $this->withFieldSort('modified', $sortOrder->toNative());
     }
 
     /**
-     * @inheritdoc
-     *
      * @see https://www.elastic.co/guide/en/elasticsearch/guide/current/sorting-by-distance.html
      */
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder)
@@ -509,5 +397,20 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
                 'distance_type' => 'plane',
             ]
         );
+    }
+
+    public function withGroupByProductionId()
+    {
+        $c = clone $this;
+        $c->extraQueryParameters['collapse']['field'] = 'productionCollapseValue';
+
+        // Add a "total" aggregation based on the number of results with a distinct value for productionCollapseValue
+        // to calculate the correct number of total results. (The normal total number of hits is unaffected by a
+        // collapse. See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-collapse.html)
+        $aggregation = new CardinalityAggregation('total');
+        $aggregation->setField('productionCollapseValue');
+        $c->search->addAggregation($aggregation);
+
+        return $c;
     }
 }

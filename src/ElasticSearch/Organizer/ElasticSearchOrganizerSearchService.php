@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInterface
@@ -21,12 +20,6 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
      */
     private $pagedResultSetFactory;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory
-     */
     public function __construct(
         Client $elasticSearchClient,
         StringLiteral $indexName,
@@ -39,24 +32,17 @@ class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInter
         $this->pagedResultSetFactory = $pagedResultSetFactory;
     }
 
-    /**
-     * @param OrganizerQueryBuilderInterface $queryBuilder
-     * @return PagedResultSet
-     */
-    public function search(OrganizerQueryBuilderInterface $queryBuilder)
+    public function search(OrganizerQueryBuilderInterface $queryBuilder): PagedResultSet
     {
-        /* @var \ONGR\ElasticsearchDSL\Search $search */
-        $search = $queryBuilder->build();
-
         $parameters = [];
         if ($queryBuilder instanceof AbstractElasticSearchQueryBuilder) {
             $parameters = $queryBuilder->createUrlParameters();
         }
 
-        $response = $this->executeQuery($search->toArray(), $parameters);
+        $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            new Natural($search->getSize()),
+            $queryBuilder->getLimit(),
             $response
         );
     }

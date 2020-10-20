@@ -56,6 +56,7 @@ class OfferSupportedParameters extends AbstractSupportedParameters
             'disableDefaultFilters',
             'isDuplicate',
             'productionId',
+            'groupBy',
         ];
     }
 }

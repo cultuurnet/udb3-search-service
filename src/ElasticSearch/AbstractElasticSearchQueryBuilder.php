@@ -32,7 +32,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     /**
      * @var ?string
      */
-    private $shardPreference = null;
+    private $shardPreference;
+
+    /**
+     * @var array
+     */
+    protected $extraQueryParameters = [];
 
     public function __construct()
     {
@@ -46,9 +51,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         $this->search->setSize(30);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -61,9 +63,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -78,9 +77,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         );
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withStart(Natural $start)
     {
         $c = $this->getClone();
@@ -88,9 +84,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function withLimit(Natural $limit)
     {
         $c = $this->getClone();
@@ -98,12 +91,18 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $c;
     }
 
-    /**
-     * @return Search
-     */
-    public function build()
+    public function getLimit(): Natural
     {
-        return $this->search;
+        $size = $this->search->getSize();
+        return $size ? new Natural($size) : new Natural(QueryBuilderInterface::DEFAULT_LIMIT);
+    }
+
+    public function build(): array
+    {
+        return array_merge(
+            $this->search->toArray(),
+            $this->extraQueryParameters
+        );
     }
 
     /**
