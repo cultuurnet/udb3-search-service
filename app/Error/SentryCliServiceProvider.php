@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Error;
 
-use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Sentry\State\HubInterface;
 
