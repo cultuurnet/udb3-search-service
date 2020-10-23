@@ -13,19 +13,19 @@ use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 class ErrorHandlerFactory
 {
-    public static function forWeb(HubInterface $hubInterface, ?ApiKey $apiKey, bool $isDebugEnvironment): Run
+    public static function forWeb(SentryExceptionHandler $sentryExceptionHandler, bool $isDebugEnvironment): Run
     {
         $whoops = new Run();
         self::prependWebHandler($whoops, $isDebugEnvironment);
-        $whoops->prependHandler(SentryExceptionHandler::createForWeb($hubInterface, $apiKey));
+        $whoops->prependHandler($sentryExceptionHandler);
         return $whoops;
     }
 
-    public static function forCli(HubInterface $hubInterface): Run
+    public static function forCli(SentryExceptionHandler $sentryExceptionHandler): Run
     {
         $whoops = new Run();
         $whoops->prependHandler(new PlainTextHandler());
-        $whoops->prependHandler(SentryExceptionHandler::createForCli($hubInterface));
+        $whoops->prependHandler($sentryExceptionHandler);
         return $whoops;
     }
 

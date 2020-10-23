@@ -1,12 +1,13 @@
 <?php
 
+use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
 use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
 use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
 use CultuurNet\UDB3\SearchService\Factory\ErrorHandlerFactory;
 use League\Route\Router;
-use Sentry\State\HubInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
@@ -20,9 +21,10 @@ $apiRequest = new ApiRequest(ServerRequestFactory::createFromGlobals());
 $apiKeyReader = $container->get(ApiKeyReaderInterface::class);
 $apiKey = $apiKeyReader->read($apiRequest);
 
+$container->share(ApiKey::class, $apiKey);
+
 $errorHandler = ErrorHandlerFactory::forWeb(
-    $container->get(HubInterface::class),
-    $apiKey,
+    $container->get(SentryExceptionHandler::class),
     $config->get('debug')
 );
 $errorHandler->register();
