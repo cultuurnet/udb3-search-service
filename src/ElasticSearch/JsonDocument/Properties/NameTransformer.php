@@ -26,6 +26,15 @@ final class NameTransformer implements JsonTransformer
             return $draft;
         }
 
+        // @replay_i18n
+        // @see https://jira.uitdatabank.be/browse/III-3584
+        // @see https://jira.uitdatabank.be/browse/III-2201
+        if (is_string($from['name'])) {
+            $from['name'] = [
+                $mainLanguage => $from['name'],
+            ];
+        }
+
         if (!isset($from['name'][$mainLanguage])) {
             $this->logger->logMissingExpectedField('name.' . $mainLanguage);
         }
