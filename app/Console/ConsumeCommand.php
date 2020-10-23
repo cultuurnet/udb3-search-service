@@ -20,27 +20,11 @@ class ConsumeCommand extends Command
      */
     private $consumer;
 
-    /**
-     * @var string
-     */
-    private $heartBeatServiceName;
-
-    /**
-     * @param string $name
-     * @param ConsumerInterface $consumer
-     */
-    public function __construct($name, ConsumerInterface $consumer)
+    public function __construct(string $name, ConsumerInterface $consumer)
     {
         parent::__construct($name);
 
         $this->consumer = $consumer;
-    }
-
-    public function withHeartBeat($heartBeatServiceName)
-    {
-        $c = clone $this;
-        $c->heartBeatServiceName = $heartBeatServiceName;
-        return $c;
     }
 
     private function handleSignal(OutputInterface $output, $signal)
@@ -68,13 +52,7 @@ class ConsumeCommand extends Command
         $channel = $this->getChannel();
         $output->writeln('Connected. Listening for incoming messages...');
 
-        $heartBeat = $this->getHeartBeat();
-
         while (count($channel->callbacks) > 0) {
-            if ($heartBeat) {
-                $heartBeat($this->getSilexApplication());
-            }
-
             pcntl_signal_dispatch();
 
             try {
@@ -103,27 +81,6 @@ class ConsumeCommand extends Command
         }
 
         return $channel;
-    }
-
-    /**
-     * @return callable|null
-     */
-    protected function getHeartBeat()
-    {
-        $app = $this->getSilexApplication();
-
-        $heartBeat = null;
-        if ($this->heartBeatServiceName) {
-            $heartBeat = $app->get($this->heartBeatServiceName);
-
-            if (!is_callable($heartBeat)) {
-                throw new RuntimeException(
-                    'The heartbeat service should be callable'
-                );
-            }
-        }
-
-        return $heartBeat;
     }
 
     /**
