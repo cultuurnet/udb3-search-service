@@ -14,8 +14,8 @@ use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
-use CultuurNet\UDB3\SearchService\SentryServiceProvider;
 use CultuurNet\UDB3\SearchService\SentryCliServiceProvider;
+use CultuurNet\UDB3\SearchService\SentryHubServiceProvider;
 use CultuurNet\UDB3\SearchService\SentryWebServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -48,7 +48,7 @@ class ContainerFactory
             $config
         );
 
-        $container->addServiceProvider(SentryServiceProvider::class);
+        $container->addServiceProvider(SentryHubServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
         $container->addServiceProvider(OrganizerServiceProvider::class);
         $container->addServiceProvider(OfferServiceProvider::class);
