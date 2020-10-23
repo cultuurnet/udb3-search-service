@@ -82,13 +82,4 @@ class ConsumeCommand extends Command
 
         return $channel;
     }
-
-    /**
-     * @return Container
-     * @TODO: Inject these dependencies (this is a temp fix)
-     */
-    private function getSilexApplication(): Container
-    {
-        return ContainerFactory::forCli(ConfigFactory::create(__DIR__.'/../../'));
-    }
 }
