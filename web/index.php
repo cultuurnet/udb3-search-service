@@ -18,10 +18,11 @@ $config = ConfigFactory::create(__DIR__ . '/../');
 $container = ContainerFactory::forWeb($config);
 
 $apiRequest = new ApiRequest(ServerRequestFactory::createFromGlobals());
-$apiKeyReader = $container->get(ApiKeyReaderInterface::class);
-$apiKey = $apiKeyReader->read($apiRequest);
 
-$container->share(ApiKey::class, $apiKey);
+$container->share(ApiKey::class, function () use ($container, $apiRequest) {
+    $apiKeyReader = $container->get(ApiKeyReaderInterface::class);
+    return $apiKeyReader->read($apiRequest);
+});
 
 $errorHandler = ErrorHandlerFactory::forWeb(
     $container->get(SentryExceptionHandler::class),
