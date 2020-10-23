@@ -433,6 +433,20 @@ class EventTransformerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_be_able_to_handle_untranslated_names_on_dummy_organizers(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-untranslated-dummy-organizer-name.json',
+            __DIR__ . '/data/event/indexed-with-untranslated-dummy-organizer.json',
+            [
+                ['warning', 'Missing expected field \'@id\'.', []],
+            ]
+        );
+    }
+
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
         $original = json_decode(file_get_contents($givenFilePath), true);
