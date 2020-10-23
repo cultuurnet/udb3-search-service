@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\SearchService;
+namespace CultuurNet\UDB3\SearchService\Error;
 
+use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
 use function Sentry\init;
