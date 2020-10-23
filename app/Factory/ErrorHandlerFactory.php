@@ -17,7 +17,7 @@ class ErrorHandlerFactory
     {
         $whoops = new Run();
         self::prependWebHandler($whoops, $isDebugEnvironment);
-        $whoops->prependHandler(new SentryExceptionHandler($hubInterface, $apiKey, false));
+        $whoops->prependHandler(SentryExceptionHandler::createForWeb($hubInterface, $apiKey));
         return $whoops;
     }
 
@@ -25,7 +25,7 @@ class ErrorHandlerFactory
     {
         $whoops = new Run();
         $whoops->prependHandler(new PlainTextHandler());
-        $whoops->prependHandler(new SentryExceptionHandler($hubInterface, null, true));
+        $whoops->prependHandler(SentryExceptionHandler::createForCli($hubInterface));
         return $whoops;
     }
 
