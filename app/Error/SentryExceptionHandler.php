@@ -9,7 +9,7 @@ use Sentry\State\HubInterface;
 use Sentry\State\Scope;
 use Whoops\Handler\Handler;
 
-class SentryExceptionHandler extends Handler
+final class SentryExceptionHandler extends Handler
 {
     /** @var HubInterface */
     private $sentryHub;
@@ -24,7 +24,7 @@ class SentryExceptionHandler extends Handler
      */
     private $console;
 
-    public function __construct(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console)
+    private function __construct(HubInterface $sentryHub, ?ApiKey $apiKey, bool $console)
     {
         $this->sentryHub = $sentryHub;
         $this->apiKey = $apiKey;
@@ -39,6 +39,16 @@ class SentryExceptionHandler extends Handler
 
         $exception = $this->getInspector()->getException();
         $this->sentryHub->captureException($exception);
+    }
+
+    public static function createForWeb(HubInterface $sentryHub, ?ApiKey $apiKey): SentryExceptionHandler
+    {
+        return new self($sentryHub, $apiKey, false);
+    }
+
+    public static function createForCli(HubInterface $sentryHub): SentryExceptionHandler
+    {
+        return new self($sentryHub, null, true);
     }
 
     private function createTags(?ApiKey $apiKey, bool $console): array

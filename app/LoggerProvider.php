@@ -2,6 +2,8 @@
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
+use CultuurNet\UDB3\SearchService\Error\SentryPsrLoggerDecorator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -32,7 +34,10 @@ class LoggerProvider extends BaseServiceProvider
                 );
                 $logger->pushHandler($logFileHandler);
 
-                return $logger;
+                return new SentryPsrLoggerDecorator(
+                    $this->get(SentryExceptionHandler::class),
+                    $logger
+                );
             }
         );
     }
