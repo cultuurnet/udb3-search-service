@@ -82,12 +82,10 @@ final class SentryPsrLoggerDecorator implements LoggerInterface
     private function sendThrowableToSentry(array $context = array()): void
     {
         $throwable = $context['exception'] ?? null;
-        if (!$throwable || !($throwable instanceof Throwable)) {
-            return;
+        if ($throwable instanceof Throwable) {
+            $inspector = new Inspector($throwable);
+            $this->sentryHandler->setInspector($inspector);
+            $this->sentryHandler->handle();
         }
-
-        $inspector = new Inspector($throwable);
-        $this->sentryHandler->setInspector($inspector);
-        $this->sentryHandler->handle();
     }
 }
