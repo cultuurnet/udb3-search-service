@@ -10,25 +10,10 @@ class MetadataTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        $metadata = $this->getMetadata($from);
-
-        if (empty($metadata)) {
-            return $draft;
-        }
-
-        $draft['metadata'] = $metadata;
+        $draft['metadata'] = [
+            'popularity' => $from['metadata']['popularity'] ?? 0,
+        ];
 
         return $draft;
-    }
-
-    private function getMetadata(array $from): array
-    {
-        if (!isset($from['metadata'])) {
-            return [];
-        }
-
-        return [
-            'popularity' => $from['metadata']['popularity'] ?: 0,
-        ];
     }
 }
