@@ -48,7 +48,16 @@ class TransformingJsonDocumentIndexService implements
 
     public function index(string $documentId, string $documentIri): void
     {
-        $response = $this->httpClient->request('GET', $documentIri);
+        // TODO: Replace hardcoded query parameters with parameters injected inside the constructor.
+        $response = $this->httpClient->request(
+            'GET',
+            $documentIri,
+            [
+                'query' => [
+                    'includeMetadata' => true,
+                ],
+            ]
+        );
 
         if ($response->getStatusCode() == 200) {
             $jsonLd = $response->getBody();
