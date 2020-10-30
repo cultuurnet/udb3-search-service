@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
     protected $provides = [
-        JsonDocumentFetcher::class
+        JsonDocumentFetcher::class,
     ];
 
     public function register(): void
