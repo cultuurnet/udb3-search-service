@@ -47,7 +47,8 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
         $this->indexService = new TransformingJsonDocumentIndexService(
             $this->httpClient,
             new JsonDocumentTransformer($this->transformer),
-            $this->searchRepository
+            $this->searchRepository,
+            (new QueryJsonDocument())->withIncludeMetadata()
         );
 
         $this->indexService->setLogger($this->logger);
@@ -68,7 +69,15 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', $documentUrl)
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'query' => [
+                        'includeMetadata' => true,
+                    ],
+                ]
+            )
             ->willReturn(new Response(200, [], json_encode($jsonLd)));
 
         $this->transformer->expects($this->once())
@@ -95,7 +104,15 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
 
         $this->httpClient->expects($this->once())
             ->method('request')
-            ->with('GET', $documentUrl)
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'query' => [
+                        'includeMetadata' => true,
+                    ],
+                ]
+            )
             ->willReturn($response);
 
         $this->logger->expects($this->once())
