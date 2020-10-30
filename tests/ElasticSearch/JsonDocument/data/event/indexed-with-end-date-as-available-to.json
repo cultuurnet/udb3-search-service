@@ -48,5 +48,8 @@
     },
     "availableTo": "2017-04-22T18:00:00+02:00",
     "isDuplicate": false,
-    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942"
+    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
+    "metadata": {
+        "popularity": 0
+    }
 }

@@ -67,6 +67,9 @@ class PlaceTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'mediaObjectsCount' => 0,
+            'metadata' => [
+                'popularity' => 0,
+            ],
         ];
 
         $expectedLogs = [

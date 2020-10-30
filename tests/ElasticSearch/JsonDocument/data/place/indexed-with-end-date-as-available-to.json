@@ -36,5 +36,8 @@
     },
     "availableTo": "2100-01-01T00:00:00+00:00",
     "isDuplicate": false,
-    "productionCollapseValue": "single-offer-179c89c5-dba4-417b-ae96-62e7a12c2405"
+    "productionCollapseValue": "single-offer-179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "metadata": {
+        "popularity": 0
+    }
 }
