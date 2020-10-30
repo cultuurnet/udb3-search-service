@@ -15,9 +15,9 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
-use CultuurNet\UDB3\Search\JsonDocument\QueryJsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -63,10 +63,13 @@ class OrganizerServiceProvider extends BaseServiceProvider
             'organizer_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get('http_client'),
+                    new JsonDocumentFetcher(
+                        $this->get('http_client'),
+                        false,
+                        $this->get('logger.amqp.udb3_consumer')
+                    ),
                     $this->get('organizer_elasticsearch_transformer'),
-                    $this->get('organizer_elasticsearch_repository'),
-                    new QueryJsonDocument()
+                    $this->get('organizer_elasticsearch_repository')
                 );
 
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));

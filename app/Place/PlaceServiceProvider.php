@@ -5,9 +5,9 @@ namespace CultuurNet\UDB3\SearchService\Place;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
-use CultuurNet\UDB3\Search\JsonDocument\QueryJsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -43,10 +43,13 @@ class PlaceServiceProvider extends BaseServiceProvider
             'place_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get('http_client'),
+                    new JsonDocumentFetcher(
+                        $this->get('http_client'),
+                        true,
+                        $this->get('logger.amqp.udb3_consumer')
+                    ),
                     $this->get('place_elasticsearch_transformer'),
-                    $this->get('place_elasticsearch_repository'),
-                    (new QueryJsonDocument())->withIncludeMetadata()
+                    $this->get('place_elasticsearch_repository')
                 );
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
 
