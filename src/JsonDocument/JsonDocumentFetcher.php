@@ -25,11 +25,18 @@ class JsonDocumentFetcher
      */
     private $logger;
 
-    public function __construct(ClientInterface $httpClient, bool $includeMetadata, LoggerInterface $logger)
+    public function __construct(ClientInterface $httpClient, LoggerInterface $logger)
     {
         $this->httpClient = $httpClient;
-        $this->includeMetadata = $includeMetadata;
+        $this->includeMetadata = false;
         $this->logger = $logger;
+    }
+
+    public function withIncludeMetadata(): JsonDocumentFetcher
+    {
+        $clone = clone $this;
+        $clone->includeMetadata = true;
+        return $clone;
     }
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument

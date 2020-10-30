@@ -26,17 +26,16 @@ class JsonDocumentFetcherTest extends TestCase
     /**
      * @var JsonDocumentFetcher
      */
-    private $jsondDocumentFetcher;
+    private $jsonDocumentFetcher;
 
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->jsondDocumentFetcher = new JsonDocumentFetcher(
+        $this->jsonDocumentFetcher = (new JsonDocumentFetcher(
             $this->httpClient,
-            true,
             $this->logger
-        );
+        ))->withIncludeMetadata();
     }
 
     /**
@@ -66,7 +65,7 @@ class JsonDocumentFetcherTest extends TestCase
                 new Response(200, [], json_encode($jsonLd))
             );
 
-        $actualJsonDocument = $this->jsondDocumentFetcher->fetch(
+        $actualJsonDocument = $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
@@ -81,7 +80,6 @@ class JsonDocumentFetcherTest extends TestCase
     {
         $jsonDocumentFetcher = new JsonDocumentFetcher(
             $this->httpClient,
-            false,
             $this->logger
         );
 
@@ -134,7 +132,7 @@ class JsonDocumentFetcherTest extends TestCase
                 new Response(400)
             );
 
-        $actualJsonDocument = $this->jsondDocumentFetcher->fetch(
+        $actualJsonDocument = $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
@@ -169,7 +167,7 @@ class JsonDocumentFetcherTest extends TestCase
             ->method('error')
             ->with('Could not retrieve JSON-LD from url for indexation.');
 
-        $this->jsondDocumentFetcher->fetch(
+        $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
