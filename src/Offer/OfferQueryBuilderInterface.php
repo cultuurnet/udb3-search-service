@@ -293,5 +293,10 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     /**
      * @return static
      */
+    public function withSortByPopularity(SortOrder $sortOrder);
+
+    /**
+     * @return static
+     */
     public function withGroupByProductionId();
 }
