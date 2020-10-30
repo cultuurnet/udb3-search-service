@@ -59,7 +59,7 @@ class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
-                    ]
+                    ],
                 ]
             )
             ->willReturn(
@@ -127,7 +127,7 @@ class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
-                    ]
+                    ],
                 ]
             )
             ->willReturn(
@@ -158,7 +158,7 @@ class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
-                    ]
+                    ],
                 ]
             )
             ->willReturn(
