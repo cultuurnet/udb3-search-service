@@ -200,6 +200,7 @@ class OfferSearchControllerTest extends TestCase
                     'score' => 'desc',
                     'created' => 'asc',
                     'modified' => 'desc',
+                    'popularity' => 'desc',
                 ],
                 'groupBy' => 'productionId',
             ]
@@ -245,6 +246,7 @@ class OfferSearchControllerTest extends TestCase
             ->withSortByScore(SortOrder::DESC())
             ->withSortByCreated(SortOrder::ASC())
             ->withSortByModified(SortOrder::DESC())
+            ->withSortByPopularity(SortOrder::DESC())
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
             )
