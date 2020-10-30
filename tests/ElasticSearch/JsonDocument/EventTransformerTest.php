@@ -450,6 +450,17 @@ class EventTransformerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_transforms_metadata(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-metadata.json',
+            __DIR__ . '/data/event/indexed-with-metadata.json'
+        );
+    }
+
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
         $original = json_decode(file_get_contents($givenFilePath), true);
