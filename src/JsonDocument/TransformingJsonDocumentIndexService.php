@@ -31,31 +31,30 @@ class TransformingJsonDocumentIndexService implements
     private $jsonDocumentTransformer;
 
     /**
-     * @param ClientInterface $httpClient
-     * @param JsonDocumentTransformer $jsonDocumentTransformer
-     * @param DocumentRepository $searchRepository
+     * @var QueryJsonDocument
      */
+    private $query;
+
     public function __construct(
         ClientInterface $httpClient,
         JsonDocumentTransformer $jsonDocumentTransformer,
-        DocumentRepository $searchRepository
+        DocumentRepository $searchRepository,
+        QueryJsonDocument $query
     ) {
         $this->httpClient = $httpClient;
         $this->jsonDocumentTransformer = $jsonDocumentTransformer;
         $this->searchRepository = $searchRepository;
+        $this->query = $query;
         $this->logger = new NullLogger();
     }
 
     public function index(string $documentId, string $documentIri): void
     {
-        // TODO: Replace hardcoded query parameters with parameters injected inside the constructor.
         $response = $this->httpClient->request(
             'GET',
             $documentIri,
             [
-                'query' => [
-                    'includeMetadata' => true,
-                ],
+                'query' => $this->query->getAll(),
             ]
         );
 
