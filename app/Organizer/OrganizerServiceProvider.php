@@ -63,11 +63,7 @@ class OrganizerServiceProvider extends BaseServiceProvider
             'organizer_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    new JsonDocumentFetcher(
-                        $this->get('http_client'),
-                        false,
-                        $this->get('logger.amqp.udb3_consumer')
-                    ),
+                    $this->get(JsonDocumentFetcher::class),
                     $this->get('organizer_elasticsearch_transformer'),
                     $this->get('organizer_elasticsearch_repository')
                 );

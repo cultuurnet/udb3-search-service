@@ -43,11 +43,7 @@ class PlaceServiceProvider extends BaseServiceProvider
             'place_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    new JsonDocumentFetcher(
-                        $this->get('http_client'),
-                        true,
-                        $this->get('logger.amqp.udb3_consumer')
-                    ),
+                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
                     $this->get('place_elasticsearch_transformer'),
                     $this->get('place_elasticsearch_repository')
                 );
