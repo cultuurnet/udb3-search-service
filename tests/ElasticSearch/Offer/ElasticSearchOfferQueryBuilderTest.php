@@ -2749,7 +2749,8 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                 SortOrder::ASC()
             )
             ->withSortByAvailableTo(SortOrder::ASC())
-            ->withSortByScore(SortOrder::DESC());
+            ->withSortByScore(SortOrder::DESC())
+            ->withSortByPopularity(SortOrder::DESC());
 
         $expectedQueryArray = [
             'from' => 30,
@@ -2776,6 +2777,11 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                 ],
                 [
                     '_score' => [
+                        'order' => 'desc',
+                    ],
+                ],
+                [
+                    'metadata.popularity' => [
                         'order' => 'desc',
                     ],
                 ],
