@@ -49,7 +49,7 @@ class EventServiceProvider extends BaseServiceProvider
                         $this->get('logger.amqp.udb3_consumer')
                     ),
                     $this->get('event_elasticsearch_transformer'),
-                    $this->get('event_elasticsearch_repository'),
+                    $this->get('event_elasticsearch_repository')
                 );
                 $service->setLogger($this->get('logger.amqp.udb3_consumer'));
 
