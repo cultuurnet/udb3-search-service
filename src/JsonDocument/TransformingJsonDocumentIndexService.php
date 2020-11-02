@@ -3,8 +3,6 @@
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -16,14 +14,9 @@ class TransformingJsonDocumentIndexService implements
     use LoggerAwareTrait;
 
     /**
-     * @var DocumentRepository
+     * @var JsonDocumentFetcher
      */
-    private $searchRepository;
-
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
+    private $jsonDocumentFetcher;
 
     /**
      * @var JsonDocumentTransformer
@@ -31,16 +24,16 @@ class TransformingJsonDocumentIndexService implements
     private $jsonDocumentTransformer;
 
     /**
-     * @param ClientInterface $httpClient
-     * @param JsonDocumentTransformer $jsonDocumentTransformer
-     * @param DocumentRepository $searchRepository
+     * @var DocumentRepository
      */
+    private $searchRepository;
+
     public function __construct(
-        ClientInterface $httpClient,
+        JsonDocumentFetcher $jsonDocumentFetcher,
         JsonDocumentTransformer $jsonDocumentTransformer,
         DocumentRepository $searchRepository
     ) {
-        $this->httpClient = $httpClient;
+        $this->jsonDocumentFetcher = $jsonDocumentFetcher;
         $this->jsonDocumentTransformer = $jsonDocumentTransformer;
         $this->searchRepository = $searchRepository;
         $this->logger = new NullLogger();
@@ -48,36 +41,21 @@ class TransformingJsonDocumentIndexService implements
 
     public function index(string $documentId, string $documentIri): void
     {
-        $response = $this->httpClient->request('GET', $documentIri);
-
-        if ($response->getStatusCode() == 200) {
-            $jsonLd = $response->getBody();
-
-            $jsonDocument = new JsonDocument(
-                $documentId,
-                $jsonLd
-            );
-
-            $documentType = $this->searchRepository->getDocumentType();
-
-            $this->logger->debug("Transforming {$documentType} {$documentId} for indexation.");
-
-            $jsonDocument = $this->jsonDocumentTransformer
-                ->transform($jsonDocument);
-
-            $this->logger->debug("Transformation of {$documentType} {$documentId} finished.");
-
-            $this->searchRepository->save($jsonDocument);
-        } else {
-            $this->logger->error(
-                'Could not retrieve JSON-LD from url for indexation.',
-                [
-                    'id' => $documentId,
-                    'url' => $documentIri,
-                    'response' => $response,
-                ]
-            );
+        $jsonDocument = $this->jsonDocumentFetcher->fetch($documentId, $documentIri);
+        if ($jsonDocument === null) {
+            return;
         }
+
+        $documentType = $this->searchRepository->getDocumentType();
+
+        $this->logger->debug("Transforming {$documentType} {$documentId} for indexation.");
+
+        $jsonDocument = $this->jsonDocumentTransformer
+            ->transform($jsonDocument);
+
+        $this->logger->debug("Transformation of {$documentType} {$documentId} finished.");
+
+        $this->searchRepository->save($jsonDocument);
     }
 
     public function remove(string $documentId): void

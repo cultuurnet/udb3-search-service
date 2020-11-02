@@ -6,6 +6,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -31,7 +32,8 @@ final class PlaceTransformer implements JsonTransformer
                 FallbackType::PLACE()
             ),
             new AddressTransformer($logger, true),
-            new GeoInformationTransformer(OfferType::PLACE(), $offerRegionService)
+            new GeoInformationTransformer(OfferType::PLACE(), $offerRegionService),
+            new MetadataTransformer()
         );
     }
 

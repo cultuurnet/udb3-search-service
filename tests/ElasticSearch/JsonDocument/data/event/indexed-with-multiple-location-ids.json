@@ -49,5 +49,8 @@
     "creator": "Jane Doe",
     "originalEncodedJsonLd": "{\"@id\":\"http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"single\",\"startDate\":\"2017-04-22T10:00:00+02:00\",\"endDate\":\"2017-04-22T18:00:00+02:00\",\"availableTo\":\"2017-04-22T18:00:00+02:00\",\"location\":{\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}},\"duplicatedBy\":[\"http:\/\/udb-silex.dev\/place\/4f7164d2-520c-4765-818d-c410ac945f0b\",\"http:\/\/udb-silex.dev\/place\/b80ecd4c-e7ae-4fcb-ae59-c84fd42dae3f\",\"http:\/\/udb-silex.dev\/place\/63b0725c-e01c-483f-bbb2-176654bbe3b8\"]},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\"}",
     "isDuplicate": false,
-    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942"
+    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
+    "metadata": {
+        "popularity": 0
+    }
 }

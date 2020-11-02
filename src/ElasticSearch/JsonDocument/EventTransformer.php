@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PerformersTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedLocationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedProductionTransformer;
@@ -43,7 +44,8 @@ final class EventTransformer implements JsonTransformer
                 FallbackType::PLACE()
             ),
             new RelatedProductionTransformer(),
-            new PerformersTransformer()
+            new PerformersTransformer(),
+            new MetadataTransformer()
         );
 
         $this->geoInformationTransformer = new GeoInformationTransformer(OfferType::EVENT(), $offerRegionService);

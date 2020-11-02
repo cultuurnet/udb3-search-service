@@ -47,5 +47,8 @@
     "production": {
         "id": "fee0d853-0620-44d9-980d-35201e5a6026"
     },
-    "productionCollapseValue": "production-fee0d853-0620-44d9-980d-35201e5a6026"
+    "productionCollapseValue": "production-fee0d853-0620-44d9-980d-35201e5a6026",
+    "metadata": {
+        "popularity": 0
+    }
 }

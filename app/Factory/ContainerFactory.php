@@ -9,6 +9,7 @@ use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\EventBusProvider;
 use CultuurNet\UDB3\SearchService\HttpClientProvider;
+use CultuurNet\UDB3\SearchService\JsonDocumentFetcherProvider;
 use CultuurNet\UDB3\SearchService\LoggerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
@@ -50,6 +51,7 @@ class ContainerFactory
 
         $container->addServiceProvider(SentryHubServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
+        $container->addServiceProvider(JsonDocumentFetcherProvider::class);
         $container->addServiceProvider(OrganizerServiceProvider::class);
         $container->addServiceProvider(OfferServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);

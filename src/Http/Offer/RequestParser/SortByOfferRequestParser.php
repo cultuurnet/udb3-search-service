@@ -43,6 +43,9 @@ class SortByOfferRequestParser implements OfferRequestParserInterface
             'modified' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByModified($sortOrder);
             },
+            'popularity' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+                return $queryBuilder->withSortByPopularity($sortOrder);
+            },
         ];
 
         foreach ($sorts as $field => $order) {

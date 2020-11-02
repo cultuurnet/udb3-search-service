@@ -67,6 +67,9 @@ class PlaceTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'mediaObjectsCount' => 0,
+            'metadata' => [
+                'popularity' => 0,
+            ],
         ];
 
         $expectedLogs = [
@@ -273,6 +276,17 @@ class PlaceTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/place/original-with-duplicate-of.json',
             __DIR__ . '/data/place/indexed-duplicate.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_metadata(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-metadata.json',
+            __DIR__ . '/data/place/indexed-with-metadata.json'
         );
     }
 

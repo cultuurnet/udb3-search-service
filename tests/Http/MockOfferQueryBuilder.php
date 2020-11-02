@@ -360,6 +360,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withSortByPopularity(SortOrder $sortOrder)
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['popularity'] = (string) $sortOrder;
+        return $c;
+    }
+
     public function withGroupByProductionId()
     {
         $c = clone $this;

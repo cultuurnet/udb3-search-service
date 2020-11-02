@@ -399,6 +399,11 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
+    public function withSortByPopularity(SortOrder $sortOrder): OfferQueryBuilderInterface
+    {
+        return $this->withFieldSort('metadata.popularity', $sortOrder->toNative());
+    }
+
     public function withGroupByProductionId()
     {
         $c = clone $this;

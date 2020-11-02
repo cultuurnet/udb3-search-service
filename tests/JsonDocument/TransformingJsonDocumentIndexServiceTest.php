@@ -4,8 +4,6 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -13,9 +11,9 @@ use Psr\Log\LoggerInterface;
 class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
-     * @var ClientInterface|MockObject
+     * @var JsonDocumentFetcher|MockObject
      */
-    private $httpClient;
+    private $jsonDocumentFetcher;
 
     /**
      * @var DocumentRepository|MockObject
@@ -39,13 +37,13 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->jsonDocumentFetcher = $this->createMock(JsonDocumentFetcher::class);
         $this->searchRepository = $this->createMock(DocumentRepository::class);
         $this->transformer = $this->createMock(JsonTransformer::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->indexService = new TransformingJsonDocumentIndexService(
-            $this->httpClient,
+            $this->jsonDocumentFetcher,
             new JsonDocumentTransformer($this->transformer),
             $this->searchRepository
         );
@@ -62,14 +60,19 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
         $documentUrl = 'event/' . $documentId;
 
         $jsonLd = ['foo' => 'bar'];
+        $jsonDocument = (new JsonDocument($documentId))
+            ->withBody($jsonLd);
         $transformedJsonLd = ['foo' => 'baz'];
         $transformedJsonDocument = (new JsonDocument($documentId))
             ->withBody($transformedJsonLd);
 
-        $this->httpClient->expects($this->once())
-            ->method('request')
-            ->with('GET', $documentUrl)
-            ->willReturn(new Response(200, [], json_encode($jsonLd)));
+        $this->jsonDocumentFetcher->expects($this->once())
+            ->method('fetch')
+            ->with(
+                $documentId,
+                $documentUrl
+            )
+            ->willReturn($jsonDocument);
 
         $this->transformer->expects($this->once())
             ->method('transform')
@@ -79,35 +82,6 @@ class TransformingJsonDocumentIndexServiceTest extends TestCase
         $this->searchRepository->expects($this->once())
             ->method('save')
             ->with($transformedJsonDocument);
-
-        $this->indexService->index($documentId, $documentUrl);
-    }
-
-    /**
-     * @test
-     */
-    public function it_logs_an_error_when_the_jsonld_can_not_be_found(): void
-    {
-        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
-        $documentUrl = 'event/' . $documentId;
-
-        $response = new Response(404);
-
-        $this->httpClient->expects($this->once())
-            ->method('request')
-            ->with('GET', $documentUrl)
-            ->willReturn($response);
-
-        $this->logger->expects($this->once())
-            ->method('error')
-            ->with(
-                'Could not retrieve JSON-LD from url for indexation.',
-                [
-                    'id' => $documentId,
-                    'url' => $documentUrl,
-                    'response' => $response,
-                ]
-            );
 
         $this->indexService->index($documentId, $documentUrl);
     }

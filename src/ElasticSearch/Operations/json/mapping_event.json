@@ -449,6 +449,15 @@
             "type": "keyword"
         },
 
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "popularity": {
+                    "type": "integer"
+                }
+            }
+        },
+
         "originalEncodedJsonLd": {
             "type": "string",
             "index": "not_analyzed"
