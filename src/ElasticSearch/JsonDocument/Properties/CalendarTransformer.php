@@ -215,7 +215,7 @@ final class CalendarTransformer implements JsonTransformer
                     'endDate' => $subEventEndDate->format(DateTime::ATOM),
                     'status' => [
                         'type' => $subEventStatusType,
-                    ]
+                    ],
                 ];
             }
         }
