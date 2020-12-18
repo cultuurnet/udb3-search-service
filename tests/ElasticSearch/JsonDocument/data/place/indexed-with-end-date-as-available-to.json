@@ -6,6 +6,9 @@
     "dateRange": [
         {}
     ],
+    "availableDateRange": [
+        {}
+    ],
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"

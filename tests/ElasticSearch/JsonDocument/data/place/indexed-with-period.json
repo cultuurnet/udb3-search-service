@@ -9,6 +9,12 @@
             "lte": "2017-04-25T23:00:00+02:00"
         }
     ],
+    "availableDateRange": [
+        {
+            "gte": "2017-04-22T10:00:00+02:00",
+            "lte": "2017-04-25T23:00:00+02:00"
+        }
+    ],
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"
