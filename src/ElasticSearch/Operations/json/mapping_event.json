@@ -30,6 +30,18 @@
             "type": "date_range",
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
+        "availableDateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "unavailableDateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "temporarilyUnavailableDateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
 
         "calendarType": {
             "type": "string",
