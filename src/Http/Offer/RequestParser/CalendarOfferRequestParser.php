@@ -6,7 +6,6 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use ValueObjects\Number\Natural;
 
 class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
