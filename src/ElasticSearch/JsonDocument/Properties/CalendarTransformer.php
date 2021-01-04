@@ -56,11 +56,6 @@ final class CalendarTransformer implements JsonTransformer
 
         $from = $this->polyFillJsonLdSubEvents($from);
 
-        $dateRange = [];
-        $availableDateRange = [];
-        $unavailableDateRange = [];
-        $temporarilyUnavailableDateRange = [];
-
         if (isset($from['subEvent'])) {
             // Index each subEvent as a separate date range.
             $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
