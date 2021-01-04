@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -142,6 +143,34 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
     ) {
         $this->guardDateRange('date', $from, $to);
         return $this->withDateRangeQuery('dateRange', $from, $to);
+    }
+
+    public function withStatusFilter(Status ...$statuses)
+    {
+        return $this->withMultiValueMatchQuery(
+            'status',
+            array_map(
+                function (Status $status) {
+                    return $status->toNative();
+                },
+                $statuses
+            )
+        );
+    }
+
+    public function withStatusAwareDateRangeFilter(
+        \DateTimeImmutable $from = null,
+        \DateTimeImmutable $to = null,
+        Status ...$statuses
+    ) {
+        $this->guardDateRange('date', $from, $to);
+        $fieldNames = array_map(
+            function (Status $status) {
+                return lcfirst($status->toNative()) . 'DateRange';
+            },
+            $statuses
+        );
+        return $this->withMultiFieldDateRangeQuery($fieldNames, $from, $to);
     }
 
     public function withCalendarTypeFilter(CalendarType ...$calendarTypes)

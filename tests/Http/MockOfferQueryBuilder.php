@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -132,6 +133,38 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['dateRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
         $c->mockQuery['dateRange']['to'] = $to ? $to->format(DATE_ATOM) : null;
+        return $c;
+    }
+
+    public function withStatusFilter(Status ...$statuses)
+    {
+        if (empty($statuses)) {
+            return $this;
+        }
+
+        $c = clone $this;
+        $c->mockQuery['status'] = array_map(
+            function (Status $status) {
+                return (string) $status;
+            },
+            $statuses
+        );
+        return $c;
+    }
+
+    public function withStatusAwareDateRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null, Status ...$statuses)
+    {
+        if (empty($statuses)) {
+            return $this;
+        }
+
+        $c = clone $this;
+
+        foreach ($statuses as $status) {
+            $c->mockQuery['dateRange'][$status->toNative()]['from'] = $from ? $from->format(DATE_ATOM) : null;
+            $c->mockQuery['dateRange'][$status->toNative()]['to'] = $to ? $to->format(DATE_ATOM) : null;
+        }
+
         return $c;
     }
 
