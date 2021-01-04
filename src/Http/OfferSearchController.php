@@ -266,17 +266,6 @@ class OfferSearchController
             $queryBuilder = $queryBuilder->withModifiedRangeFilter($modifiedFrom, $modifiedTo);
         }
 
-        $calendarTypes = $this->getCalendarTypesFromQuery($parameterBag);
-        if (!empty($calendarTypes)) {
-            $queryBuilder = $queryBuilder->withCalendarTypeFilter(...$calendarTypes);
-        }
-
-        $dateFrom = $parameterBag->getDateTimeFromParameter('dateFrom');
-        $dateTo = $parameterBag->getDateTimeFromParameter('dateTo');
-        if ($dateFrom || $dateTo) {
-            $queryBuilder = $queryBuilder->withDateRangeFilter($dateFrom, $dateTo);
-        }
-
         $termIds = $this->getTermIdsFromQuery($parameterBag, 'termIds');
         foreach ($termIds as $termId) {
             $queryBuilder = $queryBuilder->withTermIdFilter($termId);
@@ -434,21 +423,6 @@ class OfferSearchController
             $queryParameter,
             function ($value) {
                 return new RegionId($value);
-            }
-        );
-    }
-
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @return CalendarType[]
-     */
-    private function getCalendarTypesFromQuery(ParameterBagInterface $parameterBag)
-    {
-        return $parameterBag->getExplodedStringFromParameter(
-            'calendarType',
-            null,
-            function ($calendarType) {
-                return new CalendarType($calendarType);
             }
         );
     }
