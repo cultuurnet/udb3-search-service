@@ -70,6 +70,7 @@ class PlaceTransformerTest extends TestCase
             'metadata' => [
                 'popularity' => 0,
             ],
+            'status' => 'Available',
         ];
 
         $expectedLogs = [

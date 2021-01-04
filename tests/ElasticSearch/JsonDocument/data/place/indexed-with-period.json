@@ -15,6 +15,7 @@
             "lte": "2017-04-25T23:00:00+02:00"
         }
     ],
+    "status": "Available",
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"

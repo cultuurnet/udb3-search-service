@@ -2287,6 +2287,7 @@
             "lte": "2017-06-30T18:00:00+02:00"
         }
     ],
+    "status": "Available",
     "workflowStatus": "DRAFT",
     "availableTo": "2017-04-25T23:00:00+02:00",
     "name": {

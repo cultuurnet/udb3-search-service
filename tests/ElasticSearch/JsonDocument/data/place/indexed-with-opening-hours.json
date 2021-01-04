@@ -1879,6 +1879,7 @@
             "lte": "2018-05-07T09:17:00+02:00"
         }
     ],
+    "status": "Available",
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"
