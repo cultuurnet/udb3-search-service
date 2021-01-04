@@ -56,6 +56,12 @@ final class CalendarTransformer implements JsonTransformer
 
         $from = $this->polyFillJsonLdSubEvents($from);
 
+        // The document should either have subEvents or a "permanent" calendar type.
+        if (!isset($from['subEvent']) && $from['calendarType'] !== 'permanent') {
+            $this->logger->logMissingExpectedField('subEvent');
+            return $draft;
+        }
+
         if (isset($from['subEvent'])) {
             // Index each subEvent as a separate date range.
             $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
@@ -74,7 +80,7 @@ final class CalendarTransformer implements JsonTransformer
                 $this->filterSubEventsByStatusType($from['subEvent'], 'TemporarilyUnavailable'),
                 true
             );
-        } elseif (!isset($from['subEvent']) && $from['calendarType'] === 'permanent') {
+        } else {
             // Index a single range without any bounds.
             $dateRange = [new stdClass()];
 
@@ -83,9 +89,6 @@ final class CalendarTransformer implements JsonTransformer
             $availableDateRange = $status === self::STATUS_AVAILABLE ? [new stdClass()] : [];
             $unavailableDateRange = $status === self::STATUS_UNAVAILABLE ? [new stdClass()] : [];
             $temporarilyUnavailableDateRange = $status === self::STATUS_TEMPORARILY_UNAVAILABLE ? [new stdClass()] : [];
-        } else {
-            $this->logger->logMissingExpectedField('subEvent');
-            return $draft;
         }
 
         $ranges = array_filter(
