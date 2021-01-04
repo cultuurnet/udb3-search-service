@@ -152,8 +152,11 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStatusAwareDateRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null, Status ...$statuses)
-    {
+    public function withStatusAwareDateRangeFilter(
+        \DateTimeImmutable $from = null,
+        \DateTimeImmutable $to = null,
+        Status ...$statuses
+    ) {
         if (empty($statuses)) {
             return $this;
         }
