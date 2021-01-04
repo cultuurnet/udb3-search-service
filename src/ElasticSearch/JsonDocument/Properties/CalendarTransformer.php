@@ -328,6 +328,6 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         // If there's still no status found assume it's Available.
-        return 'Available';
+        return self::STATUS_AVAILABLE;
     }
 }
