@@ -270,6 +270,17 @@ class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_unavailable_date_ranges_from_sub_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-unavailable-dates.json',
+            __DIR__ . '/data/event/indexed-with-unavailable-dates.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_typical_age_range_for_everyone_to_all_ages_true(): void
     {
         $this->transformAndAssert(
