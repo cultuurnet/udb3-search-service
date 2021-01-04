@@ -49,6 +49,9 @@ final class CalendarTransformer implements JsonTransformer
 
     private function transformDateRange(array $from, array $draft): array
     {
+        $status = $this->determineStatus($from);
+        $draft['status'] = $status;
+
         if (!isset($from['calendarType'])) {
             // Logged in transformCalendarType().
             return $draft;
@@ -85,7 +88,6 @@ final class CalendarTransformer implements JsonTransformer
             $dateRange = [new stdClass()];
 
             // Index a single range without any bounds for the status of the event/place.
-            $status = $this->determineStatus($from);
             $availableDateRange = $status === self::STATUS_AVAILABLE ? [new stdClass()] : [];
             $unavailableDateRange = $status === self::STATUS_UNAVAILABLE ? [new stdClass()] : [];
             $temporarilyUnavailableDateRange = $status === self::STATUS_TEMPORARILY_UNAVAILABLE ? [new stdClass()] : [];
