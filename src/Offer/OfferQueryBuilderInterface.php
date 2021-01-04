@@ -112,7 +112,7 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     );
 
     /**
-     * @param Status ...$status
+     * @param Status ...$statuses
      * @return static
      */
     public function withStatusFilter(Status ...$statuses);
@@ -120,7 +120,7 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     /**
      * @param \DateTimeImmutable|null $from
      * @param \DateTimeImmutable|null $to
-     * @param Status ...$status
+     * @param Status ...$statuses
      * @return static
      */
     public function withStatusAwareDateRangeFilter(
