@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
+use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -546,6 +547,120 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                                 'dateRange' => [
                                     'gte' => '2017-04-25T00:00:00+00:00',
                                     'lte' => '2017-05-01T23:59:59+00:00',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_query_with_a_complete_date_range_filter_for_multiple_statuses(): void
+    {
+        /* @var ElasticSearchOfferQueryBuilder $builder */
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withStatusAwareDateRangeFilter(
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'),
+                Status::TEMPORARILY_UNAVAILABLE(),
+                Status::UNAVAILABLE()
+            );
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'temporarilyUnavailableDateRange' => [
+                                                'gte' => '2017-04-25T00:00:00+00:00',
+                                                'lte' => '2017-05-01T23:59:59+00:00',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'unavailableDateRange' => [
+                                                'gte' => '2017-04-25T00:00:00+00:00',
+                                                'lte' => '2017-05-01T23:59:59+00:00',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
+    {
+        /* @var ElasticSearchOfferQueryBuilder $builder */
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withStatusFilter(
+                Status::TEMPORARILY_UNAVAILABLE(),
+                Status::UNAVAILABLE()
+            );
+
+        $expectedQueryArray = [
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'status' => [
+                                                'query' => 'TemporarilyUnavailable',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'status' => [
+                                                'query' => 'Unavailable',
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
