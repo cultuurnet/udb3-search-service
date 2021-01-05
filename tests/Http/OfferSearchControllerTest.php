@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
+use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -181,6 +182,7 @@ class OfferSearchControllerTest extends TestCase
                 'calendarType' => 'single',
                 'dateFrom' => '2017-05-01T00:00:00+01:00',
                 'dateTo' => '2017-05-01T23:59:59+01:00',
+                'status' => 'Unavailable,TemporarilyUnavailable',
                 'createdFrom' => '2017-05-01T13:33:37+01:00',
                 'createdTo' => '2017-05-01T13:33:37+01:00',
                 'modifiedFrom' => '2017-05-01T13:33:37+01:00',
@@ -291,9 +293,11 @@ class OfferSearchControllerTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00')
             )
             ->withCalendarTypeFilter(new CalendarType('single'))
-            ->withDateRangeFilter(
+            ->withStatusAwareDateRangeFilter(
                 \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00')
+                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'),
+                Status::UNAVAILABLE(),
+                Status::TEMPORARILY_UNAVAILABLE()
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))
@@ -932,6 +936,67 @@ class OfferSearchControllerTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when sorting by distance.');
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_for_an_unknown_status(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(['status' => 'Available,Foo']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unknown status value "Foo"');
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_a_status_filter_only_if_no_date_from_or_date_to_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'status' => 'Available',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStatusFilter(Status::AVAILABLE());
+
+        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_a_date_range_filter_only_if_no_status_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'dateFrom' => '2017-05-01T00:00:00+01:00',
+                'dateTo' => '2017-05-01T23:59:59+01:00',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withDateRangeFilter(
+                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
+                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00')
+            );
+
+        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
