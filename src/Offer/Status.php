@@ -5,9 +5,9 @@ namespace CultuurNet\UDB3\Search\Offer;
 use ValueObjects\Enum\Enum;
 
 /**
- * @method Status AVAILABLE()
- * @method Status UNAVAILABLE()
- * @method Status TEMPORARILY_UNAVAILABLE()
+ * @method static Status AVAILABLE()
+ * @method static Status UNAVAILABLE()
+ * @method static Status TEMPORARILY_UNAVAILABLE()
  */
 class Status extends Enum
 {
