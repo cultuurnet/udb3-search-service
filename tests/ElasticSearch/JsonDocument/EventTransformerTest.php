@@ -82,6 +82,7 @@ class EventTransformerTest extends TestCase
             'metadata' => [
                 'popularity' => 0,
             ],
+            'status' => 'Available',
         ];
 
         $expectedLogs = [
@@ -264,6 +265,28 @@ class EventTransformerTest extends TestCase
                 ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
                 ['warning', 'Missing expected field \'creator\'.', []],
             ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_unavailable_date_ranges_from_sub_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-unavailable-dates.json',
+            __DIR__ . '/data/event/indexed-with-unavailable-dates.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_unavailable_status(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-unavailable-status.json',
+            __DIR__ . '/data/event/indexed-with-unavailable-status.json'
         );
     }
 

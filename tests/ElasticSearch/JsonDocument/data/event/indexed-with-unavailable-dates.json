@@ -21,11 +21,15 @@
         {
             "gte": "2017-04-30T00:00:00+02:00",
             "lte": "2017-04-30T00:00:00+02:00"
-        },
+        }
+    ],
+    "unavailableDateRange": [
         {
             "gte": "2017-05-01T00:00:00+02:00",
             "lte": "2017-05-01T00:00:00+02:00"
-        },
+        }
+    ],
+    "temporarilyUnavailableDateRange": [
         {
             "gte": "2017-05-07T00:00:00+02:00",
             "lte": "2017-05-07T00:00:00+02:00"
@@ -64,7 +68,8 @@
         }
     },
     "created": "2017-04-22T13:33:37+02:00",
-    "originalEncodedJsonLd": "{\"@id\":\"http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"multiple\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\",\"availableTo\":\"2017-05-07T00:00:00+02:00\",\"subEvent\":[{\"@type\":\"Event\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-04-30T00:00:00+02:00\"},{\"@type\":\"Event\",\"startDate\":\"2017-05-01T00:00:00+02:00\",\"endDate\":\"2017-05-01T00:00:00+02:00\"},{\"@type\":\"Event\",\"startDate\":\"2017-05-07T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\"}],\"location\":{\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\"}",
+    "creator": "test",
+    "originalEncodedJsonLd": "{\"@id\":\"http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"multiple\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\",\"availableTo\":\"2017-05-07T00:00:00+02:00\",\"subEvent\":[{\"@type\":\"Event\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-04-30T00:00:00+02:00\",\"status\":{\"type\":\"Available\"}},{\"@type\":\"Event\",\"startDate\":\"2017-05-01T00:00:00+02:00\",\"endDate\":\"2017-05-01T00:00:00+02:00\",\"status\":{\"type\":\"Unavailable\"}},{\"@type\":\"Event\",\"startDate\":\"2017-05-07T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\",\"status\":{\"type\":\"TemporarilyUnavailable\"}}],\"location\":{\"@id\":\"http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"test\"}",
     "isDuplicate": false,
     "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
     "metadata": {

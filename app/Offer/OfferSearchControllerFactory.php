@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
@@ -76,6 +77,7 @@ class OfferSearchControllerFactory
     ) {
         $requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
+            ->withParser(new CalendarOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GeoBoundsOfferRequestParser())

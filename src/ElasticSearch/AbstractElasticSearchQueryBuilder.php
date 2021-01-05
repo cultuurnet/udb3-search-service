@@ -257,6 +257,40 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
      */
     protected function withRangeQuery($fieldName, $from = null, $to = null)
     {
+        $rangeQuery = $this->createRangeQuery($fieldName, $from, $to);
+        if (!$rangeQuery) {
+            return $this;
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
+        return $c;
+    }
+
+    /**
+     * @param string[] $fieldNames
+     * @param string|int|float|null $from
+     * @param string|int|float|null $to
+     * @return static
+     */
+    protected function withMultiFieldRangeQuery(array $fieldNames, $from = null, $to = null)
+    {
+        $nestedBoolQuery = new BoolQuery();
+
+        foreach ($fieldNames as $fieldName) {
+            $rangeQuery = $this->createRangeQuery($fieldName, $from, $to);
+            if ($rangeQuery) {
+                $nestedBoolQuery->add($rangeQuery, BoolQuery::SHOULD);
+            }
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($nestedBoolQuery, BoolQuery::FILTER);
+        return $c;
+    }
+
+    private function createRangeQuery(string $fieldName, $from = null, $to = null): ?RangeQuery
+    {
         $parameters = array_filter(
             [
                 RangeQuery::GTE => $from,
@@ -268,14 +302,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         );
 
         if (empty($parameters)) {
-            return $this;
+            return null;
         }
 
-        $rangeQuery = new RangeQuery($fieldName, $parameters);
-
-        $c = $this->getClone();
-        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
-        return $c;
+        return new RangeQuery($fieldName, $parameters);
     }
 
     /**
@@ -288,6 +318,24 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     {
         return $this->withRangeQuery(
             $fieldName,
+            is_null($from) ? null : $from->format(\DateTime::ATOM),
+            is_null($to) ? null : $to->format(\DateTime::ATOM)
+        );
+    }
+
+    /**
+     * @param string[] $fieldNames
+     * @param \DateTimeImmutable|null $from
+     * @param \DateTimeImmutable|null $to
+     * @return static
+     */
+    protected function withMultiFieldDateRangeQuery(
+        array $fieldNames,
+        \DateTimeImmutable $from = null,
+        \DateTimeImmutable $to = null
+    ) {
+        return $this->withMultiFieldRangeQuery(
+            $fieldNames,
             is_null($from) ? null : $from->format(\DateTime::ATOM),
             is_null($to) ? null : $to->format(\DateTime::ATOM)
         );

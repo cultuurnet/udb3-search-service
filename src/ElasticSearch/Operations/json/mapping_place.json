@@ -26,7 +26,25 @@
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
 
+        "status": {
+            "type": "string",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
         "dateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "availableDateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "unavailableDateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "temporarilyUnavailableDateRange": {
             "type": "date_range",
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },

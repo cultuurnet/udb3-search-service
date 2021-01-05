@@ -3,6 +3,7 @@
     "@type": "Event",
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "multiple",
+    "status": "Available",
     "workflowStatus": "DRAFT",
     "availableTo": "2017-05-07T00:00:00+02:00",
     "name": {
