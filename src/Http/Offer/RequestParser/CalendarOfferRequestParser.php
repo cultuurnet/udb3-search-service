@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
+use InvalidArgumentException;
 
 class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
@@ -22,7 +23,11 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
             'status',
             null,
             function (string $status) {
-                return Status::fromNative($status);
+                try {
+                    return Status::fromNative($status);
+                } catch (InvalidArgumentException $e) {
+                    throw new InvalidArgumentException('Unknown status value "' . $status . '"');
+                }
             }
         );
         $dateFrom = $parameterBagReader->getDateTimeFromParameter('dateFrom');
