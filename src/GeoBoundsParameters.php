@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
 class GeoBoundsParameters
 {

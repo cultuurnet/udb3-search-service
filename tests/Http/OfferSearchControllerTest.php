@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\Geocoding\Coordinate\Latitude;
-use CultuurNet\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
