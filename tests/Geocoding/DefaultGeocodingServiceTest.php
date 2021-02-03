@@ -2,9 +2,9 @@
 
 namespace CultuurNet\UDB3\Search\Geocoding;
 
-use CultuurNet\Geocoding\Coordinate\Coordinates;
-use CultuurNet\Geocoding\Coordinate\Latitude;
-use CultuurNet\Geocoding\Coordinate\Longitude;
+use Cultuurnet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use Cultuurnet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use Cultuurnet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use Geocoder\Exception\NoResultException;
 use Geocoder\GeocoderInterface;
 use Geocoder\Result\Geocoded;
