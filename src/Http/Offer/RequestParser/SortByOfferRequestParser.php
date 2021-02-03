@@ -2,7 +2,7 @@
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
-use Cultuurnet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
