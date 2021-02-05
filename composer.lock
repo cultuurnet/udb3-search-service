@@ -4,58 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d539a695bb68004a5091480c863f9d88",
+    "content-hash": "93924e46fcec1a6177e9df6218c68f2c",
     "packages": [
-        {
-            "name": "2dotstwice/collection",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2dotstwice/php-collection.git",
-                "reference": "d681e91e6441b68e6abad4f2634cda869cefafc9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2dotstwice/php-collection/zipball/d681e91e6441b68e6abad4f2634cda869cefafc9",
-                "reference": "d681e91e6441b68e6abad4f2634cda869cefafc9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/php-token-stream": "1.4.6",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "TwoDotsTwice\\Collection\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Bert Ramakers",
-                    "email": "bert@2dotstwice.be",
-                    "homepage": "http://2dotstwice.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": " Library for creating collection classes with strict typing.",
-            "time": "2015-12-16T09:28:40+00:00"
-        },
         {
             "name": "beberlei/assert",
             "version": "v2.7.6",
@@ -795,52 +745,6 @@
             ],
             "description": "Authentication service for CultuurNet web services",
             "time": "2018-04-23T12:11:11+00:00"
-        },
-        {
-            "name": "cultuurnet/broadway-amqp",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/broadway-amqp.git",
-                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/broadway-amqp/zipball/743ce678f246acc5309f102feda9eb14ebd1d6a3",
-                "reference": "743ce678f246acc5309f102feda9eb14ebd1d6a3",
-                "shasum": ""
-            },
-            "require": {
-                "2dotstwice/collection": "~1.1",
-                "broadway/broadway": "~0.10",
-                "cultuurnet/deserializer": "~0.1",
-                "cultuurnet/valueobjects": "~3.0",
-                "php-amqplib/php-amqplib": "2.6.*",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.11",
-                "php-coveralls/php-coveralls": "^2.1",
-                "phpunit/phpunit": "^7.5",
-                "squizlabs/php_codesniffer": "2.6.1"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\BroadwayAMQP\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "AMQP integration for Broadway library",
-            "time": "2019-08-29T07:58:48+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -3736,16 +3640,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.1.0",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
-                "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": ""
             },
             "require": {
@@ -3754,7 +3658,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -3779,7 +3683,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "psr/simple-cache",
@@ -6900,6 +6804,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-07-25T05:29:42+00:00"
         },
         {
@@ -7993,12 +7898,12 @@
             "version": "1.4.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webmozart/assert.git",
+                "url": "https://github.com/webmozarts/assert.git",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "reference": "83e253c8e0be5b0257b881e1827274667c5c17a9",
                 "shasum": ""
             },
