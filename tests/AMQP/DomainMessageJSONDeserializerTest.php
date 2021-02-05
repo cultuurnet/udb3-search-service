@@ -31,7 +31,7 @@ class DomainMessageJSONDeserializerTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            'Class \'CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable\' does not implement ' .
+            'Class \'CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable\' does not implement ' .
             'Broadway\Serializer\SerializableInterface'
         );
 
