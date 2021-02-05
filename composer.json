@@ -15,7 +15,6 @@
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/auth": "~3.0",
-        "cultuurnet/broadway-amqp": "~0.1",
         "cultuurnet/culturefeed-php": "~1.9.2",
         "cultuurnet/deserializer": "~0.1",
         "cultuurnet/hydra": "~0.1",
