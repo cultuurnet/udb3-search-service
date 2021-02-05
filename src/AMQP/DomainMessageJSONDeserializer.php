@@ -15,7 +15,7 @@ class DomainMessageJSONDeserializer extends JSONDeserializer
      * Fully qualified class name of the payload. This class should implement
      * Broadway\Serializer\SerializableInterface.
      *
-     * @var $payloadClass
+     * @var string
      */
     private $payloadClass;
 
