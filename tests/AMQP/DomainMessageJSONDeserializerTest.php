@@ -17,7 +17,7 @@ class DomainMessageJSONDeserializerTest extends TestCase
      */
     protected $domainMessageJSONDeserializer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->domainMessageJSONDeserializer = new DomainMessageJSONDeserializer(
             DummyEvent::class
