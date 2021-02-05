@@ -77,7 +77,7 @@ class EventBusForwardingConsumerTest extends TestCase
     private $deserializer;
 
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->connection = $this->createMock(AMQPStreamConnection::class);
 
