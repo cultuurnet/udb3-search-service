@@ -11,7 +11,7 @@ use Whoops\Exception\Inspector;
 /**
  * Decorates a PSR logger to also send all errors and emergencies that contain a Throwable in their context (in an
  * "exception" key) to Sentry.
- * Originally written to send error/emergency logs written by CultuurNet\BroadwayAMQP\AbstractConsumer
+ * Originally written to send error/emergency logs written by CultuurNet\UDB3\Search\AMQP\AbstractConsumer
  * (i.e. all AMQP consumers) to Sentry.
  */
 final class SentryPsrLoggerDecorator implements LoggerInterface

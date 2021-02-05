@@ -1,12 +1,12 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP;
+namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEvent;
-use CultuurNet\BroadwayAMQP\Dummies\DummyEventNotSerializable;
+use CultuurNet\UDB3\Search\AMQP\Dummies\DummyEvent;
+use CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 

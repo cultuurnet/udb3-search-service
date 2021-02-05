@@ -2,10 +2,7 @@
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\BroadwayAMQP\ConsumerInterface;
-use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
-use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
-use League\Container\Container;
+use CultuurNet\UDB3\Search\AMQP\ConsumerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use RuntimeException;

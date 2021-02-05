@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP\Dummies;
+namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
 class DummyEventNotSerializable
 {

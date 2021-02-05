@@ -1,6 +1,6 @@
 <?php
 
-namespace CultuurNet\BroadwayAMQP;
+namespace CultuurNet\UDB3\Search\AMQP;
 
 use CultuurNet\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\Deserializer\DeserializerNotFoundException;
