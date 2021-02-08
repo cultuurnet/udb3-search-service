@@ -55,30 +55,14 @@ final class CalendarTransformer implements JsonTransformer
 
         $from = $this->polyFillJsonLdSubEvents($from);
 
-        // The document should either have subEvents or a "permanent" calendar type.
-        if (!isset($from['subEvent']) && $from['calendarType'] !== 'permanent') {
+        if (!isset($from['subEvent'])) {
             $this->logger->logMissingExpectedField('subEvent');
             return $draft;
         }
 
-        if (isset($from['subEvent'])) {
-            // Index each subEvent as a separate date range.
-            $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
-        } else {
-            // Index a single range without any bounds.
-            $dateRange = [new stdClass()];
-        }
+        $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
 
-        $ranges = array_filter(
-            [
-                'dateRange' => $dateRange,
-            ],
-            function (array $values) {
-                return count($values);
-            }
-        );
-
-        $draft = array_merge($draft, $ranges);
+        $draft['dateRange'] = $dateRange;
 
         return $draft;
     }
@@ -117,6 +101,16 @@ final class CalendarTransformer implements JsonTransformer
                 if (isset($from['openingHours'])) {
                     return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
                 }
+                $from['subEvent'] = [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => null,
+                        'endDate' => null,
+                        'status' => [
+                            'type' => $this->determineStatus($from),
+                        ],
+                    ],
+                ];
                 return $from;
                 break;
 
@@ -259,19 +253,26 @@ final class CalendarTransformer implements JsonTransformer
         );
     }
 
-    private function convertSubEventsToDateRanges(array $subEvents, bool $disableLogging = false): array
+    private function convertSubEventsToDateRanges(array $subEvents): array
     {
         $dateRanges = [];
-        $logger = $disableLogging ? new JsonTransformerPsrLogger(new NullLogger()) : $this->logger;
 
         foreach ($subEvents as $index => $subEvent) {
-            if (!isset($subEvent['startDate'])) {
-                $logger->logMissingExpectedField("subEvent[{$index}].startDate");
+            if (!array_key_exists('startDate', $subEvent)) {
+                $this->logger->logMissingExpectedField("subEvent[{$index}].startDate");
                 continue;
             }
 
-            if (!isset($subEvent['endDate'])) {
-                $logger->logMissingExpectedField("subEvent[{$index}].endDate");
+            if (!array_key_exists('endDate', $subEvent)) {
+                $this->logger->logMissingExpectedField("subEvent[{$index}].endDate");
+                continue;
+            }
+
+            if ($subEvent['startDate'] === null && $subEvent['endDate'] === null) {
+                // If there's neither a startDate or endDate we should not send a gte or lte to Elasticsearch, but we do
+                // need to index an empty object. If we use [] instead of stdClass, it gets converted to an empty array
+                // in JSON because it has no keys, while we need an empty object like {}.
+                $dateRanges[] = new stdClass();
                 continue;
             }
 
