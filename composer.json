@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": ">=7.1",
+        "ext-json": "*",
         "broadway/broadway": "~0.10",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
