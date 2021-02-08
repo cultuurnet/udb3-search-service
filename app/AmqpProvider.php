@@ -3,9 +3,9 @@
 namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBusInterface;
-use CultuurNet\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Search\AMQP\DomainMessageJSONDeserializer;
 use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Search\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;

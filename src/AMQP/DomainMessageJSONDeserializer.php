@@ -6,7 +6,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Search\Deserializer\JSONDeserializer;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class DomainMessageJSONDeserializer extends JSONDeserializer
