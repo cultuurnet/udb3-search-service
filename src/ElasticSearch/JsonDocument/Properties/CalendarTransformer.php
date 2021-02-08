@@ -62,7 +62,11 @@ final class CalendarTransformer implements JsonTransformer
 
         $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
 
-        $draft['dateRange'] = $dateRange;
+        // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
+        // still possible we end up without date ranges.
+        if (!empty($dateRange)) {
+            $draft['dateRange'] = $dateRange;
+        }
 
         return $draft;
     }
