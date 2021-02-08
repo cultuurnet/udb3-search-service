@@ -26,17 +26,11 @@ class PagedCollection implements JsonSerializable
      */
     private $totalItems;
 
-    /**
-     * @param int $pageNumber
-     * @param int $itemsPerPage
-     * @param array $members
-     * @param int $totalItems
-     */
     public function __construct(
-        $pageNumber,
-        $itemsPerPage,
+        int $pageNumber,
+        int $itemsPerPage,
         array $members,
-        $totalItems
+        int $totalItems
     ) {
         $this->setPageNumber($pageNumber);
         $this->setItemsPerpage($itemsPerPage);
@@ -44,7 +38,7 @@ class PagedCollection implements JsonSerializable
         $this->setTotalItems($totalItems);
     }
 
-    private function setPageNumber($pageNumber)
+    private function setPageNumber(int $pageNumber): void
     {
         if (!is_int($pageNumber)) {
             throw new \InvalidArgumentException(
@@ -54,18 +48,12 @@ class PagedCollection implements JsonSerializable
         $this->pageNumber = $pageNumber;
     }
 
-    /**
-     * @return int
-     */
-    public function getPageNumber()
+    public function getPageNumber(): int
     {
         return $this->pageNumber;
     }
 
-    /**
-     * @param int $totalItems
-     */
-    private function setTotalItems($totalItems)
+    private function setTotalItems(int $totalItems): void
     {
         if (!is_int($totalItems)) {
             throw new \InvalidArgumentException(
@@ -75,18 +63,12 @@ class PagedCollection implements JsonSerializable
         $this->totalItems = $totalItems;
     }
 
-    /**
-     * @return int
-     */
-    public function getTotalItems()
+    public function getTotalItems(): int
     {
         return $this->totalItems;
     }
 
-    /**
-     * @param int $itemsPerPage
-     */
-    private function setItemsPerPage($itemsPerPage)
+    private function setItemsPerPage(int $itemsPerPage): void
     {
         if (!is_int($itemsPerPage)) {
             throw new \InvalidArgumentException(
@@ -96,37 +78,24 @@ class PagedCollection implements JsonSerializable
         $this->itemsPerPage = $itemsPerPage;
     }
 
-    /**
-     * @return int
-     */
-    public function getItemsPerPage()
+    public function getItemsPerPage(): int
     {
         return $this->itemsPerPage;
     }
 
-    /**
-     * @return array
-     */
-    public function getMembers()
+    public function getMembers(): array
     {
         return $this->members;
     }
 
-    /**
-     * @param array $members
-     * @return PagedCollection
-     */
-    public function withMembers(array $members)
+    public function withMembers(array $members): PagedCollection
     {
         $c = clone $this;
         $c->members = $members;
         return $c;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         $data = [
             '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
@@ -136,7 +105,7 @@ class PagedCollection implements JsonSerializable
             'member' => $this->getMembers(),
         ];
 
-        return array_filter($data, function ($item) {
+        return array_filter($data, static function ($item) {
             return null !== $item;
         });
     }
