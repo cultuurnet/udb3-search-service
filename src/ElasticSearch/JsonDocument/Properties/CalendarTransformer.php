@@ -15,10 +15,6 @@ use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
 {
-    private const STATUS_AVAILABLE = 'Available';
-    private const STATUS_UNAVAILABLE = 'Unavailable';
-    private const STATUS_TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
-
     /**
      * @var JsonTransformerLogger
      */
@@ -68,37 +64,14 @@ final class CalendarTransformer implements JsonTransformer
         if (isset($from['subEvent'])) {
             // Index each subEvent as a separate date range.
             $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
-
-            // Index each subEvent as a separate date range in the correct collection of date ranges for the subEvent's
-            // status.
-            $availableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'Available'),
-                true
-            );
-            $unavailableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'Unavailable'),
-                true
-            );
-            $temporarilyUnavailableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'TemporarilyUnavailable'),
-                true
-            );
         } else {
             // Index a single range without any bounds.
             $dateRange = [new stdClass()];
-
-            // Index a single range without any bounds for the status of the event/place.
-            $availableDateRange = $status === self::STATUS_AVAILABLE ? [new stdClass()] : [];
-            $unavailableDateRange = $status === self::STATUS_UNAVAILABLE ? [new stdClass()] : [];
-            $temporarilyUnavailableDateRange = $status === self::STATUS_TEMPORARILY_UNAVAILABLE ? [new stdClass()] : [];
         }
 
         $ranges = array_filter(
             [
                 'dateRange' => $dateRange,
-                'availableDateRange' => $availableDateRange,
-                'unavailableDateRange' => $unavailableDateRange,
-                'temporarilyUnavailableDateRange' => $temporarilyUnavailableDateRange,
             ],
             function (array $values) {
                 return count($values);
@@ -330,6 +303,6 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         // If there's still no status found assume it's Available.
-        return self::STATUS_AVAILABLE;
+        return 'Available';
     }
 }
