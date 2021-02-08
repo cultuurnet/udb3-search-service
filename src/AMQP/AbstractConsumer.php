@@ -2,8 +2,8 @@
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
-use CultuurNet\Deserializer\DeserializerLocatorInterface;
-use CultuurNet\Deserializer\DeserializerNotFoundException;
+use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
