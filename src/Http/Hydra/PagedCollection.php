@@ -27,11 +27,6 @@ class PagedCollection implements JsonSerializable
     private $totalItems;
 
     /**
-     * @var PageUrlGenerator
-     */
-    private $pageUrlGenerator;
-
-    /**
      * @var int
      */
     private $firstPageNumber = 1;
@@ -41,23 +36,18 @@ class PagedCollection implements JsonSerializable
      * @param int $itemsPerPage
      * @param array $members
      * @param int $totalItems
-     * @param PageUrlGenerator $pageUrlGenerator
-     * @param bool $zeroBasedNumbering
      */
     public function __construct(
         $pageNumber,
         $itemsPerPage,
         array $members,
-        $totalItems,
-        PageUrlGenerator $pageUrlGenerator = null,
-        $zeroBasedNumbering = false
+        $totalItems
     ) {
         $this->setPageNumber($pageNumber);
         $this->setItemsPerpage($itemsPerPage);
         $this->members = $members;
         $this->setTotalItems($totalItems);
-        $this->pageUrlGenerator = $pageUrlGenerator;
-        $this->setZeroBasedNumbering($zeroBasedNumbering);
+        $this->setZeroBasedNumbering(false);
     }
 
     /**
