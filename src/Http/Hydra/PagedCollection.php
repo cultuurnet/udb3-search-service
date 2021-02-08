@@ -27,11 +27,6 @@ class PagedCollection implements JsonSerializable
     private $totalItems;
 
     /**
-     * @var int
-     */
-    private $firstPageNumber = 1;
-
-    /**
      * @param int $pageNumber
      * @param int $itemsPerPage
      * @param array $members
@@ -47,16 +42,6 @@ class PagedCollection implements JsonSerializable
         $this->setItemsPerpage($itemsPerPage);
         $this->members = $members;
         $this->setTotalItems($totalItems);
-        $this->setZeroBasedNumbering(false);
-    }
-
-    /**
-     * @param bool $enable
-     *   enable or disable zero based numbering
-     */
-    private function setZeroBasedNumbering($enable)
-    {
-        $this->firstPageNumber = $enable ? 0 : 1;
     }
 
     private function setPageNumber($pageNumber)
