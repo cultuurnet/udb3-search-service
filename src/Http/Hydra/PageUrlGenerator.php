@@ -1,9 +1,6 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\Hydra;
+namespace CultuurNet\UDB3\Search\Http\Hydra;
 
 interface PageUrlGenerator
 {

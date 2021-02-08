@@ -1,11 +1,10 @@
 <?php
-/**
- * @file
- */
 
-namespace CultuurNet\Hydra;
+namespace CultuurNet\UDB3\Search\Http\Hydra;
 
-class PagedCollection implements \JsonSerializable
+use JsonSerializable;
+
+class PagedCollection implements JsonSerializable
 {
     /**
      * @var int
