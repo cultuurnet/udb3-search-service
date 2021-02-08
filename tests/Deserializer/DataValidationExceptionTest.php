@@ -13,7 +13,7 @@ class DataValidationExceptionTest extends TestCase
     {
         $messages = [
             'Field foo should not be empty.',
-            'Field bar should be an integer, string given.'
+            'Field bar should be an integer, string given.',
         ];
 
         $exception = new DataValidationException();
