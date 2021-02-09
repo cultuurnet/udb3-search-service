@@ -15,6 +15,8 @@ use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
 {
+    private const STATUS_AVAILABLE = 'Available';
+
     /**
      * @var JsonTransformerLogger
      */
@@ -27,39 +29,35 @@ final class CalendarTransformer implements JsonTransformer
 
     public function transform(array $from, array $draft = []): array
     {
+        // Index status Available by default even if there are errors like missing calendar type, missing subEvents, ...
+        $draft['status'] = self::STATUS_AVAILABLE;
+
+        if (!isset($from['calendarType'])) {
+            $this->logger->logMissingExpectedField('calendarType');
+            return $draft;
+        }
+
         $draft = $this->transformCalendarType($from, $draft);
+        $draft = $this->transformStatus($from, $draft);
+
+        $from = $this->polyFillJsonLdSubEvents($from);
+        if (!isset($from['subEvent'])) {
+            $this->logger->logMissingExpectedField('subEvent');
+            return $draft;
+        }
+
         $draft = $this->transformDateRange($from, $draft);
         return $draft;
     }
 
     private function transformCalendarType(array $from, array $draft): array
     {
-        if (!isset($from['calendarType'])) {
-            $this->logger->logMissingExpectedField('calendarType');
-            return $draft;
-        }
-
         $draft['calendarType'] = $from['calendarType'];
         return $draft;
     }
 
     private function transformDateRange(array $from, array $draft): array
     {
-        $status = $this->determineStatus($from);
-        $draft['status'] = $status;
-
-        if (!isset($from['calendarType'])) {
-            // Logged in transformCalendarType().
-            return $draft;
-        }
-
-        $from = $this->polyFillJsonLdSubEvents($from);
-
-        if (!isset($from['subEvent'])) {
-            $this->logger->logMissingExpectedField('subEvent');
-            return $draft;
-        }
-
         $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
 
         // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
@@ -68,6 +66,13 @@ final class CalendarTransformer implements JsonTransformer
             $draft['dateRange'] = $dateRange;
         }
 
+        return $draft;
+    }
+
+    private function transformStatus(array $from, array $draft): array
+    {
+        $status = $this->determineStatus($from);
+        $draft['status'] = $status;
         return $draft;
     }
 
@@ -308,6 +313,6 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         // If there's still no status found assume it's Available.
-        return 'Available';
+        return self::STATUS_AVAILABLE;
     }
 }
