@@ -251,17 +251,6 @@ final class CalendarTransformer implements JsonTransformer
         return $openingHoursByDay;
     }
 
-    private function filterSubEventsByStatusType(array $subEvents, string $expectedStatusType): array
-    {
-        return array_filter(
-            $subEvents,
-            function (array $subEvent) use ($expectedStatusType) {
-                $actualStatusType = $this->determineStatus($subEvent);
-                return $actualStatusType === $expectedStatusType;
-            }
-        );
-    }
-
     private function convertSubEventsToDateRanges(array $subEvents): array
     {
         $dateRanges = [];
