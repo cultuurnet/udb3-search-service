@@ -47,6 +47,7 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         $draft = $this->transformDateRange($from, $draft);
+        $draft = $this->transformSubEvents($from, $draft);
         return $draft;
     }
 
@@ -73,6 +74,20 @@ final class CalendarTransformer implements JsonTransformer
     {
         $status = $this->determineStatus($from);
         $draft['status'] = $status;
+        return $draft;
+    }
+
+    private function transformSubEvents(array $from, array $draft): array
+    {
+        $draft['subEvent'] = [];
+
+        foreach ($from['subEvent'] as $subEvent) {
+            $draft['subEvent'][] = [
+                'dateRange' => $this->convertSubEventToDateRange($subEvent),
+                'status' => $this->determineStatus($subEvent, $from),
+            ];
+        }
+
         return $draft;
     }
 
