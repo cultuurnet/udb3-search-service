@@ -7,6 +7,12 @@
         {}
     ],
     "status": "Available",
+    "subEvent": [
+        {
+            "dateRange": {},
+            "status": "Available"
+        }
+    ],
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"

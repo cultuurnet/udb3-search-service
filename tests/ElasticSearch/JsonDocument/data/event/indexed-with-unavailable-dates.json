@@ -18,6 +18,29 @@
         }
     ],
     "status": "Available",
+    "subEvent": [
+        {
+            "dateRange": {
+                "gte": "2017-04-30T00:00:00+02:00",
+                "lte": "2017-04-30T00:00:00+02:00"
+            },
+            "status": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-05-01T00:00:00+02:00",
+                "lte": "2017-05-01T00:00:00+02:00"
+            },
+            "status": "Unavailable"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-05-07T00:00:00+02:00",
+                "lte": "2017-05-07T00:00:00+02:00"
+            },
+            "status": "TemporarilyUnavailable"
+        }
+    ],
     "workflowStatus": "DRAFT",
     "availableTo": "2017-05-07T00:00:00+02:00",
     "name": {
