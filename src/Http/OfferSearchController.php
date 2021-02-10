@@ -337,7 +337,6 @@ class OfferSearchController
         return $request->getQueryParameterBag()->getDateTimeFromParameter($queryParameter, $defaultDateTimeString);
     }
 
-
     /**
      * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
