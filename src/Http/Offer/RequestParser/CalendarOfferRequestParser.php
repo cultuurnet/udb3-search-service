@@ -44,6 +44,12 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
             $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
         }
 
+        $availableFrom = $parameterBagReader->getDateTimeFromParameter('availableFrom');
+        $availableTo = $parameterBagReader->getDateTimeFromParameter('availableTo');
+        if ($availableFrom || $availableTo) {
+            $offerQueryBuilder = $offerQueryBuilder->withAvailableRangeFilter($availableFrom, $availableTo);
+        }
+
         return $offerQueryBuilder;
     }
 

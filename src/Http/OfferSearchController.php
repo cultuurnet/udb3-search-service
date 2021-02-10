@@ -189,12 +189,6 @@ class OfferSearchController
             );
         }
 
-        $availableFrom = $this->getAvailabilityFromQuery($request, 'availableFrom');
-        $availableTo = $this->getAvailabilityFromQuery($request, 'availableTo');
-        if ($availableFrom || $availableTo) {
-            $queryBuilder = $queryBuilder->withAvailableRangeFilter($availableFrom, $availableTo);
-        }
-
         $regionIds = $this->getRegionIdsFromQuery($parameterBag, 'regions');
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
@@ -327,14 +321,6 @@ class OfferSearchController
         }
 
         return ResponseFactory::jsonLd($jsonArray);
-    }
-
-    private function getAvailabilityFromQuery(ApiRequestInterface $request, string $queryParameter): ?DateTimeImmutable
-    {
-        $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
-        $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
-
-        return $request->getQueryParameterBag()->getDateTimeFromParameter($queryParameter, $defaultDateTimeString);
     }
 
     /**
