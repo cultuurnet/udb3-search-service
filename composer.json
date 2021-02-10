@@ -17,7 +17,7 @@
         "crell/api-problem": "^3.2",
         "cultuurnet/auth": "~3.0",
         "cultuurnet/culturefeed-php": "~1.9.2",
-        "cultuurnet/udb3-api-guard": "dev-master",
+        "cultuurnet/udb3-api-guard": "^1.0.0",
         "cultuurnet/valueobjects": "~3.2",
         "danielstjules/stringy": "~1.9",
         "elasticsearch/elasticsearch": "~5.2",
