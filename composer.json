@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": ">=7.1",
+        "ext-json": "*",
         "broadway/broadway": "~0.10",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/auth": "~3.0",
         "cultuurnet/culturefeed-php": "~1.9.2",
-        "cultuurnet/hydra": "~0.1",
-        "cultuurnet/udb3-api-guard": "dev-master#9d32549e3dccac0fe00ca06129e042774de4082b",
+        "cultuurnet/udb3-api-guard": "^1.0.0",
         "cultuurnet/valueobjects": "~3.2",
         "danielstjules/stringy": "~1.9",
         "elasticsearch/elasticsearch": "~5.2",
@@ -38,12 +38,11 @@
         "zendframework/zend-httphandlerrunner": "^1.1"
     },
     "require-dev": {
-        "escapestudios/symfony2-coding-standard": "~2.9",
-        "phing/phing": "~2.14",
+        "escapestudios/symfony2-coding-standard": "^3.12",
         "php-coveralls/php-coveralls": "^2.1",
         "phpstan/phpstan": "^0.12.43",
         "phpunit/phpunit": "^7.5",
-        "squizlabs/php_codesniffer": "~2.5.1"
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
         "psr-4": {
@@ -71,6 +70,13 @@
         "sort-packages": true
     },
     "scripts": {
-        "phing": "./vendor/bin/phing test"
+        "test": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "phpcs": "vendor/bin/phpcs -p",
+        "ci": [
+            "composer phpstan",
+            "composer test",
+            "composer phpcs"
+        ]
     }
 }
