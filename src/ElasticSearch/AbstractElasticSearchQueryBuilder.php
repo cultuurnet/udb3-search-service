@@ -10,6 +10,7 @@ use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
+use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\MatchAllQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
@@ -382,6 +383,18 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
         $c = $this->getClone();
         $c->boolQuery->add($queryStringQuery, $type);
+        return $c;
+    }
+
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface... $queries)
+    {
+        $boolQuery = new BoolQuery();
+        foreach ($queries as $individualQuery) {
+            $boolQuery->add($individualQuery, BoolQuery::FILTER);
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add(new NestedQuery($path, $boolQuery), BoolQuery::FILTER);
         return $c;
     }
 
