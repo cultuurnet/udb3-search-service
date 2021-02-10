@@ -5,6 +5,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
@@ -189,6 +190,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     }
 
     /**
+     * Adds a MATCH query for one or more terms. If multiple terms are supplied, a SHOULD boolean query is used,
+     * which is the same as an OR operator. So this query is useful to find all documents with a single-value field that
+     * should contain one of the given terms as a value.
+     *
+     * @see self::createMultiValueMatchQuery()
+     *
      * @param string $fieldName
      * @param string[] $terms
      * @return static
@@ -199,20 +206,29 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
             return $this;
         }
 
-        if (count($terms) == 1) {
-            return $this->withMatchQuery($fieldName, $terms[0]);
-        }
-
-        $nestedBoolQuery = new BoolQuery();
-
-        foreach ($terms as $term) {
-            $matchQuery = new MatchQuery($fieldName, $term);
-            $nestedBoolQuery->add($matchQuery, BoolQuery::SHOULD);
-        }
+        $query = $this->createMultiValueMatchQuery($fieldName, $terms);
 
         $c = $this->getClone();
-        $c->boolQuery->add($nestedBoolQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($query, BoolQuery::FILTER);
         return $c;
+    }
+
+    /**
+     * Creates a MATCH query for one or more terms. If multiple terms are supplied, a SHOULD boolean query is used,
+     * which is the same as an OR operator. So this query is useful to find all documents with a single-value field that
+     * should contain one of the given terms as a value.
+     */
+    protected function createMultiValueMatchQuery(string $fieldName, array $terms): BuilderInterface
+    {
+        if (count($terms) === 1) {
+            return new MatchQuery($fieldName, $terms[0]);
+        }
+
+        $boolQuery = new BoolQuery();
+        foreach ($terms as $term) {
+            $boolQuery->add(new MatchQuery($fieldName, $term), BoolQuery::SHOULD);
+        }
+        return $boolQuery;
     }
 
     /**
