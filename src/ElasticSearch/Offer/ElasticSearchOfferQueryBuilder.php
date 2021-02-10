@@ -167,8 +167,8 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
 
         $dateRangeQuery = $this->createRangeQuery(
             'subEvent.dateRange',
-            $from->format(DATE_ATOM),
-            $to->format(DATE_ATOM)
+            $from ? $from->format(DATE_ATOM) : null,
+            $to ? $to->format(DATE_ATOM) : null
         );
 
         $statusesQuery = $this->createMultiValueMatchQuery(
