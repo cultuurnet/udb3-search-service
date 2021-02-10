@@ -31,7 +31,6 @@ class EventBusProvider extends BaseServiceProvider
 
                     if (!(is_null($this->parameter('config.event_bus'))) &&
                         !(is_null($this->parameter('config.event_bus.subscribers')))) {
-
                         $subscriberIds = $this->parameter('config.event_bus.subscribers');
                         $subscribers = [];
                         foreach ($subscriberIds as $subscriberServiceId) {
@@ -42,7 +41,6 @@ class EventBusProvider extends BaseServiceProvider
                     foreach ($subscribers as $subscriber) {
                         $eventBus->subscribe($subscriber);
                     }
-
                 });
 
                 return $bus;

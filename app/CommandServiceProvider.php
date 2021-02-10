@@ -194,6 +194,5 @@ class CommandServiceProvider extends BaseServiceProvider
                     ->setDescription('Process messages from UDB3 core');
             }
         );
-
     }
 }
