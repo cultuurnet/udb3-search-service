@@ -164,13 +164,28 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         Status ...$statuses
     ) {
         $this->guardDateRange('date', $from, $to);
-        $fieldNames = array_map(
-            function (Status $status) {
-                return lcfirst($status->toNative()) . 'DateRange';
-            },
-            $statuses
+
+        $dateRangeQuery = $this->createRangeQuery(
+            'subEvent.dateRange',
+            $from->format(DATE_ATOM),
+            $to->format(DATE_ATOM)
         );
-        return $this->withMultiFieldDateRangeQuery($fieldNames, $from, $to);
+
+        $statusesQuery = $this->createMultiValueMatchQuery(
+            'subEvent.status',
+            array_map(
+                function (Status $status) {
+                    return $status->toNative();
+                },
+                $statuses
+            )
+        );
+
+        return $this->withBooleanFilterQueryOnNestedObject(
+            'subEvent',
+            $dateRangeQuery,
+            $statusesQuery
+        );
     }
 
     public function withCalendarTypeFilter(CalendarType ...$calendarTypes)
