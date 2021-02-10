@@ -346,7 +346,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $c;
     }
 
-    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface... $queries)
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries)
     {
         $boolQuery = new BoolQuery();
         foreach ($queries as $individualQuery) {
