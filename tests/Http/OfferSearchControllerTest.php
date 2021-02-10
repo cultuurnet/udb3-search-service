@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
@@ -114,6 +115,7 @@ class OfferSearchControllerTest extends TestCase
 
         $this->requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
+            ->withParser(new AvailabilityOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(new MockDistanceFactory()))
             ->withParser(new DocumentLanguageOfferRequestParser())
