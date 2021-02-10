@@ -14,7 +14,7 @@ final class AvailabilityOfferRequestParser implements OfferRequestParserInterfac
     {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $default = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'))
+        $default = DateTimeImmutable::createFromFormat('U', (string) $request->getServerParam('REQUEST_TIME', 0))
             ->format(DATE_ATOM);
 
         $availableFrom = $parameterBagReader->getDateTimeFromParameter('availableFrom', $default);
