@@ -334,21 +334,7 @@ class OfferSearchController
         $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
         $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
 
-        return $request->getQueryParameterBag()->getStringFromParameter(
-            $queryParameter,
-            $defaultDateTimeString,
-            function ($dateTimeString) use ($queryParameter) {
-                $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
-
-                if (!$dateTime) {
-                    throw new \InvalidArgumentException(
-                        "{$queryParameter} should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00"
-                    );
-                }
-
-                return $dateTime;
-            }
-        );
+        return $request->getQueryParameterBag()->getDateTimeFromParameter($queryParameter, $defaultDateTimeString);
     }
 
 

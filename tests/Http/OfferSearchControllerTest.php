@@ -511,6 +511,8 @@ class OfferSearchControllerTest extends TestCase
                 'start' => 30,
                 'limit' => 10,
                 'disableDefaultFilters' => true,
+                'availableFrom' => '2017-04-01T00:00:00 01:00',
+                'availableTo' => '2017-04-01T23:59:59 01:00',
                 'dateFrom' => '2017-04-01T00:00:00 01:00',
                 'dateTo' => '2017-04-01T23:59:59 01:00',
             ]
@@ -519,6 +521,10 @@ class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
+            ->withAvailableRangeFilter(
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+            )
             ->withDateRangeFilter(
                 DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
                 DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T23:59:59+01:00')
