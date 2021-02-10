@@ -70,15 +70,13 @@
         "sort-packages": true
     },
     "scripts": {
-        "scripts": {
-            "test": "vendor/bin/phpunit",
-            "phpstan": "vendor/bin/phpstan analyse",
-            "phpcs": "vendor/bin/phpcs -p",
-            "ci": [
-                "composer phpstan",
-                "composer test",
-                "composer phpcs"
-            ]
-        }
+        "test": "vendor/bin/phpunit",
+        "phpstan": "vendor/bin/phpstan analyse",
+        "phpcs": "vendor/bin/phpcs -p",
+        "ci": [
+            "composer phpstan",
+            "composer test",
+            "composer phpcs"
+        ]
     }
 }
