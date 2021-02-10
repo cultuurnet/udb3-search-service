@@ -7,6 +7,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 class CalendarOfferRequestParser implements OfferRequestParserInterface
@@ -44,8 +45,11 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
             $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
         }
 
-        $availableFrom = $parameterBagReader->getDateTimeFromParameter('availableFrom');
-        $availableTo = $parameterBagReader->getDateTimeFromParameter('availableTo');
+        $defaultAvailableDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
+        $defaultAvailableDateTimeString = ($defaultAvailableDateTime) ? $defaultAvailableDateTime->format(\DateTime::ATOM) : null;
+
+        $availableFrom = $parameterBagReader->getDateTimeFromParameter('availableFrom', $defaultAvailableDateTimeString);
+        $availableTo = $parameterBagReader->getDateTimeFromParameter('availableTo', $defaultAvailableDateTimeString);
         if ($availableFrom || $availableTo) {
             $offerQueryBuilder = $offerQueryBuilder->withAvailableRangeFilter($availableFrom, $availableTo);
         }
