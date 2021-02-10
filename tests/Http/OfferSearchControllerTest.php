@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -496,6 +497,36 @@ class OfferSearchControllerTest extends TestCase
         $this->expectExceptionMessage(
             'availableFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00'
         );
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_spaces_in_date_parameters_to_plus_signs()
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => 30,
+                'limit' => 10,
+                'disableDefaultFilters' => true,
+                'dateFrom' => '2017-04-01T00:00:00 01:00',
+                'dateTo' => '2017-04-01T23:59:59 01:00',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withDateRangeFilter(
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+            );
+
+        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -990,8 +1021,8 @@ class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00')
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00')
             );
 
         $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
