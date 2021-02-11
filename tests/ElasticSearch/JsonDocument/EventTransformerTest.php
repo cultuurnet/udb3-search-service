@@ -106,6 +106,17 @@ class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_correctly_transforms_local_time_range_in_events_with_end_date_the_day_after_start_date(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-end-date-the-day-after-start-date.json',
+            __DIR__ . '/data/event/indexed-with-end-date-the-day-after-start-date.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_events_with_multiple_dates(): void
     {
         $this->transformAndAssert(

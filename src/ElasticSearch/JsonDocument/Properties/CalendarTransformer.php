@@ -95,9 +95,14 @@ final class CalendarTransformer implements JsonTransformer
         $draft['subEvent'] = [];
 
         foreach ($from['subEvent'] as $subEvent) {
+            $localTimeRange = $this->convertSubEventToLocalTimeRanges($subEvent);
+            if (count($localTimeRange) === 1) {
+                $localTimeRange = $localTimeRange[0];
+            }
+
             $draft['subEvent'][] = [
                 'dateRange' => $this->convertSubEventToDateRange($subEvent),
-                'localTimeRange' => $this->convertSubEventToLocalTimeRange($subEvent),
+                'localTimeRange' => $localTimeRange,
                 'status' => $this->determineStatus($subEvent, $from),
             ];
         }
@@ -329,21 +334,29 @@ final class CalendarTransformer implements JsonTransformer
                 continue;
             }
 
-            $localTimeRange = $this->convertSubEventToLocalTimeRange($subEvent);
+            $localTimeRangesForSubEvent = $this->convertSubEventToLocalTimeRanges($subEvent);
 
             // Reduce unnecessary duplicates in the top level localTimeRange.
             // This reduces a lot of duplicates for events with opening hours for example, because when we drop the
             // date info we don't need the same opening hours for _every_ week like we do for dates.
-            if (!in_array($localTimeRange, $timeRanges, false)) {
-                $timeRanges[] = $localTimeRange;
+            foreach ($localTimeRangesForSubEvent as $localTimeRangeForSubEvent) {
+                if (!in_array($localTimeRangeForSubEvent, $timeRanges, false)) {
+                    $timeRanges[] = $localTimeRangeForSubEvent;
+                }
             }
         }
 
         return array_values($timeRanges);
     }
 
-    private function convertSubEventToLocalTimeRange(array $subEvent): stdClass
+    /**
+     * @return stdClass[]
+     */
+    private function convertSubEventToLocalTimeRanges(array $subEvent): array
     {
+        $startDate = null;
+        $endDate = null;
+
         $startTime = null;
         $endTime = null;
 
@@ -361,15 +374,65 @@ final class CalendarTransformer implements JsonTransformer
             $endTime = $endDate->format('Hi');
         }
 
-        // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
-        // like for permanent events, then we need to make sure we send an object like {} to Elasticsearch. An empty
-        // PHP array would get converted to [] in JSON.
-        return (object) array_filter(
-            [
-                'gte' => $startTime,
-                'lte' => $endTime,
-            ]
-        );
+        if ($startDate && $endDate) {
+            $startDateWithoutHours = $startDate->setTime(0, 0, 0);
+            $endDateWithoutHours = $endDate->setTime(0, 0, 0);
+            $daySpan = $endDateWithoutHours->diff($startDateWithoutHours)->days;
+
+            // Start and end time are on the same day, so we have one time range.
+            if ($daySpan === 0) {
+                return [
+                    (object) [
+                        'gte' => $startTime,
+                        'lte' => $endTime,
+                    ]
+                ];
+            }
+
+            // End time is on the day after the start time. To prevent invalid ranges where the end time is lower than
+            // the start time, we make ranges from start -> 23:59 and from 00:00 -> end.
+            if ($daySpan === 1) {
+                return [
+                    (object) [
+                        'gte' => $startTime,
+                        'lte' => 2359,
+                    ],
+                    (object) [
+                        'gte' => 0000,
+                        'lte' => $endTime,
+                    ],
+                ];
+            }
+
+            // End time is multiple days after start time. Same as the day after above, but with a complete range
+            // in-between. If there's more than 1 day in-between, one complete range is still sufficient.
+            return [
+                (object) [
+                    'gte' => $startTime,
+                    'lte' => 2359,
+                ],
+                (object) [
+                    'gte' => 0000,
+                    'lte' => 2359,
+                ],
+                (object) [
+                    'gte' => 0000,
+                    'lte' => $endTime,
+                ],
+            ];
+        }
+
+        if ($startDate) {
+            return [(object) ['gte' => $startTime]];
+        }
+
+        if ($endDate) {
+            return [(object) ['lte' => $endTime]];
+        }
+
+        // We need to make sure we send an object like {} to Elasticsearch if there's no start or end time.
+        // [[]] would be converted to [[]] in JSON, while we want [{}].
+        return [new stdClass()];
     }
 
     private function determineStatus(array $entity, ?array $parent = null): string
