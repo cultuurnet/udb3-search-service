@@ -9,6 +9,7 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
@@ -45,6 +46,7 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         $draft = $this->transformDateRange($from, $draft);
+        $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
         return $draft;
     }
@@ -68,6 +70,19 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    private function transformLocalTimeRange(array $from, array $draft): array
+    {
+        $localTimeRange = $this->convertSubEventsToLocalTimeRanges($from['subEvent']);
+
+        // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
+        // still possible we end up without time ranges.
+        if (!empty($localTimeRange)) {
+            $draft['localTimeRange'] = $localTimeRange;
+        }
+
+        return $draft;
+    }
+
     private function transformStatus(array $from, array $draft): array
     {
         $status = $this->determineStatus($from);
@@ -82,6 +97,7 @@ final class CalendarTransformer implements JsonTransformer
         foreach ($from['subEvent'] as $subEvent) {
             $draft['subEvent'][] = [
                 'dateRange' => $this->convertSubEventToDateRange($subEvent),
+                'localTimeRange' => $this->convertSubEventToLocalTimeRange($subEvent),
                 'status' => $this->determineStatus($subEvent, $from),
             ];
         }
@@ -190,12 +206,12 @@ final class CalendarTransformer implements JsonTransformer
             foreach ($openingHoursByDay[$day] as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
-                    new \DateTimeZone('Europe/Brussels')
+                    new DateTimeZone('Europe/Brussels')
                 );
 
                 $subEventEndDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['closes'] . ':00',
-                    new \DateTimeZone('Europe/Brussels')
+                    new DateTimeZone('Europe/Brussels')
                 );
 
                 $subEvent[] = [
@@ -294,6 +310,64 @@ final class CalendarTransformer implements JsonTransformer
             [
                 'gte' => $subEvent['startDate'] ?? null,
                 'lte' => $subEvent['endDate'] ?? null,
+            ]
+        );
+    }
+
+    private function convertSubEventsToLocalTimeRanges(array $subEvents): array
+    {
+        $timeRanges = [];
+
+        foreach ($subEvents as $subEvent) {
+            if (!array_key_exists('startDate', $subEvent)) {
+                // Logged already when creating dateRange
+                continue;
+            }
+
+            if (!array_key_exists('endDate', $subEvent)) {
+                // Logged already when creating dateRange
+                continue;
+            }
+
+            $localTimeRange = $this->convertSubEventToLocalTimeRange($subEvent);
+
+            // Reduce unnecessary duplicates in the top level localTimeRange.
+            // This reduces a lot of duplicates for events with opening hours for example, because when we drop the
+            // date info we don't need the same opening hours for _every_ week like we do for dates.
+            if (!in_array($localTimeRange, $timeRanges, false)) {
+                $timeRanges[] = $localTimeRange;
+            }
+        }
+
+        return array_values($timeRanges);
+    }
+
+    private function convertSubEventToLocalTimeRange(array $subEvent): stdClass
+    {
+        $startTime = null;
+        $endTime = null;
+
+        // When converting the dates to times it's important we set the right timezone, because sometimes the dates are
+        // in UTC for example and then the time info is not what we'd expect to be in Belgium.
+        if (isset($subEvent['startDate'])) {
+            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
+            $startDate->setTimezone(new DateTimeZone('Europe/Brussels'));
+            $startTime = $startDate->format('Hi');
+        }
+
+        if (isset($subEvent['endDate'])) {
+            $endDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate']);
+            $endDate->setTimezone(new DateTimeZone('Europe/Brussels'));
+            $endTime = $endDate->format('Hi');
+        }
+
+        // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
+        // like for permanent events, then we need to make sure we send an object like {} to Elasticsearch. An empty
+        // PHP array would get converted to [] in JSON.
+        return (object) array_filter(
+            [
+                'gte' => $startTime,
+                'lte' => $endTime,
             ]
         );
     }
