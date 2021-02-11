@@ -5,12 +5,10 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use DateInterval;
 use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
-use Psr\Log\NullLogger;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
