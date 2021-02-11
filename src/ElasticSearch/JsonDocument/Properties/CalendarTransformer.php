@@ -399,7 +399,7 @@ final class CalendarTransformer implements JsonTransformer
                     (object) [
                         'gte' => $startTime,
                         'lte' => $endTime,
-                    ]
+                    ],
                 ];
             }
 
