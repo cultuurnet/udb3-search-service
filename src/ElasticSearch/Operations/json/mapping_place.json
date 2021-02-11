@@ -36,6 +36,9 @@
             "type": "date_range",
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
+        "timeRange": {
+            "type": "integer_range"
+        },
 
         "subEvent": {
             "type": "nested",
@@ -48,6 +51,9 @@
                     "type": "string",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "timeRange": {
+                    "type": "integer_range"
                 }
             }
         },
