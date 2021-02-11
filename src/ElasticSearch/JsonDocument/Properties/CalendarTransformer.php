@@ -14,6 +14,17 @@ use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
 {
+    /**
+     * List of countries that UDB3 supports and their timezones so we can index localTimeRange based on the start and
+     * end times of an event converted to the timezone in which it takes place.
+     * @see https://github.com/eggert/tz/blob/master/zone1970.tab
+     */
+    private const TIMEZONES = [
+        'BE' => 'Europe/Brussels',
+        'NL' => 'Europe/Amsterdam',
+    ];
+    private const DEFAULT_TIMEZONE = 'Europe/Brussels';
+
     private const STATUS_AVAILABLE = 'Available';
 
     /**
@@ -72,7 +83,10 @@ final class CalendarTransformer implements JsonTransformer
 
     private function transformLocalTimeRange(array $from, array $draft): array
     {
-        $localTimeRange = $this->convertSubEventsToLocalTimeRanges($from['subEvent']);
+        $localTimeRange = $this->convertSubEventsToLocalTimeRanges(
+            $from['subEvent'],
+            $this->determineLocalTimezone($from)
+        );
 
         // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
         // still possible we end up without time ranges.
@@ -95,7 +109,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft['subEvent'] = [];
 
         foreach ($from['subEvent'] as $subEvent) {
-            $localTimeRange = $this->convertSubEventToLocalTimeRanges($subEvent);
+            $localTimeRange = $this->convertSubEventToLocalTimeRanges($subEvent, $this->determineLocalTimezone($from));
             if (count($localTimeRange) === 1) {
                 $localTimeRange = $localTimeRange[0];
             }
@@ -211,12 +225,12 @@ final class CalendarTransformer implements JsonTransformer
             foreach ($openingHoursByDay[$day] as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
-                    new DateTimeZone('Europe/Brussels')
+                    $this->determineLocalTimezone($from)
                 );
 
                 $subEventEndDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['closes'] . ':00',
-                    new DateTimeZone('Europe/Brussels')
+                    $this->determineLocalTimezone($from)
                 );
 
                 $subEvent[] = [
@@ -319,7 +333,7 @@ final class CalendarTransformer implements JsonTransformer
         );
     }
 
-    private function convertSubEventsToLocalTimeRanges(array $subEvents): array
+    private function convertSubEventsToLocalTimeRanges(array $subEvents, DateTimeZone $timezone): array
     {
         $timeRanges = [];
 
@@ -334,7 +348,7 @@ final class CalendarTransformer implements JsonTransformer
                 continue;
             }
 
-            $localTimeRangesForSubEvent = $this->convertSubEventToLocalTimeRanges($subEvent);
+            $localTimeRangesForSubEvent = $this->convertSubEventToLocalTimeRanges($subEvent, $timezone);
 
             // Reduce unnecessary duplicates in the top level localTimeRange.
             // This reduces a lot of duplicates for events with opening hours for example, because when we drop the
@@ -352,7 +366,7 @@ final class CalendarTransformer implements JsonTransformer
     /**
      * @return stdClass[]
      */
-    private function convertSubEventToLocalTimeRanges(array $subEvent): array
+    private function convertSubEventToLocalTimeRanges(array $subEvent, DateTimeZone $timezone): array
     {
         $startDate = null;
         $endDate = null;
@@ -364,13 +378,13 @@ final class CalendarTransformer implements JsonTransformer
         // in UTC for example and then the time info is not what we'd expect to be in Belgium.
         if (isset($subEvent['startDate'])) {
             $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
-            $startDate->setTimezone(new DateTimeZone('Europe/Brussels'));
+            $startDate->setTimezone($timezone);
             $startTime = $startDate->format('Hi');
         }
 
         if (isset($subEvent['endDate'])) {
             $endDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate']);
-            $endDate->setTimezone(new DateTimeZone('Europe/Brussels'));
+            $endDate->setTimezone($timezone);
             $endTime = $endDate->format('Hi');
         }
 
@@ -455,5 +469,16 @@ final class CalendarTransformer implements JsonTransformer
 
         // If there's still no status found assume it's Available.
         return self::STATUS_AVAILABLE;
+    }
+
+    private function determineLocalTimezone(array $from): DateTimeZone
+    {
+        $location = $from['location'] ?? $from;
+        $country = $location['address']['addressCountry'] ?? null;
+
+        if ($country) {
+            return new DateTimeZone(self::TIMEZONES[$country] ?? self::DEFAULT_TIMEZONE);
+        }
+        return new DateTimeZone(self::DEFAULT_TIMEZONE);
     }
 }
