@@ -30,7 +30,7 @@
             "type": "date_range",
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
-        "timeRange": {
+        "localTimeRange": {
             "type": "integer_range"
         },
         "status": {
@@ -46,7 +46,7 @@
                     "type": "date_range",
                     "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
                 },
-                "timeRange": {
+                "localTimeRange": {
                     "type": "integer_range"
                 },
                 "status": {
