@@ -953,11 +953,21 @@
     "completedLanguages": [
         "nl"
     ],
+    "localTimeRange": [
+        {
+            "gte": "0830",
+            "lte": "0917"
+        }
+    ],
     "subEvent": [
         {
             "dateRange": {
                 "gte": "2016-11-09T08:30:00+01:00",
                 "lte": "2016-11-09T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -966,12 +976,20 @@
                 "gte": "2016-11-11T08:30:00+01:00",
                 "lte": "2016-11-11T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-11-14T08:30:00+01:00",
                 "lte": "2016-11-14T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -980,12 +998,20 @@
                 "gte": "2016-11-16T08:30:00+01:00",
                 "lte": "2016-11-16T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-11-18T08:30:00+01:00",
                 "lte": "2016-11-18T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -994,12 +1020,20 @@
                 "gte": "2016-11-21T08:30:00+01:00",
                 "lte": "2016-11-21T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-11-23T08:30:00+01:00",
                 "lte": "2016-11-23T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1008,12 +1042,20 @@
                 "gte": "2016-11-25T08:30:00+01:00",
                 "lte": "2016-11-25T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-11-28T08:30:00+01:00",
                 "lte": "2016-11-28T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1022,12 +1064,20 @@
                 "gte": "2016-11-30T08:30:00+01:00",
                 "lte": "2016-11-30T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-02T08:30:00+01:00",
                 "lte": "2016-12-02T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1036,12 +1086,20 @@
                 "gte": "2016-12-05T08:30:00+01:00",
                 "lte": "2016-12-05T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-07T08:30:00+01:00",
                 "lte": "2016-12-07T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1050,12 +1108,20 @@
                 "gte": "2016-12-09T08:30:00+01:00",
                 "lte": "2016-12-09T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-12T08:30:00+01:00",
                 "lte": "2016-12-12T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1064,12 +1130,20 @@
                 "gte": "2016-12-14T08:30:00+01:00",
                 "lte": "2016-12-14T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-16T08:30:00+01:00",
                 "lte": "2016-12-16T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1078,12 +1152,20 @@
                 "gte": "2016-12-19T08:30:00+01:00",
                 "lte": "2016-12-19T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-21T08:30:00+01:00",
                 "lte": "2016-12-21T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1092,12 +1174,20 @@
                 "gte": "2016-12-23T08:30:00+01:00",
                 "lte": "2016-12-23T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-26T08:30:00+01:00",
                 "lte": "2016-12-26T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1106,12 +1196,20 @@
                 "gte": "2016-12-28T08:30:00+01:00",
                 "lte": "2016-12-28T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2016-12-30T08:30:00+01:00",
                 "lte": "2016-12-30T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1120,12 +1218,20 @@
                 "gte": "2017-01-02T08:30:00+01:00",
                 "lte": "2017-01-02T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-04T08:30:00+01:00",
                 "lte": "2017-01-04T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1134,12 +1240,20 @@
                 "gte": "2017-01-06T08:30:00+01:00",
                 "lte": "2017-01-06T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-09T08:30:00+01:00",
                 "lte": "2017-01-09T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1148,12 +1262,20 @@
                 "gte": "2017-01-11T08:30:00+01:00",
                 "lte": "2017-01-11T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-13T08:30:00+01:00",
                 "lte": "2017-01-13T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1162,12 +1284,20 @@
                 "gte": "2017-01-16T08:30:00+01:00",
                 "lte": "2017-01-16T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-18T08:30:00+01:00",
                 "lte": "2017-01-18T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1176,12 +1306,20 @@
                 "gte": "2017-01-20T08:30:00+01:00",
                 "lte": "2017-01-20T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-23T08:30:00+01:00",
                 "lte": "2017-01-23T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1190,12 +1328,20 @@
                 "gte": "2017-01-25T08:30:00+01:00",
                 "lte": "2017-01-25T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-01-27T08:30:00+01:00",
                 "lte": "2017-01-27T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1204,12 +1350,20 @@
                 "gte": "2017-01-30T08:30:00+01:00",
                 "lte": "2017-01-30T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-01T08:30:00+01:00",
                 "lte": "2017-02-01T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1218,12 +1372,20 @@
                 "gte": "2017-02-03T08:30:00+01:00",
                 "lte": "2017-02-03T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-06T08:30:00+01:00",
                 "lte": "2017-02-06T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1232,12 +1394,20 @@
                 "gte": "2017-02-08T08:30:00+01:00",
                 "lte": "2017-02-08T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-10T08:30:00+01:00",
                 "lte": "2017-02-10T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1246,12 +1416,20 @@
                 "gte": "2017-02-13T08:30:00+01:00",
                 "lte": "2017-02-13T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-15T08:30:00+01:00",
                 "lte": "2017-02-15T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1260,12 +1438,20 @@
                 "gte": "2017-02-17T08:30:00+01:00",
                 "lte": "2017-02-17T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-20T08:30:00+01:00",
                 "lte": "2017-02-20T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1274,12 +1460,20 @@
                 "gte": "2017-02-22T08:30:00+01:00",
                 "lte": "2017-02-22T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-02-24T08:30:00+01:00",
                 "lte": "2017-02-24T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1288,12 +1482,20 @@
                 "gte": "2017-02-27T08:30:00+01:00",
                 "lte": "2017-02-27T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-01T08:30:00+01:00",
                 "lte": "2017-03-01T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1302,12 +1504,20 @@
                 "gte": "2017-03-03T08:30:00+01:00",
                 "lte": "2017-03-03T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-06T08:30:00+01:00",
                 "lte": "2017-03-06T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1316,12 +1526,20 @@
                 "gte": "2017-03-08T08:30:00+01:00",
                 "lte": "2017-03-08T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-10T08:30:00+01:00",
                 "lte": "2017-03-10T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1330,12 +1548,20 @@
                 "gte": "2017-03-13T08:30:00+01:00",
                 "lte": "2017-03-13T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-15T08:30:00+01:00",
                 "lte": "2017-03-15T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1344,12 +1570,20 @@
                 "gte": "2017-03-17T08:30:00+01:00",
                 "lte": "2017-03-17T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-20T08:30:00+01:00",
                 "lte": "2017-03-20T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1358,12 +1592,20 @@
                 "gte": "2017-03-22T08:30:00+01:00",
                 "lte": "2017-03-22T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-24T08:30:00+01:00",
                 "lte": "2017-03-24T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1372,12 +1614,20 @@
                 "gte": "2017-03-27T08:30:00+02:00",
                 "lte": "2017-03-27T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-03-29T08:30:00+02:00",
                 "lte": "2017-03-29T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1386,12 +1636,20 @@
                 "gte": "2017-03-31T08:30:00+02:00",
                 "lte": "2017-03-31T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-03T08:30:00+02:00",
                 "lte": "2017-04-03T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1400,12 +1658,20 @@
                 "gte": "2017-04-05T08:30:00+02:00",
                 "lte": "2017-04-05T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-07T08:30:00+02:00",
                 "lte": "2017-04-07T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1414,12 +1680,20 @@
                 "gte": "2017-04-10T08:30:00+02:00",
                 "lte": "2017-04-10T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-12T08:30:00+02:00",
                 "lte": "2017-04-12T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1428,12 +1702,20 @@
                 "gte": "2017-04-14T08:30:00+02:00",
                 "lte": "2017-04-14T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-17T08:30:00+02:00",
                 "lte": "2017-04-17T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1442,12 +1724,20 @@
                 "gte": "2017-04-19T08:30:00+02:00",
                 "lte": "2017-04-19T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-21T08:30:00+02:00",
                 "lte": "2017-04-21T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1456,12 +1746,20 @@
                 "gte": "2017-04-24T08:30:00+02:00",
                 "lte": "2017-04-24T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-26T08:30:00+02:00",
                 "lte": "2017-04-26T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1470,12 +1768,20 @@
                 "gte": "2017-04-28T08:30:00+02:00",
                 "lte": "2017-04-28T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-01T08:30:00+02:00",
                 "lte": "2017-05-01T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1484,12 +1790,20 @@
                 "gte": "2017-05-03T08:30:00+02:00",
                 "lte": "2017-05-03T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-05T08:30:00+02:00",
                 "lte": "2017-05-05T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1498,12 +1812,20 @@
                 "gte": "2017-05-08T08:30:00+02:00",
                 "lte": "2017-05-08T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-10T08:30:00+02:00",
                 "lte": "2017-05-10T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1512,12 +1834,20 @@
                 "gte": "2017-05-12T08:30:00+02:00",
                 "lte": "2017-05-12T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-15T08:30:00+02:00",
                 "lte": "2017-05-15T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1526,12 +1856,20 @@
                 "gte": "2017-05-17T08:30:00+02:00",
                 "lte": "2017-05-17T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-19T08:30:00+02:00",
                 "lte": "2017-05-19T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1540,12 +1878,20 @@
                 "gte": "2017-05-22T08:30:00+02:00",
                 "lte": "2017-05-22T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-24T08:30:00+02:00",
                 "lte": "2017-05-24T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1554,12 +1900,20 @@
                 "gte": "2017-05-26T08:30:00+02:00",
                 "lte": "2017-05-26T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-29T08:30:00+02:00",
                 "lte": "2017-05-29T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1568,12 +1922,20 @@
                 "gte": "2017-05-31T08:30:00+02:00",
                 "lte": "2017-05-31T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-02T08:30:00+02:00",
                 "lte": "2017-06-02T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1582,12 +1944,20 @@
                 "gte": "2017-06-05T08:30:00+02:00",
                 "lte": "2017-06-05T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-07T08:30:00+02:00",
                 "lte": "2017-06-07T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1596,12 +1966,20 @@
                 "gte": "2017-06-09T08:30:00+02:00",
                 "lte": "2017-06-09T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-12T08:30:00+02:00",
                 "lte": "2017-06-12T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1610,12 +1988,20 @@
                 "gte": "2017-06-14T08:30:00+02:00",
                 "lte": "2017-06-14T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-16T08:30:00+02:00",
                 "lte": "2017-06-16T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1624,12 +2010,20 @@
                 "gte": "2017-06-19T08:30:00+02:00",
                 "lte": "2017-06-19T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-21T08:30:00+02:00",
                 "lte": "2017-06-21T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1638,12 +2032,20 @@
                 "gte": "2017-06-23T08:30:00+02:00",
                 "lte": "2017-06-23T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-26T08:30:00+02:00",
                 "lte": "2017-06-26T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1652,12 +2054,20 @@
                 "gte": "2017-06-28T08:30:00+02:00",
                 "lte": "2017-06-28T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-06-30T08:30:00+02:00",
                 "lte": "2017-06-30T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1666,12 +2076,20 @@
                 "gte": "2017-07-03T08:30:00+02:00",
                 "lte": "2017-07-03T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-05T08:30:00+02:00",
                 "lte": "2017-07-05T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1680,12 +2098,20 @@
                 "gte": "2017-07-07T08:30:00+02:00",
                 "lte": "2017-07-07T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-10T08:30:00+02:00",
                 "lte": "2017-07-10T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1694,12 +2120,20 @@
                 "gte": "2017-07-12T08:30:00+02:00",
                 "lte": "2017-07-12T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-14T08:30:00+02:00",
                 "lte": "2017-07-14T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1708,12 +2142,20 @@
                 "gte": "2017-07-17T08:30:00+02:00",
                 "lte": "2017-07-17T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-19T08:30:00+02:00",
                 "lte": "2017-07-19T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1722,12 +2164,20 @@
                 "gte": "2017-07-21T08:30:00+02:00",
                 "lte": "2017-07-21T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-24T08:30:00+02:00",
                 "lte": "2017-07-24T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1736,12 +2186,20 @@
                 "gte": "2017-07-26T08:30:00+02:00",
                 "lte": "2017-07-26T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-07-28T08:30:00+02:00",
                 "lte": "2017-07-28T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1750,12 +2208,20 @@
                 "gte": "2017-07-31T08:30:00+02:00",
                 "lte": "2017-07-31T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-02T08:30:00+02:00",
                 "lte": "2017-08-02T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1764,12 +2230,20 @@
                 "gte": "2017-08-04T08:30:00+02:00",
                 "lte": "2017-08-04T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-07T08:30:00+02:00",
                 "lte": "2017-08-07T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1778,12 +2252,20 @@
                 "gte": "2017-08-09T08:30:00+02:00",
                 "lte": "2017-08-09T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-11T08:30:00+02:00",
                 "lte": "2017-08-11T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1792,12 +2274,20 @@
                 "gte": "2017-08-14T08:30:00+02:00",
                 "lte": "2017-08-14T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-16T08:30:00+02:00",
                 "lte": "2017-08-16T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1806,12 +2296,20 @@
                 "gte": "2017-08-18T08:30:00+02:00",
                 "lte": "2017-08-18T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-21T08:30:00+02:00",
                 "lte": "2017-08-21T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1820,12 +2318,20 @@
                 "gte": "2017-08-23T08:30:00+02:00",
                 "lte": "2017-08-23T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-25T08:30:00+02:00",
                 "lte": "2017-08-25T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1834,12 +2340,20 @@
                 "gte": "2017-08-28T08:30:00+02:00",
                 "lte": "2017-08-28T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-08-30T08:30:00+02:00",
                 "lte": "2017-08-30T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1848,12 +2362,20 @@
                 "gte": "2017-09-01T08:30:00+02:00",
                 "lte": "2017-09-01T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-04T08:30:00+02:00",
                 "lte": "2017-09-04T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1862,12 +2384,20 @@
                 "gte": "2017-09-06T08:30:00+02:00",
                 "lte": "2017-09-06T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-08T08:30:00+02:00",
                 "lte": "2017-09-08T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1876,12 +2406,20 @@
                 "gte": "2017-09-11T08:30:00+02:00",
                 "lte": "2017-09-11T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-13T08:30:00+02:00",
                 "lte": "2017-09-13T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1890,12 +2428,20 @@
                 "gte": "2017-09-15T08:30:00+02:00",
                 "lte": "2017-09-15T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-18T08:30:00+02:00",
                 "lte": "2017-09-18T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1904,12 +2450,20 @@
                 "gte": "2017-09-20T08:30:00+02:00",
                 "lte": "2017-09-20T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-22T08:30:00+02:00",
                 "lte": "2017-09-22T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1918,12 +2472,20 @@
                 "gte": "2017-09-25T08:30:00+02:00",
                 "lte": "2017-09-25T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-09-27T08:30:00+02:00",
                 "lte": "2017-09-27T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1932,12 +2494,20 @@
                 "gte": "2017-09-29T08:30:00+02:00",
                 "lte": "2017-09-29T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-02T08:30:00+02:00",
                 "lte": "2017-10-02T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1946,12 +2516,20 @@
                 "gte": "2017-10-04T08:30:00+02:00",
                 "lte": "2017-10-04T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-06T08:30:00+02:00",
                 "lte": "2017-10-06T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1960,12 +2538,20 @@
                 "gte": "2017-10-09T08:30:00+02:00",
                 "lte": "2017-10-09T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-11T08:30:00+02:00",
                 "lte": "2017-10-11T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1974,12 +2560,20 @@
                 "gte": "2017-10-13T08:30:00+02:00",
                 "lte": "2017-10-13T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-16T08:30:00+02:00",
                 "lte": "2017-10-16T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -1988,12 +2582,20 @@
                 "gte": "2017-10-18T08:30:00+02:00",
                 "lte": "2017-10-18T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-20T08:30:00+02:00",
                 "lte": "2017-10-20T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2002,12 +2604,20 @@
                 "gte": "2017-10-23T08:30:00+02:00",
                 "lte": "2017-10-23T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-25T08:30:00+02:00",
                 "lte": "2017-10-25T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2016,12 +2626,20 @@
                 "gte": "2017-10-27T08:30:00+02:00",
                 "lte": "2017-10-27T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-10-30T08:30:00+01:00",
                 "lte": "2017-10-30T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2030,12 +2648,20 @@
                 "gte": "2017-11-01T08:30:00+01:00",
                 "lte": "2017-11-01T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-03T08:30:00+01:00",
                 "lte": "2017-11-03T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2044,12 +2670,20 @@
                 "gte": "2017-11-06T08:30:00+01:00",
                 "lte": "2017-11-06T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-08T08:30:00+01:00",
                 "lte": "2017-11-08T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2058,12 +2692,20 @@
                 "gte": "2017-11-10T08:30:00+01:00",
                 "lte": "2017-11-10T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-13T08:30:00+01:00",
                 "lte": "2017-11-13T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2072,12 +2714,20 @@
                 "gte": "2017-11-15T08:30:00+01:00",
                 "lte": "2017-11-15T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-17T08:30:00+01:00",
                 "lte": "2017-11-17T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2086,12 +2736,20 @@
                 "gte": "2017-11-20T08:30:00+01:00",
                 "lte": "2017-11-20T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-22T08:30:00+01:00",
                 "lte": "2017-11-22T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2100,12 +2758,20 @@
                 "gte": "2017-11-24T08:30:00+01:00",
                 "lte": "2017-11-24T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-11-27T08:30:00+01:00",
                 "lte": "2017-11-27T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2114,12 +2780,20 @@
                 "gte": "2017-11-29T08:30:00+01:00",
                 "lte": "2017-11-29T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-01T08:30:00+01:00",
                 "lte": "2017-12-01T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2128,12 +2802,20 @@
                 "gte": "2017-12-04T08:30:00+01:00",
                 "lte": "2017-12-04T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-06T08:30:00+01:00",
                 "lte": "2017-12-06T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2142,12 +2824,20 @@
                 "gte": "2017-12-08T08:30:00+01:00",
                 "lte": "2017-12-08T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-11T08:30:00+01:00",
                 "lte": "2017-12-11T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2156,12 +2846,20 @@
                 "gte": "2017-12-13T08:30:00+01:00",
                 "lte": "2017-12-13T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-15T08:30:00+01:00",
                 "lte": "2017-12-15T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2170,12 +2868,20 @@
                 "gte": "2017-12-18T08:30:00+01:00",
                 "lte": "2017-12-18T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-20T08:30:00+01:00",
                 "lte": "2017-12-20T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2184,12 +2890,20 @@
                 "gte": "2017-12-22T08:30:00+01:00",
                 "lte": "2017-12-22T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-25T08:30:00+01:00",
                 "lte": "2017-12-25T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2198,12 +2912,20 @@
                 "gte": "2017-12-27T08:30:00+01:00",
                 "lte": "2017-12-27T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-12-29T08:30:00+01:00",
                 "lte": "2017-12-29T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2212,12 +2934,20 @@
                 "gte": "2018-01-01T08:30:00+01:00",
                 "lte": "2018-01-01T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-03T08:30:00+01:00",
                 "lte": "2018-01-03T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2226,12 +2956,20 @@
                 "gte": "2018-01-05T08:30:00+01:00",
                 "lte": "2018-01-05T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-08T08:30:00+01:00",
                 "lte": "2018-01-08T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2240,12 +2978,20 @@
                 "gte": "2018-01-10T08:30:00+01:00",
                 "lte": "2018-01-10T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-12T08:30:00+01:00",
                 "lte": "2018-01-12T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2254,12 +3000,20 @@
                 "gte": "2018-01-15T08:30:00+01:00",
                 "lte": "2018-01-15T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-17T08:30:00+01:00",
                 "lte": "2018-01-17T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2268,12 +3022,20 @@
                 "gte": "2018-01-19T08:30:00+01:00",
                 "lte": "2018-01-19T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-22T08:30:00+01:00",
                 "lte": "2018-01-22T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2282,12 +3044,20 @@
                 "gte": "2018-01-24T08:30:00+01:00",
                 "lte": "2018-01-24T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-26T08:30:00+01:00",
                 "lte": "2018-01-26T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2296,12 +3066,20 @@
                 "gte": "2018-01-29T08:30:00+01:00",
                 "lte": "2018-01-29T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-01-31T08:30:00+01:00",
                 "lte": "2018-01-31T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2310,12 +3088,20 @@
                 "gte": "2018-02-02T08:30:00+01:00",
                 "lte": "2018-02-02T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-05T08:30:00+01:00",
                 "lte": "2018-02-05T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2324,12 +3110,20 @@
                 "gte": "2018-02-07T08:30:00+01:00",
                 "lte": "2018-02-07T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-09T08:30:00+01:00",
                 "lte": "2018-02-09T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2338,12 +3132,20 @@
                 "gte": "2018-02-12T08:30:00+01:00",
                 "lte": "2018-02-12T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-14T08:30:00+01:00",
                 "lte": "2018-02-14T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2352,12 +3154,20 @@
                 "gte": "2018-02-16T08:30:00+01:00",
                 "lte": "2018-02-16T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-19T08:30:00+01:00",
                 "lte": "2018-02-19T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2366,12 +3176,20 @@
                 "gte": "2018-02-21T08:30:00+01:00",
                 "lte": "2018-02-21T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-23T08:30:00+01:00",
                 "lte": "2018-02-23T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2380,12 +3198,20 @@
                 "gte": "2018-02-26T08:30:00+01:00",
                 "lte": "2018-02-26T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-02-28T08:30:00+01:00",
                 "lte": "2018-02-28T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2394,12 +3220,20 @@
                 "gte": "2018-03-02T08:30:00+01:00",
                 "lte": "2018-03-02T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-05T08:30:00+01:00",
                 "lte": "2018-03-05T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2408,12 +3242,20 @@
                 "gte": "2018-03-07T08:30:00+01:00",
                 "lte": "2018-03-07T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-09T08:30:00+01:00",
                 "lte": "2018-03-09T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2422,12 +3264,20 @@
                 "gte": "2018-03-12T08:30:00+01:00",
                 "lte": "2018-03-12T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-14T08:30:00+01:00",
                 "lte": "2018-03-14T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2436,12 +3286,20 @@
                 "gte": "2018-03-16T08:30:00+01:00",
                 "lte": "2018-03-16T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-19T08:30:00+01:00",
                 "lte": "2018-03-19T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2450,12 +3308,20 @@
                 "gte": "2018-03-21T08:30:00+01:00",
                 "lte": "2018-03-21T09:17:00+01:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-23T08:30:00+01:00",
                 "lte": "2018-03-23T09:17:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2464,12 +3330,20 @@
                 "gte": "2018-03-26T08:30:00+02:00",
                 "lte": "2018-03-26T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-03-28T08:30:00+02:00",
                 "lte": "2018-03-28T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2478,12 +3352,20 @@
                 "gte": "2018-03-30T08:30:00+02:00",
                 "lte": "2018-03-30T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-02T08:30:00+02:00",
                 "lte": "2018-04-02T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2492,12 +3374,20 @@
                 "gte": "2018-04-04T08:30:00+02:00",
                 "lte": "2018-04-04T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-06T08:30:00+02:00",
                 "lte": "2018-04-06T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2506,12 +3396,20 @@
                 "gte": "2018-04-09T08:30:00+02:00",
                 "lte": "2018-04-09T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-11T08:30:00+02:00",
                 "lte": "2018-04-11T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2520,12 +3418,20 @@
                 "gte": "2018-04-13T08:30:00+02:00",
                 "lte": "2018-04-13T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-16T08:30:00+02:00",
                 "lte": "2018-04-16T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2534,12 +3440,20 @@
                 "gte": "2018-04-18T08:30:00+02:00",
                 "lte": "2018-04-18T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-20T08:30:00+02:00",
                 "lte": "2018-04-20T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2548,12 +3462,20 @@
                 "gte": "2018-04-23T08:30:00+02:00",
                 "lte": "2018-04-23T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-25T08:30:00+02:00",
                 "lte": "2018-04-25T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2562,12 +3484,20 @@
                 "gte": "2018-04-27T08:30:00+02:00",
                 "lte": "2018-04-27T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-04-30T08:30:00+02:00",
                 "lte": "2018-04-30T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -2576,6 +3506,10 @@
                 "gte": "2018-05-02T08:30:00+02:00",
                 "lte": "2018-05-02T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
@@ -2583,12 +3517,20 @@
                 "gte": "2018-05-04T08:30:00+02:00",
                 "lte": "2018-05-04T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2018-05-07T08:30:00+02:00",
                 "lte": "2018-05-07T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         }

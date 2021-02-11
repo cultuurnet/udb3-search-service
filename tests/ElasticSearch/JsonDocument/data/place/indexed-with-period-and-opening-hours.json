@@ -34,11 +34,21 @@
         }
     ],
     "status": "Available",
+    "localTimeRange": [
+        {
+            "gte": "0830",
+            "lte": "0917"
+        }
+    ],
     "subEvent": [
         {
             "dateRange": {
                 "gte": "2017-04-24T08:30:00+02:00",
                 "lte": "2017-04-24T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -47,12 +57,20 @@
                 "gte": "2017-04-26T08:30:00+02:00",
                 "lte": "2017-04-26T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-04-28T08:30:00+02:00",
                 "lte": "2017-04-28T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -61,12 +79,20 @@
                 "gte": "2017-05-01T08:30:00+02:00",
                 "lte": "2017-05-01T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-03T08:30:00+02:00",
                 "lte": "2017-05-03T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         },
@@ -75,12 +101,20 @@
                 "gte": "2017-05-05T08:30:00+02:00",
                 "lte": "2017-05-05T09:17:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
             "status": "Available"
         },
         {
             "dateRange": {
                 "gte": "2017-05-08T08:30:00+02:00",
                 "lte": "2017-05-08T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
             },
             "status": "Available"
         }
