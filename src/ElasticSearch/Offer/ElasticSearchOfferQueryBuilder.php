@@ -146,6 +146,12 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withDateRangeQuery('dateRange', $from, $to);
     }
 
+    public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null)
+    {
+        $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
+        return $this->withRangeQuery('localTimeRange', $localTimeFrom, $localTimeTo);
+    }
+
     public function withStatusFilter(Status ...$statuses)
     {
         return $this->withMultiValueMatchQuery(

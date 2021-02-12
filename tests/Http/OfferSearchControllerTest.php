@@ -1001,7 +1001,7 @@ class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_status_filter_only_if_no_date_from_or_date_to_is_given(): void
+    public function it_uses_a_status_filter_only_if_no_date_from_or_date_to_or_time_from_or_time_to_is_given(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1023,7 +1023,7 @@ class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_date_range_filter_only_if_no_status_is_given(): void
+    public function it_uses_a_date_range_filter_only_if_no_status_or_time_from_or_time_to_is_given(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1038,6 +1038,29 @@ class OfferSearchControllerTest extends TestCase
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00')
             );
+
+        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_a_time_filter_only_if_no_date_from_or_date_to_or_status_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'localTimeFrom' => '0800',
+                'localTimeTo' => '1600',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withLocalTimeRangeFilter(800, 1600);
 
         $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
 

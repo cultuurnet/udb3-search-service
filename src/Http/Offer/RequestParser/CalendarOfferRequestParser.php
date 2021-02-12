@@ -62,6 +62,8 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
             $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
         } elseif ($hasStatuses) {
             $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
+        } elseif ($hasLocalTimes) {
+            $offerQueryBuilder = $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
         }
 
         return $offerQueryBuilder;

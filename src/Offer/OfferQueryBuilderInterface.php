@@ -112,6 +112,16 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     );
 
     /**
+     * @param int|null $localTimeFrom
+     * @param int|null $localTimeTo
+     * @return OfferQueryBuilderInterface
+     */
+    public function withLocalTimeRangeFilter(
+        int $localTimeFrom = null,
+        int $localTimeTo = null
+    );
+
+    /**
      * @param Status ...$statuses
      * @return static
      */
