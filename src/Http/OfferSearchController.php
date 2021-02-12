@@ -189,12 +189,6 @@ class OfferSearchController
             );
         }
 
-        $availableFrom = $this->getAvailabilityFromQuery($request, 'availableFrom');
-        $availableTo = $this->getAvailabilityFromQuery($request, 'availableTo');
-        if ($availableFrom || $availableTo) {
-            $queryBuilder = $queryBuilder->withAvailableRangeFilter($availableFrom, $availableTo);
-        }
-
         $regionIds = $this->getRegionIdsFromQuery($parameterBag, 'regions');
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
@@ -328,29 +322,6 @@ class OfferSearchController
 
         return ResponseFactory::jsonLd($jsonArray);
     }
-
-    private function getAvailabilityFromQuery(ApiRequestInterface $request, string $queryParameter): ?DateTimeImmutable
-    {
-        $defaultDateTime = DateTimeImmutable::createFromFormat('U', $request->getServerParam('REQUEST_TIME'));
-        $defaultDateTimeString = ($defaultDateTime) ? $defaultDateTime->format(\DateTime::ATOM) : null;
-
-        return $request->getQueryParameterBag()->getStringFromParameter(
-            $queryParameter,
-            $defaultDateTimeString,
-            function ($dateTimeString) use ($queryParameter) {
-                $dateTime = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $dateTimeString);
-
-                if (!$dateTime) {
-                    throw new \InvalidArgumentException(
-                        "{$queryParameter} should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00"
-                    );
-                }
-
-                return $dateTime;
-            }
-        );
-    }
-
 
     /**
      * @param ParameterBagInterface $parameterBag

@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
@@ -42,6 +43,8 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTime;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -112,6 +115,7 @@ class OfferSearchControllerTest extends TestCase
 
         $this->requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
+            ->withParser(new AvailabilityOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(new MockDistanceFactory()))
             ->withParser(new DocumentLanguageOfferRequestParser())
@@ -264,8 +268,8 @@ class OfferSearchControllerTest extends TestCase
                 new WorkflowStatus('DRAFT')
             )
             ->withAvailableRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-26T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-28T15:30:23+01:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-28T15:30:23+01:00')
             )
             ->withRegionFilter(
                 $this->regionIndexName,
@@ -285,17 +289,17 @@ class OfferSearchControllerTest extends TestCase
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00')
             )
             ->withModifiedRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00')
             )
             ->withCalendarTypeFilter(new CalendarType('single'))
             ->withStatusAwareDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00'),
                 Status::UNAVAILABLE(),
                 Status::TEMPORARILY_UNAVAILABLE()
             )
@@ -428,8 +432,8 @@ class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
             ->withAvailableRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-26T08:34:21+00:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-04-26T08:34:21+00:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00')
             )
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
             ->withAudienceTypeFilter(new AudienceType('everyone'))
@@ -496,6 +500,42 @@ class OfferSearchControllerTest extends TestCase
         $this->expectExceptionMessage(
             'availableFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00'
         );
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_convert_spaces_in_date_parameters_to_plus_signs()
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => 30,
+                'limit' => 10,
+                'disableDefaultFilters' => true,
+                'availableFrom' => '2017-04-01T00:00:00 01:00',
+                'availableTo' => '2017-04-01T23:59:59 01:00',
+                'dateFrom' => '2017-04-01T00:00:00 01:00',
+                'dateTo' => '2017-04-01T23:59:59 01:00',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStart(new Natural(30))
+            ->withLimit(new Natural(10))
+            ->withAvailableRangeFilter(
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+            )
+            ->withDateRangeFilter(
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+            );
+
+        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -990,8 +1030,8 @@ class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00')
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
+                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00')
             );
 
         $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);

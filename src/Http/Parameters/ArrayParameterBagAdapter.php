@@ -156,6 +156,12 @@ class ArrayParameterBagAdapter implements ParameterBagInterface
     public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
     {
         $callback = static function ($asString) use ($queryParameter) {
+            // When you use a + in a URL it gets interpreted as a space. This can be resolved by using %2B instead, or
+            // something like urlencode() when programming an actual integration, but it's convenient to interpret the
+            // spaces in dates as plus signs for testing purposes. The date format we expect should have no spaces
+            // anyway, so if we find a space it's more likely that it was meant to be a +.
+            $asString = str_replace(' ', '+', $asString);
+
             $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
