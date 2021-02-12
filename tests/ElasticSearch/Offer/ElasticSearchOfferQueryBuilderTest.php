@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\Status;
+use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -569,11 +570,11 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withStatusAwareDateRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'),
-                Status::TEMPORARILY_UNAVAILABLE(),
-                Status::UNAVAILABLE()
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
+                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'))
+                    ->withStatuses([Status::TEMPORARILY_UNAVAILABLE(), Status::UNAVAILABLE()])
             );
 
         $expectedQueryArray = [

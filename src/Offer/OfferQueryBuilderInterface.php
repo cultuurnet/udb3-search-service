@@ -118,16 +118,10 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     public function withStatusFilter(Status ...$statuses);
 
     /**
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
-     * @param Status ...$statuses
+     * @param SubEventQueryParameters $subEventQueryParameters
      * @return static
      */
-    public function withStatusAwareDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null,
-        Status ...$statuses
-    );
+    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters);
 
     /**
      * @param CalendarType ...$calendarTypes

@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
+use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -293,11 +294,11 @@ class OfferSearchControllerTest extends TestCase
                 \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T13:33:37+01:00')
             )
             ->withCalendarTypeFilter(new CalendarType('single'))
-            ->withStatusAwareDateRangeFilter(
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                \DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'),
-                Status::UNAVAILABLE(),
-                Status::TEMPORARILY_UNAVAILABLE()
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(\DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(\DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
+                    ->withStatuses([Status::UNAVAILABLE(), Status::TEMPORARILY_UNAVAILABLE()])
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))

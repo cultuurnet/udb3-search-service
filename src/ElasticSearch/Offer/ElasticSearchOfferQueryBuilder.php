@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
+use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -158,11 +159,12 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         );
     }
 
-    public function withStatusAwareDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null,
-        Status ...$statuses
-    ) {
+    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters)
+    {
+        $from = $subEventQueryParameters->getDateFrom();
+        $to = $subEventQueryParameters->getDateTo();
+        $statuses = $subEventQueryParameters->getStatuses();
+
         $this->guardDateRange('date', $from, $to);
 
         $dateRangeQuery = $this->createRangeQuery(
