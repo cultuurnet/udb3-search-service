@@ -49,21 +49,33 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
         // level status because an event can have multiple statuses when filtering by subEvent.
         // For dateRange and localTimeRange it's just more performant to filter on the aggregated properties index on
         // the top level if they are not combined with status or each other.
-        if ($hasMultipleFilters) {
-            $offerQueryBuilder = $offerQueryBuilder->withSubEventFilter(
-                (new SubEventQueryParameters())
-                    ->withDateFrom($dateFrom)
-                    ->withDateTo($dateTo)
-                    ->withLocalTimeFrom($localTimeFrom)
-                    ->withLocalTimeTo($localTimeTo)
-                    ->withStatuses($statuses)
-            );
-        } elseif ($hasDates) {
-            $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
-        } elseif ($hasStatuses) {
-            $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
-        } elseif ($hasLocalTimes) {
-            $offerQueryBuilder = $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+        switch (true) {
+            case $hasMultipleFilters:
+                $offerQueryBuilder = $offerQueryBuilder->withSubEventFilter(
+                    (new SubEventQueryParameters())
+                        ->withDateFrom($dateFrom)
+                        ->withDateTo($dateTo)
+                        ->withLocalTimeFrom($localTimeFrom)
+                        ->withLocalTimeTo($localTimeTo)
+                        ->withStatuses($statuses)
+                );
+                return $offerQueryBuilder;
+                break;
+
+            case $hasDates:
+                $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
+                return $offerQueryBuilder;
+                break;
+
+            case $hasStatuses:
+                $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
+                return $offerQueryBuilder;
+                break;
+
+            case $hasLocalTimes:
+                $offerQueryBuilder = $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+                return $offerQueryBuilder;
+                break;
         }
 
         return $offerQueryBuilder;
