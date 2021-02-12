@@ -163,14 +163,23 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
     {
         $from = $subEventQueryParameters->getDateFrom();
         $to = $subEventQueryParameters->getDateTo();
+        $localTimeFrom = $subEventQueryParameters->getLocalTimeFrom();
+        $localTimeTo = $subEventQueryParameters->getLocalTimeTo();
         $statuses = $subEventQueryParameters->getStatuses();
 
         $this->guardDateRange('date', $from, $to);
+        $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
 
         $dateRangeQuery = $this->createRangeQuery(
             'subEvent.dateRange',
             $from ? $from->format(DATE_ATOM) : null,
             $to ? $to->format(DATE_ATOM) : null
+        );
+
+        $localTimeRangeQuery = $this->createRangeQuery(
+            'subEvent.localTimeRange',
+            $subEventQueryParameters->getLocalTimeFrom(),
+            $subEventQueryParameters->getLocalTimeTo()
         );
 
         $statusesQuery = $this->createMultiValueMatchQuery(
@@ -186,6 +195,7 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         return $this->withBooleanFilterQueryOnNestedObject(
             'subEvent',
             $dateRangeQuery,
+            $localTimeRangeQuery,
             $statusesQuery
         );
     }

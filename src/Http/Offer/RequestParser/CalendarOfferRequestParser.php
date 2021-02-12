@@ -33,20 +33,29 @@ class CalendarOfferRequestParser implements OfferRequestParserInterface
         );
         $dateFrom = $parameterBagReader->getDateTimeFromParameter('dateFrom');
         $dateTo = $parameterBagReader->getDateTimeFromParameter('dateTo');
+        $localTimeFrom = $parameterBagReader->getIntegerFromParameter('localTimeFrom');
+        $localTimeTo = $parameterBagReader->getIntegerFromParameter('localTimeTo');
 
         $hasStatuses = !empty($statuses);
         $hasDates = !is_null($dateFrom) || !is_null($dateTo);
+        $hasLocalTimes =  !is_null($localTimeFrom) || !is_null($localTimeTo);
+
+        $hasMultipleFilters = ((int) $hasStatuses + (int) $hasDates + (int) $hasLocalTimes) > 1;
 
         // If the URL has parameters to filter on date AND status, filter by subEvent because otherwise we can get false
         // positives (for example an event with a subEvent that has the right date but the wrong status and also a
         // subEvent with the wrong date but right status -> matches if not filtering by subEvent)
         // On the other hand if the URL only filters by status but not by date, the filtering should happen on the top
         // level status because an event can have multiple statuses when filtering by subEvent.
-        if ($hasStatuses && $hasDates) {
+        // For dateRange and localTimeRange it's just more performant to filter on the aggregated properties index on
+        // the top level if they are not combined with status or each other.
+        if ($hasMultipleFilters) {
             $offerQueryBuilder = $offerQueryBuilder->withSubEventFilter(
                 (new SubEventQueryParameters())
                     ->withDateFrom($dateFrom)
                     ->withDateTo($dateTo)
+                    ->withLocalTimeFrom($localTimeFrom)
+                    ->withLocalTimeTo($localTimeTo)
                     ->withStatuses($statuses)
             );
         } elseif ($hasDates) {

@@ -187,6 +187,8 @@ class OfferSearchControllerTest extends TestCase
                 'calendarType' => 'single',
                 'dateFrom' => '2017-05-01T00:00:00+01:00',
                 'dateTo' => '2017-05-01T23:59:59+01:00',
+                'localTimeFrom' => '0800',
+                'localTimeTo' => '1600',
                 'status' => 'Unavailable,TemporarilyUnavailable',
                 'createdFrom' => '2017-05-01T13:33:37+01:00',
                 'createdTo' => '2017-05-01T13:33:37+01:00',
@@ -302,6 +304,8 @@ class OfferSearchControllerTest extends TestCase
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'))
                     ->withDateTo(DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
+                    ->withLocalTimeFrom(800)
+                    ->withLocalTimeTo(1600)
                     ->withStatuses([Status::UNAVAILABLE(), Status::TEMPORARILY_UNAVAILABLE()])
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))

@@ -564,7 +564,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_build_query_with_a_complete_date_range_filter_for_multiple_statuses(): void
+    public function it_should_build_query_with_a_complete_date_range_and_time_range_filter_for_multiple_statuses(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -574,6 +574,8 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
                     ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'))
+                    ->withLocalTimeFrom(800)
+                    ->withLocalTimeTo(1600)
                     ->withStatuses([Status::TEMPORARILY_UNAVAILABLE(), Status::UNAVAILABLE()])
             );
 
@@ -599,6 +601,14 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                                                     'subEvent.dateRange' => [
                                                         'gte' => '2017-04-25T00:00:00+00:00',
                                                         'lte' => '2017-05-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'range' => [
+                                                    'subEvent.localTimeRange' => [
+                                                        'gte' => '800',
+                                                        'lte' => '1600',
                                                     ],
                                                 ],
                                             ],

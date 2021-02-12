@@ -19,6 +19,16 @@ final class SubEventQueryParameters
     private $dateTo;
 
     /**
+     * @var int|null
+     */
+    private $localTimeFrom;
+
+    /**
+     * @var int|null
+     */
+    private $localTimeTo;
+
+    /**
      * @var Status[]
      */
     private $statuses = [];
@@ -44,6 +54,30 @@ final class SubEventQueryParameters
     {
         $c = clone $this;
         $c->dateTo = $dateTo;
+        return $c;
+    }
+
+    public function getLocalTimeFrom(): ?int
+    {
+        return $this->localTimeFrom;
+    }
+
+    public function withLocalTimeFrom(?int $localTimeFrom): SubEventQueryParameters
+    {
+        $c = clone $this;
+        $c->localTimeFrom = $localTimeFrom;
+        return $c;
+    }
+
+    public function getLocalTimeTo(): ?int
+    {
+        return $this->localTimeTo;
+    }
+
+    public function withLocalTimeTo(?int $localTimeTo): SubEventQueryParameters
+    {
+        $c = clone $this;
+        $c->localTimeTo = $localTimeTo;
         return $c;
     }
 
