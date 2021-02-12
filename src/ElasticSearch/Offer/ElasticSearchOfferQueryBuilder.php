@@ -174,35 +174,44 @@ class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder i
         $statuses = $subEventQueryParameters->getStatuses();
 
         $this->guardDateRange('date', $from, $to);
-        $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
 
-        $dateRangeQuery = $this->createRangeQuery(
-            'subEvent.dateRange',
-            $from ? $from->format(DATE_ATOM) : null,
-            $to ? $to->format(DATE_ATOM) : null
-        );
+        if ($localTimeFrom && $localTimeTo) {
+            $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
+        }
 
-        $localTimeRangeQuery = $this->createRangeQuery(
-            'subEvent.localTimeRange',
-            $subEventQueryParameters->getLocalTimeFrom(),
-            $subEventQueryParameters->getLocalTimeTo()
-        );
+        $queries = [];
 
-        $statusesQuery = $this->createMultiValueMatchQuery(
-            'subEvent.status',
-            array_map(
-                function (Status $status) {
-                    return $status->toNative();
-                },
-                $statuses
-            )
-        );
+        if ($from || $to) {
+            $queries[] = $this->createRangeQuery(
+                'subEvent.dateRange',
+                $from ? $from->format(DATE_ATOM) : null,
+                $to ? $to->format(DATE_ATOM) : null
+            );
+        }
+
+        if ($localTimeFrom || $localTimeTo) {
+            $queries[] = $this->createRangeQuery(
+                'subEvent.localTimeRange',
+                $subEventQueryParameters->getLocalTimeFrom(),
+                $subEventQueryParameters->getLocalTimeTo()
+            );
+        }
+
+        if (count($statuses) > 0) {
+            $queries[] = $this->createMultiValueMatchQuery(
+                'subEvent.status',
+                array_map(
+                    function (Status $status) {
+                        return $status->toNative();
+                    },
+                    $statuses
+                )
+            );
+        }
 
         return $this->withBooleanFilterQueryOnNestedObject(
             'subEvent',
-            $dateRangeQuery,
-            $localTimeRangeQuery,
-            $statusesQuery
+            ...$queries
         );
     }
 
