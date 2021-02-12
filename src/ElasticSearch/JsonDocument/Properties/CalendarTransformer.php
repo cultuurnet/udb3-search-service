@@ -378,13 +378,13 @@ final class CalendarTransformer implements JsonTransformer
         // in UTC for example and then the time info is not what we'd expect to be in Belgium.
         if (isset($subEvent['startDate'])) {
             $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
-            $startDate->setTimezone($timezone);
+            $startDate = $startDate->setTimezone($timezone);
             $startTime = $startDate->format('Hi');
         }
 
         if (isset($subEvent['endDate'])) {
             $endDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate']);
-            $endDate->setTimezone($timezone);
+            $endDate = $endDate->setTimezone($timezone);
             $endTime = $endDate->format('Hi');
         }
 
