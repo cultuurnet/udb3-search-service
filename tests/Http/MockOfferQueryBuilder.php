@@ -168,7 +168,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
                     return $status->toNative();
                 },
                 $subEventQueryParameters->getStatuses()
-            )
+            ),
         ];
 
         return $c;
