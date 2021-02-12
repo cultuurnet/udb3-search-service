@@ -6,10 +6,13 @@
     "dateRange": [
         {}
     ],
-    "availableDateRange": [
-        {}
-    ],
     "status": "Available",
+    "subEvent": [
+        {
+            "dateRange": {},
+            "status": "Available"
+        }
+    ],
     "workflowStatus": "DRAFT",
     "availableTo": "2100-04-22T18:00:00+02:00",
     "name": {

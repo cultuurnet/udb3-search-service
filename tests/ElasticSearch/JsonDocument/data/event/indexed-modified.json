@@ -9,13 +9,16 @@
             "lte": "2017-04-22T18:00:00+02:00"
         }
     ],
-    "availableDateRange": [
+    "status": "Available",
+    "subEvent": [
         {
-            "gte": "2017-04-22T10:00:00+02:00",
-            "lte": "2017-04-22T18:00:00+02:00"
+            "dateRange": {
+                "gte": "2017-04-22T10:00:00+02:00",
+                "lte": "2017-04-22T18:00:00+02:00"
+            },
+            "status": "Available"
         }
     ],
-    "status": "Available",
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Punkfest"

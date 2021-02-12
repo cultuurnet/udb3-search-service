@@ -5,10 +5,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
+use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\MatchAllQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
@@ -189,6 +191,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     }
 
     /**
+     * Adds a MATCH query for one or more terms. If multiple terms are supplied, a SHOULD boolean query is used,
+     * which is the same as an OR operator. So this query is useful to find all documents with a single-value field that
+     * should contain one of the given terms as a value.
+     *
+     * @see self::createMultiValueMatchQuery()
+     *
      * @param string $fieldName
      * @param string[] $terms
      * @return static
@@ -199,20 +207,29 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
             return $this;
         }
 
-        if (count($terms) == 1) {
-            return $this->withMatchQuery($fieldName, $terms[0]);
-        }
-
-        $nestedBoolQuery = new BoolQuery();
-
-        foreach ($terms as $term) {
-            $matchQuery = new MatchQuery($fieldName, $term);
-            $nestedBoolQuery->add($matchQuery, BoolQuery::SHOULD);
-        }
+        $query = $this->createMultiValueMatchQuery($fieldName, $terms);
 
         $c = $this->getClone();
-        $c->boolQuery->add($nestedBoolQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($query, BoolQuery::FILTER);
         return $c;
+    }
+
+    /**
+     * Creates a MATCH query for one or more terms. If multiple terms are supplied, a SHOULD boolean query is used,
+     * which is the same as an OR operator. So this query is useful to find all documents with a single-value field that
+     * should contain one of the given terms as a value.
+     */
+    protected function createMultiValueMatchQuery(string $fieldName, array $terms): BuilderInterface
+    {
+        if (count($terms) === 1) {
+            return new MatchQuery($fieldName, $terms[0]);
+        }
+
+        $boolQuery = new BoolQuery();
+        foreach ($terms as $term) {
+            $boolQuery->add(new MatchQuery($fieldName, $term), BoolQuery::SHOULD);
+        }
+        return $boolQuery;
     }
 
     /**
@@ -267,29 +284,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         return $c;
     }
 
-    /**
-     * @param string[] $fieldNames
-     * @param string|int|float|null $from
-     * @param string|int|float|null $to
-     * @return static
-     */
-    protected function withMultiFieldRangeQuery(array $fieldNames, $from = null, $to = null)
-    {
-        $nestedBoolQuery = new BoolQuery();
-
-        foreach ($fieldNames as $fieldName) {
-            $rangeQuery = $this->createRangeQuery($fieldName, $from, $to);
-            if ($rangeQuery) {
-                $nestedBoolQuery->add($rangeQuery, BoolQuery::SHOULD);
-            }
-        }
-
-        $c = $this->getClone();
-        $c->boolQuery->add($nestedBoolQuery, BoolQuery::FILTER);
-        return $c;
-    }
-
-    private function createRangeQuery(string $fieldName, $from = null, $to = null): ?RangeQuery
+    protected function createRangeQuery(string $fieldName, $from = null, $to = null): ?RangeQuery
     {
         $parameters = array_filter(
             [
@@ -324,24 +319,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     }
 
     /**
-     * @param string[] $fieldNames
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
-     * @return static
-     */
-    protected function withMultiFieldDateRangeQuery(
-        array $fieldNames,
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
-    ) {
-        return $this->withMultiFieldRangeQuery(
-            $fieldNames,
-            is_null($from) ? null : $from->format(\DateTime::ATOM),
-            is_null($to) ? null : $to->format(\DateTime::ATOM)
-        );
-    }
-
-    /**
      * @param string $queryString
      * @param string[] $fields
      * @param string $type
@@ -366,6 +343,18 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
         $c = $this->getClone();
         $c->boolQuery->add($queryStringQuery, $type);
+        return $c;
+    }
+
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries)
+    {
+        $boolQuery = new BoolQuery();
+        foreach ($queries as $individualQuery) {
+            $boolQuery->add($individualQuery, BoolQuery::FILTER);
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add(new NestedQuery($path, $boolQuery), BoolQuery::FILTER);
         return $c;
     }
 

@@ -5,19 +5,15 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use DateInterval;
 use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
-use Psr\Log\NullLogger;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
 {
     private const STATUS_AVAILABLE = 'Available';
-    private const STATUS_UNAVAILABLE = 'Unavailable';
-    private const STATUS_TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
 
     /**
      * @var JsonTransformerLogger
@@ -31,81 +27,64 @@ final class CalendarTransformer implements JsonTransformer
 
     public function transform(array $from, array $draft = []): array
     {
-        $draft = $this->transformCalendarType($from, $draft);
-        $draft = $this->transformDateRange($from, $draft);
-        return $draft;
-    }
+        // Index status Available by default even if there are errors like missing calendar type, missing subEvents, ...
+        $draft['status'] = self::STATUS_AVAILABLE;
 
-    private function transformCalendarType(array $from, array $draft): array
-    {
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
             return $draft;
         }
 
+        $draft = $this->transformCalendarType($from, $draft);
+        $draft = $this->transformStatus($from, $draft);
+
+        $from = $this->polyFillJsonLdSubEvents($from);
+        if (!isset($from['subEvent'])) {
+            $this->logger->logMissingExpectedField('subEvent');
+            return $draft;
+        }
+
+        $draft = $this->transformDateRange($from, $draft);
+        $draft = $this->transformSubEvents($from, $draft);
+        return $draft;
+    }
+
+    private function transformCalendarType(array $from, array $draft): array
+    {
         $draft['calendarType'] = $from['calendarType'];
         return $draft;
     }
 
     private function transformDateRange(array $from, array $draft): array
     {
+        $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
+
+        // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
+        // still possible we end up without date ranges.
+        if (!empty($dateRange)) {
+            $draft['dateRange'] = $dateRange;
+        }
+
+        return $draft;
+    }
+
+    private function transformStatus(array $from, array $draft): array
+    {
         $status = $this->determineStatus($from);
         $draft['status'] = $status;
+        return $draft;
+    }
 
-        if (!isset($from['calendarType'])) {
-            // Logged in transformCalendarType().
-            return $draft;
+    private function transformSubEvents(array $from, array $draft): array
+    {
+        $draft['subEvent'] = [];
+
+        foreach ($from['subEvent'] as $subEvent) {
+            $draft['subEvent'][] = [
+                'dateRange' => $this->convertSubEventToDateRange($subEvent),
+                'status' => $this->determineStatus($subEvent, $from),
+            ];
         }
-
-        $from = $this->polyFillJsonLdSubEvents($from);
-
-        // The document should either have subEvents or a "permanent" calendar type.
-        if (!isset($from['subEvent']) && $from['calendarType'] !== 'permanent') {
-            $this->logger->logMissingExpectedField('subEvent');
-            return $draft;
-        }
-
-        if (isset($from['subEvent'])) {
-            // Index each subEvent as a separate date range.
-            $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
-
-            // Index each subEvent as a separate date range in the correct collection of date ranges for the subEvent's
-            // status.
-            $availableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'Available'),
-                true
-            );
-            $unavailableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'Unavailable'),
-                true
-            );
-            $temporarilyUnavailableDateRange = $this->convertSubEventsToDateRanges(
-                $this->filterSubEventsByStatusType($from['subEvent'], 'TemporarilyUnavailable'),
-                true
-            );
-        } else {
-            // Index a single range without any bounds.
-            $dateRange = [new stdClass()];
-
-            // Index a single range without any bounds for the status of the event/place.
-            $availableDateRange = $status === self::STATUS_AVAILABLE ? [new stdClass()] : [];
-            $unavailableDateRange = $status === self::STATUS_UNAVAILABLE ? [new stdClass()] : [];
-            $temporarilyUnavailableDateRange = $status === self::STATUS_TEMPORARILY_UNAVAILABLE ? [new stdClass()] : [];
-        }
-
-        $ranges = array_filter(
-            [
-                'dateRange' => $dateRange,
-                'availableDateRange' => $availableDateRange,
-                'unavailableDateRange' => $unavailableDateRange,
-                'temporarilyUnavailableDateRange' => $temporarilyUnavailableDateRange,
-            ],
-            function (array $values) {
-                return count($values);
-            }
-        );
-
-        $draft = array_merge($draft, $ranges);
 
         return $draft;
     }
@@ -144,6 +123,16 @@ final class CalendarTransformer implements JsonTransformer
                 if (isset($from['openingHours'])) {
                     return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
                 }
+                $from['subEvent'] = [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => null,
+                        'endDate' => null,
+                        'status' => [
+                            'type' => $this->determineStatus($from),
+                        ],
+                    ],
+                ];
                 return $from;
                 break;
 
@@ -275,40 +264,38 @@ final class CalendarTransformer implements JsonTransformer
         return $openingHoursByDay;
     }
 
-    private function filterSubEventsByStatusType(array $subEvents, string $expectedStatusType): array
-    {
-        return array_filter(
-            $subEvents,
-            function (array $subEvent) use ($expectedStatusType) {
-                $actualStatusType = $this->determineStatus($subEvent);
-                return $actualStatusType === $expectedStatusType;
-            }
-        );
-    }
-
-    private function convertSubEventsToDateRanges(array $subEvents, bool $disableLogging = false): array
+    private function convertSubEventsToDateRanges(array $subEvents): array
     {
         $dateRanges = [];
-        $logger = $disableLogging ? new JsonTransformerPsrLogger(new NullLogger()) : $this->logger;
 
         foreach ($subEvents as $index => $subEvent) {
-            if (!isset($subEvent['startDate'])) {
-                $logger->logMissingExpectedField("subEvent[{$index}].startDate");
+            if (!array_key_exists('startDate', $subEvent)) {
+                $this->logger->logMissingExpectedField("subEvent[{$index}].startDate");
                 continue;
             }
 
-            if (!isset($subEvent['endDate'])) {
-                $logger->logMissingExpectedField("subEvent[{$index}].endDate");
+            if (!array_key_exists('endDate', $subEvent)) {
+                $this->logger->logMissingExpectedField("subEvent[{$index}].endDate");
                 continue;
             }
 
-            $dateRanges[] = [
-                'gte' => $subEvent['startDate'],
-                'lte' => $subEvent['endDate'],
-            ];
+            $dateRanges[] = $this->convertSubEventToDateRange($subEvent);
         }
 
         return $dateRanges;
+    }
+
+    private function convertSubEventToDateRange(array $subEvent): stdClass
+    {
+        // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
+        // like for permanent events, then we need to make sure we send an object like {} to Elasticsearch. An empty
+        // PHP array would get converted to [] in JSON.
+        return (object) array_filter(
+            [
+                'gte' => $subEvent['startDate'] ?? null,
+                'lte' => $subEvent['endDate'] ?? null,
+            ]
+        );
     }
 
     private function determineStatus(array $entity, ?array $parent = null): string

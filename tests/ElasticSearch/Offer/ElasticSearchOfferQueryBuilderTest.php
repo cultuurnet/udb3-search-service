@@ -588,21 +588,38 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                     ],
                     'filter' => [
                         [
-                            'bool' => [
-                                'should' => [
-                                    [
-                                        'range' => [
-                                            'temporarilyUnavailableDateRange' => [
-                                                'gte' => '2017-04-25T00:00:00+00:00',
-                                                'lte' => '2017-05-01T23:59:59+00:00',
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2017-04-25T00:00:00+00:00',
+                                                        'lte' => '2017-05-01T23:59:59+00:00',
+                                                    ],
+                                                ],
                                             ],
-                                        ],
-                                    ],
-                                    [
-                                        'range' => [
-                                            'unavailableDateRange' => [
-                                                'gte' => '2017-04-25T00:00:00+00:00',
-                                                'lte' => '2017-05-01T23:59:59+00:00',
+                                            [
+                                                'bool' => [
+                                                    'should' => [
+                                                        [
+                                                            'match' => [
+                                                                'subEvent.status' => [
+                                                                    'query' => 'TemporarilyUnavailable',
+                                                                ],
+                                                            ],
+                                                        ],
+                                                        [
+                                                            'match' => [
+                                                                'subEvent.status' => [
+                                                                    'query' => 'Unavailable',
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
