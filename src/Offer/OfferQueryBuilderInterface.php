@@ -112,22 +112,26 @@ interface OfferQueryBuilderInterface extends QueryBuilderInterface
     );
 
     /**
+     * @param int|null $localTimeFrom
+     * @param int|null $localTimeTo
+     * @return OfferQueryBuilderInterface
+     */
+    public function withLocalTimeRangeFilter(
+        int $localTimeFrom = null,
+        int $localTimeTo = null
+    );
+
+    /**
      * @param Status ...$statuses
      * @return static
      */
     public function withStatusFilter(Status ...$statuses);
 
     /**
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
-     * @param Status ...$statuses
+     * @param SubEventQueryParameters $subEventQueryParameters
      * @return static
      */
-    public function withStatusAwareDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null,
-        Status ...$statuses
-    );
+    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters);
 
     /**
      * @param CalendarType ...$calendarTypes

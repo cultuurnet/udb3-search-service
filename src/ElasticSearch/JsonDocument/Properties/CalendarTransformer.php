@@ -9,10 +9,22 @@ use DateInterval;
 use DatePeriod;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeZone;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
 {
+    /**
+     * List of countries that UDB3 supports and their timezones so we can index localTimeRange based on the start and
+     * end times of an event converted to the timezone in which it takes place.
+     * @see https://github.com/eggert/tz/blob/master/zone1970.tab
+     */
+    private const TIMEZONES = [
+        'BE' => 'Europe/Brussels',
+        'NL' => 'Europe/Amsterdam',
+    ];
+    private const DEFAULT_TIMEZONE = 'Europe/Brussels';
+
     private const STATUS_AVAILABLE = 'Available';
 
     /**
@@ -25,6 +37,14 @@ final class CalendarTransformer implements JsonTransformer
         $this->logger = $logger;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     public function transform(array $from, array $draft = []): array
     {
         // Index status Available by default even if there are errors like missing calendar type, missing subEvents, ...
@@ -45,16 +65,33 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         $draft = $this->transformDateRange($from, $draft);
+        $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformCalendarType(array $from, array $draft): array
     {
         $draft['calendarType'] = $from['calendarType'];
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformDateRange(array $from, array $draft): array
     {
         $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
@@ -68,6 +105,38 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
+    private function transformLocalTimeRange(array $from, array $draft): array
+    {
+        $localTimeRange = $this->convertSubEventsToLocalTimeRanges(
+            $from['subEvent'],
+            $this->determineLocalTimezone($from)
+        );
+
+        // Even though there's a subEvent, it might not have a startDate and/or endDate if the data is incorrect so it's
+        // still possible we end up without time ranges.
+        if (!empty($localTimeRange)) {
+            $draft['localTimeRange'] = $localTimeRange;
+        }
+
+        return $draft;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformStatus(array $from, array $draft): array
     {
         $status = $this->determineStatus($from);
@@ -75,13 +144,27 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformSubEvents(array $from, array $draft): array
     {
         $draft['subEvent'] = [];
 
         foreach ($from['subEvent'] as $subEvent) {
+            $localTimeRange = $this->convertSubEventToLocalTimeRanges($subEvent, $this->determineLocalTimezone($from));
+            if (count($localTimeRange) === 1) {
+                $localTimeRange = $localTimeRange[0];
+            }
+
             $draft['subEvent'][] = [
                 'dateRange' => $this->convertSubEventToDateRange($subEvent),
+                'localTimeRange' => $localTimeRange,
                 'status' => $this->determineStatus($subEvent, $from),
             ];
         }
@@ -89,6 +172,19 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @return array
+     *   Given JSON-LD, with an additional subEvent property if there was none and it could be derived from the
+     *   following logic:
+     *     - calendar type single: add a single subEvent based on startDate and endDate
+     *     - calendar type multiple: can not (and should not) be poly-filled if missing
+     *     - calendar type periodic: add subEvents based on opening hours, or if there are no opening hours based on
+     *         startDate and endDate
+     *     - calendar type permanent: add subEvents based on opening hours, or a single subEvent with an unlimited range
+     *         if there are no opening hours
+     */
     private function polyFillJsonLdSubEvents(array $from): array
     {
         if ($from['calendarType'] === 'single' || $from['calendarType'] === 'periodic') {
@@ -145,6 +241,12 @@ final class CalendarTransformer implements JsonTransformer
         }
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place with startDate and endDate properties, as an associative array
+     * @return array
+     *   Given JSON-LD with an additional subEvent property based on the startDate and endDate properties
+     */
     private function polyFillJsonLdSubEventsFromStartAndEndDate(array $from): array
     {
         $from['subEvent'] = [
@@ -161,6 +263,12 @@ final class CalendarTransformer implements JsonTransformer
         return $from;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place with openingHours property, as an associative array
+     * @return array
+     *   Given JSON-LD poly-filled with a subEvent property based on the openingHours property
+     */
     private function polyFillJsonLdSubEventsFromOpeningHours(array $from): array
     {
         $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours']);
@@ -190,12 +298,12 @@ final class CalendarTransformer implements JsonTransformer
             foreach ($openingHoursByDay[$day] as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
-                    new \DateTimeZone('Europe/Brussels')
+                    $this->determineLocalTimezone($from)
                 );
 
                 $subEventEndDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['closes'] . ':00',
-                    new \DateTimeZone('Europe/Brussels')
+                    $this->determineLocalTimezone($from)
                 );
 
                 $subEvent[] = [
@@ -216,6 +324,13 @@ final class CalendarTransformer implements JsonTransformer
         return $from;
     }
 
+    /**
+     * @param array $openingHours
+     *   JSON-LD of the openingHours property of an event/place, as an associative array
+     * @return array<int,array<int,array<int,string>>>
+     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
+     *   enclosing array
+     */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
         $openingHoursByDay = [
@@ -264,6 +379,12 @@ final class CalendarTransformer implements JsonTransformer
         return $openingHoursByDay;
     }
 
+    /**
+     * @param array $subEvents
+     *   subEvent property on event/place JSON-LD, decoded as an array of arrays with "startDate", "endDate", ... each.
+     * @return stdClass[]
+     *   List of Elasticsearch range objects
+     */
     private function convertSubEventsToDateRanges(array $subEvents): array
     {
         $dateRanges = [];
@@ -285,6 +406,10 @@ final class CalendarTransformer implements JsonTransformer
         return $dateRanges;
     }
 
+    /**
+     * @param array $subEvent
+     *   JSON-LD of a single subEvent, as an associative array
+     */
     private function convertSubEventToDateRange(array $subEvent): stdClass
     {
         // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
@@ -298,6 +423,139 @@ final class CalendarTransformer implements JsonTransformer
         );
     }
 
+    /**
+     * @param array $subEvents
+     *   subEvent property on event/place JSON-LD, decoded as an array of arrays with "startDate", "endDate", ... each.
+     * @return stdClass[]
+     *   A flattened list of Elasticsearch range objects constructed by convertSubEventToLocalTimeRanges() for each
+     *   subEvent. Duplicates are omitted.
+     */
+    private function convertSubEventsToLocalTimeRanges(array $subEvents, DateTimeZone $timezone): array
+    {
+        $timeRanges = [];
+
+        foreach ($subEvents as $subEvent) {
+            if (!array_key_exists('startDate', $subEvent)) {
+                // Logged already when creating dateRange
+                continue;
+            }
+
+            if (!array_key_exists('endDate', $subEvent)) {
+                // Logged already when creating dateRange
+                continue;
+            }
+
+            $localTimeRangesForSubEvent = $this->convertSubEventToLocalTimeRanges($subEvent, $timezone);
+
+            // Reduce unnecessary duplicates in the top level localTimeRange.
+            // This reduces a lot of duplicates for events with opening hours for example, because when we drop the
+            // date info we don't need the same opening hours for _every_ week like we do for dates.
+            foreach ($localTimeRangesForSubEvent as $localTimeRangeForSubEvent) {
+                if (!in_array($localTimeRangeForSubEvent, $timeRanges, false)) {
+                    $timeRanges[] = $localTimeRangeForSubEvent;
+                }
+            }
+        }
+
+        return array_values($timeRanges);
+    }
+
+    /**
+     * @param array $subEvent
+     *   JSON-LD of a single subEvent, as an associative array
+     * @return stdClass[]
+     *   Elasticsearch range objects. Can be multiple when the startDate and endDate are on different days.
+     */
+    private function convertSubEventToLocalTimeRanges(array $subEvent, DateTimeZone $timezone): array
+    {
+        $startDate = null;
+        $endDate = null;
+
+        $startTime = null;
+        $endTime = null;
+
+        // When converting the dates to times it's important we set the right timezone, because sometimes the dates are
+        // in UTC for example and then the time info is not what we'd expect to be in Belgium.
+        if (isset($subEvent['startDate'])) {
+            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
+            $startDate = $startDate->setTimezone($timezone);
+            $startTime = $startDate->format('Hi');
+        }
+
+        if (isset($subEvent['endDate'])) {
+            $endDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate']);
+            $endDate = $endDate->setTimezone($timezone);
+            $endTime = $endDate->format('Hi');
+        }
+
+        if ($startDate && $endDate) {
+            $startDateWithoutHours = $startDate->setTime(0, 0, 0);
+            $endDateWithoutHours = $endDate->setTime(0, 0, 0);
+            $daySpan = $endDateWithoutHours->diff($startDateWithoutHours)->days;
+
+            // Start and end time are on the same day, so we have one time range.
+            if ($daySpan === 0) {
+                return [
+                    (object) [
+                        'gte' => $startTime,
+                        'lte' => $endTime,
+                    ],
+                ];
+            }
+
+            // End time is on the day after the start time. To prevent invalid ranges where the end time is lower than
+            // the start time, we make ranges from start -> 23:59 and from 00:00 -> end.
+            if ($daySpan === 1) {
+                return [
+                    (object) [
+                        'gte' => $startTime,
+                        'lte' => 2359,
+                    ],
+                    (object) [
+                        'gte' => 0000,
+                        'lte' => $endTime,
+                    ],
+                ];
+            }
+
+            // End time is multiple days after start time. Same as the day after above, but with a complete range
+            // in-between. If there's more than 1 day in-between, one complete range is still sufficient.
+            return [
+                (object) [
+                    'gte' => $startTime,
+                    'lte' => 2359,
+                ],
+                (object) [
+                    'gte' => 0000,
+                    'lte' => 2359,
+                ],
+                (object) [
+                    'gte' => 0000,
+                    'lte' => $endTime,
+                ],
+            ];
+        }
+
+        if ($startDate) {
+            return [(object) ['gte' => $startTime]];
+        }
+
+        if ($endDate) {
+            return [(object) ['lte' => $endTime]];
+        }
+
+        // We need to make sure we send an object like {} to Elasticsearch if there's no start or end time.
+        // [[]] would be converted to [[]] in JSON, while we want [{}].
+        return [new stdClass()];
+    }
+
+    /**
+     * @param array $entity
+     *   JSON-LD of an event, place, or subEvent as an associative array
+     * @param array|null $parent
+     *   If the given $entity is a subEvent, the JSON-LD of the parent event/place can be given as an associative array
+     *   to use as a fallback if the subEvent has no explicit status but the parent does
+     */
     private function determineStatus(array $entity, ?array $parent = null): string
     {
         // If the given event, subEvent, or place has a status.type, use that.
@@ -318,5 +576,20 @@ final class CalendarTransformer implements JsonTransformer
 
         // If there's still no status found assume it's Available.
         return self::STATUS_AVAILABLE;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place as an associative array
+     */
+    private function determineLocalTimezone(array $from): DateTimeZone
+    {
+        $location = $from['location'] ?? $from;
+        $country = $location['address']['addressCountry'] ?? null;
+
+        if ($country) {
+            return new DateTimeZone(self::TIMEZONES[$country] ?? self::DEFAULT_TIMEZONE);
+        }
+        return new DateTimeZone(self::DEFAULT_TIMEZONE);
     }
 }

@@ -39,6 +39,8 @@ class OfferSupportedParameters extends AbstractSupportedParameters
             'calendarType',
             'dateFrom',
             'dateTo',
+            'localTimeFrom',
+            'localTimeTo',
             'status',
             'termIds',
             'termLabels',

@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
+use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
@@ -136,6 +137,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null)
+    {
+        $c = clone $this;
+        $c->mockQuery['localTimeRange']['from'] = $localTimeFrom;
+        $c->mockQuery['localTimeRange']['to'] = $localTimeTo;
+        return $c;
+    }
+
     public function withStatusFilter(Status ...$statuses)
     {
         if (empty($statuses)) {
@@ -152,21 +161,23 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStatusAwareDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null,
-        Status ...$statuses
-    ) {
-        if (empty($statuses)) {
-            return $this;
-        }
-
+    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): self
+    {
         $c = clone $this;
 
-        foreach ($statuses as $status) {
-            $c->mockQuery['dateRange'][$status->toNative()]['from'] = $from ? $from->format(DATE_ATOM) : null;
-            $c->mockQuery['dateRange'][$status->toNative()]['to'] = $to ? $to->format(DATE_ATOM) : null;
-        }
+        $dateFrom = $subEventQueryParameters->getDateFrom();
+        $dateTo = $subEventQueryParameters->getDateTo();
+
+        $c->mockQuery['subEvent'] = [
+            'dateFrom' => $dateFrom ? $dateFrom->format(DATE_ATOM) : null,
+            'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
+            'statuses' => array_map(
+                function (Status $status) {
+                    return $status->toNative();
+                },
+                $subEventQueryParameters->getStatuses()
+            ),
+        ];
 
         return $c;
     }

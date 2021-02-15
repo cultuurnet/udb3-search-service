@@ -17,12 +17,22 @@
             "lte": "2017-05-07T00:00:00+02:00"
         }
     ],
+    "localTimeRange": [
+        {
+            "gte": "0000",
+            "lte": "0000"
+        }
+    ],
     "status": "Unavailable",
     "subEvent": [
         {
             "dateRange": {
                 "gte": "2017-04-30T00:00:00+02:00",
                 "lte": "2017-04-30T00:00:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0000",
+                "lte": "0000"
             },
             "status": "Unavailable"
         },
@@ -31,12 +41,20 @@
                 "gte": "2017-05-01T00:00:00+02:00",
                 "lte": "2017-05-01T00:00:00+02:00"
             },
+            "localTimeRange": {
+                "gte": "0000",
+                "lte": "0000"
+            },
             "status": "Unavailable"
         },
         {
             "dateRange": {
                 "gte": "2017-05-07T00:00:00+02:00",
                 "lte": "2017-05-07T00:00:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0000",
+                "lte": "0000"
             },
             "status": "Unavailable"
         }

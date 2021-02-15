@@ -26,15 +26,17 @@
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
 
+        "dateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+        "localTimeRange": {
+            "type": "integer_range"
+        },
         "status": {
             "type": "string",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
-        },
-
-        "dateRange": {
-            "type": "date_range",
-            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
 
         "subEvent": {
@@ -43,6 +45,9 @@
                 "dateRange": {
                     "type": "date_range",
                     "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+                },
+                "localTimeRange": {
+                    "type": "integer_range"
                 },
                 "status": {
                     "type": "string",
