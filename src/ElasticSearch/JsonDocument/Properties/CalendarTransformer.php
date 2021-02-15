@@ -327,8 +327,9 @@ final class CalendarTransformer implements JsonTransformer
     /**
      * @param array $openingHours
      *   JSON-LD of the openingHours property of an event/place, as an associative array
-     * @return array[][][]
-     *   Associative arrays with "opens" and "closes" each, grouped in lists per weekday in an enclosing array
+     * @return string[][][]
+     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
+     *   enclosing array
      */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
