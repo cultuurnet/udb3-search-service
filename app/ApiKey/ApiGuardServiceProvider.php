@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\ApiKey;
 
 use CultureFeed;
-use CultuurNet\Auth\ConsumerCredentials;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticatorInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\CompositeApiKeyReader;
@@ -48,14 +47,9 @@ final class ApiGuardServiceProvider extends BaseServiceProvider
         $this->add(
             ApiKeyAuthenticatorInterface::class,
             function () {
-                $consumerCredentials = new ConsumerCredentials(
+                $oauthClient = new \CultureFeed_DefaultOAuthClient(
                     $this->parameter('uitid.consumer.key'),
                     $this->parameter('uitid.consumer.secret')
-                );
-
-                $oauthClient = new \CultureFeed_DefaultOAuthClient(
-                    $consumerCredentials->getKey(),
-                    $consumerCredentials->getSecret()
                 );
                 $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
