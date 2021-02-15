@@ -37,6 +37,14 @@ final class CalendarTransformer implements JsonTransformer
         $this->logger = $logger;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     public function transform(array $from, array $draft = []): array
     {
         // Index status Available by default even if there are errors like missing calendar type, missing subEvents, ...
@@ -62,12 +70,28 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformCalendarType(array $from, array $draft): array
     {
         $draft['calendarType'] = $from['calendarType'];
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformDateRange(array $from, array $draft): array
     {
         $dateRange = $this->convertSubEventsToDateRanges($from['subEvent']);
@@ -81,6 +105,14 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformLocalTimeRange(array $from, array $draft): array
     {
         $localTimeRange = $this->convertSubEventsToLocalTimeRanges(
@@ -97,6 +129,14 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformStatus(array $from, array $draft): array
     {
         $status = $this->determineStatus($from);
@@ -104,6 +144,14 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
     private function transformSubEvents(array $from, array $draft): array
     {
         $draft['subEvent'] = [];
@@ -124,6 +172,19 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @return array
+     *   Given JSON-LD, with an additional subEvent property if there was none and it could be derived from the
+     *   following logic:
+     *     - calendar type single: add a single subEvent based on startDate and endDate
+     *     - calendar type multiple: can not (and should not) be poly-filled if missing
+     *     - calendar type periodic: add subEvents based on opening hours, or if there are no opening hours based on
+     *         startDate and endDate
+     *     - calendar type permanent: add subEvents based on opening hours, or a single subEvent with an unlimited range
+     *         if there are no opening hours
+     */
     private function polyFillJsonLdSubEvents(array $from): array
     {
         if ($from['calendarType'] === 'single' || $from['calendarType'] === 'periodic') {
@@ -180,6 +241,12 @@ final class CalendarTransformer implements JsonTransformer
         }
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place with startDate and endDate properties, as an associative array
+     * @return array
+     *   Given JSON-LD with an additional subEvent property based on the startDate and endDate properties
+     */
     private function polyFillJsonLdSubEventsFromStartAndEndDate(array $from): array
     {
         $from['subEvent'] = [
@@ -196,6 +263,12 @@ final class CalendarTransformer implements JsonTransformer
         return $from;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place with openingHours property, as an associative array
+     * @return array
+     *   Given JSON-LD poly-filled with a subEvent property based on the openingHours property
+     */
     private function polyFillJsonLdSubEventsFromOpeningHours(array $from): array
     {
         $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours']);
@@ -251,6 +324,12 @@ final class CalendarTransformer implements JsonTransformer
         return $from;
     }
 
+    /**
+     * @param array $openingHours
+     *   JSON-LD of the openingHours property of an event/place, as an associative array
+     * @return array[][][]
+     *   Associative arrays with "opens" and "closes" each, grouped in lists per weekday in an enclosing array
+     */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
         $openingHoursByDay = [
@@ -299,6 +378,12 @@ final class CalendarTransformer implements JsonTransformer
         return $openingHoursByDay;
     }
 
+    /**
+     * @param array $subEvents
+     *   subEvent property on event/place JSON-LD, decoded as an array of arrays with "startDate", "endDate", ... each.
+     * @return stdClass[]
+     *   List of Elasticsearch range objects
+     */
     private function convertSubEventsToDateRanges(array $subEvents): array
     {
         $dateRanges = [];
@@ -320,6 +405,10 @@ final class CalendarTransformer implements JsonTransformer
         return $dateRanges;
     }
 
+    /**
+     * @param array $subEvent
+     *   JSON-LD of a single subEvent, as an associative array
+     */
     private function convertSubEventToDateRange(array $subEvent): stdClass
     {
         // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
@@ -333,6 +422,13 @@ final class CalendarTransformer implements JsonTransformer
         );
     }
 
+    /**
+     * @param array $subEvents
+     *   subEvent property on event/place JSON-LD, decoded as an array of arrays with "startDate", "endDate", ... each.
+     * @return stdClass[]
+     *   A flattened list of Elasticsearch range objects constructed by convertSubEventToLocalTimeRanges() for each
+     *   subEvent. Duplicates are omitted.
+     */
     private function convertSubEventsToLocalTimeRanges(array $subEvents, DateTimeZone $timezone): array
     {
         $timeRanges = [];
@@ -364,7 +460,10 @@ final class CalendarTransformer implements JsonTransformer
     }
 
     /**
+     * @param array $subEvent
+     *   JSON-LD of a single subEvent, as an associative array
      * @return stdClass[]
+     *   Elasticsearch range objects. Can be multiple when the startDate and endDate are on different days.
      */
     private function convertSubEventToLocalTimeRanges(array $subEvent, DateTimeZone $timezone): array
     {
@@ -449,6 +548,13 @@ final class CalendarTransformer implements JsonTransformer
         return [new stdClass()];
     }
 
+    /**
+     * @param array $entity
+     *   JSON-LD of an event, place, or subEvent as an associative array
+     * @param array|null $parent
+     *   If the given $entity is a subEvent, the JSON-LD of the parent event/place can be given as an associative array
+     *   to use as a fallback if the subEvent has no explicit status but the parent does
+     */
     private function determineStatus(array $entity, ?array $parent = null): string
     {
         // If the given event, subEvent, or place has a status.type, use that.
@@ -471,6 +577,10 @@ final class CalendarTransformer implements JsonTransformer
         return self::STATUS_AVAILABLE;
     }
 
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place as an associative array
+     */
     private function determineLocalTimezone(array $from): DateTimeZone
     {
         $location = $from['location'] ?? $from;
