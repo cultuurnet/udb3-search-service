@@ -34,7 +34,7 @@ use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
+final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
     /**
