@@ -12,12 +12,12 @@ final class JsonDocument implements ReadModelInterface
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $body;
+    private $body;
 
     public function __construct(string $id, string $rawBody = '{}')
     {
