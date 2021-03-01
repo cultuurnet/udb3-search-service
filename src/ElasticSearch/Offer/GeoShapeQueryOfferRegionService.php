@@ -13,7 +13,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
     /**
      * Amount of (matching) regions per page.
      */
-    const PAGE_SIZE = 10;
+    public const PAGE_SIZE = 10;
 
     /**
      * @var Client

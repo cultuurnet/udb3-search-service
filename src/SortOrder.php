@@ -12,6 +12,6 @@ use ValueObjects\Enum\Enum;
  */
 class SortOrder extends Enum
 {
-    const ASC = 'asc';
-    const DESC = 'desc';
+    public const ASC = 'asc';
+    public const DESC = 'desc';
 }

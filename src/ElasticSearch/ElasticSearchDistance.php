@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Search\AbstractDistance;
 
 class ElasticSearchDistance extends AbstractDistance
 {
-    const DISTANCE_REGEX = '/^\s*(\d+\.?\d*)\s*([a-zA-Z]+)\s*$/';
+    public const DISTANCE_REGEX = '/^\s*(\d+\.?\d*)\s*([a-zA-Z]+)\s*$/';
 
     /**
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/5.0/common-options.html#distance-units
      */
-    const VALID_DISTANCE_UNITS = [
+    public const VALID_DISTANCE_UNITS = [
         'mi',
         'miles',
         'yd',

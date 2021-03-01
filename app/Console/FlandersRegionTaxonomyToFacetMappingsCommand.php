@@ -21,7 +21,7 @@ class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
      * Note that we have to use a wildcard * and the name() function to find
      * the term nodes, because the XML namespace messes with xpath.
      */
-    const REGIONS_XPATH = "//*[name()='term'][@domain='flandersregion']";
+    public const REGIONS_XPATH = "//*[name()='term'][@domain='flandersregion']";
 
     public function configure()
     {

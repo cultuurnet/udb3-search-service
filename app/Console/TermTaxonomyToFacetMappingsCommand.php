@@ -22,9 +22,9 @@ class TermTaxonomyToFacetMappingsCommand extends Command
      * Note that we have to use a wildcard * and the name() function to find
      * the term nodes, because the XML namespace messes with xpath.
      */
-    const TYPES_XPATH = "//*[name()='term'][@domain='eventtype'][@parentid]";
-    const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
-    const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
+    public const TYPES_XPATH = "//*[name()='term'][@domain='eventtype'][@parentid]";
+    public const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
+    public const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
 
     public function configure()
     {
