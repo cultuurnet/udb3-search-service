@@ -100,7 +100,6 @@ class OfferSearchController
         QueryStringFactoryInterface $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {
-
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->queryBuilder = $queryBuilder;

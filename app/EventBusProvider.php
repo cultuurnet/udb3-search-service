@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\SimpleEventBus;
 
 class EventBusProvider extends BaseServiceProvider
 {
-
     protected $provides = [
         EventBusInterface::class,
     ];

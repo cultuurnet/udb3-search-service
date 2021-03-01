@@ -15,7 +15,6 @@ class SortByOrganizerRequestParser implements OrganizerRequestParser
         ServerRequestInterface $request,
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
-        
         $parameters = $request->getQueryParams();
         $sorts = !empty($parameters['sort']) ? $parameters['sort'] : [];
 

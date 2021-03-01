@@ -16,7 +16,7 @@ class ResponseFactory
     /**
      * @param array|object $data
      */
-    public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK) : ResponseInterface
+    public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK): ResponseInterface
     {
         $response = new Response($code);
 

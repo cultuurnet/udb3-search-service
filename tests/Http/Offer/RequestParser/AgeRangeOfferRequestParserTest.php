@@ -34,7 +34,6 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_age_range_filter_with_a_min_age()
     {
-
         $request = $this->request(
             [
                 'minAge' => '7',

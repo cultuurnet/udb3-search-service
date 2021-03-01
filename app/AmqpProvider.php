@@ -17,7 +17,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 class AmqpProvider extends BaseServiceProvider
 {
-
     public function provides(string $alias): bool
     {
         foreach ($this->consumers() as $consumerId => $consumerConfig) {
@@ -38,7 +37,6 @@ class AmqpProvider extends BaseServiceProvider
      */
     public function register()
     {
-
         foreach ($this->consumers() as $consumerId => $consumerConfig) {
             $this->add(
                 $this->consumerName($consumerId),
