@@ -24,11 +24,11 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
-            (new JsonDocument(456))
+            (new JsonDocument('456'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/456', 'name' => 'Het Depot']
                 ),
@@ -54,7 +54,7 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
@@ -81,11 +81,11 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
-            (new JsonDocument(456))
+            (new JsonDocument('456'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/456', 'name' => 'Het Depot']
                 ),

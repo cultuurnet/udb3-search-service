@@ -238,17 +238,6 @@ class NodeMapAggregationTransformerTest extends TestCase
                 'exception_message' => 'Facet node prv-antwerpen has a string as name, but it should be an array.',
             ],
 
-            'missing_language' => [
-                'node_map' => [
-                    'prv-antwerpen' => [
-                        'name' => [
-                            'Antwerpen',
-                        ],
-                    ],
-                ],
-                'exception_message' => 'Invalid language code: 0',
-            ],
-
             'invalid_language' => [
                 'node_map' => [
                     'prv-antwerpen' => [
