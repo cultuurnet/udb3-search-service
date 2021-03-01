@@ -113,7 +113,7 @@ class OrganizerSearchControllerTest extends TestCase
             )
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'))
             ->withDomainFilter(Domain::specifyType('www.publiq.be'))
-            ->withPostalCodeFilter(new PostalCode("3000"))
+            ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('NL')))
             ->withCreatorFilter(new Creator('Jan Janssens'))
             ->withSortByScore(SortOrder::DESC())

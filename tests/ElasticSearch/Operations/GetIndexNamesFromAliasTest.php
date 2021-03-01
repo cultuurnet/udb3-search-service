@@ -40,8 +40,8 @@ class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
                         'creation_date' => '1494583641407',
                         'number_of_replicas' => '1',
                         'uuid' => '_SwFvhnQTGWhMwXXvWIJHQ',
-                        "version" => [
-                            "created" => "5030099",
+                        'version' => [
+                            'created' => '5030099',
                         ],
                     ],
                 ],
@@ -58,8 +58,8 @@ class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
                         'creation_date' => '1494583641407',
                         'number_of_replicas' => '1',
                         'uuid' => '_SwFvhnQTGWhMwXXvWIJHQ',
-                        "version" => [
-                            "created" => "5030099",
+                        'version' => [
+                            'created' => '5030099',
                         ],
                     ],
                 ],

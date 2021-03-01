@@ -57,7 +57,7 @@ class Coordinates
         $split = explode(',', $latLon);
 
         if (count($split) !== 2) {
-            throw new \InvalidArgumentException("Lat lon string is not in the expected format (lat,lon).");
+            throw new \InvalidArgumentException('Lat lon string is not in the expected format (lat,lon).');
         }
 
         $lat = new Latitude((double) $split[0]);

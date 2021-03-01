@@ -122,13 +122,13 @@ class UpdateIndexAliasTest extends AbstractOperationTestCase
             ->method('info')
             ->withConsecutive(
                 [
-                    "Deleted alias udb3_core_write from index udb3_core_v1.",
+                    'Deleted alias udb3_core_write from index udb3_core_v1.',
                 ],
                 [
-                    "Deleted alias udb3_core_write from index udb3_core_v2.",
+                    'Deleted alias udb3_core_write from index udb3_core_v2.',
                 ],
                 [
-                    "Created alias udb3_core_write on index udb3_core_v2.",
+                    'Created alias udb3_core_write on index udb3_core_v2.',
                 ]
             );
 

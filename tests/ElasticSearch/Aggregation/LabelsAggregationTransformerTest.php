@@ -46,7 +46,7 @@ class LabelsAggregationTransformerTest extends TestCase
         $this->assertFalse($this->transformer->supports($unsupported));
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage("Aggregation regions not supported for transformation.");
+        $this->expectExceptionMessage('Aggregation regions not supported for transformation.');
 
         $this->transformer->toFacetTree($unsupported);
     }

@@ -74,7 +74,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
 
             if (!isset($response['hits']) || !isset($response['hits']['total']) || !isset($response['hits']['hits'])) {
                 throw new \RuntimeException(
-                    "Got invalid response from ElasticSearch when trying to find matching regions."
+                    'Got invalid response from ElasticSearch when trying to find matching regions.'
                 );
             }
 

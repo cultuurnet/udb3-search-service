@@ -23,7 +23,7 @@ final class ProductionCollapseValueTransformer implements JsonTransformer
     {
         // Offers from the same production should have the same production collapse value.
         if (isset($from['production']['id'])) {
-            $draft['productionCollapseValue'] = "production-" . $from['production']['id'];
+            $draft['productionCollapseValue'] = 'production-' . $from['production']['id'];
             return $draft;
         }
 

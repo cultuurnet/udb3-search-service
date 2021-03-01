@@ -36,12 +36,12 @@ class RoutingServiceProvider extends BaseServiceProvider
                 $router->middleware(
                     new CorsMiddleware(
                         [
-                            "origin" => ["*"],
-                            "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
-                            "headers.allow" => ["Authorization", "X-Api-Key"],
-                            "headers.expose" => [],
-                            "credentials" => true,
-                            "cache" => 0,
+                            'origin' => ['*'],
+                            'methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                            'headers.allow' => ['Authorization', 'X-Api-Key'],
+                            'headers.expose' => [],
+                            'credentials' => true,
+                            'cache' => 0,
                         ]
                     )
                 );

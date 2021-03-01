@@ -138,9 +138,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         Natural $max = null
     ) {
         if (!is_null($min) && !is_null($max) && $min->toInteger() > $max->toInteger()) {
-             throw new \InvalidArgumentException(
-                 "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
-             );
+            throw new \InvalidArgumentException(
+                "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
+            );
         }
     }
 

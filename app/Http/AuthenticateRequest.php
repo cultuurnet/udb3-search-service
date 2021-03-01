@@ -27,7 +27,7 @@ class AuthenticateRequest implements MiddlewareInterface
     {
         $request = new ApiRequest($request);
 
-        if ($request->getMethod() === "OPTIONS" && $request->hasHeader("Access-Control-Request-Method")) {
+        if ($request->getMethod() === 'OPTIONS' && $request->hasHeader('Access-Control-Request-Method')) {
             return $handler->handle($request);
         }
 

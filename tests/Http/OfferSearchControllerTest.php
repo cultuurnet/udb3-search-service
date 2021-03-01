@@ -286,7 +286,7 @@ class OfferSearchControllerTest extends TestCase
                 $this->regionDocumentType,
                 new RegionId('prv-limburg')
             )
-            ->withPostalCodeFilter(new PostalCode("3000"))
+            ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
             ->withAudienceTypeFilter(new AudienceType('members'))
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))

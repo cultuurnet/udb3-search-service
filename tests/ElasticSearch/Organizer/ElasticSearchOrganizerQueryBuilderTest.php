@@ -293,7 +293,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withPostalCodeFilter(new PostalCode("3000"));
+            ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
             'from' => 30,

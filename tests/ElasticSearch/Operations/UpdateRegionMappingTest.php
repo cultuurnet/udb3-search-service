@@ -31,9 +31,9 @@ class UpdateRegionMappingTest extends AbstractMappingTestCase
     protected function getExpectedMappingBody()
     {
         return [
-            "properties" => [
-                "location" => [
-                    "type" => "geo_shape",
+            'properties' => [
+                'location' => [
+                    'type' => 'geo_shape',
                 ],
             ],
         ];
