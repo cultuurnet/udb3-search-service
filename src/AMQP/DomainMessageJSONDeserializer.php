@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DateTime;
@@ -25,7 +27,7 @@ class DomainMessageJSONDeserializer extends JSONDeserializer
     public function __construct($payloadClass)
     {
         parent::__construct(true);
-        
+
         if (!in_array(SerializableInterface::class, class_implements($payloadClass))) {
             throw new \InvalidArgumentException(
                 sprintf(

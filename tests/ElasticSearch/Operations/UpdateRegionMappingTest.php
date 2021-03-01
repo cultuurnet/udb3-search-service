@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
@@ -8,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class UpdateRegionMappingTest extends AbstractMappingTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateRegionMapping
      */
     protected function createOperation(Client $client, LoggerInterface $logger)
@@ -31,9 +31,9 @@ class UpdateRegionMappingTest extends AbstractMappingTestCase
     protected function getExpectedMappingBody()
     {
         return [
-            "properties" => [
-                "location" => [
-                    "type" => "geo_shape",
+            'properties' => [
+                'location' => [
+                    'type' => 'geo_shape',
                 ],
             ],
         ];

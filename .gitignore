@@ -5,3 +5,4 @@
 /features.yml
 /facet_mapping_regions.yml
 /web/autocomplete.json
+/.php_cs.cache

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -44,7 +46,7 @@ class LabelsAggregationTransformerTest extends TestCase
         $this->assertFalse($this->transformer->supports($unsupported));
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage("Aggregation regions not supported for transformation.");
+        $this->expectExceptionMessage('Aggregation regions not supported for transformation.');
 
         $this->transformer->toFacetTree($unsupported);
     }

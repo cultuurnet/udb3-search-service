@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
@@ -234,8 +236,8 @@ class PlaceTransformerTest extends TestCase
             __DIR__ . '/data/place/original-with-wrong-available-from.json',
             __DIR__ . '/data/place/indexed-without-available-from.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-                ['error', "Could not parse availableFrom as an ISO-8601 datetime.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
+                ['error', 'Could not parse availableFrom as an ISO-8601 datetime.', []],
             ]
         );
     }
@@ -249,8 +251,8 @@ class PlaceTransformerTest extends TestCase
             __DIR__ . '/data/place/original-with-wrong-available-to.json',
             __DIR__ . '/data/place/indexed-with-end-date-as-available-to.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-                ['error', "Could not parse availableTo as an ISO-8601 datetime.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
+                ['error', 'Could not parse availableTo as an ISO-8601 datetime.', []],
             ]
         );
     }

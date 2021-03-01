@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
@@ -11,16 +13,13 @@ class CompositeAggregationTransformer implements AggregationTransformerInterface
      */
     private $transformers = [];
 
-    /**
-     * @param AggregationTransformerInterface $aggregationTransformer
-     */
+
     public function register(AggregationTransformerInterface $aggregationTransformer)
     {
         $this->transformers[] = $aggregationTransformer;
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return bool
      */
     public function supports(Aggregation $aggregation)
@@ -34,7 +33,6 @@ class CompositeAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return FacetTreeInterface
      * @throws \LogicException
      */

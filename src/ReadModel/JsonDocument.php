@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ReadModel;
@@ -11,12 +12,12 @@ final class JsonDocument implements ReadModelInterface
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $body;
+    private $body;
 
     public function __construct(string $id, string $rawBody = '{}')
     {

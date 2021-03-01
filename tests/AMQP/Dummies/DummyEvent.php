@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
 use Broadway\Serializer\SerializableInterface;
@@ -27,7 +29,6 @@ class DummyEvent implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return mixed The object instance
      */
     public static function deserialize(array $data)

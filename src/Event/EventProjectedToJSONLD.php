@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Event;
@@ -45,7 +46,6 @@ final class EventProjectedToJSONLD implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return static
      */
     public static function deserialize(array $data)

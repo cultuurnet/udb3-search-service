@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use Elasticsearch\Client;
@@ -34,7 +36,6 @@ trait HasElasticSearchClient
     }
 
     /**
-     * @param array $body
      * @return array
      */
     private function executeQuery(array $body, array $parameters = [])
@@ -47,7 +48,6 @@ trait HasElasticSearchClient
     }
 
     /**
-     * @param array $parameters
      * @return array
      */
     private function createParameters(array $parameters)

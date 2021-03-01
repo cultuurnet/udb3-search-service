@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Event;
 
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
@@ -19,9 +21,7 @@ class EventSearchProjector extends AbstractSearchProjector
         ];
     }
 
-    /**
-     * @param EventProjectedToJSONLD $eventProjectedToJSONLD
-     */
+
     protected function handleEventProjectedToJSONLD(EventProjectedToJSONLD $eventProjectedToJSONLD)
     {
         $this->getIndexService()->index(

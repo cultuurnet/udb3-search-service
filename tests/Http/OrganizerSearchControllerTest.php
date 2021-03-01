@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
@@ -111,7 +113,7 @@ class OrganizerSearchControllerTest extends TestCase
             )
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'))
             ->withDomainFilter(Domain::specifyType('www.publiq.be'))
-            ->withPostalCodeFilter(new PostalCode("3000"))
+            ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('NL')))
             ->withCreatorFilter(new Creator('Jan Janssens'))
             ->withSortByScore(SortOrder::DESC())
@@ -202,7 +204,6 @@ class OrganizerSearchControllerTest extends TestCase
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param Request $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -259,10 +260,7 @@ class OrganizerSearchControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @param OrganizerQueryBuilderInterface $expectedQueryBuilder
-     * @param PagedResultSet $pagedResultSet
-     */
+
     private function expectQueryBuilderWillReturnResultSet(
         OrganizerQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet

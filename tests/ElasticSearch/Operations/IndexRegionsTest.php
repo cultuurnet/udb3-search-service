@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
@@ -20,8 +22,6 @@ class IndexRegionsTest extends AbstractOperationTestCase
     }
 
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return IndexRegions
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -19,10 +21,7 @@ class SingleFileIndexationStrategy implements IndexationStrategyInterface
      */
     private $logger;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param LoggerInterface $logger
-     */
+
     public function __construct(
         Client $elasticSearchClient,
         LoggerInterface $logger
@@ -31,11 +30,7 @@ class SingleFileIndexationStrategy implements IndexationStrategyInterface
         $this->logger = $logger;
     }
 
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
+
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,

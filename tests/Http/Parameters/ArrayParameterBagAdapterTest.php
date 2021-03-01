@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
 use CultuurNet\UDB3\Search\Label\LabelName;
@@ -318,7 +320,6 @@ class ArrayParameterBagAdapterTest extends TestCase
      * @test
      * @dataProvider booleanDataProvider
      *
-     * @param mixed $parameterValue
      * @param bool|null $expectedValue
      */
     public function it_should_parse_a_boolean_value_from_a_parameter(
@@ -512,10 +513,7 @@ class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag->getDateTimeFromParameter('availableFrom');
     }
 
-    /**
-     * @param array $expected
-     * @param array $actual
-     */
+
     private function assertArrayContentsAreEqual(array $expected, array $actual): void
     {
         $this->assertCount(count($expected), $actual);
@@ -525,10 +523,7 @@ class ArrayParameterBagAdapterTest extends TestCase
         }
     }
 
-    /**
-     * @param DateTimeImmutable $expected
-     * @param DateTimeImmutable $actual
-     */
+
     private function assertDateTimeEquals(DateTimeImmutable $expected, DateTimeImmutable $actual): void
     {
         $this->assertEquals(

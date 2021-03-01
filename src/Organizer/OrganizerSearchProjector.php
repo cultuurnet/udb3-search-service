@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Organizer;
 
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
@@ -19,9 +21,7 @@ class OrganizerSearchProjector extends AbstractSearchProjector
         ];
     }
 
-    /**
-     * @param OrganizerProjectedToJSONLD $organizerProjectedToJSONLD
-     */
+
     protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD)
     {
         $this->getIndexService()->index(

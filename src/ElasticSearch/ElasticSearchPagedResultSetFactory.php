@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\Aggregation;
@@ -23,10 +25,7 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
      */
     private $responseValidator;
 
-    /**
-     * @param AggregationTransformerInterface $aggregationTransformer
-     * @param ElasticSearchResponseValidatorInterface|null $responseValidator
-     */
+
     public function __construct(
         AggregationTransformerInterface $aggregationTransformer,
         ElasticSearchResponseValidatorInterface $responseValidator = null
@@ -64,7 +63,7 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
 
         $bucketAggregations = array_filter(
             array_map(
-                function (array $aggregationData, string $aggregationName) : ?Aggregation {
+                function (array $aggregationData, string $aggregationName): ?Aggregation {
                     try {
                         return Aggregation::fromElasticSearchResponseAggregationData(
                             $aggregationName,

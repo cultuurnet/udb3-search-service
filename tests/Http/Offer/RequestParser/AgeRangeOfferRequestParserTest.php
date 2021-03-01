@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
@@ -32,7 +34,6 @@ class AgeRangeOfferRequestParserTest extends TestCase
      */
     public function it_should_add_an_age_range_filter_with_a_min_age()
     {
-
         $request = $this->request(
             [
                 'minAge' => '7',

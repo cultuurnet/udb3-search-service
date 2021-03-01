@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
@@ -7,8 +9,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexation
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use ValueObjects\StringLiteral\StringLiteral;
 
 class ElasticSearchProvider extends BaseServiceProvider

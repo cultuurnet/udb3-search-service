@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -30,8 +32,6 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
     private $queuedDocuments;
 
     /**
-     * @param Client $elasticSearchClient
-     * @param LoggerInterface $logger
      * @param int $autoFlushThreshold
      */
     public function __construct(
@@ -46,11 +46,7 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
         $this->queuedDocuments = [];
     }
 
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
+
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,

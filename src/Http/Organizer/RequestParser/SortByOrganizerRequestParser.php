@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
@@ -13,7 +15,6 @@ class SortByOrganizerRequestParser implements OrganizerRequestParser
         ServerRequestInterface $request,
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
-        
         $parameters = $request->getQueryParams();
         $sorts = !empty($parameters['sort']) ? $parameters['sort'] : [];
 

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Validation;
 
 class PagedResultSetResponseValidator implements ElasticSearchResponseValidatorInterface
 {
     /**
-     * @param array $responseData
      * @throws InvalidElasticSearchResponseException
      */
     public function validate(array $responseData)

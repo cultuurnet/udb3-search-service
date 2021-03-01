@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
@@ -30,8 +32,6 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     /**
      * Get parameter from config
      *
-     * @param string $parameter
-     * @return mixed
      */
     protected function parameter(string $parameter)
     {
@@ -41,8 +41,6 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     /**
      * Get service from container
      *
-     * @param string $name
-     * @return mixed
      */
     protected function get(string $name)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use Broadway\Domain\DomainMessage;
@@ -13,18 +15,14 @@ abstract class AbstractSearchProjector implements EventListenerInterface
      */
     private $indexService;
 
-    /**
-     * @param JsonDocumentIndexServiceInterface $indexService
-     */
+
     public function __construct(
         JsonDocumentIndexServiceInterface $indexService
     ) {
         $this->indexService = $indexService;
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         $handlers = $this->getEventHandlers();

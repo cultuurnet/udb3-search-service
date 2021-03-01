@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -29,8 +31,6 @@ class PagedResultSet
     private $facets;
 
     /**
-     * @param Natural $total
-     * @param Natural $perPage
      * @param JsonDocument[] $results
      */
     public function __construct(
@@ -89,9 +89,7 @@ class PagedResultSet
         return $this->facets;
     }
 
-    /**
-     * @param array $results
-     */
+
     private function guardResults(array $results)
     {
         foreach ($results as $result) {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -79,7 +81,6 @@ class AggregationTest extends TestCase
      * @test
      * @dataProvider invalidElasticSearchResponseAggregationDataProvider
      *
-     * @param array $invalidElasticSearchResponseAggregationData
      * @param string $expectedExceptionMessage
      */
     public function it_throws_an_exception_when_the_given_elasticsearch_response_aggregation_data_is_invalid(

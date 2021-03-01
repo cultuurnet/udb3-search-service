@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Symfony\Component\Console\Command\Command;
@@ -20,9 +22,9 @@ class TermTaxonomyToFacetMappingsCommand extends Command
      * Note that we have to use a wildcard * and the name() function to find
      * the term nodes, because the XML namespace messes with xpath.
      */
-    const TYPES_XPATH = "//*[name()='term'][@domain='eventtype'][@parentid]";
-    const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
-    const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
+    public const TYPES_XPATH = "//*[name()='term'][@domain='eventtype'][@parentid]";
+    public const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
+    public const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
 
     public function configure()
     {
@@ -38,8 +40,6 @@ class TermTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -65,7 +65,6 @@ class TermTaxonomyToFacetMappingsCommand extends Command
 
     /**
      * @param string $mappingName
-     * @param \SimpleXmlElement $xml
      * @param string $xpath
      */
     private function generateYmlMapping(

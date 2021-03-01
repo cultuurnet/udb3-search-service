@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Offer;
 
 use ValueObjects\Enum\Enum;
@@ -13,9 +15,9 @@ use ValueObjects\Enum\Enum;
  */
 class FacetName extends Enum
 {
-    const REGIONS = 'regions';
-    const TYPES = 'types';
-    const THEMES = 'themes';
-    const FACILITIES = 'facilities';
-    const LABELS = 'labels';
+    public const REGIONS = 'regions';
+    public const TYPES = 'types';
+    public const THEMES = 'themes';
+    public const FACILITIES = 'facilities';
+    public const LABELS = 'labels';
 }

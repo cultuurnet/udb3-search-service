@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
@@ -13,10 +15,8 @@ class ResponseFactory
 
     /**
      * @param array|object $data
-     * @param int $code
-     * @return ResponseInterface
      */
-    public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK) : ResponseInterface
+    public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK): ResponseInterface
     {
         $response = new Response($code);
 

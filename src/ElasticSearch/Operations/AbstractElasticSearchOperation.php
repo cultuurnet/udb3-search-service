@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
@@ -17,10 +19,7 @@ abstract class AbstractElasticSearchOperation
      */
     protected $logger;
 
-    /**
-     * @param Client $client
-     * @param LoggerInterface $logger
-     */
+
     public function __construct(
         Client $client,
         LoggerInterface $logger

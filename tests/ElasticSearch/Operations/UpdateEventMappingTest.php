@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
@@ -8,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class UpdateEventMappingTest extends AbstractMappingTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateEventMapping
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

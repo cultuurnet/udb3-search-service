@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -100,7 +102,7 @@ class NodeMapAggregationTransformerTest extends TestCase
         $this->assertFalse($this->transformer->supports($unsupported));
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage("Aggregation themes not supported for transformation.");
+        $this->expectExceptionMessage('Aggregation themes not supported for transformation.');
 
         $this->transformer->toFacetTree($unsupported);
     }
@@ -190,7 +192,6 @@ class NodeMapAggregationTransformerTest extends TestCase
      * @test
      * @dataProvider invalidNodeMapDataProvider
      *
-     * @param array $invalidNodeMap
      * @param string $expectedExceptionMessage
      */
     public function it_validates_the_injected_node_map_upon_construction(
@@ -236,17 +237,6 @@ class NodeMapAggregationTransformerTest extends TestCase
                 'exception_message' => 'Facet node prv-antwerpen has a string as name, but it should be an array.',
             ],
 
-            'missing_language' => [
-                'node_map' => [
-                    'prv-antwerpen' => [
-                        'name' => [
-                            'Antwerpen',
-                        ],
-                    ],
-                ],
-                'exception_message' => 'Invalid language code: 0',
-            ],
-
             'invalid_language' => [
                 'node_map' => [
                     'prv-antwerpen' => [
@@ -283,7 +273,7 @@ class NodeMapAggregationTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                'exception_message' => "Facet node gem-antwerpen has a string as name, but it should be an array.",
+                'exception_message' => 'Facet node gem-antwerpen has a string as name, but it should be an array.',
             ],
         ];
     }

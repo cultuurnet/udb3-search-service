@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Broadway\EventHandling\EventBusInterface;
@@ -44,13 +46,10 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
     private $indexationStrategy;
 
     /**
-     * @param Client $client
      * @param string $readIndexName
      * @param string $scrollTtl
      * @param int $scrollSize
      * @param int $bulkThreshold
-     * @param EventBusInterface $eventBus
-     * @param IndexationStrategyInterface $indexationStrategy
      */
     public function __construct(
         Client $client,

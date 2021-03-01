@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Factory;
 
@@ -7,8 +9,7 @@ use Noodlehaus\Parser\Yaml;
 
 class ConfigFactory
 {
-
-    public static function create(string $configDir) : Config
+    public static function create(string $configDir): Config
     {
         $configFiles = [
             $configDir . '/config.yml',

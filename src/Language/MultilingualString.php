@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
@@ -73,10 +74,8 @@ final class MultilingualString
     }
 
     /**
-     * @param Language $preferredLanguage
      * @param Language[] ...$fallbackLanguages
      *   One or more accept languages.
-     * @return StringLiteral|null
      */
     public function getStringForLanguage(Language $preferredLanguage, Language ...$fallbackLanguages): ?StringLiteral
     {

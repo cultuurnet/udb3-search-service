@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -1358,11 +1360,11 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                         [
                             'geo_bounding_box' => [
                                 'geo_point' => [
-                                    "top_left" => [
+                                    'top_left' => [
                                         'lat' => 40.73,
                                         'lon' => -74.1,
                                     ],
-                                    "bottom_right" => [
+                                    'bottom_right' => [
                                         'lat' => 40.01,
                                         'lon' => -71.12,
                                     ],
@@ -1388,7 +1390,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withPostalCodeFilter(new PostalCode("3000"));
+            ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
             'from' => 30,
@@ -1454,7 +1456,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withAddressCountryFilter(new Country(CountryCode::fromNative("BE")));
+            ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')));
 
         $expectedQueryArray = [
             'from' => 30,
@@ -3275,7 +3277,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withProductionIdFilter(
-                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
+                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toNative()
             );
 
         $expectedQueryArray = [

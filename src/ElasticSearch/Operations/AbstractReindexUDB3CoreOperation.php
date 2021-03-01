@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Broadway\Domain\DomainEventStream;
@@ -30,9 +32,6 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     private $scrollSize;
 
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
-     * @param EventBusInterface $eventBus
      * @param string $scrollTtl
      *   Time to keep the scroll alive in-between requests. Should be small!
      * @param int $scrollSize
@@ -103,9 +102,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         }
     }
 
-    /**
-     * @param array $hit
-     */
+
     private function dispatchEventForHit(array $hit)
     {
         if (isset($hit['_type']) && $hit['_type'] == 'region_query') {
@@ -174,7 +171,6 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     }
 
     /**
-     * @param mixed $event
      * @return string
      */
     private function getReadableEventType($event)

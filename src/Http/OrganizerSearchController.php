@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
@@ -164,7 +166,6 @@ class OrganizerSearchController
 
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return LabelName[]
      */
@@ -179,7 +180,6 @@ class OrganizerSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return Language[]
      */

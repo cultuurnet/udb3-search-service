@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Organizer;
@@ -45,7 +46,6 @@ final class OrganizerProjectedToJSONLD implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return OrganizerProjectedToJSONLD
      */
     public static function deserialize(array $data)

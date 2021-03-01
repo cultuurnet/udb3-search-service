@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -11,7 +13,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
     /**
      * Amount of (matching) regions per page.
      */
-    const PAGE_SIZE = 10;
+    public const PAGE_SIZE = 10;
 
     /**
      * @var Client
@@ -23,10 +25,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
      */
     private $indexName;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param StringLiteral $geoShapesIndexName
-     */
+
     public function __construct(
         Client $elasticSearchClient,
         StringLiteral $geoShapesIndexName
@@ -75,7 +74,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
 
             if (!isset($response['hits']) || !isset($response['hits']['total']) || !isset($response['hits']['hits'])) {
                 throw new \RuntimeException(
-                    "Got invalid response from ElasticSearch when trying to find matching regions."
+                    'Got invalid response from ElasticSearch when trying to find matching regions.'
                 );
             }
 
