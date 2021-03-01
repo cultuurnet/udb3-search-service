@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Http;
 
 use CultuurNet\UDB3\ApiGuard\Request\ApiKeyRequestAuthenticator;

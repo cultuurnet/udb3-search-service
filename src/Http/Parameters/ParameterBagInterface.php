@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
 interface ParameterBagInterface
 {
     /**
      * @param string $queryParameter
-     * @param callable|null $callback
      * @return array
      */
     public function getArrayFromParameter(
