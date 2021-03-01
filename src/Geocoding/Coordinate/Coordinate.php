@@ -32,7 +32,6 @@ abstract class Coordinate
     }
 
     /**
-     * @param Coordinate $coordinate
      * @return bool
      */
     public function sameAs(Coordinate $coordinate)

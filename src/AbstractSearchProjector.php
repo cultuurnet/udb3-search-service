@@ -15,18 +15,14 @@ abstract class AbstractSearchProjector implements EventListenerInterface
      */
     private $indexService;
 
-    /**
-     * @param JsonDocumentIndexServiceInterface $indexService
-     */
+
     public function __construct(
         JsonDocumentIndexServiceInterface $indexService
     ) {
         $this->indexService = $indexService;
     }
 
-    /**
-     * @param DomainMessage $domainMessage
-     */
+
     public function handle(DomainMessage $domainMessage)
     {
         $handlers = $this->getEventHandlers();

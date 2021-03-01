@@ -19,10 +19,7 @@ abstract class AbstractElasticSearchOperation
      */
     protected $logger;
 
-    /**
-     * @param Client $client
-     * @param LoggerInterface $logger
-     */
+
     public function __construct(
         Client $client,
         LoggerInterface $logger

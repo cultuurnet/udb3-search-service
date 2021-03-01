@@ -31,7 +31,6 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     private $readAlias;
 
     /**
-     * @param Client $client
      * @param string $latestIndexName
      * @param string $writeAlias
      * @param string $readAlias

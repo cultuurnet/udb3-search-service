@@ -20,9 +20,7 @@ class FacetNode extends AbstractFacetTree
 
     /**
      * @param string $key
-     * @param MultilingualString $name
      * @param int $count
-     * @param array $children
      */
     public function __construct(
         $key,

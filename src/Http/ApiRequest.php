@@ -19,7 +19,6 @@ class ApiRequest implements ApiRequestInterface
 
     /**
      * ApiRequest constructor.
-     * @param ServerRequestInterface $request
      */
     public function __construct(ServerRequestInterface $request)
     {
@@ -297,7 +296,6 @@ class ApiRequest implements ApiRequestInterface
      *
      * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     * @param mixed $requestTarget
      * @return static
      */
     public function withRequestTarget($requestTarget)
@@ -600,7 +598,6 @@ class ApiRequest implements ApiRequestInterface
      *
      * @param string $name The attribute name.
      * @param mixed $default Default value to return if the attribute does not exist.
-     * @return mixed
      * @see getAttributes()
      */
     public function getAttribute($name, $default = null)

@@ -40,8 +40,6 @@ class TermTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -67,7 +65,6 @@ class TermTaxonomyToFacetMappingsCommand extends Command
 
     /**
      * @param string $mappingName
-     * @param \SimpleXmlElement $xml
      * @param string $xpath
      */
     private function generateYmlMapping(

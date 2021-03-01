@@ -25,10 +25,7 @@ class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetF
      */
     private $responseValidator;
 
-    /**
-     * @param AggregationTransformerInterface $aggregationTransformer
-     * @param ElasticSearchResponseValidatorInterface|null $responseValidator
-     */
+
     public function __construct(
         AggregationTransformerInterface $aggregationTransformer,
         ElasticSearchResponseValidatorInterface $responseValidator = null

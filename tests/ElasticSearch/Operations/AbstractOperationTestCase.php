@@ -27,9 +27,7 @@ abstract class AbstractOperationTestCase extends TestCase
      */
     protected $logger;
 
-    /**
-     * @var mixed
-     */
+
     protected $operation;
 
     protected function setUp()

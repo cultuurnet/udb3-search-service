@@ -21,9 +21,7 @@ class OrganizerSearchProjector extends AbstractSearchProjector
         ];
     }
 
-    /**
-     * @param OrganizerProjectedToJSONLD $organizerProjectedToJSONLD
-     */
+
     protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD)
     {
         $this->getIndexService()->index(

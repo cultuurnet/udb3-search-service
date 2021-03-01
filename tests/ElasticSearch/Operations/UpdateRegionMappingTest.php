@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class UpdateRegionMappingTest extends AbstractMappingTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateRegionMapping
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

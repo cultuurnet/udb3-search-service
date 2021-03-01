@@ -14,17 +14,13 @@ class MutableIndexationStrategy implements IndexationStrategyInterface
      */
     private $indexationStrategy;
 
-    /**
-     * @param IndexationStrategyInterface $indexationStrategy
-     */
+
     public function __construct(IndexationStrategyInterface $indexationStrategy)
     {
         $this->indexationStrategy = $indexationStrategy;
     }
 
-    /**
-     * @param IndexationStrategyInterface $newIndexationStrategy
-     */
+
     public function setIndexationStrategy(IndexationStrategyInterface $newIndexationStrategy)
     {
         if ($this->indexationStrategy instanceof BulkIndexationStrategy) {
@@ -34,11 +30,7 @@ class MutableIndexationStrategy implements IndexationStrategyInterface
         $this->indexationStrategy = $newIndexationStrategy;
     }
 
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
+
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,

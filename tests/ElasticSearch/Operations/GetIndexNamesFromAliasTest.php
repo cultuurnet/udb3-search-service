@@ -11,8 +11,6 @@ use Psr\Log\LoggerInterface;
 class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return GetIndexNamesFromAlias
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

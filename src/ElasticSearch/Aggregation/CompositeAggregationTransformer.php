@@ -13,16 +13,13 @@ class CompositeAggregationTransformer implements AggregationTransformerInterface
      */
     private $transformers = [];
 
-    /**
-     * @param AggregationTransformerInterface $aggregationTransformer
-     */
+
     public function register(AggregationTransformerInterface $aggregationTransformer)
     {
         $this->transformers[] = $aggregationTransformer;
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return bool
      */
     public function supports(Aggregation $aggregation)
@@ -36,7 +33,6 @@ class CompositeAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return FacetTreeInterface
      * @throws \LogicException
      */

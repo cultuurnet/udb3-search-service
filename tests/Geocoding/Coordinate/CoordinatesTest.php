@@ -37,7 +37,6 @@ class CoordinatesTest extends TestCase
      * @dataProvider validLatLonStringProvider
      *
      * @param string $latLonString
-     * @param Coordinates $expectedCoordinates
      */
     public function it_can_be_created_from_a_valid_lat_lon_string(
         $latLonString,

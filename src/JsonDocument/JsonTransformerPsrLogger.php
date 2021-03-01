@@ -11,9 +11,7 @@ class JsonTransformerPsrLogger implements JsonTransformerLogger
     /** @var  LoggerInterface */
     private $psrLogger;
 
-    /**
-     * @param LoggerInterface $psrLogger
-     */
+
     public function __construct(LoggerInterface $psrLogger)
     {
         $this->psrLogger = $psrLogger;

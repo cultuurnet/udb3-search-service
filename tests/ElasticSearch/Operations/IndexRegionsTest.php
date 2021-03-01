@@ -22,8 +22,6 @@ class IndexRegionsTest extends AbstractOperationTestCase
     }
 
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return IndexRegions
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

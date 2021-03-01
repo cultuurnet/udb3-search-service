@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class UpdateOrganizerMappingTest extends AbstractMappingTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateOrganizerMapping
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

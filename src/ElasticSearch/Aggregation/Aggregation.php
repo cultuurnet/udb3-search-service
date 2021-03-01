@@ -23,7 +23,6 @@ class Aggregation
     private $buckets;
 
     /**
-     * @param FacetName $name
      * @param Bucket ...$buckets
      */
     public function __construct(FacetName $name, Bucket ...$buckets)
@@ -54,7 +53,6 @@ class Aggregation
 
     /**
      * @param string $name
-     * @param array $aggregationData
      * @return Aggregation
      */
     public static function fromElasticSearchResponseAggregationData($name, array $aggregationData)

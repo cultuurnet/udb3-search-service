@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class CreateIndexTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return CreateIndex
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

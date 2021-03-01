@@ -9,11 +9,6 @@ use ValueObjects\StringLiteral\StringLiteral;
 
 interface IndexationStrategyInterface
 {
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,

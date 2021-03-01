@@ -25,10 +25,7 @@ class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
      */
     private $indexName;
 
-    /**
-     * @param Client $elasticSearchClient
-     * @param StringLiteral $geoShapesIndexName
-     */
+
     public function __construct(
         Client $elasticSearchClient,
         StringLiteral $geoShapesIndexName

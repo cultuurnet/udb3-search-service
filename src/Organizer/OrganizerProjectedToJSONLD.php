@@ -46,7 +46,6 @@ final class OrganizerProjectedToJSONLD implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return OrganizerProjectedToJSONLD
      */
     public static function deserialize(array $data)

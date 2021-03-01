@@ -32,13 +32,7 @@ class IndexRegionsCommand extends AbstractElasticSearchCommand
      */
     private $finder;
 
-    /**
-     * @param Client $client
-     * @param Finder $finder
-     * @param string $indexName
-     * @param string $pathToScan
-     * @param string $fileNameRegex
-     */
+
     public function __construct(
         Client $client,
         Finder $finder,

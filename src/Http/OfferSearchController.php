@@ -114,7 +114,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ApiRequest $request
      * @return ResponseInterface
      */
     public function __invoke(ApiRequest $request)
@@ -326,7 +325,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return TermId[]
      */
@@ -341,7 +339,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return TermLabel[]
      */
@@ -356,7 +353,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return LabelName[]
      */
@@ -371,7 +367,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return Language[]
      */
@@ -386,7 +381,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return RegionId[]
      */
@@ -401,7 +395,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @return AudienceType|null
      */
     private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag)
@@ -416,8 +409,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
-     * @param string $queryParameter
      * @return FacetName[]
      */
     private function getFacetsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array

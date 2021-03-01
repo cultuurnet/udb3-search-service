@@ -21,9 +21,7 @@ class EventSearchProjector extends AbstractSearchProjector
         ];
     }
 
-    /**
-     * @param EventProjectedToJSONLD $eventProjectedToJSONLD
-     */
+
     protected function handleEventProjectedToJSONLD(EventProjectedToJSONLD $eventProjectedToJSONLD)
     {
         $this->getIndexService()->index(

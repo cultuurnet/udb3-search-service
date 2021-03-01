@@ -32,7 +32,6 @@ abstract class AbstractElasticSearchCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
      * @return ConsoleLogger
      */
     protected function getLogger(OutputInterface $output)

@@ -430,7 +430,6 @@ class OfferSearchControllerTest extends TestCase
      * @test
      * @dataProvider defaultsEnabledQueryParametersProvider
      *
-     * @param array $queryParameters
      */
     public function it_uses_default_parameters_when_default_filters_are_not_disabled(array $queryParameters)
     {
@@ -1075,7 +1074,6 @@ class OfferSearchControllerTest extends TestCase
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param ApiRequestInterface $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -1180,10 +1178,7 @@ class OfferSearchControllerTest extends TestCase
         return  new ApiRequest($request);
     }
 
-    /**
-     * @param OfferQueryBuilderInterface $expectedQueryBuilder
-     * @param PagedResultSet $pagedResultSet
-     */
+
     private function expectQueryBuilderWillReturnResultSet(
         OfferQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet

@@ -81,7 +81,6 @@ class AggregationTest extends TestCase
      * @test
      * @dataProvider invalidElasticSearchResponseAggregationDataProvider
      *
-     * @param array $invalidElasticSearchResponseAggregationData
      * @param string $expectedExceptionMessage
      */
     public function it_throws_an_exception_when_the_given_elasticsearch_response_aggregation_data_is_invalid(

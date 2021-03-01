@@ -204,7 +204,6 @@ class OrganizerSearchControllerTest extends TestCase
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param Request $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -261,10 +260,7 @@ class OrganizerSearchControllerTest extends TestCase
         ];
     }
 
-    /**
-     * @param OrganizerQueryBuilderInterface $expectedQueryBuilder
-     * @param PagedResultSet $pagedResultSet
-     */
+
     private function expectQueryBuilderWillReturnResultSet(
         OrganizerQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet

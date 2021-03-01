@@ -166,7 +166,6 @@ class OrganizerSearchController
 
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return LabelName[]
      */
@@ -181,7 +180,6 @@ class OrganizerSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return Language[]
      */

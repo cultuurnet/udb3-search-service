@@ -18,7 +18,6 @@ abstract class AbstractFacetTree implements FacetTreeInterface
 
     /**
      * @param string $key
-     * @param array $children
      */
     public function __construct(
         $key,

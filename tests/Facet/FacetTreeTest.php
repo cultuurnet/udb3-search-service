@@ -121,10 +121,7 @@ class FacetTreeTest extends TestCase
         $this->assertChildrenEquals($expectedChildren, $actual->getChildren());
     }
 
-    /**
-     * @param array $expected
-     * @param array $actual
-     */
+
     private function assertChildrenEquals(array $expected, array $actual)
     {
         $this->assertEquals(count($expected), count($actual));
@@ -134,10 +131,7 @@ class FacetTreeTest extends TestCase
         }
     }
 
-    /**
-     * @param FacetNode $expected
-     * @param FacetNode $actual
-     */
+
     private function assertNodeEquals(FacetNode $expected, FacetNode $actual)
     {
         $this->assertEquals($expected->getKey(), $actual->getKey());

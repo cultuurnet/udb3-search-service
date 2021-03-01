@@ -36,7 +36,6 @@ trait HasElasticSearchClient
     }
 
     /**
-     * @param array $body
      * @return array
      */
     private function executeQuery(array $body, array $parameters = [])
@@ -49,7 +48,6 @@ trait HasElasticSearchClient
     }
 
     /**
-     * @param array $parameters
      * @return array
      */
     private function createParameters(array $parameters)

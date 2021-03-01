@@ -15,11 +15,7 @@ class IndexRegions extends AbstractElasticSearchOperation
      */
     private $finder;
 
-    /**
-     * @param Client $client
-     * @param LoggerInterface $logger
-     * @param Finder $finder
-     */
+
     public function __construct(
         Client $client,
         LoggerInterface $logger,

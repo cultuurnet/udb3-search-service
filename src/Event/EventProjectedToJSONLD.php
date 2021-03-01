@@ -46,7 +46,6 @@ final class EventProjectedToJSONLD implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return static
      */
     public static function deserialize(array $data)

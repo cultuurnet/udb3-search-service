@@ -130,8 +130,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     /**
      * @param string $parameterName
-     * @param Natural|null $min
-     * @param Natural|null $max
      * @throws \InvalidArgumentException
      */
     protected function guardNaturalIntegerRange(
@@ -148,8 +146,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     /**
      * @param string $parameterName
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
      * @throws \InvalidArgumentException
      */
     protected function guardDateRange(
@@ -307,8 +303,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     /**
      * @param string $fieldName
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
      * @return static
      */
     protected function withDateRangeQuery($fieldName, \DateTimeImmutable $from = null, \DateTimeImmutable $to = null)

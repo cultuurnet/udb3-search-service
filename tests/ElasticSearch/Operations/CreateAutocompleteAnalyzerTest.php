@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return CreateAutocompleteAnalyzer
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

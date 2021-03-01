@@ -50,12 +50,6 @@ class EventBusForwardingConsumerFactory
 
     /**
      * EventBusForwardingConsumerFactory constructor.
-     * @param Natural $executionDelay
-     * @param AMQPStreamConnection $connection
-     * @param LoggerInterface $logger
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param EventBusInterface $eventBus
-     * @param StringLiteral $consumerTag
      */
     public function __construct(
         Natural $executionDelay,
@@ -74,8 +68,6 @@ class EventBusForwardingConsumerFactory
     }
 
     /**
-     * @param StringLiteral $exchange
-     * @param StringLiteral $queue
      * @return EventBusForwardingConsumer
      */
     public function create(

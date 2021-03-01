@@ -18,9 +18,7 @@ class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
      */
     private $beforeFirstPublicationCallback;
 
-    /**
-     * @param callable $callback
-     */
+
     public function beforeFirstPublication(callable $callback): void
     {
         $this->beforeFirstPublicationCallback = $callback;

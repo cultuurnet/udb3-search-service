@@ -21,7 +21,6 @@ class ApiExceptionHandler extends Handler
 
     /**
      * ApiExceptionHandler constructor.
-     * @param EmitterInterface $emitter
      */
     public function __construct(EmitterInterface $emitter)
     {

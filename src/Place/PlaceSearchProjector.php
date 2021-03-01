@@ -21,9 +21,7 @@ class PlaceSearchProjector extends AbstractSearchProjector
         ];
     }
 
-    /**
-     * @param PlaceProjectedToJSONLD $placeProjectedToJSONLD
-     */
+
     protected function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD)
     {
         $this->getIndexService()->index(

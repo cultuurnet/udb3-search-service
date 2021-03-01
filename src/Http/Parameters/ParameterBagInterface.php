@@ -42,7 +42,6 @@ interface ParameterBagInterface
     /**
      * @param string $parameterName
      * @param string|null $defaultValueAsString
-     * @param callable|null $callback
      * @param string $delimiter
      * @return array
      */

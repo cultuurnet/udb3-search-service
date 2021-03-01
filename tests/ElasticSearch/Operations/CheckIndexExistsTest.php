@@ -10,8 +10,6 @@ use Psr\Log\LoggerInterface;
 class CheckIndexExistsTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return CheckIndexExists
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

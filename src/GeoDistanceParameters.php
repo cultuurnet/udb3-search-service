@@ -18,10 +18,7 @@ class GeoDistanceParameters
      */
     private $maximumDistance;
 
-    /**
-     * @param Coordinates $coordinates
-     * @param AbstractDistance $maximumDistance
-     */
+
     public function __construct(
         Coordinates $coordinates,
         AbstractDistance $maximumDistance

@@ -16,10 +16,7 @@ class Coordinates
      */
     private $long;
 
-    /**
-     * @param Latitude $lat
-     * @param Longitude $long
-     */
+
     public function __construct(Latitude $lat, Longitude $long)
     {
         $this->lat = $lat;
@@ -43,7 +40,6 @@ class Coordinates
     }
 
     /**
-     * @param Coordinates $coordinates
      * @return bool
      */
     public function sameAs(Coordinates $coordinates)

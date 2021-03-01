@@ -26,7 +26,6 @@ class LabelsAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return bool
      */
     public function supports(Aggregation $aggregation)
@@ -35,7 +34,6 @@ class LabelsAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return FacetTreeInterface
      */
     public function toFacetTree(Aggregation $aggregation)
