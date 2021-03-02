@@ -13,7 +13,7 @@ use Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AbstractReindexCommand extends AbstractElasticSearchCommand
+abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string
