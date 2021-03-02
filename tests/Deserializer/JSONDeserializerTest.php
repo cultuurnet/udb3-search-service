@@ -21,9 +21,14 @@ final class JSONDeserializerTest extends TestCase
 
     public function setUp()
     {
-        $this->deserializer = new JSONDeserializer();
+        $this->deserializer = $this->getMockForAbstractClass(JSONDeserializer::class);
 
-        $this->assocDeserializer = new JSONDeserializer(true);
+        $this->assocDeserializer = $this->getMockForAbstractClass(
+            JSONDeserializer::class,
+            [
+                true,
+            ]
+        );
     }
 
     /**

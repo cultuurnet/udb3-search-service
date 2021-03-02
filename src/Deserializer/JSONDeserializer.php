@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Deserializer;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class JSONDeserializer implements DeserializerInterface
+abstract class JSONDeserializer implements DeserializerInterface
 {
     /**
      * When true, returned objects will be converted into associative arrays.
