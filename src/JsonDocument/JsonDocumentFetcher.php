@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
-class JsonDocumentFetcher
+final class JsonDocumentFetcher implements JsonDocumentFetcherInterface
 {
     /**
      * @var ClientInterface

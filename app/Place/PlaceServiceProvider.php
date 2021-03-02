@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Place;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcherInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
@@ -45,7 +45,7 @@ final class PlaceServiceProvider extends BaseServiceProvider
             'place_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
+                    $this->get(JsonDocumentFetcherInterface::class)->withIncludeMetadata(),
                     $this->get('place_elasticsearch_transformer'),
                     $this->get('place_elasticsearch_repository')
                 );

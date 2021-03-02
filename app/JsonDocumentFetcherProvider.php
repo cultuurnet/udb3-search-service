@@ -5,17 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcherInterface;
 
 final class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
     protected $provides = [
-        JsonDocumentFetcher::class,
+        JsonDocumentFetcherInterface::class,
     ];
 
     public function register(): void
     {
         $this->add(
-            JsonDocumentFetcher::class,
+            JsonDocumentFetcherInterface::class,
             function () {
                 return new JsonDocumentFetcher(
                     $this->get('http_client'),

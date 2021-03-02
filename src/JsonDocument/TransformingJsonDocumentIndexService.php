@@ -16,7 +16,7 @@ final class TransformingJsonDocumentIndexService implements
     use LoggerAwareTrait;
 
     /**
-     * @var JsonDocumentFetcher
+     * @var JsonDocumentFetcherInterface
      */
     private $jsonDocumentFetcher;
 
@@ -31,7 +31,7 @@ final class TransformingJsonDocumentIndexService implements
     private $searchRepository;
 
     public function __construct(
-        JsonDocumentFetcher $jsonDocumentFetcher,
+        JsonDocumentFetcherInterface $jsonDocumentFetcher,
         JsonDocumentTransformer $jsonDocumentTransformer,
         DocumentRepository $searchRepository
     ) {
