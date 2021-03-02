@@ -22,7 +22,7 @@ final class MutableIndexationStrategyTest extends TestCase
     private $mockStrategy2;
 
     /**
-     * @var BulkIndexationStrategy|MockObject
+     * @var BulkIndexationStrategyInterface|MockObject
      */
     private $mockBulkStrategy;
 
@@ -36,7 +36,7 @@ final class MutableIndexationStrategyTest extends TestCase
         $this->mockStrategy1 = $this->createMock(IndexationStrategyInterface::class);
         $this->mockStrategy2 = $this->createMock(IndexationStrategyInterface::class);
 
-        $this->mockBulkStrategy = $this->createMock(BulkIndexationStrategy::class);
+        $this->mockBulkStrategy = $this->createMock(BulkIndexationStrategyInterface::class);
 
         $this->mutableStrategy = new MutableIndexationStrategy($this->mockStrategy1);
     }

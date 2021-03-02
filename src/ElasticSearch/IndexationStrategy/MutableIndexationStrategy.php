@@ -23,7 +23,7 @@ final class MutableIndexationStrategy implements IndexationStrategyInterface
 
     public function setIndexationStrategy(IndexationStrategyInterface $newIndexationStrategy)
     {
-        if ($this->indexationStrategy instanceof BulkIndexationStrategy) {
+        if ($this->indexationStrategy instanceof BulkIndexationStrategyInterface) {
             $this->indexationStrategy->flush();
         }
 
