@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class CompositeAggregationTransformerTest extends TestCase
+final class CompositeAggregationTransformerTest extends TestCase
 {
     /**
      * @var AggregationTransformerInterface|MockObject

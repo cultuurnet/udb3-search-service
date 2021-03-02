@@ -6,17 +6,17 @@ namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
 use Broadway\Serializer\SerializableInterface;
 
-class DummyEvent implements SerializableInterface
+final class DummyEvent implements SerializableInterface
 {
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $content;
+    private $content;
 
     /**
      * @param string $id

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use Psr\Log\LoggerInterface;
 
-class JsonTransformerPsrLogger implements JsonTransformerLogger
+final class JsonTransformerPsrLogger implements JsonTransformerLogger
 {
     /** @var  LoggerInterface */
     private $psrLogger;

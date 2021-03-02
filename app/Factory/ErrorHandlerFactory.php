@@ -11,7 +11,7 @@ use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
-class ErrorHandlerFactory
+final class ErrorHandlerFactory
 {
     public static function forWeb(SentryExceptionHandler $sentryExceptionHandler, bool $isDebugEnvironment): Run
     {

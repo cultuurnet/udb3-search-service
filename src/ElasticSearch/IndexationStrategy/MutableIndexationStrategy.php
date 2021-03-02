@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class MutableIndexationStrategy implements IndexationStrategyInterface
+final class MutableIndexationStrategy implements IndexationStrategyInterface
 {
     /**
      * @var IndexationStrategyInterface

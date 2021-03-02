@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReindexUDB3Core;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReindexUDB3CoreCommand extends AbstractReindexCommand
+final class ReindexUDB3CoreCommand extends AbstractReindexCommand
 {
     /**
      * @inheritdoc

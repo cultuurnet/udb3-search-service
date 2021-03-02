@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use InvalidArgumentException;
 
-class CalendarOfferRequestParser implements OfferRequestParserInterface
+final class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
     public function parse(
         ApiRequestInterface $request,

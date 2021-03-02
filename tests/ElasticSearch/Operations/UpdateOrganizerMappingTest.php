@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class UpdateOrganizerMappingTest extends AbstractMappingTestCase
+final class UpdateOrganizerMappingTest extends AbstractMappingTestCase
 {
     /**
      * @return UpdateOrganizerMapping

@@ -11,7 +11,7 @@ use ValueObjects\Enum\Enum;
  * @method static Status UNAVAILABLE()
  * @method static Status TEMPORARILY_UNAVAILABLE()
  */
-class Status extends Enum
+final class Status extends Enum
 {
     public const AVAILABLE = 'Available';
     public const UNAVAILABLE = 'Unavailable';

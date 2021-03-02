@@ -57,7 +57,7 @@ use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchControllerTest extends TestCase
+final class OfferSearchControllerTest extends TestCase
 {
     /**
      * @var QueryParameterApiKeyReader

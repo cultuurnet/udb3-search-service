@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
+final class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
 {
     /**
      * Amount of (matching) regions per page.

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
-class ApiRequest implements ApiRequestInterface
+final class ApiRequest implements ApiRequestInterface
 {
     /**
      * @var ServerRequestInterface

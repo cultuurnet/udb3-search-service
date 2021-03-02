@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Yaml\Yaml;
 
-class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
+final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 {
     /**
      * XPATH definitions to find the relevant terms.

@@ -11,7 +11,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-class ArrayParameterBagAdapterTest extends TestCase
+final class ArrayParameterBagAdapterTest extends TestCase
 {
     /**
      * @test

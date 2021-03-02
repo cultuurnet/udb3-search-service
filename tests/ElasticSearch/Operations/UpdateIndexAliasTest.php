@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class UpdateIndexAliasTest extends AbstractOperationTestCase
+final class UpdateIndexAliasTest extends AbstractOperationTestCase
 {
     /**
      * @return UpdateIndexAlias

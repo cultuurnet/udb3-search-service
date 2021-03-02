@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class CheckIndexExistsTest extends AbstractOperationTestCase
+final class CheckIndexExistsTest extends AbstractOperationTestCase
 {
     /**
      * @return CheckIndexExists

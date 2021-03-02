@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class CompositeOrganizerRequestParser implements OrganizerRequestParser
+final class CompositeOrganizerRequestParser implements OrganizerRequestParser
 {
     /**
      * @var OrganizerRequestParser[]

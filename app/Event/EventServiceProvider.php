@@ -17,7 +17,7 @@ use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventServiceProvider extends BaseServiceProvider
+final class EventServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,

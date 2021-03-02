@@ -8,7 +8,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
 
-class ResponseFactory
+final class ResponseFactory
 {
     // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
     private const JSON_OPTIONS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;

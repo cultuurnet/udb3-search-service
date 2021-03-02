@@ -12,7 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 
-class PagedCollectionFactoryTest extends TestCase
+final class PagedCollectionFactoryTest extends TestCase
 {
     /**
      * @var JsonTransformer|MockObject

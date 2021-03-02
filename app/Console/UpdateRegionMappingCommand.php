@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateRegionMapping;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateRegionMappingCommand extends AbstractMappingCommand
+final class UpdateRegionMappingCommand extends AbstractMappingCommand
 {
     /**
      * @inheritdoc

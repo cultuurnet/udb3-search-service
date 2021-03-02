@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Hydra;
 
 use JsonSerializable;
 
-class PagedCollection implements JsonSerializable
+final class PagedCollection implements JsonSerializable
 {
     /**
      * @var int

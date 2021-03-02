@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
  * Aggregation result, from an ElasticSearch response.
  * NOT an aggregation query.
  */
-class Aggregation
+final class Aggregation
 {
     /**
      * @var FacetName

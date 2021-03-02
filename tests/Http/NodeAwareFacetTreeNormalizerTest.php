@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeAwareFacetTreeNormalizerTest extends TestCase
+final class NodeAwareFacetTreeNormalizerTest extends TestCase
 {
     /**
      * @var NodeAwareFacetTreeNormalizer

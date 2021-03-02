@@ -11,7 +11,7 @@ use Broadway\Serializer\SerializableInterface;
 use CultuurNet\UDB3\Search\Deserializer\JSONDeserializer;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DomainMessageJSONDeserializer extends JSONDeserializer
+final class DomainMessageJSONDeserializer extends JSONDeserializer
 {
     /**
      * Fully qualified class name of the payload. This class should implement

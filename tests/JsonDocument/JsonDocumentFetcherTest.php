@@ -11,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class JsonDocumentFetcherTest extends TestCase
+final class JsonDocumentFetcherTest extends TestCase
 {
     /**
      * @var ClientInterface|MockObject

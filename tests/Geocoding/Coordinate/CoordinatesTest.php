@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
 use PHPUnit\Framework\TestCase;
 
-class CoordinatesTest extends TestCase
+final class CoordinatesTest extends TestCase
 {
     /**
      * @test

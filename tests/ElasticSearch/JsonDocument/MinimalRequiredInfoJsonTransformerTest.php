@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use PHPUnit\Framework\TestCase;
 
-class MinimalRequiredInfoJsonTransformerTest extends TestCase
+final class MinimalRequiredInfoJsonTransformerTest extends TestCase
 {
     /**
      * @var MinimalRequiredInfoJsonTransformer

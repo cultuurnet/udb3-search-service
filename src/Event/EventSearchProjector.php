@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Event;
 
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
 
-class EventSearchProjector extends AbstractSearchProjector
+final class EventSearchProjector extends AbstractSearchProjector
 {
     /**
      * @return array

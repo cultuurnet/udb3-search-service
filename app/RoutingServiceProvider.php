@@ -12,7 +12,7 @@ use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
 use Tuupola\Middleware\CorsMiddleware;
 
-class RoutingServiceProvider extends BaseServiceProvider
+final class RoutingServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Router::class,

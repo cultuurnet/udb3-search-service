@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 use CultuurNet\UDB3\Search\Language\Language;
 use PHPUnit\Framework\TestCase;
 
-class OfferPredefinedQueryStringFieldsTest extends TestCase
+final class OfferPredefinedQueryStringFieldsTest extends TestCase
 {
     /**
      * @test

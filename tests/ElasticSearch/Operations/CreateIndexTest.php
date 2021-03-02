@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class CreateIndexTest extends AbstractOperationTestCase
+final class CreateIndexTest extends AbstractOperationTestCase
 {
     /**
      * @return CreateIndex

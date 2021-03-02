@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class BulkIndexationStrategyTest extends TestCase
+final class BulkIndexationStrategyTest extends TestCase
 {
     /**
      * @var Client|MockObject

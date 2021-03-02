@@ -11,7 +11,7 @@ use ValueObjects\Enum\Enum;
  * @method static FallbackType PLACE()
  * @method static FallbackType ORGANIZER()
  */
-class FallbackType extends Enum
+final class FallbackType extends Enum
 {
     public const EVENT = 'Event';
     public const PLACE = 'Place';

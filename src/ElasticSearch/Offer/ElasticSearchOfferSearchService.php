@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
+final class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
 {
     use HasElasticSearchClient;
 

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\DistanceFactoryInterface;
 
-class MockDistanceFactory implements DistanceFactoryInterface
+final class MockDistanceFactory implements DistanceFactoryInterface
 {
     /**
      * @param string $distance

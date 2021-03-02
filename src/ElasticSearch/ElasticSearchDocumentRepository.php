@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepository implements DocumentRepository
+final class ElasticSearchDocumentRepository implements DocumentRepository
 {
     use HasElasticSearchClient;
 

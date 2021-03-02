@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventBusForwardingConsumerTest extends TestCase
+final class EventBusForwardingConsumerTest extends TestCase
 {
     /**
      * @var AMQPStreamConnection|MockObject

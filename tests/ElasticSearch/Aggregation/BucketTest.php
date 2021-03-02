@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use PHPUnit\Framework\TestCase;
 
-class BucketTest extends TestCase
+final class BucketTest extends TestCase
 {
     /**
      * @test

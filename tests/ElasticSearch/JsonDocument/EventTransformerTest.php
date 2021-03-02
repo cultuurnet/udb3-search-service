@@ -14,7 +14,7 @@ use DateTime;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class EventTransformerTest extends TestCase
+final class EventTransformerTest extends TestCase
 {
     /**
      * @var OfferRegionServiceInterface|MockObject

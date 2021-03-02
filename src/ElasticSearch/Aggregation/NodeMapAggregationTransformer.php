@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeMapAggregationTransformer implements AggregationTransformerInterface
+final class NodeMapAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @var FacetName

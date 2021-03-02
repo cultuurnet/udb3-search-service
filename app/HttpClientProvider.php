@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use GuzzleHttp\Client;
 
-class HttpClientProvider extends BaseServiceProvider
+final class HttpClientProvider extends BaseServiceProvider
 {
     protected $provides = [
         'http_client',

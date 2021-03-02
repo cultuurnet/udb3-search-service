@@ -15,7 +15,7 @@ use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class AmqpProvider extends BaseServiceProvider
+final class AmqpProvider extends BaseServiceProvider
 {
     public function provides(string $alias): bool
     {

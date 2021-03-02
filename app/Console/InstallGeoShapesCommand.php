@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InstallGeoShapesCommand extends AbstractElasticSearchCommand
+final class InstallGeoShapesCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string

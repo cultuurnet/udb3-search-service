@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
-class IndexRegionsCommand extends AbstractElasticSearchCommand
+final class IndexRegionsCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string

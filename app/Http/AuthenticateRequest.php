@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class AuthenticateRequest implements MiddlewareInterface
+final class AuthenticateRequest implements MiddlewareInterface
 {
     /**
      * @var ApiKeyRequestAuthenticator

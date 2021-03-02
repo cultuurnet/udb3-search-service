@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
-class CompositeOfferRequestParser implements OfferRequestParserInterface
+final class CompositeOfferRequestParser implements OfferRequestParserInterface
 {
     /**
      * @var OfferRequestParserInterface[]

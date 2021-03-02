@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use InvalidArgumentException;
 use ValueObjects\Number\Natural;
 
-class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
+final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
 {
     /**
      * @var AggregationTransformerInterface

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class UpdateOrganizerMapping extends AbstractMappingOperation
+final class UpdateOrganizerMapping extends AbstractMappingOperation
 {
     /**
      * @param string $indexName

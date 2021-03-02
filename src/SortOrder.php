@@ -10,7 +10,7 @@ use ValueObjects\Enum\Enum;
  * @method static SortOrder ASC()
  * @method static SortOrder DESC()
  */
-class SortOrder extends Enum
+final class SortOrder extends Enum
 {
     public const ASC = 'asc';
     public const DESC = 'desc';

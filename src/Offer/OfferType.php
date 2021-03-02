@@ -10,7 +10,7 @@ use ValueObjects\Enum\Enum;
  * @method static OfferType EVENT()
  * @method static OfferType PLACE()
  */
-class OfferType extends Enum
+final class OfferType extends Enum
 {
     public const EVENT = 'Event';
     public const PLACE = 'Place';

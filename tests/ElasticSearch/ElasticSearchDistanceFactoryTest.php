@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use PHPUnit\Framework\TestCase;
 
-class ElasticSearchDistanceFactoryTest extends TestCase
+final class ElasticSearchDistanceFactoryTest extends TestCase
 {
     /**
      * @var ElasticSearchDistanceFactory

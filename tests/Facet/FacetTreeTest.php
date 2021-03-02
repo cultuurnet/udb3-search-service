@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class FacetTreeTest extends TestCase
+final class FacetTreeTest extends TestCase
 {
     /**
      * @test

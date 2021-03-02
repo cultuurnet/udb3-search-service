@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateIndexCommand extends AbstractElasticSearchCommand
+final class CreateIndexCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

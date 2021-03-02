@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ReadModel;
 
 use RuntimeException;
 
-class DocumentGone extends RuntimeException
+final class DocumentGone extends RuntimeException
 {
     public function __construct($message = '', $code = 410, \Exception $previous = null)
     {

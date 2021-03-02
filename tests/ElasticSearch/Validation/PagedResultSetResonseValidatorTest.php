@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Validation;
 
 use PHPUnit\Framework\TestCase;
 
-class PagedResultSetResponseValidatorTest extends TestCase
+final class PagedResultSetResponseValidatorTest extends TestCase
 {
     /**
      * @var PagedResultSetResponseValidator

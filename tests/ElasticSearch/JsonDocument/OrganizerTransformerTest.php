@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerTransformerTest extends TestCase
+final class OrganizerTransformerTest extends TestCase
 {
     /**
      * @var SimpleArrayLogger

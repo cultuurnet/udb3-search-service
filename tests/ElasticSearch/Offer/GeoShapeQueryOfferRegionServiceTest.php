@@ -10,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class GeoShapeQueryOfferRegionServiceTest extends TestCase
+final class GeoShapeQueryOfferRegionServiceTest extends TestCase
 {
     /**
      * @var Client|MockObject

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class CreateAutocompleteAnalyzer extends AbstractElasticSearchOperation
+final class CreateAutocompleteAnalyzer extends AbstractElasticSearchOperation
 {
     public function run()
     {

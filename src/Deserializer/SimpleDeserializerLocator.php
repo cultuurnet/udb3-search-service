@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Search\Deserializer;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SimpleDeserializerLocator implements DeserializerLocatorInterface
+final class SimpleDeserializerLocator implements DeserializerLocatorInterface
 {
     /**
      * @var DeserializerInterface[]
      */
-    protected $deserializers = [];
+    private $deserializers = [];
 
 
     public function registerDeserializer(

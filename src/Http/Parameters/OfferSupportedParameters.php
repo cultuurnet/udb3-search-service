@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-class OfferSupportedParameters extends AbstractSupportedParameters
+final class OfferSupportedParameters extends AbstractSupportedParameters
 {
     protected function getSupportedParameters(): array
     {

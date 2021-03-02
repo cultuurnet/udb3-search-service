@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\Number\Natural;
 
-class AgeRangeOfferRequestParserTest extends TestCase
+final class AgeRangeOfferRequestParserTest extends TestCase
 {
     /**
      * @var DocumentLanguageOfferRequestParser
