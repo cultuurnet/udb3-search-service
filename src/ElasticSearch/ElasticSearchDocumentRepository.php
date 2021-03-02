@@ -67,6 +67,6 @@ class ElasticSearchDocumentRepository implements DocumentRepository
 
     public function getDocumentType(): string
     {
-        return $this->documentType;
+        return $this->documentType->toNative();
     }
 }
