@@ -17,7 +17,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 /**
  * Forwards messages coming in via AMQP to an event bus.
  */
-class EventBusForwardingConsumer extends AbstractConsumer
+final class EventBusForwardingConsumer extends AbstractConsumer
 {
     /**
      * @var EventBusInterface

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PagedResultSetTest extends TestCase
+final class PagedResultSetTest extends TestCase
 {
     /**
      * @test

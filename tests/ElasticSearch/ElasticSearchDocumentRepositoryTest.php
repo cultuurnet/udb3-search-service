@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepositoryTest extends TestCase
+final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
     /**
      * @var Client|MockObject

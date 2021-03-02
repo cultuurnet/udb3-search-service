@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Place;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
-class PlaceProjectedToJSONLDTest extends TestCase
+final class PlaceProjectedToJSONLDTest extends TestCase
 {
     /**
      * @test

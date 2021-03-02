@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseExactMatchAna
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSearchCommand
+final class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

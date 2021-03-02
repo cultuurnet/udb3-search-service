@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class CreateLowerCaseStandardAnalyzer extends AbstractElasticSearchOperation
+final class CreateLowerCaseStandardAnalyzer extends AbstractElasticSearchOperation
 {
     public function run()
     {

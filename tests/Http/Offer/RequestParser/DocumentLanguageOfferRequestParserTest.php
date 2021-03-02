@@ -11,7 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-class DocumentLanguageOfferRequestParserTest extends TestCase
+final class DocumentLanguageOfferRequestParserTest extends TestCase
 {
     /**
      * @var DocumentLanguageOfferRequestParser

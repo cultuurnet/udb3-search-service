@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class MutableIndexationStrategyTest extends TestCase
+final class MutableIndexationStrategyTest extends TestCase
 {
     /**
      * @var IndexationStrategyInterface|MockObject

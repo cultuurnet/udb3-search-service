@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Validation;
 
-class PagedResultSetResponseValidator implements ElasticSearchResponseValidatorInterface
+final class PagedResultSetResponseValidator implements ElasticSearchResponseValidatorInterface
 {
     /**
      * @throws InvalidElasticSearchResponseException

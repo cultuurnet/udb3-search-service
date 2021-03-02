@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchServiceFactory
+final class OfferSearchServiceFactory
 {
     /**
      * @var Client

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 
-class LuceneQueryStringFactory implements QueryStringFactoryInterface
+final class LuceneQueryStringFactory implements QueryStringFactoryInterface
 {
     /**
      * @param string $queryString

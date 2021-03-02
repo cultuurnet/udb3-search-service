@@ -8,7 +8,7 @@ use Psr\Log\LoggerInterface;
 
 // This array logger makes it easy to also check the order of method calls.
 // Could be moved to separate library for reuse on other projects.
-class SimpleArrayLogger implements LoggerInterface
+final class SimpleArrayLogger implements LoggerInterface
 {
     private $logs = [];
 

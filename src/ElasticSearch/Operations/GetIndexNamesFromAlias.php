@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 
-class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
+final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
 {
     /**
      * @param string $aliasName

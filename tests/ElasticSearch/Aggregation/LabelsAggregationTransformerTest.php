@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LabelsAggregationTransformerTest extends TestCase
+final class LabelsAggregationTransformerTest extends TestCase
 {
     /**
      * @var FacetName

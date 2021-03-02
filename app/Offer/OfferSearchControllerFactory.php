@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchControllerFactory
+final class OfferSearchControllerFactory
 {
     /**
      * @var int

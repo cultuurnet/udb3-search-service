@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateOrganizerMapping;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateOrganizerMappingCommand extends AbstractMappingCommand
+final class UpdateOrganizerMappingCommand extends AbstractMappingCommand
 {
     /**
      * @inheritdoc

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
-class GeoDistanceParameters
+final class GeoDistanceParameters
 {
     /**
      * @var Coordinates

@@ -8,7 +8,7 @@ use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
-class IndexRegionsTest extends AbstractOperationTestCase
+final class IndexRegionsTest extends AbstractOperationTestCase
 {
     /**
      * @var Finder

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SingleFileIndexationStrategyTest extends TestCase
+final class SingleFileIndexationStrategyTest extends TestCase
 {
     /**
      * @var Client|MockObject

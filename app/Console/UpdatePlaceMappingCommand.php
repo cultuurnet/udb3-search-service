@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdatePlaceMapping;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdatePlaceMappingCommand extends AbstractMappingCommand
+final class UpdatePlaceMappingCommand extends AbstractMappingCommand
 {
     /**
      * @inheritdoc

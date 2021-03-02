@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Deserializer;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class JSONDeserializerTest extends TestCase
+final class JSONDeserializerTest extends TestCase
 {
     /**
      * @var JSONDeserializer

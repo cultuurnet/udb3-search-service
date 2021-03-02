@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentIndexServiceInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerSearchProjectorTest extends TestCase
+final class OrganizerSearchProjectorTest extends TestCase
 {
     /**
      * @var JsonDocumentIndexServiceInterface|MockObject

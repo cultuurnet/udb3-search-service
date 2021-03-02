@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
+final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string

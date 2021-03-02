@@ -30,7 +30,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-class OrganizerSearchControllerTest extends TestCase
+final class OrganizerSearchControllerTest extends TestCase
 {
     /**
      * @var ApiKeyReaderInterface|MockObject

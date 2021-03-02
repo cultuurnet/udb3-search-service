@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DeleteIndexCommand extends AbstractElasticSearchCommand
+final class DeleteIndexCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

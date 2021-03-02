@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
 
-class MockQueryStringFactory implements QueryStringFactoryInterface
+final class MockQueryStringFactory implements QueryStringFactoryInterface
 {
     /**
      * @param string $queryString

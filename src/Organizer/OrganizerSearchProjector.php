@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Organizer;
 
 use CultuurNet\UDB3\Search\AbstractSearchProjector;
 
-class OrganizerSearchProjector extends AbstractSearchProjector
+final class OrganizerSearchProjector extends AbstractSearchProjector
 {
     /**
      * @return array

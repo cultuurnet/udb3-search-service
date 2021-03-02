@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use ValueObjects\Number\Natural;
 
-class PagedResultSet
+final class PagedResultSet
 {
     /**
      * @var Natural

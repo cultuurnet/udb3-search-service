@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
 use CultuurNet\UDB3\Search\Language\Language;
 
-class OfferPredefinedQueryStringFields implements PredefinedQueryFieldsInterface
+final class OfferPredefinedQueryStringFields implements PredefinedQueryFieldsInterface
 {
     public function getPredefinedFields(Language ...$languages): array
     {

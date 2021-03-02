@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class DeleteIndexTest extends AbstractOperationTestCase
+final class DeleteIndexTest extends AbstractOperationTestCase
 {
     /**
      * @return DeleteIndex

@@ -19,7 +19,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
+final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
     protected function getPredefinedQueryStringFields(Language ...$languages): array

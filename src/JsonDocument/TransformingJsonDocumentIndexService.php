@@ -9,7 +9,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class TransformingJsonDocumentIndexService implements
+final class TransformingJsonDocumentIndexService implements
     JsonDocumentIndexServiceInterface,
     LoggerAwareInterface
 {

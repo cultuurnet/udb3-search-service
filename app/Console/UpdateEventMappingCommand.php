@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateEventMapping;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateEventMappingCommand extends AbstractMappingCommand
+final class UpdateEventMappingCommand extends AbstractMappingCommand
 {
     /**
      * @inheritdoc

@@ -11,7 +11,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Yaml\Yaml;
 
-class TermTaxonomyToFacetMappingsCommand extends Command
+final class TermTaxonomyToFacetMappingsCommand extends Command
 {
     /**
      * XPATH definitions to find the relevant terms.

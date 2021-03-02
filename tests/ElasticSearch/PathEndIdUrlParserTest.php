@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use PHPUnit\Framework\TestCase;
 
-class PathEndIdUrlParserTest extends TestCase
+final class PathEndIdUrlParserTest extends TestCase
 {
     /**
      * @var PathEndIdUrlParser

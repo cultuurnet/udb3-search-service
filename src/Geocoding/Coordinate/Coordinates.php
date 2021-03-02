@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
-class Coordinates
+final class Coordinates
 {
     /**
      * @var Latitude

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DomainMessageJSONDeserializerTest extends TestCase
+final class DomainMessageJSONDeserializerTest extends TestCase
 {
     /**
      * @var DomainMessageJSONDeserializer

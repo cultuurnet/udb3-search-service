@@ -8,7 +8,7 @@ use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Psr\Log\LoggerInterface;
 
-class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
+final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
     /**
      * @return GetIndexNamesFromAlias

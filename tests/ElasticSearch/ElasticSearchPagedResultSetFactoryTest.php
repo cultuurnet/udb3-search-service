@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchPagedResultSetFactoryTest extends TestCase
+final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
     /**
      * @var NodeMapAggregationTransformer

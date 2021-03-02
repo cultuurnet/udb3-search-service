@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\AbstractDistance;
 
-class ElasticSearchDistance extends AbstractDistance
+final class ElasticSearchDistance extends AbstractDistance
 {
     public const DISTANCE_REGEX = '/^\s*(\d+\.?\d*)\s*([a-zA-Z]+)\s*$/';
 

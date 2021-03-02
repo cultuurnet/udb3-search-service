@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Language;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class MultilingualStringTest extends TestCase
+final class MultilingualStringTest extends TestCase
 {
     /**
      * @var Language

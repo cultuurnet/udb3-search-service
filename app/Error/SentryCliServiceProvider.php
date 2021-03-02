@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Error;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Sentry\State\HubInterface;
 
-class SentryCliServiceProvider extends BaseServiceProvider
+final class SentryCliServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         SentryExceptionHandler::class,

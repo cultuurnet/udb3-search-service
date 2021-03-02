@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\SortOrder;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 
-class SortByOrganizerRequestParser implements OrganizerRequestParser
+final class SortByOrganizerRequestParser implements OrganizerRequestParser
 {
     public function parse(
         ServerRequestInterface $request,

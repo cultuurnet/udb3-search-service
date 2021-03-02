@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
+final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
 {
     /**
      * @return CreateAutocompleteAnalyzer

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-class KnownLanguages
+final class KnownLanguages
 {
     public function fieldNames(string $fieldPattern): array
     {

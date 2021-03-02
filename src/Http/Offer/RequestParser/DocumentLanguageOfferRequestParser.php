@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
-class DocumentLanguageOfferRequestParser implements OfferRequestParserInterface
+final class DocumentLanguageOfferRequestParser implements OfferRequestParserInterface
 {
     public function parse(
         ApiRequestInterface $request,

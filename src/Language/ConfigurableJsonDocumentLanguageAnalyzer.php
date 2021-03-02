@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Language;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
-class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
+final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
 {
     /**
      * @var string[]

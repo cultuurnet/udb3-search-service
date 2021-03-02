@@ -17,7 +17,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\Url;
 
-class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
     /**
      * @test

@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
-class DistanceOfferRequestParser implements OfferRequestParserInterface
+final class DistanceOfferRequestParser implements OfferRequestParserInterface
 {
     /**
      * @var DistanceFactoryInterface

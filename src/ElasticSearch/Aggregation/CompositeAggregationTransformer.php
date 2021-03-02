@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 
-class CompositeAggregationTransformer implements AggregationTransformerInterface
+final class CompositeAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @var AggregationTransformerInterface[]

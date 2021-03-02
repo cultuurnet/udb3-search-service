@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseStandardAnaly
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchCommand
+final class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

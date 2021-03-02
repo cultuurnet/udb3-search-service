@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 
-class CountryExtractor
+final class CountryExtractor
 {
     public function getCountryFromQuery(
         ParameterBagInterface $parameterBag,

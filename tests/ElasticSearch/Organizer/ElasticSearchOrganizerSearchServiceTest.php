@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOrganizerSearchServiceTest extends TestCase
+final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 {
     /**
      * @var Client|MockObject

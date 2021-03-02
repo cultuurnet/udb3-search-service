@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\RegionEmbeddingJsonTransfo
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-class ResultTransformerFactory
+final class ResultTransformerFactory
 {
     public static function create(bool $embedded): JsonTransformer
     {

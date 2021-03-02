@@ -9,7 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class JsonTransformerPsrLoggerTest extends TestCase
+final class JsonTransformerPsrLoggerTest extends TestCase
 {
     /**
      * @var LoggerInterface|MockObject

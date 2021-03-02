@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 
-class JsonDocumentFetcherProvider extends BaseServiceProvider
+final class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
     protected $provides = [
         JsonDocumentFetcher::class,

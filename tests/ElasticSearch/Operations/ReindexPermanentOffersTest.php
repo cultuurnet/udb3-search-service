@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class ReindexPermanentOffersTest extends AbstractReindexUDB3CoreTest
+final class ReindexPermanentOffersTest extends AbstractReindexUDB3CoreTest
 {
     /**
      * @return ReindexPermanentOffers

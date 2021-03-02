@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Parameters;
 
 use InvalidArgumentException;
 
-class ArrayParameterBagAdapter implements ParameterBagInterface
+final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
     /**
      * @var array

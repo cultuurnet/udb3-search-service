@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use PHPUnit\Framework\TestCase;
 
-class JsonLdEmbeddingJsonTransformerTest extends TestCase
+final class JsonLdEmbeddingJsonTransformerTest extends TestCase
 {
     /**
      * @var JsonLdEmbeddingJsonTransformer

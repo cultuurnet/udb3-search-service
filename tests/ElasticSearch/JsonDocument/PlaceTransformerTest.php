@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class PlaceTransformerTest extends TestCase
+final class PlaceTransformerTest extends TestCase
 {
     /**
      * @var OfferRegionServiceInterface|MockObject

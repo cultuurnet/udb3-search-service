@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
-class Language
+final class Language
 {
-    protected $code;
+    private $code;
 
     public function __construct(string $code)
     {

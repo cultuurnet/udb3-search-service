@@ -37,7 +37,7 @@ use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
     protected function getPredefinedQueryStringFields(Language ...$languages)
     {

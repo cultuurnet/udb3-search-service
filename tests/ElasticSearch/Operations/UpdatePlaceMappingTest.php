@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class UpdatePlaceMappingTest extends AbstractMappingTestCase
+final class UpdatePlaceMappingTest extends AbstractMappingTestCase
 {
     /**
      * @return UpdatePlaceMapping

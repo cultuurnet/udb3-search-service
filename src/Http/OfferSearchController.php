@@ -35,7 +35,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  *   implementations.
  * @see https://jira.uitdatabank.be/browse/III-2144
  */
-class OfferSearchController
+final class OfferSearchController
 {
     /**
      * @var ApiKeyReaderInterface

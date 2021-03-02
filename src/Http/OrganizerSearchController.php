@@ -23,7 +23,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-class OrganizerSearchController
+final class OrganizerSearchController
 {
     /**
      * @var ApiKeyReaderInterface

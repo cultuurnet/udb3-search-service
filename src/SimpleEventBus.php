@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 use Broadway\Domain\DomainEventStreamInterface;
 
-class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
+final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
 {
     /**
      * @var bool

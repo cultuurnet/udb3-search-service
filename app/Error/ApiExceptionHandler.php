@@ -12,7 +12,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-class ApiExceptionHandler extends Handler
+final class ApiExceptionHandler extends Handler
 {
     /**
      * @var EmitterInterface

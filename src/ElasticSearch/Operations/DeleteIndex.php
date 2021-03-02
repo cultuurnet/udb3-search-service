@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class DeleteIndex extends AbstractElasticSearchOperation
+final class DeleteIndex extends AbstractElasticSearchOperation
 {
     /**
      * @param string $indexName

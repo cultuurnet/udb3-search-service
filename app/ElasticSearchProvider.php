@@ -11,7 +11,7 @@ use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchProvider extends BaseServiceProvider
+final class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
