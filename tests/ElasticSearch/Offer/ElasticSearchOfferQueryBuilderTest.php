@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Search\SortOrder;
 use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -3053,50 +3052,6 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_should_ignore_unmapped_facets(): void
-    {
-        /* @var ElasticSearchOfferQueryBuilder $builder */
-        $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
-            ->withFacet(
-                FacetName::REGIONS()
-            )
-            ->withFacet(
-                $this->createUnknownFacetName()
-            )
-            ->withFacet(
-                FacetName::FACILITIES()
-            );
-
-        $expectedQueryArray = [
-            'from' => 30,
-            'size' => 10,
-            'query' => [
-                'match_all' => (object) [],
-            ],
-            'aggregations' => [
-                'regions' => [
-                    'terms' => [
-                        'field' => 'regions.keyword',
-                    ],
-                ],
-                'facilities' => [
-                    'terms' => [
-                        'field' => 'facilityIds',
-                    ],
-                ],
-            ],
-        ];
-
-        $actualQueryArray = $builder->build();
-
-        $this->assertEquals($expectedQueryArray, $actualQueryArray);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_build_a_query_with_multiple_sorts(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
@@ -3215,20 +3170,6 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
-    }
-
-    /**
-     * @return FacetName
-     */
-    private function createUnknownFacetName()
-    {
-        /** @var FacetName|MockObject $facetName */
-        $facetName = $this->createMock(FacetName::class);
-
-        $facetName->method('toNative')
-            ->willReturn('unknown');
-
-        return $facetName;
     }
 
     /**

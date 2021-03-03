@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
@@ -23,7 +23,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  * Multiple filters are combined using AND.
  * Filters that accept multiple values use OR internally.
  */
-interface OfferQueryBuilderInterface extends QueryBuilderInterface
+interface OfferQueryBuilderInterface extends QueryBuilder
 {
     /**
      * @return OfferQueryBuilderInterface

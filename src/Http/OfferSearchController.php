@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Geography\CountryCode;
@@ -73,7 +73,7 @@ final class OfferSearchController
     private $regionDocumentType;
 
     /**
-     * @var QueryStringFactoryInterface
+     * @var QueryStringFactory
      */
     private $queryStringFactory;
 
@@ -95,7 +95,7 @@ final class OfferSearchController
         OfferSearchServiceInterface $searchService,
         StringLiteral $regionIndexName,
         StringLiteral $regionDocumentType,
-        QueryStringFactoryInterface $queryStringFactory,
+        QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {
         $this->apiKeyReader = $apiKeyReader;

@@ -13,7 +13,7 @@ use ValueObjects\Enum\Enum;
  * @method static FacetName FACILITIES()
  * @method static FacetName LABELS()
  */
-class FacetName extends Enum
+final class FacetName extends Enum
 {
     public const REGIONS = 'regions';
     public const TYPES = 'types';

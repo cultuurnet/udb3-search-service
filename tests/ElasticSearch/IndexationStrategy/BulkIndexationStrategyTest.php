@@ -214,6 +214,6 @@ final class BulkIndexationStrategyTest extends TestCase
         $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument2);
         $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument3);
 
-        $this->strategy->flush();
+        $this->strategy->finish();
     }
 }

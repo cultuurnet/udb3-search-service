@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-interface QueryStringFactoryInterface
+interface QueryStringFactory
 {
     /**
      * @param string $queryString
