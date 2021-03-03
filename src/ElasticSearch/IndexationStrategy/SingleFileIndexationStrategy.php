@@ -49,4 +49,8 @@ final class SingleFileIndexationStrategy implements IndexationStrategyInterface
             ]
         );
     }
+
+    public function flush(): void
+    {
+    }
 }

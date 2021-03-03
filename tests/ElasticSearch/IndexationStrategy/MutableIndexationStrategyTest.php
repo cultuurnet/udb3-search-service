@@ -22,11 +22,6 @@ final class MutableIndexationStrategyTest extends TestCase
     private $mockStrategy2;
 
     /**
-     * @var BulkIndexationStrategyInterface|MockObject
-     */
-    private $mockBulkStrategy;
-
-    /**
      * @var MutableIndexationStrategy
      */
     private $mutableStrategy;
@@ -35,8 +30,6 @@ final class MutableIndexationStrategyTest extends TestCase
     {
         $this->mockStrategy1 = $this->createMock(IndexationStrategyInterface::class);
         $this->mockStrategy2 = $this->createMock(IndexationStrategyInterface::class);
-
-        $this->mockBulkStrategy = $this->createMock(BulkIndexationStrategyInterface::class);
 
         $this->mutableStrategy = new MutableIndexationStrategy($this->mockStrategy1);
     }
@@ -83,9 +76,9 @@ final class MutableIndexationStrategyTest extends TestCase
      */
     public function it_flushes_an_injected_bulk_strategy_before_swapping_it_out()
     {
-        $this->mutableStrategy->setIndexationStrategy($this->mockBulkStrategy);
+        $this->mutableStrategy->setIndexationStrategy($this->mockStrategy1);
 
-        $this->mockBulkStrategy->expects($this->once())
+        $this->mockStrategy1->expects($this->once())
             ->method('flush');
 
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy2);

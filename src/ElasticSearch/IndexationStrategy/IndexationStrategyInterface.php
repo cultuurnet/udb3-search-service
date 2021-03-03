@@ -14,4 +14,6 @@ interface IndexationStrategyInterface
         StringLiteral $documentType,
         JsonDocument $jsonDocument
     );
+
+    public function flush(): void;
 }

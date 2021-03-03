@@ -23,10 +23,7 @@ final class MutableIndexationStrategy implements IndexationStrategyInterface
 
     public function setIndexationStrategy(IndexationStrategyInterface $newIndexationStrategy)
     {
-        if ($this->indexationStrategy instanceof BulkIndexationStrategyInterface) {
-            $this->indexationStrategy->flush();
-        }
-
+        $this->indexationStrategy->flush();
         $this->indexationStrategy = $newIndexationStrategy;
     }
 
@@ -37,5 +34,9 @@ final class MutableIndexationStrategy implements IndexationStrategyInterface
         JsonDocument $jsonDocument
     ) {
         $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);
+    }
+
+    public function flush(): void
+    {
     }
 }
