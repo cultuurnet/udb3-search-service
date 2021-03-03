@@ -32,7 +32,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         $this->logger = $logger;
     }
 
-    public function withIncludeMetadata(): GuzzleJsonDocumentFetcher
+    public function withIncludeMetadata(): JsonDocumentFetcher
     {
         $clone = clone $this;
         $clone->includeMetadata = true;
