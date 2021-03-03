@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-interface QueryBuilderInterface
+interface QueryBuilder
 {
     public const DEFAULT_LIMIT = 10;
 

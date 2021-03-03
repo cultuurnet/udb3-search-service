@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
@@ -464,7 +464,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function getLimit(): Natural
     {
         if (!isset($this->mockQuery['limit'])) {
-            return new Natural(QueryBuilderInterface::DEFAULT_LIMIT);
+            return new Natural(QueryBuilder::DEFAULT_LIMIT);
         }
 
         return new Natural($this->mockQuery['limit']);

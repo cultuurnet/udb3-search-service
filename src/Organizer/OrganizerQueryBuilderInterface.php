@@ -7,14 +7,14 @@ namespace CultuurNet\UDB3\Search\Organizer;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Label\LabelName;
-use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-interface OrganizerQueryBuilderInterface extends QueryBuilderInterface
+interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
     /**
      * @return static
