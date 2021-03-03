@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
-final class JsonDocumentFetcher implements JsonDocumentFetcherInterface
+final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcherInterface
 {
     /**
      * @var ClientInterface
@@ -32,7 +32,7 @@ final class JsonDocumentFetcher implements JsonDocumentFetcherInterface
         $this->logger = $logger;
     }
 
-    public function withIncludeMetadata(): JsonDocumentFetcher
+    public function withIncludeMetadata(): GuzzleJsonDocumentFetcher
     {
         $clone = clone $this;
         $clone->includeMetadata = true;
