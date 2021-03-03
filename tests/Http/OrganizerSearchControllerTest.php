@@ -53,7 +53,7 @@ final class OrganizerSearchControllerTest extends TestCase
     private $controller;
 
     /**
-     * @var \CultuurNet\UDB3\Search\QueryStringFactoryInterface
+     * @var \CultuurNet\UDB3\Search\QueryStringFactory
      */
     private $queryStringFactory;
 

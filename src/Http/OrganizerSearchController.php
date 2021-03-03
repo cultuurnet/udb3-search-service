@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use CultuurNet\UDB3\Search\QueryStringFactory;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -46,7 +46,7 @@ final class OrganizerSearchController
     private $organizerParameterWhiteList;
 
     /**
-     * @var QueryStringFactoryInterface
+     * @var QueryStringFactory
      */
     private $queryStringFactory;
 
@@ -60,7 +60,7 @@ final class OrganizerSearchController
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
-        QueryStringFactoryInterface $queryStringFactory
+        QueryStringFactory $queryStringFactory
     ) {
         $this->apiKeyReader = $apiKeyReader;
         $this->queryBuilder = $queryBuilder;
