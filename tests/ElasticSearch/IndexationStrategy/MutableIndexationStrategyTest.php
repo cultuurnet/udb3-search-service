@@ -12,12 +12,12 @@ use ValueObjects\StringLiteral\StringLiteral;
 final class MutableIndexationStrategyTest extends TestCase
 {
     /**
-     * @var IndexationStrategyInterface|MockObject
+     * @var IndexationStrategy|MockObject
      */
     private $mockStrategy1;
 
     /**
-     * @var IndexationStrategyInterface|MockObject
+     * @var IndexationStrategy|MockObject
      */
     private $mockStrategy2;
 
@@ -28,8 +28,8 @@ final class MutableIndexationStrategyTest extends TestCase
 
     protected function setUp()
     {
-        $this->mockStrategy1 = $this->createMock(IndexationStrategyInterface::class);
-        $this->mockStrategy2 = $this->createMock(IndexationStrategyInterface::class);
+        $this->mockStrategy1 = $this->createMock(IndexationStrategy::class);
+        $this->mockStrategy2 = $this->createMock(IndexationStrategy::class);
 
         $this->mutableStrategy = new MutableIndexationStrategy($this->mockStrategy1);
     }

@@ -9,7 +9,7 @@ use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-final class BulkIndexationStrategy implements IndexationStrategyInterface
+final class BulkIndexationStrategy implements IndexationStrategy
 {
     /**
      * @var Client
