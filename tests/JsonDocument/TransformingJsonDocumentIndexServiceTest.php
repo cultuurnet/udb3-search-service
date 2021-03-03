@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 final class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
-     * @var JsonDocumentFetcherInterface|MockObject
+     * @var JsonDocumentFetcher|MockObject
      */
     private $jsonDocumentFetcher;
 
@@ -39,7 +39,7 @@ final class TransformingJsonDocumentIndexServiceTest extends TestCase
 
     protected function setUp()
     {
-        $this->jsonDocumentFetcher = $this->createMock(JsonDocumentFetcherInterface::class);
+        $this->jsonDocumentFetcher = $this->createMock(JsonDocumentFetcher::class);
         $this->searchRepository = $this->createMock(DocumentRepository::class);
         $this->transformer = $this->createMock(JsonTransformer::class);
         $this->logger = $this->createMock(LoggerInterface::class);

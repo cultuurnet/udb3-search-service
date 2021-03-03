@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
-interface JsonDocumentFetcherInterface
+interface JsonDocumentFetcher
 {
-    public function withIncludeMetadata(): JsonDocumentFetcherInterface;
+    public function withIncludeMetadata(): JsonDocumentFetcher;
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument;
 }

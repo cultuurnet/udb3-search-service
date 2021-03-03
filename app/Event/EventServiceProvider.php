@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EventTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\Event\EventSearchProjector;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcherInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
@@ -45,7 +45,7 @@ final class EventServiceProvider extends BaseServiceProvider
             'event_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcherInterface::class)->withIncludeMetadata(),
+                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
                     $this->get('event_elasticsearch_transformer'),
                     $this->get('event_elasticsearch_repository')
                 );

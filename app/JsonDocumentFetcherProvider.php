@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\JsonDocument\GuzzleJsonDocumentFetcher;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcherInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 
 final class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
     protected $provides = [
-        JsonDocumentFetcherInterface::class,
+        JsonDocumentFetcher::class,
     ];
 
     public function register(): void
     {
         $this->add(
-            JsonDocumentFetcherInterface::class,
+            JsonDocumentFetcher::class,
             function () {
                 return new GuzzleJsonDocumentFetcher(
                     $this->get('http_client'),

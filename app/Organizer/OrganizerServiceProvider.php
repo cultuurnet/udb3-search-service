@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcherInterface;
+use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
@@ -65,7 +65,7 @@ final class OrganizerServiceProvider extends BaseServiceProvider
             'organizer_search_projector',
             function () {
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcherInterface::class),
+                    $this->get(JsonDocumentFetcher::class),
                     $this->get('organizer_elasticsearch_transformer'),
                     $this->get('organizer_elasticsearch_repository')
                 );
