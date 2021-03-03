@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Search\DistanceFactoryInterface;
+use CultuurNet\UDB3\Search\DistanceFactory;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
@@ -13,11 +13,11 @@ use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 final class DistanceOfferRequestParser implements OfferRequestParserInterface
 {
     /**
-     * @var DistanceFactoryInterface
+     * @var DistanceFactory
      */
     private $distanceFactory;
 
-    public function __construct(DistanceFactoryInterface $distanceFactory)
+    public function __construct(DistanceFactory $distanceFactory)
     {
         $this->distanceFactory = $distanceFactory;
     }
