@@ -79,7 +79,7 @@ final class MutableIndexationStrategyTest extends TestCase
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy1);
 
         $this->mockStrategy1->expects($this->once())
-            ->method('flush');
+            ->method('finish');
 
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy2);
     }

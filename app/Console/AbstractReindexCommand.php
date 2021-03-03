@@ -93,7 +93,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         $operation->run($this->readIndexName);
 
         if (isset($bulkIndexationStrategy)) {
-            $bulkIndexationStrategy->flush();
+            $bulkIndexationStrategy->finish();
         }
     }
 

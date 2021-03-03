@@ -68,7 +68,7 @@ final class BulkIndexationStrategy implements IndexationStrategyInterface
     /**
      * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing
      */
-    public function flush(): void
+    public function finish(): void
     {
         $count = count($this->queuedDocuments);
         $this->logger->info("Sending {$count} documents to ElasticSearch for indexation...");
@@ -99,7 +99,7 @@ final class BulkIndexationStrategy implements IndexationStrategyInterface
     private function autoFlush()
     {
         if (count($this->queuedDocuments) >= $this->autoFlushThreshold) {
-            $this->flush();
+            $this->finish();
         }
     }
 }
