@@ -24,7 +24,7 @@ final class JsonDocumentFetcherTest extends TestCase
     private $logger;
 
     /**
-     * @var JsonDocumentFetcher
+     * @var GuzzleJsonDocumentFetcher
      */
     private $jsonDocumentFetcher;
 
@@ -32,7 +32,7 @@ final class JsonDocumentFetcherTest extends TestCase
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->jsonDocumentFetcher = (new JsonDocumentFetcher(
+        $this->jsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
             $this->httpClient,
             $this->logger
         ))->withIncludeMetadata();
@@ -78,7 +78,7 @@ final class JsonDocumentFetcherTest extends TestCase
      */
     public function it_can_fetch_json_document_without_metadata(): void
     {
-        $jsonDocumentFetcher = new JsonDocumentFetcher(
+        $jsonDocumentFetcher = new GuzzleJsonDocumentFetcher(
             $this->httpClient,
             $this->logger
         );
