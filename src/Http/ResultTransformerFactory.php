@@ -17,8 +17,7 @@ final class ResultTransformerFactory
     public static function create(
         bool $embedded,
         CalendarSummaryFormat ...$calendarSummaryFormats
-    ): JsonTransformer
-    {
+    ): JsonTransformer {
         if ($embedded) {
             $transformerStack = new CompositeJsonTransformer(
                 new JsonLdEmbeddingJsonTransformer(),

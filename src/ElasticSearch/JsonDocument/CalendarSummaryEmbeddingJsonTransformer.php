@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use InvalidArgumentException;
 
-class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
+final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
     /**
      * @var CalendarSummaryFormat[]
@@ -41,18 +41,18 @@ class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
         $calendarSummary = [
             $calendarSummaryFormat->getType() => [
                 $calendarSummaryFormat->getFormat() => trim(
-                        $calendarFormatter->format(
-                        $offer,
-                        $calendarSummaryFormat->getFormat()
-                    )
+                    $calendarFormatter->format(
+                            $offer,
+                            $calendarSummaryFormat->getFormat()
+                        )
                 ),
-            ]
+            ],
         ];
 
         return array_merge_recursive(
             $original,
             [
-                'calendarSummary' => $calendarSummary
+                'calendarSummary' => $calendarSummary,
             ]
         );
     }
