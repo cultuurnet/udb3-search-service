@@ -18,21 +18,22 @@ final class ResultTransformerFactory
         bool $embedded,
         CalendarSummaryFormat ...$calendarSummaryFormats
     ): JsonTransformer {
+
+        $transformerStack = new CompositeJsonTransformer();
+
         if ($embedded) {
-            $transformerStack = new CompositeJsonTransformer(
-                new JsonLdEmbeddingJsonTransformer(),
-                new RegionEmbeddingJsonTransformer()
-            );
-
-            if (!empty($calendarSummaryFormats)) {
-                $transformerStack = $transformerStack->addTransformer(
-                    new CalendarSummaryEmbeddingJsonTransformer($calendarSummaryFormats)
-                );
-            }
-
-            return $transformerStack;
+            $transformerStack = $transformerStack->addTransformer(new JsonLdEmbeddingJsonTransformer());
+            $transformerStack = $transformerStack->addTransformer(new RegionEmbeddingJsonTransformer());
+        } else {
+            $transformerStack = $transformerStack->addTransformer(new MinimalRequiredInfoJsonTransformer());
         }
 
-        return new MinimalRequiredInfoJsonTransformer();
+        if (!empty($calendarSummaryFormats)) {
+            $transformerStack = $transformerStack->addTransformer(
+                new CalendarSummaryEmbeddingJsonTransformer($calendarSummaryFormats)
+            );
+        }
+
+        return $transformerStack;
     }
 }
