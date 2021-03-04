@@ -75,7 +75,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         '_source' => [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
                             '@type' => 'Event',
-                            'name' => 'Punkfest',
+                            'regions' => ['foo', 'bar'],
+                            'originalEncodedJsonLd' => '{}',
                         ],
                     ],
                     [
@@ -85,7 +86,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         '_source' => [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                             '@type' => 'Place',
-                            'name' => 'Harmoniezaal Sint-Quintinus',
+                            'regions' => ['foo', 'bar'],
+                            'originalEncodedJsonLd' => '{}',
                         ],
                     ],
                 ],
@@ -119,7 +121,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         (object) [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
                             '@type' => 'Event',
-                            'name' => 'Punkfest',
+                            'regions' => ['foo', 'bar'],
+                            'originalEncodedJsonLd' => '{}',
                         ]
                     ),
                 (new JsonDocument('bdc0f4ce-a211-463e-a8d1-d8b699fb1159'))
@@ -127,7 +130,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         (object) [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                             '@type' => 'Place',
-                            'name' => 'Harmoniezaal Sint-Quintinus',
+                            'regions' => ['foo', 'bar'],
+                            'originalEncodedJsonLd' => '{}',
                         ]
                     ),
             ]

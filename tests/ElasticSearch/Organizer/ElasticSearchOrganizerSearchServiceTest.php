@@ -69,14 +69,16 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 
         $sourceCollectiefCursief = [
             '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
-            'name' => 'Collectief Cursief',
+            '@type' => 'Organizer',
+            'originalEncodedJsonLd' => '{}',
         ];
 
         $idCollectiefAC = 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159';
 
         $sourceAC = [
             '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
-            'name' => 'Anoniem Collectief',
+            '@type' => 'Organizer',
+            'originalEncodedJsonLd' => '{}',
         ];
 
         $response = [
