@@ -33,6 +33,7 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
             'calendarSummary' => [
                 'text' => [
                     'xs' => 'Altijd open',
+                    'md' => 'Altijd open',
                 ],
                 'html' => [
                     'md' => '<p class="cf-openinghours">Altijd open</p>',
@@ -42,6 +43,7 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
 
         $transformer = new CalendarSummaryEmbeddingJsonTransformer(
             CalendarSummaryFormat::fromCombinedParameter('xs-text'),
+            CalendarSummaryFormat::fromCombinedParameter('md-text'),
             CalendarSummaryFormat::fromCombinedParameter('md-html')
         );
 
