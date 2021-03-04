@@ -21,6 +21,26 @@ class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 
     public function transform(array $original, array $draft = []): array
     {
+        foreach ($this->calendarSummaryFormats as $calendarSummaryFormat) {
+            $original = $this->embedCalendarSummary($original, $calendarSummaryFormat);
+        }
+
         return $original;
+    }
+
+    private function embedCalendarSummary(array $original, CalendarSummaryFormat $calendarSummaryFormat): array
+    {
+        $calendarSummary = [
+            $calendarSummaryFormat->getType() => [
+                $calendarSummaryFormat->getFormat() => '',
+            ]
+        ];
+
+        return array_merge_recursive(
+            $original,
+            [
+                'calendarSummary' => $calendarSummary
+            ]
+        );
     }
 }
