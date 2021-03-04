@@ -18,7 +18,6 @@ final class ResultTransformerFactory
         bool $embedded,
         CalendarSummaryFormat ...$calendarSummaryFormats
     ): JsonTransformer {
-
         $transformerStack = new CompositeJsonTransformer();
 
         if ($embedded) {
