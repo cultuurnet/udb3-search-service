@@ -97,6 +97,7 @@ class ElasticSearchOfferSearchServiceTest extends TestCase
                     'index' => $this->indexName->toNative(),
                     'type' => $this->documentType->toNative(),
                     'body' => [
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
                         'size' => 2,
                         'query' => [
