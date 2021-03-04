@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use CultuurNet\UDB3\Search\QueryStringFactory;
 
-class LuceneQueryStringFactory implements QueryStringFactoryInterface
+final class LuceneQueryStringFactory implements QueryStringFactory
 {
     /**
      * @param string $queryString

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Language;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
-class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
+final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
 {
     /**
      * @var string[]
@@ -22,7 +24,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param JsonDocument $jsonDocument
      * @return Language[]
      */
     public function determineAvailableLanguages(JsonDocument $jsonDocument)
@@ -45,7 +46,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param JsonDocument $jsonDocument
      * @return Language[]
      */
     public function determineCompletedLanguages(JsonDocument $jsonDocument)
@@ -76,7 +76,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */
@@ -90,7 +89,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */
@@ -106,7 +104,6 @@ class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAn
     }
 
     /**
-     * @param \stdClass $json
      * @param string $propertyName
      * @return string[]
      */

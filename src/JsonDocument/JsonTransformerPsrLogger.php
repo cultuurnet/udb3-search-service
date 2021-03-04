@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use Psr\Log\LoggerInterface;
 
-class JsonTransformerPsrLogger implements JsonTransformerLogger
+final class JsonTransformerPsrLogger implements JsonTransformerLogger
 {
     /** @var  LoggerInterface */
     private $psrLogger;
 
-    /**
-     * @param LoggerInterface $psrLogger
-     */
+
     public function __construct(LoggerInterface $psrLogger)
     {
         $this->psrLogger = $psrLogger;

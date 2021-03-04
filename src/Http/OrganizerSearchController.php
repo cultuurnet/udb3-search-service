@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
@@ -14,14 +16,14 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use CultuurNet\UDB3\Search\QueryStringFactory;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-class OrganizerSearchController
+final class OrganizerSearchController
 {
     /**
      * @var ApiKeyReaderInterface
@@ -44,7 +46,7 @@ class OrganizerSearchController
     private $organizerParameterWhiteList;
 
     /**
-     * @var QueryStringFactoryInterface
+     * @var QueryStringFactory
      */
     private $queryStringFactory;
 
@@ -58,7 +60,7 @@ class OrganizerSearchController
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
-        QueryStringFactoryInterface $queryStringFactory
+        QueryStringFactory $queryStringFactory
     ) {
         $this->apiKeyReader = $apiKeyReader;
         $this->queryBuilder = $queryBuilder;
@@ -164,7 +166,6 @@ class OrganizerSearchController
 
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return LabelName[]
      */
@@ -179,7 +180,6 @@ class OrganizerSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return Language[]
      */

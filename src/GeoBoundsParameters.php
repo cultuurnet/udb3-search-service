@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
-class GeoBoundsParameters
+final class GeoBoundsParameters
 {
     /**
      * @var Coordinates

@@ -1,47 +1,42 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class MutableIndexationStrategy implements IndexationStrategyInterface
+final class MutableIndexationStrategy implements IndexationStrategy
 {
     /**
-     * @var IndexationStrategyInterface
+     * @var IndexationStrategy
      */
     private $indexationStrategy;
 
-    /**
-     * @param IndexationStrategyInterface $indexationStrategy
-     */
-    public function __construct(IndexationStrategyInterface $indexationStrategy)
+
+    public function __construct(IndexationStrategy $indexationStrategy)
     {
         $this->indexationStrategy = $indexationStrategy;
     }
 
-    /**
-     * @param IndexationStrategyInterface $newIndexationStrategy
-     */
-    public function setIndexationStrategy(IndexationStrategyInterface $newIndexationStrategy)
-    {
-        if ($this->indexationStrategy instanceof BulkIndexationStrategy) {
-            $this->indexationStrategy->flush();
-        }
 
+    public function setIndexationStrategy(IndexationStrategy $newIndexationStrategy)
+    {
+        $this->indexationStrategy->finish();
         $this->indexationStrategy = $newIndexationStrategy;
     }
 
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
+
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,
         JsonDocument $jsonDocument
     ) {
         $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);
+    }
+
+    public function finish(): void
+    {
     }
 }

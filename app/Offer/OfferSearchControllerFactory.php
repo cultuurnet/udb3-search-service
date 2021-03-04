@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
@@ -24,7 +26,7 @@ use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchControllerFactory
+final class OfferSearchControllerFactory
 {
     /**
      * @var int

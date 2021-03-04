@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
@@ -14,7 +16,6 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
-use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
@@ -22,9 +23,8 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
-use CultuurNet\UDB3\Search\QueryStringFactoryInterface;
+use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
@@ -35,7 +35,7 @@ use ValueObjects\StringLiteral\StringLiteral;
  *   implementations.
  * @see https://jira.uitdatabank.be/browse/III-2144
  */
-class OfferSearchController
+final class OfferSearchController
 {
     /**
      * @var ApiKeyReaderInterface
@@ -73,7 +73,7 @@ class OfferSearchController
     private $regionDocumentType;
 
     /**
-     * @var QueryStringFactoryInterface
+     * @var QueryStringFactory
      */
     private $queryStringFactory;
 
@@ -95,10 +95,9 @@ class OfferSearchController
         OfferSearchServiceInterface $searchService,
         StringLiteral $regionIndexName,
         StringLiteral $regionDocumentType,
-        QueryStringFactoryInterface $queryStringFactory,
+        QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {
-
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->queryBuilder = $queryBuilder;
@@ -112,7 +111,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ApiRequest $request
      * @return ResponseInterface
      */
     public function __invoke(ApiRequest $request)
@@ -324,7 +322,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return TermId[]
      */
@@ -339,7 +336,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return TermLabel[]
      */
@@ -354,7 +350,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return LabelName[]
      */
@@ -369,7 +364,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return Language[]
      */
@@ -384,7 +378,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @param string $queryParameter
      * @return RegionId[]
      */
@@ -399,7 +392,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
      * @return AudienceType|null
      */
     private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag)
@@ -414,8 +406,6 @@ class OfferSearchController
     }
 
     /**
-     * @param ParameterBagInterface $parameterBag
-     * @param string $queryParameter
      * @return FacetName[]
      */
     private function getFacetsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array

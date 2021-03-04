@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use PHPUnit\Framework\TestCase;
 
-class OrganizerTransformerTest extends TestCase
+final class OrganizerTransformerTest extends TestCase
 {
     /**
      * @var SimpleArrayLogger

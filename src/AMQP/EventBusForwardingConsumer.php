@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DateTime;
@@ -15,7 +17,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 /**
  * Forwards messages coming in via AMQP to an event bus.
  */
-class EventBusForwardingConsumer extends AbstractConsumer
+final class EventBusForwardingConsumer extends AbstractConsumer
 {
     /**
      * @var EventBusInterface
@@ -23,12 +25,6 @@ class EventBusForwardingConsumer extends AbstractConsumer
     private $eventBus;
 
     /**
-     * @param AMQPStreamConnection $connection
-     * @param EventBusInterface $eventBus
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param StringLiteral $consumerTag
-     * @param StringLiteral $exchangeName
-     * @param StringLiteral $queueName
      * @param int $delay
      */
     public function __construct(
@@ -53,10 +49,7 @@ class EventBusForwardingConsumer extends AbstractConsumer
         );
     }
 
-    /**
-     * @param mixed $deserializedMessage
-     * @param array $context
-     */
+
     protected function handle($deserializedMessage, array $context)
     {
         // If the deserializer did not return a DomainMessage yet, then

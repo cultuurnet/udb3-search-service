@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Validation;
 
 use PHPUnit\Framework\TestCase;
 
-class PagedResultSetResponseValidatorTest extends TestCase
+final class PagedResultSetResponseValidatorTest extends TestCase
 {
     /**
      * @var PagedResultSetResponseValidator
@@ -44,7 +46,6 @@ class PagedResultSetResponseValidatorTest extends TestCase
      * @dataProvider invalidResponseDataProvider
      *
      * @param string $expectedExceptionMessage
-     * @param array $responseData
      */
     public function it_throws_an_exception_when_a_required_property_is_missing(
         $expectedExceptionMessage,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
@@ -7,7 +9,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class TransformingJsonDocumentIndexService implements
+final class TransformingJsonDocumentIndexService implements
     JsonDocumentIndexServiceInterface,
     LoggerAwareInterface
 {

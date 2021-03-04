@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -10,7 +12,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class LabelsAggregationTransformer implements AggregationTransformerInterface
+final class LabelsAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @var FacetName
@@ -24,7 +26,6 @@ class LabelsAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return bool
      */
     public function supports(Aggregation $aggregation)
@@ -33,7 +34,6 @@ class LabelsAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return FacetTreeInterface
      */
     public function toFacetTree(Aggregation $aggregation)

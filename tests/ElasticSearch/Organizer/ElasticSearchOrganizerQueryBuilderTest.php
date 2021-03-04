@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
@@ -15,7 +17,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Hostname;
 use ValueObjects\Web\Url;
 
-class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
     /**
      * @test
@@ -298,7 +300,7 @@ class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryB
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withPostalCodeFilter(new PostalCode("3000"));
+            ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],

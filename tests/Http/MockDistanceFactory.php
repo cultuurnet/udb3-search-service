@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Search\DistanceFactoryInterface;
+use CultuurNet\UDB3\Search\DistanceFactory;
 
-class MockDistanceFactory implements DistanceFactoryInterface
+final class MockDistanceFactory implements DistanceFactory
 {
     /**
      * @param string $distance

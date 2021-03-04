@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use PHPUnit\Framework\TestCase;
 
-class SchemaVersionsTest extends TestCase
+final class SchemaVersionsTest extends TestCase
 {
     /**
      * @test

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
 use GuzzleHttp\Client;
 
-class HttpClientProvider extends BaseServiceProvider
+final class HttpClientProvider extends BaseServiceProvider
 {
     protected $provides = [
         'http_client',

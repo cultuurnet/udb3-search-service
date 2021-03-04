@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 
-class SortByOfferRequestParser implements OfferRequestParserInterface
+final class SortByOfferRequestParser implements OfferRequestParserInterface
 {
     public function parse(
         ApiRequestInterface $request,

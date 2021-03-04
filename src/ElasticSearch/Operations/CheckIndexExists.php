@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class CheckIndexExists extends AbstractElasticSearchOperation
+final class CheckIndexExists extends AbstractElasticSearchOperation
 {
     /**
      * @param string $indexName

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\AMQP\ConsumerInterface;
@@ -10,7 +12,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ConsumeCommand extends Command
+final class ConsumeCommand extends Command
 {
     /**
      * @var ConsumerInterface

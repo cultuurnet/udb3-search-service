@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-class JsonLdResponse implements ResponseInterface
+final class JsonLdResponse implements ResponseInterface
 {
     // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
     private const JSON_OPTIONS = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;

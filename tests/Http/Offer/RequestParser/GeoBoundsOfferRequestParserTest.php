@@ -38,7 +38,6 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
      */
     public function it_should_not_add_a_bounds_filter_if_no_bounds_parameter_is_given()
     {
-
         $this->offerQueryBuilder->expects($this->never())
             ->method('withGeoBoundsFilter');
 

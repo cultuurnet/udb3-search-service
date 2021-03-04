@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -10,7 +12,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeMapAggregationTransformer implements AggregationTransformerInterface
+final class NodeMapAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @var FacetName
@@ -23,7 +25,6 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
     private $nodeMap;
 
     /**
-     * @param FacetName $facetName
      * @param array $nodeMap
      *   Example structure:
      *   [
@@ -52,7 +53,6 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return bool
      */
     public function supports(Aggregation $aggregation)
@@ -61,7 +61,6 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param Aggregation $aggregation
      * @return FacetTreeInterface
      */
     public function toFacetTree(Aggregation $aggregation)
@@ -76,7 +75,6 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param array $nodeMap
      * @throws \InvalidArgumentException
      */
     private function validateNodeMap(array $nodeMap)
@@ -110,7 +108,6 @@ class NodeMapAggregationTransformer implements AggregationTransformerInterface
     }
 
     /**
-     * @param array $nodeMap
      * @param Bucket[] $buckets
      * @return FacetNode[]
      */

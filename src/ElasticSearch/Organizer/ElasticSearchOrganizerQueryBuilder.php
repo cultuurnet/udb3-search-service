@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
@@ -17,7 +19,7 @@ use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
-class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
+final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
     public function __construct()

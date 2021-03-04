@@ -1,18 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 
-class CountryExtractor
+final class CountryExtractor
 {
-    /**
-     * @param ParameterBagInterface $parameterBag
-     * @param null|CountryCode $defaultCountryCode
-     * @return null|Country
-     */
     public function getCountryFromQuery(
         ParameterBagInterface $parameterBag,
         ?CountryCode $defaultCountryCode

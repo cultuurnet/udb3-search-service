@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
 use InvalidArgumentException;
 
-class ArrayParameterBagAdapter implements ParameterBagInterface
+final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
     /**
      * @var array
@@ -17,7 +19,6 @@ class ArrayParameterBagAdapter implements ParameterBagInterface
     private $resetValue;
 
     /**
-     * @param array $parameterBag
      * @param string $resetValue
      */
     public function __construct(array $parameterBag, $resetValue = '*')
@@ -28,7 +29,6 @@ class ArrayParameterBagAdapter implements ParameterBagInterface
 
     /**
      * @param string $queryParameter
-     * @param callable|null $callback
      * @return array
      */
     public function getArrayFromParameter($queryParameter, callable $callback = null)
@@ -102,7 +102,6 @@ class ArrayParameterBagAdapter implements ParameterBagInterface
     /**
      * @param string $parameterName
      * @param string|null $defaultValueAsString
-     * @param callable|null $callback
      * @param string $delimiter
      * @return array
      */

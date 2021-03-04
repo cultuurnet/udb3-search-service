@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
@@ -29,7 +31,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;
 
-class CommandServiceProvider extends BaseServiceProvider
+final class CommandServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Application::class,

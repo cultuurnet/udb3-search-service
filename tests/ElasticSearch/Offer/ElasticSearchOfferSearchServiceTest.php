@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
@@ -12,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferSearchServiceTest extends TestCase
+final class ElasticSearchOfferSearchServiceTest extends TestCase
 {
     /**
      * @var Client|MockObject

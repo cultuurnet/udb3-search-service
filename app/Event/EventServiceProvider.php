@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Event;
 
@@ -15,7 +17,7 @@ use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventServiceProvider extends BaseServiceProvider
+final class EventServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,

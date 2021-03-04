@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
-class Latitude extends Coordinate
+final class Latitude extends Coordinate
 {
     public function __construct($value)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
-class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
+final class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 {
     private const BOUNDS_REGEX = '([0-9\.-]+),([0-9\.-]+)\|([0-9\.-]+),([0-9\.-]+)';
 

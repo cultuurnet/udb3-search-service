@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
 use PHPUnit\Framework\TestCase;
 
-class LatitudeTest extends TestCase
+final class LatitudeTest extends TestCase
 {
     /**
      * @test

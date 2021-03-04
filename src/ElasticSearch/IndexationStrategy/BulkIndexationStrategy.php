@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -7,7 +9,7 @@ use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class BulkIndexationStrategy implements IndexationStrategyInterface
+final class BulkIndexationStrategy implements IndexationStrategy
 {
     /**
      * @var Client
@@ -30,8 +32,6 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
     private $queuedDocuments;
 
     /**
-     * @param Client $elasticSearchClient
-     * @param LoggerInterface $logger
      * @param int $autoFlushThreshold
      */
     public function __construct(
@@ -46,11 +46,7 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
         $this->queuedDocuments = [];
     }
 
-    /**
-     * @param StringLiteral $indexName
-     * @param StringLiteral $documentType
-     * @param JsonDocument $jsonDocument
-     */
+
     public function indexDocument(
         StringLiteral $indexName,
         StringLiteral $documentType,
@@ -72,7 +68,7 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
     /**
      * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing
      */
-    public function flush()
+    public function finish(): void
     {
         $count = count($this->queuedDocuments);
         $this->logger->info("Sending {$count} documents to ElasticSearch for indexation...");
@@ -103,7 +99,7 @@ class BulkIndexationStrategy implements IndexationStrategyInterface
     private function autoFlush()
     {
         if (count($this->queuedDocuments) >= $this->autoFlushThreshold) {
-            $this->flush();
+            $this->finish();
         }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -9,7 +11,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class NodeAwareFacetTreeNormalizerTest extends TestCase
+final class NodeAwareFacetTreeNormalizerTest extends TestCase
 {
     /**
      * @var NodeAwareFacetTreeNormalizer

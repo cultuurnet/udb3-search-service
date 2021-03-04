@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
+final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return CreateAutocompleteAnalyzer
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

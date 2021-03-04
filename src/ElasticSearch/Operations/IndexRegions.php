@@ -1,23 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
-class IndexRegions extends AbstractElasticSearchOperation
+final class IndexRegions extends AbstractElasticSearchOperation
 {
     /**
      * @var Finder
      */
     private $finder;
 
-    /**
-     * @param Client $client
-     * @param LoggerInterface $logger
-     * @param Finder $finder
-     */
+
     public function __construct(
         Client $client,
         LoggerInterface $logger,

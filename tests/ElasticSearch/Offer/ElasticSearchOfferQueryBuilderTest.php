@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -29,13 +31,12 @@ use CultuurNet\UDB3\Search\SortOrder;
 use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
-use PHPUnit\Framework\MockObject\MockObject;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
     protected function getPredefinedQueryStringFields(Language ...$languages)
     {
@@ -1386,11 +1387,11 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
                         [
                             'geo_bounding_box' => [
                                 'geo_point' => [
-                                    "top_left" => [
+                                    'top_left' => [
                                         'lat' => 40.73,
                                         'lon' => -74.1,
                                     ],
-                                    "bottom_right" => [
+                                    'bottom_right' => [
                                         'lat' => 40.01,
                                         'lon' => -71.12,
                                     ],
@@ -1416,7 +1417,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withPostalCodeFilter(new PostalCode("3000"));
+            ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -1483,7 +1484,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
-            ->withAddressCountryFilter(new Country(CountryCode::fromNative("BE")));
+            ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -3116,51 +3117,6 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     /**
      * @test
      */
-    public function it_should_ignore_unmapped_facets(): void
-    {
-        /* @var ElasticSearchOfferQueryBuilder $builder */
-        $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
-            ->withFacet(
-                FacetName::REGIONS()
-            )
-            ->withFacet(
-                $this->createUnknownFacetName()
-            )
-            ->withFacet(
-                FacetName::FACILITIES()
-            );
-
-        $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-            'from' => 30,
-            'size' => 10,
-            'query' => [
-                'match_all' => (object) [],
-            ],
-            'aggregations' => [
-                'regions' => [
-                    'terms' => [
-                        'field' => 'regions.keyword',
-                    ],
-                ],
-                'facilities' => [
-                    'terms' => [
-                        'field' => 'facilityIds',
-                    ],
-                ],
-            ],
-        ];
-
-        $actualQueryArray = $builder->build();
-
-        $this->assertEquals($expectedQueryArray, $actualQueryArray);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_build_a_query_with_multiple_sorts(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
@@ -3285,20 +3241,6 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
     }
 
     /**
-     * @return FacetName
-     */
-    private function createUnknownFacetName()
-    {
-        /** @var FacetName|MockObject $facetName */
-        $facetName = $this->createMock(FacetName::class);
-
-        $facetName->method('toNative')
-            ->willReturn('unknown');
-
-        return $facetName;
-    }
-
-    /**
      * @test
      */
     public function it_should_build_a_query_with_an_is_duplicate_filter(): void
@@ -3345,7 +3287,7 @@ class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuild
             ->withStart(new Natural(30))
             ->withLimit(new Natural(10))
             ->withProductionIdFilter(
-                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
+                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toNative()
             );
 
         $expectedQueryArray = [

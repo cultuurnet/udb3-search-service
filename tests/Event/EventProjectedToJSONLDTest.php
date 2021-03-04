@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Event;
 
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Identity\UUID;
 
-class EventProjectedToJSONLDTest extends TestCase
+final class EventProjectedToJSONLDTest extends TestCase
 {
     /**
      * @test

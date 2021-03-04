@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class CreateLowerCaseExactMatchAnalyzer extends AbstractElasticSearchOperation
+final class CreateLowerCaseExactMatchAnalyzer extends AbstractElasticSearchOperation
 {
     public function run()
     {

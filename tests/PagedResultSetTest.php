@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -11,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class PagedResultSetTest extends TestCase
+final class PagedResultSetTest extends TestCase
 {
     /**
      * @test
@@ -22,11 +24,11 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
-            (new JsonDocument(456))
+            (new JsonDocument('456'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/456', 'name' => 'Het Depot']
                 ),
@@ -52,7 +54,7 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
@@ -79,11 +81,11 @@ class PagedResultSetTest extends TestCase
         $perPage = new Natural(30);
 
         $results = [
-            (new JsonDocument(123))
+            (new JsonDocument('123'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/123', 'name' => 'STUK']
                 ),
-            (new JsonDocument(456))
+            (new JsonDocument('456'))
                 ->withBody(
                     (object) ['@id' => 'http://acme.com/organizer/456', 'name' => 'Het Depot']
                 ),

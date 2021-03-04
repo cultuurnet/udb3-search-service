@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -8,7 +10,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
  * Aggregation result, from an ElasticSearch response.
  * NOT an aggregation query.
  */
-class Aggregation
+final class Aggregation
 {
     /**
      * @var FacetName
@@ -21,7 +23,6 @@ class Aggregation
     private $buckets;
 
     /**
-     * @param FacetName $name
      * @param Bucket ...$buckets
      */
     public function __construct(FacetName $name, Bucket ...$buckets)
@@ -52,7 +53,6 @@ class Aggregation
 
     /**
      * @param string $name
-     * @param array $aggregationData
      * @return Aggregation
      */
     public static function fromElasticSearchResponseAggregationData($name, array $aggregationData)

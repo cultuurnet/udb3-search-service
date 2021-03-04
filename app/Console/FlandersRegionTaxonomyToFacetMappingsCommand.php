@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Symfony\Component\Console\Command\Command;
@@ -11,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Yaml\Yaml;
 
-class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
+final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 {
     /**
      * XPATH definitions to find the relevant terms.
@@ -19,7 +21,7 @@ class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
      * Note that we have to use a wildcard * and the name() function to find
      * the term nodes, because the XML namespace messes with xpath.
      */
-    const REGIONS_XPATH = "//*[name()='term'][@domain='flandersregion']";
+    public const REGIONS_XPATH = "//*[name()='term'][@domain='flandersregion']";
 
     public function configure()
     {
@@ -40,8 +42,6 @@ class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)

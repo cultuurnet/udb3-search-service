@@ -1,11 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
 use Broadway\Domain\DomainEventStreamInterface;
 
-class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
+final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
 {
     /**
      * @var bool
@@ -17,9 +18,7 @@ class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
      */
     private $beforeFirstPublicationCallback;
 
-    /**
-     * @param callable $callback
-     */
+
     public function beforeFirstPublication(callable $callback): void
     {
         $this->beforeFirstPublicationCallback = $callback;

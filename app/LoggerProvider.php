@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\SearchService\Error\SentryPsrLoggerDecorator;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
-class LoggerProvider extends BaseServiceProvider
+final class LoggerProvider extends BaseServiceProvider
 {
     protected $provides = [
         'logger.amqp.udb3_consumer',

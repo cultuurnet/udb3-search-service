@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -9,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class BulkIndexationStrategyTest extends TestCase
+final class BulkIndexationStrategyTest extends TestCase
 {
     /**
      * @var Client|MockObject
@@ -212,6 +214,6 @@ class BulkIndexationStrategyTest extends TestCase
         $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument2);
         $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument3);
 
-        $this->strategy->flush();
+        $this->strategy->finish();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
@@ -7,7 +9,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class JsonTransformerPsrLoggerTest extends TestCase
+final class JsonTransformerPsrLoggerTest extends TestCase
 {
     /**
      * @var LoggerInterface|MockObject

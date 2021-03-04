@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Organizer;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
@@ -24,7 +26,7 @@ use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OrganizerServiceProvider extends BaseServiceProvider
+final class OrganizerServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,

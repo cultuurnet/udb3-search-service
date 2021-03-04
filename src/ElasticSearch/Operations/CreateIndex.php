@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class CreateIndex extends AbstractElasticSearchOperation
+final class CreateIndex extends AbstractElasticSearchOperation
 {
     /**
      * @param string $indexName

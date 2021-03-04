@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Facet;
 
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 
-class FacetNode extends AbstractFacetTree
+final class FacetNode extends AbstractFacetTree
 {
     /**
      * @var MultilingualString
@@ -18,9 +20,7 @@ class FacetNode extends AbstractFacetTree
 
     /**
      * @param string $key
-     * @param MultilingualString $name
      * @param int $count
-     * @param array $children
      */
     public function __construct(
         $key,

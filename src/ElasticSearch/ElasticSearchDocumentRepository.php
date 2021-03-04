@@ -1,20 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepository implements DocumentRepository
+final class ElasticSearchDocumentRepository implements DocumentRepository
 {
     use HasElasticSearchClient;
 
     /**
-     * @var IndexationStrategyInterface
+     * @var IndexationStrategy
      */
     private $indexationStrategy;
 
@@ -22,7 +24,7 @@ class ElasticSearchDocumentRepository implements DocumentRepository
         Client $elasticSearchClient,
         StringLiteral $indexName,
         StringLiteral $documentType,
-        IndexationStrategyInterface $indexationStrategy
+        IndexationStrategy $indexationStrategy
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->indexName = $indexName;
@@ -65,6 +67,6 @@ class ElasticSearchDocumentRepository implements DocumentRepository
 
     public function getDocumentType(): string
     {
-        return $this->documentType;
+        return $this->documentType->toNative();
     }
 }

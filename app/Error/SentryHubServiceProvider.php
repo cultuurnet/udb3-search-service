@@ -9,7 +9,7 @@ use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
 use function Sentry\init;
 
-class SentryHubServiceProvider extends BaseServiceProvider
+final class SentryHubServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         HubInterface::class,

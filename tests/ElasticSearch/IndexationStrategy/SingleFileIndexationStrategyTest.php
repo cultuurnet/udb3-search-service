@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -9,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SingleFileIndexationStrategyTest extends TestCase
+final class SingleFileIndexationStrategyTest extends TestCase
 {
     /**
      * @var Client|MockObject

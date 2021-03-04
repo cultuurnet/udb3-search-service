@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\BulkIndexationStrategy;
-use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategyInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\AbstractReindexUDB3CoreOperation;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AbstractReindexCommand extends AbstractElasticSearchCommand
+abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string
@@ -39,24 +41,21 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
     private $eventBus;
 
     /**
-     * @var IndexationStrategyInterface
+     * @var IndexationStrategy
      */
     private $indexationStrategy;
 
     /**
-     * @param Client $client
      * @param string $readIndexName
      * @param string $scrollTtl
      * @param int $scrollSize
      * @param int $bulkThreshold
-     * @param EventBusInterface $eventBus
-     * @param IndexationStrategyInterface $indexationStrategy
      */
     public function __construct(
         Client $client,
         $readIndexName,
         EventBusInterface $eventBus,
-        IndexationStrategyInterface $indexationStrategy,
+        IndexationStrategy $indexationStrategy,
         $scrollTtl = '1m',
         $scrollSize = 50,
         $bulkThreshold = 10
@@ -94,7 +93,7 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
         $operation->run($this->readIndexName);
 
         if (isset($bulkIndexationStrategy)) {
-            $bulkIndexationStrategy->flush();
+            $bulkIndexationStrategy->finish();
         }
     }
 
@@ -103,7 +102,7 @@ class AbstractReindexCommand extends AbstractElasticSearchCommand
         return $this->eventBus;
     }
 
-    protected function getIndexationStrategy(): IndexationStrategyInterface
+    protected function getIndexationStrategy(): IndexationStrategy
     {
         return $this->indexationStrategy;
     }

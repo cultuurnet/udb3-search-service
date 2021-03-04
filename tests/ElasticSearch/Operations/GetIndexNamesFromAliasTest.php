@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Psr\Log\LoggerInterface;
 
-class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
+final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return GetIndexNamesFromAlias
      */
     protected function createOperation(Client $client, LoggerInterface $logger)
@@ -40,8 +40,8 @@ class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
                         'creation_date' => '1494583641407',
                         'number_of_replicas' => '1',
                         'uuid' => '_SwFvhnQTGWhMwXXvWIJHQ',
-                        "version" => [
-                            "created" => "5030099",
+                        'version' => [
+                            'created' => '5030099',
                         ],
                     ],
                 ],
@@ -58,8 +58,8 @@ class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
                         'creation_date' => '1494583641407',
                         'number_of_replicas' => '1',
                         'uuid' => '_SwFvhnQTGWhMwXXvWIJHQ',
-                        "version" => [
-                            "created" => "5030099",
+                        'version' => [
+                            'created' => '5030099',
                         ],
                     ],
                 ],

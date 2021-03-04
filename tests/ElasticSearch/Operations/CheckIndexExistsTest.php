@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class CheckIndexExistsTest extends AbstractOperationTestCase
+final class CheckIndexExistsTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return CheckIndexExists
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

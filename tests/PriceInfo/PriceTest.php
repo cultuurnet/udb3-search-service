@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\PriceInfo;
 
 use PHPUnit\Framework\TestCase;
 use ValueObjects\Exception\InvalidNativeArgumentException;
 
-class PriceTest extends TestCase
+final class PriceTest extends TestCase
 {
     /**
      * @test

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -55,7 +57,7 @@ use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchControllerTest extends TestCase
+final class OfferSearchControllerTest extends TestCase
 {
     /**
      * @var QueryParameterApiKeyReader
@@ -284,7 +286,7 @@ class OfferSearchControllerTest extends TestCase
                 $this->regionDocumentType,
                 new RegionId('prv-limburg')
             )
-            ->withPostalCodeFilter(new PostalCode("3000"))
+            ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
             ->withAudienceTypeFilter(new AudienceType('members'))
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
@@ -428,7 +430,6 @@ class OfferSearchControllerTest extends TestCase
      * @test
      * @dataProvider defaultsEnabledQueryParametersProvider
      *
-     * @param array $queryParameters
      */
     public function it_uses_default_parameters_when_default_filters_are_not_disabled(array $queryParameters)
     {
@@ -1073,7 +1074,6 @@ class OfferSearchControllerTest extends TestCase
      * @test
      * @dataProvider unknownParameterProvider
      *
-     * @param ApiRequestInterface $request
      * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
@@ -1178,10 +1178,7 @@ class OfferSearchControllerTest extends TestCase
         return  new ApiRequest($request);
     }
 
-    /**
-     * @param OfferQueryBuilderInterface $expectedQueryBuilder
-     * @param PagedResultSet $pagedResultSet
-     */
+
     private function expectQueryBuilderWillReturnResultSet(
         OfferQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet

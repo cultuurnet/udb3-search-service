@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\JsonDocument\GuzzleJsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 
-class JsonDocumentFetcherProvider extends BaseServiceProvider
+final class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
     protected $provides = [
         JsonDocumentFetcher::class,
@@ -17,7 +18,7 @@ class JsonDocumentFetcherProvider extends BaseServiceProvider
         $this->add(
             JsonDocumentFetcher::class,
             function () {
-                return new JsonDocumentFetcher(
+                return new GuzzleJsonDocumentFetcher(
                     $this->get('http_client'),
                     $this->get('logger.amqp.udb3_consumer')
                 );

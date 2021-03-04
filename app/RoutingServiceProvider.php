@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
@@ -10,7 +12,7 @@ use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
 use Tuupola\Middleware\CorsMiddleware;
 
-class RoutingServiceProvider extends BaseServiceProvider
+final class RoutingServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Router::class,
@@ -34,12 +36,12 @@ class RoutingServiceProvider extends BaseServiceProvider
                 $router->middleware(
                     new CorsMiddleware(
                         [
-                            "origin" => ["*"],
-                            "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
-                            "headers.allow" => ["Authorization", "X-Api-Key"],
-                            "headers.expose" => [],
-                            "credentials" => true,
-                            "cache" => 0,
+                            'origin' => ['*'],
+                            'methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+                            'headers.allow' => ['Authorization', 'X-Api-Key'],
+                            'headers.expose' => [],
+                            'credentials' => true,
+                            'cache' => 0,
                         ]
                     )
                 );

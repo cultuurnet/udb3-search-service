@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReindexPermanentOffers;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ReindexPermanentOffersCommand extends AbstractReindexCommand
+final class ReindexPermanentOffersCommand extends AbstractReindexCommand
 {
     /**
      * @inheritdoc

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
@@ -11,7 +13,7 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
+final class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
 {
     use HasElasticSearchClient;
 

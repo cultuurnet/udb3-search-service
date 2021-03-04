@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\QueryBuilderInterface;
+use CultuurNet\UDB3\Search\QueryBuilder;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
@@ -19,7 +21,7 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterface
+abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
     /**
      * @var Search
@@ -96,7 +98,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
     public function getLimit(): Natural
     {
         $size = $this->search->getSize();
-        return $size ? new Natural($size) : new Natural(QueryBuilderInterface::DEFAULT_LIMIT);
+        return $size ? new Natural($size) : new Natural(QueryBuilder::DEFAULT_LIMIT);
     }
 
     public function build(): array
@@ -128,8 +130,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     /**
      * @param string $parameterName
-     * @param Natural|null $min
-     * @param Natural|null $max
      * @throws \InvalidArgumentException
      */
     protected function guardNaturalIntegerRange(
@@ -138,16 +138,14 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
         Natural $max = null
     ) {
         if (!is_null($min) && !is_null($max) && $min->toInteger() > $max->toInteger()) {
-             throw new \InvalidArgumentException(
-                 "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
-             );
+            throw new \InvalidArgumentException(
+                "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
+            );
         }
     }
 
     /**
      * @param string $parameterName
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
      * @throws \InvalidArgumentException
      */
     protected function guardDateRange(
@@ -305,8 +303,6 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilderInterfac
 
     /**
      * @param string $fieldName
-     * @param \DateTimeImmutable|null $from
-     * @param \DateTimeImmutable|null $to
      * @return static
      */
     protected function withDateRangeQuery($fieldName, \DateTimeImmutable $from = null, \DateTimeImmutable $to = null)

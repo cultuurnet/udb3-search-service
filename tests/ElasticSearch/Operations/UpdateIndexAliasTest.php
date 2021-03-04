@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class UpdateIndexAliasTest extends AbstractOperationTestCase
+final class UpdateIndexAliasTest extends AbstractOperationTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateIndexAlias
      */
     protected function createOperation(Client $client, LoggerInterface $logger)
@@ -122,13 +122,13 @@ class UpdateIndexAliasTest extends AbstractOperationTestCase
             ->method('info')
             ->withConsecutive(
                 [
-                    "Deleted alias udb3_core_write from index udb3_core_v1.",
+                    'Deleted alias udb3_core_write from index udb3_core_v1.',
                 ],
                 [
-                    "Deleted alias udb3_core_write from index udb3_core_v2.",
+                    'Deleted alias udb3_core_write from index udb3_core_v2.',
                 ],
                 [
-                    "Created alias udb3_core_write on index udb3_core_v2.",
+                    'Created alias udb3_core_write on index udb3_core_v2.',
                 ]
             );
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Http\Hydra\PagedCollection;
@@ -8,7 +10,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
-class PagedCollectionFactory
+final class PagedCollectionFactory
 {
     public static function fromPagedResultSet(
         JsonTransformer $jsonTransformer,

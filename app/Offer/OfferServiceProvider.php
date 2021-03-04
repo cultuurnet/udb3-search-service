@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
@@ -12,7 +14,7 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 
-class OfferServiceProvider extends BaseServiceProvider
+final class OfferServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'offer_controller',

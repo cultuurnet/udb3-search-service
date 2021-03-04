@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\EventHandling\EventBusInterface;
@@ -9,7 +11,7 @@ use Psr\Log\LoggerInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventBusForwardingConsumerFactory
+final class EventBusForwardingConsumerFactory
 {
     /**
      * Delay the consumption of UDB2 updates with some seconds to prevent a
@@ -19,41 +21,35 @@ class EventBusForwardingConsumerFactory
      *
      * @var Natural
      */
-    protected $executionDelay;
+    private $executionDelay;
 
     /**
      * @var AMQPStreamConnection
      */
-    protected $connection;
+    private $connection;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var DeserializerLocatorInterface
      */
-    protected $deserializerLocator;
+    private $deserializerLocator;
 
     /**
      * @var EventBusInterface
      */
-    protected $eventBus;
+    private $eventBus;
 
     /**
      * @var StringLiteral
      */
-    protected $consumerTag;
+    private $consumerTag;
 
     /**
      * EventBusForwardingConsumerFactory constructor.
-     * @param Natural $executionDelay
-     * @param AMQPStreamConnection $connection
-     * @param LoggerInterface $logger
-     * @param DeserializerLocatorInterface $deserializerLocator
-     * @param EventBusInterface $eventBus
-     * @param StringLiteral $consumerTag
      */
     public function __construct(
         Natural $executionDelay,
@@ -72,8 +68,6 @@ class EventBusForwardingConsumerFactory
     }
 
     /**
-     * @param StringLiteral $exchange
-     * @param StringLiteral $queue
      * @return EventBusForwardingConsumer
      */
     public function create(

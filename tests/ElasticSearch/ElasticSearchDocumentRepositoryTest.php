@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
@@ -11,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchDocumentRepositoryTest extends TestCase
+final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
     /**
      * @var Client|MockObject

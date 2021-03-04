@@ -1,20 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Deserializer;
 
 use ValueObjects\StringLiteral\StringLiteral;
 
-class SimpleDeserializerLocator implements DeserializerLocatorInterface
+final class SimpleDeserializerLocator implements DeserializerLocatorInterface
 {
     /**
      * @var DeserializerInterface[]
      */
-    protected $deserializers = [];
+    private $deserializers = [];
 
-    /**
-     * @param StringLiteral $contentType
-     * @param DeserializerInterface $deserializer
-     */
+
     public function registerDeserializer(
         StringLiteral $contentType,
         DeserializerInterface $deserializer
@@ -23,7 +22,6 @@ class SimpleDeserializerLocator implements DeserializerLocatorInterface
     }
 
     /**
-     * @param StringLiteral $contentType
      * @return DeserializerInterface
      */
     public function getDeserializerForContentType(StringLiteral $contentType)

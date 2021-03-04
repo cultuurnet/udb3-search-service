@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
@@ -16,12 +18,12 @@ use Psr\Http\Message\ServerRequestInterface;
 interface ApiRequestInterface extends ServerRequestInterface
 {
     public function getQueryParam(string $name, $default = null);
-    
+
     public function hasQueryParam(string $name): bool;
-    
+
     public function getQueryParamsKeys(): ?array;
 
     public function getQueryParameterBag(): ParameterBagInterface;
-    
+
     public function getServerParam(string $name, $default = null);
 }

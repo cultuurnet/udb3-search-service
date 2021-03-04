@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
@@ -12,7 +14,7 @@ use DateTime;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class EventTransformerTest extends TestCase
+final class EventTransformerTest extends TestCase
 {
     /**
      * @var OfferRegionServiceInterface|MockObject
@@ -332,8 +334,8 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-wrong-available-from.json',
             __DIR__ . '/data/event/indexed-without-available-from.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-                ['error', "Could not parse availableFrom as an ISO-8601 datetime.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
+                ['error', 'Could not parse availableFrom as an ISO-8601 datetime.', []],
             ]
         );
     }
@@ -347,8 +349,8 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-wrong-available-to.json',
             __DIR__ . '/data/event/indexed-with-end-date-as-available-to.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
-                ['error', "Could not parse availableTo as an ISO-8601 datetime.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
+                ['error', 'Could not parse availableTo as an ISO-8601 datetime.', []],
             ]
         );
     }
@@ -362,7 +364,7 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-available-to-missing.json',
             __DIR__ . '/data/event/indexed-with-end-date-as-available-to-which-was-missing.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
             ]
         );
     }
@@ -376,7 +378,7 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-higher-available-from.json',
             __DIR__ . '/data/event/indexed-with-same-available-from-and-to.json',
             [
-                ['warning', "Found availableFrom but workflowStatus is DRAFT.", []],
+                ['warning', 'Found availableFrom but workflowStatus is DRAFT.', []],
             ]
         );
     }
@@ -429,7 +431,7 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-wrong-created.json',
             __DIR__ . '/data/event/indexed-without-created.json',
             [
-                ['error', "Could not parse created as an ISO-8601 datetime.", []],
+                ['error', 'Could not parse created as an ISO-8601 datetime.', []],
             ]
         );
     }
@@ -443,7 +445,7 @@ class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-wrong-modified.json',
             __DIR__ . '/data/event/indexed-without-modified.json',
             [
-                ['error', "Could not parse modified as an ISO-8601 datetime.", []],
+                ['error', 'Could not parse modified as an ISO-8601 datetime.', []],
             ]
         );
     }

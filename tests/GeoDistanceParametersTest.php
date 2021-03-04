@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use PHPUnit\Framework\TestCase;
 
-class GeoDistanceParametersTest extends TestCase
+final class GeoDistanceParametersTest extends TestCase
 {
     /**
      * @test

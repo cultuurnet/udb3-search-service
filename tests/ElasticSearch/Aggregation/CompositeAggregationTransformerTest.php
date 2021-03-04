@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class CompositeAggregationTransformerTest extends TestCase
+final class CompositeAggregationTransformerTest extends TestCase
 {
     /**
      * @var AggregationTransformerInterface|MockObject

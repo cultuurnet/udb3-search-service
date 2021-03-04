@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 
-class NullAggregationTransformerTest extends TestCase
+final class NullAggregationTransformerTest extends TestCase
 {
     /**
      * @var NullAggregationTransformer

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\AmqpProvider;
@@ -22,7 +24,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
 
-class ContainerFactory
+final class ContainerFactory
 {
     public static function forCli(Config $config): Container
     {

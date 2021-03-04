@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-class KnownLanguages
+final class KnownLanguages
 {
-    /**
-     * @param string $fieldPattern
-     * @return array
-     */
     public function fieldNames(string $fieldPattern): array
     {
         // @todo: The list of known languages gets bigger.

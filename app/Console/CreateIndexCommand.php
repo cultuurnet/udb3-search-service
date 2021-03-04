@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateIndex as CreateIndexOperation;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateIndexCommand extends AbstractElasticSearchCommand
+final class CreateIndexCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

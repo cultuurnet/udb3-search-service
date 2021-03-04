@@ -1,15 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
-use CultuurNet\UDB3\Search\Deserializer\JSONDeserializer;
+use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
+use CultuurNet\UDB3\Search\Deserializer\NotWellFormedException;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class DomainMessageJSONDeserializer extends JSONDeserializer
+final class DomainMessageJSONDeserializer implements DeserializerInterface
 {
     /**
      * Fully qualified class name of the payload. This class should implement
@@ -24,8 +27,6 @@ class DomainMessageJSONDeserializer extends JSONDeserializer
      */
     public function __construct($payloadClass)
     {
-        parent::__construct(true);
-        
         if (!in_array(SerializableInterface::class, class_implements($payloadClass))) {
             throw new \InvalidArgumentException(
                 sprintf(
@@ -43,17 +44,17 @@ class DomainMessageJSONDeserializer extends JSONDeserializer
      */
     public function deserialize(StringLiteral $data)
     {
-        $data = parent::deserialize(
-            $data
-        );
+        $data = json_decode($data->toNative(), true);
 
-        $payloadClass = $this->payloadClass;
+        if (null === $data) {
+            throw new NotWellFormedException('Invalid JSON');
+        }
 
         return new DomainMessage(
             $data['id'],
             $data['playhead'],
             Metadata::deserialize($data['metadata']),
-            $payloadClass::deserialize($data['payload']),
+            $this->payloadClass::deserialize($data['payload']),
             DateTime::fromString($data['recorded_on'])
         );
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Elasticsearch\Client;
@@ -30,7 +32,6 @@ abstract class AbstractElasticSearchCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
      * @return ConsoleLogger
      */
     protected function getLogger(OutputInterface $output)

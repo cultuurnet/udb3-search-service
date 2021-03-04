@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Place;
@@ -45,7 +46,6 @@ final class PlaceProjectedToJSONLD implements SerializableInterface
     }
 
     /**
-     * @param array $data
      * @return static
      */
     public static function deserialize(array $data)

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
@@ -8,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use Elasticsearch\Client;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class OfferSearchServiceFactory
+final class OfferSearchServiceFactory
 {
     /**
      * @var Client

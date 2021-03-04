@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use Symfony\Component\Console\Command\Command;
@@ -8,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrateElasticSearchCommand extends Command
+final class MigrateElasticSearchCommand extends Command
 {
     /**
      * @inheritdoc

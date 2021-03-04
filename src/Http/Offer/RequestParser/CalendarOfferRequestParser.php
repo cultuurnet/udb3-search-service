@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
@@ -10,7 +12,7 @@ use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use InvalidArgumentException;
 
-class CalendarOfferRequestParser implements OfferRequestParserInterface
+final class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
     public function parse(
         ApiRequestInterface $request,

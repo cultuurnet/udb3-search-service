@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
@@ -14,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class ElasticSearchPagedResultSetFactoryTest extends TestCase
+final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
     /**
      * @var NodeMapAggregationTransformer

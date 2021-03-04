@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Error;
 
@@ -10,7 +12,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
-class ApiExceptionHandler extends Handler
+final class ApiExceptionHandler extends Handler
 {
     /**
      * @var EmitterInterface
@@ -19,7 +21,6 @@ class ApiExceptionHandler extends Handler
 
     /**
      * ApiExceptionHandler constructor.
-     * @param EmitterInterface $emitter
      */
     public function __construct(EmitterInterface $emitter)
     {

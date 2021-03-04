@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-class UpdateOrganizerMappingTest extends AbstractMappingTestCase
+final class UpdateOrganizerMappingTest extends AbstractMappingTestCase
 {
     /**
-     * @param Client $client
-     * @param LoggerInterface $logger
      * @return UpdateOrganizerMapping
      */
     protected function createOperation(Client $client, LoggerInterface $logger)

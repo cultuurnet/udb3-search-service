@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
@@ -7,7 +9,6 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 interface FacetTreeNormalizerInterface
 {
     /**
-     * @param FacetTreeInterface $facetTree
      * @return array
      *   Array with exclusively scalar values.
      */

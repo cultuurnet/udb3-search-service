@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\Facet;
 
 use CultuurNet\UDB3\Search\Language\Language;
@@ -7,7 +9,7 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class FacetTreeTest extends TestCase
+final class FacetTreeTest extends TestCase
 {
     /**
      * @test
@@ -119,10 +121,7 @@ class FacetTreeTest extends TestCase
         $this->assertChildrenEquals($expectedChildren, $actual->getChildren());
     }
 
-    /**
-     * @param array $expected
-     * @param array $actual
-     */
+
     private function assertChildrenEquals(array $expected, array $actual)
     {
         $this->assertEquals(count($expected), count($actual));
@@ -132,10 +131,7 @@ class FacetTreeTest extends TestCase
         }
     }
 
-    /**
-     * @param FacetNode $expected
-     * @param FacetNode $actual
-     */
+
     private function assertNodeEquals(FacetNode $expected, FacetNode $actual)
     {
         $this->assertEquals($expected->getKey(), $actual->getKey());

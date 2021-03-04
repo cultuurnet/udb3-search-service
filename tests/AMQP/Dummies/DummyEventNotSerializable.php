@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
-class DummyEventNotSerializable
+final class DummyEventNotSerializable
 {
     /**
      * @var string
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      */
-    protected $content;
+    private $content;
 
     /**
      * @param string $id

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseStandardAnalyzer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchCommand
+final class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc

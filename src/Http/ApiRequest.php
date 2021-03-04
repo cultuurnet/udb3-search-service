@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
@@ -8,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
-class ApiRequest implements ApiRequestInterface
+final class ApiRequest implements ApiRequestInterface
 {
     /**
      * @var ServerRequestInterface
@@ -17,7 +19,6 @@ class ApiRequest implements ApiRequestInterface
 
     /**
      * ApiRequest constructor.
-     * @param ServerRequestInterface $request
      */
     public function __construct(ServerRequestInterface $request)
     {
@@ -46,13 +47,13 @@ class ApiRequest implements ApiRequestInterface
     {
         return new ArrayParameterBagAdapter($this->request->getQueryParams());
     }
-    
+
     public function getServerParam(string $name, $default = null)
     {
         $params = $this->request->getServerParams();
         return isset($params[$name]) ? $params[$name] : $default;
     }
-    
+
     /**
      * Retrieves the HTTP protocol version as a string.
      *
@@ -64,7 +65,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getProtocolVersion();
     }
-    
+
     /**
      * Return an instance with the specified HTTP protocol version.
      *
@@ -83,7 +84,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withProtocolVersion($version);
         return new self($request);
     }
-    
+
     /**
      * Retrieves all message header values.
      *
@@ -113,7 +114,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getHeaders();
     }
-    
+
     /**
      * Checks if a header exists by the given case-insensitive name.
      *
@@ -126,7 +127,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->hasHeader($name);
     }
-    
+
     /**
      * Retrieves a message header value by the given case-insensitive name.
      *
@@ -145,7 +146,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getHeader($name);
     }
-    
+
     /**
      * Retrieves a comma-separated string of the values for a single header.
      *
@@ -169,7 +170,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getHeaderLine($name);
     }
-    
+
     /**
      * Return an instance with the provided value replacing the specified header.
      *
@@ -190,7 +191,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withHeader($name, $value);
         return new self($request);
     }
-    
+
     /**
      * Return an instance with the specified header appended with the given value.
      *
@@ -212,7 +213,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withAddedHeader($name, $value);
         return new self($request);
     }
-    
+
     /**
      * Return an instance without the specified header.
      *
@@ -230,7 +231,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withoutHeader($name);
         return new self($request);
     }
-    
+
     /**
      * Gets the body of the message.
      *
@@ -240,7 +241,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getBody();
     }
-    
+
     /**
      * Return an instance with the specified message body.
      *
@@ -259,7 +260,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withBody($body);
         return new self($request);
     }
-    
+
     /**
      * Retrieves the message's request target.
      *
@@ -280,7 +281,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getRequestTarget();
     }
-    
+
     /**
      * Return an instance with the specific request-target.
      *
@@ -295,7 +296,6 @@ class ApiRequest implements ApiRequestInterface
      *
      * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     * @param mixed $requestTarget
      * @return static
      */
     public function withRequestTarget($requestTarget)
@@ -303,7 +303,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withRequestTarget($requestTarget);
         return new self($request);
     }
-    
+
     /**
      * Retrieves the HTTP method of the request.
      *
@@ -313,7 +313,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getMethod();
     }
-    
+
     /**
      * Return an instance with the provided HTTP method.
      *
@@ -334,7 +334,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withMethod($method);
         return new self($request);
     }
-    
+
     /**
      * Retrieves the URI instance.
      *
@@ -348,7 +348,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getUri();
     }
-    
+
     /**
      * Returns an instance with the provided URI.
      *
@@ -384,7 +384,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withUri($uri, $preserveHost);
         return new self($request);
     }
-    
+
     /**
      * Retrieve server parameters.
      *
@@ -398,7 +398,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getServerParams();
     }
-    
+
     /**
      * Retrieve cookies.
      *
@@ -413,7 +413,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getCookieParams();
     }
-    
+
     /**
      * Return an instance with the specified cookies.
      *
@@ -436,7 +436,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withCookieParams($cookies);
         return new self($request);
     }
-    
+
     /**
      * Retrieve query string arguments.
      *
@@ -453,7 +453,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getQueryParams();
     }
-    
+
     /**
      * Return an instance with the specified query string arguments.
      *
@@ -481,7 +481,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withQueryParams($query);
         return new self($request);
     }
-    
+
     /**
      * Retrieve normalized file upload data.
      *
@@ -498,7 +498,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getUploadedFiles();
     }
-    
+
     /**
      * Create a new instance with the specified uploaded files.
      *
@@ -515,7 +515,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withUploadedFiles($uploadedFiles);
         return new self($request);
     }
-    
+
     /**
      * Retrieve any parameters provided in the request body.
      *
@@ -535,7 +535,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getParsedBody();
     }
-    
+
     /**
      * Return an instance with the specified body parameters.
      *
@@ -569,7 +569,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withParsedBody($data);
         return new self($request);
     }
-    
+
     /**
      * Retrieve attributes derived from the request.
      *
@@ -585,7 +585,7 @@ class ApiRequest implements ApiRequestInterface
     {
         return $this->request->getAttributes();
     }
-    
+
     /**
      * Retrieve a single derived request attribute.
      *
@@ -598,14 +598,13 @@ class ApiRequest implements ApiRequestInterface
      *
      * @param string $name The attribute name.
      * @param mixed $default Default value to return if the attribute does not exist.
-     * @return mixed
      * @see getAttributes()
      */
     public function getAttribute($name, $default = null)
     {
         return $this->request->getAttribute($name, $default);
     }
-    
+
     /**
      * Return an instance with the specified derived request attribute.
      *
@@ -626,7 +625,7 @@ class ApiRequest implements ApiRequestInterface
         $request = $this->request->withAttribute($name, $value);
         return new self($request);
     }
-    
+
     /**
      * Return an instance that removes the specified derived request attribute.
      *

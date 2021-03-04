@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\GetIndexNamesFromAlias;
@@ -11,7 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InstallGeoShapesCommand extends AbstractElasticSearchCommand
+final class InstallGeoShapesCommand extends AbstractElasticSearchCommand
 {
     /**
      * @var string
@@ -29,7 +31,6 @@ class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     private $readAlias;
 
     /**
-     * @param Client $client
      * @param string $latestIndexName
      * @param string $writeAlias
      * @param string $readAlias

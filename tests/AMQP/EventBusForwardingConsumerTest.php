@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DomainEventStream;
@@ -17,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use ValueObjects\StringLiteral\StringLiteral;
 
-class EventBusForwardingConsumerTest extends TestCase
+final class EventBusForwardingConsumerTest extends TestCase
 {
     /**
      * @var AMQPStreamConnection|MockObject

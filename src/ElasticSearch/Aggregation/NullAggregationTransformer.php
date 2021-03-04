@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-class NullAggregationTransformer implements AggregationTransformerInterface
+final class NullAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @inheritdoc

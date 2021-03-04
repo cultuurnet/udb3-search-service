@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
@@ -8,7 +10,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class TransformingJsonDocumentIndexServiceTest extends TestCase
+final class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
      * @var JsonDocumentFetcher|MockObject

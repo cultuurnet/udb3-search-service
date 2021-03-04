@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-class PathEndIdUrlParser implements IdUrlParserInterface
+final class PathEndIdUrlParser implements IdUrlParserInterface
 {
     /**
      * @param string $url

@@ -37,11 +37,9 @@
         "zendframework/zend-httphandlerrunner": "^1.1"
     },
     "require-dev": {
-        "escapestudios/symfony2-coding-standard": "^3.12",
-        "php-coveralls/php-coveralls": "^2.1",
         "phpstan/phpstan": "^0.12.43",
         "phpunit/phpunit": "^7.5",
-        "squizlabs/php_codesniffer": "^3.5"
+        "publiq/php-cs-fixer-config": "^1.3"
     },
     "autoload": {
         "psr-4": {
@@ -71,11 +69,12 @@
     "scripts": {
         "test": "vendor/bin/phpunit",
         "phpstan": "vendor/bin/phpstan analyse",
-        "phpcs": "vendor/bin/phpcs -p",
+        "cs": "php-cs-fixer fix -v --diff --dry-run",
+        "cs-fix": "php-cs-fixer fix -v --diff",
         "ci": [
+            "composer cs",
             "composer phpstan",
-            "composer test",
-            "composer phpcs"
+            "composer test"
         ]
     }
 }

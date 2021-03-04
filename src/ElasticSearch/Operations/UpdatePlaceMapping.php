@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-class UpdatePlaceMapping extends AbstractMappingOperation
+final class UpdatePlaceMapping extends AbstractMappingOperation
 {
     /**
      * @param string $indexName

@@ -18,7 +18,6 @@ jobs:
               with:
                   php-version: ${{ matrix.php-versions }}
                   ini-values: xdebug.mode=coverage
-                  extensions: intl, tidy
                   tools: composer
 
             - name: ✌️ Check PHP Version
@@ -43,7 +42,7 @@ jobs:
             - name: ✅ Run tests
               run: composer test
 
-    phpcs:
+    cs:
         runs-on: ubuntu-latest
         name: Code style
         steps:
@@ -54,7 +53,6 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
-                  extensions: intl, tidy
                   tools: composer
 
             - name: 📩 Cache Composer packages
@@ -71,7 +69,7 @@ jobs:
               run: composer install --no-progress --no-suggest
 
             - name: ✨ Run code style check
-              run: composer phpcs
+              run: composer cs
 
     phpstan:
         runs-on: ubuntu-latest
@@ -84,7 +82,6 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: 7.1
-                  extensions: intl, tidy
                   tools: composer
 
             - name: 📩 Cache Composer packages

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elasticsearch\Client;
@@ -25,9 +27,7 @@ abstract class AbstractOperationTestCase extends TestCase
      */
     protected $logger;
 
-    /**
-     * @var mixed
-     */
+
     protected $operation;
 
     protected function setUp()
