@@ -309,7 +309,7 @@ final class OfferSearchController
 
         $resultTransformer = ResultTransformerFactory::create(
             (bool) $parameterBag->getBooleanFromParameter('embed'),
-            $calendarSummaries
+            ...$calendarSummaries
         );
 
         $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
