@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\CalendarSummaryV3\CalendarFormatterInterface;
+use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
+use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
+use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
+use InvalidArgumentException;
 
 class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
@@ -30,9 +35,17 @@ class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 
     private function embedCalendarSummary(array $original, CalendarSummaryFormat $calendarSummaryFormat): array
     {
+        $calendarFormatter = $this->getCalendarFormatterByType($calendarSummaryFormat->getType());
+        $offer = Offer::fromJsonLd(json_encode($original));
+
         $calendarSummary = [
             $calendarSummaryFormat->getType() => [
-                $calendarSummaryFormat->getFormat() => '',
+                $calendarSummaryFormat->getFormat() => trim(
+                        $calendarFormatter->format(
+                        $offer,
+                        $calendarSummaryFormat->getFormat()
+                    )
+                ),
             ]
         ];
 
@@ -42,5 +55,17 @@ class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
                 'calendarSummary' => $calendarSummary
             ]
         );
+    }
+
+    private function getCalendarFormatterByType(string $calendarSummaryType): CalendarFormatterInterface
+    {
+        switch ($calendarSummaryType) {
+            case 'text':
+                return new CalendarPlainTextFormatter('nl_BE', true, 'Europe/Brussels');
+            case 'html':
+                return new CalendarHTMLFormatter('nl_BE', true, 'Europe/Brussels');
+            default:
+                throw new InvalidArgumentException('No calendar formatter configured for type ' . $calendarSummaryType);
+        }
     }
 }

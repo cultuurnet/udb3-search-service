@@ -32,10 +32,10 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
             'calendarType' => 'permanent',
             'calendarSummary' => [
                 'text' => [
-                    'xs' => '',
+                    'xs' => 'Altijd open',
                 ],
                 'html' => [
-                    'md' => '',
+                    'md' => '<p class="cf-openinghours">Altijd open</p>',
                 ],
             ],
         ];
