@@ -104,6 +104,7 @@ class ElasticSearchOrganizerSearchServiceTest extends TestCase
                     'index' => $this->indexName->toNative(),
                     'type' => $this->documentType->toNative(),
                     'body' => [
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
                         'from' => 960,
                         'size' => 30,
                         'query' => [
