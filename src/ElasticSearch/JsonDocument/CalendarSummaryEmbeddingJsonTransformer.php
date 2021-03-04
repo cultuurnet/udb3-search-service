@@ -42,9 +42,9 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
             $calendarSummaryFormat->getType() => [
                 $calendarSummaryFormat->getFormat() => trim(
                     $calendarFormatter->format(
-                            $offer,
-                            $calendarSummaryFormat->getFormat()
-                        )
+                        $offer,
+                        $calendarSummaryFormat->getFormat()
+                    )
                 ),
             ],
         ];
