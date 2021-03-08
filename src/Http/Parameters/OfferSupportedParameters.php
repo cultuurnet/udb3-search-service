@@ -9,6 +9,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
     protected function getSupportedParameters(): array
     {
         return [
+            'embedCalendarSummaries',
             'q',
             'id',
             'text',
