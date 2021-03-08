@@ -38,10 +38,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         $this->responseValidator = $responseValidator;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function createPagedResultSet(Natural $perPage, array $response)
+    public function createPagedResultSet(int $perPage, array $response): PagedResultSet
     {
         $this->responseValidator->validate($response);
 
@@ -96,7 +93,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
 
         $pagedResultSet = (new PagedResultSet(
             $total,
-            $perPage,
+            new Natural($perPage),
             $results
         ))->withFacets(...$facets);
 

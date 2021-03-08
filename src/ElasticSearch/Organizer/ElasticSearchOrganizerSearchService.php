@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInterface
@@ -45,7 +44,7 @@ final class ElasticSearchOrganizerSearchService implements OrganizerSearchServic
         $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            new Natural($queryBuilder->getLimit()->toInteger()),
+            $queryBuilder->getLimit()->toInteger(),
             $response
         );
     }

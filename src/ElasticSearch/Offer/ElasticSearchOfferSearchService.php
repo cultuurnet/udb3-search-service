@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use Elasticsearch\Client;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
@@ -45,7 +44,7 @@ final class ElasticSearchOfferSearchService implements OfferSearchServiceInterfa
         $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            new Natural($queryBuilder->getLimit()->toInteger()),
+            $queryBuilder->getLimit()->toInteger(),
             $response
         );
     }

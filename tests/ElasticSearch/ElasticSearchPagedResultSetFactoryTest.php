@@ -113,7 +113,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
             new Natural(962),
@@ -223,7 +223,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
             new Natural(962),
@@ -311,7 +311,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
             new Natural(2),
