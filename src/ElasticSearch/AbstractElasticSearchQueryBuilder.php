@@ -97,10 +97,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
-    public function getLimit(): Natural
+    public function getLimit(): Limit
     {
         $size = $this->search->getSize();
-        return $size ? new Natural($size) : new Natural(QueryBuilder::DEFAULT_LIMIT);
+        return $size ? new Limit($size) : new Limit(QueryBuilder::DEFAULT_LIMIT);
     }
 
     public function build(): array

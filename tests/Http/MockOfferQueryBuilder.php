@@ -463,13 +463,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function getLimit(): Natural
+    public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {
-            return new Natural(QueryBuilder::DEFAULT_LIMIT);
+            return new Limit(QueryBuilder::DEFAULT_LIMIT);
         }
 
-        return new Natural($this->mockQuery['limit']);
+        return new Limit($this->mockQuery['limit']);
     }
 
     public function build(): array

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Language\Language;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 interface QueryBuilder
@@ -34,7 +33,7 @@ interface QueryBuilder
      */
     public function withLimit(Limit $limit);
 
-    public function getLimit(): Natural;
+    public function getLimit(): Limit;
 
     public function build(): array;
 }

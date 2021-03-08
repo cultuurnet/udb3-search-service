@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
@@ -132,13 +131,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function getLimit(): Natural
+    public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {
-            return new Natural(QueryBuilder::DEFAULT_LIMIT);
+            return new Limit(QueryBuilder::DEFAULT_LIMIT);
         }
 
-        return new Natural($this->mockQuery['limit']);
+        return new Limit($this->mockQuery['limit']);
     }
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface
