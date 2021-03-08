@@ -44,7 +44,7 @@ final class ElasticSearchOrganizerSearchService implements OrganizerSearchServic
         $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            $queryBuilder->getLimit(),
+            $queryBuilder->getLimit()->toInteger(),
             $response
         );
     }

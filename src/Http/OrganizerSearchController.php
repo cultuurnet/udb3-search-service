@@ -14,11 +14,12 @@ use CultuurNet\UDB3\Search\Http\Parameters\OrganizerSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
+use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
@@ -76,18 +77,14 @@ final class OrganizerSearchController
             $request->getQueryParamsKeys()
         );
 
-        $start = (int) $request->getQueryParam('start', 0);
-        $limit = (int) $request->getQueryParam('limit', 30);
-
-        if ($limit === 0) {
-            $limit = 30;
-        }
+        $start = new Start((int) $request->getQueryParam('start', 0));
+        $limit = new Limit((int) $request->getQueryParam('limit', 30));
 
         $parameterBag = $request->getQueryParameterBag();
 
         $queryBuilder = $this->queryBuilder
-            ->withStart(new Natural($start))
-            ->withLimit(new Natural($limit));
+            ->withStart($start)
+            ->withLimit($limit);
 
         $consumerApiKey = $this->apiKeyReader->read($request);
 
@@ -157,8 +154,8 @@ final class OrganizerSearchController
         $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
             $resultTransformer,
             $resultSet,
-            $start,
-            $limit
+            $start->toInteger(),
+            $limit->toInteger()
         );
 
         return ResponseFactory::jsonLd($pagedCollection);

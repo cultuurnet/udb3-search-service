@@ -6,12 +6,13 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferSearchServiceTest extends TestCase
@@ -61,8 +62,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
     public function it_returns_a_paged_result_set_for_the_given_search_parameters()
     {
         $queryBuilder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(0))
-            ->withLimit(new Natural(2));
+            ->withStart(new Start(0))
+            ->withLimit(new Limit(2));
 
         $response = [
             'hits' => [
@@ -113,8 +114,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->willReturn($response);
 
         $expected = new PagedResultSet(
-            new Natural(32),
-            new Natural(2),
+            32,
+            2,
             [
                 (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
                     ->withBody(

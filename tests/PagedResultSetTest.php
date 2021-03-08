@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class PagedResultSetTest extends TestCase
@@ -20,8 +19,8 @@ final class PagedResultSetTest extends TestCase
      */
     public function it_returns_paged_results_and_metadata()
     {
-        $total = new Natural(1000);
-        $perPage = new Natural(30);
+        $total = 1000;
+        $perPage = 30;
 
         $results = [
             (new JsonDocument('123'))
@@ -50,8 +49,8 @@ final class PagedResultSetTest extends TestCase
      */
     public function it_guards_that_results_are_all_json_documents()
     {
-        $total = new Natural(1000);
-        $perPage = new Natural(30);
+        $total = 1000;
+        $perPage = 30;
 
         $results = [
             (new JsonDocument('123'))
@@ -77,8 +76,8 @@ final class PagedResultSetTest extends TestCase
      */
     public function it_has_an_optional_facets_property()
     {
-        $total = new Natural(1000);
-        $perPage = new Natural(30);
+        $total = 1000;
+        $perPage = 30;
 
         $results = [
             (new JsonDocument('123'))

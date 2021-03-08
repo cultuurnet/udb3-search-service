@@ -6,22 +6,21 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use ValueObjects\Number\Natural;
 
 final class PagedResultSet
 {
     /**
-     * @var Natural
+     * @var int
      */
     private $total;
 
     /**
-     * @var Natural
+     * @var int
      */
     private $perPage;
 
     /**
-     * @var array
+     * @var JsonDocument[]
      */
     private $results;
 
@@ -34,8 +33,8 @@ final class PagedResultSet
      * @param JsonDocument[] $results
      */
     public function __construct(
-        Natural $total,
-        Natural $perPage,
+        int $total,
+        int $perPage,
         array $results
     ) {
         $this->guardResults($results);
@@ -46,35 +45,22 @@ final class PagedResultSet
         $this->facets = [];
     }
 
-    /**
-     * @return Natural
-     */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->total;
     }
 
-    /**
-     * @return Natural
-     */
-    public function getPerPage()
+    public function getPerPage(): int
     {
         return $this->perPage;
     }
 
-    /**
-     * @return array
-     */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->results;
     }
 
-    /**
-     * @param FacetFilter[] ...$facetFilters
-     * @return PagedResultSet
-     */
-    public function withFacets(FacetFilter ...$facetFilters)
+    public function withFacets(FacetFilter ...$facetFilters): PagedResultSet
     {
         $c = clone $this;
         $c->facets = $facetFilters;
@@ -84,13 +70,13 @@ final class PagedResultSet
     /**
      * @return FacetFilter[]
      */
-    public function getFacets()
+    public function getFacets(): array
     {
         return $this->facets;
     }
 
 
-    private function guardResults(array $results)
+    private function guardResults(array $results): void
     {
         foreach ($results as $result) {
             if (!($result instanceof JsonDocument)) {

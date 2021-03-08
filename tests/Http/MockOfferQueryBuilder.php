@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -26,6 +27,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -447,27 +449,27 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStart(Natural $start)
+    public function withStart(Start $start)
     {
         $c = clone $this;
-        $c->mockQuery['start'] = $start->toNative();
+        $c->mockQuery['start'] = $start->toInteger();
         return $c;
     }
 
-    public function withLimit(Natural $limit)
+    public function withLimit(Limit $limit)
     {
         $c = clone $this;
-        $c->mockQuery['limit'] = $limit->toNative();
+        $c->mockQuery['limit'] = $limit->toInteger();
         return $c;
     }
 
-    public function getLimit(): Natural
+    public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {
-            return new Natural(QueryBuilder::DEFAULT_LIMIT);
+            return new Limit(QueryBuilder::DEFAULT_LIMIT);
         }
 
-        return new Natural($this->mockQuery['limit']);
+        return new Limit($this->mockQuery['limit']);
     }
 
     public function build(): array

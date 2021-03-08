@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -28,6 +29,7 @@ use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use CultuurNet\UDB3\Search\Start;
 use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -58,8 +60,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     public function it_should_build_a_query_with_pagination_parameters(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10));
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -81,8 +83,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar')
             );
@@ -119,8 +121,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     public function it_should_build_a_query_with_a_free_text_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withTextQuery(
                 new StringLiteral('(foo OR baz) AND bar AND labels:test')
             );
@@ -161,8 +163,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
 
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar'),
                 $nl,
@@ -205,8 +207,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
             );
@@ -247,8 +249,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLocationCdbIdFilter(
                 new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
             );
@@ -289,8 +291,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withOrganizerCdbIdFilter(
                 new Cdbid('392168d7-57c9-4488-8e2e-d492c843054b')
             );
@@ -331,8 +333,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCalendarTypeFilter();
 
         $expectedQueryArray = [
@@ -356,8 +358,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCalendarTypeFilter(new CalendarType('single'));
 
         $expectedQueryArray = [
@@ -396,8 +398,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCalendarTypeFilter(
                 new CalendarType('SINGLE'),
                 new CalendarType('MULTIPLE')
@@ -452,8 +454,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withDateRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
@@ -495,8 +497,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withDateRangeFilter(
                 null,
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -538,8 +540,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withDateRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -582,8 +584,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
@@ -669,8 +671,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
@@ -735,8 +737,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
@@ -812,8 +814,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
                     ->withLocalTimeFrom(800)
@@ -889,8 +891,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withStatusFilter(
                 Status::TEMPORARILY_UNAVAILABLE(),
                 Status::UNAVAILABLE()
@@ -945,8 +947,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
@@ -970,8 +972,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withWorkflowStatusFilter(new WorkflowStatus('DRAFT'));
 
         $expectedQueryArray = [
@@ -1010,8 +1012,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withWorkflowStatusFilter(
                 new WorkflowStatus('READY_FOR_VALIDATION'),
                 new WorkflowStatus('APPROVED')
@@ -1066,8 +1068,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAvailableRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
@@ -1109,8 +1111,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAvailableRangeFilter(
                 null,
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -1152,8 +1154,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAvailableRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -1213,8 +1215,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAvailableRangeFilter(
                 null,
                 null
@@ -1241,8 +1243,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withRegionFilter(
                 new StringLiteral('geoshapes'),
                 new StringLiteral('regions'),
@@ -1307,8 +1309,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
@@ -1357,8 +1359,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withGeoBoundsFilter(
                 new GeoBoundsParameters(
                     new Coordinates(
@@ -1415,8 +1417,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
@@ -1482,8 +1484,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')));
 
         $expectedQueryArray = [
@@ -1549,8 +1551,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAgeRangeFilter(new Natural(18), null);
 
         $expectedQueryArray = [
@@ -1589,8 +1591,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAgeRangeFilter(null, new Natural(18));
 
         $expectedQueryArray = [
@@ -1629,8 +1631,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAgeRangeFilter(new Natural(6), new Natural(12));
 
         $expectedQueryArray = [
@@ -1670,8 +1672,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAgeRangeFilter(new Natural(18), null)
             ->withAllAgesFilter(true);
 
@@ -1716,8 +1718,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAgeRangeFilter(new Natural(18), null)
             ->withAllAgesFilter(false);
 
@@ -1762,8 +1764,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withPriceRangeFilter(Price::fromFloat(9.99), null);
 
         $expectedQueryArray = [
@@ -1802,8 +1804,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withPriceRangeFilter(null, Price::fromFloat(19.99));
 
         $expectedQueryArray = [
@@ -1842,8 +1844,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withPriceRangeFilter(Price::fromFloat(9.99), Price::fromFloat(19.99));
 
         $expectedQueryArray = [
@@ -1897,8 +1899,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withAudienceTypeFilter(new AudienceType('members'));
 
         $expectedQueryArray = [
@@ -1937,8 +1939,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withMediaObjectsFilter(true);
 
         $expectedQueryArray = [
@@ -1977,8 +1979,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withMediaObjectsFilter(false);
 
         $expectedQueryArray = [
@@ -2017,8 +2019,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withUiTPASFilter(true);
 
         $expectedQueryArray = [
@@ -2055,8 +2057,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withUiTPASFilter(false);
 
         $expectedQueryArray = [
@@ -2093,8 +2095,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withTermIdFilter(
                 new TermId('0.12.4.86')
             )
@@ -2145,8 +2147,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withTermLabelFilter(
                 new TermLabel('Jeugdhuis')
             )
@@ -2197,8 +2199,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLocationTermIdFilter(
                 new TermId('0.12.4.86')
             )
@@ -2249,8 +2251,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLocationTermLabelFilter(
                 new TermLabel('Jeugdhuis')
             )
@@ -2301,8 +2303,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLabelFilter(
                 new LabelName('foo')
             )
@@ -2353,8 +2355,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLocationLabelFilter(
                 new LabelName('foo')
             )
@@ -2405,8 +2407,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withOrganizerLabelFilter(
                 new LabelName('foo')
             )
@@ -2457,8 +2459,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withMainLanguageFilter(new Language('nl'));
 
         $expectedQueryArray = [
@@ -2497,8 +2499,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withMainLanguageFilter(
                 new Language('fr')
             );
@@ -2539,8 +2541,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withLanguageFilter(
                 new Language('fr')
             )
@@ -2591,8 +2593,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCompletedLanguageFilter(
                 new Language('fr')
             )
@@ -2643,8 +2645,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCreatorFilter(new Creator('Jane Doe'));
 
         $expectedQueryArray = [
@@ -2683,8 +2685,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCreatedRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
@@ -2726,8 +2728,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCreatedRangeFilter(
                 null,
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -2769,8 +2771,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withCreatedRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -2813,8 +2815,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withModifiedRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 null
@@ -2856,8 +2858,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withModifiedRangeFilter(
                 null,
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -2899,8 +2901,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withModifiedRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
@@ -2943,8 +2945,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withFacet(
                 FacetName::REGIONS()
             );
@@ -2977,8 +2979,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withFacet(
                 FacetName::REGIONS()
             )
@@ -3019,8 +3021,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withFacet(
                 FacetName::REGIONS()
             )
@@ -3077,8 +3079,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder(100))
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withFacet(
                 FacetName::REGIONS()
             )
@@ -3121,8 +3123,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSortByDistance(
                 new Coordinates(
                     new Latitude(8.674),
@@ -3183,8 +3185,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSortByCreated(SortOrder::ASC());
 
         $expectedQueryArray = [
@@ -3215,8 +3217,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withSortByModified(SortOrder::ASC());
 
         $expectedQueryArray = [
@@ -3247,8 +3249,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withDuplicateFilter(true);
 
         $expectedQueryArray = [
@@ -3284,8 +3286,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     public function it_should_build_a_query_with_a_production_id_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withProductionIdFilter(
                 (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toNative()
             );
@@ -3325,8 +3327,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     public function it_should_build_a_query_with_a_group_by_production_id(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Natural(30))
-            ->withLimit(new Natural(10))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
             ->withGroupByProductionId();
 
         $expectedQueryArray = [

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 
 final class PagedCollectionFactoryTest extends TestCase
 {
@@ -42,8 +41,8 @@ final class PagedCollectionFactoryTest extends TestCase
         $total = 12;
 
         $pagedResultSet = new PagedResultSet(
-            new Natural($total),
-            new Natural(10),
+            $total,
+            $limit,
             [
                 new JsonDocument(
                     '3d3ecf5c-2c21-4c6c-9faf-cd8e5fbf0464',

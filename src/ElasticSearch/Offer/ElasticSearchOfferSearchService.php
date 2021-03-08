@@ -44,7 +44,7 @@ final class ElasticSearchOfferSearchService implements OfferSearchServiceInterfa
         $response = $this->executeQuery($queryBuilder->build(), $parameters);
 
         return $this->pagedResultSetFactory->createPagedResultSet(
-            $queryBuilder->getLimit(),
+            $queryBuilder->getLimit()->toInteger(),
             $response
         );
     }

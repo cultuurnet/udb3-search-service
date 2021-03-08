@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchPagedResultSetFactoryTest extends TestCase
@@ -113,11 +112,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
-            new Natural(962),
-            new Natural(30),
+            962,
+            30,
             [
                 (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
                     ->withBody(
@@ -223,11 +222,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
-            new Natural(962),
-            new Natural(30),
+            962,
+            30,
             [
                 (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
                     ->withBody(
@@ -311,11 +310,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $perPage = new Natural(30);
+        $perPage = 30;
 
         $expected = new PagedResultSet(
-            new Natural(2),
-            new Natural(30),
+            2,
+            30,
             [
                 (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
                     ->withBody(
