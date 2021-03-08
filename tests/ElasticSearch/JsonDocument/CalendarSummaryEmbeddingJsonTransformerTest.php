@@ -16,7 +16,7 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
     {
         $jsonld = [
             '@id' => 'https://io.uitdatabank.be/events/8ea290f6-deb2-426e-820a-68eeefde9c4d',
-            '@type' => 'Event',
+            '@context' => '/contexts/event',
             'status' => [
                 'type' => 'Available',
             ],
@@ -25,7 +25,7 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
 
         $indexed = [
             '@id' => 'https://io.uitdatabank.be/events/8ea290f6-deb2-426e-820a-68eeefde9c4d',
-            '@type' => 'Event',
+            '@context' => '/contexts/event',
             'originalEncodedJsonLd' => json_encode($jsonld),
         ];
 
