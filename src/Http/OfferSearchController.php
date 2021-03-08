@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -122,18 +123,11 @@ final class OfferSearchController
         );
 
         $start = new Start((int) $request->getQueryParam('start', 0));
-        $limit = (int) $request->getQueryParam('limit', 30);
-
-        if ($limit < 0 || $limit > 2000) {
-            throw new \InvalidArgumentException('The "limit" parameter should be between 0 and 2000');
-        }
-        if ($limit === 0) {
-            $limit = 30;
-        }
+        $limit = new Limit((int) $request->getQueryParam('limit', 30));
 
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start->toInteger()))
-            ->withLimit(new Natural($limit));
+            ->withLimit(new Natural($limit->toInteger()));
 
         $consumerApiKey = $this->apiKeyReader->read($request);
 
@@ -321,7 +315,7 @@ final class OfferSearchController
             $resultTransformer,
             $resultSet,
             $start->toInteger(),
-            $limit
+            $limit->toInteger()
         );
 
         $jsonArray = $pagedCollection->jsonSerialize();
