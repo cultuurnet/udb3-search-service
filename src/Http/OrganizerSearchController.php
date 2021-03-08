@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
@@ -84,8 +83,8 @@ final class OrganizerSearchController
         $parameterBag = $request->getQueryParameterBag();
 
         $queryBuilder = $this->queryBuilder
-            ->withStart(new Natural($start->toInteger()))
-            ->withLimit(new Natural($limit->toInteger()));
+            ->withStart($start)
+            ->withLimit($limit);
 
         $consumerApiKey = $this->apiKeyReader->read($request);
 

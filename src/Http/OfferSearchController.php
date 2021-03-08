@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 /**
@@ -126,8 +125,8 @@ final class OfferSearchController
         $limit = new Limit((int) $request->getQueryParam('limit', 30));
 
         $queryBuilder = $this->queryBuilder
-            ->withStart(new Natural($start->toInteger()))
-            ->withLimit(new Natural($limit->toInteger()));
+            ->withStart($start)
+            ->withLimit($limit);
 
         $consumerApiKey = $this->apiKeyReader->read($request);
 

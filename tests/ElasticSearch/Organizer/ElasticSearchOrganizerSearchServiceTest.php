@@ -6,8 +6,10 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -61,8 +63,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
     public function it_returns_a_paged_result_set_for_the_given_search_query()
     {
         $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Natural(960))
-            ->withLimit(new Natural(30))
+            ->withStart(new Start(960))
+            ->withLimit(new Limit(30))
             ->withAutoCompleteFilter(new StringLiteral('Collectief'));
 
         $idCollectiefCursief = '351b85c1-66ea-463b-82a6-515b7de0d267';

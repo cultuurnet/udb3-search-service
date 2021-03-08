@@ -27,12 +27,12 @@ interface QueryBuilder
     /**
      * @return static
      */
-    public function withStart(Natural $start);
+    public function withStart(Start $start);
 
     /**
      * @return static
      */
-    public function withLimit(Natural $limit);
+    public function withLimit(Limit $limit);
 
     public function getLimit(): Natural;
 

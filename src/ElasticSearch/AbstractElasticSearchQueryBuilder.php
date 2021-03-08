@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\QueryBuilder;
+use CultuurNet\UDB3\Search\Start;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
@@ -81,17 +83,17 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         );
     }
 
-    public function withStart(Natural $start)
+    public function withStart(Start $start)
     {
         $c = $this->getClone();
-        $c->search->setFrom($start->toNative());
+        $c->search->setFrom($start->toInteger());
         return $c;
     }
 
-    public function withLimit(Natural $limit)
+    public function withLimit(Limit $limit)
     {
         $c = $this->getClone();
-        $c->search->setSize($limit->toNative());
+        $c->search->setSize($limit->toInteger());
         return $c;
     }
 
