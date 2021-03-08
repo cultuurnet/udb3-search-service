@@ -29,7 +29,7 @@ final class ResultTransformerFactory
 
         if (!empty($calendarSummaryFormats)) {
             $transformerStack = $transformerStack->addTransformer(
-                new CalendarSummaryEmbeddingJsonTransformer($calendarSummaryFormats)
+                new CalendarSummaryEmbeddingJsonTransformer(...$calendarSummaryFormats)
             );
         }
 
