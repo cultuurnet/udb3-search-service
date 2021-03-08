@@ -123,9 +123,17 @@ final class OfferSearchController
         $start = (int) $request->getQueryParam('start', 0);
         $limit = (int) $request->getQueryParam('limit', 30);
 
+        if ($start < 0 || $start > 10000) {
+            throw new \InvalidArgumentException('The "start" parameter should be between 0 and 10000');
+        }
+
+        if ($limit < 0 || $limit > 2000) {
+            throw new \InvalidArgumentException('The "limit" parameter should be between 0 and 2000');
+        }
         if ($limit === 0) {
             $limit = 30;
         }
+
         $queryBuilder = $this->queryBuilder
             ->withStart(new Natural($start))
             ->withLimit(new Natural($limit));
