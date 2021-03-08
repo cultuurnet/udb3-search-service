@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
+use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
@@ -76,12 +77,8 @@ final class OrganizerSearchController
             $request->getQueryParamsKeys()
         );
 
-        $start = (int) $request->getQueryParam('start', 0);
+        $start = new Start((int) $request->getQueryParam('start', 0));
         $limit = (int) $request->getQueryParam('limit', 30);
-
-        if ($start < 0 || $start > 10000) {
-            throw new \InvalidArgumentException('The "start" parameter should be between 0 and 10000');
-        }
 
         if ($limit < 0 || $limit > 2000) {
             throw new \InvalidArgumentException('The "limit" parameter should be between 0 and 2000');
@@ -93,7 +90,7 @@ final class OrganizerSearchController
         $parameterBag = $request->getQueryParameterBag();
 
         $queryBuilder = $this->queryBuilder
-            ->withStart(new Natural($start))
+            ->withStart(new Natural($start->toInteger()))
             ->withLimit(new Natural($limit));
 
         $consumerApiKey = $this->apiKeyReader->read($request);
@@ -164,7 +161,7 @@ final class OrganizerSearchController
         $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
             $resultTransformer,
             $resultSet,
-            $start,
+            $start->toInteger(),
             $limit
         );
 
