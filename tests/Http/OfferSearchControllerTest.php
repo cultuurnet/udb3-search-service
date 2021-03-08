@@ -428,6 +428,78 @@ final class OfferSearchControllerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_throws_if_a_negative_start_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => -1,
+                'limit' => 30,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_a_start_over_10_000_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => 10001,
+                'limit' => 30,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_a_negative_limit_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => 0,
+                'limit' => -1,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_a_limit_over_2000_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'start' => 0,
+                'limit' => 2001,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
      * @dataProvider defaultsEnabledQueryParametersProvider
      *
      */
