@@ -20,7 +20,7 @@ final class PagedResultSet
     private $perPage;
 
     /**
-     * @var array
+     * @var JsonDocument[]
      */
     private $results;
 
@@ -55,19 +55,12 @@ final class PagedResultSet
         return $this->perPage;
     }
 
-    /**
-     * @return array
-     */
-    public function getResults()
+    public function getResults(): array
     {
         return $this->results;
     }
 
-    /**
-     * @param FacetFilter[] ...$facetFilters
-     * @return PagedResultSet
-     */
-    public function withFacets(FacetFilter ...$facetFilters)
+    public function withFacets(FacetFilter ...$facetFilters): PagedResultSet
     {
         $c = clone $this;
         $c->facets = $facetFilters;
@@ -77,13 +70,13 @@ final class PagedResultSet
     /**
      * @return FacetFilter[]
      */
-    public function getFacets()
+    public function getFacets(): array
     {
         return $this->facets;
     }
 
 
-    private function guardResults(array $results)
+    private function guardResults(array $results): void
     {
         foreach ($results as $result) {
             if (!($result instanceof JsonDocument)) {
