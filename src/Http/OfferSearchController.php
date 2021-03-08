@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
+use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
@@ -299,8 +300,16 @@ final class OfferSearchController
         }
         $resultSet = $this->searchService->search($queryBuilder);
 
+        $calendarSummaries = array_map(
+            function (string $parameter) {
+                return CalendarSummaryFormat::fromCombinedParameter($parameter);
+            },
+            $parameterBag->getArrayFromParameter('embedCalendarSummaries')
+        );
+
         $resultTransformer = ResultTransformerFactory::create(
-            (bool) $parameterBag->getBooleanFromParameter('embed')
+            (bool) $parameterBag->getBooleanFromParameter('embed'),
+            ...$calendarSummaries
         );
 
         $pagedCollection = PagedCollectionFactory::fromPagedResultSet(

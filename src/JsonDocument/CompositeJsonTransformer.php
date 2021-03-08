@@ -16,6 +16,14 @@ final class CompositeJsonTransformer implements JsonTransformer
         $this->jsonTransformers = $jsonTransformers;
     }
 
+    public function addTransformer(JsonTransformer $jsonTransformer): self
+    {
+        $clone = clone $this;
+        $clone->jsonTransformers[] = $jsonTransformer;
+
+        return $clone;
+    }
+
     public function transform(array $from, array $draft = []): array
     {
         return array_reduce(
