@@ -34,7 +34,7 @@ final class PagedCollectionFactory
             $pageNumber,
             $limit,
             $results,
-            $pagedResultSet->getTotal()->toNative()
+            $pagedResultSet->getTotal()
         );
     }
 }

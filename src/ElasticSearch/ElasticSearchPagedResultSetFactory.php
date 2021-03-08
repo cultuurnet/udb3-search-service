@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Validation\PagedResultSetResponseValida
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use InvalidArgumentException;
-use ValueObjects\Number\Natural;
 
 final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
 {
@@ -42,7 +41,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
     {
         $this->responseValidator->validate($response);
 
-        $total = new Natural($response['hits']['total']);
+        $total = $response['hits']['total'];
 
         $results = array_map(
             function (array $result) {
@@ -55,7 +54,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         $aggregations = isset($response['aggregations']) ? $response['aggregations'] : [];
 
         if (isset($aggregations['total'])) {
-            $total = new Natural($aggregations['total']['value']);
+            $total = $aggregations['total']['value'];
         }
 
         $bucketAggregations = array_filter(
@@ -93,7 +92,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
 
         $pagedResultSet = (new PagedResultSet(
             $total,
-            new Natural($perPage),
+            $perPage,
             $results
         ))->withFacets(...$facets);
 

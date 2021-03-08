@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOrganizerSearchServiceTest extends TestCase
@@ -153,8 +152,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
         ];
 
         $expectedPagedResultSet = new PagedResultSet(
-            new Natural(962),
-            new Natural(30),
+            962,
+            30,
             $expectedResults
         );
 

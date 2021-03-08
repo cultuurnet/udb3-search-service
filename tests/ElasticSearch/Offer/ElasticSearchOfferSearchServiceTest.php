@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferSearchServiceTest extends TestCase
@@ -115,8 +114,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->willReturn($response);
 
         $expected = new PagedResultSet(
-            new Natural(32),
-            new Natural(2),
+            32,
+            2,
             [
                 (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
                     ->withBody(

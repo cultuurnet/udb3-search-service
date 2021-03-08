@@ -332,8 +332,8 @@ final class OfferSearchControllerTest extends TestCase
             ->withGroupByProductionId();
 
         $expectedResultSet = new PagedResultSet(
-            new Natural(32),
-            new Natural(10),
+            32,
+            10,
             [
                 new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id": "events/1","@type":"Event"}'),
                 new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id": "places/2","@type":"Place"}'),
@@ -421,7 +421,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withStart(new Start(0))
             ->withLimit(new Limit(30));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -519,7 +519,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withAudienceTypeFilter(new AudienceType('everyone'))
             ->withDuplicateFilter(false);
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -555,7 +555,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
 
@@ -613,7 +613,7 @@ final class OfferSearchControllerTest extends TestCase
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
             );
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -670,7 +670,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withLimit(new Limit(30))
             ->withAgeRangeFilter(new Natural(0), new Natural(0));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -697,7 +697,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withLimit(new Limit(30))
             ->withPriceRangeFilter(Price::fromFloat(0.14), Price::fromFloat(2.24));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -729,7 +729,7 @@ final class OfferSearchControllerTest extends TestCase
                 ->withMediaObjectsFilter($booleanValue);
         }
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -761,7 +761,7 @@ final class OfferSearchControllerTest extends TestCase
                 ->withUiTPASFilter($booleanValue);
         }
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -858,7 +858,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withOrganizerLabelFilter(new LabelName('bar'))
             ->withFacet(FacetName::REGIONS());
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -884,7 +884,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withLimit(new Limit(10))
             ->withCalendarTypeFilter(new CalendarType('SINGLE'), new CalendarType('MULTIPLE'));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -936,7 +936,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('NL')));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -1088,7 +1088,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStatusFilter(Status::AVAILABLE());
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -1114,7 +1114,7 @@ final class OfferSearchControllerTest extends TestCase
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00')
             );
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -1137,7 +1137,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withLocalTimeRangeFilter(800, 1600);
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -1235,7 +1235,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withStart(new Start(10))
             ->withLimit(new Limit(30));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 

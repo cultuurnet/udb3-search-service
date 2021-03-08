@@ -27,7 +27,6 @@ use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\Number\Natural;
 use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
@@ -128,8 +127,8 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLimit(new Limit(10));
 
         $expectedResultSet = new PagedResultSet(
-            new Natural(32),
-            new Natural(10),
+            32,
+            10,
             [
                 new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id":"1","@type":"Organizer"}'),
                 new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id":"2","@type":"Organizer"}'),
@@ -176,7 +175,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLimit(new Limit(30))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
@@ -267,7 +266,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLimit(new Limit(30))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
-        $expectedResultSet = new PagedResultSet(new Natural(30), new Natural(0), []);
+        $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
