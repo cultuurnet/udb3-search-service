@@ -29,6 +29,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withLimit(new Natural(10));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -54,6 +55,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -90,6 +92,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -122,6 +125,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAutoCompleteFilter(new StringLiteral('Collectief Cursief'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -167,6 +171,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -205,6 +210,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -242,6 +248,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -296,6 +303,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -361,6 +369,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAddressCountryFilter(new Country(CountryCode::get('NL')));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -426,6 +435,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withCreatorFilter(new Creator('John Doe'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -469,6 +479,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -514,6 +525,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -537,6 +549,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -578,6 +591,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -632,6 +646,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 0,
             'size' => 30,
             'query' => [

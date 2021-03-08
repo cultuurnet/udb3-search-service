@@ -62,6 +62,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withLimit(new Natural(10));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -87,6 +88,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -124,6 +126,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -167,6 +170,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -208,6 +212,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -249,6 +254,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -290,6 +296,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -329,6 +336,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCalendarTypeFilter();
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -353,6 +361,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCalendarTypeFilter(new CalendarType('single'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -395,6 +404,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -450,6 +460,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -492,6 +503,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -534,6 +546,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -581,6 +594,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -666,6 +680,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -730,6 +745,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -806,6 +822,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -880,6 +897,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -932,6 +950,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -956,6 +975,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withWorkflowStatusFilter(new WorkflowStatus('DRAFT'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -998,6 +1018,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1053,6 +1074,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1095,6 +1117,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1137,6 +1160,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1197,6 +1221,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1230,6 +1255,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1294,6 +1320,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1346,6 +1373,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1392,6 +1420,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1458,6 +1487,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1524,6 +1554,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(new Natural(18), null);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1563,6 +1594,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(null, new Natural(18));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1602,6 +1634,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(new Natural(6), new Natural(12));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1643,6 +1676,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAllAgesFilter(true);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1688,6 +1722,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAllAgesFilter(false);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1732,6 +1767,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(Price::fromFloat(9.99), null);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1771,6 +1807,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(null, Price::fromFloat(19.99));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1810,6 +1847,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(Price::fromFloat(9.99), Price::fromFloat(19.99));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1864,6 +1902,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAudienceTypeFilter(new AudienceType('members'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1903,6 +1942,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMediaObjectsFilter(true);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1942,6 +1982,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMediaObjectsFilter(false);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1981,6 +2022,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withUiTPASFilter(true);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2018,6 +2060,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withUiTPASFilter(false);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2060,6 +2103,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2111,6 +2155,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2162,6 +2207,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2213,6 +2259,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2264,6 +2311,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2315,6 +2363,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2366,6 +2415,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2412,6 +2462,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMainLanguageFilter(new Language('nl'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2453,6 +2504,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2497,6 +2549,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2548,6 +2601,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2594,6 +2648,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCreatorFilter(new Creator('Jane Doe'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2636,6 +2691,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2678,6 +2734,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2720,6 +2777,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2763,6 +2821,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2805,6 +2864,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2847,6 +2907,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2889,6 +2950,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2925,6 +2987,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2972,6 +3035,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3023,6 +3087,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3070,6 +3135,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByPopularity(SortOrder::DESC());
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3122,6 +3188,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByCreated(SortOrder::ASC());
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3153,6 +3220,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByModified(SortOrder::ASC());
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3184,6 +3252,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withDuplicateFilter(true);
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3222,6 +3291,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3260,6 +3330,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withGroupByProductionId();
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [

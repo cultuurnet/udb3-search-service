@@ -22,6 +22,12 @@ use ValueObjects\Web\Url;
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd'];
+    }
+
     protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         return [];
