@@ -314,7 +314,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withAudienceTypeFilter(AudienceType $audienceType): self
     {
-        return $this->withMatchQuery('audienceType', $audienceType->toNative());
+        return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
     public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null): self

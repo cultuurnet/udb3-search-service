@@ -260,7 +260,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withAudienceTypeFilter(AudienceType $audienceType)
     {
         $c = clone $this;
-        $c->mockQuery['audienceType'] = (string) $audienceType;
+        $c->mockQuery['audienceType'] = $audienceType->toString();
         return $c;
     }
 
