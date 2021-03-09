@@ -57,7 +57,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             (new KnownLanguages())->fieldNames(
                 'address.{{lang}}.postalCode'
             ),
-            $postalCode->toNative()
+            $postalCode->toString()
         );
     }
 

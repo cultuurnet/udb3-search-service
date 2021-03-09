@@ -240,7 +240,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             (new KnownLanguages())->fieldNames(
                 'address.{{lang}}.postalCode'
             ),
-            $postalCode->toNative()
+            $postalCode->toString()
         );
     }
 

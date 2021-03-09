@@ -198,7 +198,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withPostalCodeFilter(PostalCode $postalCode)
     {
         $c = clone $this;
-        $c->mockQuery['postalCode'] = (string) $postalCode;
+        $c->mockQuery['postalCode'] = $postalCode->toString();
         return $c;
     }
 
