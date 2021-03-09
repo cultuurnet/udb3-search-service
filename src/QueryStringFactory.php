@@ -7,8 +7,7 @@ namespace CultuurNet\UDB3\Search;
 interface QueryStringFactory
 {
     /**
-     * @param string $queryString
      * @return AbstractQueryString
      */
-    public function fromString($queryString);
+    public function fromString(string $queryString);
 }

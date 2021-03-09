@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 
 final class LuceneQueryStringFactoryTest extends TestCase
 {
@@ -28,15 +27,5 @@ final class LuceneQueryStringFactoryTest extends TestCase
         $expected = new LuceneQueryString($queryString);
         $actual = $this->factory->fromString($queryString);
         $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_delegates_validation_to_the_value_object_itself()
-    {
-        $queryString = false;
-        $this->expectException(InvalidNativeArgumentException::class);
-        $this->factory->fromString($queryString);
     }
 }

@@ -63,7 +63,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         }
 
         return $this->withQueryStringQuery(
-            $queryString->toNative(),
+            $queryString->toString(),
             $this->getPredefinedQueryStringFields(...$textLanguages)
         );
     }

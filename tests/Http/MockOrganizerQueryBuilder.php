@@ -93,7 +93,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['advancedQuery']['query'] = (string) $queryString;
+        $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;
