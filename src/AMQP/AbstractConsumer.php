@@ -121,9 +121,7 @@ abstract class AbstractConsumer implements ConsumerInterface
                 $contentType
             );
 
-            $deserializedMessage = $deserializer->deserialize(
-                new StringLiteral($message->body)
-            );
+            $deserializedMessage = $deserializer->deserialize($message->body);
 
             $this->delayIfNecessary();
 

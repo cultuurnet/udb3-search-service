@@ -174,7 +174,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializer->expects($this->once())
             ->method('deserialize')
-            ->with(new StringLiteral(''))
+            ->with('')
             ->willReturn('');
 
         $this->channel->expects($this->once())

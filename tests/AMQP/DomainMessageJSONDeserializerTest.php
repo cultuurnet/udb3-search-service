@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Search\AMQP\Dummies\DummyEvent;
 use CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class DomainMessageJSONDeserializerTest extends TestCase
 {
@@ -45,9 +44,7 @@ final class DomainMessageJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_domain_message()
     {
-        $jsonData = new StringLiteral(
-            file_get_contents(__DIR__ . '/Dummies/domain-message-dummy-event.json')
-        );
+        $jsonData = file_get_contents(__DIR__ . '/Dummies/domain-message-dummy-event.json');
 
         $expectedDomainMessage = new DomainMessage(
             'message-id-123',
