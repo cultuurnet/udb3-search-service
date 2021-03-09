@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 {
@@ -23,12 +22,12 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -43,8 +42,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = new StringLiteral('udb3-core');
-        $this->documentType = new StringLiteral('organizer');
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'organizer';
 
         $this->service = new ElasticSearchOrganizerSearchService(
             $this->client,
@@ -87,14 +86,14 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                 'total' => 962,
                 'hits' => [
                     [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => $idCollectiefCursief,
                         '_source' => $sourceCollectiefCursief,
                     ],
                     [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => $idCollectiefAC,
                         '_source' => $sourceAC,
                     ],
@@ -106,8 +105,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->method('search')
             ->with(
                 [
-                    'index' => $this->indexName->toNative(),
-                    'type' => $this->documentType->toNative(),
+                    'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
                         'from' => 960,
