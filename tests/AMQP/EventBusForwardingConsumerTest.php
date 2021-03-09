@@ -27,17 +27,17 @@ final class EventBusForwardingConsumerTest extends TestCase
     private $connection;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $queueName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $exchangeName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $consumerTag;
 
@@ -85,9 +85,9 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->delay = 1;
 
-        $this->queueName = new StringLiteral('my-queue');
-        $this->exchangeName = new StringLiteral('my-exchange');
-        $this->consumerTag = new StringLiteral('my-tag');
+        $this->queueName = 'my-queue';
+        $this->exchangeName = 'my-exchange';
+        $this->consumerTag = 'my-tag';
         $this->eventBus = $this->createMock(EventBusInterface::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
@@ -334,9 +334,6 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_automatically_acknowledges_when_no_deserializer_was_found(): void
     {
-        $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
-
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
