@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\SortOrder;
 use Stringy\Stringy;
 use ValueObjects\Geography\Country;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -33,10 +32,10 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return [];
     }
 
-    public function withAutoCompleteFilter(StringLiteral $input)
+    public function withAutoCompleteFilter(string $input)
     {
         // Currently not translatable, just look in the Dutch version for now.
-        return $this->withMatchPhraseQuery('name.nl.autocomplete', $input->toNative());
+        return $this->withMatchPhraseQuery('name.nl.autocomplete', $input);
     }
 
     public function withWebsiteFilter(Url $url)

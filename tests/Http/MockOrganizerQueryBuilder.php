@@ -30,7 +30,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
-    public function withAutoCompleteFilter(StringLiteral $input)
+    public function withAutoCompleteFilter(string $input)
     {
         $c = clone $this;
         $c->mockQuery['autoComplete'] = (string) $input;

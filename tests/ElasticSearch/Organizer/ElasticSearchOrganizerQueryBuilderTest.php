@@ -123,7 +123,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_an_autocomplete_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withAutoCompleteFilter(new StringLiteral('Collectief Cursief'));
+            ->withAutoCompleteFilter('Collectief Cursief');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
@@ -245,7 +245,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withAutoCompleteFilter(new StringLiteral('foo'))
+            ->withAutoCompleteFilter('foo')
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
 
         $expectedQueryArray = [
@@ -643,7 +643,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $mutatedBuilder = $originalBuilder
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withAutoCompleteFilter(new StringLiteral('foo'))
+            ->withAutoCompleteFilter('foo')
             ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
 
         $expectedQueryArray = [

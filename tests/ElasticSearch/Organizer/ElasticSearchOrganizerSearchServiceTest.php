@@ -64,7 +64,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
         $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Start(960))
             ->withLimit(new Limit(30))
-            ->withAutoCompleteFilter(new StringLiteral('Collectief'));
+            ->withAutoCompleteFilter('Collectief');
 
         $idCollectiefCursief = '351b85c1-66ea-463b-82a6-515b7de0d267';
 

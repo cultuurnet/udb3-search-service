@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -105,9 +104,7 @@ final class OrganizerSearchController
         }
 
         if ($request->hasQueryParam('name')) {
-            $queryBuilder = $queryBuilder->withAutoCompleteFilter(
-                new StringLiteral($request->getQueryParam('name'))
-            );
+            $queryBuilder = $queryBuilder->withAutoCompleteFilter($request->getQueryParam('name'));
         }
 
         if ($request->hasQueryParam('website')) {
