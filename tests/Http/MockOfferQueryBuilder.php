@@ -100,7 +100,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
             function (WorkflowStatus $workflowStatus) {
-                return (string) $workflowStatus;
+                return $workflowStatus->toString();
             },
             $workflowStatuses
         );

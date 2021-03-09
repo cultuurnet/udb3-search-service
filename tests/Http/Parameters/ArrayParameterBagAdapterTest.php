@@ -133,7 +133,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $expected = new WorkflowStatus('DRAFT');
         $actual = $parameterBag->getStringFromParameter('workflowStatus', null, $callback);
 
-        $this->assertTrue($expected->sameValueAs($actual));
+        $this->assertEquals($expected, $actual);
     }
 
     /**
@@ -168,7 +168,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $expected = new WorkflowStatus('APPROVED');
         $actual = $parameterBag->getStringFromParameter('workflowStatus', $default, $callback);
 
-        $this->assertTrue($expected->sameValueAs($actual));
+        $this->assertEquals($expected, $actual);
     }
 
     /**

@@ -116,7 +116,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'workflowStatus',
             array_map(
                 function (WorkflowStatus $workflowStatus) {
-                    return $workflowStatus->toNative();
+                    return $workflowStatus->toString();
                 },
                 $workflowStatuses
             )
