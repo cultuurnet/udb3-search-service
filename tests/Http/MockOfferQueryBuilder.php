@@ -304,7 +304,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withTermIdFilter(TermId $termId)
     {
         $c = clone $this;
-        $c->mockQuery['termId'][] = (string) $termId;
+        $c->mockQuery['termId'][] = $termId->toString();
         return $c;
     }
 
@@ -318,7 +318,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withLocationTermIdFilter(TermId $locationTermId)
     {
         $c = clone $this;
-        $c->mockQuery['locationTermId'][] = (string) $locationTermId;
+        $c->mockQuery['locationTermId'][] = $locationTermId->toString();
         return $c;
     }
 

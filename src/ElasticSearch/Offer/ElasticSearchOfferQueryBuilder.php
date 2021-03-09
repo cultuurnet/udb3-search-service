@@ -363,7 +363,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withTermIdFilter(TermId $termId): self
     {
-        return $this->withMatchQuery('terms.id', $termId->toNative());
+        return $this->withMatchQuery('terms.id', $termId->toString());
     }
 
     public function withTermLabelFilter(TermLabel $termLabel): self
@@ -373,7 +373,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withLocationTermIdFilter(TermId $locationTermId): self
     {
-        return $this->withMatchQuery('location.terms.id', $locationTermId->toNative());
+        return $this->withMatchQuery('location.terms.id', $locationTermId->toString());
     }
 
     public function withLocationTermLabelFilter(TermLabel $locationTermLabel): self
