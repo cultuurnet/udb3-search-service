@@ -87,7 +87,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             'workflowStatus',
             array_map(
                 function (WorkflowStatus $workflowStatus) {
-                    return $workflowStatus->toNative();
+                    return $workflowStatus->toString();
                 },
                 $workflowStatuses
             )

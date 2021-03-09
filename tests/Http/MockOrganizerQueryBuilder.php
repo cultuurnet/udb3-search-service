@@ -83,7 +83,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
             function (WorkflowStatus $workflowStatus) {
-                return (string) $workflowStatus;
+                return $workflowStatus->toString();
             },
             $workflowStatuses
         );
