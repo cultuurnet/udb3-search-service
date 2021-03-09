@@ -263,7 +263,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         $geoShapeQuery->addPreIndexedShape(
             'geo',
-            $regionId->toNative(),
+            $regionId->toString(),
             $regionDocumentType,
             $regionIndexName,
             'location'
