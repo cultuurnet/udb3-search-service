@@ -57,7 +57,6 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class OfferSearchControllerTest extends TestCase
 {
@@ -1198,7 +1197,7 @@ final class OfferSearchControllerTest extends TestCase
     public function it_should_add_the_default_query_of_the_api_consumer_if_they_have_one()
     {
         $apiKey = new ApiKey('d568d2e9-3b53-4704-82a1-eaccf91a6337');
-        $defaultQuery = new StringLiteral('labels:foo');
+        $defaultQuery = 'labels:foo';
 
         /* @var ConsumerInterface|MockObject $consumer */
         $consumer = $this->createMock(ConsumerInterface::class);

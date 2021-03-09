@@ -17,7 +17,6 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
@@ -201,7 +200,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     public function it_logs_messages_when_consuming()
     {
         $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
+        $context['correlation_id'] = 'my-correlation-id-123';
 
         $this->logger
             ->expects($this->at(0))
@@ -280,7 +279,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     public function it_logs_messages_when_rejecting_a_message()
     {
         $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
+        $context['correlation_id'] = 'my-correlation-id-123';
 
         $this->logger
             ->expects($this->at(0))
