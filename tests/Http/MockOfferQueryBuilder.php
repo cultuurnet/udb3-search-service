@@ -311,7 +311,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withTermLabelFilter(TermLabel $termLabel)
     {
         $c = clone $this;
-        $c->mockQuery['termLabel'][] = (string) $termLabel;
+        $c->mockQuery['termLabel'][] = $termLabel->toString();
         return $c;
     }
 
@@ -325,7 +325,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withLocationTermLabelFilter(TermLabel $locationTermLabel)
     {
         $c = clone $this;
-        $c->mockQuery['locationTermLabel'][] = (string) $locationTermLabel;
+        $c->mockQuery['locationTermLabel'][] = $locationTermLabel->toString();
         return $c;
     }
 
