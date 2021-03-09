@@ -54,7 +54,7 @@ final class SentryExceptionHandler extends Handler
     private function createTags(?ApiKey $apiKey, bool $console): array
     {
         return [
-            'api_key' => $apiKey ? $apiKey->toNative() : 'null',
+            'api_key' => $apiKey ? $apiKey->toString() : 'null',
             'runtime.env' => $console ? 'cli' : 'web',
         ];
     }

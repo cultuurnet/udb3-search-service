@@ -1218,7 +1218,7 @@ final class OfferSearchControllerTest extends TestCase
                 'start' => 10,
                 'limit' => 30,
                 'disableDefaultFilters' => true,
-                'apiKey' => $apiKey->toNative(),
+                'apiKey' => $apiKey->toString(),
                 'q' => 'labels:bar',
             ]
         );

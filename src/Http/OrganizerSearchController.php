@@ -90,7 +90,7 @@ final class OrganizerSearchController
 
         if ($consumerApiKey instanceof ApiKey &&
             $queryBuilder instanceof ElasticSearchOrganizerQueryBuilder) {
-            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toNative());
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toString());
         }
 
         $queryBuilder = $this->organizerRequestParser->parse($request, $queryBuilder);

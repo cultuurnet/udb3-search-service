@@ -132,7 +132,7 @@ final class OfferSearchController
 
         if ($consumerApiKey instanceof ApiKey &&
             $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
-            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toNative());
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toString());
         }
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
@@ -145,9 +145,7 @@ final class OfferSearchController
         $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
         if ($defaultQuery) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString(
-                    $defaultQuery->toNative()
-                ),
+                $this->queryStringFactory->fromString($defaultQuery),
                 ...$textLanguages
             );
         }
