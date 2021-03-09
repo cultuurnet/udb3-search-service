@@ -87,12 +87,12 @@ final class OfferSearchControllerTest extends TestCase
     private $searchService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionIndexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionDocumentType;
 
@@ -132,8 +132,8 @@ final class OfferSearchControllerTest extends TestCase
 
         $this->searchService = $this->createMock(OfferSearchServiceInterface::class);
 
-        $this->regionIndexName = new StringLiteral('geoshapes');
-        $this->regionDocumentType = new StringLiteral('region');
+        $this->regionIndexName = 'geoshapes';
+        $this->regionDocumentType = 'region';
 
         $this->queryStringFactory = new MockQueryStringFactory();
 

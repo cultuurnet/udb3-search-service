@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * Multiple filters are combined using AND.
@@ -137,8 +136,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      * @return OfferQueryBuilderInterface
      */
     public function withRegionFilter(
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         RegionId $regionId
     );
 

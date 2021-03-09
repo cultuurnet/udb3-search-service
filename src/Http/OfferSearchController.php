@@ -65,12 +65,12 @@ final class OfferSearchController
     private $searchService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionIndexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionDocumentType;
 
@@ -95,8 +95,8 @@ final class OfferSearchController
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
         OfferSearchServiceInterface $searchService,
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {

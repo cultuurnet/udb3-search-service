@@ -1246,13 +1246,13 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withRegionFilter(
-                new StringLiteral('geoshapes'),
-                new StringLiteral('regions'),
+                'geoshapes',
+                'regions',
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
-                new StringLiteral('geoshapes'),
-                new StringLiteral('regions'),
+                'geoshapes',
+                'regions',
                 new RegionId('prv-limburg')
             );
 

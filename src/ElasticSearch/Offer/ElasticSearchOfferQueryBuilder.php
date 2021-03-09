@@ -34,7 +34,6 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -256,8 +255,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withRegionFilter(
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         RegionId $regionId
     ): self {
         $geoShapeQuery = new GeoShapeQuery();
@@ -265,8 +264,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $geoShapeQuery->addPreIndexedShape(
             'geo',
             $regionId->toNative(),
-            $regionDocumentType->toNative(),
-            $regionIndexName->toNative(),
+            $regionDocumentType,
+            $regionIndexName,
             'location'
         );
 
