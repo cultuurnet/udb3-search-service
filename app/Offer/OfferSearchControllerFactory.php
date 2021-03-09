@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class OfferSearchControllerFactory
 {
@@ -100,8 +99,8 @@ final class OfferSearchControllerFactory
                 $readIndex,
                 $documentType
             ),
-            new StringLiteral($this->regionIndex),
-            new StringLiteral($this->documentType),
+            $this->regionIndex,
+            $this->documentType,
             new LuceneQueryStringFactory(),
             new NodeAwareFacetTreeNormalizer()
         );
