@@ -278,7 +278,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toNative(),
+            $geoDistanceParameters->getMaximumDistance()->toString(),
             (object) [
                 'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
                 'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),

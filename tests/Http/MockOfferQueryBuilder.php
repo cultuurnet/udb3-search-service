@@ -226,7 +226,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['geoDistance']['lat'] = $geoDistance->getCoordinates()->getLatitude()->toDouble();
         $c->mockQuery['geoDistance']['lng'] = $geoDistance->getCoordinates()->getLongitude()->toDouble();
-        $c->mockQuery['geoDistance']['distance'] = $geoDistance->getMaximumDistance()->toNative();
+        $c->mockQuery['geoDistance']['distance'] = $geoDistance->getMaximumDistance()->toString();
         return $c;
     }
 
