@@ -227,7 +227,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'calendarType',
             array_map(
                 function (CalendarType $calendarType) {
-                    return $calendarType->toNative();
+                    return $calendarType->toString();
                 },
                 $calendarTypes
             )

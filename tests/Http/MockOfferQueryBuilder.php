@@ -188,7 +188,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['calendarType'] = array_map(
             function (CalendarType $calendarType) {
-                return (string) $calendarType;
+                return $calendarType->toString();
             },
             $calendarTypes
         );
