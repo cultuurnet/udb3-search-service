@@ -74,17 +74,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withCdbIdFilter(Cdbid $cdbid): self
     {
-        return $this->withMatchQuery('id', $cdbid->toNative());
+        return $this->withMatchQuery('id', $cdbid->toString());
     }
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid): self
     {
-        return $this->withMatchQuery('location.id', $locationCdbid->toNative());
+        return $this->withMatchQuery('location.id', $locationCdbid->toString());
     }
 
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
-        return $this->withMatchQuery('organizer.id', $organizerCdbId);
+        return $this->withMatchQuery('organizer.id', $organizerCdbId->toString());
     }
 
     public function withMainLanguageFilter(Language $mainLanguages): self

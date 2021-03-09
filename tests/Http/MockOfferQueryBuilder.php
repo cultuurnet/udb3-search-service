@@ -44,21 +44,21 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withCdbIdFilter(Cdbid $cdbid)
     {
         $c = clone $this;
-        $c->mockQuery['cdbId'] = (string) $cdbid;
+        $c->mockQuery['cdbId'] = $cdbid->toString();
         return $c;
     }
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid)
     {
         $c = clone $this;
-        $c->mockQuery['locationCdbId'] = (string) $locationCdbid;
+        $c->mockQuery['locationCdbId'] = $locationCdbid->toString();
         return $c;
     }
 
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId)
     {
         $c = clone $this;
-        $c->mockQuery['organizerCdbId'] = (string) $organizerCdbId;
+        $c->mockQuery['organizerCdbId'] = $organizerCdbId->toString();
         return $c;
     }
 

@@ -3286,7 +3286,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withProductionIdFilter(
-                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toNative()
+                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toString()
             );
 
         $expectedQueryArray = [
