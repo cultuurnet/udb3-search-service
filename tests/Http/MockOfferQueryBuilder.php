@@ -126,7 +126,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withCreatorFilter(Creator $creator)
     {
         $c = clone $this;
-        $c->mockQuery['creator'] = (string) $creator;
+        $c->mockQuery['creator'] = $creator->toString();
         return $c;
     }
 

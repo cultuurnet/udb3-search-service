@@ -73,7 +73,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withCreatorFilter(Creator $creator)
     {
-        return $this->withMatchQuery('creator', $creator->toNative());
+        return $this->withMatchQuery('creator', $creator->toString());
     }
 
     public function withLabelFilter(LabelName $label)

@@ -141,7 +141,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withCreatorFilter(Creator $creator): self
     {
-        return $this->withMatchQuery('creator', $creator->toNative());
+        return $this->withMatchQuery('creator', $creator->toString());
     }
 
     public function withDateRangeFilter(
