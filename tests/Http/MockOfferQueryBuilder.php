@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
@@ -436,10 +435,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['textQuery']['query'] = (string) $text;
+        $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;

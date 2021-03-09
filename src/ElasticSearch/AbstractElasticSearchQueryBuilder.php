@@ -21,7 +21,6 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Search;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
@@ -69,14 +68,14 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         );
     }
 
-    public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
             $textLanguages = $this->getDefaultLanguages();
         }
 
         return $this->withQueryStringQuery(
-            str_replace(':', '\\:', $text->toNative()),
+            str_replace(':', '\\:', $text),
             $this->getPredefinedQueryStringFields(...$textLanguages),
             BoolQuery::MUST,
             'AND'

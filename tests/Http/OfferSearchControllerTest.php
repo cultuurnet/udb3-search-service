@@ -230,7 +230,7 @@ final class OfferSearchControllerTest extends TestCase
                 new Language('en')
             )
             ->withTextQuery(
-                new StringLiteral('(foo OR bar) AND baz'),
+                '(foo OR bar) AND baz',
                 new Language('nl'),
                 new Language('en')
             )
@@ -848,7 +848,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withTextQuery(new StringLiteral('foobar'), new Language('nl'))
+            ->withTextQuery('foobar', new Language('nl'))
             ->withLanguageFilter(new Language('nl'))
             ->withCompletedLanguageFilter(new Language('nl'))
             ->withTermIdFilter(new TermId('0.145.567.6'))

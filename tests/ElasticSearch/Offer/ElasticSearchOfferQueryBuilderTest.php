@@ -36,7 +36,6 @@ use InvalidArgumentException;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
@@ -123,9 +122,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withTextQuery(
-                new StringLiteral('(foo OR baz) AND bar AND labels:test')
-            );
+            ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
