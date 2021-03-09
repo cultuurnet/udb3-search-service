@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class NodeMapAggregationTransformer implements AggregationTransformerInterface
 {
@@ -131,12 +130,12 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
                 if (!isset($name)) {
                     $name = new MultilingualString(
                         new Language($language),
-                        new StringLiteral($value)
+                        $value
                     );
                 } else {
                     $name = $name->withTranslation(
                         new Language($language),
-                        new StringLiteral($value)
+                        $value
                     );
                 }
             }

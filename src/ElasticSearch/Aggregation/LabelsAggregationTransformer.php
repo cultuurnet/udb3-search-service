@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class LabelsAggregationTransformer implements AggregationTransformerInterface
 {
@@ -51,7 +50,7 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
 
             // For labels we use the bucket key for all 4 supported
             // languages, because labels are currently not multilingual.
-            $translatedName = new StringLiteral($bucket->getKey());
+            $translatedName = $bucket->getKey();
 
             $name = new MultilingualString(
                 new Language('nl'),

@@ -346,12 +346,12 @@ final class OfferSearchControllerTest extends TestCase
                 [
                     new FacetNode(
                         'gem-leuven',
-                        new MultilingualString(new Language('nl'), new StringLiteral('Leuven')),
+                        new MultilingualString(new Language('nl'), 'Leuven'),
                         7,
                         [
                             new FacetNode(
                                 'gem-wijgmaal',
-                                new MultilingualString(new Language('nl'), new StringLiteral('Wijgmaal')),
+                                new MultilingualString(new Language('nl'), 'Wijgmaal'),
                                 3
                             ),
                         ]

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Facet;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class FacetTreeTest extends TestCase
 {
@@ -20,7 +19,7 @@ final class FacetTreeTest extends TestCase
             'gem-leuven',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Leuven')
+                'Leuven'
             ),
             3
         );
@@ -29,7 +28,7 @@ final class FacetTreeTest extends TestCase
             'gem-wilsele',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Wilsele')
+                'Wilsele'
             ),
             14
         );
@@ -38,7 +37,7 @@ final class FacetTreeTest extends TestCase
             'facet13',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Wijgmaal')
+                'Wijgmaal'
             ),
             15
         );
@@ -47,7 +46,7 @@ final class FacetTreeTest extends TestCase
             'prv-vlaams-brabant',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Vlaams-Brabant')
+                'Vlaams-Brabant'
             ),
             32,
             [$gemLeuven, $gemWilsele, $gemWijgmaal]
@@ -57,7 +56,7 @@ final class FacetTreeTest extends TestCase
             'gem-berchem',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Berchem')
+                'Berchem'
             ),
             7
         );
@@ -66,7 +65,7 @@ final class FacetTreeTest extends TestCase
             'gem-westerlo',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Westerlo')
+                'Westerlo'
             ),
             8
         );
@@ -75,7 +74,7 @@ final class FacetTreeTest extends TestCase
             'gem-antwerpen',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Antwerpen')
+                'Antwerpen'
             ),
             13
         );
@@ -84,7 +83,7 @@ final class FacetTreeTest extends TestCase
             'prv-antwerpen',
             new MultilingualString(
                 new Language('nl'),
-                new StringLiteral('Antwerpen')
+                'Antwerpen'
             ),
             28,
             [$gemBerchem, $gemWesterlo, $gemAntwerpen]
@@ -112,7 +111,7 @@ final class FacetTreeTest extends TestCase
     public function it_only_accepts_an_int_as_count()
     {
         $this->expectException(\InvalidArgumentException::class);
-        new FacetNode('test', new MultilingualString(new Language('nl'), new StringLiteral('test')), 'count', []);
+        new FacetNode('test', new MultilingualString(new Language('nl'), 'test'), 'count', []);
     }
 
     private function assertFilterEquals(string $expectedKey, array $expectedChildren, FacetFilter $actual): void

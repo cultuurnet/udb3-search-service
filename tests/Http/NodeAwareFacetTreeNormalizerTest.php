@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class NodeAwareFacetTreeNormalizerTest extends TestCase
 {
@@ -39,7 +38,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                         'prv-vlaams-brabant',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Vlaams-Brabant')
+                            'Vlaams-Brabant'
                         ),
                         20,
                         [
@@ -47,7 +46,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                                 'gem-leuven',
                                 new MultilingualString(
                                     new Language('nl'),
-                                    new StringLiteral('Leuven')
+                                    'Leuven'
                                 ),
                                 15
                             ),
@@ -55,7 +54,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                                 'gem-diest',
                                 new MultilingualString(
                                     new Language('nl'),
-                                    new StringLiteral('Diest')
+                                    'Diest'
                                 ),
                                 5
                             ),
@@ -65,7 +64,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                         'prv-antwerpen',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Antwerpen')
+                            'Antwerpen'
                         ),
                         32,
                         [
@@ -73,7 +72,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                                 'gem-antwerpen',
                                 new MultilingualString(
                                     new Language('nl'),
-                                    new StringLiteral('Antwerpen')
+                                    'Antwerpen'
                                 ),
                                 17
                             ),
@@ -81,7 +80,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                                 'gem-westerlo',
                                 new MultilingualString(
                                     new Language('nl'),
-                                    new StringLiteral('Westerlo')
+                                    'Westerlo'
                                 ),
                                 15
                             ),
@@ -96,7 +95,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                         '0.11.6.5',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Jeugdhuis of jeugdcentrum')
+                            'Jeugdhuis of jeugdcentrum'
                         ),
                         7
                     ),
@@ -104,7 +103,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                         '0.11.6.7',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Bibliotheek')
+                            'Bibliotheek'
                         ),
                         14
                     ),
