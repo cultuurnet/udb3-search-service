@@ -251,9 +251,6 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_rejects_the_massage_when_an_error_occurs()
     {
-        $context = [];
-        $context['correlation_id'] = new StringLiteral('my-correlation-id-123');
-
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
