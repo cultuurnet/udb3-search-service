@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferSearchServiceTest extends TestCase
 {
@@ -23,12 +22,12 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -43,8 +42,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = new StringLiteral('udb3-core');
-        $this->documentType = new StringLiteral('event,place');
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'event,place';
 
         $this->service = new ElasticSearchOfferSearchService(
             $this->client,
@@ -99,8 +98,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->method('search')
             ->with(
                 [
-                    'index' => $this->indexName->toNative(),
-                    'type' => $this->documentType->toNative(),
+                    'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
