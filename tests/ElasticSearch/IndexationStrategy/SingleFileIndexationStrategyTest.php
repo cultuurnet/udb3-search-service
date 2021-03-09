@@ -9,7 +9,6 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class SingleFileIndexationStrategyTest extends TestCase
 {
@@ -19,12 +18,12 @@ final class SingleFileIndexationStrategyTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -44,8 +43,8 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = new StringLiteral('udb3-core');
-        $this->documentType = new StringLiteral('event');
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'event';
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -70,8 +69,8 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->method('index')
             ->with(
                 [
-                    'index' => $this->indexName->toNative(),
-                    'type' => $this->documentType->toNative(),
+                    'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     'body' => ['foo' => 'bar'],
                 ]

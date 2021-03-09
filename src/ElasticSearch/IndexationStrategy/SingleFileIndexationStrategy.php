@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
@@ -32,8 +31,8 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
 
 
     public function indexDocument(
-        StringLiteral $indexName,
-        StringLiteral $documentType,
+        string $indexName,
+        string $documentType,
         JsonDocument $jsonDocument
     ) {
         $id = $jsonDocument->getId();
@@ -42,8 +41,8 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
 
         $this->elasticSearchClient->index(
             [
-                'index' => $indexName->toNative(),
-                'type' => $documentType->toNative(),
+                'index' => $indexName,
+                'type' => $documentType,
                 'id' => $id,
                 'body' => (array) $jsonDocument->getBody(),
             ]

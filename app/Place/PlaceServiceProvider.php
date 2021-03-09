@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class PlaceServiceProvider extends BaseServiceProvider
 {
@@ -76,8 +75,8 @@ final class PlaceServiceProvider extends BaseServiceProvider
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
-                    new StringLiteral($this->parameter('elasticsearch.place.write_index')),
-                    new StringLiteral($this->parameter('elasticsearch.place.document_type')),
+                    $this->parameter('elasticsearch.place.write_index'),
+                    $this->parameter('elasticsearch.place.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
             }

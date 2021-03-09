@@ -96,8 +96,8 @@ final class OrganizerServiceProvider extends BaseServiceProvider
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
-                    new StringLiteral($this->parameter('elasticsearch.organizer.write_index')),
-                    new StringLiteral($this->parameter('elasticsearch.organizer.document_type')),
+                    $this->parameter('elasticsearch.organizer.write_index'),
+                    $this->parameter('elasticsearch.organizer.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
             }

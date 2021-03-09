@@ -9,7 +9,6 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class BulkIndexationStrategyTest extends TestCase
 {
@@ -19,12 +18,12 @@ final class BulkIndexationStrategyTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -49,8 +48,8 @@ final class BulkIndexationStrategyTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = new StringLiteral('udb3-core');
-        $this->documentType = new StringLiteral('event');
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'event';
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -90,8 +89,8 @@ final class BulkIndexationStrategyTest extends TestCase
             'body' => [
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     ],
                 ],
@@ -100,8 +99,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '5cb3f31d-ffb4-4de5-86bd-852825d94ff2',
                     ],
                 ],
@@ -110,8 +109,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7',
                     ],
                 ],
@@ -120,8 +119,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '21dc5755-93c1-4443-9ee9-3ca0373a1107',
                     ],
                 ],
@@ -130,8 +129,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '8d429d11-ffdb-4c59-a530-792c5bf028df',
                     ],
                 ],
@@ -175,8 +174,8 @@ final class BulkIndexationStrategyTest extends TestCase
             'body' => [
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     ],
                 ],
@@ -185,8 +184,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '5cb3f31d-ffb4-4de5-86bd-852825d94ff2',
                     ],
                 ],
@@ -195,8 +194,8 @@ final class BulkIndexationStrategyTest extends TestCase
                 ],
                 [
                     'index' => [
-                        '_index' => $this->indexName->toNative(),
-                        '_type' => $this->documentType->toNative(),
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7',
                     ],
                 ],

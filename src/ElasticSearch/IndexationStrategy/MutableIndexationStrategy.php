@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class MutableIndexationStrategy implements IndexationStrategy
 {
@@ -29,8 +28,8 @@ final class MutableIndexationStrategy implements IndexationStrategy
 
 
     public function indexDocument(
-        StringLiteral $indexName,
-        StringLiteral $documentType,
+        string $indexName,
+        string $documentType,
         JsonDocument $jsonDocument
     ) {
         $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);

@@ -11,7 +11,6 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
@@ -21,12 +20,12 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -41,8 +40,8 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = new StringLiteral('udb3-core');
-        $this->documentType = new StringLiteral('organizer');
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'organizer';
 
         $this->repository = new ElasticSearchDocumentRepository(
             $this->client,
@@ -69,8 +68,8 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
             ->withBody($body);
 
         $parameters = [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
             'id' => $id,
             'body' => [
                 'name' => 'STUK',
@@ -92,8 +91,8 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
         $parameters = [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
             'id' => $id,
         ];
 
@@ -112,15 +111,15 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
         $parameters = [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
             'id' => $id,
         ];
 
         $response = [
             'found' => true,
-            '_index' => $this->indexName->toNative(),
-            '_type' => $this->documentType->toNative(),
+            '_index' => $this->indexName,
+            '_type' => $this->documentType,
             '_id' => $id,
             '_version' => 2,
             '_source' => [
@@ -147,15 +146,15 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
         $parameters = [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
             'id' => $id,
         ];
 
         $response = [
             'found' => false,
-            '_index' => $this->indexName->toNative(),
-            '_type' => $this->documentType->toNative(),
+            '_index' => $this->indexName,
+            '_type' => $this->documentType,
             '_id' => $id,
             '_version' => 2,
         ];
@@ -178,15 +177,15 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
         $parameters = [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
             'id' => $id,
         ];
 
         $response = [
             'found' => false,
-            '_index' => $this->indexName->toNative(),
-            '_type' => $this->documentType->toNative(),
+            '_index' => $this->indexName,
+            '_type' => $this->documentType,
             '_id' => $id,
         ];
 
