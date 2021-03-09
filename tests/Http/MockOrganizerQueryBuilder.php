@@ -74,7 +74,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withLabelFilter(LabelName $label)
     {
         $c = clone $this;
-        $c->mockQuery['label'][] = (string) $label;
+        $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 

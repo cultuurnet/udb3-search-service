@@ -383,17 +383,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withLabelFilter(LabelName $label): self
     {
-        return $this->withMatchQuery('labels', $label->toNative());
+        return $this->withMatchQuery('labels', $label->toString());
     }
 
     public function withLocationLabelFilter(LabelName $locationLabel): self
     {
-        return $this->withMatchQuery('location.labels', $locationLabel->toNative());
+        return $this->withMatchQuery('location.labels', $locationLabel->toString());
     }
 
     public function withOrganizerLabelFilter(LabelName $organizerLabel): self
     {
-        return $this->withMatchQuery('organizer.labels', $organizerLabel->toNative());
+        return $this->withMatchQuery('organizer.labels', $organizerLabel->toString());
     }
 
     public function withDuplicateFilter(bool $isDuplicate): self

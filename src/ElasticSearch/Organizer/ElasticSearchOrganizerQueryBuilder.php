@@ -78,7 +78,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withLabelFilter(LabelName $label)
     {
-        return $this->withMatchQuery('labels', $label->toNative());
+        return $this->withMatchQuery('labels', $label->toString());
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): ElasticSearchOrganizerQueryBuilder

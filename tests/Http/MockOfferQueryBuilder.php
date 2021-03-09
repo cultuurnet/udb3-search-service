@@ -332,21 +332,21 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withLabelFilter(LabelName $label)
     {
         $c = clone $this;
-        $c->mockQuery['label'][] = (string) $label;
+        $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 
     public function withLocationLabelFilter(LabelName $locationLabel)
     {
         $c = clone $this;
-        $c->mockQuery['locationLabel'][] = (string) $locationLabel;
+        $c->mockQuery['locationLabel'][] = $locationLabel->toString();
         return $c;
     }
 
     public function withOrganizerLabelFilter(LabelName $organizerLabel)
     {
         $c = clone $this;
-        $c->mockQuery['organizerLabel'][] = (string) $organizerLabel;
+        $c->mockQuery['organizerLabel'][] = $organizerLabel->toString();
         return $c;
     }
 
