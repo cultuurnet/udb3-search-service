@@ -115,10 +115,8 @@ abstract class AbstractConsumer implements ConsumerInterface
                 );
             }
 
-            $contentType = new StringLiteral($message->get('content_type'));
-
             $deserializer = $this->deserializerLocator->getDeserializerForContentType(
-                $contentType
+                $message->get('content_type')
             );
 
             $deserializedMessage = $deserializer->deserialize($message->body);

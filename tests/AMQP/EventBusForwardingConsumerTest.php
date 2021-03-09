@@ -169,7 +169,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willReturn($this->deserializer);
 
         $this->deserializer->expects($this->once())
@@ -229,7 +229,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willReturn($this->deserializer);
 
         $messageProperties = [
@@ -253,7 +253,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     {
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
@@ -308,7 +308,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
@@ -339,7 +339,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
-            ->with(new StringLiteral('application/vnd.cultuurnet.udb3-events.dummy-event+json'))
+            ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
             ->willThrowException(new DeserializerNotFoundException());
 
         $this->channel->expects($this->once())
