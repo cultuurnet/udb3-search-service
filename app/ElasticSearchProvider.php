@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexation
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryOfferRegionService;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchProvider extends BaseServiceProvider
 {
@@ -50,7 +49,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
             function () {
                 return new GeoShapeQueryOfferRegionService(
                     $this->get(Client::class),
-                    new StringLiteral($this->parameter('elasticsearch.region.read_index'))
+                    $this->parameter('elasticsearch.region.read_index')
                 );
             }
         );
