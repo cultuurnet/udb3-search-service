@@ -436,22 +436,22 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->toNative());
+        return $this->withFieldSort('_score', $sortOrder->toString());
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->toNative());
+        return $this->withFieldSort('availableTo', $sortOrder->toString());
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->toNative());
+        return $this->withFieldSort('created', $sortOrder->toString());
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->toNative());
+        return $this->withFieldSort('modified', $sortOrder->toString());
     }
 
     /**
@@ -461,7 +461,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         return $this->withFieldSort(
             '_geo_distance',
-            $sortOrder->toNative(),
+            $sortOrder->toString(),
             [
                 'geo_point' => [
                     'lat' => $coordinates->getLatitude()->toDouble(),
@@ -475,7 +475,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->toNative());
+        return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
     }
 
     public function withGroupByProductionId(): self

@@ -253,13 +253,13 @@ final class OfferSearchControllerTest extends TestCase
                     new Latitude(-40.0),
                     new Longitude(70.0)
                 ),
-                SortOrder::ASC()
+                SortOrder::asc()
             )
-            ->withSortByAvailableTo(SortOrder::ASC())
-            ->withSortByScore(SortOrder::DESC())
-            ->withSortByCreated(SortOrder::ASC())
-            ->withSortByModified(SortOrder::DESC())
-            ->withSortByPopularity(SortOrder::DESC())
+            ->withSortByAvailableTo(SortOrder::asc())
+            ->withSortByScore(SortOrder::desc())
+            ->withSortByCreated(SortOrder::asc())
+            ->withSortByModified(SortOrder::desc())
+            ->withSortByPopularity(SortOrder::desc())
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
             )

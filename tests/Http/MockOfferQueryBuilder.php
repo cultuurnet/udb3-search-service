@@ -374,28 +374,28 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withSortByScore(SortOrder $sortOrder)
     {
         $c = clone $this;
-        $c->mockQuery['sort']['score'] = (string) $sortOrder;
+        $c->mockQuery['sort']['score'] = $sortOrder->toString();
         return $c;
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder)
     {
         $c = clone $this;
-        $c->mockQuery['sort']['availableTo'] = (string) $sortOrder;
+        $c->mockQuery['sort']['availableTo'] = $sortOrder->toString();
         return $c;
     }
 
     public function withSortByCreated(SortOrder $sortOrder)
     {
         $c = clone $this;
-        $c->mockQuery['sort']['created'] = (string) $sortOrder;
+        $c->mockQuery['sort']['created'] = $sortOrder->toString();
         return $c;
     }
 
     public function withSortByModified(SortOrder $sortOrder)
     {
         $c = clone $this;
-        $c->mockQuery['sort']['modified'] = (string) $sortOrder;
+        $c->mockQuery['sort']['modified'] = $sortOrder->toString();
         return $c;
     }
 
@@ -404,14 +404,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['sort']['distance']['lat'] = $coordinates->getLatitude()->toDouble();
         $c->mockQuery['sort']['distance']['lng'] = $coordinates->getLongitude()->toDouble();
-        $c->mockQuery['sort']['distance']['order'] = (string) $sortOrder;
+        $c->mockQuery['sort']['distance']['order'] = $sortOrder->toString();
         return $c;
     }
 
     public function withSortByPopularity(SortOrder $sortOrder)
     {
         $c = clone $this;
-        $c->mockQuery['sort']['popularity'] = (string) $sortOrder;
+        $c->mockQuery['sort']['popularity'] = $sortOrder->toString();
         return $c;
     }
 
