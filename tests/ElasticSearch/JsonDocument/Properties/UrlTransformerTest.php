@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Exception\InvalidNativeArgumentException;
 
 final class UrlTransformerTest extends TestCase
 {
@@ -71,7 +71,7 @@ final class UrlTransformerTest extends TestCase
      */
     public function it_throws_for_invalid_urls(array $from): void
     {
-        $this->expectException(InvalidNativeArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         (new UrlTransformer())->transform($from, []);
     }
 
