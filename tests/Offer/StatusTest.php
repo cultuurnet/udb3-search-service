@@ -42,7 +42,7 @@ final class StatusTest extends TestCase
     {
         return [
             'unknown' => ['unknown'],
-            'available' => ['Available'],
+            'available' => ['available'],
             'AVAILABLE' => ['AVAILABLE'],
         ];
     }
