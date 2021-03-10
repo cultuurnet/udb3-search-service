@@ -38,7 +38,7 @@ final class NaturalTest extends TestCase
     /**
      * @test
      */
-    public function it_return_the_value(): void
+    public function it_can_return_the_value(): void
     {
         /** @var Natural $natural */
         $natural = $this->getMockForAbstractClass(
