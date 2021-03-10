@@ -8,13 +8,13 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Web\Hostname;
-use ValueObjects\Web\Url;
 
 final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
@@ -165,7 +165,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_website_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
+            ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
@@ -242,7 +242,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withAutoCompleteFilter('foo')
-            ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
+            ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
@@ -640,7 +640,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withAutoCompleteFilter('foo')
-            ->withWebsiteFilter(Url::fromNative('http://foo.bar'));
+            ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],

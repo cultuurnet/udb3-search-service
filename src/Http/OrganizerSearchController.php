@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerSupportedParameters;
@@ -21,7 +22,6 @@ use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Web\Domain;
-use ValueObjects\Web\Url;
 
 final class OrganizerSearchController
 {
@@ -109,7 +109,7 @@ final class OrganizerSearchController
 
         if ($request->hasQueryParam('website')) {
             $queryBuilder = $queryBuilder->withWebsiteFilter(
-                Url::fromNative($request->getQueryParam('website'))
+                new Url($request->getQueryParam('website'))
             );
         }
 

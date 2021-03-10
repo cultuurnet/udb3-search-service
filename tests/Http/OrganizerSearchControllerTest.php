@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
@@ -27,7 +28,6 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Request;
 use ValueObjects\Web\Domain;
-use ValueObjects\Web\Url;
 
 final class OrganizerSearchControllerTest extends TestCase
 {
@@ -110,7 +110,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 new Language('nl'),
                 new Language('en')
             )
-            ->withWebsiteFilter(Url::fromNative('http://foo.bar'))
+            ->withWebsiteFilter(new Url('http://foo.bar'))
             ->withDomainFilter(Domain::specifyType('www.publiq.be'))
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))
