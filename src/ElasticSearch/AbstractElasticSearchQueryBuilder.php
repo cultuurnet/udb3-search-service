@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Natural;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Start;
 use ONGR\ElasticsearchDSL\BuilderInterface;
@@ -20,7 +21,6 @@ use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Search;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
-use ValueObjects\Number\Natural;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
@@ -138,7 +138,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         Natural $min = null,
         Natural $max = null
     ) {
-        if (!is_null($min) && !is_null($max) && $min->toInteger() > $max->toInteger()) {
+        if (!is_null($min) && !is_null($max) && $min->toNative() > $max->toNative()) {
             throw new \InvalidArgumentException(
                 "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
             );

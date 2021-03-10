@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -29,7 +30,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
-use ValueObjects\Number\Natural;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
@@ -264,7 +264,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null)
+    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null)
     {
         $c = clone $this;
         $c->mockQuery['ageRange']['from'] = $minimum ? $minimum->toNative() : null;

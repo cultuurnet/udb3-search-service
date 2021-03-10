@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -33,7 +34,6 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use ValueObjects\Geography\Country;
-use ValueObjects\Number\Natural;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -154,7 +154,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null): self
     {
-        $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
+        $this->guardNaturalIntegerRange('localTime', new Age($localTimeFrom), new Age($localTimeTo));
         return $this->withRangeQuery('localTimeRange', $localTimeFrom, $localTimeTo);
     }
 
@@ -182,7 +182,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $this->guardDateRange('date', $from, $to);
 
         if ($localTimeFrom && $localTimeTo) {
-            $this->guardNaturalIntegerRange('localTime', new Natural($localTimeFrom), new Natural($localTimeTo));
+            $this->guardNaturalIntegerRange('localTime', new Age($localTimeFrom), new Age($localTimeTo));
         }
 
         $queries = [];
@@ -317,7 +317,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
-    public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null): self
+    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self
     {
         $this->guardNaturalIntegerRange('age', $minimum, $maximum);
 

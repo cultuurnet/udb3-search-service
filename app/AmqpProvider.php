@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBusInterface;
+use CultuurNet\UDB3\Search\AMQP\Delay;
 use CultuurNet\UDB3\Search\AMQP\DomainMessageJSONDeserializer;
 use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Search\Deserializer\SimpleDeserializerLocator;
@@ -12,7 +13,6 @@ use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\Number\Natural;
 
 final class AmqpProvider extends BaseServiceProvider
 {
@@ -52,7 +52,7 @@ final class AmqpProvider extends BaseServiceProvider
             'event_bus_forwarding_consumer_factory',
             function () {
                 return new EventBusForwardingConsumerFactory(
-                    new Natural(0),
+                    new Delay(0),
                     $this->get('amqp.connection'),
                     $this->get('logger.amqp.udb3_consumer'),
                     $this->get('deserializer_locator'),
