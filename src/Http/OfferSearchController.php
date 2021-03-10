@@ -8,6 +8,7 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
@@ -29,7 +30,6 @@ use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
-use ValueObjects\Geography\CountryCode;
 
 /**
  * @todo Extract more parsing functionality to OfferRequestParserInterface
@@ -201,7 +201,7 @@ final class OfferSearchController
 
         $country = (new CountryExtractor())->getCountryFromQuery(
             $parameterBag,
-            CountryCode::fromNative('BE')
+            new Country('BE')
         );
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);

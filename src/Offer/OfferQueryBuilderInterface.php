@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
-use ValueObjects\Geography\Country;
 
 /**
  * Multiple filters are combined using AND.

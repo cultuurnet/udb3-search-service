@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
-use ValueObjects\Geography\Country;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -60,7 +60,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withAddressCountryFilter(Country $country)
     {
         $c = clone $this;
-        $c->mockQuery['country'] = (string) $country;
+        $c->mockQuery['country'] = $country->toString();
         return $c;
     }
 

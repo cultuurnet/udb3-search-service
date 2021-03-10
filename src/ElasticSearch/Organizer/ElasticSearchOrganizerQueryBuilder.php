@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
@@ -14,7 +15,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\SortOrder;
 use Stringy\Stringy;
-use ValueObjects\Geography\Country;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -67,7 +67,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             (new KnownLanguages())->fieldNames(
                 'address.{{lang}}.addressCountry'
             ),
-            $country->getCode()->toNative()
+            $country->toString()
         );
     }
 
