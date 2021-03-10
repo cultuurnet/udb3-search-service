@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\PriceInfo;
 
 use CultuurNet\UDB3\Search\Natural;
-use ValueObjects\Exception\InvalidNativeArgumentException;
+use InvalidArgumentException;
 
 final class Price extends Natural
 {
     public static function fromFloat(float $value): Price
     {
         if (!is_float($value)) {
-            throw new InvalidNativeArgumentException($value, ['float']);
+            throw new InvalidArgumentException($value, ['float']);
         }
 
         $precision = 0;
