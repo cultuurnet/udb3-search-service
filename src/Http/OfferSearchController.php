@@ -418,7 +418,7 @@ final class OfferSearchController
             $queryParameter,
             function ($value) {
                 try {
-                    return FacetName::fromNative(strtolower($value));
+                    return new FacetName(strtolower($value));
                 } catch (\InvalidArgumentException $e) {
                     throw new \InvalidArgumentException("Unknown facet name '$value'.");
                 }

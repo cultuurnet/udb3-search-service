@@ -367,7 +367,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withFacet(FacetName $facetName)
     {
         $c = clone $this;
-        $c->mockQuery['facet'][] = (string) $facetName;
+        $c->mockQuery['facet'][] = $facetName->toString();
         return $c;
     }
 

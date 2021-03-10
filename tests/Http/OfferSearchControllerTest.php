@@ -324,7 +324,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withOrganizerLabelFilter(new LabelName('ipsum'))
             ->withDuplicateFilter(false)
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
-            ->withFacet(FacetName::REGIONS())
+            ->withFacet(FacetName::regions())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withGroupByProductionId();
@@ -854,7 +854,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('foo'))
             ->withLocationLabelFilter(new LabelName('baz'))
             ->withOrganizerLabelFilter(new LabelName('bar'))
-            ->withFacet(FacetName::REGIONS());
+            ->withFacet(FacetName::regions());
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

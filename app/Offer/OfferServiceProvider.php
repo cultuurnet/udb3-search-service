@@ -69,7 +69,7 @@ final class OfferServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_region_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
-                    FacetName::REGIONS(),
+                    FacetName::regions(),
                     $this->parameter('facet_mapping_regions')
                 );
             }
@@ -79,7 +79,7 @@ final class OfferServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_theme_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
-                    FacetName::THEMES(),
+                    FacetName::themes(),
                     $this->parameter('facet_mapping_themes')
                 );
             }
@@ -89,7 +89,7 @@ final class OfferServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_type_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
-                    FacetName::TYPES(),
+                    FacetName::types(),
                     $this->parameter('facet_mapping_types')
                 );
             }
@@ -99,7 +99,7 @@ final class OfferServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_facility_aggregation_transformer',
             function () {
                 return new NodeMapAggregationTransformer(
-                    FacetName::FACILITIES(),
+                    FacetName::facilities(),
                     $this->parameter('facet_mapping_facilities')
                 );
             }
@@ -109,7 +109,7 @@ final class OfferServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_label_aggregation_transformer',
             function () {
                 return new LabelsAggregationTransformer(
-                    FacetName::LABELS()
+                    FacetName::labels()
                 );
             }
         );

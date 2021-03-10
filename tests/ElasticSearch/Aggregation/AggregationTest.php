@@ -14,7 +14,7 @@ final class AggregationTest extends TestCase
      */
     public function it_has_a_name_and_an_associative_array_of_buckets()
     {
-        $name = FacetName::THEMES();
+        $name = FacetName::themes();
 
         $buckets = [
             new Bucket('0.11.7.8.1', 10),
@@ -37,7 +37,7 @@ final class AggregationTest extends TestCase
      */
     public function it_always_returns_an_array_of_buckets_even_if_its_empty()
     {
-        $aggregation = new Aggregation(FacetName::REGIONS());
+        $aggregation = new Aggregation(FacetName::regions());
         $this->assertTrue(is_array($aggregation->getBuckets()));
     }
 
@@ -62,7 +62,7 @@ final class AggregationTest extends TestCase
         ];
 
         $expectedAggregation = new Aggregation(
-            FacetName::THEMES(),
+            FacetName::themes(),
             ...[
                 new Bucket('0.11.7.8.1', 10),
                 new Bucket('0.11.7.8.2', 12),
@@ -70,7 +70,7 @@ final class AggregationTest extends TestCase
         );
 
         $actualAggregation = Aggregation::fromElasticSearchResponseAggregationData(
-            FacetName::THEMES(),
+            FacetName::themes()->toString(),
             $aggregationResponseData
         );
 
@@ -90,7 +90,7 @@ final class AggregationTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         Aggregation::fromElasticSearchResponseAggregationData(
-            FacetName::REGIONS(),
+            FacetName::regions()->toString(),
             $invalidElasticSearchResponseAggregationData
         );
     }

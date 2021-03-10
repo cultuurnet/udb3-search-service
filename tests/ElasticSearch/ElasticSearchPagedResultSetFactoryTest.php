@@ -29,7 +29,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     protected function setUp()
     {
         $this->aggregationTransformer = new NodeMapAggregationTransformer(
-            FacetName::REGIONS(),
+            FacetName::regions(),
             [
                 'gem-leuven' => [
                     'name' => ['nl' => 'Leuven'],
@@ -140,7 +140,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
         // because there the injected transformer does not support it.
         $expected = $expected->withFacets(
             new FacetFilter(
-                FacetName::REGIONS()->toNative(),
+                FacetName::regions()->toString(),
                 [
                     new FacetNode(
                         'gem-leuven',
@@ -246,7 +246,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 
         $expected = $expected->withFacets(
             new FacetFilter(
-                FacetName::REGIONS()->toNative(),
+                FacetName::regions()->toString(),
                 [
                     new FacetNode(
                         'gem-leuven',

@@ -2944,7 +2944,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withFacet(
-                FacetName::REGIONS()
+                FacetName::regions()
             );
 
         $expectedQueryArray = [
@@ -2978,10 +2978,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withFacet(
-                FacetName::REGIONS()
+                FacetName::regions()
             )
             ->withFacet(
-                FacetName::FACILITIES()
+                FacetName::facilities()
             );
 
         $expectedQueryArray = [
@@ -3020,16 +3020,16 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withFacet(
-                FacetName::REGIONS()
+                FacetName::regions()
             )
             ->withFacet(
-                FacetName::TYPES()
+                FacetName::types()
             )
             ->withFacet(
-                FacetName::THEMES()
+                FacetName::themes()
             )
             ->withFacet(
-                FacetName::FACILITIES()
+                FacetName::facilities()
             );
 
         $expectedQueryArray = [
@@ -3078,10 +3078,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withFacet(
-                FacetName::REGIONS()
+                FacetName::regions()
             )
             ->withFacet(
-                FacetName::FACILITIES()
+                FacetName::facilities()
             );
 
         $expectedQueryArray = [

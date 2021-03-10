@@ -408,22 +408,20 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withFacet(FacetName $facetName): self
     {
-        $facetName = $facetName->toNative();
-
         $facetFields = [
-            FacetName::REGIONS()->toNative() => 'regions.keyword',
-            FacetName::TYPES()->toNative() => 'typeIds',
-            FacetName::THEMES()->toNative() => 'themeIds',
-            FacetName::FACILITIES()->toNative() => 'facilityIds',
-            FacetName::LABELS()->toNative() => 'labels.keyword',
+            FacetName::regions()->toString() => 'regions.keyword',
+            FacetName::types()->toString() => 'typeIds',
+            FacetName::themes()->toString() => 'themeIds',
+            FacetName::facilities()->toString() => 'facilityIds',
+            FacetName::labels()->toString() => 'labels.keyword',
         ];
 
-        if (!isset($facetFields[$facetName])) {
+        if (!isset($facetFields[$facetName->toString()])) {
             return $this;
         }
 
-        $facetField = $facetFields[$facetName];
-        $aggregation = new TermsAggregation($facetName, $facetField);
+        $facetField = $facetFields[$facetName->toString()];
+        $aggregation = new TermsAggregation($facetName->toString(), $facetField);
 
         if (null !== $this->aggregationSize) {
             $aggregation->addParameter('size', $this->aggregationSize);
