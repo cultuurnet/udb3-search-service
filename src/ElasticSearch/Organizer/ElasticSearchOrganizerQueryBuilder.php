@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\SortOrder;
 use Stringy\Stringy;
 use ValueObjects\Geography\Country;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -33,10 +32,10 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return [];
     }
 
-    public function withAutoCompleteFilter(StringLiteral $input)
+    public function withAutoCompleteFilter(string $input)
     {
         // Currently not translatable, just look in the Dutch version for now.
-        return $this->withMatchPhraseQuery('name.nl.autocomplete', $input->toNative());
+        return $this->withMatchPhraseQuery('name.nl.autocomplete', $input);
     }
 
     public function withWebsiteFilter(Url $url)
@@ -58,7 +57,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             (new KnownLanguages())->fieldNames(
                 'address.{{lang}}.postalCode'
             ),
-            $postalCode->toNative()
+            $postalCode->toString()
         );
     }
 
@@ -74,12 +73,12 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withCreatorFilter(Creator $creator)
     {
-        return $this->withMatchQuery('creator', $creator->toNative());
+        return $this->withMatchQuery('creator', $creator->toString());
     }
 
     public function withLabelFilter(LabelName $label)
     {
-        return $this->withMatchQuery('labels', $label->toNative());
+        return $this->withMatchQuery('labels', $label->toString());
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): ElasticSearchOrganizerQueryBuilder
@@ -88,7 +87,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             'workflowStatus',
             array_map(
                 function (WorkflowStatus $workflowStatus) {
-                    return $workflowStatus->toNative();
+                    return $workflowStatus->toString();
                 },
                 $workflowStatuses
             )

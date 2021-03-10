@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Language\Language;
-use ValueObjects\StringLiteral\StringLiteral;
 
 interface QueryBuilder
 {
@@ -21,7 +20,7 @@ interface QueryBuilder
      * @param Language ...$textLanguages
      * @return static
      */
-    public function withTextQuery(StringLiteral $text, Language ...$textLanguages);
+    public function withTextQuery(string $text, Language ...$textLanguages);
 
     /**
      * @return static

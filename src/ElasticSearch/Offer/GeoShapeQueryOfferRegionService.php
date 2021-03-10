@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
 {
@@ -21,14 +20,14 @@ final class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterfa
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
 
     public function __construct(
         Client $elasticSearchClient,
-        StringLiteral $geoShapesIndexName
+        string $geoShapesIndexName
     ) {
         $this->client = $elasticSearchClient;
         $this->indexName = $geoShapesIndexName;
@@ -65,7 +64,7 @@ final class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterfa
         do {
             $response = $this->client->search(
                 [
-                    'index' => $this->indexName->toNative(),
+                    'index' => $this->indexName,
                     'body' => $query,
                     'size' => self::PAGE_SIZE,
                     'from' => self::PAGE_SIZE * $pageNumber,

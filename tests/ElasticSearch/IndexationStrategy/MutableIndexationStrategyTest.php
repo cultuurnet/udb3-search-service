@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class MutableIndexationStrategyTest extends TestCase
 {
@@ -39,8 +38,8 @@ final class MutableIndexationStrategyTest extends TestCase
      */
     public function it_delegates_the_indexing_of_documents_to_the_currently_injected_strategy()
     {
-        $index = new StringLiteral('udb3_core');
-        $type = new StringLiteral('event');
+        $index = 'udb3_core';
+        $type = 'event';
         $document = new JsonDocument('ba2c3314-f50f-4f9f-b57a-1353eaaaf84c', '{"foo":"bar"}');
 
         $this->mockStrategy1->expects($this->once())
@@ -57,8 +56,8 @@ final class MutableIndexationStrategyTest extends TestCase
     {
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy2);
 
-        $index = new StringLiteral('udb3_core');
-        $type = new StringLiteral('event');
+        $index = 'udb3_core';
+        $type = 'event';
         $document = new JsonDocument('ba2c3314-f50f-4f9f-b57a-1353eaaaf84c', '{"foo":"bar"}');
 
         $this->mockStrategy1->expects($this->never())

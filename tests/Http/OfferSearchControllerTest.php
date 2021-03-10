@@ -57,7 +57,6 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class OfferSearchControllerTest extends TestCase
 {
@@ -87,12 +86,12 @@ final class OfferSearchControllerTest extends TestCase
     private $searchService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionIndexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionDocumentType;
 
@@ -132,8 +131,8 @@ final class OfferSearchControllerTest extends TestCase
 
         $this->searchService = $this->createMock(OfferSearchServiceInterface::class);
 
-        $this->regionIndexName = new StringLiteral('geoshapes');
-        $this->regionDocumentType = new StringLiteral('region');
+        $this->regionIndexName = 'geoshapes';
+        $this->regionDocumentType = 'region';
 
         $this->queryStringFactory = new MockQueryStringFactory();
 
@@ -230,7 +229,7 @@ final class OfferSearchControllerTest extends TestCase
                 new Language('en')
             )
             ->withTextQuery(
-                new StringLiteral('(foo OR bar) AND baz'),
+                '(foo OR bar) AND baz',
                 new Language('nl'),
                 new Language('en')
             )
@@ -346,12 +345,12 @@ final class OfferSearchControllerTest extends TestCase
                 [
                     new FacetNode(
                         'gem-leuven',
-                        new MultilingualString(new Language('nl'), new StringLiteral('Leuven')),
+                        new MultilingualString(new Language('nl'), 'Leuven'),
                         7,
                         [
                             new FacetNode(
                                 'gem-wijgmaal',
-                                new MultilingualString(new Language('nl'), new StringLiteral('Wijgmaal')),
+                                new MultilingualString(new Language('nl'), 'Wijgmaal'),
                                 3
                             ),
                         ]
@@ -848,7 +847,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withTextQuery(new StringLiteral('foobar'), new Language('nl'))
+            ->withTextQuery('foobar', new Language('nl'))
             ->withLanguageFilter(new Language('nl'))
             ->withCompletedLanguageFilter(new Language('nl'))
             ->withTermIdFilter(new TermId('0.145.567.6'))
@@ -1198,7 +1197,7 @@ final class OfferSearchControllerTest extends TestCase
     public function it_should_add_the_default_query_of_the_api_consumer_if_they_have_one()
     {
         $apiKey = new ApiKey('d568d2e9-3b53-4704-82a1-eaccf91a6337');
-        $defaultQuery = new StringLiteral('labels:foo');
+        $defaultQuery = 'labels:foo';
 
         /* @var ConsumerInterface|MockObject $consumer */
         $consumer = $this->createMock(ConsumerInterface::class);

@@ -18,7 +18,7 @@ final class ElasticSearchDistanceTest extends TestCase
     public function it_accepts_valid_elasticsearch_distances($givenDistanceString, $expectedDistanceString)
     {
         $distance = new ElasticSearchDistance($givenDistanceString);
-        $this->assertEquals($expectedDistanceString, $distance->toNative());
+        $this->assertEquals($expectedDistanceString, $distance->toString());
     }
 
     /**

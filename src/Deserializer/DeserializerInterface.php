@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Deserializer;
 
-use ValueObjects\StringLiteral\StringLiteral;
-
 interface DeserializerInterface
 {
-    public function deserialize(StringLiteral $data);
+    public function deserialize(string $data);
 }

@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
@@ -45,21 +44,21 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withCdbIdFilter(Cdbid $cdbid)
     {
         $c = clone $this;
-        $c->mockQuery['cdbId'] = (string) $cdbid;
+        $c->mockQuery['cdbId'] = $cdbid->toString();
         return $c;
     }
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid)
     {
         $c = clone $this;
-        $c->mockQuery['locationCdbId'] = (string) $locationCdbid;
+        $c->mockQuery['locationCdbId'] = $locationCdbid->toString();
         return $c;
     }
 
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId)
     {
         $c = clone $this;
-        $c->mockQuery['organizerCdbId'] = (string) $organizerCdbId;
+        $c->mockQuery['organizerCdbId'] = $organizerCdbId->toString();
         return $c;
     }
 
@@ -101,7 +100,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
             function (WorkflowStatus $workflowStatus) {
-                return (string) $workflowStatus;
+                return $workflowStatus->toString();
             },
             $workflowStatuses
         );
@@ -127,7 +126,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withCreatorFilter(Creator $creator)
     {
         $c = clone $this;
-        $c->mockQuery['creator'] = (string) $creator;
+        $c->mockQuery['creator'] = $creator->toString();
         return $c;
     }
 
@@ -189,7 +188,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['calendarType'] = array_map(
             function (CalendarType $calendarType) {
-                return (string) $calendarType;
+                return $calendarType->toString();
             },
             $calendarTypes
         );
@@ -199,7 +198,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withPostalCodeFilter(PostalCode $postalCode)
     {
         $c = clone $this;
-        $c->mockQuery['postalCode'] = (string) $postalCode;
+        $c->mockQuery['postalCode'] = $postalCode->toString();
         return $c;
     }
 
@@ -211,14 +210,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     }
 
     public function withRegionFilter(
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         RegionId $regionId
     ) {
         $c = clone $this;
-        $c->mockQuery['region']['index'] = (string) $regionIndexName;
-        $c->mockQuery['region']['type'] = (string) $regionDocumentType;
-        $c->mockQuery['region']['id'] = (string) $regionId;
+        $c->mockQuery['region']['index'] = $regionIndexName;
+        $c->mockQuery['region']['type'] = $regionDocumentType;
+        $c->mockQuery['region']['id'] = $regionId->toString();
         return $c;
     }
 
@@ -227,7 +226,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['geoDistance']['lat'] = $geoDistance->getCoordinates()->getLatitude()->toDouble();
         $c->mockQuery['geoDistance']['lng'] = $geoDistance->getCoordinates()->getLongitude()->toDouble();
-        $c->mockQuery['geoDistance']['distance'] = $geoDistance->getMaximumDistance()->toNative();
+        $c->mockQuery['geoDistance']['distance'] = $geoDistance->getMaximumDistance()->toString();
         return $c;
     }
 
@@ -261,7 +260,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withAudienceTypeFilter(AudienceType $audienceType)
     {
         $c = clone $this;
-        $c->mockQuery['audienceType'] = (string) $audienceType;
+        $c->mockQuery['audienceType'] = $audienceType->toString();
         return $c;
     }
 
@@ -305,49 +304,49 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withTermIdFilter(TermId $termId)
     {
         $c = clone $this;
-        $c->mockQuery['termId'][] = (string) $termId;
+        $c->mockQuery['termId'][] = $termId->toString();
         return $c;
     }
 
     public function withTermLabelFilter(TermLabel $termLabel)
     {
         $c = clone $this;
-        $c->mockQuery['termLabel'][] = (string) $termLabel;
+        $c->mockQuery['termLabel'][] = $termLabel->toString();
         return $c;
     }
 
     public function withLocationTermIdFilter(TermId $locationTermId)
     {
         $c = clone $this;
-        $c->mockQuery['locationTermId'][] = (string) $locationTermId;
+        $c->mockQuery['locationTermId'][] = $locationTermId->toString();
         return $c;
     }
 
     public function withLocationTermLabelFilter(TermLabel $locationTermLabel)
     {
         $c = clone $this;
-        $c->mockQuery['locationTermLabel'][] = (string) $locationTermLabel;
+        $c->mockQuery['locationTermLabel'][] = $locationTermLabel->toString();
         return $c;
     }
 
     public function withLabelFilter(LabelName $label)
     {
         $c = clone $this;
-        $c->mockQuery['label'][] = (string) $label;
+        $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 
     public function withLocationLabelFilter(LabelName $locationLabel)
     {
         $c = clone $this;
-        $c->mockQuery['locationLabel'][] = (string) $locationLabel;
+        $c->mockQuery['locationLabel'][] = $locationLabel->toString();
         return $c;
     }
 
     public function withOrganizerLabelFilter(LabelName $organizerLabel)
     {
         $c = clone $this;
-        $c->mockQuery['organizerLabel'][] = (string) $organizerLabel;
+        $c->mockQuery['organizerLabel'][] = $organizerLabel->toString();
         return $c;
     }
 
@@ -426,7 +425,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['advancedQuery']['query'] = (string) $queryString;
+        $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;
@@ -436,10 +435,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['textQuery']['query'] = (string) $text;
+        $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class NodeMapAggregationTransformerTest extends TestCase
 {
@@ -132,7 +131,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
                     'prv-vlaams-brabant',
                     new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('Vlaams-Brabant')
+                        'Vlaams-Brabant'
                     ),
                     45,
                     [
@@ -140,31 +139,31 @@ final class NodeMapAggregationTransformerTest extends TestCase
                             'gem-leuven',
                             (new MultilingualString(
                                 new Language('nl'),
-                                new StringLiteral('Leuven')
-                            ))->withTranslation(new Language('fr'), new StringLiteral('Louvain')),
+                                'Leuven'
+                            ))->withTranslation(new Language('fr'), 'Louvain'),
                             33,
                             [
                                 new FacetNode(
                                     'deelgem-leuven',
                                     (new MultilingualString(
                                         new Language('nl'),
-                                        new StringLiteral('Leuven centrum')
-                                    ))->withTranslation(new Language('fr'), new StringLiteral('Louvain central')),
+                                        'Leuven centrum'
+                                    ))->withTranslation(new Language('fr'), 'Louvain central'),
                                     18
                                 ),
                                 new FacetNode(
                                     'deelgem-wijgmaal',
                                     (new MultilingualString(
                                         new Language('nl'),
-                                        new StringLiteral('Wijgmaal')
-                                    ))->withTranslation(new Language('fr'), new StringLiteral('Louvain nord')),
+                                        'Wijgmaal'
+                                    ))->withTranslation(new Language('fr'), 'Louvain nord'),
                                     5
                                 ),
                                 new FacetNode(
                                     'deelgem-wilsele',
                                     new MultilingualString(
                                         new Language('nl'),
-                                        new StringLiteral('Wilsele')
+                                        'Wilsele'
                                     ),
                                     10
                                 ),
@@ -174,7 +173,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
                             'gem-diest',
                             new MultilingualString(
                                 new Language('nl'),
-                                new StringLiteral('Diest')
+                                'Diest'
                             ),
                             12
                         ),

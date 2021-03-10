@@ -13,14 +13,13 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class AmqpProvider extends BaseServiceProvider
 {
     public function provides(string $alias): bool
     {
         foreach ($this->consumers() as $consumerId => $consumerConfig) {
-            if ($alias === (string) $this->consumerName($consumerId)) {
+            if ($alias === $this->consumerName($consumerId)) {
                 return true;
             }
         }
@@ -41,13 +40,10 @@ final class AmqpProvider extends BaseServiceProvider
             $this->add(
                 $this->consumerName($consumerId),
                 function () use ($consumerConfig) {
-                    $exchange = new StringLiteral($consumerConfig['exchange']);
-                    $queue = new StringLiteral($consumerConfig['queue']);
-
                     /** @var EventBusForwardingConsumerFactory $consumerFactory */
                     $consumerFactory = $this->get('event_bus_forwarding_consumer_factory');
 
-                    return $consumerFactory->create($exchange, $queue);
+                    return $consumerFactory->create($consumerConfig['exchange'], $consumerConfig['queue']);
                 }
             );
         }
@@ -61,7 +57,7 @@ final class AmqpProvider extends BaseServiceProvider
                     $this->get('logger.amqp.udb3_consumer'),
                     $this->get('deserializer_locator'),
                     $this->get(EventBusInterface::class),
-                    new StringLiteral($this->parameter('amqp.consumer_tag'))
+                    $this->parameter('amqp.consumer_tag')
                 );
             }
         );
@@ -96,7 +92,7 @@ final class AmqpProvider extends BaseServiceProvider
 
                 foreach ($deserializerMapping as $payloadClass => $contentType) {
                     $deserializerLocator->registerDeserializer(
-                        new StringLiteral($contentType),
+                        $contentType,
                         new DomainMessageJSONDeserializer($payloadClass)
                     );
                 }

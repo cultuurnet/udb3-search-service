@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class GeoShapeQueryOfferRegionServiceTest extends TestCase
 {
@@ -18,7 +17,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
     private $client;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $geoShapesIndexName;
 
@@ -30,7 +29,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
     protected function setUp()
     {
         $this->client = $this->createMock(Client::class);
-        $this->geoShapesIndexName = new StringLiteral('mock');
+        $this->geoShapesIndexName = 'mock';
 
         $this->offerRegionService = new GeoShapeQueryOfferRegionService(
             $this->client,
@@ -48,7 +47,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
             ->withConsecutive(
                 [
                     [
-                        'index' => $this->geoShapesIndexName->toNative(),
+                        'index' => $this->geoShapesIndexName,
                         'body' => [
                             'query' => [
                                 'bool' => [
@@ -75,7 +74,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
                 ],
                 [
                     [
-                        'index' => $this->geoShapesIndexName->toNative(),
+                        'index' => $this->geoShapesIndexName,
                         'body' => [
                             'query' => [
                                 'bool' => [

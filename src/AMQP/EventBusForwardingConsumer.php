@@ -12,7 +12,6 @@ use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use ValueObjects\Identity\UUID;
-use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * Forwards messages coming in via AMQP to an event bus.
@@ -31,9 +30,9 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         AMQPStreamConnection $connection,
         EventBusInterface $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
-        StringLiteral $consumerTag,
-        StringLiteral $exchangeName,
-        StringLiteral $queueName,
+        string $consumerTag,
+        string $exchangeName,
+        string $queueName,
         $delay = 0
     ) {
         $this->eventBus = $eventBus;

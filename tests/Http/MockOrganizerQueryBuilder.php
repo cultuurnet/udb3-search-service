@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Geography\Country;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -30,7 +29,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
-    public function withAutoCompleteFilter(StringLiteral $input)
+    public function withAutoCompleteFilter(string $input)
     {
         $c = clone $this;
         $c->mockQuery['autoComplete'] = (string) $input;
@@ -54,7 +53,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withPostalCodeFilter(PostalCode $postalCode)
     {
         $c = clone $this;
-        $c->mockQuery['postalCode'] = (string) $postalCode;
+        $c->mockQuery['postalCode'] = $postalCode->toString();
         return $c;
     }
 
@@ -68,14 +67,14 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withCreatorFilter(Creator $creator)
     {
         $c = clone $this;
-        $c->mockQuery['creator'] = (string) $creator;
+        $c->mockQuery['creator'] = $creator->toString();
         return $c;
     }
 
     public function withLabelFilter(LabelName $label)
     {
         $c = clone $this;
-        $c->mockQuery['label'][] = (string) $label;
+        $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 
@@ -84,7 +83,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
             function (WorkflowStatus $workflowStatus) {
-                return (string) $workflowStatus;
+                return $workflowStatus->toString();
             },
             $workflowStatuses
         );
@@ -94,7 +93,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['advancedQuery']['query'] = (string) $queryString;
+        $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;
@@ -104,10 +103,10 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withTextQuery(StringLiteral $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages)
     {
         $c = clone $this;
-        $c->mockQuery['textQuery']['query'] = (string) $text;
+        $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
             function (Language $language) {
                 return (string) $language;

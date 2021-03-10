@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
-use ValueObjects\StringLiteral\StringLiteral;
-
 final class MultilingualString
 {
     /**
@@ -14,17 +12,17 @@ final class MultilingualString
     private $originalLanguage;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $originalString;
 
     /**
-     * @var StringLiteral[]
+     * @var string[]
      *   Associative array with languages as keys and translations as values.
      */
     private $translations;
 
-    public function __construct(Language $originalLanguage, StringLiteral $originalString)
+    public function __construct(Language $originalLanguage, string $originalString)
     {
         $this->originalLanguage = $originalLanguage;
         $this->originalString = $originalString;
@@ -36,14 +34,14 @@ final class MultilingualString
         return $this->originalLanguage;
     }
 
-    public function getOriginalString(): StringLiteral
+    public function getOriginalString(): string
     {
         return $this->originalString;
     }
 
-    public function withTranslation(Language $language, StringLiteral $translation): MultilingualString
+    public function withTranslation(Language $language, string $translation): MultilingualString
     {
-        if ($language->getCode() == $this->originalLanguage->getCode()) {
+        if ($language->getCode() === $this->originalLanguage->getCode()) {
             throw new \InvalidArgumentException('Can not translate to original language.');
         }
 
@@ -53,7 +51,7 @@ final class MultilingualString
     }
 
     /**
-     * @return StringLiteral[]
+     * @return string[]
      *   Associative array with languages as keys and translations as values.
      */
     public function getTranslations(): array
@@ -62,7 +60,7 @@ final class MultilingualString
     }
 
     /**
-     * @return StringLiteral[]
+     * @return string[]
      *   Associative array with languages as keys and translations as values.
      */
     public function getTranslationsIncludingOriginal(): array
@@ -74,10 +72,10 @@ final class MultilingualString
     }
 
     /**
-     * @param Language[] ...$fallbackLanguages
+     * @param Language ...$fallbackLanguages
      *   One or more accept languages.
      */
-    public function getStringForLanguage(Language $preferredLanguage, Language ...$fallbackLanguages): ?StringLiteral
+    public function getStringForLanguage(Language $preferredLanguage, Language ...$fallbackLanguages): ?string
     {
         $languages = $fallbackLanguages;
         array_unshift($languages, $preferredLanguage);
@@ -98,7 +96,7 @@ final class MultilingualString
         $serialized = [];
 
         foreach ($this->getTranslationsIncludingOriginal() as $language => $translation) {
-            $serialized[$language] = $translation->toNative();
+            $serialized[$language] = $translation;
         }
 
         return $serialized;
@@ -112,13 +110,13 @@ final class MultilingualString
             $originalLanguage = reset($languages);
         }
 
-        $string = new MultilingualString(new Language($originalLanguage), new StringLiteral($data[$originalLanguage]));
+        $string = new MultilingualString(new Language($originalLanguage), $data[$originalLanguage]);
         foreach ($data as $language => $translation) {
             if ($language === $originalLanguage) {
                 continue;
             }
 
-            $string = $string->withTranslation(new Language($language), new StringLiteral($translation));
+            $string = $string->withTranslation(new Language($language), $translation);
         }
 
         return $string;

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Deserializer;
 
-use ValueObjects\StringLiteral\StringLiteral;
-
 final class SimpleDeserializerLocator implements DeserializerLocatorInterface
 {
     /**
@@ -15,23 +13,20 @@ final class SimpleDeserializerLocator implements DeserializerLocatorInterface
 
 
     public function registerDeserializer(
-        StringLiteral $contentType,
+        string $contentType,
         DeserializerInterface $deserializer
     ) {
-        $this->deserializers[$contentType->toNative()] = $deserializer;
+        $this->deserializers[$contentType] = $deserializer;
     }
 
-    /**
-     * @return DeserializerInterface
-     */
-    public function getDeserializerForContentType(StringLiteral $contentType)
+    public function getDeserializerForContentType(string $contentType): DeserializerInterface
     {
-        if (array_key_exists($contentType->toNative(), $this->deserializers)) {
-            return $this->deserializers[$contentType->toNative()];
+        if (array_key_exists($contentType, $this->deserializers)) {
+            return $this->deserializers[$contentType];
         }
 
         throw new DeserializerNotFoundException(
-            "Unable to find a deserializer for content type '{$contentType->toNative()}'"
+            "Unable to find a deserializer for content type '$contentType'"
         );
     }
 }

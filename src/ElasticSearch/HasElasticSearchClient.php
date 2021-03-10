@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 trait HasElasticSearchClient
 {
@@ -15,12 +14,12 @@ trait HasElasticSearchClient
     private $elasticSearchClient;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $indexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $documentType;
 
@@ -30,8 +29,8 @@ trait HasElasticSearchClient
     private function getDefaultParameters()
     {
         return [
-            'index' => $this->indexName->toNative(),
-            'type' => $this->documentType->toNative(),
+            'index' => $this->indexName,
+            'type' => $this->documentType,
         ];
     }
 

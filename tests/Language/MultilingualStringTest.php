@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Language;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class MultilingualStringTest extends TestCase
 {
@@ -15,12 +14,12 @@ final class MultilingualStringTest extends TestCase
     private $originalLanguage;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $originalString;
 
     /**
-     * @var StringLiteral[]
+     * @var string[]
      */
     private $translations;
 
@@ -32,13 +31,11 @@ final class MultilingualStringTest extends TestCase
     protected function setUp()
     {
         $this->originalLanguage = new Language('nl');
-        $this->originalString = new StringLiteral(
-            'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'
-        );
+        $this->originalString = 'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu';
 
         $this->translations = [
-            'fr' => new StringLiteral('Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'),
-            'en' => new StringLiteral('All birds have begun nests, except me and you. What we are waiting for?'),
+            'fr' => 'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
+            'en' => 'All birds have begun nests, except me and you. What we are waiting for?',
         ];
 
         $this->multilingualString = (new MultilingualString($this->originalLanguage, $this->originalString))
@@ -69,15 +66,9 @@ final class MultilingualStringTest extends TestCase
     public function it_returns_all_translations_including_the_original_language__string(): void
     {
         $expected = [
-            'nl' => new StringLiteral(
-                'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'
-            ),
-            'fr' => new StringLiteral(
-                'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'
-            ),
-            'en' => new StringLiteral(
-                'All birds have begun nests, except me and you. What we are waiting for?'
-            ),
+            'nl' => 'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu',
+            'fr' => 'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
+            'en' => 'All birds have begun nests, except me and you. What we are waiting for?',
         ];
 
         $this->assertEquals($expected, $this->multilingualString->getTranslationsIncludingOriginal());
@@ -93,7 +84,7 @@ final class MultilingualStringTest extends TestCase
 
         $this->multilingualString->withTranslation(
             new Language('nl'),
-            new StringLiteral('Alle vogels zijn nesten begonnen, behalve ik en jij. Waar wachten wij nu op?')
+            'Alle vogels zijn nesten begonnen, behalve ik en jij. Waar wachten wij nu op?'
         );
     }
 
@@ -106,7 +97,7 @@ final class MultilingualStringTest extends TestCase
     public function it_can_return_the_value_for_a_given_language_or_a_fallback_language(
         Language $preferredLanguage,
         array $fallbackLanguages,
-        StringLiteral $expected = null
+        string $expected = null
     ): void {
         $actual = $this->multilingualString->getStringForLanguage($preferredLanguage, ...$fallbackLanguages);
         $this->assertEquals($expected, $actual);
@@ -118,17 +109,17 @@ final class MultilingualStringTest extends TestCase
             [
                 new Language('nl'),
                 [new Language('fr'), new Language('en')],
-                new StringLiteral('Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu'),
+                'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu',
             ],
             [
                 new Language('de'),
                 [new Language('fr'), new Language('en')],
-                new StringLiteral('Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?'),
+                'Tous les oiseaux ont commencé nids, sauf moi et vous. Ce que nous attendons?',
             ],
             [
                 new Language('de'),
                 [new Language('es'), new Language('en')],
-                new StringLiteral('All birds have begun nests, except me and you. What we are waiting for?'),
+                'All birds have begun nests, except me and you. What we are waiting for?',
             ],
             [
                 new Language('de'),

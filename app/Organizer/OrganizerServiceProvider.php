@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class OrganizerServiceProvider extends BaseServiceProvider
 {
@@ -49,8 +48,8 @@ final class OrganizerServiceProvider extends BaseServiceProvider
                     new ElasticSearchOrganizerQueryBuilder(),
                     new ElasticSearchOrganizerSearchService(
                         $this->get(Client::class),
-                        new StringLiteral($this->parameter('elasticsearch.organizer.read_index')),
-                        new StringLiteral($this->parameter('elasticsearch.organizer.document_type')),
+                        $this->parameter('elasticsearch.organizer.read_index'),
+                        $this->parameter('elasticsearch.organizer.document_type'),
                         new ElasticSearchPagedResultSetFactory(
                             new NullAggregationTransformer()
                         )
@@ -96,8 +95,8 @@ final class OrganizerServiceProvider extends BaseServiceProvider
             function () {
                 return new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
-                    new StringLiteral($this->parameter('elasticsearch.organizer.write_index')),
-                    new StringLiteral($this->parameter('elasticsearch.organizer.document_type')),
+                    $this->parameter('elasticsearch.organizer.write_index'),
+                    $this->parameter('elasticsearch.organizer.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
             }

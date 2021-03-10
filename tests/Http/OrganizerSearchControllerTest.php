@@ -27,7 +27,6 @@ use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Request;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -106,7 +105,7 @@ final class OrganizerSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAutoCompleteFilter(new StringLiteral('Foo'))
+            ->withAutoCompleteFilter('Foo')
             ->withAdvancedQuery(
                 new MockQueryString('Foo bar'),
                 new Language('nl'),

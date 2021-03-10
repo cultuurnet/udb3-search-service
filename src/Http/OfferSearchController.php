@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\StringLiteral\StringLiteral;
 
 /**
  * @todo Extract more parsing functionality to OfferRequestParserInterface
@@ -65,12 +64,12 @@ final class OfferSearchController
     private $searchService;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionIndexName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $regionDocumentType;
 
@@ -95,8 +94,8 @@ final class OfferSearchController
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
         OfferSearchServiceInterface $searchService,
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer
     ) {
@@ -161,7 +160,7 @@ final class OfferSearchController
 
         if ($request->hasQueryParam('text')) {
             $queryBuilder = $queryBuilder->withTextQuery(
-                new StringLiteral($request->getQueryParam('text')),
+                $request->getQueryParam('text'),
                 ...$textLanguages
             );
         }

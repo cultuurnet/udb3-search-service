@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchDocumentRepository implements DocumentRepository
 {
@@ -22,8 +21,8 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
 
     public function __construct(
         Client $elasticSearchClient,
-        StringLiteral $indexName,
-        StringLiteral $documentType,
+        string $indexName,
+        string $documentType,
         IndexationStrategy $indexationStrategy
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
@@ -67,6 +66,6 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
 
     public function getDocumentType(): string
     {
-        return $this->documentType->toNative();
+        return $this->documentType;
     }
 }

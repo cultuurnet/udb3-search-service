@@ -74,7 +74,7 @@ final class GeoInformationTransformer implements JsonTransformer
 
         return array_map(
             function (RegionId $regionId) {
-                return $regionId->toNative();
+                return $regionId->toString();
             },
             $regionIds
         );

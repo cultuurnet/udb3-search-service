@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
@@ -147,7 +146,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                         'gem-leuven',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Leuven')
+                            'Leuven'
                         ),
                         10
                     ),
@@ -155,7 +154,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                         'gem-antwerpen',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Antwerpen')
+                            'Antwerpen'
                         ),
                         12
                     ),
@@ -253,7 +252,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                         'gem-leuven',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Leuven')
+                            'Leuven'
                         ),
                         10
                     ),
@@ -261,7 +260,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                         'gem-antwerpen',
                         new MultilingualString(
                             new Language('nl'),
-                            new StringLiteral('Antwerpen')
+                            'Antwerpen'
                         ),
                         12
                     ),

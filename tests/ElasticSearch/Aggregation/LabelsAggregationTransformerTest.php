@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class LabelsAggregationTransformerTest extends TestCase
 {
@@ -76,33 +75,33 @@ final class LabelsAggregationTransformerTest extends TestCase
                     'hiddenLabel1',
                     (new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('hiddenLabel1')
+                        'hiddenLabel1'
                     ))
-                        ->withTranslation($fr, new StringLiteral('hiddenLabel1'))
-                        ->withTranslation($de, new StringLiteral('hiddenLabel1'))
-                        ->withTranslation($en, new StringLiteral('hiddenLabel1')),
+                        ->withTranslation($fr, 'hiddenLabel1')
+                        ->withTranslation($de, 'hiddenLabel1')
+                        ->withTranslation($en, 'hiddenLabel1'),
                     11
                 ),
                 new FacetNode(
                     'hiddenLabel2',
                     (new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('hiddenLabel2')
+                        'hiddenLabel2'
                     ))
-                        ->withTranslation($fr, new StringLiteral('hiddenLabel2'))
-                        ->withTranslation($de, new StringLiteral('hiddenLabel2'))
-                        ->withTranslation($en, new StringLiteral('hiddenLabel2')),
+                        ->withTranslation($fr, 'hiddenLabel2')
+                        ->withTranslation($de, 'hiddenLabel2')
+                        ->withTranslation($en, 'hiddenLabel2'),
                     6
                 ),
                 new FacetNode(
                     'labelA',
                     (new MultilingualString(
                         new Language('nl'),
-                        new StringLiteral('labelA')
+                        'labelA'
                     ))
-                        ->withTranslation($fr, new StringLiteral('labelA'))
-                        ->withTranslation($de, new StringLiteral('labelA'))
-                        ->withTranslation($en, new StringLiteral('labelA')),
+                        ->withTranslation($fr, 'labelA')
+                        ->withTranslation($de, 'labelA')
+                        ->withTranslation($en, 'labelA'),
                     2
                 ),
             ]

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
-use ValueObjects\StringLiteral\StringLiteral;
 use ValueObjects\Web\Domain;
 use ValueObjects\Web\Url;
 
@@ -19,7 +18,7 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     /**
      * @return static
      */
-    public function withAutoCompleteFilter(StringLiteral $input);
+    public function withAutoCompleteFilter(string $input);
 
     /**
      * @return static

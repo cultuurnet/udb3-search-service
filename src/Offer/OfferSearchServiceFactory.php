@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\AggregationTransformerInter
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
 use Elasticsearch\Client;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class OfferSearchServiceFactory
 {
@@ -32,8 +31,8 @@ final class OfferSearchServiceFactory
     {
         return new ElasticSearchOfferSearchService(
             $this->client,
-            new StringLiteral($readIndex),
-            new StringLiteral($documentType),
+            $readIndex,
+            $documentType,
             new ElasticSearchPagedResultSetFactory(
                 $this->aggregationTransformer
             )

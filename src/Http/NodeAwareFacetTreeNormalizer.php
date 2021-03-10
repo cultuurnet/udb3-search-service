@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class NodeAwareFacetTreeNormalizer implements FacetTreeNormalizerInterface
 {
@@ -15,13 +14,7 @@ final class NodeAwareFacetTreeNormalizer implements FacetTreeNormalizerInterface
         $data = [];
 
         if ($facetTree instanceof FacetNode) {
-            $data['name'] = array_map(
-                function (StringLiteral $translation) {
-                    return $translation->toNative();
-                },
-                $facetTree->getName()->getTranslationsIncludingOriginal()
-            );
-
+            $data['name'] = $facetTree->getName()->getTranslationsIncludingOriginal();
             $data['count'] = $facetTree->getCount();
 
             $data['children'] = [];

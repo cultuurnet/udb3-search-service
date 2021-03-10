@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class BulkIndexationStrategy implements IndexationStrategy
 {
@@ -48,16 +47,16 @@ final class BulkIndexationStrategy implements IndexationStrategy
 
 
     public function indexDocument(
-        StringLiteral $indexName,
-        StringLiteral $documentType,
+        string $indexName,
+        string $documentType,
         JsonDocument $jsonDocument
     ) {
         $id = $jsonDocument->getId();
         $this->logger->info("Queuing document {$id} for indexation.");
 
         $this->queuedDocuments[] = [
-            'index' => $indexName->toNative(),
-            'type' => $documentType->toNative(),
+            'index' => $indexName,
+            'type' => $documentType,
             'id' => $jsonDocument->getId(),
             'body' => json_decode($jsonDocument->getRawBody(), true),
         ];

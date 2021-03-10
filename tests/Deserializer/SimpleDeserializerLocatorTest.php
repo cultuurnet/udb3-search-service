@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Deserializer;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class SimpleDeserializerLocatorTest extends TestCase
 {
@@ -27,27 +26,23 @@ final class SimpleDeserializerLocatorTest extends TestCase
         $anotherDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->deserializerLocator->registerDeserializer(
-            new StringLiteral('application/vnd.cultuurnet.foo'),
+            'application/vnd.cultuurnet.foo',
             $firstDeserializer
         );
 
         $this->deserializerLocator->registerDeserializer(
-            new StringLiteral('application/vnd.cultuurnet.bar'),
+            'application/vnd.cultuurnet.bar',
             $anotherDeserializer
         );
 
         $this->assertSame(
             $firstDeserializer,
-            $this->deserializerLocator->getDeserializerForContentType(
-                new StringLiteral('application/vnd.cultuurnet.foo')
-            )
+            $this->deserializerLocator->getDeserializerForContentType('application/vnd.cultuurnet.foo')
         );
 
         $this->assertSame(
             $anotherDeserializer,
-            $this->deserializerLocator->getDeserializerForContentType(
-                new StringLiteral('application/vnd.cultuurnet.bar')
-            )
+            $this->deserializerLocator->getDeserializerForContentType('application/vnd.cultuurnet.bar')
         );
     }
 
@@ -55,8 +50,6 @@ final class SimpleDeserializerLocatorTest extends TestCase
     {
         $this->expectException(DeserializerNotFoundException::class);
 
-        $this->deserializerLocator->getDeserializerForContentType(
-            new StringLiteral('application/vnd.cultuurnet.something-else')
-        );
+        $this->deserializerLocator->getDeserializerForContentType('application/vnd.cultuurnet.something-else');
     }
 }

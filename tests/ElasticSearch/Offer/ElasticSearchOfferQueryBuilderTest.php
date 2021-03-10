@@ -36,7 +36,6 @@ use InvalidArgumentException;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
@@ -123,9 +122,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withTextQuery(
-                new StringLiteral('(foo OR baz) AND bar AND labels:test')
-            );
+            ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -1246,13 +1243,13 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withRegionFilter(
-                new StringLiteral('geoshapes'),
-                new StringLiteral('regions'),
+                'geoshapes',
+                'regions',
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
-                new StringLiteral('geoshapes'),
-                new StringLiteral('regions'),
+                'geoshapes',
+                'regions',
                 new RegionId('prv-limburg')
             );
 
@@ -3289,7 +3286,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withProductionIdFilter(
-                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toNative()
+                (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toString()
             );
 
         $expectedQueryArray = [

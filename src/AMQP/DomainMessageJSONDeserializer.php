@@ -10,7 +10,6 @@ use Broadway\Domain\Metadata;
 use Broadway\Serializer\SerializableInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\NotWellFormedException;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class DomainMessageJSONDeserializer implements DeserializerInterface
 {
@@ -39,12 +38,9 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
         $this->payloadClass = $payloadClass;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function deserialize(StringLiteral $data)
+    public function deserialize(string $data)
     {
-        $data = json_decode($data->toNative(), true);
+        $data = json_decode($data, true);
 
         if (null === $data) {
             throw new NotWellFormedException('Invalid JSON');

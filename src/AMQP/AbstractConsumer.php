@@ -10,7 +10,6 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;
-use ValueObjects\StringLiteral\StringLiteral;
 
 abstract class AbstractConsumer implements ConsumerInterface
 {
@@ -27,17 +26,17 @@ abstract class AbstractConsumer implements ConsumerInterface
     private $deserializerLocator;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $queueName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $exchangeName;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $consumerTag;
 
@@ -51,25 +50,21 @@ abstract class AbstractConsumer implements ConsumerInterface
      *
      * @var int
      */
-    private $delay = 0;
+    private $delay;
 
     /**
      * @var string
      */
-    private $messageHandlerName = 'message handler';
+    private $messageHandlerName;
 
-    /**
-     * @param int $delay
-     * @param string $messageHandlerName
-     */
     public function __construct(
         AMQPStreamConnection $connection,
         DeserializerLocatorInterface $deserializerLocator,
-        StringLiteral $consumerTag,
-        StringLiteral $exchangeName,
-        StringLiteral $queueName,
-        $delay = 0,
-        $messageHandlerName = 'message handler'
+        string $consumerTag,
+        string $exchangeName,
+        string $queueName,
+        int $delay = 0,
+        string $messageHandlerName = 'message handler'
     ) {
         $this->connection = $connection;
         $this->channel = $connection->channel();
@@ -115,15 +110,11 @@ abstract class AbstractConsumer implements ConsumerInterface
                 );
             }
 
-            $contentType = new StringLiteral($message->get('content_type'));
-
             $deserializer = $this->deserializerLocator->getDeserializerForContentType(
-                $contentType
+                $message->get('content_type')
             );
 
-            $deserializedMessage = $deserializer->deserialize(
-                new StringLiteral($message->body)
-            );
+            $deserializedMessage = $deserializer->deserialize($message->body);
 
             $this->delayIfNecessary();
 
@@ -185,7 +176,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     private function declareQueue()
     {
         $this->channel->queue_declare(
-            (string) $this->queueName,
+            $this->queueName,
             $passive = false,
             $durable = true,
             $exclusive = false,
@@ -203,7 +194,7 @@ abstract class AbstractConsumer implements ConsumerInterface
     {
         $this->channel->basic_consume(
             $this->queueName,
-            $consumerTag = (string) $this->consumerTag,
+            $consumerTag = $this->consumerTag,
             $noLocal = false,
             $noAck = false,
             $exclusive = false,

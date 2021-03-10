@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Label;
 
-use ValueObjects\StringLiteral\StringLiteral;
+use CultuurNet\UDB3\Search\StringLiteral;
 
 final class LabelName extends StringLiteral
 {

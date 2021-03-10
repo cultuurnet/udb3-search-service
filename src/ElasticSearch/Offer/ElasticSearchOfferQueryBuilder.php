@@ -34,7 +34,6 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use ValueObjects\Geography\Country;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -75,17 +74,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withCdbIdFilter(Cdbid $cdbid): self
     {
-        return $this->withMatchQuery('id', $cdbid->toNative());
+        return $this->withMatchQuery('id', $cdbid->toString());
     }
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid): self
     {
-        return $this->withMatchQuery('location.id', $locationCdbid->toNative());
+        return $this->withMatchQuery('location.id', $locationCdbid->toString());
     }
 
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
-        return $this->withMatchQuery('organizer.id', $organizerCdbId);
+        return $this->withMatchQuery('organizer.id', $organizerCdbId->toString());
     }
 
     public function withMainLanguageFilter(Language $mainLanguages): self
@@ -117,7 +116,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'workflowStatus',
             array_map(
                 function (WorkflowStatus $workflowStatus) {
-                    return $workflowStatus->toNative();
+                    return $workflowStatus->toString();
                 },
                 $workflowStatuses
             )
@@ -142,7 +141,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withCreatorFilter(Creator $creator): self
     {
-        return $this->withMatchQuery('creator', $creator->toNative());
+        return $this->withMatchQuery('creator', $creator->toString());
     }
 
     public function withDateRangeFilter(
@@ -228,7 +227,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'calendarType',
             array_map(
                 function (CalendarType $calendarType) {
-                    return $calendarType->toNative();
+                    return $calendarType->toString();
                 },
                 $calendarTypes
             )
@@ -241,7 +240,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             (new KnownLanguages())->fieldNames(
                 'address.{{lang}}.postalCode'
             ),
-            $postalCode->toNative()
+            $postalCode->toString()
         );
     }
 
@@ -256,17 +255,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withRegionFilter(
-        StringLiteral $regionIndexName,
-        StringLiteral $regionDocumentType,
+        string $regionIndexName,
+        string $regionDocumentType,
         RegionId $regionId
     ): self {
         $geoShapeQuery = new GeoShapeQuery();
 
         $geoShapeQuery->addPreIndexedShape(
             'geo',
-            $regionId->toNative(),
-            $regionDocumentType->toNative(),
-            $regionIndexName->toNative(),
+            $regionId->toString(),
+            $regionDocumentType,
+            $regionIndexName,
             'location'
         );
 
@@ -279,7 +278,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toNative(),
+            $geoDistanceParameters->getMaximumDistance()->toString(),
             (object) [
                 'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
                 'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
@@ -315,7 +314,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withAudienceTypeFilter(AudienceType $audienceType): self
     {
-        return $this->withMatchQuery('audienceType', $audienceType->toNative());
+        return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
     public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null): self
@@ -364,37 +363,37 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withTermIdFilter(TermId $termId): self
     {
-        return $this->withMatchQuery('terms.id', $termId->toNative());
+        return $this->withMatchQuery('terms.id', $termId->toString());
     }
 
     public function withTermLabelFilter(TermLabel $termLabel): self
     {
-        return $this->withMatchQuery('terms.label', $termLabel->toNative());
+        return $this->withMatchQuery('terms.label', $termLabel->toString());
     }
 
     public function withLocationTermIdFilter(TermId $locationTermId): self
     {
-        return $this->withMatchQuery('location.terms.id', $locationTermId->toNative());
+        return $this->withMatchQuery('location.terms.id', $locationTermId->toString());
     }
 
     public function withLocationTermLabelFilter(TermLabel $locationTermLabel): self
     {
-        return $this->withMatchQuery('location.terms.label', $locationTermLabel->toNative());
+        return $this->withMatchQuery('location.terms.label', $locationTermLabel->toString());
     }
 
     public function withLabelFilter(LabelName $label): self
     {
-        return $this->withMatchQuery('labels', $label->toNative());
+        return $this->withMatchQuery('labels', $label->toString());
     }
 
     public function withLocationLabelFilter(LabelName $locationLabel): self
     {
-        return $this->withMatchQuery('location.labels', $locationLabel->toNative());
+        return $this->withMatchQuery('location.labels', $locationLabel->toString());
     }
 
     public function withOrganizerLabelFilter(LabelName $organizerLabel): self
     {
-        return $this->withMatchQuery('organizer.labels', $organizerLabel->toNative());
+        return $this->withMatchQuery('organizer.labels', $organizerLabel->toString());
     }
 
     public function withDuplicateFilter(bool $isDuplicate): self

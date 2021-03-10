@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 use ValueObjects\Number\Natural;
-use ValueObjects\StringLiteral\StringLiteral;
 
 final class EventBusForwardingConsumerFactory
 {
@@ -44,20 +43,17 @@ final class EventBusForwardingConsumerFactory
     private $eventBus;
 
     /**
-     * @var StringLiteral
+     * @var string
      */
     private $consumerTag;
 
-    /**
-     * EventBusForwardingConsumerFactory constructor.
-     */
     public function __construct(
         Natural $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
         EventBusInterface $eventBus,
-        StringLiteral $consumerTag
+        string $consumerTag
     ) {
         $this->executionDelay = $executionDelay;
         $this->connection = $connection;
@@ -71,8 +67,8 @@ final class EventBusForwardingConsumerFactory
      * @return EventBusForwardingConsumer
      */
     public function create(
-        StringLiteral $exchange,
-        StringLiteral $queue
+        string $exchange,
+        string $queue
     ) {
         $eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,
