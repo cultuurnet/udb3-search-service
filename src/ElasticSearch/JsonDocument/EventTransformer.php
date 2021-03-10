@@ -50,7 +50,7 @@ final class EventTransformer implements JsonTransformer
             new MetadataTransformer()
         );
 
-        $this->geoInformationTransformer = new GeoInformationTransformer(OfferType::EVENT(), $offerRegionService);
+        $this->geoInformationTransformer = new GeoInformationTransformer(OfferType::event(), $offerRegionService);
     }
 
     public function transform(array $from, array $draft = []): array
