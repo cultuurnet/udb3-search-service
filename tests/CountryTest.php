@@ -11,18 +11,39 @@ final class CountryTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider validValues
      */
-    public function it_only_allows_valid_countries(): void
+    public function it_only_accepts_valid_values(string $value): void
     {
-        new Country('BE');
-
-        $this->expectException(InvalidArgumentException::class);
-        new Country('AA');
+        new Country($value);
+        $this->addToAssertionCount(1);
     }
 
-    public function it_can_be_converted_to_a_string(): void
+    public function validValues(): array
     {
-        $country = new Country('FR');
-        $this->assertEquals('FR', $country->toString());
+        return [
+            'AA' => ['AA'],
+            'BE' => ['BE'],
+            'FR' => ['FR'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider inValidValues
+     */
+    public function it_throws_on_invalid_values(string $invalidValue): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Country($invalidValue);
+    }
+
+    public function inValidValues(): array
+    {
+        return [
+            'be' => ['be'],
+            'BEL' => ['BEL'],
+            'B' => ['B'],
+        ];
     }
 }
