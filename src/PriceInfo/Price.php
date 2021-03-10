@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\PriceInfo;
 
+use CultuurNet\UDB3\Search\Natural;
 use ValueObjects\Exception\InvalidNativeArgumentException;
-use ValueObjects\Number\Natural;
 
 final class Price extends Natural
 {
