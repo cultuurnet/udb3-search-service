@@ -164,7 +164,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'status',
             array_map(
                 function (Status $status) {
-                    return $status->toNative();
+                    return $status->toString();
                 },
                 $statuses
             )
@@ -208,7 +208,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                 'subEvent.status',
                 array_map(
                     function (Status $status) {
-                        return $status->toNative();
+                        return $status->toString();
                     },
                     $statuses
                 )

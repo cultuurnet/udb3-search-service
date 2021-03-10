@@ -27,7 +27,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
             null,
             function (string $status) {
                 try {
-                    return Status::fromNative($status);
+                    return new Status($status);
                 } catch (InvalidArgumentException $e) {
                     throw new InvalidArgumentException('Unknown status value "' . $status . '"');
                 }

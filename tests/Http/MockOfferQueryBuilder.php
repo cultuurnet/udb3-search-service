@@ -155,7 +155,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['status'] = array_map(
             function (Status $status) {
-                return (string) $status;
+                return $status->toString();
             },
             $statuses
         );
@@ -174,7 +174,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
             'statuses' => array_map(
                 function (Status $status) {
-                    return $status->toNative();
+                    return $status->toString();
                 },
                 $subEventQueryParameters->getStatuses()
             ),

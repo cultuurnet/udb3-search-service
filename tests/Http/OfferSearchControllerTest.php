@@ -308,7 +308,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withDateTo(DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
-                    ->withStatuses([Status::UNAVAILABLE(), Status::TEMPORARILY_UNAVAILABLE()])
+                    ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))
@@ -1084,7 +1084,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStatusFilter(Status::AVAILABLE());
+            ->withStatusFilter(Status::available());
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
