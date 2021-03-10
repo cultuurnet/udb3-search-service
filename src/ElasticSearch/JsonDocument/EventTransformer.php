@@ -38,12 +38,12 @@ final class EventTransformer implements JsonTransformer
             new OfferTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::EVENT()
+                FallbackType::event()
             ),
             new RelatedLocationTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::PLACE()
+                FallbackType::place()
             ),
             new RelatedProductionTransformer(),
             new PerformersTransformer(),

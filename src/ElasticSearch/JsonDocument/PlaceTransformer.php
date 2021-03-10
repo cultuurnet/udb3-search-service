@@ -31,7 +31,7 @@ final class PlaceTransformer implements JsonTransformer
             new OfferTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::PLACE()
+                FallbackType::place()
             ),
             new AddressTransformer($logger, true),
             new GeoInformationTransformer(OfferType::PLACE(), $offerRegionService),
