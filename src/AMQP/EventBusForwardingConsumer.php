@@ -11,7 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\Identity\UUID;
+use Rhumsaa\Uuid\Uuid;
 
 /**
  * Forwards messages coming in via AMQP to an event bus.
@@ -56,7 +56,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         // DomainMessage.
         if (!$deserializedMessage instanceof DomainMessage) {
             $deserializedMessage = new DomainMessage(
-                UUID::generateAsString(),
+                Uuid::uuid4(),
                 0,
                 new Metadata($context),
                 $deserializedMessage,

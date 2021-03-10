@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Place;
 
 use PHPUnit\Framework\TestCase;
-use ValueObjects\Identity\UUID;
+use Rhumsaa\Uuid\Uuid;
 
 final class PlaceProjectedToJSONLDTest extends TestCase
 {
@@ -14,14 +14,14 @@ final class PlaceProjectedToJSONLDTest extends TestCase
      */
     public function it_can_serialize_and_deserialize(): void
     {
-        $placeId = UUID::generateAsString();
-        $iri = 'example.com/' . $placeId;
+        $placeId = Uuid::uuid4();
+        $iri = 'example.com/' . $placeId->toString();
 
         $serializedData = [
-            'item_id' => $placeId,
+            'item_id' => $placeId->toString(),
             'iri' => $iri,
         ];
-        $event = new PlaceProjectedToJSONLD($placeId, $iri);
+        $event = new PlaceProjectedToJSONLD($placeId->toString(), $iri);
 
         $this->assertEquals($serializedData, $event->serialize());
         $this->assertEquals($event, PlaceProjectedToJSONLD::deserialize($serializedData));
@@ -32,10 +32,10 @@ final class PlaceProjectedToJSONLDTest extends TestCase
      */
     public function it_exposes_its_values(): void
     {
-        $placeId = UUID::generateAsString();
-        $iri = 'example.com/' . $placeId;
+        $placeId = Uuid::uuid4();
+        $iri = 'example.com/' . $placeId->toString();
 
-        $event = new PlaceProjectedToJSONLD($placeId, $iri);
+        $event = new PlaceProjectedToJSONLD($placeId->toString(), $iri);
 
         $this->assertEquals($placeId, $event->getItemId());
         $this->assertEquals($iri, $event->getIri());
