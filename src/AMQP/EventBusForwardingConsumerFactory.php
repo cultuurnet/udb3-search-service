@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Search\Natural;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
-use ValueObjects\Number\Natural;
 
 final class EventBusForwardingConsumerFactory
 {

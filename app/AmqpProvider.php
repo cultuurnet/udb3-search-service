@@ -9,10 +9,10 @@ use CultuurNet\UDB3\Search\AMQP\DomainMessageJSONDeserializer;
 use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Search\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Natural;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\Number\Natural;
 
 final class AmqpProvider extends BaseServiceProvider
 {
