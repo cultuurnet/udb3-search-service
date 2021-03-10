@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\EventHandling\EventBusInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
-use CultuurNet\UDB3\Search\Natural;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
 
@@ -18,7 +17,7 @@ final class EventBusForwardingConsumerFactory
      * commands in the UDB3 queue worker need to finish before their
      * counterpart UDB2 update is processed.
      *
-     * @var Natural
+     * @var Delay
      */
     private $executionDelay;
 
@@ -48,7 +47,7 @@ final class EventBusForwardingConsumerFactory
     private $consumerTag;
 
     public function __construct(
-        Natural $executionDelay,
+        Delay $executionDelay,
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
