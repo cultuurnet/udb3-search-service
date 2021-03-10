@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Address\PostalCode;
@@ -29,7 +30,6 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
-use ValueObjects\Geography\Country;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
@@ -205,7 +205,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withAddressCountryFilter(Country $country)
     {
         $c = clone $this;
-        $c->mockQuery['country'] = (string) $country;
+        $c->mockQuery['country'] = $country->toString();
         return $c;
     }
 

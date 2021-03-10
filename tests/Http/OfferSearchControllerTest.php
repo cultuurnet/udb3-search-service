@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
@@ -55,8 +56,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
 
 final class OfferSearchControllerTest extends TestCase
 {
@@ -288,7 +287,7 @@ final class OfferSearchControllerTest extends TestCase
                 new RegionId('prv-limburg')
             )
             ->withPostalCodeFilter(new PostalCode('3000'))
-            ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
+            ->withAddressCountryFilter(new Country('BE'))
             ->withAudienceTypeFilter(new AudienceType('members'))
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
             ->withMediaObjectsFilter(true)
@@ -514,7 +513,7 @@ final class OfferSearchControllerTest extends TestCase
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00')
             )
-            ->withAddressCountryFilter(new Country(CountryCode::fromNative('BE')))
+            ->withAddressCountryFilter(new Country('BE'))
             ->withAudienceTypeFilter(new AudienceType('everyone'))
             ->withDuplicateFilter(false);
 
@@ -933,7 +932,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAddressCountryFilter(new Country(CountryCode::fromNative('NL')));
+            ->withAddressCountryFilter(new Country('NL'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

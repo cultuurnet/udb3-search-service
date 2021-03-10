@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use ValueObjects\Geography\Country;
-use ValueObjects\Geography\CountryCode;
 
 final class CountryExtractor
 {
     public function getCountryFromQuery(
         ParameterBagInterface $parameterBag,
-        ?CountryCode $defaultCountryCode
+        ?Country $defaultCountry
     ): ?Country {
         return $parameterBag->getStringFromParameter(
             'addressCountry',
-            null !== $defaultCountryCode ? $defaultCountryCode->toNative() : null,
-            function ($country) {
+            null !== $defaultCountry ? $defaultCountry->toString() : null,
+            function (string $country) {
                 try {
-                    $countryCode = CountryCode::fromNative(strtoupper((string) $country));
-                    return new Country($countryCode);
+                    return new Country(strtoupper($country));
                 } catch (\InvalidArgumentException $e) {
                     throw new \InvalidArgumentException("Unknown country code '{$country}'.");
                 }
