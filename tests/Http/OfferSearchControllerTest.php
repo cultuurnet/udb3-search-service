@@ -31,6 +31,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -56,7 +57,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use ValueObjects\Geography\Country;
 use ValueObjects\Geography\CountryCode;
-use ValueObjects\Number\Natural;
 
 final class OfferSearchControllerTest extends TestCase
 {
@@ -233,7 +233,7 @@ final class OfferSearchControllerTest extends TestCase
                 new Language('nl'),
                 new Language('en')
             )
-            ->withAgeRangeFilter(new Natural(3), new Natural(7))
+            ->withAgeRangeFilter(new Age(3), new Age(7))
             ->withAllAgesFilter(true)
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
@@ -667,7 +667,7 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStart(new Start(0))
             ->withLimit(new Limit(30))
-            ->withAgeRangeFilter(new Natural(0), new Natural(0));
+            ->withAgeRangeFilter(new Age(0), new Age(0));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

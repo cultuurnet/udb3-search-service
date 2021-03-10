@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
+use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use ValueObjects\Number\Natural;
 
 final class AgeRangeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -17,7 +17,7 @@ final class AgeRangeOfferRequestParser implements OfferRequestParserInterface
         $parameterBagReader = $request->getQueryParameterBag();
 
         $ageCallback = function ($age) {
-            return new Natural($age);
+            return new Age($age);
         };
 
         $minAge = $parameterBagReader->getIntegerFromParameter('minAge', null, $ageCallback);

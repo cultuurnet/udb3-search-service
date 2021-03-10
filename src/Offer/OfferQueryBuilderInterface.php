@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Geography\Country;
-use ValueObjects\Number\Natural;
 
 /**
  * Multiple filters are combined using AND.
@@ -159,7 +158,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     /**
      * @return OfferQueryBuilderInterface
      */
-    public function withAgeRangeFilter(Natural $minimum = null, Natural $maximum = null);
+    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null);
 
     /**
      * @param bool $include

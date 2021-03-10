@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use ValueObjects\Number\Natural;
 
 final class AgeRangeOfferRequestParserTest extends TestCase
 {
@@ -42,7 +42,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
 
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
-            ->with(new Natural(7), null)
+            ->with(new Age(7), null)
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
@@ -61,7 +61,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
 
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
-            ->with(null, new Natural(12))
+            ->with(null, new Age(12))
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
@@ -81,7 +81,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
 
         $this->queryBuilder->expects($this->once())
             ->method('withAgeRangeFilter')
-            ->with(new Natural(7), new Natural(12))
+            ->with(new Age(7), new Age(12))
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
