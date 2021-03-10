@@ -18,7 +18,7 @@ final class SortOrder
 
     public function __construct(string $order)
     {
-        if (!\in_array($order, $this->getAllowedValues())) {
+        if (!in_array($order, $this->getAllowedValues())) {
             throw new InvalidArgumentException('The given sort order ' . $order . ' is not asc or desc');
         }
 

@@ -19,7 +19,7 @@ final class FallbackType
 
     public function __construct(string $fallbackType)
     {
-        if (!\in_array($fallbackType, $this->getAllowedValues())) {
+        if (!in_array($fallbackType, $this->getAllowedValues())) {
             throw new InvalidArgumentException(
                 'The given fallback type ' . $fallbackType . ' is not Event, Place or Organizer'
             );
