@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 use InvalidArgumentException;
 
-final class Natural
+abstract class Natural
 {
     /**
      * @var int
