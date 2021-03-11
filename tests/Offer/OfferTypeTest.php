@@ -34,6 +34,9 @@ final class OfferTypeTest extends TestCase
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid OfferType: ' . $invalidValue . '. Should be one of Event, Place'
+        );
         new OfferType($invalidValue);
     }
 

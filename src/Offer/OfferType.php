@@ -8,8 +8,13 @@ use InvalidArgumentException;
 
 final class OfferType
 {
-    public const EVENT = 'Event';
-    public const PLACE = 'Place';
+    private const EVENT = 'Event';
+    private const PLACE = 'Place';
+
+    private const ALLOWED_VALUES = [
+        self::EVENT,
+        self::PLACE,
+    ];
 
     /**
      * @var string
@@ -18,8 +23,10 @@ final class OfferType
 
     public function __construct(string $offerType)
     {
-        if (!in_array($offerType, $this->getAllowedValues())) {
-            throw new InvalidArgumentException('The given offer type ' . $offerType . ' should be Event or Place');
+        if (!in_array($offerType, self::ALLOWED_VALUES)) {
+            throw new InvalidArgumentException(
+                'Invalid OfferType: ' . $offerType . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
+            );
         }
 
         $this->offerType = $offerType;
@@ -38,13 +45,5 @@ final class OfferType
     public function toString(): string
     {
         return $this->offerType;
-    }
-
-    private function getAllowedValues(): array
-    {
-        return [
-            self::EVENT,
-            self::PLACE,
-        ];
     }
 }
