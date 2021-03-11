@@ -37,6 +37,9 @@ final class FacetNameTest extends TestCase
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid FacetName: ' . $invalidValue . '. Should be one of regions, types, themes, facilities, labels'
+        );
         new FacetName($invalidValue);
     }
 

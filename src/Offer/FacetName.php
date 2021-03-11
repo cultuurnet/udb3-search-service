@@ -8,11 +8,19 @@ use InvalidArgumentException;
 
 final class FacetName
 {
-    public const REGIONS = 'regions';
-    public const TYPES = 'types';
-    public const THEMES = 'themes';
-    public const FACILITIES = 'facilities';
-    public const LABELS = 'labels';
+    private const REGIONS = 'regions';
+    private const TYPES = 'types';
+    private const THEMES = 'themes';
+    private const FACILITIES = 'facilities';
+    private const LABELS = 'labels';
+
+    private static $allowedValues = [
+        self::REGIONS,
+        self::TYPES,
+        self::THEMES,
+        self::FACILITIES,
+        self::LABELS,
+    ];
 
     /**
      * @var string
@@ -21,8 +29,10 @@ final class FacetName
 
     public function __construct(string $facetName)
     {
-        if (!in_array($facetName, $this->getAllowedValues())) {
-            throw new InvalidArgumentException('The given facet name ' . $facetName . ' is not supported');
+        if (!in_array($facetName, self::$allowedValues)) {
+            throw new InvalidArgumentException(
+                'Invalid FacetName: ' . $facetName . '. Should be one of ' . implode(', ', self::$allowedValues)
+            );
         }
 
         $this->facetName = $facetName;
@@ -61,16 +71,5 @@ final class FacetName
     public function sameValueAs(FacetName $otherFacetName): bool
     {
         return $this->toString() === $otherFacetName->toString();
-    }
-
-    private function getAllowedValues(): array
-    {
-        return [
-            self::REGIONS,
-            self::TYPES,
-            self::THEMES,
-            self::FACILITIES,
-            self::LABELS,
-        ];
     }
 }
