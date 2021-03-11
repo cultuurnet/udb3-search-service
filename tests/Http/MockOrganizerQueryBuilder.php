@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
-use ValueObjects\Web\Domain;
 
 final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
 {
@@ -43,10 +42,10 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withDomainFilter(Domain $domain)
+    public function withDomainFilter(string $domain)
     {
         $c = clone $this;
-        $c->mockQuery['domain'] = (string) $domain;
+        $c->mockQuery['domain'] = $domain;
         return $c;
     }
 

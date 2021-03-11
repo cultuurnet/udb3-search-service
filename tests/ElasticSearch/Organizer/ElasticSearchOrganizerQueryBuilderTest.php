@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Start;
-use ValueObjects\Web\Hostname;
 
 final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
@@ -202,9 +201,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_builds_a_query_to_filter_on_the_domain_name(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withDomainFilter(
-                Hostname::fromNative('www.publiq.be')
-            );
+            ->withDomainFilter('www.publiq.be');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
