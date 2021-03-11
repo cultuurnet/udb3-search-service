@@ -14,7 +14,7 @@ final class FacetName
     private const FACILITIES = 'facilities';
     private const LABELS = 'labels';
 
-    private static $allowedValues = [
+    private const ALLOWED_VALUES = [
         self::REGIONS,
         self::TYPES,
         self::THEMES,
@@ -29,9 +29,9 @@ final class FacetName
 
     public function __construct(string $facetName)
     {
-        if (!in_array($facetName, self::$allowedValues)) {
+        if (!in_array($facetName, self::ALLOWED_VALUES)) {
             throw new InvalidArgumentException(
-                'Invalid FacetName: ' . $facetName . '. Should be one of ' . implode(', ', self::$allowedValues)
+                'Invalid FacetName: ' . $facetName . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }
 

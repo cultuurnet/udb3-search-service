@@ -12,7 +12,7 @@ final class FallbackType
     private const PLACE = 'Place';
     private const ORGANIZER = 'Organizer';
 
-    private static $allowedValues = [
+    private const ALLOWED_VALUES = [
         self::EVENT,
         self::PLACE,
         self::ORGANIZER,
@@ -25,9 +25,9 @@ final class FallbackType
 
     public function __construct(string $fallbackType)
     {
-        if (!in_array($fallbackType, self::$allowedValues)) {
+        if (!in_array($fallbackType, self::ALLOWED_VALUES)) {
             throw new InvalidArgumentException(
-                'Invalid FallbackType: ' . $fallbackType . '. Should be one of ' . implode(', ', self::$allowedValues)
+                'Invalid FallbackType: ' . $fallbackType . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }
 

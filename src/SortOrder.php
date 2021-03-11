@@ -11,7 +11,7 @@ final class SortOrder
     private const ASC = 'asc';
     private const DESC = 'desc';
 
-    private static $allowedValues = [
+    private const ALLOWED_VALUES = [
         self::ASC,
         self::DESC,
     ];
@@ -23,9 +23,9 @@ final class SortOrder
 
     public function __construct(string $order)
     {
-        if (!in_array($order, self::$allowedValues)) {
+        if (!in_array($order, self::ALLOWED_VALUES)) {
             throw new InvalidArgumentException(
-                'Invalid SortOrder: ' . $order . '. Should be one of ' . implode(', ', self::$allowedValues)
+                'Invalid SortOrder: ' . $order . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }
 
