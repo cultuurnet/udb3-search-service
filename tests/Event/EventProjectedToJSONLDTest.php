@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Event;
 
 use PHPUnit\Framework\TestCase;
-use Rhumsaa\Uuid\Uuid;
+use Ramsey\Uuid\Uuid;
 
 final class EventProjectedToJSONLDTest extends TestCase
 {
