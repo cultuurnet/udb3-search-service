@@ -8,9 +8,15 @@ use InvalidArgumentException;
 
 final class FallbackType
 {
-    public const EVENT = 'Event';
-    public const PLACE = 'Place';
-    public const ORGANIZER = 'Organizer';
+    private const EVENT = 'Event';
+    private const PLACE = 'Place';
+    private const ORGANIZER = 'Organizer';
+
+    private static $allowedValues = [
+        self::EVENT,
+        self::PLACE,
+        self::ORGANIZER,
+    ];
 
     /**
      * @var string
@@ -19,9 +25,9 @@ final class FallbackType
 
     public function __construct(string $fallbackType)
     {
-        if (!in_array($fallbackType, $this->getAllowedValues())) {
+        if (!in_array($fallbackType, self::$allowedValues)) {
             throw new InvalidArgumentException(
-                'The given fallback type ' . $fallbackType . ' is not Event, Place or Organizer'
+                'Invalid FallbackType: ' . $fallbackType . '. Should be one of ' . implode(', ', self::$allowedValues)
             );
         }
 
@@ -46,14 +52,5 @@ final class FallbackType
     public function toString(): string
     {
         return $this->fallbackType;
-    }
-
-    private function getAllowedValues(): array
-    {
-        return [
-            self::EVENT,
-            self::PLACE,
-            self::ORGANIZER,
-        ];
     }
 }

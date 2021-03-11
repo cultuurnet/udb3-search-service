@@ -35,6 +35,9 @@ final class FallbackTypeTest extends TestCase
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid FallbackType: ' . $invalidValue . '. Should be one of Event, Place, Organizer'
+        );
         new FallbackType($invalidValue);
     }
 
