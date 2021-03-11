@@ -35,6 +35,9 @@ final class StatusTest extends TestCase
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid Status: ' . $invalidValue . '. Should be one of Available, Unavailable, TemporarilyUnavailable'
+        );
         new Status($invalidValue);
     }
 

@@ -8,9 +8,15 @@ use InvalidArgumentException;
 
 final class Status
 {
-    public const AVAILABLE = 'Available';
-    public const UNAVAILABLE = 'Unavailable';
-    public const TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
+    private const AVAILABLE = 'Available';
+    private const UNAVAILABLE = 'Unavailable';
+    private const TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
+
+    private const ALLOWED_VALUES = [
+        self::AVAILABLE,
+        self::UNAVAILABLE,
+        self::TEMPORARILY_UNAVAILABLE,
+    ];
 
     /**
      * @var string
@@ -19,8 +25,10 @@ final class Status
 
     public function __construct(string $status)
     {
-        if (!in_array($status, $this->getAllowedValues())) {
-            throw new InvalidArgumentException('The given status ' . $status . ' is not supported');
+        if (!in_array($status, self::ALLOWED_VALUES)) {
+            throw new InvalidArgumentException(
+                'Invalid Status: ' . $status . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
+            );
         }
 
         $this->status = $status;
@@ -44,14 +52,5 @@ final class Status
     public function toString(): string
     {
         return $this->status;
-    }
-
-    private function getAllowedValues(): array
-    {
-        return [
-            self::AVAILABLE,
-            self::UNAVAILABLE,
-            self::TEMPORARILY_UNAVAILABLE,
-        ];
     }
 }
