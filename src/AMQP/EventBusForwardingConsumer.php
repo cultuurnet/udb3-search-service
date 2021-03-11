@@ -8,7 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Rhumsaa\Uuid\Uuid;
@@ -19,7 +19,7 @@ use Rhumsaa\Uuid\Uuid;
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -28,7 +28,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
      */
     public function __construct(
         AMQPStreamConnection $connection,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
         string $consumerTag,
         string $exchangeName,

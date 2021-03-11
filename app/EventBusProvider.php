@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\SimpleEventBus;
 
 final class EventBusProvider extends BaseServiceProvider
 {
     protected $provides = [
-        EventBusInterface::class,
+        EventBus::class,
     ];
 
     /**
@@ -23,11 +23,11 @@ final class EventBusProvider extends BaseServiceProvider
     public function register()
     {
         $this->addShared(
-            EventBusInterface::class,
+            EventBus::class,
             function () {
                 $bus = new SimpleEventBus();
 
-                $bus->beforeFirstPublication(function (EventBusInterface $eventBus) {
+                $bus->beforeFirstPublication(function (EventBus $eventBus) {
                     $subscribers = $this->get('event_bus_subscribers');
 
                     if (!(is_null($this->parameter('config.event_bus'))) &&

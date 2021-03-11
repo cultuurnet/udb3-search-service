@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\AMQP;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\NotWellFormedException;
 
@@ -26,10 +26,10 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
      */
     public function __construct($payloadClass)
     {
-        if (!in_array(SerializableInterface::class, class_implements($payloadClass))) {
+        if (!in_array(Serializable::class, class_implements($payloadClass))) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Class \'%s\' does not implement ' . SerializableInterface::class,
+                    'Class \'%s\' does not implement ' . Serializable::class,
                     $payloadClass
                 )
             );

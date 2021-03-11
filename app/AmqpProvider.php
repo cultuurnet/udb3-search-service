@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\AMQP\Delay;
 use CultuurNet\UDB3\Search\AMQP\DomainMessageJSONDeserializer;
 use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumerFactory;
@@ -56,7 +56,7 @@ final class AmqpProvider extends BaseServiceProvider
                     $this->get('amqp.connection'),
                     $this->get('logger.amqp.udb3_consumer'),
                     $this->get('deserializer_locator'),
-                    $this->get(EventBusInterface::class),
+                    $this->get(EventBus::class),
                     $this->parameter('amqp.consumer_tag')
                 );
             }

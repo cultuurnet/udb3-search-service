@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\BulkIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
@@ -36,7 +36,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
     private $bulkThreshold;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -54,7 +54,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
     public function __construct(
         Client $client,
         $readIndexName,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         IndexationStrategy $indexationStrategy,
         $scrollTtl = '1m',
         $scrollSize = 50,
@@ -97,7 +97,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         }
     }
 
-    protected function getEventBus(): EventBusInterface
+    protected function getEventBus(): EventBus
     {
         return $this->eventBus;
     }

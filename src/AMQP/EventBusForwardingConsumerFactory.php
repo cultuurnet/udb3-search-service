@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
@@ -37,7 +37,7 @@ final class EventBusForwardingConsumerFactory
     private $deserializerLocator;
 
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -51,7 +51,7 @@ final class EventBusForwardingConsumerFactory
         AMQPStreamConnection $connection,
         LoggerInterface $logger,
         DeserializerLocatorInterface $deserializerLocator,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         string $consumerTag
     ) {
         $this->executionDelay = $executionDelay;
