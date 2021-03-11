@@ -4,19 +4,46 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use ValueObjects\Enum\Enum;
+use InvalidArgumentException;
 
-/**
- * @method static OfferType EVENT()
- * @method static OfferType PLACE()
- */
-final class OfferType extends Enum
+final class OfferType
 {
-    public const EVENT = 'Event';
-    public const PLACE = 'Place';
+    private const EVENT = 'Event';
+    private const PLACE = 'Place';
 
-    public static function fromCaseInsensitiveValue($value)
+    private const ALLOWED_VALUES = [
+        self::EVENT,
+        self::PLACE,
+    ];
+
+    /**
+     * @var string
+     */
+    private $offerType;
+
+    public function __construct(string $offerType)
     {
-        return self::fromNative(ucfirst(strtolower($value)));
+        if (!in_array($offerType, self::ALLOWED_VALUES)) {
+            throw new InvalidArgumentException(
+                'Invalid OfferType: ' . $offerType . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
+            );
+        }
+
+        $this->offerType = $offerType;
+    }
+
+    public static function event(): self
+    {
+        return new self(self::EVENT);
+    }
+
+    public static function place(): self
+    {
+        return new self(self::PLACE);
+    }
+
+    public function toString(): string
+    {
+        return $this->offerType;
     }
 }

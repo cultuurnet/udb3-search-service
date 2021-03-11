@@ -40,7 +40,7 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
             }
 
             try {
-                $sortOrder = SortOrder::get($order);
+                $sortOrder = new SortOrder($order);
             } catch (InvalidArgumentException $e) {
                 throw new InvalidArgumentException("Invalid sort order '{$order}' given.");
             }

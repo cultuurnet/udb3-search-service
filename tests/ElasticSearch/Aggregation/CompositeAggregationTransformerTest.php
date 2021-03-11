@@ -51,10 +51,10 @@ final class CompositeAggregationTransformerTest extends TestCase
         $this->transformer1 = $this->createMock(AggregationTransformerInterface::class);
         $this->transformer2 = $this->createMock(AggregationTransformerInterface::class);
 
-        $this->aggregationNameSupportedByTransformer1 = FacetName::REGIONS();
-        $this->aggregationNameSupportedByTransformer2 = FacetName::THEMES();
-        $this->aggregationNameSupportedByBoth = FacetName::TYPES();
-        $this->unsupportedAggregationName = FacetName::FACILITIES();
+        $this->aggregationNameSupportedByTransformer1 = FacetName::regions();
+        $this->aggregationNameSupportedByTransformer2 = FacetName::themes();
+        $this->aggregationNameSupportedByBoth = FacetName::types();
+        $this->unsupportedAggregationName = FacetName::facilities();
 
         $this->transformer1->expects($this->any())
             ->method('supports')
@@ -101,7 +101,7 @@ final class CompositeAggregationTransformerTest extends TestCase
     public function it_delegates_to_the_first_transformer_that_supports_the_aggregation()
     {
         $aggregation = new Aggregation($this->aggregationNameSupportedByBoth);
-        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth->toNative());
+        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth->toString());
 
         $this->transformer1->expects($this->once())
             ->method('toFacetTree')

@@ -51,11 +51,7 @@ final class Aggregation
         return $this->buckets;
     }
 
-    /**
-     * @param string $name
-     * @return Aggregation
-     */
-    public static function fromElasticSearchResponseAggregationData($name, array $aggregationData)
+    public static function fromElasticSearchResponseAggregationData(string $name, array $aggregationData): Aggregation
     {
         if (!isset($aggregationData['buckets'])) {
             throw new \InvalidArgumentException('Aggregation data does not contain any buckets.');
@@ -79,6 +75,6 @@ final class Aggregation
             $aggregationData['buckets']
         );
 
-        return new Aggregation(FacetName::fromNative($name), ...$buckets);
+        return new Aggregation(new FacetName($name), ...$buckets);
     }
 }

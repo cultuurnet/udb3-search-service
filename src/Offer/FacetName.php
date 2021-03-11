@@ -4,20 +4,72 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use ValueObjects\Enum\Enum;
+use InvalidArgumentException;
 
-/**
- * @method static FacetName REGIONS()
- * @method static FacetName TYPES()
- * @method static FacetName THEMES()
- * @method static FacetName FACILITIES()
- * @method static FacetName LABELS()
- */
-final class FacetName extends Enum
+final class FacetName
 {
-    public const REGIONS = 'regions';
-    public const TYPES = 'types';
-    public const THEMES = 'themes';
-    public const FACILITIES = 'facilities';
-    public const LABELS = 'labels';
+    private const REGIONS = 'regions';
+    private const TYPES = 'types';
+    private const THEMES = 'themes';
+    private const FACILITIES = 'facilities';
+    private const LABELS = 'labels';
+
+    private const ALLOWED_VALUES = [
+        self::REGIONS,
+        self::TYPES,
+        self::THEMES,
+        self::FACILITIES,
+        self::LABELS,
+    ];
+
+    /**
+     * @var string
+     */
+    private $facetName;
+
+    public function __construct(string $facetName)
+    {
+        if (!in_array($facetName, self::ALLOWED_VALUES)) {
+            throw new InvalidArgumentException(
+                'Invalid FacetName: ' . $facetName . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
+            );
+        }
+
+        $this->facetName = $facetName;
+    }
+
+    public static function regions(): self
+    {
+        return new self(self::REGIONS);
+    }
+
+    public static function types(): self
+    {
+        return new self(self::TYPES);
+    }
+
+    public static function themes(): self
+    {
+        return new self(self::THEMES);
+    }
+
+    public static function facilities(): self
+    {
+        return new self(self::FACILITIES);
+    }
+
+    public static function labels(): self
+    {
+        return new self(self::LABELS);
+    }
+
+    public function toString(): string
+    {
+        return $this->facetName;
+    }
+
+    public function sameValueAs(FacetName $otherFacetName): bool
+    {
+        return $this->toString() === $otherFacetName->toString();
+    }
 }

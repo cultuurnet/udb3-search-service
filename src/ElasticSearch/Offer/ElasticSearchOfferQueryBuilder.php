@@ -165,7 +165,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'status',
             array_map(
                 function (Status $status) {
-                    return $status->toNative();
+                    return $status->toString();
                 },
                 $statuses
             )
@@ -209,7 +209,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                 'subEvent.status',
                 array_map(
                     function (Status $status) {
-                        return $status->toNative();
+                        return $status->toString();
                     },
                     $statuses
                 )
@@ -409,22 +409,20 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withFacet(FacetName $facetName): self
     {
-        $facetName = $facetName->toNative();
-
         $facetFields = [
-            FacetName::REGIONS()->toNative() => 'regions.keyword',
-            FacetName::TYPES()->toNative() => 'typeIds',
-            FacetName::THEMES()->toNative() => 'themeIds',
-            FacetName::FACILITIES()->toNative() => 'facilityIds',
-            FacetName::LABELS()->toNative() => 'labels.keyword',
+            FacetName::regions()->toString() => 'regions.keyword',
+            FacetName::types()->toString() => 'typeIds',
+            FacetName::themes()->toString() => 'themeIds',
+            FacetName::facilities()->toString() => 'facilityIds',
+            FacetName::labels()->toString() => 'labels.keyword',
         ];
 
-        if (!isset($facetFields[$facetName])) {
+        if (!isset($facetFields[$facetName->toString()])) {
             return $this;
         }
 
-        $facetField = $facetFields[$facetName];
-        $aggregation = new TermsAggregation($facetName, $facetField);
+        $facetField = $facetFields[$facetName->toString()];
+        $aggregation = new TermsAggregation($facetName->toString(), $facetField);
 
         if (null !== $this->aggregationSize) {
             $aggregation->addParameter('size', $this->aggregationSize);
@@ -437,22 +435,22 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->toNative());
+        return $this->withFieldSort('_score', $sortOrder->toString());
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->toNative());
+        return $this->withFieldSort('availableTo', $sortOrder->toString());
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->toNative());
+        return $this->withFieldSort('created', $sortOrder->toString());
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->toNative());
+        return $this->withFieldSort('modified', $sortOrder->toString());
     }
 
     /**
@@ -462,7 +460,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         return $this->withFieldSort(
             '_geo_distance',
-            $sortOrder->toNative(),
+            $sortOrder->toString(),
             [
                 'geo_point' => [
                     'lat' => $coordinates->getLatitude()->toDouble(),
@@ -476,7 +474,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->toNative());
+        return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
     }
 
     public function withGroupByProductionId(): self

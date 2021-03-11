@@ -44,7 +44,7 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
             }
         }
 
-        $aggregationName = $aggregation->getName()->toNative();
+        $aggregationName = $aggregation->getName()->toString();
         throw new \LogicException("Aggregation \"$aggregationName\" not supported for transformation.");
     }
 }

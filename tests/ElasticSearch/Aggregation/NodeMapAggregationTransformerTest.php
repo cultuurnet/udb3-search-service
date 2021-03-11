@@ -30,7 +30,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
 
     protected function setUp()
     {
-        $this->facetName = FacetName::REGIONS();
+        $this->facetName = FacetName::regions();
 
         $this->nodeMap = [
             'prv-vlaams-brabant' => [
@@ -95,7 +95,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
     public function it_only_supports_aggregations_with_the_same_name_as_the_injected_aggregation_name()
     {
         $supported = new Aggregation($this->facetName);
-        $unsupported = new Aggregation(FacetName::THEMES());
+        $unsupported = new Aggregation(FacetName::themes());
 
         $this->assertTrue($this->transformer->supports($supported));
         $this->assertFalse($this->transformer->supports($unsupported));
@@ -125,7 +125,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
         );
 
         $expectedFacetTree = new FacetFilter(
-            $this->facetName->toNative(),
+            $this->facetName->toString(),
             [
                 new FacetNode(
                     'prv-vlaams-brabant',
@@ -199,7 +199,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
     ) {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
-        new NodeMapAggregationTransformer(FacetName::REGIONS(), $invalidNodeMap);
+        new NodeMapAggregationTransformer(FacetName::regions(), $invalidNodeMap);
     }
 
     /**

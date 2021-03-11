@@ -96,16 +96,16 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
-        return $this->withFieldSort('_score', $sortOrder->toNative());
+        return $this->withFieldSort('_score', $sortOrder->toString());
     }
 
     public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
-        return $this->withFieldSort('created', $sortOrder->toNative());
+        return $this->withFieldSort('created', $sortOrder->toString());
     }
 
     public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
-        return $this->withFieldSort('modified', $sortOrder->toNative());
+        return $this->withFieldSort('modified', $sortOrder->toString());
     }
 }
