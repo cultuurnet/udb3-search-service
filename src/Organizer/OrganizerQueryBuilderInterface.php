@@ -7,11 +7,11 @@ namespace CultuurNet\UDB3\Search\Organizer;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use ValueObjects\Web\Domain;
-use ValueObjects\Web\Url;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
 {

@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -17,7 +18,6 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use ValueObjects\Web\Domain;
-use ValueObjects\Web\Url;
 
 final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
 {
@@ -32,14 +32,14 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withAutoCompleteFilter(string $input)
     {
         $c = clone $this;
-        $c->mockQuery['autoComplete'] = (string) $input;
+        $c->mockQuery['autoComplete'] = $input;
         return $c;
     }
 
     public function withWebsiteFilter(Url $url)
     {
         $c = clone $this;
-        $c->mockQuery['website'] = (string) $url;
+        $c->mockQuery['website'] = $url->toString();
         return $c;
     }
 

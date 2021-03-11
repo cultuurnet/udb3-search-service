@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
-use Stringy\Stringy;
-use ValueObjects\Web\Url;
 
 final class UrlTransformer implements JsonTransformer
 {
@@ -17,18 +15,7 @@ final class UrlTransformer implements JsonTransformer
         }
 
         $draft['url'] = $from['url'];
-        $draft['domain'] = $this->extractDomain($from['url']);
+        $draft['domain'] = (new Url($from['url']))->getDomain();
         return $draft;
-    }
-
-    private function extractDomain(string $url): string
-    {
-        $url = Url::fromNative($url);
-        $domain = $url->getDomain();
-
-        $domain = Stringy::create($domain);
-        $domain = $domain->removeLeft('www.');
-
-        return (string) $domain;
     }
 }
