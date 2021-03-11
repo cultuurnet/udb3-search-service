@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class DummyEvent implements SerializableInterface
+final class DummyEvent implements Serializable
 {
     /**
      * @var string

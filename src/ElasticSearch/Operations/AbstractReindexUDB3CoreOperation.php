@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOperation
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -40,7 +40,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     public function __construct(
         Client $client,
         LoggerInterface $logger,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         $scrollTtl = '1m',
         $scrollSize = 50
     ) {

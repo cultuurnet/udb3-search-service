@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
@@ -41,7 +41,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     private $consumerTag;
 
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -87,7 +87,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->queueName = 'my-queue';
         $this->exchangeName = 'my-exchange';
         $this->consumerTag = 'my-tag';
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()

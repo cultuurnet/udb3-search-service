@@ -8,10 +8,10 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use ValueObjects\Identity\UUID;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Forwards messages coming in via AMQP to an event bus.
@@ -19,7 +19,7 @@ use ValueObjects\Identity\UUID;
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
     /**
-     * @var EventBusInterface
+     * @var EventBus
      */
     private $eventBus;
 
@@ -28,7 +28,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
      */
     public function __construct(
         AMQPStreamConnection $connection,
-        EventBusInterface $eventBus,
+        EventBus $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
         string $consumerTag,
         string $exchangeName,
@@ -56,7 +56,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         // DomainMessage.
         if (!$deserializedMessage instanceof DomainMessage) {
             $deserializedMessage = new DomainMessage(
-                UUID::generateAsString(),
+                Uuid::uuid4(),
                 0,
                 new Metadata($context),
                 $deserializedMessage,

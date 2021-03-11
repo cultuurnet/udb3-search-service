@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use Broadway\Domain\DomainEventStreamInterface;
+use Broadway\Domain\DomainEventStream;
 
 final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
 {
@@ -32,7 +32,7 @@ final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
         }
     }
 
-    public function publish(DomainEventStreamInterface $domainMessages)
+    public function publish(DomainEventStream $domainMessages)
     {
         if ($this->first) {
             $this->first = false;

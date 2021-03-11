@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Broadway\Domain\DomainEventStream;
-use Broadway\EventHandling\EventBusInterface;
+use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
@@ -16,7 +16,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
     /**
-     * @var EventBusInterface|MockObject
+     * @var EventBus|MockObject
      */
     private $eventBus;
 
@@ -27,7 +27,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 
     protected function setUp()
     {
-        $this->eventBus = $this->createMock(EventBusInterface::class);
+        $this->eventBus = $this->createMock(EventBus::class);
 
         parent::setUp();
 
@@ -57,7 +57,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     }
 
     /**
-     * @return EventBusInterface|MockObject
+     * @return EventBus|MockObject
      */
     public function getEventBus()
     {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Organizer;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class OrganizerProjectedToJSONLD implements SerializableInterface
+final class OrganizerProjectedToJSONLD implements Serializable
 {
     /**
      * @var string

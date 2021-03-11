@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Event;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class EventProjectedToJSONLD implements SerializableInterface
+final class EventProjectedToJSONLD implements Serializable
 {
     /**
      * @var string

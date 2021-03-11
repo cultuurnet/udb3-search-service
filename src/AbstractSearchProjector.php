@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentIndexServiceInterface;
 
-abstract class AbstractSearchProjector implements EventListenerInterface
+abstract class AbstractSearchProjector implements EventListener
 {
     /**
      * @var JsonDocumentIndexServiceInterface

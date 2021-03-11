@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Place;
 
-use Broadway\Serializer\SerializableInterface;
+use Broadway\Serializer\Serializable;
 
-final class PlaceProjectedToJSONLD implements SerializableInterface
+final class PlaceProjectedToJSONLD implements Serializable
 {
     /**
      * @var string
