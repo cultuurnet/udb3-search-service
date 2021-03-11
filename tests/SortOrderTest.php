@@ -34,6 +34,7 @@ final class SortOrderTest extends TestCase
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid SortOrder: ' . $invalidValue . '. Should be one of asc, desc');
         new SortOrder($invalidValue);
     }
 

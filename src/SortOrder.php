@@ -8,8 +8,13 @@ use InvalidArgumentException;
 
 final class SortOrder
 {
-    public const ASC = 'asc';
-    public const DESC = 'desc';
+    private const ASC = 'asc';
+    private const DESC = 'desc';
+
+    private static $allowedValues = [
+        self::ASC,
+        self::DESC,
+    ];
 
     /**
      * @var string
@@ -18,8 +23,10 @@ final class SortOrder
 
     public function __construct(string $order)
     {
-        if (!in_array($order, $this->getAllowedValues())) {
-            throw new InvalidArgumentException('The given sort order ' . $order . ' is not asc or desc');
+        if (!in_array($order, self::$allowedValues)) {
+            throw new InvalidArgumentException(
+                'Invalid SortOrder: ' . $order . '. Should be one of ' . implode(', ', self::$allowedValues)
+            );
         }
 
         $this->order = $order;
@@ -38,13 +45,5 @@ final class SortOrder
     public function toString(): string
     {
         return $this->order;
-    }
-
-    private function getAllowedValues(): array
-    {
-        return [
-            self::ASC,
-            self::DESC,
-        ];
     }
 }
