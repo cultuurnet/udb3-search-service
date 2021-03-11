@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
-use ValueObjects\Web\Domain;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
@@ -28,7 +27,7 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     /**
      * @return static
      */
-    public function withDomainFilter(Domain $domain);
+    public function withDomainFilter(string $domain);
 
     /**
      * @return static

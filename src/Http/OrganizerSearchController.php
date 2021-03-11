@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
-use ValueObjects\Web\Domain;
 
 final class OrganizerSearchController
 {
@@ -115,7 +114,7 @@ final class OrganizerSearchController
 
         if ($request->hasQueryParam('domain')) {
             $queryBuilder = $queryBuilder->withDomainFilter(
-                Domain::specifyType($request->getQueryParam('domain'))
+                $request->getQueryParam('domain')
             );
         }
 

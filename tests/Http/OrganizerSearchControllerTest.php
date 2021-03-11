@@ -27,7 +27,6 @@ use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Slim\Psr7\Factory\UriFactory;
 use Slim\Psr7\Request;
-use ValueObjects\Web\Domain;
 
 final class OrganizerSearchControllerTest extends TestCase
 {
@@ -111,7 +110,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 new Language('en')
             )
             ->withWebsiteFilter(new Url('http://foo.bar'))
-            ->withDomainFilter(Domain::specifyType('www.publiq.be'))
+            ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))
             ->withCreatorFilter(new Creator('Jan Janssens'))
