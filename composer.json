@@ -16,7 +16,7 @@
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/calendar-summary-v3": "^3.2",
-        "cultuurnet/culturefeed-php": "~1.9.2",
+        "cultuurnet/culturefeed-php": "~1.12",
         "cultuurnet/udb3-api-guard": "^4.0.0",
         "danielstjules/stringy": "~1.9",
         "elasticsearch/elasticsearch": "~5.2",
