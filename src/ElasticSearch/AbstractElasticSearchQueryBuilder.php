@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Natural;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Start;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
@@ -131,7 +132,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string $parameterName
-     * @throws \InvalidArgumentException
+     * @throws UnsupportedParameterValue
      */
     protected function guardNaturalIntegerRange(
         $parameterName,
@@ -139,7 +140,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         Natural $max = null
     ) {
         if (!is_null($min) && !is_null($max) && $min->toNative() > $max->toNative()) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
             );
         }
@@ -147,7 +148,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string $parameterName
-     * @throws \InvalidArgumentException
+     * @throws UnsupportedParameterValue
      */
     protected function guardDateRange(
         $parameterName,
@@ -155,7 +156,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         \DateTimeImmutable $to = null
     ) {
         if (!is_null($from) && !is_null($to) && $from > $to) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "Start {$parameterName} date should be equal to or smaller than end {$parameterName} date."
             );
         }

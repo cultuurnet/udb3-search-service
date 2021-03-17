@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
@@ -58,7 +58,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         $callback = $this->ensureCallback($callback);
 
         if (is_array($parameterValue)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "The parameter \"{$parameterName}\" can only have a single value."
             );
         }
@@ -164,7 +164,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
-                throw new InvalidArgumentException(
+                throw new UnsupportedParameterValue(
                     "{$queryParameter} should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00"
                 );
             }

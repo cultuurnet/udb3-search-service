@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarSummaryFormat
 {
@@ -24,13 +24,13 @@ final class CalendarSummaryFormat
     public function __construct(string $type, string $format)
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid type: ' . $type . '. Use one of: ' . join(',', self::ALLOWED_TYPES)
             );
         }
 
         if (!in_array($format, self::ALLOWED_FORMATS)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid format: ' . $format . '. Use one of: ' . join(',', self::ALLOWED_FORMATS)
             );
         }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Label;
 
 use CultuurNet\UDB3\Search\StringLiteral;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class LabelName extends StringLiteral
 {
@@ -15,20 +16,20 @@ final class LabelName extends StringLiteral
         parent::__construct($value);
 
         if (false !== strpos($value, ';')) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "Value for argument $value should not contain semicolons."
             );
         }
 
         $length = mb_strlen($value);
         if ($length < 2) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "Value for argument $value should not be shorter than 2 chars."
             );
         }
 
         if ($length > 255) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 "Value for argument $value should not be longer than 255 chars."
             );
         }

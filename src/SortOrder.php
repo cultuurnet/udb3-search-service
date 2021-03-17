@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class SortOrder
 {
@@ -24,7 +24,7 @@ final class SortOrder
     public function __construct(string $order)
     {
         if (!in_array($order, self::ALLOWED_VALUES)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid SortOrder: ' . $order . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 abstract class Natural
 {
@@ -16,7 +16,9 @@ abstract class Natural
     public function __construct(int $value)
     {
         if ($value < 0) {
-            throw new InvalidArgumentException('Natural should be 0 or bigger');
+            $classNameParts = array_reverse(explode('\\', get_class($this)));
+            $className = reset($classNameParts);
+            throw new UnsupportedParameterValue($className .' should be 0 or bigger');
         }
 
         $this->value = $value;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Country
 {
@@ -16,7 +16,7 @@ final class Country
     public function __construct(string $code)
     {
         if (!preg_match('/^[A-Z]{2}$/', $code)) {
-            throw new InvalidArgumentException('Country code ' . $code . ' is not supported');
+            throw new UnsupportedParameterValue('Country code ' . $code . ' is not supported');
         }
 
         $this->country = $code;

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
+
 final class Coordinates
 {
     /**
@@ -16,48 +18,34 @@ final class Coordinates
      */
     private $long;
 
-
     public function __construct(Latitude $lat, Longitude $long)
     {
         $this->lat = $lat;
         $this->long = $long;
     }
 
-    /**
-     * @return Latitude
-     */
-    public function getLatitude()
+    public function getLatitude(): Latitude
     {
         return $this->lat;
     }
 
-    /**
-     * @return Longitude
-     */
-    public function getLongitude()
+    public function getLongitude(): Longitude
     {
         return $this->long;
     }
 
-    /**
-     * @return bool
-     */
-    public function sameAs(Coordinates $coordinates)
+    public function sameAs(Coordinates $coordinates): bool
     {
         return $coordinates->getLatitude()->sameAs($this->lat) &&
             $coordinates->getLongitude()->sameAs($this->long);
     }
 
-    /**
-     * @param string $latLon
-     * @return Coordinates
-     */
-    public static function fromLatLonString($latLon)
+    public static function fromLatLonString(string $latLon): Coordinates
     {
         $split = explode(',', $latLon);
 
         if (count($split) !== 2) {
-            throw new \InvalidArgumentException('Lat lon string is not in the expected format (lat,lon).');
+            throw new UnsupportedParameterValue('Lat lon string is not in the expected format (lat,lon).');
         }
 
         $lat = new Latitude((float) $split[0]);

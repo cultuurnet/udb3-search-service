@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Start
 {
@@ -16,7 +16,7 @@ final class Start
     public function __construct(int $value)
     {
         if ($value < 0 || $value > 10000) {
-            throw new InvalidArgumentException('The "start" parameter should be between 0 and 10000');
+            throw new UnsupportedParameterValue('The "start" parameter should be between 0 and 10000');
         }
 
         $this->value = $value;

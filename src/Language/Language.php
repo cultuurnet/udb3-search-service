@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
+
 final class Language
 {
     private $code;
@@ -11,7 +13,7 @@ final class Language
     public function __construct(string $code)
     {
         if (!preg_match('/^[a-z]{2}$/', $code)) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid language code: ' . $code
             );
         }

@@ -10,7 +10,7 @@ use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
 use CultuurNet\CalendarSummaryV3\Offer\Offer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
@@ -64,7 +64,9 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
             case 'html':
                 return new CalendarHTMLFormatter('nl_BE', true, 'Europe/Brussels');
             default:
-                throw new InvalidArgumentException('No calendar formatter configured for type ' . $calendarSummaryType);
+                throw new UnsupportedParameterValue(
+                    $calendarSummaryType . ' is not a supported calendar summary type'
+                );
         }
     }
 }

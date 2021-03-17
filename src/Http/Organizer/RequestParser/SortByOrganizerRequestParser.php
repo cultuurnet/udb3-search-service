@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class SortByOrganizerRequestParser implements OrganizerRequestParser
@@ -19,7 +19,7 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
         $sorts = !empty($parameters['sort']) ? $parameters['sort'] : [];
 
         if (!is_array($sorts)) {
-            throw new InvalidArgumentException('Invalid sorting syntax given.');
+            throw new UnsupportedParameterValue('Invalid sorting syntax given.');
         }
 
         $sortBuilders = [
@@ -36,13 +36,13 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
 
         foreach ($sorts as $field => $order) {
             if (!isset($sortBuilders[$field])) {
-                throw new InvalidArgumentException("Invalid sort field '{$field}' given.");
+                throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
             }
 
             try {
                 $sortOrder = new SortOrder($order);
-            } catch (InvalidArgumentException $e) {
-                throw new InvalidArgumentException("Invalid sort order '{$order}' given.");
+            } catch (UnsupportedParameterValue $e) {
+                throw new UnsupportedParameterValue("Invalid sort order '{$order}' given.");
             }
 
             $callback = $sortBuilders[$field];

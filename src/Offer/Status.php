@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Status
 {
@@ -26,7 +26,7 @@ final class Status
     public function __construct(string $status)
     {
         if (!in_array($status, self::ALLOWED_VALUES)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid Status: ' . $status . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }

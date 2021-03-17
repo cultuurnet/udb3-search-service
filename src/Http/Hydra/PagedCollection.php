@@ -42,11 +42,6 @@ final class PagedCollection implements JsonSerializable
 
     private function setPageNumber(int $pageNumber): void
     {
-        if (!is_int($pageNumber)) {
-            throw new \InvalidArgumentException(
-                'pageNumber should be an integer, got ' . gettype($pageNumber)
-            );
-        }
         $this->pageNumber = $pageNumber;
     }
 
@@ -57,11 +52,6 @@ final class PagedCollection implements JsonSerializable
 
     private function setTotalItems(int $totalItems): void
     {
-        if (!is_int($totalItems)) {
-            throw new \InvalidArgumentException(
-                'totalItems should be an integer, got ' . gettype($totalItems)
-            );
-        }
         $this->totalItems = $totalItems;
     }
 
@@ -72,11 +62,6 @@ final class PagedCollection implements JsonSerializable
 
     private function setItemsPerPage(int $itemsPerPage): void
     {
-        if (!is_int($itemsPerPage)) {
-            throw new \InvalidArgumentException(
-                'totalItems should be an integer, got ' . gettype($itemsPerPage)
-            );
-        }
         $this->itemsPerPage = $itemsPerPage;
     }
 

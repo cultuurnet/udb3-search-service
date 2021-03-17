@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class SortByOfferRequestParser implements OfferRequestParserInterface
 {
@@ -19,7 +20,7 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
         $sorts = $request->getQueryParam('sort', []);
 
         if (!is_array($sorts)) {
-            throw new \InvalidArgumentException('Invalid sorting syntax given.');
+            throw new UnsupportedParameterValue('Invalid sorting syntax given.');
         }
 
         $sortBuilders = [
@@ -53,13 +54,13 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
 
         foreach ($sorts as $field => $order) {
             if (!isset($sortBuilders[$field])) {
-                throw new \InvalidArgumentException("Invalid sort field '{$field}' given.");
+                throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
             }
 
             try {
                 $sortOrder = new SortOrder($order);
-            } catch (\InvalidArgumentException $e) {
-                throw new \InvalidArgumentException("Invalid sort order '{$order}' given.");
+            } catch (UnsupportedParameterValue $e) {
+                throw new UnsupportedParameterValue("Invalid sort order '{$order}' given.");
             }
 
             $callback = $sortBuilders[$field];
