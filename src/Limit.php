@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-
 final class Limit
 {
     /**
