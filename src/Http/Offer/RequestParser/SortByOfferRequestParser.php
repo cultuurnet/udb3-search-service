@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
+use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 
@@ -31,7 +32,7 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             'distance' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
                 $coordinates = $request->getQueryParam('coordinates', false);
                 if (!$coordinates) {
-                    throw new \InvalidArgumentException(
+                    throw new MissingParameter(
                         'Required "coordinates" parameter missing when sorting by distance.'
                     );
                 }
