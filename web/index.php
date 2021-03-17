@@ -5,6 +5,8 @@ declare(strict_types=1);
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
+use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
 use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
 use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
@@ -26,10 +28,12 @@ $container->share(ApiKey::class, function () use ($container, $apiRequest) {
     return $apiKeyReader->read($apiRequest);
 });
 
-$errorHandler = ErrorHandlerFactory::forWeb(
-    $container->get(SentryExceptionHandler::class),
-    $config->get('debug')
-);
+$errorLogger = LoggerFactory::create($container, new LoggerName('web.log'));
+if ($config->get('debug')) {
+    $errorHandler = ErrorHandlerFactory::forWebDebug($errorLogger);
+} else {
+    $errorHandler = ErrorHandlerFactory::forWeb($errorLogger);
+}
 $errorHandler->register();
 
 $response = $container->get(Router::class)->dispatch($apiRequest);
