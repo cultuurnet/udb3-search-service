@@ -13,7 +13,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $config = ConfigFactory::create(__DIR__ . '/../');
 $container = ContainerFactory::forCli($config);
 
-$errorLogger = LoggerFactory::create($container, new LoggerName('cli.log'));
+$errorLogger = LoggerFactory::create($container, new LoggerName('cli'));
 $errorHandler = ErrorHandlerFactory::forCli($errorLogger);
 $errorHandler->register();
 
