@@ -19,11 +19,13 @@ final class ErrorLoggerHandler extends Handler
         $this->logger = $logger;
     }
 
-    public function handle(): void
+    public function handle(): ?int
     {
         $throwable = $this->getInspector()->getException();
 
         // Include the original throwable as "exception" so that the Sentry monolog handler can process it correctly.
         $this->logger->error($throwable->getMessage(), ['exception' => $throwable]);
+
+        return null;
     }
 }
