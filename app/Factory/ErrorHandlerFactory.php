@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\Error\ApiExceptionHandler;
 use CultuurNet\UDB3\SearchService\Error\ErrorLoggerHandler;
-use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
 use Psr\Log\LoggerInterface;
 use Whoops\Handler\PlainTextHandler;
 use Whoops\Handler\PrettyPageHandler;

@@ -7,7 +7,6 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
-use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
 use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
 use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
 use CultuurNet\UDB3\SearchService\Factory\ErrorHandlerFactory;
