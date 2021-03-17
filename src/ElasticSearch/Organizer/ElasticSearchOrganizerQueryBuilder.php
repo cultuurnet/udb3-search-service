@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\SortOrder;
-use Stringy\Stringy;
 
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
@@ -44,8 +43,10 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withDomainFilter(string $domain)
     {
-        $modifiedDomain = (string) Stringy::create($domain)->removeLeft('www.');
-        return $this->withTermQuery('domain', $modifiedDomain);
+        if (strpos($domain, 'www.') === 0) {
+            $domain = substr($domain, strlen('www.'));
+        }
+        return $this->withTermQuery('domain', $domain);
     }
 
     public function withPostalCodeFilter(PostalCode $postalCode)

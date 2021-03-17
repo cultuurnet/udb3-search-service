@@ -201,6 +201,41 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_builds_a_query_to_filter_on_the_domain_name(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withDomainFilter('publiq.be');
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'domain' => 'publiq.be',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_www_prefix_from_domain_names(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withDomainFilter('www.publiq.be');
 
         $expectedQueryArray = [
