@@ -10,7 +10,7 @@ use Monolog\Processor\ProcessorInterface;
 final class SentryTagsProcessor implements ProcessorInterface
 {
     /**
-     * @var ApiKey|null
+     * @var ApiKey
      */
     private $apiKey;
 
@@ -25,20 +25,20 @@ final class SentryTagsProcessor implements ProcessorInterface
         $this->console = $console;
     }
 
-    public static function forWeb(?ApiKey $apiKey): SentryTagsProcessor
+    public static function forWeb(ApiKey $apiKey): SentryTagsProcessor
     {
         return new self($apiKey, false);
     }
 
     public static function forCli(): SentryTagsProcessor
     {
-        return new self(null, true);
+        return new self(new ApiKey('null'), true);
     }
 
     public function __invoke(array $record): array
     {
         $record['context']['tags'] = [
-            'api_key' => $this->apiKey ? $this->apiKey->toString() : 'null',
+            'api_key' => $this->apiKey->toString(),
             'runtime.env' => $this->console ? 'cli' : 'web',
         ];
         return $record;
