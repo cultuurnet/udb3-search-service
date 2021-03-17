@@ -10,11 +10,19 @@ use Sentry\State\HubInterface;
 final class SentryCliServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
+        SentryTagsProcessor::class,
         SentryExceptionHandler::class,
     ];
 
     public function register(): void
     {
+        $this->add(
+            SentryTagsProcessor::class,
+            function () {
+                return SentryTagsProcessor::forCli();
+            }
+        );
+
         $this->add(
             SentryExceptionHandler::class,
             function () {

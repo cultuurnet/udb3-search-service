@@ -11,11 +11,19 @@ use Sentry\State\HubInterface;
 final class SentryWebServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
+        SentryTagsProcessor::class,
         SentryExceptionHandler::class,
     ];
 
     public function register(): void
     {
+        $this->add(
+            SentryTagsProcessor::class,
+            function () {
+                return SentryTagsProcessor::forWeb($this->get(ApiKey::class));
+            }
+        );
+
         $this->add(
             SentryExceptionHandler::class,
             function () {
