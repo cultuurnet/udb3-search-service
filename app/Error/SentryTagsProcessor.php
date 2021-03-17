@@ -19,7 +19,7 @@ final class SentryTagsProcessor implements ProcessorInterface
      */
     private $console;
 
-    private function __construct(?ApiKey $apiKey, bool $console)
+    private function __construct(ApiKey $apiKey, bool $console)
     {
         $this->apiKey = $apiKey;
         $this->console = $console;
