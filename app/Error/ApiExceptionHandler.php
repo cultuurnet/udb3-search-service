@@ -27,7 +27,7 @@ final class ApiExceptionHandler extends Handler
         $this->emitter = $emitter;
     }
 
-    public function handle()
+    public function handle(): ?int
     {
         $exception = $this->getInspector()->getException();
         if ($exception instanceof ElasticsearchException) {
@@ -49,7 +49,7 @@ final class ApiExceptionHandler extends Handler
         return Handler::QUIT;
     }
 
-    private function createNewApiProblem(\Throwable $throwable)
+    private function createNewApiProblem(\Throwable $throwable): ApiProblem
     {
         if ($throwable instanceof Error) {
             return (new ApiProblem('Internal server error'))
