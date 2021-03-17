@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultuurNet\UDB3\SearchService\Error\SentryExceptionHandler;
-use CultuurNet\UDB3\SearchService\Error\SentryPsrLoggerDecorator;
+use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
+use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 final class LoggerProvider extends BaseServiceProvider
 {
@@ -15,30 +14,15 @@ final class LoggerProvider extends BaseServiceProvider
         'logger.amqp.udb3_consumer',
     ];
 
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->add(
             'logger.amqp.udb3_consumer',
             function () {
-                $logger = new Logger('amqp.udb3_publisher');
-                $logger->pushHandler(new StreamHandler('php://stdout'));
-
-                $logFileHandler = new StreamHandler(
-                    __DIR__ . '/../log/amqp.log',
-                    Logger::DEBUG
-                );
-                $logger->pushHandler($logFileHandler);
-
-                return new SentryPsrLoggerDecorator(
-                    $this->get(SentryExceptionHandler::class),
-                    $logger
+                return LoggerFactory::create(
+                    $this->getContainer(),
+                    new LoggerName('amqp', 'amqp.udb3_publisher'),
+                    [new StreamHandler('php://stdout')]
                 );
             }
         );
