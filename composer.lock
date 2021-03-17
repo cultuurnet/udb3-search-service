@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b02e5b54ca9d03b9b35acb898692270a",
+    "content-hash": "40ef32afcf531d9953feabceb18e76b5",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -479,10 +479,6 @@
                 }
             ],
             "description": "Library to convert cultuurnet dates to a readable summary",
-            "support": {
-                "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v3.2"
-            },
             "time": "2021-03-16T15:02:11+00:00"
         },
         {
@@ -568,10 +564,6 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "support": {
-                "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/1.12"
-            },
             "time": "2020-10-09T11:56:35+00:00"
         },
         {
@@ -626,21 +618,21 @@
         },
         {
             "name": "danielstjules/stringy",
-            "version": "1.10.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/danielstjules/Stringy.git",
-                "reference": "4749c205db47ee5b32e8d1adf6d9aff8db6caf3b"
+                "reference": "df24ab62d2d8213bbbe88cc36fc35a4503b4bd7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/4749c205db47ee5b32e8d1adf6d9aff8db6caf3b",
-                "reference": "4749c205db47ee5b32e8d1adf6d9aff8db6caf3b",
+                "url": "https://api.github.com/repos/danielstjules/Stringy/zipball/df24ab62d2d8213bbbe88cc36fc35a4503b4bd7e",
+                "reference": "df24ab62d2d8213bbbe88cc36fc35a4503b4bd7e",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*",
-                "php": ">=5.3.0"
+                "php": ">=5.4.0",
+                "symfony/polyfill-mbstring": "~1.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -678,7 +670,7 @@
                 "utility",
                 "utils"
             ],
-            "time": "2015-07-23T00:54:12+00:00"
+            "time": "2017-06-12T01:10:27+00:00"
         },
         {
             "name": "delfimov/translate",
@@ -2981,10 +2973,6 @@
                 "psr-7",
                 "psr7"
             ],
-            "support": {
-                "issues": "https://github.com/slimphp/Slim-Psr7/issues",
-                "source": "https://github.com/slimphp/Slim-Psr7/tree/master"
-            },
             "time": "2019-10-05T20:27:07+00:00"
         },
         {
