@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\Jwt\Udb3Token;
 use Monolog\Processor\ProcessorInterface;
 
 final class SentryTagsProcessor implements ProcessorInterface
