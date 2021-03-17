@@ -25,8 +25,9 @@ final class SentryTagsProcessor implements ProcessorInterface
         $this->console = $console;
     }
 
-    public static function forWeb(ApiKey $apiKey): SentryTagsProcessor
+    public static function forWeb(?ApiKey $apiKey): SentryTagsProcessor
     {
+        $apiKey = $apiKey ?? new ApiKey('null');
         return new self($apiKey, false);
     }
 
