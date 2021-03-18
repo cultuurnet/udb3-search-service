@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use CultuurNet\UDB3\Search\UnsupportedParameter;
+
 abstract class AbstractSupportedParameters
 {
     /**
@@ -27,14 +29,14 @@ abstract class AbstractSupportedParameters
 
     /**
      * @param string[] $parameters
-     * @throws \InvalidArgumentException
+     * @throws UnsupportedParameter
      */
     public function guardAgainstUnsupportedParameters(array $parameters): void
     {
         $whiteList = array_merge($this->getGloballySupportedParameters(), $this->getSupportedParameters());
         $unknownParameters = array_diff($parameters, $whiteList);
         if (count($unknownParameters) > 0) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameter(
                 'Unknown query parameter(s): ' . implode(', ', $unknownParameters)
             );
         }

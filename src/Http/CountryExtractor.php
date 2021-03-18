@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CountryExtractor
 {
@@ -19,8 +20,8 @@ final class CountryExtractor
             function (string $country) {
                 try {
                     return new Country(strtoupper($country));
-                } catch (\InvalidArgumentException $e) {
-                    throw new \InvalidArgumentException("Unknown country code '{$country}'.");
+                } catch (UnsupportedParameterValue $e) {
+                    throw new UnsupportedParameterValue("Unknown country code '{$country}'.");
                 }
             }
         );

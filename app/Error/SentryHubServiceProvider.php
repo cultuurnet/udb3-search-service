@@ -15,7 +15,7 @@ final class SentryHubServiceProvider extends BaseServiceProvider
         HubInterface::class,
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->add(
             HubInterface::class,

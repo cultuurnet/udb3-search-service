@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 {
@@ -26,7 +27,7 @@ final class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 
         $matches = [];
         if (!preg_match('/' . self::BOUNDS_REGEX . '/', $bounds, $matches)) {
-            throw new \InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Bounds parameter should be in the "southWestLat,southWestLong|northEastLat,NorthEastLong" format.'
             );
         }

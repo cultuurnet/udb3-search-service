@@ -5,22 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Sentry\State\HubInterface;
 
 final class SentryCliServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        SentryExceptionHandler::class,
+        SentryTagsProcessor::class,
     ];
 
     public function register(): void
     {
         $this->add(
-            SentryExceptionHandler::class,
+            SentryTagsProcessor::class,
             function () {
-                return SentryExceptionHandler::createForCli(
-                    $this->get(HubInterface::class)
-                );
+                return SentryTagsProcessor::forCli();
             }
         );
     }

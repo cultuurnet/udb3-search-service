@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use CultuurNet\UDB3\Search\AbstractDistance;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ElasticSearchDistance extends AbstractDistance
 {
@@ -44,14 +45,14 @@ final class ElasticSearchDistance extends AbstractDistance
         $regexResult = preg_match(self::DISTANCE_REGEX, $value, $matches);
 
         if (!$regexResult || count($matches) !== 3) {
-            throw new \InvalidArgumentException('Distance is not in a valid format.');
+            throw new UnsupportedParameterValue('Distance is not in a valid format.');
         }
 
         $distance = $matches[1];
         $unit = $matches[2];
 
         if (!in_array($unit, self::VALID_DISTANCE_UNITS)) {
-            throw new \InvalidArgumentException('Distance uses an unsupported unit.');
+            throw new UnsupportedParameterValue('Distance uses an unsupported unit.');
         }
 
         // Concatenate the distance and unit without spaces to make sure we get a valid ElasticSearch distance string.

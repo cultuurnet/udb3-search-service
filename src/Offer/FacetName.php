@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class FacetName
 {
@@ -30,7 +30,7 @@ final class FacetName
     public function __construct(string $facetName)
     {
         if (!in_array($facetName, self::ALLOWED_VALUES)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 'Invalid FacetName: ' . $facetName . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
             );
         }

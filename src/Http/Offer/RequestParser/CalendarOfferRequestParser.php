@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
@@ -28,8 +28,8 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
             function (string $status) {
                 try {
                     return new Status($status);
-                } catch (InvalidArgumentException $e) {
-                    throw new InvalidArgumentException('Unknown status value "' . $status . '"');
+                } catch (UnsupportedParameterValue $e) {
+                    throw new UnsupportedParameterValue('Unknown status value "' . $status . '"');
                 }
             }
         );

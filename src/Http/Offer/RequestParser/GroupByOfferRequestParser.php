@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class GroupByOfferRequestParser implements OfferRequestParserInterface
 {
@@ -24,7 +24,7 @@ final class GroupByOfferRequestParser implements OfferRequestParserInterface
         }
 
         if (!in_array($groupField, self::SUPPORTED_GROUP_FIELDS, true)) {
-            throw new InvalidArgumentException(
+            throw new UnsupportedParameterValue(
                 sprintf(
                     'Unknown groupBy field "%s", supported fields: %s',
                     $groupField,

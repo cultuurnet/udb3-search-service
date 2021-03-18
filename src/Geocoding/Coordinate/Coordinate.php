@@ -11,30 +11,17 @@ abstract class Coordinate
      */
     private $value;
 
-    /**
-     * @param double $value
-     */
-    public function __construct($value)
+    public function __construct(float $value)
     {
-        if (!is_double($value)) {
-            throw new \InvalidArgumentException('Coordinate value should be of type double.');
-        }
-
         $this->value = $value;
     }
 
-    /**
-     * @return double
-     */
-    public function toDouble()
+    public function toDouble(): float
     {
         return $this->value;
     }
 
-    /**
-     * @return bool
-     */
-    public function sameAs(Coordinate $coordinate)
+    public function sameAs(Coordinate $coordinate): bool
     {
         return $this->value === $coordinate->value;
     }
