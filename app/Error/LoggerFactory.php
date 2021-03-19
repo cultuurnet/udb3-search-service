@@ -9,8 +9,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\PsrLogMessageProcessor;
 use Psr\Container\ContainerInterface;
-use Sentry\Monolog\Handler as SentryHandler;
-use Sentry\State\HubInterface;
 
 final class LoggerFactory
 {
@@ -25,7 +23,7 @@ final class LoggerFactory
     private static $streamHandlers = [];
 
     /**
-     * @var SentryHandler|null
+     * @var SentryHandlerScopeDecorator|null
      */
     private static $sentryHandler;
 
@@ -61,11 +59,10 @@ final class LoggerFactory
         return self::$streamHandlers[$name];
     }
 
-    private static function getSentryHandler(ContainerInterface $container): SentryHandler
+    private static function getSentryHandler(ContainerInterface $container): SentryHandlerScopeDecorator
     {
         if (!isset(self::$sentryHandler)) {
-            self::$sentryHandler = new SentryHandler($container->get(HubInterface::class), Logger::ERROR);
-            self::$sentryHandler->pushProcessor($container->get(SentryTagsProcessor::class));
+            self::$sentryHandler = $container->get(SentryHandlerScopeDecorator::class);
         }
 
         return self::$sentryHandler;
