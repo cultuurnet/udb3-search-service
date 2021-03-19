@@ -14,7 +14,6 @@ final class SentryWebServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         SentryHandlerScopeDecorator::class,
-        SentryTagsProcessor::class,
     ];
 
     public function register(): void
@@ -26,13 +25,6 @@ final class SentryWebServiceProvider extends BaseServiceProvider
                     new SentryHandler($this->get(HubInterface::class), Logger::ERROR),
                     $this->get(ApiKey::class)
                 );
-            }
-        );
-
-        $this->add(
-            SentryTagsProcessor::class,
-            function () {
-                return SentryTagsProcessor::forWeb($this->get(ApiKey::class));
             }
         );
     }
