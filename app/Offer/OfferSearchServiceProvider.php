@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 
-final class OfferServiceProvider extends BaseServiceProvider
+final class OfferSearchServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'offer_controller',
