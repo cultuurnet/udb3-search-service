@@ -8,6 +8,7 @@ use CultuurNet\UDB3\SearchService\AmqpProvider;
 use CultuurNet\UDB3\SearchService\ApiKey\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
+use CultuurNet\UDB3\SearchService\Event\EventIndexationServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventServiceProvider;
 use CultuurNet\UDB3\SearchService\EventBusProvider;
 use CultuurNet\UDB3\SearchService\HttpClientProvider;
@@ -58,6 +59,7 @@ final class ContainerFactory
         $container->addServiceProvider(OfferServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
         $container->addServiceProvider(EventServiceProvider::class);
+        $container->addServiceProvider(EventIndexationServiceProvider::class);
         $container->addServiceProvider(PlaceServiceProvider::class);
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(AmqpLoggerProvider::class);
