@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 
-final class OrganizerServiceProvider extends BaseServiceProvider
+final class OrganizerSearchServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         OrganizerSearchController::class,

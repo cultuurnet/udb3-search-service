@@ -16,7 +16,7 @@ use CultuurNet\UDB3\SearchService\JsonDocumentFetcherProvider;
 use CultuurNet\UDB3\SearchService\AmqpLoggerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerIndexationServiceProvider;
-use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Organizer\OrganizerSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceIndexationServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
@@ -57,7 +57,7 @@ final class ContainerFactory
         $container->addServiceProvider(SentryHubServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
         $container->addServiceProvider(JsonDocumentFetcherProvider::class);
-        $container->addServiceProvider(OrganizerServiceProvider::class);
+        $container->addServiceProvider(OrganizerSearchServiceProvider::class);
         $container->addServiceProvider(OrganizerIndexationServiceProvider::class);
         $container->addServiceProvider(OfferSearchServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
