@@ -16,6 +16,7 @@ use CultuurNet\UDB3\SearchService\JsonDocumentFetcherProvider;
 use CultuurNet\UDB3\SearchService\AmqpLoggerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceIndexationServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryCliServiceProvider;
@@ -61,6 +62,7 @@ final class ContainerFactory
         $container->addServiceProvider(EventSearchServiceProvider::class);
         $container->addServiceProvider(EventIndexationServiceProvider::class);
         $container->addServiceProvider(PlaceServiceProvider::class);
+        $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(AmqpLoggerProvider::class);
         $container->addServiceProvider(HttpClientProvider::class);
