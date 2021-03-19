@@ -19,6 +19,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
     protected $provides = [
         'offer_controller',
         OfferSearchControllerFactory::class,
+        OfferSearchServiceFactory::class,
     ];
 
     public function register(): void
