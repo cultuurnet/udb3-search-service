@@ -67,7 +67,6 @@ final class ContainerFactory
         $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(AmqpLoggerProvider::class);
-        $container->addServiceProvider(HttpClientProvider::class);
         $container->addServiceProvider(AmqpProvider::class);
 
         return $container;
