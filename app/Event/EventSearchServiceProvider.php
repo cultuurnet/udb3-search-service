@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Event;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 
-final class EventServiceProvider extends BaseServiceProvider
+final class EventSearchServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'event_controller',
