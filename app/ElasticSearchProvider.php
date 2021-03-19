@@ -15,6 +15,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
     protected $provides = [
         Client::class,
         'offer_region_service',
+        'elasticsearch_indexation_strategy',
     ];
 
     public function register()
