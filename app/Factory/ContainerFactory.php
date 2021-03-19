@@ -33,6 +33,13 @@ final class ContainerFactory
     {
         $container = self::build($config);
         $container->addServiceProvider(SentryCliServiceProvider::class);
+        $container->addServiceProvider(AmqpLoggerProvider::class);
+        $container->addServiceProvider(AmqpProvider::class);
+        $container->addServiceProvider(EventBusProvider::class);
+        $container->addServiceProvider(JsonDocumentFetcherProvider::class);
+        $container->addServiceProvider(OrganizerIndexationServiceProvider::class);
+        $container->addServiceProvider(EventIndexationServiceProvider::class);
+        $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(CommandServiceProvider::class);
         return $container;
     }
@@ -56,18 +63,11 @@ final class ContainerFactory
 
         $container->addServiceProvider(SentryHubServiceProvider::class);
         $container->addServiceProvider(ApiGuardServiceProvider::class);
-        $container->addServiceProvider(JsonDocumentFetcherProvider::class);
         $container->addServiceProvider(OrganizerSearchServiceProvider::class);
-        $container->addServiceProvider(OrganizerIndexationServiceProvider::class);
         $container->addServiceProvider(OfferSearchServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
         $container->addServiceProvider(EventSearchServiceProvider::class);
-        $container->addServiceProvider(EventIndexationServiceProvider::class);
         $container->addServiceProvider(PlaceSearchServiceProvider::class);
-        $container->addServiceProvider(PlaceIndexationServiceProvider::class);
-        $container->addServiceProvider(EventBusProvider::class);
-        $container->addServiceProvider(AmqpLoggerProvider::class);
-        $container->addServiceProvider(AmqpProvider::class);
 
         return $container;
     }
