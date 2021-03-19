@@ -39,9 +39,8 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
         $this->add(
             OfferSearchControllerFactory::class,
             function () {
-                $agregationSize = $this->parameter('elasticsearch.aggregation_size');
                 $offerSearchControllerFactory = new OfferSearchControllerFactory(
-                    $agregationSize,
+                    $this->parameter('elasticsearch.aggregation_size'),
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
                     $this->get(ApiKeyReaderInterface::class),
