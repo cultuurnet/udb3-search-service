@@ -22,11 +22,6 @@ final class LoggerFactory
      */
     private static $streamHandlers = [];
 
-    /**
-     * @var SentryHandlerScopeDecorator|null
-     */
-    private static $sentryHandler;
-
     public static function create(
         ContainerInterface $container,
         LoggerName $name,
@@ -40,7 +35,7 @@ final class LoggerFactory
             self::$loggers[$loggerName]->pushProcessor(new PsrLogMessageProcessor());
 
             $streamHandler = self::getStreamHandler($fileNameWithoutSuffix);
-            $sentryHandler = self::getSentryHandler($container);
+            $sentryHandler = $container->get(SentryHandlerScopeDecorator::class);
 
             $handlers = new GroupHandler(array_merge([$streamHandler, $sentryHandler], $extraHandlers));
             self::$loggers[$loggerName]->pushHandler($handlers);
@@ -57,14 +52,5 @@ final class LoggerFactory
         }
 
         return self::$streamHandlers[$name];
-    }
-
-    private static function getSentryHandler(ContainerInterface $container): SentryHandlerScopeDecorator
-    {
-        if (!isset(self::$sentryHandler)) {
-            self::$sentryHandler = $container->get(SentryHandlerScopeDecorator::class);
-        }
-
-        return self::$sentryHandler;
     }
 }
