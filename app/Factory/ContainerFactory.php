@@ -11,7 +11,6 @@ use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventIndexationServiceProvider;
 use CultuurNet\UDB3\SearchService\Event\EventSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\EventBusProvider;
-use CultuurNet\UDB3\SearchService\HttpClientProvider;
 use CultuurNet\UDB3\SearchService\JsonDocumentFetcherProvider;
 use CultuurNet\UDB3\SearchService\AmqpLoggerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchServiceProvider;
