@@ -17,7 +17,7 @@ use CultuurNet\UDB3\SearchService\AmqpLoggerProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\SearchService\Place\PlaceIndexationServiceProvider;
-use CultuurNet\UDB3\SearchService\Place\PlaceServiceProvider;
+use CultuurNet\UDB3\SearchService\Place\PlaceSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryCliServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryHubServiceProvider;
@@ -61,7 +61,7 @@ final class ContainerFactory
         $container->addServiceProvider(ElasticSearchProvider::class);
         $container->addServiceProvider(EventSearchServiceProvider::class);
         $container->addServiceProvider(EventIndexationServiceProvider::class);
-        $container->addServiceProvider(PlaceServiceProvider::class);
+        $container->addServiceProvider(PlaceSearchServiceProvider::class);
         $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(EventBusProvider::class);
         $container->addServiceProvider(AmqpLoggerProvider::class);

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Place;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 
-final class PlaceServiceProvider extends BaseServiceProvider
+final class PlaceSearchServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         'place_controller',
