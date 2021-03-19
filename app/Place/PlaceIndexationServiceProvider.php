@@ -27,22 +27,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
         $this->add(
             'place_search_projector',
             function () {
-                $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
-                    $this->get('place_elasticsearch_transformer'),
-                    $this->get('place_elasticsearch_repository')
-                );
-                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
-
-                return new PlaceSearchProjector($service);
-            },
-            'event_bus_subscribers'
-        );
-
-        $this->add(
-            'place_elasticsearch_transformer',
-            function () {
-                return new JsonDocumentTransformer(
+                $transformer = new JsonDocumentTransformer(
                     new PlaceTransformer(
                         new JsonTransformerPsrLogger(
                             $this->get('logger.amqp.udb3_consumer')
@@ -51,19 +36,24 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                         $this->get('offer_region_service')
                     )
                 );
-            }
-        );
 
-        $this->add(
-            'place_elasticsearch_repository',
-            function () {
-                return new ElasticSearchDocumentRepository(
+                $repository = new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.place.write_index'),
                     $this->parameter('elasticsearch.place.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
-            }
+
+                $service = new TransformingJsonDocumentIndexService(
+                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
+                    $transformer,
+                    $repository
+                );
+                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
+
+                return new PlaceSearchProjector($service);
+            },
+            'event_bus_subscribers'
         );
     }
 }
