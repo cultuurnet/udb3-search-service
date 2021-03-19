@@ -53,7 +53,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
         );
 
         $this->add(
-            'offer_elasticsearch_aggregation_transformer',
+            OfferSearchServiceFactory::class,
             function () {
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
@@ -85,16 +85,10 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                         FacetName::labels()
                     )
                 );
-                return $transformer;
-            }
-        );
 
-        $this->add(
-            OfferSearchServiceFactory::class,
-            function () {
                 return new OfferSearchServiceFactory(
                     $this->get(Client::class),
-                    $this->get('offer_elasticsearch_aggregation_transformer')
+                    $transformer
                 );
             }
         );
