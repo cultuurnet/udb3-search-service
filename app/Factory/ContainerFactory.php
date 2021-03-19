@@ -47,6 +47,11 @@ final class ContainerFactory
     {
         $container = self::build($config);
         $container->addServiceProvider(SentryWebServiceProvider::class);
+        $container->addServiceProvider(ApiGuardServiceProvider::class);
+        $container->addServiceProvider(OrganizerSearchServiceProvider::class);
+        $container->addServiceProvider(OfferSearchServiceProvider::class);
+        $container->addServiceProvider(EventSearchServiceProvider::class);
+        $container->addServiceProvider(PlaceSearchServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
         return $container;
     }
@@ -61,12 +66,7 @@ final class ContainerFactory
         );
 
         $container->addServiceProvider(SentryHubServiceProvider::class);
-        $container->addServiceProvider(ApiGuardServiceProvider::class);
-        $container->addServiceProvider(OrganizerSearchServiceProvider::class);
-        $container->addServiceProvider(OfferSearchServiceProvider::class);
         $container->addServiceProvider(ElasticSearchProvider::class);
-        $container->addServiceProvider(EventSearchServiceProvider::class);
-        $container->addServiceProvider(PlaceSearchServiceProvider::class);
 
         return $container;
     }
