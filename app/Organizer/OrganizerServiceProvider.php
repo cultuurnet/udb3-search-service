@@ -28,7 +28,6 @@ use Elasticsearch\Client;
 final class OrganizerServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Client::class,
         OrganizerSearchController::class,
         'organizer_search_projector',
         'event_bus_subscribers',
