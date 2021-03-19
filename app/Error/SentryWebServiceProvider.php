@@ -6,19 +6,25 @@ namespace CultuurNet\UDB3\SearchService\Error;
 
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
+use Monolog\Logger;
+use Sentry\Monolog\Handler as SentryHandler;
+use Sentry\State\HubInterface;
 
 final class SentryWebServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        SentryTagsProcessor::class,
+        SentryHandlerScopeDecorator::class,
     ];
 
     public function register(): void
     {
-        $this->add(
-            SentryTagsProcessor::class,
+        $this->addShared(
+            SentryHandlerScopeDecorator::class,
             function () {
-                return SentryTagsProcessor::forWeb($this->get(ApiKey::class));
+                return SentryHandlerScopeDecorator::forWeb(
+                    new SentryHandler($this->get(HubInterface::class), Logger::ERROR),
+                    $this->get(ApiKey::class)
+                );
             }
         );
     }

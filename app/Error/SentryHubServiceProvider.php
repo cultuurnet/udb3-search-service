@@ -17,7 +17,7 @@ final class SentryHubServiceProvider extends BaseServiceProvider
 
     public function register(): void
     {
-        $this->add(
+        $this->addShared(
             HubInterface::class,
             function () {
                 init([
