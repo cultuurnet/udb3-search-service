@@ -56,63 +56,39 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
             'offer_elasticsearch_aggregation_transformer',
             function () {
                 $transformer = new CompositeAggregationTransformer();
-                $transformer->register($this->get('offer_elasticsearch_region_aggregation_transformer'));
-                $transformer->register($this->get('offer_elasticsearch_theme_aggregation_transformer'));
-                $transformer->register($this->get('offer_elasticsearch_type_aggregation_transformer'));
-                $transformer->register($this->get('offer_elasticsearch_facility_aggregation_transformer'));
-                $transformer->register($this->get('offer_elasticsearch_label_aggregation_transformer'));
+                $transformer->register(
+                    new NodeMapAggregationTransformer(
+                        FacetName::regions(),
+                        $this->parameter('facet_mapping_regions')
+                    )
+                );
+                $transformer->register(
+                    new NodeMapAggregationTransformer(
+                        FacetName::themes(),
+                        $this->parameter('facet_mapping_themes')
+                    )
+                );
+                $transformer->register(
+                    new NodeMapAggregationTransformer(
+                        FacetName::types(),
+                        $this->parameter('facet_mapping_types')
+                    )
+                );
+                $transformer->register(
+                    new NodeMapAggregationTransformer(
+                        FacetName::facilities(),
+                        $this->parameter('facet_mapping_facilities')
+                    )
+                );
+                $transformer->register(
+                    new LabelsAggregationTransformer(
+                        FacetName::labels()
+                    )
+                );
                 return $transformer;
             }
         );
 
-        $this->add(
-            'offer_elasticsearch_region_aggregation_transformer',
-            function () {
-                return new NodeMapAggregationTransformer(
-                    FacetName::regions(),
-                    $this->parameter('facet_mapping_regions')
-                );
-            }
-        );
-
-        $this->add(
-            'offer_elasticsearch_theme_aggregation_transformer',
-            function () {
-                return new NodeMapAggregationTransformer(
-                    FacetName::themes(),
-                    $this->parameter('facet_mapping_themes')
-                );
-            }
-        );
-
-        $this->add(
-            'offer_elasticsearch_type_aggregation_transformer',
-            function () {
-                return new NodeMapAggregationTransformer(
-                    FacetName::types(),
-                    $this->parameter('facet_mapping_types')
-                );
-            }
-        );
-
-        $this->add(
-            'offer_elasticsearch_facility_aggregation_transformer',
-            function () {
-                return new NodeMapAggregationTransformer(
-                    FacetName::facilities(),
-                    $this->parameter('facet_mapping_facilities')
-                );
-            }
-        );
-
-        $this->add(
-            'offer_elasticsearch_label_aggregation_transformer',
-            function () {
-                return new LabelsAggregationTransformer(
-                    FacetName::labels()
-                );
-            }
-        );
         $this->add(
             OfferSearchServiceFactory::class,
             function () {
