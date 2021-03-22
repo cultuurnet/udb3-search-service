@@ -42,7 +42,8 @@ final class ApiExceptionHandler extends Handler
 
         $this->emitter->emit(
             ResponseFactory::jsonLd(
-                $problem->asArray()
+                $problem->asArray(),
+                $problem->getStatus()
             )
         );
 
