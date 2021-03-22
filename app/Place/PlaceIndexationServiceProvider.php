@@ -13,14 +13,11 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 use Elasticsearch\Client;
 
-final class PlaceServiceProvider extends BaseServiceProvider
+final class PlaceIndexationServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Client::class,
-        'place_controller',
         'place_search_projector',
         'event_bus_subscribers',
     ];
@@ -28,37 +25,9 @@ final class PlaceServiceProvider extends BaseServiceProvider
     public function register(): void
     {
         $this->add(
-            'place_controller',
-            function () {
-                /** @var OfferSearchControllerFactory $offerControllerFactory */
-                $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
-
-                return $offerControllerFactory->createFor(
-                    $this->parameter('elasticsearch.place.read_index'),
-                    $this->parameter('elasticsearch.place.document_type')
-                );
-            }
-        );
-
-        $this->add(
             'place_search_projector',
             function () {
-                $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
-                    $this->get('place_elasticsearch_transformer'),
-                    $this->get('place_elasticsearch_repository')
-                );
-                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
-
-                return new PlaceSearchProjector($service);
-            },
-            'event_bus_subscribers'
-        );
-
-        $this->add(
-            'place_elasticsearch_transformer',
-            function () {
-                return new JsonDocumentTransformer(
+                $transformer = new JsonDocumentTransformer(
                     new PlaceTransformer(
                         new JsonTransformerPsrLogger(
                             $this->get('logger.amqp.udb3_consumer')
@@ -67,19 +36,24 @@ final class PlaceServiceProvider extends BaseServiceProvider
                         $this->get('offer_region_service')
                     )
                 );
-            }
-        );
 
-        $this->add(
-            'place_elasticsearch_repository',
-            function () {
-                return new ElasticSearchDocumentRepository(
+                $repository = new ElasticSearchDocumentRepository(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.place.write_index'),
                     $this->parameter('elasticsearch.place.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
-            }
+
+                $service = new TransformingJsonDocumentIndexService(
+                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
+                    $transformer,
+                    $repository
+                );
+                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
+
+                return new PlaceSearchProjector($service);
+            },
+            'event_bus_subscribers'
         );
     }
 }

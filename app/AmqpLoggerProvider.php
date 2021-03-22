@@ -8,7 +8,7 @@ use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use Monolog\Handler\StreamHandler;
 
-final class LoggerProvider extends BaseServiceProvider
+final class AmqpLoggerProvider extends BaseServiceProvider
 {
     protected $provides = [
         'logger.amqp.udb3_consumer',
