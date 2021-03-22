@@ -34,7 +34,6 @@ final class ErrorHandlerFactory
     public static function forWebDebug(LoggerInterface $logger): Run
     {
         $whoops = new Run();
-        $whoops->sendHttpCode(false);
         $whoops->prependHandler(new PrettyPageHandler());
         $whoops->prependHandler(new ErrorLoggerHandler($logger));
         return $whoops;
