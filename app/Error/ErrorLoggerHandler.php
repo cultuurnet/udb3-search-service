@@ -41,9 +41,12 @@ final class ErrorLoggerHandler extends Handler
     {
         $throwable = $this->getInspector()->getException();
 
-        // Don't log exceptions that are caused by user errors
-        if (in_array(get_class($throwable), self::BAD_REQUEST_EXCEPTIONS)) {
-            return null;
+        // Don't log exceptions that are caused by user errors.
+        // Use an instanceof check instead of in_array to also allow filtering on parent class or interface.
+        foreach (self::BAD_REQUEST_EXCEPTIONS as $badRequestExceptionClass) {
+            if ($throwable instanceof $badRequestExceptionClass) {
+                return null;
+            }
         }
 
         // Don't log Elasticsearch exceptions caused by un-parsable query in q parameter, but do log others
