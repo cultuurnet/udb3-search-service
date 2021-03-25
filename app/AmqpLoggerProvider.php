@@ -21,7 +21,7 @@ final class AmqpLoggerProvider extends BaseServiceProvider
             function () {
                 return LoggerFactory::create(
                     $this->getContainer(),
-                    LoggerName::forAmqpWorker('amqp', 'udb3'),
+                    LoggerName::forAmqpWorker('udb3'),
                     [new StreamHandler('php://stdout')]
                 );
             }
