@@ -22,6 +22,13 @@ final class LoggerName
         $this->loggerName = $customLoggerName ?? 'logger.' . $this->fileNameWithoutSuffix;
     }
 
+    public static function forAmqpWorker(string $workerName, ?string $suffix = null): self
+    {
+        $fileName = 'amqp.' . $workerName;
+        $loggerName = self::appendSuffixToFilename($fileName, $suffix);
+        return new self($fileName, $loggerName);
+    }
+
     public function getFileNameWithoutSuffix(): string
     {
         return $this->fileNameWithoutSuffix;
