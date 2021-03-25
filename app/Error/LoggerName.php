@@ -22,6 +22,16 @@ final class LoggerName
         $this->loggerName = $customLoggerName ?? 'logger.' . $this->fileNameWithoutSuffix;
     }
 
+    public static function forCli(): self
+    {
+        return new self('cli');
+    }
+
+    public static function forWeb(): self
+    {
+        return new self('web');
+    }
+
     public static function forAmqpWorker(string $workerName, ?string $suffix = null): self
     {
         $fileName = 'amqp.' . $workerName;

@@ -27,7 +27,7 @@ $container->share(ApiKey::class, function () use ($container, $apiRequest) {
     return $apiKeyReader->read($apiRequest);
 });
 
-$errorLogger = LoggerFactory::create($container, new LoggerName('web'));
+$errorLogger = LoggerFactory::create($container, LoggerName::forWeb());
 if ($config->get('debug')) {
     $errorHandler = ErrorHandlerFactory::forWebDebug($errorLogger);
 } else {
