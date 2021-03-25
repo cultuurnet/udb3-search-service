@@ -11,17 +11,17 @@ use Monolog\Handler\StreamHandler;
 final class AmqpLoggerProvider extends BaseServiceProvider
 {
     protected $provides = [
-        'logger.amqp.udb3_consumer',
+        'logger.amqp.udb3',
     ];
 
     public function register(): void
     {
         $this->add(
-            'logger.amqp.udb3_consumer',
+            'logger.amqp.udb3',
             function () {
                 return LoggerFactory::create(
                     $this->getContainer(),
-                    new LoggerName('amqp', 'amqp.udb3_publisher'),
+                    LoggerName::forAmqpWorker('udb3'),
                     [new StreamHandler('php://stdout')]
                 );
             }

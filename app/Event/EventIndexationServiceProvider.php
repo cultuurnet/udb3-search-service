@@ -30,7 +30,7 @@ final class EventIndexationServiceProvider extends BaseServiceProvider
                 $transformer = new JsonDocumentTransformer(
                     new EventTransformer(
                         new JsonTransformerPsrLogger(
-                            $this->get('logger.amqp.udb3_consumer')
+                            $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
                         $this->get('offer_region_service')
@@ -49,7 +49,7 @@ final class EventIndexationServiceProvider extends BaseServiceProvider
                     $transformer,
                     $repository
                 );
-                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
+                $service->setLogger($this->get('logger.amqp.udb3'));
 
                 return new EventSearchProjector($service);
             },

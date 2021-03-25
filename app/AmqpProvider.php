@@ -54,7 +54,7 @@ final class AmqpProvider extends BaseServiceProvider
                 return new EventBusForwardingConsumerFactory(
                     new Delay(0),
                     $this->get('amqp.connection'),
-                    $this->get('logger.amqp.udb3_consumer'),
+                    $this->get('logger.amqp.udb3'),
                     $this->get('deserializer_locator'),
                     $this->get(EventBus::class),
                     $this->parameter('amqp.consumer_tag')
