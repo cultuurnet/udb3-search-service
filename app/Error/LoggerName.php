@@ -39,6 +39,11 @@ final class LoggerName
         return new self($fileName, $loggerName);
     }
 
+    private static function appendSuffixToFilename(string $fileName, ?string $suffix = null): string
+    {
+        return $suffix ? $fileName . '.' . $suffix : $fileName;
+    }
+
     public function getFileNameWithoutSuffix(): string
     {
         return $this->fileNameWithoutSuffix;
