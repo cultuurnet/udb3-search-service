@@ -16,7 +16,7 @@ final class LoggerName
      */
     private $loggerName;
 
-    public function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
+    private function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
     {
         $this->fileNameWithoutSuffix = $fileNameWithoutSuffix;
         $this->loggerName = $customLoggerName ?? 'logger.' . $this->fileNameWithoutSuffix;
