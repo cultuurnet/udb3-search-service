@@ -30,7 +30,7 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                 $transformer = new JsonDocumentTransformer(
                     new OrganizerTransformer(
                         new JsonTransformerPsrLogger(
-                            $this->get('logger.amqp.udb3_consumer')
+                            $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser()
                     )
@@ -49,7 +49,7 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                     $repository
                 );
 
-                $service->setLogger($this->get('logger.amqp.udb3_consumer'));
+                $service->setLogger($this->get('logger.amqp.udb3'));
 
                 return new OrganizerSearchProjector($service);
             },

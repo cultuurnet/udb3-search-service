@@ -21,7 +21,7 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
             function () {
                 return new GuzzleJsonDocumentFetcher(
                     new Client(),
-                    $this->get('logger.amqp.udb3_consumer')
+                    $this->get('logger.amqp.udb3')
                 );
             }
         );
