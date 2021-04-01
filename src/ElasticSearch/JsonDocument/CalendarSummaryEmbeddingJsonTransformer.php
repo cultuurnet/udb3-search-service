@@ -14,6 +14,13 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
+    private const LOCALES = [
+        'nl_BE',
+        'fr_BE',
+        'de',
+        'en',
+    ];
+
     /**
      * @var CalendarSummaryFormat[]
      */
