@@ -47,29 +47,38 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
         return $draft;
     }
 
+    /**
+     * This methods returns an associative array with following indexes:
+     *  [language][type][format], for example [nl][text][sm] or [fr][html][md]
+     * @return string[][][]
+     */
     private function getCalendarSummaryData(Offer $offer, CalendarSummaryFormat $calendarSummaryFormat): array
     {
-        $calendarFormatter = $this->getCalendarFormatterByType($calendarSummaryFormat->getType());
+        $calendarSummaries = [];
 
-        return [
-            $calendarSummaryFormat->getType() => [
+        foreach (self::LOCALES as $locale) {
+            $calendarFormatter = $this->getCalendarFormatterByTypeAndLocale($calendarSummaryFormat->getType(), $locale);
+
+            $calendarSummaries[substr($locale, 0, 2)][$calendarSummaryFormat->getType()] = [
                 $calendarSummaryFormat->getFormat() => trim(
                     $calendarFormatter->format(
                         $offer,
                         $calendarSummaryFormat->getFormat()
                     )
                 ),
-            ],
-        ];
+            ];
+        }
+
+        return $calendarSummaries;
     }
 
-    private function getCalendarFormatterByType(string $calendarSummaryType): CalendarFormatterInterface
+    private function getCalendarFormatterByTypeAndLocale(string $calendarSummaryType, string $locale): CalendarFormatterInterface
     {
         switch ($calendarSummaryType) {
             case 'text':
-                return new CalendarPlainTextFormatter('nl_BE', true, 'Europe/Brussels');
+                return new CalendarPlainTextFormatter($locale, true, 'Europe/Brussels');
             case 'html':
-                return new CalendarHTMLFormatter('nl_BE', true, 'Europe/Brussels');
+                return new CalendarHTMLFormatter($locale, true, 'Europe/Brussels');
             default:
                 throw new UnsupportedParameterValue(
                     $calendarSummaryType . ' is not a supported calendar summary type'
