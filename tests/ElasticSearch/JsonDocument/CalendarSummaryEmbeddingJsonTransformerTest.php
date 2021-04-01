@@ -31,12 +31,41 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
 
         $expected = [
             'calendarSummary' => [
-                'text' => [
-                    'xs' => 'Altijd open',
-                    'md' => 'Altijd open',
+                'nl' => [
+                    'text' => [
+                        'xs' => 'Altijd open',
+                        'md' => 'Altijd open',
+                    ],
+                    'html' => [
+                        'md' => '<p class="cf-openinghours">Altijd open</p>',
+                    ],
                 ],
-                'html' => [
-                    'md' => '<p class="cf-openinghours">Altijd open</p>',
+                'fr' => [
+                    'text' => [
+                        'xs' => 'Toujours ouvert',
+                        'md' => 'Toujours ouvert',
+                    ],
+                    'html' => [
+                        'md' => '<p class="cf-openinghours">Toujours ouvert</p>',
+                    ],
+                ],
+                'de' => [
+                    'text' => [
+                        'xs' => 'Immer offen',
+                        'md' => 'Immer offen',
+                    ],
+                    'html' => [
+                        'md' => '<p class="cf-openinghours">Immer offen</p>',
+                    ],
+                ],
+                'en' => [
+                    'text' => [
+                        'xs' => 'Always open',
+                        'md' => 'Always open',
+                    ],
+                    'html' => [
+                        'md' => '<p class="cf-openinghours">Always open</p>',
+                    ],
                 ],
             ],
         ];
