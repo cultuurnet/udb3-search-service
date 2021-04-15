@@ -15,6 +15,7 @@ final class JsonLdPolyfillJsonTransformer implements JsonTransformer
         // Apply transformations to the draft of the JSON to return, which should be based on the original JSON-LD
         $draft = $this->polyfillNewProperties($draft);
         $draft = $this->removeObsoleteProperties($draft);
+        $draft = $this->removeInternalProperties($draft);
         return $draft;
     }
 
@@ -92,5 +93,11 @@ final class JsonLdPolyfillJsonTransformer implements JsonTransformer
     {
         $obsoleteProperties = ['calendarSummary'];
         return array_diff_key($json, array_flip($obsoleteProperties));
+    }
+
+    private function removeInternalProperties(array $json): array
+    {
+        $internalProperties = ['metadata'];
+        return array_diff_key($json, array_flip($internalProperties));
     }
 }

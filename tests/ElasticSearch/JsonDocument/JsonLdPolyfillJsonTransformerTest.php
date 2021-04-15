@@ -219,6 +219,27 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
             ->assertReturnedDocumentContains(['@type' => 'Event']);
     }
 
+
+    /**
+     * @test
+     */
+    public function it_should_remove_metadata_if_set(): void
+    {
+        $this
+            ->given(['metadata' => 'Foo bar bla bla'])
+            ->assertReturnedDocumentDoesNotContainKey('metadata');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_complain_if_metadata_property_is_not_found(): void
+    {
+        $this
+            ->given(['@type' => 'Event'])
+            ->assertReturnedDocumentContains(['@type' => 'Event']);
+    }
+
     private function given(array $given): self
     {
         $this->given = $given;
