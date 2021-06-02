@@ -32,7 +32,7 @@
         "sentry/sdk": "^2.2",
         "slim/psr7": "^0.6",
         "symfony/console": "^4.4",
-        "symfony/finder": "~3.2",
+        "symfony/finder": "~4.4",
         "symfony/yaml": "^4.3",
         "tuupola/cors-middleware": "^1.1",
         "zendframework/zend-httphandlerrunner": "^1.1"
