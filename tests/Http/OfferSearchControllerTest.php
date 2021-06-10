@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
@@ -146,7 +147,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionIndexName,
             $this->regionDocumentType,
             $this->queryStringFactory,
-            $this->facetTreeNormalizer
+            $this->facetTreeNormalizer,
+            new Consumer('id', '')
         );
     }
 

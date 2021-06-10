@@ -9,6 +9,7 @@ use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
@@ -57,13 +58,19 @@ final class OfferSearchControllerFactory
      */
     private $offerSearchServiceFactory;
 
+    /**
+     * @var Consumer
+     */
+    private $consumer;
+
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository,
-        OfferSearchServiceFactory $offerSearchServiceFactory
+        OfferSearchServiceFactory $offerSearchServiceFactory,
+        Consumer $consumer
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
@@ -71,6 +78,7 @@ final class OfferSearchControllerFactory
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
+        $this->consumer = $consumer;
     }
 
     public function createFor(
@@ -102,7 +110,8 @@ final class OfferSearchControllerFactory
             $this->regionIndex,
             $this->documentType,
             new LuceneQueryStringFactory(),
-            new NodeAwareFacetTreeNormalizer()
+            new NodeAwareFacetTreeNormalizer(),
+            $this->consumer
         );
     }
 }

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
@@ -89,6 +90,11 @@ final class OfferSearchController
      */
     private $offerParameterWhiteList;
 
+    /**
+     * @var Consumer
+     */
+    private $consumer;
+
     public function __construct(
         ApiKeyReaderInterface $apiKeyReader,
         ConsumerReadRepositoryInterface $consumerReadRepository,
@@ -98,7 +104,8 @@ final class OfferSearchController
         string $regionIndexName,
         string $regionDocumentType,
         QueryStringFactory $queryStringFactory,
-        FacetTreeNormalizerInterface $facetTreeNormalizer
+        FacetTreeNormalizerInterface $facetTreeNormalizer,
+        Consumer $consumer
     ) {
         $this->apiKeyReader = $apiKeyReader;
         $this->consumerReadRepository = $consumerReadRepository;
@@ -110,6 +117,7 @@ final class OfferSearchController
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
+        $this->consumer = $consumer;
     }
 
     /**
