@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
@@ -24,11 +23,6 @@ use Psr\Http\Message\ResponseInterface;
 
 final class OrganizerSearchController
 {
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
     /**
      * @var OrganizerQueryBuilderInterface
      */
@@ -54,19 +48,24 @@ final class OrganizerSearchController
      */
     private $organizerRequestParser;
 
+    /**
+     * @var Consumer
+     */
+    private $consumer;
+
     public function __construct(
-        ApiKeyReaderInterface $apiKeyReader,
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         OrganizerRequestParser $organizerRequestParser,
-        QueryStringFactory $queryStringFactory
+        QueryStringFactory $queryStringFactory,
+        Consumer $consumer
     ) {
-        $this->apiKeyReader = $apiKeyReader;
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
         $this->organizerParameterWhiteList = new OrganizerSupportedParameters();
+        $this->consumer = $consumer;
     }
 
     public function __invoke(ApiRequestInterface $request): ResponseInterface
@@ -84,11 +83,9 @@ final class OrganizerSearchController
             ->withStart($start)
             ->withLimit($limit);
 
-        $consumerApiKey = $this->apiKeyReader->read($request);
-
-        if ($consumerApiKey instanceof ApiKey &&
+        if ($this->consumer->getId() &&
             $queryBuilder instanceof ElasticSearchOrganizerQueryBuilder) {
-            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toString());
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
         }
 
         $queryBuilder = $this->organizerRequestParser->parse($request, $queryBuilder);
