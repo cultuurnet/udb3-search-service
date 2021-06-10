@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Http\AuthenticateRequest;
 use Fig\Http\Message\StatusCodeInterface;
@@ -16,10 +17,13 @@ final class RoutingServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Router::class,
+        Consumer::class,
     ];
 
     public function register()
     {
+        $this->leagueContainer->add(Consumer::class, new Consumer(null, null));
+
         $this->leagueContainer->add(
             Router::class,
             function () {
