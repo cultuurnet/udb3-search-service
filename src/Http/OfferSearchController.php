@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
@@ -136,11 +135,8 @@ final class OfferSearchController
             ->withStart($start)
             ->withLimit($limit);
 
-        $consumerApiKey = $this->apiKeyReader->read($request);
-
-        if ($consumerApiKey instanceof ApiKey &&
-            $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
-            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toString());
+        if ($this->consumer->getId() && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
         }
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
@@ -149,11 +145,9 @@ final class OfferSearchController
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
-        $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
-        $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
-        if ($defaultQuery) {
+        if ($this->consumer->getDefaultQuery()) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString($defaultQuery),
+                $this->queryStringFactory->fromString($this->consumer->getDefaultQuery()),
                 ...$textLanguages
             );
         }
