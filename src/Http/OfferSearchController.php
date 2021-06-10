@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
@@ -39,16 +37,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OfferSearchController
 {
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
-
     /**
      * @var OfferQueryBuilderInterface
      */
@@ -95,8 +83,6 @@ final class OfferSearchController
     private $consumer;
 
     public function __construct(
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository,
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
         OfferSearchServiceInterface $searchService,
@@ -106,8 +92,6 @@ final class OfferSearchController
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer
     ) {
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
         $this->searchService = $searchService;

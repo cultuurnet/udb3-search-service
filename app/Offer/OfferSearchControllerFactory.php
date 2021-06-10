@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
@@ -44,16 +42,6 @@ final class OfferSearchControllerFactory
     private $documentType;
 
     /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
-
-    /**
      * @var OfferSearchServiceFactory
      */
     private $offerSearchServiceFactory;
@@ -67,16 +55,12 @@ final class OfferSearchControllerFactory
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository,
         OfferSearchServiceFactory $offerSearchServiceFactory,
         Consumer $consumer
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
     }
@@ -99,8 +83,6 @@ final class OfferSearchControllerFactory
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         return new OfferSearchController(
-            $this->apiKeyReader,
-            $this->consumerReadRepository,
             new ElasticSearchOfferQueryBuilder($this->aggregationSize),
             $requestParser,
             $this->offerSearchServiceFactory->createFor(
