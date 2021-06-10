@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
 use ICultureFeed;
 use League\Container\Container;
+use League\Container\Definition\DefinitionInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -173,12 +174,15 @@ final class AuthenticateRequestTest extends TestCase
             ->with($request)
             ->willReturn($response);
 
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
+
         $this->container->expects($this->once())
-            ->method('add')
-            ->with(
-                Consumer::class,
-                new Consumer('my_active_api_key', 'my_default_search_query')
-            );
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
 
         $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
 
