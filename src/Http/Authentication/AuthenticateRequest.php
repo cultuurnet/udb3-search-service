@@ -62,7 +62,14 @@ final class AuthenticateRequest implements MiddlewareInterface
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
-        $this->container->add(Consumer::class, new Consumer($apiKey, $cultureFeedConsumer->searchPrefixSapi3));
+        $this->container
+            ->extend(Consumer::class)
+            ->setConcrete(
+                new Consumer(
+                    $apiKey,
+                    empty($cultureFeedConsumer->searchPrefixSapi3) ? null : $cultureFeedConsumer->searchPrefixSapi3
+                )
+            );
 
         return $handler->handle($request);
     }
