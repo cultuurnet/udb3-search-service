@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\AmqpProvider;
-use CultuurNet\UDB3\SearchService\ApiKey\ApiGuardServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventIndexationServiceProvider;
@@ -47,7 +46,6 @@ final class ContainerFactory
     {
         $container = self::build($config);
         $container->addServiceProvider(SentryWebServiceProvider::class);
-        $container->addServiceProvider(ApiGuardServiceProvider::class);
         $container->addServiceProvider(OrganizerSearchServiceProvider::class);
         $container->addServiceProvider(OfferSearchServiceProvider::class);
         $container->addServiceProvider(EventSearchServiceProvider::class);

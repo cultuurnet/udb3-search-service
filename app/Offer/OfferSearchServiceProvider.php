@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
@@ -44,9 +43,8 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.aggregation_size'),
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
-                    $this->get(ApiKeyReaderInterface::class),
-                    $this->get(InMemoryConsumerRepository::class),
-                    $this->get(OfferSearchServiceFactory::class)
+                    $this->get(OfferSearchServiceFactory::class),
+                    $this->get(Consumer::class)
                 );
             }
         );

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepositoryInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
@@ -39,16 +37,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OfferSearchController
 {
-    /**
-     * @var ApiKeyReaderInterface
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var ConsumerReadRepositoryInterface
-     */
-    private $consumerReadRepository;
-
     /**
      * @var OfferQueryBuilderInterface
      */
@@ -89,19 +77,21 @@ final class OfferSearchController
      */
     private $offerParameterWhiteList;
 
+    /**
+     * @var Consumer
+     */
+    private $consumer;
+
     public function __construct(
-        ApiKeyReaderInterface $apiKeyReader,
-        ConsumerReadRepositoryInterface $consumerReadRepository,
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
         OfferSearchServiceInterface $searchService,
         string $regionIndexName,
         string $regionDocumentType,
         QueryStringFactory $queryStringFactory,
-        FacetTreeNormalizerInterface $facetTreeNormalizer
+        FacetTreeNormalizerInterface $facetTreeNormalizer,
+        Consumer $consumer
     ) {
-        $this->apiKeyReader = $apiKeyReader;
-        $this->consumerReadRepository = $consumerReadRepository;
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
         $this->searchService = $searchService;
@@ -110,6 +100,7 @@ final class OfferSearchController
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
+        $this->consumer = $consumer;
     }
 
     /**
@@ -128,11 +119,8 @@ final class OfferSearchController
             ->withStart($start)
             ->withLimit($limit);
 
-        $consumerApiKey = $this->apiKeyReader->read($request);
-
-        if ($consumerApiKey instanceof ApiKey &&
-            $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
-            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $consumerApiKey->toString());
+        if ($this->consumer->getId() && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
+            $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
         }
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
@@ -141,11 +129,9 @@ final class OfferSearchController
 
         $textLanguages = $this->getLanguagesFromQuery($parameterBag, 'textLanguages');
 
-        $consumer = $consumerApiKey ? $this->consumerReadRepository->getConsumer($consumerApiKey) : null;
-        $defaultQuery = $consumer ? $consumer->getDefaultQuery() : null;
-        if ($defaultQuery) {
+        if ($this->consumer->getDefaultQuery()) {
             $queryBuilder = $queryBuilder->withAdvancedQuery(
-                $this->queryStringFactory->fromString($defaultQuery),
+                $this->queryStringFactory->fromString($this->consumer->getDefaultQuery()),
                 ...$textLanguages
             );
         }

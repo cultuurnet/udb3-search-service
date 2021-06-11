@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
-use CultuurNet\UDB3\SearchService\Http\AuthenticateRequest;
 use Fig\Http\Message\StatusCodeInterface;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
@@ -16,10 +17,13 @@ final class RoutingServiceProvider extends BaseServiceProvider
 {
     protected $provides = [
         Router::class,
+        Consumer::class,
     ];
 
     public function register()
     {
+        $this->leagueContainer->add(Consumer::class, new Consumer(null, null));
+
         $this->leagueContainer->add(
             Router::class,
             function () {
@@ -28,8 +32,17 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $router->setStrategy($strategy);
 
                 if ($this->parameter('toggles.authentication.status') !== 'inactive') {
+                    $oauthClient = new \CultureFeed_DefaultOAuthClient(
+                        $this->parameter('uitid.consumer.key'),
+                        $this->parameter('uitid.consumer.secret')
+                    );
+                    $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
+
                     $router->middleware(
-                        $this->getLeagueContainer()->get(AuthenticateRequest::class)
+                        new AuthenticateRequest(
+                            $this->getLeagueContainer(),
+                            new \CultureFeed($oauthClient)
+                        )
                     );
                 }
 

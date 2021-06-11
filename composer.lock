@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e6d73688cb02096e8d7d6c92898d3b0",
+    "content-hash": "4c9226ecd39a3bdb60a88b87493f4963",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -533,60 +533,6 @@
                 "source": "https://github.com/cultuurnet/culturefeed-php/tree/1.12"
             },
             "time": "2020-10-09T11:56:35+00:00"
-        },
-        {
-            "name": "cultuurnet/udb3-api-guard",
-            "version": "v4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "shasum": ""
-            },
-            "require": {
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "cultuurnet/culturefeed-php": "~1.8",
-                "phpstan/phpstan": "^0.12.74",
-                "phpunit/phpunit": "^7.5",
-                "publiq/php-cs-fixer-config": "^v1.3",
-                "slim/psr7": "^0.5.0"
-            },
-            "suggest": {
-                "cultuurnet/culturefeed-php": "To use the CultureFeed implementations of ApiKey and Consumer interfaces."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-0.x": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\ApiGuard\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Publiq vzw",
-                    "email": "info@2publiq.be"
-                }
-            ],
-            "support": {
-                "issues": "https://github.com/cultuurnet/udb3-api-guard/issues",
-                "source": "https://github.com/cultuurnet/udb3-api-guard/tree/v4.0"
-            },
-            "time": "2021-03-05T11:49:45+00:00"
         },
         {
             "name": "delfimov/translate",

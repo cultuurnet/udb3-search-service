@@ -8,15 +8,12 @@ use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerInterface;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
@@ -60,16 +57,6 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 final class OfferSearchControllerTest extends TestCase
 {
     /**
-     * @var QueryParameterApiKeyReader
-     */
-    private $apiKeyReader;
-
-    /**
-     * @var InMemoryConsumerRepository
-     */
-    private $consumerRepository;
-
-    /**
      * @var MockOfferQueryBuilder
      */
     private $queryBuilder;
@@ -111,9 +98,6 @@ final class OfferSearchControllerTest extends TestCase
 
     protected function setUp()
     {
-        $this->apiKeyReader = new QueryParameterApiKeyReader('apiKey');
-        $this->consumerRepository = new InMemoryConsumerRepository();
-
         $this->queryBuilder = new MockOfferQueryBuilder();
 
         $this->requestParser = (new CompositeOfferRequestParser())
@@ -138,15 +122,14 @@ final class OfferSearchControllerTest extends TestCase
         $this->facetTreeNormalizer = new NodeAwareFacetTreeNormalizer();
 
         $this->controller = new OfferSearchController(
-            $this->apiKeyReader,
-            $this->consumerRepository,
             $this->queryBuilder,
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
             $this->regionDocumentType,
             $this->queryStringFactory,
-            $this->facetTreeNormalizer
+            $this->facetTreeNormalizer,
+            new Consumer('id', '')
         );
     }
 
@@ -1195,28 +1178,23 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_should_add_the_default_query_of_the_api_consumer_if_they_have_one()
     {
-        $apiKey = new ApiKey('d568d2e9-3b53-4704-82a1-eaccf91a6337');
-        $defaultQuery = 'labels:foo';
-
-        /* @var ConsumerInterface|MockObject $consumer */
-        $consumer = $this->createMock(ConsumerInterface::class);
-
-        $consumer->expects($this->any())
-            ->method('getApiKey')
-            ->willReturn($apiKey);
-
-        $consumer->expects($this->any())
-            ->method('getDefaultQuery')
-            ->willReturn($defaultQuery);
-
-        $this->consumerRepository->setConsumer($apiKey, $consumer);
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo')
+        );
 
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'start' => 10,
                 'limit' => 30,
                 'disableDefaultFilters' => true,
-                'apiKey' => $apiKey->toString(),
+                'apiKey' => 'd568d2e9-3b53-4704-82a1-eaccf91a6337',
                 'q' => 'labels:bar',
             ]
         );
@@ -1237,7 +1215,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $this->controller->__invoke(new ApiRequest($request));
+        $controller->__invoke(new ApiRequest($request));
     }
 
     private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface

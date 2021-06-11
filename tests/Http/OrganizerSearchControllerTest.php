@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
@@ -31,11 +31,6 @@ use Slim\Psr7\Request;
 final class OrganizerSearchControllerTest extends TestCase
 {
     /**
-     * @var ApiKeyReaderInterface|MockObject
-     */
-    private $apiKeyReader;
-
-    /**
      * @var MockOrganizerQueryBuilder
      */
     private $queryBuilder;
@@ -57,18 +52,17 @@ final class OrganizerSearchControllerTest extends TestCase
 
     protected function setUp()
     {
-        $this->apiKeyReader = $this->createMock(ApiKeyReaderInterface::class);
         $this->queryBuilder = new MockOrganizerQueryBuilder();
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
         $this->queryStringFactory = new MockQueryStringFactory();
         $this->controller = new OrganizerSearchController(
-            $this->apiKeyReader,
             $this->queryBuilder,
             $this->searchService,
             (new CompositeOrganizerRequestParser())
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory
+            $this->queryStringFactory,
+            new Consumer(null, null)
         );
     }
 
