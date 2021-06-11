@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Error;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKeyAuthenticationException;
-use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\UnsupportedParameter;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -21,8 +19,6 @@ final class ErrorLoggerHandler extends Handler
         UnsupportedParameter::class,
         UnsupportedParameterValue::class,
         MissingParameter::class,
-        ApiKeyAuthenticationException::class,
-        RequestAuthenticationException::class,
         NotFoundException::class,
         MethodNotAllowedException::class,
     ];
