@@ -54,7 +54,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         withScope(function (Scope $scope) use ($record, &$result): void {
             $scope->setTags(
                 [
-                    'id' => $this->consumer->getId(),
+                    'id' => $this->consumer->getId() ?? 'null',
                     'runtime.env' => $this->console ? 'cli' : 'web',
                 ]
             );
