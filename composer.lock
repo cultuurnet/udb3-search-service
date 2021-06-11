@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f27b39d1d76f83ea0010a5bfe6baa346",
+    "content-hash": "bae86eeb2bf7013c15a732bd89a41bc5",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -565,56 +565,6 @@
             ],
             "description": "Culturefeed PHP library",
             "time": "2020-10-09T11:56:35+00:00"
-        },
-        {
-            "name": "cultuurnet/udb3-api-guard",
-            "version": "v4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/cultuurnet/udb3-api-guard.git",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-api-guard/zipball/713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "reference": "713d831b03ae379d6dadc4976043c9afbebbb3f9",
-                "shasum": ""
-            },
-            "require": {
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "cultuurnet/culturefeed-php": "~1.8",
-                "phpstan/phpstan": "^0.12.74",
-                "phpunit/phpunit": "^7.5",
-                "publiq/php-cs-fixer-config": "^v1.3",
-                "slim/psr7": "^0.5.0"
-            },
-            "suggest": {
-                "cultuurnet/culturefeed-php": "To use the CultureFeed implementations of ApiKey and Consumer interfaces."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-0.x": "0.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CultuurNet\\UDB3\\ApiGuard\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Publiq vzw",
-                    "email": "info@2publiq.be"
-                }
-            ],
-            "time": "2021-03-05T11:49:45+00:00"
         },
         {
             "name": "delfimov/translate",
@@ -6788,5 +6738,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
