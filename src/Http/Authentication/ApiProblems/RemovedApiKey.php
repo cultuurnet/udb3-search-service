@@ -14,7 +14,7 @@ final class RemovedApiKey extends ApiProblem
     {
         parent::__construct('Unauthorized', 'https://api.publiq.be/probs/auth/unauthorized');
         $this->setStatus(401);
-        $this->setDetail('the provided api key ' . $apiKey . ' is removed');
+        $this->setDetail('The provided api key ' . $apiKey . ' is removed');
     }
 
     public function toResponse(): ResponseInterface
