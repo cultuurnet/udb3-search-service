@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Error;
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Sentry\State\Scope;
@@ -21,31 +21,30 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
     private $decoratedHandler;
 
     /**
-     * @var ApiKey
+     * @var Consumer
      */
-    private $apiKey;
+    private $consumer;
 
     /**
      * @var bool
      */
     private $console;
 
-    private function __construct(HandlerInterface $decoratedHandler, ApiKey $apiKey, bool $console)
+    private function __construct(HandlerInterface $decoratedHandler, Consumer $consumer, bool $console)
     {
         $this->decoratedHandler = $decoratedHandler;
-        $this->apiKey = $apiKey;
+        $this->consumer = $consumer;
         $this->console = $console;
     }
 
-    public static function forWeb(HandlerInterface $decoratedHandler, ?ApiKey $apiKey): self
+    public static function forWeb(HandlerInterface $decoratedHandler, Consumer $consumer): self
     {
-        $apiKey = $apiKey ?? new ApiKey('null');
-        return new self($decoratedHandler, $apiKey, false);
+        return new self($decoratedHandler, $consumer, false);
     }
 
     public static function forCli(HandlerInterface $decoratedHandler): self
     {
-        return new self($decoratedHandler, new ApiKey('null'), true);
+        return new self($decoratedHandler, new Consumer(null, null), true);
     }
 
     public function handle(array $record): bool
@@ -55,7 +54,7 @@ final class SentryHandlerScopeDecorator implements HandlerInterface
         withScope(function (Scope $scope) use ($record, &$result): void {
             $scope->setTags(
                 [
-                    'api_key' => $this->apiKey->toString(),
+                    'id' => $this->consumer->getId(),
                     'runtime.env' => $this->console ? 'cli' : 'web',
                 ]
             );
