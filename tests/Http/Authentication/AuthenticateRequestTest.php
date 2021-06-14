@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use Auth0\SDK\API\Management as Auth0Management;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -35,6 +36,11 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
+     * @var Auth0Management|MockObject
+     */
+    private $auth0Management;
+
+    /**
      * @var AuthenticateRequest
      */
     private $authenticateRequest;
@@ -43,10 +49,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
+        $this->auth0Management = $this->createMock(Auth0Management::class);
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed
+            $this->cultureFeed,
+            $this->auth0Management
         );
     }
 
