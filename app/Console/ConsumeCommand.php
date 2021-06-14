@@ -69,9 +69,7 @@ final class ConsumeCommand extends Command
      */
     protected function getChannel()
     {
-        /** @var ConsumerInterface $consumer */
-        $consumer = $this->consumer;
-        $channel = $consumer->getChannel();
+        $channel = $this->consumer->getChannel();
 
         if (!$channel instanceof AMQPChannel) {
             throw new RuntimeException(
