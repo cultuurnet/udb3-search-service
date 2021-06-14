@@ -12,8 +12,8 @@ final class BlockedApiKey extends ApiProblem
 {
     public function __construct(string $apiKey)
     {
-        parent::__construct('Unauthorized', 'https://api.publiq.be/probs/auth/unauthorized');
-        $this->setStatus(401);
+        parent::__construct('Forbidden', 'https://api.publiq.be/probs/auth/forbidden');
+        $this->setStatus(403);
         $this->setDetail('The provided api key ' . $apiKey . ' is blocked');
     }
 
