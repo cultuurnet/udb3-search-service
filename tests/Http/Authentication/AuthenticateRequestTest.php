@@ -214,6 +214,43 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
+    {
+        $auth0Clients = $this->createMock(Clients::class);
+        $auth0Clients->expects($this->once())
+            ->method('get')
+            ->with(
+                'my_active_client_id',
+                ['client_id', 'client_metadata']
+            )
+            ->willReturn([
+                'client_metadata' => [
+                    'sapi3' => false,
+                ],
+            ]);
+
+        $this->auth0Management->expects($this->once())
+            ->method('clients')
+            ->willReturn($auth0Clients);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->never())
+            ->method('handle');
+
+        $this->container->expects($this->never())
+            ->method('extend');
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+
+        $this->assertProblemReport(new MissingSapiScope('my_active_client_id'), $actualResponse);
+    }
+
+    /**
      * @dataProvider validClientIdRequestsProvider
      * @test
      */
