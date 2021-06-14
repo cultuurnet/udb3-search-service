@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Auth0\SDK\API\Management as Auth0Management;
+use Auth0\SDK\API\Management\Clients;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingSapiScope;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
 use ICultureFeed;
@@ -160,10 +162,10 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
-     * @dataProvider validRequestsProvider
+     * @dataProvider validApiKeyRequestsProvider
      * @test
      */
-    public function it_handles_valid_requests(ServerRequestInterface $request): void
+    public function it_handles_valid_requests_with_api_key(ServerRequestInterface $request): void
     {
         $cultureFeedConsumer = new CultureFeed_Consumer();
         $cultureFeedConsumer->status = 'ACTIVE';
@@ -197,7 +199,7 @@ final class AuthenticateRequestTest extends TestCase
         $this->assertEquals($response, $actualResponse);
     }
 
-    public function validRequestsProvider(): array
+    public function validApiKeyRequestsProvider(): array
     {
         return [
             'api key header' => [
