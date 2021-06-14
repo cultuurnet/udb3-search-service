@@ -213,6 +213,68 @@ final class AuthenticateRequestTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider validClientIdRequestsProvider
+     * @test
+     */
+    public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
+    {
+        $auth0Clients = $this->createMock(Clients::class);
+        $auth0Clients->expects($this->once())
+            ->method('get')
+            ->with(
+                'my_active_client_id',
+                ['client_id', 'client_metadata']
+            )
+            ->willReturn([
+                'client_metadata' => [
+                    'sapi3' => true,
+                ],
+            ]);
+
+        $this->auth0Management->expects($this->once())
+            ->method('clients')
+            ->willReturn($auth0Clients);
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    public function validClientIdRequestsProvider(): array
+    {
+        return [
+            'client id header' => [
+                $request = (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withHeader('x-client-id', 'my_active_client_id'),
+            ],
+            'client id param' => [
+                $request = (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withQueryParams(['clientId' => 'my_active_client_id']),
+            ],
+        ];
+    }
+
     private function assertProblemReport(ApiProblem $apiProblem, ResponseInterface $response): void
     {
         $this->assertEquals($apiProblem->getStatus(), $response->getStatusCode());
