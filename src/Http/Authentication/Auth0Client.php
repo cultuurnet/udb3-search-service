@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use GuzzleHttp\Client;
 
-final class Auth0TokenGenerator
+final class Auth0Client
 {
     /**
      * @var Client
@@ -36,7 +36,7 @@ final class Auth0TokenGenerator
         $this->clientSecret = $clientSecret;
     }
 
-    public function newToken(): string
+    public function getToken(): string
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -53,5 +53,18 @@ final class Auth0TokenGenerator
 
         $res = json_decode($response->getBody()->getContents(), true);
         return $res['access_token'];
+    }
+
+    public function getMetadata(string $clientId, string $token): array
+    {
+        $response = $this->client->get(
+            'https://' . $this->domain . '/api/v2/clients/' . $clientId,
+            [
+                'headers' => ['Authorization' => 'Bearer ' . $token],
+            ]
+        );
+
+        $res = json_decode($response->getBody()->getContents(), true);
+        return empty($res['client_metadata']) ? [] : $res['client_metadata'];
     }
 }
