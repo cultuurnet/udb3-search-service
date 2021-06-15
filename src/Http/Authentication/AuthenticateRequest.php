@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use Auth0\SDK\API\Management as Auth0Management;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
@@ -33,15 +32,15 @@ final class AuthenticateRequest implements MiddlewareInterface
     private $cultureFeed;
 
     /**
-     * @var Auth0Management
+     * @var Auth0Client
      */
-    private $auth0Management;
+    private $auth0Client;
 
-    public function __construct(Container $container, ICultureFeed $cultureFeed, Auth0Management $auth0Management)
+    public function __construct(Container $container, ICultureFeed $cultureFeed, Auth0Client $auth0Client)
     {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
-        $this->auth0Management = $auth0Management;
+        $this->auth0Client = $auth0Client;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -68,12 +67,12 @@ final class AuthenticateRequest implements MiddlewareInterface
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
         try {
-            $client = $this->auth0Management->clients()->get($clientId, ['client_id', 'client_metadata'], true);
+            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken());
         } catch (Exception $exception) {
             return (new InvalidClientId($clientId))->toResponse();
         }
 
-        if (empty($client['client_metadata']['sapi3'])) {
+        if (empty($metadata['sapi3'])) {
             return (new MissingSapiScope($clientId))->toResponse();
         }
 
