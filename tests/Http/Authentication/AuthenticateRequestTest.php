@@ -39,6 +39,11 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
+     * @var Auth0TokenProvider
+     */
+    private $auth0TokenProvider;
+
+    /**
      * @var AuthenticateRequest
      */
     private $authenticateRequest;
@@ -48,15 +53,28 @@ final class AuthenticateRequestTest extends TestCase
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
+        $auth0Client = new Auth0Client(
+            $this->createMock(Client::class),
+            'domain',
+            'clientId',
+            'clientSecret'
+        );
+
+        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository
+            ->method('get')
+            ->willReturn('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+
+        $this->auth0TokenProvider = new Auth0TokenProvider(
+            $auth0TokenRepository,
+            $auth0Client
+        );
+
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            new Auth0Client(
-                $this->createMock(Client::class),
-                'domain',
-                'clientId',
-                'clientSecret'
-            )
+            $this->auth0TokenProvider,
+            $auth0Client
         );
     }
 
@@ -228,6 +246,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
+            $this->auth0TokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
                 'domain',
@@ -265,6 +284,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
+            $this->auth0TokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
                 'domain',
