@@ -32,14 +32,24 @@ final class AuthenticateRequest implements MiddlewareInterface
     private $cultureFeed;
 
     /**
+     * @var Auth0TokenProvider
+     */
+    private $auth0TokenProvider;
+
+    /**
      * @var Auth0Client
      */
     private $auth0Client;
 
-    public function __construct(Container $container, ICultureFeed $cultureFeed, Auth0Client $auth0Client)
-    {
+    public function __construct(
+        Container $container,
+        ICultureFeed $cultureFeed,
+        Auth0TokenProvider $auth0TokenProvider,
+        Auth0Client $auth0Client
+    ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
+        $this->auth0TokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
     }
 
@@ -64,10 +74,16 @@ final class AuthenticateRequest implements MiddlewareInterface
         return $this->handleApiKey($request, $handler, $apiKey);
     }
 
-    private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
-    {
+    private function handleClientId(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $clientId
+    ): ResponseInterface {
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken());
+            $metadata = $this->auth0Client->getMetadata(
+                $clientId,
+                $this->auth0TokenProvider->get()
+            );
         } catch (Exception $exception) {
             return (new InvalidClientId($clientId))->toResponse();
         }
@@ -83,8 +99,11 @@ final class AuthenticateRequest implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    private function handleApiKey(ServerRequestInterface $request, RequestHandlerInterface $handler, string $apiKey): ResponseInterface
-    {
+    private function handleApiKey(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $apiKey
+    ): ResponseInterface {
         try {
             /** @var CultureFeed_Consumer $cultureFeedConsumer */
             $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
