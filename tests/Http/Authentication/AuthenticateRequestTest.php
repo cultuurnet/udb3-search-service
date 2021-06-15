@@ -239,7 +239,6 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['access_token' => 'my_token'])),
             new Response(200, [], json_encode(['client_metadata' => ['sapi3' => false]])),
         ]);
 
@@ -277,7 +276,6 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['access_token' => 'my_token'])),
             new Response(200, [], json_encode(['client_metadata' => ['sapi3' => true]])),
         ]);
 
