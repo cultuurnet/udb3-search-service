@@ -13,7 +13,6 @@
         "php": ">=7.1",
         "ext-json": "*",
         "ext-pcntl": "*",
-        "auth0/auth0-php": "^5.7.0",
         "broadway/broadway": "1.0.0",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
