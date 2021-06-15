@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use Auth0\SDK\API\Management as Auth0Management;
-use Auth0\SDK\API\Management\Clients;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -14,6 +12,9 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingSapiScope;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
 use League\Container\Container;
 use League\Container\Definition\DefinitionInterface;
@@ -38,11 +39,6 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
-     * @var Auth0Management|MockObject
-     */
-    private $auth0Management;
-
-    /**
      * @var AuthenticateRequest
      */
     private $authenticateRequest;
@@ -51,12 +47,16 @@ final class AuthenticateRequestTest extends TestCase
     {
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
-        $this->auth0Management = $this->createMock(Auth0Management::class);
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0Management
+            new Auth0Client(
+                $this->createMock(Client::class),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
         );
     }
 
@@ -220,22 +220,21 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
     {
-        $auth0Clients = $this->createMock(Clients::class);
-        $auth0Clients->expects($this->once())
-            ->method('get')
-            ->with(
-                'my_active_client_id',
-                ['client_id', 'client_metadata']
-            )
-            ->willReturn([
-                'client_metadata' => [
-                    'sapi3' => false,
-                ],
-            ]);
+        $mockHandler = new MockHandler([
+            new Response(200, [], json_encode(['access_token' => 'my_token'])),
+            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => false]])),
+        ]);
 
-        $this->auth0Management->expects($this->once())
-            ->method('clients')
-            ->willReturn($auth0Clients);
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
         $requestHandler->expects($this->never())
@@ -247,7 +246,7 @@ final class AuthenticateRequestTest extends TestCase
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
             ->withHeader('x-client-id', 'my_active_client_id');
-        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertProblemReport(new MissingSapiScope('my_active_client_id'), $actualResponse);
     }
@@ -258,22 +257,21 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
-        $auth0Clients = $this->createMock(Clients::class);
-        $auth0Clients->expects($this->once())
-            ->method('get')
-            ->with(
-                'my_active_client_id',
-                ['client_id', 'client_metadata']
-            )
-            ->willReturn([
-                'client_metadata' => [
-                    'sapi3' => true,
-                ],
-            ]);
+        $mockHandler = new MockHandler([
+            new Response(200, [], json_encode(['access_token' => 'my_token'])),
+            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => true]])),
+        ]);
 
-        $this->auth0Management->expects($this->once())
-            ->method('clients')
-            ->willReturn($auth0Clients);
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
 
         $response = (new ResponseFactory())->createResponse(200);
 
@@ -293,7 +291,7 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
     }
