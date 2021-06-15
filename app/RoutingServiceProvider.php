@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenFileRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
@@ -47,10 +49,16 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $this->parameter('auth0.client_secret')
                     );
 
+                    $auth0TokenProvider = new Auth0TokenProvider(
+                        new Auth0TokenFileRepository(__DIR__ . '/../.auth0-token-cache'),
+                        $auth0Client
+                    );
+
                     $router->middleware(
                         new AuthenticateRequest(
                             $this->getLeagueContainer(),
                             new \CultureFeed($oauthClient),
+                            $auth0TokenProvider,
                             $auth0Client
                         )
                     );
