@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use Auth0\SDK\API\Management as Auth0Management;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
@@ -41,7 +40,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
-                    $auth0TokenGenerator = new Auth0TokenGenerator(
+                    $auth0Client = new Auth0Client(
                         new Client(),
                         $this->parameter('auth0.domain'),
                         $this->parameter('auth0.client_id'),
@@ -52,10 +51,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new AuthenticateRequest(
                             $this->getLeagueContainer(),
                             new \CultureFeed($oauthClient),
-                            new Auth0Management(
-                                $auth0TokenGenerator->newToken(),
-                                $this->parameter('auth0.domain')
-                            )
+                            $auth0Client
                         )
                     );
                 }
