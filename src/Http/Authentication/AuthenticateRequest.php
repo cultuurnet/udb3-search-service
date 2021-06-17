@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
 use League\Container\Container;
 use Psr\Http\Message\ResponseInterface;
@@ -68,11 +69,17 @@ final class AuthenticateRequest implements MiddlewareInterface
     {
         try {
             $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken());
+            $auth0Down = false;
+        } catch (ConnectException $connectException) {
+            // This exception indicates that Auth0 can't be reached.
+            $metadata = [];
+            $auth0Down = true;
         } catch (Exception $exception) {
             return (new InvalidClientId($clientId))->toResponse();
         }
 
-        if (!$this->hasSapiAccess($metadata)) {
+        // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
+        if (!$auth0Down && !$this->hasSapiAccess($metadata)) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 

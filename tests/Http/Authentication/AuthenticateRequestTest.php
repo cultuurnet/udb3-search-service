@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
@@ -251,6 +252,51 @@ final class AuthenticateRequestTest extends TestCase
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_all_access_when_auth0_is_down(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+
+        $mockHandler = new MockHandler([new ConnectException('No connection with Auth0', $request)]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
     }
 
     /**
