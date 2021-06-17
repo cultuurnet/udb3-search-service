@@ -222,7 +222,9 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], json_encode(['access_token' => 'my_token'])),
-            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => false]])),
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry'],
+            ])),
         ]);
 
         $authenticateRequest = new AuthenticateRequest(
@@ -259,7 +261,9 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], json_encode(['access_token' => 'my_token'])),
-            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => true]])),
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
+            ])),
         ]);
 
         $authenticateRequest = new AuthenticateRequest(

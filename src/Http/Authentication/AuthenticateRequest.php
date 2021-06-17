@@ -72,7 +72,7 @@ final class AuthenticateRequest implements MiddlewareInterface
             return (new InvalidClientId($clientId))->toResponse();
         }
 
-        if (empty($metadata['sapi3'])) {
+        if (!$this->hasSapiAccess($metadata)) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
@@ -110,6 +110,20 @@ final class AuthenticateRequest implements MiddlewareInterface
             );
 
         return $handler->handle($request);
+    }
+
+    private function hasSapiAccess(array $metadata): bool
+    {
+        if (empty($metadata)) {
+            return false;
+        }
+
+        if (empty($metadata['publiq-apis'])) {
+            return false;
+        }
+
+        $apis = explode(' ', $metadata['publiq-apis']);
+        return in_array('sapi', $apis, true);
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string
