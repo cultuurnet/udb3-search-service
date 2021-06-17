@@ -29,7 +29,7 @@ final class Auth0TokenProvider
     {
         $token = $this->auth0TokenRepository->get();
 
-        if ($token === null || $this->isExpired($token)) {
+        if ($token === null || $this->expiresWithin($token, '+5 minutes')) {
             $token = $this->auth0Client->getToken();
             $this->auth0TokenRepository->set($token);
         }
@@ -37,9 +37,9 @@ final class Auth0TokenProvider
         return $token;
     }
 
-    private function isExpired(string $token): bool
+    private function expiresWithin(string $token, string $offset): bool
     {
         $parser = new Parser();
-        return $parser->parse($token)->isExpired(new DateTime());
+        return $parser->parse($token)->isExpired((new DateTime())->modify($offset));
     }
 }
