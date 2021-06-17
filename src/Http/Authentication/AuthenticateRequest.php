@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingSapiScope;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
 use ICultureFeed;
@@ -73,7 +73,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         }
 
         if (empty($metadata['sapi3'])) {
-            return (new MissingSapiScope($clientId))->toResponse();
+            return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
         $this->container

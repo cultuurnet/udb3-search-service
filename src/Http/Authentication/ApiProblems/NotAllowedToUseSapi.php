@@ -8,7 +8,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 
-final class MissingSapiScope extends ApiProblem
+final class NotAllowedToUseSapi extends ApiProblem
 {
     public function __construct(string $clientId)
     {
