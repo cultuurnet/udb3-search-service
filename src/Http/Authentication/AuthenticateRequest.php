@@ -9,9 +9,10 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingSapiScope;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
+use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
 use League\Container\Container;
 use Psr\Http\Message\ResponseInterface;
@@ -80,16 +81,19 @@ final class AuthenticateRequest implements MiddlewareInterface
         string $clientId
     ): ResponseInterface {
         try {
-            $metadata = $this->auth0Client->getMetadata(
-                $clientId,
-                $this->auth0TokenProvider->get()
-            );
+            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get());
+            $auth0Down = false;
+        } catch (ConnectException $connectException) {
+            // This exception indicates that Auth0 can't be reached.
+            $metadata = [];
+            $auth0Down = true;
         } catch (Exception $exception) {
             return (new InvalidClientId($clientId))->toResponse();
         }
 
-        if (empty($metadata['sapi3'])) {
-            return (new MissingSapiScope($clientId))->toResponse();
+        // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
+        if (!$auth0Down && !$this->hasSapiAccess($metadata)) {
+            return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
         $this->container
@@ -129,6 +133,20 @@ final class AuthenticateRequest implements MiddlewareInterface
             );
 
         return $handler->handle($request);
+    }
+
+    private function hasSapiAccess(array $metadata): bool
+    {
+        if (empty($metadata)) {
+            return false;
+        }
+
+        if (empty($metadata['publiq-apis'])) {
+            return false;
+        }
+
+        $apis = explode(' ', $metadata['publiq-apis']);
+        return in_array('sapi', $apis, true);
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string

@@ -9,10 +9,11 @@ use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingSapiScope;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
@@ -239,7 +240,9 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => false]])),
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry'],
+            ])),
         ]);
 
         $authenticateRequest = new AuthenticateRequest(
@@ -266,7 +269,53 @@ final class AuthenticateRequestTest extends TestCase
             ->withHeader('x-client-id', 'my_active_client_id');
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
-        $this->assertProblemReport(new MissingSapiScope('my_active_client_id'), $actualResponse);
+        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_all_access_when_auth0_is_down(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+
+        $mockHandler = new MockHandler([new ConnectException('No connection with Auth0', $request)]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
     }
 
     /**
@@ -276,7 +325,9 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['client_metadata' => ['sapi3' => true]])),
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
+            ])),
         ]);
 
         $authenticateRequest = new AuthenticateRequest(

@@ -41,13 +41,13 @@ final class Auth0Client
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
             [
-                'headers' => ['content-type' => 'application/x-www-form-urlencoded'],
-                'body' => sprintf(
-                    'grant_type=client_credentials&client_id=%s&client_secret=%s&audience=%s',
-                    $this->clientId,
-                    $this->clientSecret,
-                    'https://' . $this->domain . '/api/v2/'
-                ),
+                'headers' => ['content-type' => 'application/json'],
+                'json' => [
+                    'client_id' => $this->clientId,
+                    'client_secret' => $this->clientSecret,
+                    'audience' => 'https://' . $this->domain . '/api/v2/',
+                    'grant_type' => 'client_credentials',
+                ],
             ]
         );
 
