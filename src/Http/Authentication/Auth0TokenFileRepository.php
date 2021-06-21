@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use DateTimeImmutable;
+
 final class Auth0TokenFileRepository implements Auth0TokenRepository
 {
     /**
@@ -16,17 +18,29 @@ final class Auth0TokenFileRepository implements Auth0TokenRepository
         $this->fullFilePath = $fullFilePath;
     }
 
-    public function get(): ?string
+    public function get(): ?Auth0Token
     {
         if (!file_exists($this->fullFilePath)) {
             return null;
         }
 
-        return file_get_contents($this->fullFilePath);
+        $tokenAsArray = json_decode(file_get_contents($this->fullFilePath), true);
+
+        return new Auth0Token(
+            $tokenAsArray['token'],
+            new DateTimeImmutable($tokenAsArray['issuesAt']),
+            $tokenAsArray['expiresIn']
+        );
     }
 
-    public function set(string $token): void
+    public function set(Auth0Token $token): void
     {
-        file_put_contents($this->fullFilePath, $token, LOCK_EX);
+        $tokenAsJson = json_encode([
+            'token' => $token->getToken(),
+            'issuesAt' => $token->getIssuedAt()->format(DATE_ATOM),
+            'expiresIn' => $token->getExpiresIn(),
+        ]);
+
+        file_put_contents($this->fullFilePath, $tokenAsJson, LOCK_EX);
     }
 }
