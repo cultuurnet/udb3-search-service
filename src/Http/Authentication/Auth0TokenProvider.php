@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use DateTime;
-use Lcobucci\JWT\Parser;
 
 final class Auth0TokenProvider
 {
@@ -25,7 +24,7 @@ final class Auth0TokenProvider
         $this->auth0Client = $auth0Client;
     }
 
-    public function get(): string
+    public function get(): Auth0Token
     {
         $token = $this->auth0TokenRepository->get();
 
@@ -37,9 +36,8 @@ final class Auth0TokenProvider
         return $token;
     }
 
-    private function expiresWithin(string $token, string $offset): bool
+    private function expiresWithin(Auth0Token $token, string $offset): bool
     {
-        $parser = new Parser();
-        return $parser->parse($token)->isExpired((new DateTime())->modify($offset));
+        return (new DateTime())->modify($offset) > $token->getExpiresAt();
     }
 }
