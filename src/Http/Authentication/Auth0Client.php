@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use DateTimeImmutable;
 use GuzzleHttp\Client;
 
 final class Auth0Client
@@ -36,7 +37,7 @@ final class Auth0Client
         $this->clientSecret = $clientSecret;
     }
 
-    public function getToken(): string
+    public function getToken(): Auth0Token
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -52,7 +53,12 @@ final class Auth0Client
         );
 
         $res = json_decode($response->getBody()->getContents(), true);
-        return $res['access_token'];
+
+        return new Auth0Token(
+            $res['access_token'],
+            new DateTimeImmutable(),
+            $res['expires_in']
+        );
     }
 
     public function getMetadata(string $clientId, string $token): array
