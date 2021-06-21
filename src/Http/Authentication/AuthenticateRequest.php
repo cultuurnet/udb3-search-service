@@ -67,15 +67,17 @@ final class AuthenticateRequest implements MiddlewareInterface
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
+        $auth0Down = false;
+        $metadata = [];
+
         try {
             $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken());
-            $auth0Down = false;
+
+            if (empty($metadata)) {
+                return (new InvalidClientId($clientId))->toResponse();
+            }
         } catch (ConnectException $connectException) {
-            // This exception indicates that Auth0 can't be reached.
-            $metadata = [];
             $auth0Down = true;
-        } catch (Exception $exception) {
-            return (new InvalidClientId($clientId))->toResponse();
         }
 
         // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
