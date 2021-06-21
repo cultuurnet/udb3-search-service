@@ -81,7 +81,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         string $clientId
     ): ResponseInterface {
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get());
+            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get()->getToken());
             $auth0Down = false;
         } catch (ConnectException $connectException) {
             // This exception indicates that Auth0 can't be reached.

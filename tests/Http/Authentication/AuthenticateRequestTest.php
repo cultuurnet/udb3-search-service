@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -64,7 +65,13 @@ final class AuthenticateRequestTest extends TestCase
         $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
         $auth0TokenRepository
             ->method('get')
-            ->willReturn('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c');
+            ->willReturn(
+                new Auth0Token(
+                    'my_auth0_token',
+                    new DateTimeImmutable(),
+                    86400
+                )
+            );
 
         $this->auth0TokenProvider = new Auth0TokenProvider(
             $auth0TokenRepository,
