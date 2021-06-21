@@ -50,7 +50,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
 
                     $auth0TokenProvider = new Auth0TokenProvider(
-                        new Auth0TokenFileRepository(__DIR__ . '/../.auth0-token-cache'),
+                        new Auth0TokenFileRepository(__DIR__ . '/../.auth0-token-cache.json'),
                         $auth0Client
                     );
 
