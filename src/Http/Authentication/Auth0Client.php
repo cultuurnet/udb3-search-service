@@ -65,6 +65,6 @@ final class Auth0Client
         );
 
         $res = json_decode($response->getBody()->getContents(), true);
-        return empty($res['client_metadata']) ? [] : $res['client_metadata'];
+        return $response->getStatusCode() !== 200 || empty($res['client_metadata']) ? [] : $res['client_metadata'];
     }
 }
