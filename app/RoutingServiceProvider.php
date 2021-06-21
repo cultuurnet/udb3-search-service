@@ -41,7 +41,9 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
                     $auth0Client = new Auth0Client(
-                        new Client(),
+                        new Client([
+                            'request.options' => ['http_errors' => false,]
+                        ]),
                         $this->parameter('auth0.domain'),
                         $this->parameter('auth0.client_id'),
                         $this->parameter('auth0.client_secret')
