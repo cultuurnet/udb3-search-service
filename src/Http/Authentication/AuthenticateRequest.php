@@ -19,9 +19,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-final class AuthenticateRequest implements MiddlewareInterface
+final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Container
      */
@@ -52,6 +57,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         $this->cultureFeed = $cultureFeed;
         $this->auth0TokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
+        $this->logger = new NullLogger();
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -88,6 +94,7 @@ final class AuthenticateRequest implements MiddlewareInterface
                 return (new InvalidClientId($clientId))->toResponse();
             }
         } catch (ConnectException $connectException) {
+            $this->logger->error('Auth0 was detected as down, this results in disabling authentication');
             $auth0Down = true;
         }
 

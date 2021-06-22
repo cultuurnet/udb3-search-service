@@ -6,9 +6,14 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use DateTimeImmutable;
 use GuzzleHttp\Client;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-final class Auth0Client
+final class Auth0Client implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Client
      */
@@ -35,6 +40,7 @@ final class Auth0Client
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->logger = new NullLogger();
     }
 
     public function getToken(): ?Auth0Token
@@ -53,6 +59,9 @@ final class Auth0Client
         );
 
         if ($response === null || $response->getStatusCode() !== 200) {
+            $this->logger->error(
+                'Auth0 error when getting token: ' . ($response ? $response->getStatusCode() : 'unknown')
+            );
             return null;
         }
 
@@ -74,6 +83,9 @@ final class Auth0Client
         );
 
         if ($response === null || $response->getStatusCode() !== 200) {
+            $this->logger->error(
+                'Auth0 error when getting metadata: ' . ($response ? $response->getStatusCode() : 'unknown')
+            );
             return null;
         }
 

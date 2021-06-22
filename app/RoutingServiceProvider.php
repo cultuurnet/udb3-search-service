@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
+use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
+use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Client;
 use League\Route\Router;
@@ -56,14 +58,18 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $auth0Client
                     );
 
-                    $router->middleware(
-                        new AuthenticateRequest(
-                            $this->getLeagueContainer(),
-                            new \CultureFeed($oauthClient),
-                            $auth0TokenProvider,
-                            $auth0Client
-                        )
+                    $authenticateRequest = new AuthenticateRequest(
+                        $this->getLeagueContainer(),
+                        new \CultureFeed($oauthClient),
+                        $auth0TokenProvider,
+                        $auth0Client
                     );
+
+                    $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
+                    $auth0Client->setLogger($logger);
+                    $authenticateRequest->setLogger($logger);
+
+                    $router->middleware($authenticateRequest);
                 }
 
                 $router->middleware(
