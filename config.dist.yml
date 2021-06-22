@@ -8,9 +8,13 @@ debug: false
 bootstrap: []
 uitid:
   consumer:
-    key: ***
-    secret: ***
+    key: *
+    secret: *
   base_url: http://www.uitid.be/uitid/rest/
+auth0:
+  domain: publiq-acc.eu.auth0.com
+  client_id: *
+  client_secret: *
 amqp:
   host: 127.0.0.1
   port: 5672
@@ -70,11 +74,6 @@ cors:
   origins:
     - http://udb-app.dev
     - http://localhost:9999
-cache:
-  redis:
-    host: 127.0.0.1
-    database: 1
-  lifetime: 86400
 sentry:
   dsn: *
   environment: development

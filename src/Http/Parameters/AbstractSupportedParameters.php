@@ -20,6 +20,7 @@ abstract class AbstractSupportedParameters
     {
         return [
             'apiKey',
+            'clientId',
             'embed',
             'start',
             'limit',

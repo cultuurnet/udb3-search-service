@@ -8,13 +8,13 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 
-final class RemovedApiKey extends ApiProblem
+final class NotAllowedToUseSapi extends ApiProblem
 {
-    public function __construct(string $apiKey)
+    public function __construct(string $clientId)
     {
         parent::__construct('Forbidden', 'https://api.publiq.be/probs/auth/forbidden');
         $this->setStatus(403);
-        $this->setDetail('The provided api key ' . $apiKey . ' is removed');
+        $this->setDetail('The provided client id ' . $clientId . ' is not allowed to access this API.');
     }
 
     public function toResponse(): ResponseInterface

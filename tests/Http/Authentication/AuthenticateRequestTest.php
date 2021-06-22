@@ -9,8 +9,14 @@ use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use DateTimeImmutable;
 use Exception;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
 use League\Container\Container;
 use League\Container\Definition\DefinitionInterface;
@@ -35,6 +41,11 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
+     * @var Auth0TokenProvider
+     */
+    private $auth0TokenProvider;
+
+    /**
      * @var AuthenticateRequest
      */
     private $authenticateRequest;
@@ -44,9 +55,34 @@ final class AuthenticateRequestTest extends TestCase
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
+        $auth0Client = new Auth0Client(
+            $this->createMock(Client::class),
+            'domain',
+            'clientId',
+            'clientSecret'
+        );
+
+        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository
+            ->method('get')
+            ->willReturn(
+                new Auth0Token(
+                    'my_auth0_token',
+                    new DateTimeImmutable(),
+                    86400
+                )
+            );
+
+        $this->auth0TokenProvider = new Auth0TokenProvider(
+            $auth0TokenRepository,
+            $auth0Client
+        );
+
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            $auth0Client
         );
     }
 
@@ -152,10 +188,10 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
-     * @dataProvider validRequestsProvider
+     * @dataProvider validApiKeyRequestsProvider
      * @test
      */
-    public function it_handles_valid_requests(ServerRequestInterface $request): void
+    public function it_handles_valid_requests_with_api_key(ServerRequestInterface $request): void
     {
         $cultureFeedConsumer = new CultureFeed_Consumer();
         $cultureFeedConsumer->status = 'ACTIVE';
@@ -189,25 +225,172 @@ final class AuthenticateRequestTest extends TestCase
         $this->assertEquals($response, $actualResponse);
     }
 
-    public function validRequestsProvider(): array
+    public function validApiKeyRequestsProvider(): array
     {
         return [
             'api key header' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withHeader('x-api-key', 'my_active_api_key'),
             ],
             'api key param' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withQueryParams(['apiKey' => 'my_active_api_key']),
             ],
         ];
     }
 
+    /**
+     * @test
+     */
+    public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry'],
+            ])),
+        ]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->never())
+            ->method('handle');
+
+        $this->container->expects($this->never())
+            ->method('extend');
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_all_access_when_auth0_is_down(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+
+        $mockHandler = new MockHandler([new ConnectException('No connection with Auth0', $request)]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validClientIdRequestsProvider
+     * @test
+     */
+    public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], json_encode([
+                'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
+            ])),
+        ]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    public function validClientIdRequestsProvider(): array
+    {
+        return [
+            'client id header' => [
+                $request = (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withHeader('x-client-id', 'my_active_client_id'),
+            ],
+            'client id param' => [
+                $request = (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withQueryParams(['clientId' => 'my_active_client_id']),
+            ],
+        ];
+    }
+
     private function assertProblemReport(ApiProblem $apiProblem, ResponseInterface $response): void
     {
-        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertEquals($apiProblem->getStatus(), $response->getStatusCode());
         $this->assertEquals('application/ld+json', $response->getHeader('Content-Type')[0]);
         $this->assertEquals(json_encode($apiProblem->asArray()), $response->getBody());
     }
