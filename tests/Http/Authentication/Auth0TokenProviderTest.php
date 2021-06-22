@@ -19,7 +19,7 @@ final class Auth0TokenProviderTest extends TestCase
     {
         $auth0Token = new Auth0Token(
             'my_auth0_token',
-            new DateTimeImmutable('2021-06-21T08:40:00+0000'),
+            new DateTimeImmutable(),
             86400
         );
 
