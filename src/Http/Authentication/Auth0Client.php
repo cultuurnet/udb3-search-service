@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use DateTimeImmutable;
 use GuzzleHttp\Client;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-final class Auth0Client
+final class Auth0Client implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Client
      */
@@ -34,9 +40,10 @@ final class Auth0Client
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->logger = new NullLogger();
     }
 
-    public function getToken(): string
+    public function getToken(): ?Auth0Token
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -51,11 +58,22 @@ final class Auth0Client
             ]
         );
 
+        if ($response === null || $response->getStatusCode() !== 200) {
+            $this->logger->error(
+                'Auth0 error when getting token: ' . ($response ? $response->getStatusCode() : 'unknown')
+            );
+            return null;
+        }
+
         $res = json_decode($response->getBody()->getContents(), true);
-        return $res['access_token'];
+        return new Auth0Token(
+            $res['access_token'],
+            new DateTimeImmutable(),
+            $res['expires_in']
+        );
     }
 
-    public function getMetadata(string $clientId, string $token): array
+    public function getMetadata(string $clientId, string $token): ?array
     {
         $response = $this->client->get(
             'https://' . $this->domain . '/api/v2/clients/' . $clientId,
@@ -64,7 +82,14 @@ final class Auth0Client
             ]
         );
 
+        if ($response === null || $response->getStatusCode() !== 200) {
+            $this->logger->error(
+                'Auth0 error when getting metadata: ' . ($response ? $response->getStatusCode() : 'unknown')
+            );
+            return null;
+        }
+
         $res = json_decode($response->getBody()->getContents(), true);
-        return $response->getStatusCode() !== 200 || empty($res['client_metadata']) ? [] : $res['client_metadata'];
+        return  $res['client_metadata'];
     }
 }

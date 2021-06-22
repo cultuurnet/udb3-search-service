@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -40,6 +41,11 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
+     * @var Auth0TokenProvider
+     */
+    private $auth0TokenProvider;
+
+    /**
      * @var AuthenticateRequest
      */
     private $authenticateRequest;
@@ -49,15 +55,34 @@ final class AuthenticateRequestTest extends TestCase
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
+        $auth0Client = new Auth0Client(
+            $this->createMock(Client::class),
+            'domain',
+            'clientId',
+            'clientSecret'
+        );
+
+        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository
+            ->method('get')
+            ->willReturn(
+                new Auth0Token(
+                    'my_auth0_token',
+                    new DateTimeImmutable(),
+                    86400
+                )
+            );
+
+        $this->auth0TokenProvider = new Auth0TokenProvider(
+            $auth0TokenRepository,
+            $auth0Client
+        );
+
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            new Auth0Client(
-                $this->createMock(Client::class),
-                'domain',
-                'clientId',
-                'clientSecret'
-            )
+            $this->auth0TokenProvider,
+            $auth0Client
         );
     }
 
@@ -204,12 +229,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         return [
             'api key header' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withHeader('x-api-key', 'my_active_api_key'),
             ],
             'api key param' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withQueryParams(['apiKey' => 'my_active_api_key']),
             ],
@@ -222,7 +247,6 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['access_token' => 'my_token'])),
             new Response(200, [], json_encode([
                 'client_metadata' => ['publiq-apis' => 'ups entry'],
             ])),
@@ -231,6 +255,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
+            $this->auth0TokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
                 'domain',
@@ -268,6 +293,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
+            $this->auth0TokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
                 'domain',
@@ -306,7 +332,6 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode(['access_token' => 'my_token'])),
             new Response(200, [], json_encode([
                 'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
             ])),
@@ -315,6 +340,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
+            $this->auth0TokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
                 'domain',

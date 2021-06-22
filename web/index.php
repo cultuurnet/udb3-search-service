@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
-use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\ApiKeyReaderInterface;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -21,11 +19,6 @@ $config = ConfigFactory::create(__DIR__ . '/../');
 $container = ContainerFactory::forWeb($config);
 
 $apiRequest = new ApiRequest(ServerRequestFactory::createFromGlobals());
-
-$container->share(ApiKey::class, function () use ($container, $apiRequest) {
-    $apiKeyReader = $container->get(ApiKeyReaderInterface::class);
-    return $apiKeyReader->read($apiRequest);
-});
 
 $errorLogger = LoggerFactory::create($container, LoggerName::forWeb());
 if ($config->get('debug')) {

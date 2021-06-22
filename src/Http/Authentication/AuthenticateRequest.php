@@ -19,9 +19,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-final class AuthenticateRequest implements MiddlewareInterface
+final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var Container
      */
@@ -33,15 +38,26 @@ final class AuthenticateRequest implements MiddlewareInterface
     private $cultureFeed;
 
     /**
+     * @var Auth0TokenProvider
+     */
+    private $auth0TokenProvider;
+
+    /**
      * @var Auth0Client
      */
     private $auth0Client;
 
-    public function __construct(Container $container, ICultureFeed $cultureFeed, Auth0Client $auth0Client)
-    {
+    public function __construct(
+        Container $container,
+        ICultureFeed $cultureFeed,
+        Auth0TokenProvider $auth0TokenProvider,
+        Auth0Client $auth0Client
+    ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
+        $this->auth0TokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
+        $this->logger = new NullLogger();
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -65,18 +81,20 @@ final class AuthenticateRequest implements MiddlewareInterface
         return $this->handleApiKey($request, $handler, $apiKey);
     }
 
+
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
         $auth0Down = false;
         $metadata = [];
 
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken());
+            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get()->getToken());
 
-            if (empty($metadata)) {
+            if ($metadata === null) {
                 return (new InvalidClientId($clientId))->toResponse();
             }
         } catch (ConnectException $connectException) {
+            $this->logger->error('Auth0 was detected as down, this results in disabling authentication');
             $auth0Down = true;
         }
 
@@ -92,8 +110,11 @@ final class AuthenticateRequest implements MiddlewareInterface
         return $handler->handle($request);
     }
 
-    private function handleApiKey(ServerRequestInterface $request, RequestHandlerInterface $handler, string $apiKey): ResponseInterface
-    {
+    private function handleApiKey(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $apiKey
+    ): ResponseInterface {
         try {
             /** @var CultureFeed_Consumer $cultureFeedConsumer */
             $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
