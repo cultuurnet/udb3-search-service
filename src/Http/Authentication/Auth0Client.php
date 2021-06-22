@@ -67,15 +67,16 @@ final class Auth0Client implements LoggerAwareInterface
 
         if ($response->getStatusCode() !== 200) {
             $message = 'Auth0 error when getting token: ' . $response->getStatusCode();
-            $this->logger->error($message);
 
             if ($response->getStatusCode() >= 500) {
+                $this->logger->error($message);
                 throw new ConnectException(
                     $message,
                     new Request('POST', 'https://' . $this->domain . '/oauth/token')
                 );
             }
 
+            $this->logger->info($message);
             return null;
         }
 
@@ -103,15 +104,16 @@ final class Auth0Client implements LoggerAwareInterface
 
         if ($response->getStatusCode() !== 200) {
             $message = 'Auth0 error when getting metadata: ' . $response->getStatusCode();
-            $this->logger->error($message);
 
             if ($response->getStatusCode() >= 500) {
+                $this->logger->error($message);
                 throw new ConnectException(
                     $message,
                     new Request('GET', 'https://' . $this->domain . '/api/v2/clients/' . $clientId)
                 );
             }
 
+            $this->logger->info($message);
             return null;
         }
 
