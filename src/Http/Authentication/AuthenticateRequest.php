@@ -82,9 +82,9 @@ final class AuthenticateRequest implements MiddlewareInterface
         $metadata = [];
 
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0Client->getToken()->getToken());
+            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get()->getToken());
 
-            if (empty($metadata)) {
+            if ($metadata === null) {
                 return (new InvalidClientId($clientId))->toResponse();
             }
         } catch (ConnectException $connectException) {
