@@ -229,12 +229,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         return [
             'api key header' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withHeader('x-api-key', 'my_active_api_key'),
             ],
             'api key param' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withQueryParams(['apiKey' => 'my_active_api_key']),
             ],
