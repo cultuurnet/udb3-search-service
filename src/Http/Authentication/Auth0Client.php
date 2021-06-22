@@ -37,7 +37,7 @@ final class Auth0Client
         $this->clientSecret = $clientSecret;
     }
 
-    public function getToken(): Auth0Token
+    public function getToken(): ?Auth0Token
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -52,8 +52,11 @@ final class Auth0Client
             ]
         );
 
-        $res = json_decode($response->getBody()->getContents(), true);
+        if ($response === null || $response->getStatusCode() !== 200) {
+            return null;
+        }
 
+        $res = json_decode($response->getBody()->getContents(), true);
         return new Auth0Token(
             $res['access_token'],
             new DateTimeImmutable(),
@@ -61,7 +64,7 @@ final class Auth0Client
         );
     }
 
-    public function getMetadata(string $clientId, string $token): array
+    public function getMetadata(string $clientId, string $token): ?array
     {
         $response = $this->client->get(
             'https://' . $this->domain . '/api/v2/clients/' . $clientId,
@@ -70,7 +73,11 @@ final class Auth0Client
             ]
         );
 
+        if ($response === null || $response->getStatusCode() !== 200) {
+            return null;
+        }
+
         $res = json_decode($response->getBody()->getContents(), true);
-        return $response->getStatusCode() !== 200 || empty($res['client_metadata']) ? [] : $res['client_metadata'];
+        return  $res['client_metadata'];
     }
 }
