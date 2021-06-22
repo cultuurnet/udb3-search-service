@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use DateTimeImmutable;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -58,10 +60,22 @@ final class Auth0Client implements LoggerAwareInterface
             ]
         );
 
-        if ($response === null || $response->getStatusCode() !== 200) {
-            $this->logger->error(
-                'Auth0 error when getting token: ' . ($response ? $response->getStatusCode() : 'unknown')
-            );
+        if ($response === null) {
+            $this->logger->error('Auth0 error when getting token: unknown');
+            return null;
+        }
+
+        if ($response->getStatusCode() !== 200) {
+            $message = 'Auth0 error when getting token: ' . $response->getStatusCode();
+            $this->logger->error($message);
+
+            if ($response->getStatusCode() >= 500) {
+                throw new ConnectException(
+                    $message,
+                    new Request('POST', 'https://' . $this->domain . '/oauth/token')
+                );
+            }
+
             return null;
         }
 
@@ -82,10 +96,22 @@ final class Auth0Client implements LoggerAwareInterface
             ]
         );
 
-        if ($response === null || $response->getStatusCode() !== 200) {
-            $this->logger->error(
-                'Auth0 error when getting metadata: ' . ($response ? $response->getStatusCode() : 'unknown')
-            );
+        if ($response === null) {
+            $this->logger->error('Auth0 error when getting metadata: unknown');
+            return null;
+        }
+
+        if ($response->getStatusCode() !== 200) {
+            $message = 'Auth0 error when getting metadata: ' . $response->getStatusCode();
+            $this->logger->error($message);
+
+            if ($response->getStatusCode() >= 500) {
+                throw new ConnectException(
+                    $message,
+                    new Request('GET', 'https://' . $this->domain . '/api/v2/clients/' . $clientId)
+                );
+            }
+
             return null;
         }
 
