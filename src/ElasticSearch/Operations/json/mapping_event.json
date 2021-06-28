@@ -485,7 +485,7 @@
         },
 
         "originalEncodedJsonLd": {
-            "type": "string",
+            "type": "keyword",
             "index": false
         }
     }
