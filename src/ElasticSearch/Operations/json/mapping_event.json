@@ -486,7 +486,7 @@
 
         "originalEncodedJsonLd": {
             "type": "string",
-            "index": "no"
+            "index": false
         }
     }
 }
