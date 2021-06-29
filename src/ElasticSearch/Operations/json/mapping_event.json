@@ -485,8 +485,8 @@
         },
 
         "originalEncodedJsonLd": {
-            "type": "keyword",
-            "index": false
+            "type": "object",
+            "enabled": false
         }
     }
 }
