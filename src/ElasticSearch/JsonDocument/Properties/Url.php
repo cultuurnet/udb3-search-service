@@ -47,16 +47,7 @@ final class Url
             $path = '/';
         }
 
-        return implode(
-            '',
-            [
-                $domain,
-                $port,
-                $path,
-                $query,
-                $fragment,
-            ]
-        );
+        return $domain . $port . $path . $query . $fragment;
     }
 
     public function getDomain(): string
