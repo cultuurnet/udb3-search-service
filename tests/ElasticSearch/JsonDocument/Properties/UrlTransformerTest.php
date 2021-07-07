@@ -98,6 +98,15 @@ final class UrlTransformerTest extends TestCase
                     'domain' => 'app.publiq.be',
                 ],
             ],
+            'https://app.publiq.be:443/foo/' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo/',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
         ];
     }
 
