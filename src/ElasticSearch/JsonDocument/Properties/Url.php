@@ -17,12 +17,19 @@ final class Url
      */
     private $url;
 
+    /**
+     * @var array
+     */
+    private $urlParts;
+
     public function __construct(string $url)
     {
+        $this->urlParts = parse_url($url);
+
         // Normally any string should match the normalization regex since everything is optional except for the middle
         // part which allows any character(s) anyway. But just in case check it so we don't run into an error down the
         // line when getNormalizedUrl() gets called.
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match(self::NORMALIZATION_REGEX, $url)) {
+        if (!is_array($this->urlParts) || !preg_match(self::NORMALIZATION_REGEX, $url)) {
             throw new InvalidArgumentException('Url ' . $url . ' is not supported');
         }
 
@@ -50,10 +57,8 @@ final class Url
 
     public function getDomain(): string
     {
-        $urlParts = parse_url($this->url);
-
-        if (!empty($urlParts['host'])) {
-            $host = $urlParts['host'];
+        if (!empty($this->urlParts['host'])) {
+            $host = $this->urlParts['host'];
 
             if (strpos($host, 'www.') === 0) {
                 return substr($host, strlen('www.'));
