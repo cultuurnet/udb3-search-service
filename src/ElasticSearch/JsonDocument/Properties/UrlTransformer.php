@@ -14,8 +14,9 @@ final class UrlTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['url'] = $from['url'];
-        $draft['domain'] = (new Url($from['url']))->getDomain();
+        $url = new Url($from['url']);
+        $draft['url'] = $url->getNormalizedUrl();
+        $draft['domain'] = $url->getDomain();
         return $draft;
     }
 }

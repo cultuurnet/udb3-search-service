@@ -31,7 +31,7 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://www.publiq.be',
                 ],
                 [
-                    'url' => 'http://www.publiq.be',
+                    'url' => 'publiq.be',
                     'domain' => 'publiq.be',
                 ],
             ],
@@ -40,7 +40,7 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://publiq.be',
                 ],
                 [
-                    'url' => 'http://publiq.be',
+                    'url' => 'publiq.be',
                     'domain' => 'publiq.be',
                 ],
             ],
@@ -49,17 +49,53 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://app.publiq.be',
                 ],
                 [
-                    'url' => 'http://app.publiq.be',
+                    'url' => 'app.publiq.be',
                     'domain' => 'app.publiq.be',
                 ],
             ],
-            'hp://www.publiq.be' => [
+            'ftp://www.publiq.be' => [
                 [
-                    'url' => 'hp://www.publiq.be',
+                    'url' => 'ftp://www.publiq.be',
                 ],
                 [
-                    'url' => 'hp://www.publiq.be',
+                    'url' => 'ftp://www.publiq.be',
                     'domain' => 'publiq.be',
+                ],
+            ],
+            'https://www.publiq.be/foo' => [
+                [
+                    'url' => 'https://www.publiq.be/foo',
+                ],
+                [
+                    'url' => 'publiq.be/foo',
+                    'domain' => 'publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/foo' => [
+                [
+                    'url' => 'https://app.publiq.be/foo',
+                ],
+                [
+                    'url' => 'app.publiq.be/foo',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://www.publiq.be/foo/' => [
+                [
+                    'url' => 'https://www.publiq.be/foo/',
+                ],
+                [
+                    'url' => 'publiq.be/foo',
+                    'domain' => 'publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/foo/' => [
+                [
+                    'url' => 'https://app.publiq.be/foo/',
+                ],
+                [
+                    'url' => 'app.publiq.be/foo',
+                    'domain' => 'app.publiq.be',
                 ],
             ],
         ];
