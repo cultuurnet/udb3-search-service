@@ -19,8 +19,9 @@ final class Url
 
     public function __construct(string $url)
     {
-        // Normally any string should match the normalization regex, but just in case check it so we don't run into an
-        // error down the line when getNormalizedUrl() gets called.
+        // Normally any string should match the normalization regex since everything is optional except for the middle
+        // part which allows any character(s) anyway. But just in case check it so we don't run into an error down the
+        // line when getNormalizedUrl() gets called.
         if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match(self::NORMALIZATION_REGEX, $url)) {
             throw new InvalidArgumentException('Url ' . $url . ' is not supported');
         }
