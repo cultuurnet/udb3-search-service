@@ -38,7 +38,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withWebsiteFilter(Url $url)
     {
-        return $this->withMatchQuery('url', $url->toString());
+        return $this->withMatchQuery('url', $url->getNormalizedUrl());
     }
 
     public function withDomainFilter(string $domain)

@@ -181,7 +181,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         [
                             'match' => [
                                 'url' => [
-                                    'query' => 'http://foo.bar',
+                                    'query' => 'foo.bar',
                                 ],
                             ],
                         ],
@@ -298,7 +298,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         [
                             'match' => [
                                 'url' => [
-                                    'query' => 'http://foo.bar',
+                                    'query' => 'foo.bar',
                                 ],
                             ],
                         ],
