@@ -150,14 +150,9 @@ final class UrlTransformerTest extends TestCase
     public function invalidUrlProviders(): array
     {
         return [
-            'www.publiq.be' => [
+            'foo' => [
                 [
-                    'url' => 'www.publiq.be',
-                ],
-            ],
-            'publiq.be' => [
-                [
-                    'url' => 'publiq.be',
+                    'url' => '/foo:80',
                 ],
             ],
         ];
