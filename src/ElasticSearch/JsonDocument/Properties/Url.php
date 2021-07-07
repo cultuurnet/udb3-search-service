@@ -37,14 +37,24 @@ final class Url
      */
     public function getNormalizedUrl(): string
     {
+        $domain = $this->getDomain();
+        $port = isset($this->urlParts['port']) ? ':' . $this->urlParts['port'] : '';
+        $path = isset($this->urlParts['path']) ? rtrim($this->urlParts['path'], '/') : '';
+        $query = isset($this->urlParts['query']) ? '?' . $this->urlParts['query'] : '';
+        $fragment = isset($this->urlParts['fragment']) ? '#' . $this->urlParts['fragment'] : '';
+
+        if ($path === '' && ($query !== '' || $fragment !== '')) {
+            $path = '/';
+        }
+
         return implode(
             '',
             [
-                $this->getDomain(),
-                isset($this->urlParts['port']) ? ':' . $this->urlParts['port'] : null,
-                isset($this->urlParts['path']) ? rtrim($this->urlParts['path'], '/') : null,
-                isset($this->urlParts['query']) ? '?' . $this->urlParts['query'] : null,
-                isset($this->urlParts['fragment']) ? '#' . $this->urlParts['fragment'] : null,
+                $domain,
+                $port,
+                $path,
+                $query,
+                $fragment,
             ]
         );
     }
