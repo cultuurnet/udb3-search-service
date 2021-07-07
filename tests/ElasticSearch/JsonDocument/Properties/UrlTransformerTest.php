@@ -143,6 +143,24 @@ final class UrlTransformerTest extends TestCase
                     'domain' => 'app.publiq.be',
                 ],
             ],
+            'https://app.publiq.be/?lorem=ipsum' => [
+                [
+                    'url' => 'https://app.publiq.be/?lorem=ipsum',
+                ],
+                [
+                    'url' => 'app.publiq.be/?lorem=ipsum',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/#fragment' => [
+                [
+                    'url' => 'https://app.publiq.be/#fragment',
+                ],
+                [
+                    'url' => 'app.publiq.be/#fragment',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
         ];
     }
 
