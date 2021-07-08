@@ -31,7 +31,7 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://www.publiq.be',
                 ],
                 [
-                    'url' => 'http://www.publiq.be',
+                    'url' => 'publiq.be',
                     'domain' => 'publiq.be',
                 ],
             ],
@@ -40,7 +40,7 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://publiq.be',
                 ],
                 [
-                    'url' => 'http://publiq.be',
+                    'url' => 'publiq.be',
                     'domain' => 'publiq.be',
                 ],
             ],
@@ -49,17 +49,116 @@ final class UrlTransformerTest extends TestCase
                     'url' => 'http://app.publiq.be',
                 ],
                 [
-                    'url' => 'http://app.publiq.be',
+                    'url' => 'app.publiq.be',
                     'domain' => 'app.publiq.be',
                 ],
             ],
-            'hp://www.publiq.be' => [
+            'ftp://www.publiq.be' => [
                 [
-                    'url' => 'hp://www.publiq.be',
+                    'url' => 'ftp://www.publiq.be',
                 ],
                 [
-                    'url' => 'hp://www.publiq.be',
+                    'url' => 'publiq.be',
                     'domain' => 'publiq.be',
+                ],
+            ],
+            'https://www.publiq.be/foo' => [
+                [
+                    'url' => 'https://www.publiq.be/foo',
+                ],
+                [
+                    'url' => 'publiq.be/foo',
+                    'domain' => 'publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/foo' => [
+                [
+                    'url' => 'https://app.publiq.be/foo',
+                ],
+                [
+                    'url' => 'app.publiq.be/foo',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://www.publiq.be/foo/' => [
+                [
+                    'url' => 'https://www.publiq.be/foo/',
+                ],
+                [
+                    'url' => 'publiq.be/foo',
+                    'domain' => 'publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/foo/' => [
+                [
+                    'url' => 'https://app.publiq.be/foo/',
+                ],
+                [
+                    'url' => 'app.publiq.be/foo',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be:443/foo/' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo/',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be:443/foo?lorem=ipsum' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo?lorem=ipsum',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo?lorem=ipsum',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be:443/foo/?lorem=ipsum' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo/?lorem=ipsum',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo?lorem=ipsum',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be:443/foo/?lorem=ipsum/' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo?lorem=ipsum/',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo?lorem=ipsum/',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be:443/foo/?lorem=ipsum/#fragment' => [
+                [
+                    'url' => 'https://app.publiq.be:443/foo?lorem=ipsum/#fragment',
+                ],
+                [
+                    'url' => 'app.publiq.be:443/foo?lorem=ipsum/#fragment',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/?lorem=ipsum' => [
+                [
+                    'url' => 'https://app.publiq.be/?lorem=ipsum',
+                ],
+                [
+                    'url' => 'app.publiq.be/?lorem=ipsum',
+                    'domain' => 'app.publiq.be',
+                ],
+            ],
+            'https://app.publiq.be/#fragment' => [
+                [
+                    'url' => 'https://app.publiq.be/#fragment',
+                ],
+                [
+                    'url' => 'app.publiq.be/#fragment',
+                    'domain' => 'app.publiq.be',
                 ],
             ],
         ];
@@ -78,14 +177,9 @@ final class UrlTransformerTest extends TestCase
     public function invalidUrlProviders(): array
     {
         return [
-            'www.publiq.be' => [
+            'foo' => [
                 [
-                    'url' => 'www.publiq.be',
-                ],
-            ],
-            'publiq.be' => [
-                [
-                    'url' => 'publiq.be',
+                    'url' => '/foo:80',
                 ],
             ],
         ];
