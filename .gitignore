@@ -7,4 +7,3 @@
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
-/.auth0-token-cache.json
