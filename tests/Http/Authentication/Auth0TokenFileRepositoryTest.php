@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class Auth0TokenFileRepositoryTest extends TestCase
 {
-    private const CACHE_FILE = __DIR__ . '/.auth0-token-cache.json';
+    private const CACHE_FILE = __DIR__ . '/auth0-token-cache.json';
 
     /**
      * @var Auth0TokenFileRepository
