@@ -282,6 +282,42 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_requests_with_client_id_without_metadata(): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], json_encode([])),
+        ]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->auth0TokenProvider,
+            new Auth0Client(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'clientId',
+                'clientSecret'
+            )
+        );
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->never())
+            ->method('handle');
+
+        $this->container->expects($this->never())
+            ->method('extend');
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_all_access_when_auth0_is_down(): void
     {
         $request = (new ServerRequestFactory())
