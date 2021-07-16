@@ -244,7 +244,7 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_requests_with_client_id_with_missing_sapi_scope(): void
+    public function it_handles_requests_with_client_id_with_missing_sapi_permission_in_metadata(): void
     {
         $mockHandler = new MockHandler([
             new Response(200, [], json_encode([
