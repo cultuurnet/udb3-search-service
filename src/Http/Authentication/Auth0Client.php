@@ -118,6 +118,6 @@ final class Auth0Client implements LoggerAwareInterface
         }
 
         $res = json_decode($response->getBody()->getContents(), true);
-        return  $res['client_metadata'];
+        return $res['client_metadata'] ?? [];
     }
 }
