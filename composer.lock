@@ -321,16 +321,16 @@
         },
         {
             "name": "crell/api-problem",
-            "version": "3.5",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Crell/ApiProblem.git",
-                "reference": "8e4b97ca5938f9e851889816601eb85abf33c6d9"
+                "reference": "8c94e0997cff5c9a9d13893f77c3e81882518751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Crell/ApiProblem/zipball/8e4b97ca5938f9e851889816601eb85abf33c6d9",
-                "reference": "8e4b97ca5938f9e851889816601eb85abf33c6d9",
+                "url": "https://api.github.com/repos/Crell/ApiProblem/zipball/8c94e0997cff5c9a9d13893f77c3e81882518751",
+                "reference": "8c94e0997cff5c9a9d13893f77c3e81882518751",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +379,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Crell/ApiProblem/issues",
-                "source": "https://github.com/Crell/ApiProblem/tree/3.5"
+                "source": "https://github.com/Crell/ApiProblem/tree/3.5.1"
             },
             "funding": [
                 {
@@ -387,7 +387,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-21T03:32:09+00:00"
+            "time": "2021-07-26T17:13:24+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
@@ -710,16 +710,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.13.0",
+            "version": "2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "2edbc73a4687d9085c8f20f398eebade844e8424"
+                "reference": "fdf92f03e150ed84d5967a833ae93abffac0315b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/2edbc73a4687d9085c8f20f398eebade844e8424",
-                "reference": "2edbc73a4687d9085c8f20f398eebade844e8424",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/fdf92f03e150ed84d5967a833ae93abffac0315b",
+                "reference": "fdf92f03e150ed84d5967a833ae93abffac0315b",
                 "shasum": ""
             },
             "require": {
@@ -769,7 +769,7 @@
             ],
             "support": {
                 "issues": "https://github.com/filp/whoops/issues",
-                "source": "https://github.com/filp/whoops/tree/2.13.0"
+                "source": "https://github.com/filp/whoops/tree/2.14.0"
             },
             "funding": [
                 {
@@ -777,7 +777,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-06-04T12:00:00+00:00"
+            "time": "2021-07-13T12:00:00+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
