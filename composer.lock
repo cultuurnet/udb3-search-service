@@ -321,16 +321,16 @@
         },
         {
             "name": "crell/api-problem",
-            "version": "3.5",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Crell/ApiProblem.git",
-                "reference": "8e4b97ca5938f9e851889816601eb85abf33c6d9"
+                "reference": "8c94e0997cff5c9a9d13893f77c3e81882518751"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Crell/ApiProblem/zipball/8e4b97ca5938f9e851889816601eb85abf33c6d9",
-                "reference": "8e4b97ca5938f9e851889816601eb85abf33c6d9",
+                "url": "https://api.github.com/repos/Crell/ApiProblem/zipball/8c94e0997cff5c9a9d13893f77c3e81882518751",
+                "reference": "8c94e0997cff5c9a9d13893f77c3e81882518751",
                 "shasum": ""
             },
             "require": {
@@ -379,7 +379,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Crell/ApiProblem/issues",
-                "source": "https://github.com/Crell/ApiProblem/tree/3.5"
+                "source": "https://github.com/Crell/ApiProblem/tree/3.5.1"
             },
             "funding": [
                 {
@@ -387,7 +387,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-02-21T03:32:09+00:00"
+            "time": "2021-07-26T17:13:24+00:00"
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
