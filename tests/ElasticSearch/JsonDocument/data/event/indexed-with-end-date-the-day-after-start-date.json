@@ -37,7 +37,8 @@
                     "lte": "1200"
                 }
             ],
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",

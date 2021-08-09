@@ -27,7 +27,8 @@
                 "gte": "1000",
                 "lte": "1800"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",

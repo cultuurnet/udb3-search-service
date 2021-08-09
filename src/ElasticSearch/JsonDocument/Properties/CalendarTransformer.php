@@ -188,6 +188,7 @@ final class CalendarTransformer implements JsonTransformer
                 'dateRange' => $this->convertSubEventToDateRange($subEvent),
                 'localTimeRange' => $localTimeRange,
                 'status' => $this->determineStatus($subEvent, $from),
+                'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
             ];
         }
 

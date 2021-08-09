@@ -51,7 +51,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -62,7 +63,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -73,7 +75,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -84,7 +87,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -95,7 +99,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -106,7 +111,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -117,7 +123,8 @@
                 "gte": "0830",
                 "lte": "0917"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",
