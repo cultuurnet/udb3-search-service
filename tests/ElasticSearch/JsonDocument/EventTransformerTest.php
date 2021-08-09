@@ -85,6 +85,7 @@ final class EventTransformerTest extends TestCase
                 'popularity' => 0,
             ],
             'status' => 'Available',
+            'bookingAvailability' => 'Available',
         ];
 
         $expectedLogs = [

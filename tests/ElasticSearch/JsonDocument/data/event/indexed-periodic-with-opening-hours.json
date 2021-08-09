@@ -1160,6 +1160,7 @@
         }
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {

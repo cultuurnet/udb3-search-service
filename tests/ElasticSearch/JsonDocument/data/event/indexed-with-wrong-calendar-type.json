@@ -4,6 +4,7 @@
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "foobar",
     "status": "Available",
+    "bookingAvailability": "Available",
     "workflowStatus": "DRAFT",
     "availableTo": "2017-04-22T18:00:00+02:00",
     "name": {

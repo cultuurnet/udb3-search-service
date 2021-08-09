@@ -942,6 +942,7 @@
         }
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "workflowStatus": "DRAFT",
     "name": {
         "nl": "Hungaria"

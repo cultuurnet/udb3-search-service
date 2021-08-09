@@ -4062,6 +4062,7 @@
         }
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "localTimeRange": [
         {
             "gte": "0900",

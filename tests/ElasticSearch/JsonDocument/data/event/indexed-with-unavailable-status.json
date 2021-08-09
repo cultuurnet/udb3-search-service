@@ -24,6 +24,7 @@
         }
     ],
     "status": "Unavailable",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {

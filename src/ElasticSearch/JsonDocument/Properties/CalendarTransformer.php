@@ -29,6 +29,8 @@ final class CalendarTransformer implements JsonTransformer
 
     private const STATUS_AVAILABLE = 'Available';
 
+    private const BOOKING_AVAILABLE = 'Available';
+
     /**
      * @var JsonTransformerLogger
      */
@@ -49,8 +51,10 @@ final class CalendarTransformer implements JsonTransformer
      */
     public function transform(array $from, array $draft = []): array
     {
-        // Index status Available by default even if there are errors like missing calendar type, missing subEvents, ...
+        // Index status and booking availability as Available by default,
+        // even if there are errors like missing calendar type, missing subEvents, ...
         $draft['status'] = self::STATUS_AVAILABLE;
+        $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
