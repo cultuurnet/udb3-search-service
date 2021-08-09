@@ -63,6 +63,7 @@ final class CalendarTransformer implements JsonTransformer
 
         $draft = $this->transformCalendarType($from, $draft);
         $draft = $this->transformStatus($from, $draft);
+        $draft = $this->transformBookingAvailability($from, $draft);
 
         $from = $this->polyFillJsonLdSubEvents($from);
         if (!isset($from['subEvent'])) {
@@ -147,6 +148,21 @@ final class CalendarTransformer implements JsonTransformer
     {
         $status = $this->determineStatus($from);
         $draft['status'] = $status;
+        return $draft;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
+    private function transformBookingAvailability(array $from, array $draft): array
+    {
+        $bookingAvailability = $this->determineBookingAvailability($from);
+        $draft['bookingAvailability'] = $bookingAvailability;
         return $draft;
     }
 
@@ -582,6 +598,26 @@ final class CalendarTransformer implements JsonTransformer
 
         // If there's still no status found assume it's Available.
         return self::STATUS_AVAILABLE;
+    }
+
+    /**
+     * @param array $entity
+     *   JSON-LD of an event, place, or subEvent as an associative array
+     * @param array|null $parent
+     *   If the given $entity is a subEvent, the JSON-LD of the parent event/place can be given as an associative array
+     *   to use as a fallback if the subEvent has no explicit booking availability but the parent does
+     */
+    private function determineBookingAvailability(array $entity, ?array $parent = null): string
+    {
+        if (isset($entity['bookingAvailability']['type'])) {
+            return $entity['bookingAvailability']['type'];
+        }
+
+        if ($parent !== null) {
+            return $this->determineBookingAvailability($parent);
+        }
+
+        return self::BOOKING_AVAILABLE;
     }
 
     /**

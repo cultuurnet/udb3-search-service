@@ -307,6 +307,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_unavailable_booking_availability(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-unavailable-booking-availability.json',
+            __DIR__ . '/data/event/indexed-with-unavailable-booking-availability.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_typical_age_range_for_everyone_to_all_ages_true(): void
     {
         $this->transformAndAssert(
