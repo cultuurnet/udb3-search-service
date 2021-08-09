@@ -38,6 +38,11 @@
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
+        "bookingAvailability": {
+            "type": "string",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
 
         "subEvent": {
             "type": "nested",
@@ -50,6 +55,11 @@
                     "type": "integer_range"
                 },
                 "status": {
+                    "type": "string",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "bookingAvailability": {
                     "type": "string",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
