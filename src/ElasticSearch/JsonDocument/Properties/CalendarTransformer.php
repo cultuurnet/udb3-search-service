@@ -247,9 +247,6 @@ final class CalendarTransformer implements JsonTransformer
                         '@type' => 'Event',
                         'startDate' => null,
                         'endDate' => null,
-                        'status' => [
-                            'type' => $this->determineStatus($from),
-                        ],
                     ],
                 ];
                 return $from;
@@ -277,9 +274,6 @@ final class CalendarTransformer implements JsonTransformer
                 '@type' => 'Event',
                 'startDate' => $from['startDate'],
                 'endDate' => $from['endDate'],
-                'status' => [
-                    'type' => $this->determineStatus($from),
-                ],
             ],
         ];
 
@@ -310,10 +304,6 @@ final class CalendarTransformer implements JsonTransformer
 
         $subEvent = [];
 
-        // In case of sub events based on opening hours, the status should always be the same as the on one the parent
-        // event/place.
-        $subEventStatusType = $this->determineStatus($from);
-
         /* @var DateTime $date */
         foreach ($period as $date) {
             $day = strtolower($date->format('l'));
@@ -333,9 +323,6 @@ final class CalendarTransformer implements JsonTransformer
                     '@type' => 'Event',
                     'startDate' => $subEventStartDate->format(DateTime::ATOM),
                     'endDate' => $subEventEndDate->format(DateTime::ATOM),
-                    'status' => [
-                        'type' => $subEventStatusType,
-                    ],
                 ];
             }
         }
