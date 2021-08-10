@@ -162,6 +162,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withBookingAvailabilityFilter(BookingAvailability $bookingAvailability)
+    {
+        $c = clone $this;
+        $c->mockQuery['bookingAvailability'] = $bookingAvailability->toString();
+        return $c;
+    }
+
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): self
     {
         $c = clone $this;

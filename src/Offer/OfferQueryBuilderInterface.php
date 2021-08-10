@@ -113,6 +113,11 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     /**
      * @return static
      */
+    public function withBookingAvailabilityFilter(BookingAvailability $bookingAvailability);
+
+    /**
+     * @return static
+     */
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters);
 
     /**
