@@ -33,6 +33,11 @@ final class SubEventQueryParameters
      */
     private $statuses = [];
 
+    /**
+     * @var BookingAvailability|null
+     */
+    private $bookingAvailability;
+
     public function getDateFrom(): ?DateTimeImmutable
     {
         return $this->dateFrom;
@@ -90,6 +95,18 @@ final class SubEventQueryParameters
     {
         $c = clone $this;
         $c->statuses = $statuses;
+        return $c;
+    }
+
+    public function getBookingAvailability(): ?BookingAvailability
+    {
+        return $this->bookingAvailability;
+    }
+
+    public function withBookingAvailability(?BookingAvailability $bookingAvailability): SubEventQueryParameters
+    {
+        $c = clone $this;
+        $c->bookingAvailability = $bookingAvailability;
         return $c;
     }
 }

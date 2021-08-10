@@ -884,6 +884,70 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_can_build_a_query_with_a_complete_time_range_filter_for_booking_availability(): void
+    {
+        /* @var ElasticSearchOfferQueryBuilder $builder */
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withLocalTimeFrom(800)
+                    ->withLocalTimeTo(1600)
+                    ->withBookingAvailability(BookingAvailability::unavailable())
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.localTimeRange' => [
+                                                        'gte' => '800',
+                                                        'lte' => '1600',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'match' => [
+                                                    'subEvent.bookingAvailability' => [
+                                                        'query' => 'Unavailable',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */
