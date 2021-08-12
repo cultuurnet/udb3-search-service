@@ -894,7 +894,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 (new SubEventQueryParameters())
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
-                    ->withBookingAvailability(BookingAvailability::unavailable())
+                    ->withBookingAvailability('Unavailable')
             );
 
         $expectedQueryArray = [

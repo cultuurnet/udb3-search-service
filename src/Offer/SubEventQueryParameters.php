@@ -34,7 +34,7 @@ final class SubEventQueryParameters
     private $statuses = [];
 
     /**
-     * @var BookingAvailability|null
+     * @var string|null
      */
     private $bookingAvailability;
 
@@ -98,12 +98,12 @@ final class SubEventQueryParameters
         return $c;
     }
 
-    public function getBookingAvailability(): ?BookingAvailability
+    public function getBookingAvailability(): ?string
     {
         return $this->bookingAvailability;
     }
 
-    public function withBookingAvailability(?BookingAvailability $bookingAvailability): SubEventQueryParameters
+    public function withBookingAvailability(?string $bookingAvailability): SubEventQueryParameters
     {
         $c = clone $this;
         $c->bookingAvailability = $bookingAvailability;

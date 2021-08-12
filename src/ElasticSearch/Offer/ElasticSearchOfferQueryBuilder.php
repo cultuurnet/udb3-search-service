@@ -225,7 +225,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         }
 
         if ($bookingAvailability !== null) {
-            $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability->toString());
+            $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(

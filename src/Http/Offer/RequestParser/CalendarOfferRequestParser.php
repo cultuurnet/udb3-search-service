@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
-use CultuurNet\UDB3\Search\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
@@ -34,8 +33,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
                 }
             }
         );
-        $bookingAvailability = $parameterBagReader->getStringFromParameter('bookingAvailability') ?
-            BookingAvailability::fromString($parameterBagReader->getStringFromParameter('bookingAvailability')) : null;
+        $bookingAvailability = $parameterBagReader->getStringFromParameter('bookingAvailability') ?: null;
         $dateFrom = $parameterBagReader->getDateTimeFromParameter('dateFrom');
         $dateTo = $parameterBagReader->getDateTimeFromParameter('dateTo');
         $localTimeFrom = $parameterBagReader->getIntegerFromParameter('localTimeFrom');
