@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
-use CultuurNet\UDB3\Search\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -163,10 +162,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withBookingAvailabilityFilter(BookingAvailability $bookingAvailability)
+    public function withBookingAvailabilityFilter(string $bookingAvailability)
     {
         $c = clone $this;
-        $c->mockQuery['bookingAvailability'] = $bookingAvailability->toString();
+        $c->mockQuery['bookingAvailability'] = $bookingAvailability;
         return $c;
     }
 

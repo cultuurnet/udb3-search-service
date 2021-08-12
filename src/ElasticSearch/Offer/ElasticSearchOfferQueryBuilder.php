@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
-use CultuurNet\UDB3\Search\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -174,9 +173,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         );
     }
 
-    public function withBookingAvailabilityFilter(BookingAvailability $bookingAvailability): self
+    public function withBookingAvailabilityFilter(string $bookingAvailability): self
     {
-        return $this->withMatchQuery('bookingAvailability', $bookingAvailability->toString());
+        return $this->withMatchQuery('bookingAvailability', $bookingAvailability);
     }
 
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): self
