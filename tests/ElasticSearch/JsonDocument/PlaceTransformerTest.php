@@ -73,6 +73,7 @@ final class PlaceTransformerTest extends TestCase
                 'popularity' => 0,
             ],
             'status' => 'Available',
+            'bookingAvailability' => 'Available',
         ];
 
         $expectedLogs = [

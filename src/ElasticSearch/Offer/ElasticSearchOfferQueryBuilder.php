@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
@@ -172,6 +173,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         );
     }
 
+    public function withBookingAvailabilityFilter(string $bookingAvailability): self
+    {
+        return $this->withMatchQuery('bookingAvailability', $bookingAvailability);
+    }
+
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): self
     {
         $from = $subEventQueryParameters->getDateFrom();
@@ -179,6 +185,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $localTimeFrom = $subEventQueryParameters->getLocalTimeFrom();
         $localTimeTo = $subEventQueryParameters->getLocalTimeTo();
         $statuses = $subEventQueryParameters->getStatuses();
+        $bookingAvailability = $subEventQueryParameters->getBookingAvailability();
 
         $this->guardDateRange('date', $from, $to);
 
@@ -214,6 +221,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                     $statuses
                 )
             );
+        }
+
+        if ($bookingAvailability !== null) {
+            $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(

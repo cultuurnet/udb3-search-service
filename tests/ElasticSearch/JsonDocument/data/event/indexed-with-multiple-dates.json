@@ -24,6 +24,7 @@
         }
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {
@@ -34,7 +35,8 @@
                 "gte": "0000",
                 "lte": "0000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -45,7 +47,8 @@
                 "gte": "0000",
                 "lte": "0000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -56,7 +59,8 @@
                 "gte": "0000",
                 "lte": "0000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",

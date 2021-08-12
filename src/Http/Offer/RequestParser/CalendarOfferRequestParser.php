@@ -33,16 +33,18 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
                 }
             }
         );
+        $bookingAvailability = $parameterBagReader->getStringFromParameter('bookingAvailability') ?: null;
         $dateFrom = $parameterBagReader->getDateTimeFromParameter('dateFrom');
         $dateTo = $parameterBagReader->getDateTimeFromParameter('dateTo');
         $localTimeFrom = $parameterBagReader->getIntegerFromParameter('localTimeFrom');
         $localTimeTo = $parameterBagReader->getIntegerFromParameter('localTimeTo');
 
         $hasStatuses = !empty($statuses);
+        $hasBookingAvailability = !is_null($bookingAvailability);
         $hasDates = !is_null($dateFrom) || !is_null($dateTo);
         $hasLocalTimes =  !is_null($localTimeFrom) || !is_null($localTimeTo);
 
-        $hasMultipleFilters = ((int) $hasStatuses + (int) $hasDates + (int) $hasLocalTimes) > 1;
+        $requiresSubEventQueryParameters = ($hasStatuses || $hasBookingAvailability) && ($hasDates || $hasLocalTimes);
 
         // If the URL has parameters to filter on date AND status, filter by subEvent because otherwise we can get false
         // positives (for example an event with a subEvent that has the right date but the wrong status and also a
@@ -52,7 +54,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         // For dateRange and localTimeRange it's just more performant to filter on the aggregated properties index on
         // the top level if they are not combined with status or each other.
         switch (true) {
-            case $hasMultipleFilters:
+            case $requiresSubEventQueryParameters:
                 $offerQueryBuilder = $offerQueryBuilder->withSubEventFilter(
                     (new SubEventQueryParameters())
                         ->withDateFrom($dateFrom)
@@ -60,6 +62,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
                         ->withLocalTimeFrom($localTimeFrom)
                         ->withLocalTimeTo($localTimeTo)
                         ->withStatuses($statuses)
+                        ->withBookingAvailability($bookingAvailability)
                 );
                 return $offerQueryBuilder;
                 break;
@@ -71,6 +74,11 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
 
             case $hasStatuses:
                 $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
+                return $offerQueryBuilder;
+                break;
+
+            case $hasBookingAvailability:
+                $offerQueryBuilder = $offerQueryBuilder->withBookingAvailabilityFilter($bookingAvailability);
                 return $offerQueryBuilder;
                 break;
 

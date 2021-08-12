@@ -85,6 +85,7 @@ final class EventTransformerTest extends TestCase
                 'popularity' => 0,
             ],
             'status' => 'Available',
+            'bookingAvailability' => 'Available',
         ];
 
         $expectedLogs = [
@@ -300,6 +301,17 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-unavailable-status.json',
             __DIR__ . '/data/event/indexed-with-unavailable-status.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_unavailable_booking_availability(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-unavailable-booking-availability.json',
+            __DIR__ . '/data/event/indexed-with-unavailable-booking-availability.json'
         );
     }
 

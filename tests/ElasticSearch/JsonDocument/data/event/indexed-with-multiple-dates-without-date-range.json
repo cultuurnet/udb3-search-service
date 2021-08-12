@@ -4,6 +4,7 @@
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "multiple",
     "status": "Available",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {
@@ -12,7 +13,8 @@
             "localTimeRange": {
                 "lte": "0000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         },
         {
             "dateRange": {
@@ -21,7 +23,8 @@
             "localTimeRange": {
                 "gte": "0000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",

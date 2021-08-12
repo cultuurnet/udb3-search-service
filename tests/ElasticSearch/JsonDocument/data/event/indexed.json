@@ -16,6 +16,7 @@
         }
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {
@@ -26,7 +27,8 @@
                 "gte": "1200",
                 "lte": "2000"
             },
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",

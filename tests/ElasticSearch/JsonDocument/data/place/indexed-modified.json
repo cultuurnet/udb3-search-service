@@ -10,11 +10,13 @@
         {}
     ],
     "status": "Available",
+    "bookingAvailability": "Available",
     "subEvent": [
         {
             "dateRange": {},
             "localTimeRange": {},
-            "status": "Available"
+            "status": "Available",
+            "bookingAvailability": "Available"
         }
     ],
     "workflowStatus": "DRAFT",
