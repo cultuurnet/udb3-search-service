@@ -28,6 +28,69 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_add_missing_id_to_subEvent_objects(): void
+    {
+        $this
+            ->given(
+                [
+                    'subEvent' => [
+                        [
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-01T16:00:00+01:00',
+                            'endDate' => '2020-01-01T20:00:00+01:00',
+                        ],
+                        [
+                            'id' => 'foo',
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-02T16:00:00+01:00',
+                            'endDate' => '2020-01-02T20:00:00+01:00',
+                        ],
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'subEvent' => [
+                        [
+                            'id' => 0,
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-01T16:00:00+01:00',
+                            'endDate' => '2020-01-01T20:00:00+01:00',
+                        ],
+                        [
+                            'id' => 'foo',
+                            '@type' => 'Event',
+                            'startDate' => '2020-01-02T16:00:00+01:00',
+                            'endDate' => '2020-01-02T20:00:00+01:00',
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_complain_if_subEvent_property_is_not_found(): void
+    {
+        $this
+            ->given(['@type' => 'Event'])
+            ->assertReturnedDocumentContains(['@type' => 'Event']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_complain_if_subEvent_property_is_not_an_array(): void
+    {
+        $this
+            ->given(['@type' => 'Event', 'subEvent' => 'foo'])
+            ->assertReturnedDocumentContains(['@type' => 'Event', 'subEvent' => 'foo']);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_remove_metadata_if_set(): void
     {
         $this
