@@ -20,6 +20,9 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
             'status' => [
                 'type' => 'Available',
             ],
+            'bookingAvailability' => [
+                'type' => 'Available',
+            ],
             'calendarType' => 'permanent',
         ];
 

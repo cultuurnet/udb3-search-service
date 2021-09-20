@@ -16,7 +16,7 @@
         "broadway/broadway": "1.0.0",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
-        "cultuurnet/calendar-summary-v3": "^3.3",
+        "cultuurnet/calendar-summary-v3": "^3.4",
         "cultuurnet/culturefeed-php": "~1.12",
         "elasticsearch/elasticsearch": "~5.2",
         "filp/whoops": "^2.5",
