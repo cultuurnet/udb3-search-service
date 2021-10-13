@@ -77,7 +77,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         [
                             'origin' => ['*'],
                             'methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-                            'headers.allow' => ['Authorization', 'X-Api-Key', 'X-Client-Id'],
+                            'headers.allow' => ['Authorization', 'X-Api-Key', 'X-Client-Id', 'Content-Type'],
                             'headers.expose' => [],
                             'credentials' => true,
                             'cache' => 0,
