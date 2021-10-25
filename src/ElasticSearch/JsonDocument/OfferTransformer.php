@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ProductionColla
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganizerTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\VideosTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -58,6 +59,7 @@ final class OfferTransformer implements JsonTransformer
             new PriceInfoTransformer(),
             new AudienceTypeTransformer(),
             new MediaObjectsTransformer(),
+            new VideosTransformer(),
             new RelatedOrganizerTransformer(
                 $logger,
                 $idUrlParser,
