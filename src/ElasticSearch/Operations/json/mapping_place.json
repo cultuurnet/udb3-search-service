@@ -325,6 +325,9 @@
         "mediaObjectsCount": {
             "type": "integer"
         },
+        "videosCount": {
+            "type": "integer"
+        },
 
         "organizer": {
             "type": "object",
