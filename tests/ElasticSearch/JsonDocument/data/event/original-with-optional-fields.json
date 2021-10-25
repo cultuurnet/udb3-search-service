@@ -153,6 +153,22 @@
             "copyrightHolder": "Foo Bar"
         }
     ],
+    "videos": [
+        {
+            "id": "91c75325-3830-4000-b580-5778b2de4548",
+            "url": "https://www.youtube.com/watch?v=123",
+            "embedUrl": "https://www.youtube.com/embed/123",
+            "language": "nl",
+            "copyrightHolder": "Creative Commons"
+        },
+        {
+            "id": "5c549a24-bb97-4f83-8ea5-21a6d56aff72",
+            "url": "https://vimeo.com/98765432",
+            "embedUrl": "https://player.vimeo.com/video/98765432",
+            "language": "nl",
+            "copyrightHolder": "Public Domain"
+        }
+    ],
     "workflowStatus": "DRAFT",
     "created": "2017-04-22T13:33:37+02:00"
 }
