@@ -190,7 +190,6 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      * @param bool $include
      *   When set to true only offers with at least one video will be
      *   included. When set to false offers with videos will be excluded.
-     * @return OfferQueryBuilderInterface
      */
     public function withVideosFilter(bool $include): OfferQueryBuilderInterface;
 
