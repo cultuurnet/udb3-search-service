@@ -37,50 +37,23 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OfferSearchController
 {
-    /**
-     * @var OfferQueryBuilderInterface
-     */
-    private $queryBuilder;
+    private OfferQueryBuilderInterface $queryBuilder;
 
-    /**
-     * @var OfferRequestParserInterface
-     */
-    private $requestParser;
+    private OfferRequestParserInterface $requestParser;
 
-    /**
-     * @var OfferSearchServiceInterface
-     */
-    private $searchService;
+    private OfferSearchServiceInterface $searchService;
 
-    /**
-     * @var string
-     */
-    private $regionIndexName;
+    private string $regionIndexName;
 
-    /**
-     * @var string
-     */
-    private $regionDocumentType;
+    private string $regionDocumentType;
 
-    /**
-     * @var QueryStringFactory
-     */
-    private $queryStringFactory;
+    private QueryStringFactory $queryStringFactory;
 
-    /**
-     * @var FacetTreeNormalizerInterface
-     */
-    private $facetTreeNormalizer;
+    private FacetTreeNormalizerInterface $facetTreeNormalizer;
 
-    /**
-     * @var OfferSupportedParameters
-     */
-    private $offerParameterWhiteList;
+    private OfferSupportedParameters $offerParameterWhiteList;
 
-    /**
-     * @var Consumer
-     */
-    private $consumer;
+    private Consumer $consumer;
 
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
