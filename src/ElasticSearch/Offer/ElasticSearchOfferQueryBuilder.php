@@ -413,7 +413,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withDuplicateFilter(bool $isDuplicate): self
     {
-        return $this->withTermQuery('isDuplicate', (bool) $isDuplicate);
+        return $this->withTermQuery('isDuplicate', $isDuplicate);
     }
 
     public function withProductionIdFilter(string $productionId): self

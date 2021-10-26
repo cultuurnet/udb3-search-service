@@ -305,7 +305,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withVideosFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['videos'] = (bool) $include;
+        $c->mockQuery['videos'] = $include;
         return $c;
     }
 
