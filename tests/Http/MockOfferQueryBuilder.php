@@ -99,7 +99,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
-            function (WorkflowStatus $workflowStatus) {
+            static function (WorkflowStatus $workflowStatus) {
                 return $workflowStatus->toString();
             },
             $workflowStatuses
@@ -154,7 +154,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['status'] = array_map(
-            function (Status $status) {
+            static function (Status $status) {
                 return $status->toString();
             },
             $statuses
@@ -180,7 +180,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             'dateFrom' => $dateFrom ? $dateFrom->format(DATE_ATOM) : null,
             'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
             'statuses' => array_map(
-                function (Status $status) {
+                static function (Status $status) {
                     return $status->toString();
                 },
                 $subEventQueryParameters->getStatuses()
@@ -194,7 +194,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['calendarType'] = array_map(
-            function (CalendarType $calendarType) {
+            static function (CalendarType $calendarType) {
                 return $calendarType->toString();
             },
             $calendarTypes
@@ -441,7 +441,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
-            function (Language $language) {
+            static function (Language $language) {
                 return (string) $language;
             },
             $textLanguages
@@ -454,7 +454,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
-            function (Language $language) {
+            static function (Language $language) {
                 return (string) $language;
             },
             $textLanguages
