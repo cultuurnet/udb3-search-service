@@ -76,10 +76,7 @@ final class OfferSearchController
         $this->consumer = $consumer;
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function __invoke(ApiRequest $request)
+    public function __invoke(ApiRequest $request): ResponseInterface
     {
         $this->offerParameterWhiteList->guardAgainstUnsupportedParameters(
             $request->getQueryParamsKeys()
@@ -291,10 +288,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return TermId[]
      */
-    private function getTermIdsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getTermIdsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -305,10 +301,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return TermLabel[]
      */
-    private function getTermLabelsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getTermLabelsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -319,10 +314,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return LabelName[]
      */
-    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -333,10 +327,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return Language[]
      */
-    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -347,10 +340,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return RegionId[]
      */
-    private function getRegionIdsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getRegionIdsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -360,10 +352,7 @@ final class OfferSearchController
         );
     }
 
-    /**
-     * @return AudienceType|null
-     */
-    private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag)
+    private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag): ?AudienceType
     {
         return $parameterBag->getStringFromParameter(
             'audienceType',
