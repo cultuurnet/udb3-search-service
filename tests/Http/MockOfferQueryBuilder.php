@@ -280,10 +280,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withAllAgesFilter($include): self
+    public function withAllAgesFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['allAgesOnly'] = (bool) $include;
+        $c->mockQuery['allAgesOnly'] = $include;
         return $c;
     }
 
@@ -295,10 +295,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withMediaObjectsFilter($include): self
+    public function withMediaObjectsFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['mediaObjects'] = (bool) $include;
+        $c->mockQuery['mediaObjects'] = $include;
         return $c;
     }
 
@@ -309,10 +309,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withUiTPASFilter($include): self
+    public function withUiTPASFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['uitpas'] = (bool) $include;
+        $c->mockQuery['uitpas'] = $include;
         return $c;
     }
 

@@ -95,7 +95,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      *   When set to true ONLY offers for all age ranges will be included.
      *   When set to false offers for all age ranges will be excluded.
      */
-    public function withAllAgesFilter($include): OfferQueryBuilderInterface;
+    public function withAllAgesFilter(bool $include): OfferQueryBuilderInterface;
 
     public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null): OfferQueryBuilderInterface;
 
@@ -103,7 +103,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      *   When set to true only offers with at least one media object will be
      *   included. When set to false offers with media objects will be excluded.
      */
-    public function withMediaObjectsFilter($include): OfferQueryBuilderInterface;
+    public function withMediaObjectsFilter(bool $include): OfferQueryBuilderInterface;
 
     /**
      *   When set to true only offers with at least one video will be
@@ -115,7 +115,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      *   When set to true only UiTPAS offers will be included. When set to
      *   false UiTPAS offers will be excluded.
      */
-    public function withUiTPASFilter($include): OfferQueryBuilderInterface;
+    public function withUiTPASFilter(bool $include): OfferQueryBuilderInterface;
 
     public function withTermIdFilter(TermId $termId): OfferQueryBuilderInterface;
 

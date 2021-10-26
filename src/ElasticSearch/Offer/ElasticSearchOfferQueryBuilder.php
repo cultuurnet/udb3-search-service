@@ -334,9 +334,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('typicalAgeRange', $minimum, $maximum);
     }
 
-    public function withAllAgesFilter($include): self
+    public function withAllAgesFilter(bool $include): self
     {
-        return $this->withTermQuery('allAges', (bool) $include);
+        return $this->withTermQuery('allAges', $include);
     }
 
     public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null): self
@@ -349,7 +349,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('price', $minimum, $maximum);
     }
 
-    public function withMediaObjectsFilter($include): self
+    public function withMediaObjectsFilter(bool $include): self
     {
         $min = $include ? 1 : null;
         $max = $include ? null : 0;
@@ -365,7 +365,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('videosCount', $min, $max);
     }
 
-    public function withUiTPASFilter($include): self
+    public function withUiTPASFilter(bool $include): self
     {
         $uitpasQuery = 'organizer.labels:(UiTPAS* OR Paspartoe)';
 
