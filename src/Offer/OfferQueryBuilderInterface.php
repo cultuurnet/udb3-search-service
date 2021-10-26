@@ -83,9 +83,9 @@ interface OfferQueryBuilderInterface extends QueryBuilder
         RegionId $regionId
     ): OfferQueryBuilderInterface;
 
-    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistance): OfferQueryBuilderInterface;
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): OfferQueryBuilderInterface;
 
-    public function withGeoBoundsFilter(GeoBoundsParameters $geoBounds): OfferQueryBuilderInterface;
+    public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): OfferQueryBuilderInterface;
 
     public function withAudienceTypeFilter(AudienceType $audienceType): OfferQueryBuilderInterface;
 
