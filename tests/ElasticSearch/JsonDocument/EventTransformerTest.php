@@ -21,15 +21,9 @@ final class EventTransformerTest extends TestCase
      */
     private $offerRegionService;
 
-    /**
-     * @var SimpleArrayLogger
-     */
-    private $simpleArrayLogger;
+    private SimpleArrayLogger $simpleArrayLogger;
 
-    /**
-     * @var EventTransformer
-     */
-    private $transformer;
+    private EventTransformer $transformer;
 
     protected function setUp(): void
     {
