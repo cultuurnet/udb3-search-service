@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTimeImmutable;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
@@ -105,8 +106,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withAvailableRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
@@ -126,16 +127,16 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withCreatedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('created', $from, $to);
         return $this->withDateRangeQuery('created', $from, $to);
     }
 
     public function withModifiedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('modified', $from, $to);
         return $this->withDateRangeQuery('modified', $from, $to);
@@ -147,8 +148,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('date', $from, $to);
         return $this->withDateRangeQuery('dateRange', $from, $to);

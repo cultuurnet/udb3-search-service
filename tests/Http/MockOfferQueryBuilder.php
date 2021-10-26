@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
+use DateTimeImmutable;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
@@ -83,7 +84,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withAvailableRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null): self
+    public function withAvailableRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['availableRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -107,7 +108,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withCreatedRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null): self
+    public function withCreatedRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['createdRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -115,7 +116,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withModifiedRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null): self
+    public function withModifiedRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['modifiedRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -130,7 +131,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withDateRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null): self
+    public function withDateRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['dateRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
