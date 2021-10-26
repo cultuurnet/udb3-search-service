@@ -169,9 +169,9 @@ final class OfferSearchController
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
 
-        $price = $request->getQueryParam('price', null);
-        $minPrice = $request->getQueryParam('minPrice', null);
-        $maxPrice = $request->getQueryParam('maxPrice', null);
+        $price = $request->getQueryParam('price');
+        $minPrice = $request->getQueryParam('minPrice');
+        $maxPrice = $request->getQueryParam('maxPrice');
 
         if (!is_null($price)) {
             $price = Price::fromFloat((float) $price);
