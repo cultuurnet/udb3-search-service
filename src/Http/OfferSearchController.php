@@ -37,50 +37,23 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OfferSearchController
 {
-    /**
-     * @var OfferQueryBuilderInterface
-     */
-    private $queryBuilder;
+    private OfferQueryBuilderInterface $queryBuilder;
 
-    /**
-     * @var OfferRequestParserInterface
-     */
-    private $requestParser;
+    private OfferRequestParserInterface $requestParser;
 
-    /**
-     * @var OfferSearchServiceInterface
-     */
-    private $searchService;
+    private OfferSearchServiceInterface $searchService;
 
-    /**
-     * @var string
-     */
-    private $regionIndexName;
+    private string $regionIndexName;
 
-    /**
-     * @var string
-     */
-    private $regionDocumentType;
+    private string $regionDocumentType;
 
-    /**
-     * @var QueryStringFactory
-     */
-    private $queryStringFactory;
+    private QueryStringFactory $queryStringFactory;
 
-    /**
-     * @var FacetTreeNormalizerInterface
-     */
-    private $facetTreeNormalizer;
+    private FacetTreeNormalizerInterface $facetTreeNormalizer;
 
-    /**
-     * @var OfferSupportedParameters
-     */
-    private $offerParameterWhiteList;
+    private OfferSupportedParameters $offerParameterWhiteList;
 
-    /**
-     * @var Consumer
-     */
-    private $consumer;
+    private Consumer $consumer;
 
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
@@ -103,10 +76,7 @@ final class OfferSearchController
         $this->consumer = $consumer;
     }
 
-    /**
-     * @return ResponseInterface
-     */
-    public function __invoke(ApiRequest $request)
+    public function __invoke(ApiRequest $request): ResponseInterface
     {
         $this->offerParameterWhiteList->guardAgainstUnsupportedParameters(
             $request->getQueryParamsKeys()
@@ -199,9 +169,9 @@ final class OfferSearchController
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
 
-        $price = $request->getQueryParam('price', null);
-        $minPrice = $request->getQueryParam('minPrice', null);
-        $maxPrice = $request->getQueryParam('maxPrice', null);
+        $price = $request->getQueryParam('price');
+        $minPrice = $request->getQueryParam('minPrice');
+        $maxPrice = $request->getQueryParam('maxPrice');
 
         if (!is_null($price)) {
             $price = Price::fromFloat((float) $price);
@@ -288,7 +258,7 @@ final class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $calendarSummaries = array_map(
-            function (string $parameter) {
+            static function (string $parameter) {
                 return CalendarSummaryFormat::fromCombinedParameter($parameter);
             },
             $parameterBag->getArrayFromParameter('embedCalendarSummaries')
@@ -318,10 +288,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return TermId[]
      */
-    private function getTermIdsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getTermIdsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -332,10 +301,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return TermLabel[]
      */
-    private function getTermLabelsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getTermLabelsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -346,10 +314,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return LabelName[]
      */
-    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -360,10 +327,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return Language[]
      */
-    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -374,10 +340,9 @@ final class OfferSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return RegionId[]
      */
-    private function getRegionIdsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getRegionIdsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -387,10 +352,7 @@ final class OfferSearchController
         );
     }
 
-    /**
-     * @return AudienceType|null
-     */
-    private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag)
+    private function getAudienceTypeFromQuery(ParameterBagInterface $parameterBag): ?AudienceType
     {
         return $parameterBag->getStringFromParameter(
             'audienceType',

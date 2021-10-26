@@ -30,10 +30,11 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
+use DateTimeImmutable;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
-    private $mockQuery = [];
+    private array $mockQuery = [];
 
     public function __construct()
     {
@@ -41,49 +42,49 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
-    public function withCdbIdFilter(Cdbid $cdbid)
+    public function withCdbIdFilter(Cdbid $cdbid): self
     {
         $c = clone $this;
         $c->mockQuery['cdbId'] = $cdbid->toString();
         return $c;
     }
 
-    public function withLocationCdbIdFilter(Cdbid $locationCdbid)
+    public function withLocationCdbIdFilter(Cdbid $locationCdbid): self
     {
         $c = clone $this;
         $c->mockQuery['locationCdbId'] = $locationCdbid->toString();
         return $c;
     }
 
-    public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId)
+    public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
         $c = clone $this;
         $c->mockQuery['organizerCdbId'] = $organizerCdbId->toString();
         return $c;
     }
 
-    public function withMainLanguageFilter(Language $mainLanguage)
+    public function withMainLanguageFilter(Language $mainLanguage): self
     {
         $c = clone $this;
         $c->mockQuery['mainLanguage'] = (string) $mainLanguage;
         return $c;
     }
 
-    public function withLanguageFilter(Language $language)
+    public function withLanguageFilter(Language $language): self
     {
         $c = clone $this;
         $c->mockQuery['language'][] = (string) $language;
         return $c;
     }
 
-    public function withCompletedLanguageFilter(Language $language)
+    public function withCompletedLanguageFilter(Language $language): self
     {
         $c = clone $this;
         $c->mockQuery['completedLanguage'][] = (string) $language;
         return $c;
     }
 
-    public function withAvailableRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    public function withAvailableRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['availableRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -91,7 +92,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses)
+    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self
     {
         if (empty($workflowStatuses)) {
             return $this;
@@ -99,7 +100,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
-            function (WorkflowStatus $workflowStatus) {
+            static function (WorkflowStatus $workflowStatus) {
                 return $workflowStatus->toString();
             },
             $workflowStatuses
@@ -107,7 +108,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withCreatedRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    public function withCreatedRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['createdRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -115,7 +116,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withModifiedRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    public function withModifiedRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['modifiedRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -123,14 +124,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withCreatorFilter(Creator $creator)
+    public function withCreatorFilter(Creator $creator): self
     {
         $c = clone $this;
         $c->mockQuery['creator'] = $creator->toString();
         return $c;
     }
 
-    public function withDateRangeFilter(\DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    public function withDateRangeFilter(DateTimeImmutable $from = null, DateTimeImmutable $to = null): self
     {
         $c = clone $this;
         $c->mockQuery['dateRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
@@ -138,7 +139,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null)
+    public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null): self
     {
         $c = clone $this;
         $c->mockQuery['localTimeRange']['from'] = $localTimeFrom;
@@ -146,7 +147,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStatusFilter(Status ...$statuses)
+    public function withStatusFilter(Status ...$statuses): self
     {
         if (empty($statuses)) {
             return $this;
@@ -154,7 +155,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['status'] = array_map(
-            function (Status $status) {
+            static function (Status $status) {
                 return $status->toString();
             },
             $statuses
@@ -162,7 +163,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withBookingAvailabilityFilter(string $bookingAvailability)
+    public function withBookingAvailabilityFilter(string $bookingAvailability): self
     {
         $c = clone $this;
         $c->mockQuery['bookingAvailability'] = $bookingAvailability;
@@ -180,7 +181,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             'dateFrom' => $dateFrom ? $dateFrom->format(DATE_ATOM) : null,
             'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
             'statuses' => array_map(
-                function (Status $status) {
+                static function (Status $status) {
                     return $status->toString();
                 },
                 $subEventQueryParameters->getStatuses()
@@ -190,11 +191,11 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withCalendarTypeFilter(CalendarType ...$calendarTypes)
+    public function withCalendarTypeFilter(CalendarType ...$calendarTypes): self
     {
         $c = clone $this;
         $c->mockQuery['calendarType'] = array_map(
-            function (CalendarType $calendarType) {
+            static function (CalendarType $calendarType) {
                 return $calendarType->toString();
             },
             $calendarTypes
@@ -202,14 +203,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withPostalCodeFilter(PostalCode $postalCode)
+    public function withPostalCodeFilter(PostalCode $postalCode): self
     {
         $c = clone $this;
         $c->mockQuery['postalCode'] = $postalCode->toString();
         return $c;
     }
 
-    public function withAddressCountryFilter(Country $country)
+    public function withAddressCountryFilter(Country $country): self
     {
         $c = clone $this;
         $c->mockQuery['country'] = $country->toString();
@@ -220,7 +221,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         string $regionIndexName,
         string $regionDocumentType,
         RegionId $regionId
-    ) {
+    ): self {
         $c = clone $this;
         $c->mockQuery['region']['index'] = $regionIndexName;
         $c->mockQuery['region']['type'] = $regionDocumentType;
@@ -228,50 +229,50 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistance)
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): self
     {
         $c = clone $this;
-        $c->mockQuery['geoDistance']['lat'] = $geoDistance->getCoordinates()->getLatitude()->toDouble();
-        $c->mockQuery['geoDistance']['lng'] = $geoDistance->getCoordinates()->getLongitude()->toDouble();
-        $c->mockQuery['geoDistance']['distance'] = $geoDistance->getMaximumDistance()->toString();
+        $c->mockQuery['geoDistance']['lat'] = $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble();
+        $c->mockQuery['geoDistance']['lng'] = $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble();
+        $c->mockQuery['geoDistance']['distance'] = $geoDistanceParameters->getMaximumDistance()->toString();
         return $c;
     }
 
-    public function withGeoBoundsFilter(GeoBoundsParameters $geoBounds)
+    public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
     {
         $c = clone $this;
 
-        $c->mockQuery['geoBounds']['northWest']['lat'] = $geoBounds->getNorthWestCoordinates()
+        $c->mockQuery['geoBounds']['northWest']['lat'] = $geoBoundsParameters->getNorthWestCoordinates()
             ->getLatitude()->toDouble();
-        $c->mockQuery['geoBounds']['northWest']['lng'] = $geoBounds->getNorthWestCoordinates()
+        $c->mockQuery['geoBounds']['northWest']['lng'] = $geoBoundsParameters->getNorthWestCoordinates()
             ->getLongitude()->toDouble();
 
-        $c->mockQuery['geoBounds']['northEast']['lat'] = $geoBounds->getNorthEastCoordinates()
+        $c->mockQuery['geoBounds']['northEast']['lat'] = $geoBoundsParameters->getNorthEastCoordinates()
             ->getLatitude()->toDouble();
-        $c->mockQuery['geoBounds']['northEast']['lng'] = $geoBounds->getNorthEastCoordinates()
+        $c->mockQuery['geoBounds']['northEast']['lng'] = $geoBoundsParameters->getNorthEastCoordinates()
             ->getLongitude()->toDouble();
 
-        $c->mockQuery['geoBounds']['southWest']['lat'] = $geoBounds->getSouthWestCoordinates()
+        $c->mockQuery['geoBounds']['southWest']['lat'] = $geoBoundsParameters->getSouthWestCoordinates()
             ->getLatitude()->toDouble();
-        $c->mockQuery['geoBounds']['southWest']['lng'] = $geoBounds->getSouthWestCoordinates()
+        $c->mockQuery['geoBounds']['southWest']['lng'] = $geoBoundsParameters->getSouthWestCoordinates()
             ->getLongitude()->toDouble();
 
-        $c->mockQuery['geoBounds']['southEast']['lat'] = $geoBounds->getSouthEastCoordinates()
+        $c->mockQuery['geoBounds']['southEast']['lat'] = $geoBoundsParameters->getSouthEastCoordinates()
             ->getLatitude()->toDouble();
-        $c->mockQuery['geoBounds']['southEast']['lng'] = $geoBounds->getSouthEastCoordinates()
+        $c->mockQuery['geoBounds']['southEast']['lng'] = $geoBoundsParameters->getSouthEastCoordinates()
             ->getLongitude()->toDouble();
 
         return $c;
     }
 
-    public function withAudienceTypeFilter(AudienceType $audienceType)
+    public function withAudienceTypeFilter(AudienceType $audienceType): self
     {
         $c = clone $this;
         $c->mockQuery['audienceType'] = $audienceType->toString();
         return $c;
     }
 
-    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null)
+    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self
     {
         $c = clone $this;
         $c->mockQuery['ageRange']['from'] = $minimum ? $minimum->toNative() : null;
@@ -279,14 +280,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withAllAgesFilter($include)
+    public function withAllAgesFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['allAgesOnly'] = (bool) $include;
+        $c->mockQuery['allAgesOnly'] = $include;
         return $c;
     }
 
-    public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null)
+    public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null): self
     {
         $c = clone $this;
         $c->mockQuery['priceRange']['from'] = $minimum ? $minimum->toNative() : null;
@@ -294,126 +295,126 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withMediaObjectsFilter($include)
+    public function withMediaObjectsFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['mediaObjects'] = (bool) $include;
+        $c->mockQuery['mediaObjects'] = $include;
         return $c;
     }
 
-    public function withVideosFilter(bool $include): OfferQueryBuilderInterface
+    public function withVideosFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['videos'] = (bool) $include;
+        $c->mockQuery['videos'] = $include;
         return $c;
     }
 
-    public function withUiTPASFilter($include)
+    public function withUiTPASFilter(bool $include): self
     {
         $c = clone $this;
-        $c->mockQuery['uitpas'] = (bool) $include;
+        $c->mockQuery['uitpas'] = $include;
         return $c;
     }
 
-    public function withTermIdFilter(TermId $termId)
+    public function withTermIdFilter(TermId $termId): self
     {
         $c = clone $this;
         $c->mockQuery['termId'][] = $termId->toString();
         return $c;
     }
 
-    public function withTermLabelFilter(TermLabel $termLabel)
+    public function withTermLabelFilter(TermLabel $termLabel): self
     {
         $c = clone $this;
         $c->mockQuery['termLabel'][] = $termLabel->toString();
         return $c;
     }
 
-    public function withLocationTermIdFilter(TermId $locationTermId)
+    public function withLocationTermIdFilter(TermId $locationTermId): self
     {
         $c = clone $this;
         $c->mockQuery['locationTermId'][] = $locationTermId->toString();
         return $c;
     }
 
-    public function withLocationTermLabelFilter(TermLabel $locationTermLabel)
+    public function withLocationTermLabelFilter(TermLabel $locationTermLabel): self
     {
         $c = clone $this;
         $c->mockQuery['locationTermLabel'][] = $locationTermLabel->toString();
         return $c;
     }
 
-    public function withLabelFilter(LabelName $label)
+    public function withLabelFilter(LabelName $label): self
     {
         $c = clone $this;
         $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 
-    public function withLocationLabelFilter(LabelName $locationLabel)
+    public function withLocationLabelFilter(LabelName $locationLabel): self
     {
         $c = clone $this;
         $c->mockQuery['locationLabel'][] = $locationLabel->toString();
         return $c;
     }
 
-    public function withOrganizerLabelFilter(LabelName $organizerLabel)
+    public function withOrganizerLabelFilter(LabelName $organizerLabel): self
     {
         $c = clone $this;
         $c->mockQuery['organizerLabel'][] = $organizerLabel->toString();
         return $c;
     }
 
-    public function withDuplicateFilter(bool $isDuplicate)
+    public function withDuplicateFilter(bool $isDuplicate): self
     {
         $c = clone $this;
         $c->mockQuery['isDuplicate'] = $isDuplicate;
         return $c;
     }
 
-    public function withProductionIdFilter(string $productionId): MockOfferQueryBuilder
+    public function withProductionIdFilter(string $productionId): self
     {
         $c = clone $this;
         $c->mockQuery['productionId'] = $productionId;
         return $c;
     }
 
-    public function withFacet(FacetName $facetName)
+    public function withFacet(FacetName $facetName): self
     {
         $c = clone $this;
         $c->mockQuery['facet'][] = $facetName->toString();
         return $c;
     }
 
-    public function withSortByScore(SortOrder $sortOrder)
+    public function withSortByScore(SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['score'] = $sortOrder->toString();
         return $c;
     }
 
-    public function withSortByAvailableTo(SortOrder $sortOrder)
+    public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['availableTo'] = $sortOrder->toString();
         return $c;
     }
 
-    public function withSortByCreated(SortOrder $sortOrder)
+    public function withSortByCreated(SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['created'] = $sortOrder->toString();
         return $c;
     }
 
-    public function withSortByModified(SortOrder $sortOrder)
+    public function withSortByModified(SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['modified'] = $sortOrder->toString();
         return $c;
     }
 
-    public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder)
+    public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['distance']['lat'] = $coordinates->getLatitude()->toDouble();
@@ -422,26 +423,26 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withSortByPopularity(SortOrder $sortOrder)
+    public function withSortByPopularity(SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['popularity'] = $sortOrder->toString();
         return $c;
     }
 
-    public function withGroupByProductionId()
+    public function withGroupByProductionId(): self
     {
         $c = clone $this;
         $c->mockQuery['group'][] = 'productionId';
         return $c;
     }
 
-    public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
+    public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages): self
     {
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
-            function (Language $language) {
+            static function (Language $language) {
                 return (string) $language;
             },
             $textLanguages
@@ -449,12 +450,12 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withTextQuery(string $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages): self
     {
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
-            function (Language $language) {
+            static function (Language $language) {
                 return (string) $language;
             },
             $textLanguages
@@ -462,14 +463,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStart(Start $start)
+    public function withStart(Start $start): self
     {
         $c = clone $this;
         $c->mockQuery['start'] = $start->toInteger();
         return $c;
     }
 
-    public function withLimit(Limit $limit)
+    public function withLimit(Limit $limit): self
     {
         $c = clone $this;
         $c->mockQuery['limit'] = $limit->toInteger();

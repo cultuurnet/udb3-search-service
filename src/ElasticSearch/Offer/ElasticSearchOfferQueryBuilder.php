@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Country;
+use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
@@ -29,6 +30,7 @@ use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTimeImmutable;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
@@ -40,21 +42,14 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
-    /**
-     * @var \CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface
-     */
-    private $predefinedQueryStringFields;
+    private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
      * Size to be used for term aggregations.
      *
-     * @var int|null
-     *
-     * @codingStandardsIgnoreStart
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
-     * @codingStandardsIgnoreEnd
      */
-    private $aggregationSize;
+    private ?int $aggregationSize;
 
     public function __construct(int $aggregationSize = null)
     {
@@ -89,9 +84,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('organizer.id', $organizerCdbId->toString());
     }
 
-    public function withMainLanguageFilter(Language $mainLanguages): self
+    public function withMainLanguageFilter(Language $mainLanguage): self
     {
-        return $this->withMatchQuery('mainLanguage', $mainLanguages->getCode());
+        return $this->withMatchQuery('mainLanguage', $mainLanguage->getCode());
     }
 
     public function withLanguageFilter(Language $language): self
@@ -105,8 +100,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withAvailableRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
@@ -117,7 +112,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'workflowStatus',
             array_map(
-                function (WorkflowStatus $workflowStatus) {
+                static function (WorkflowStatus $workflowStatus) {
                     return $workflowStatus->toString();
                 },
                 $workflowStatuses
@@ -126,16 +121,16 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withCreatedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('created', $from, $to);
         return $this->withDateRangeQuery('created', $from, $to);
     }
 
     public function withModifiedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('modified', $from, $to);
         return $this->withDateRangeQuery('modified', $from, $to);
@@ -147,8 +142,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     }
 
     public function withDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ): self {
         $this->guardDateRange('date', $from, $to);
         return $this->withDateRangeQuery('dateRange', $from, $to);
@@ -165,7 +160,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'status',
             array_map(
-                function (Status $status) {
+                static function (Status $status) {
                     return $status->toString();
                 },
                 $statuses
@@ -215,7 +210,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $queries[] = $this->createMultiValueMatchQuery(
                 'subEvent.status',
                 array_map(
-                    function (Status $status) {
+                    static function (Status $status) {
                         return $status->toString();
                     },
                     $statuses
@@ -238,7 +233,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'calendarType',
             array_map(
-                function (CalendarType $calendarType) {
+                static function (CalendarType $calendarType) {
                     return $calendarType->toString();
                 },
                 $calendarTypes
@@ -339,9 +334,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('typicalAgeRange', $minimum, $maximum);
     }
 
-    public function withAllAgesFilter($include): self
+    public function withAllAgesFilter(bool $include): self
     {
-        return $this->withTermQuery('allAges', (bool) $include);
+        return $this->withTermQuery('allAges', $include);
     }
 
     public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null): self
@@ -354,7 +349,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('price', $minimum, $maximum);
     }
 
-    public function withMediaObjectsFilter($include): self
+    public function withMediaObjectsFilter(bool $include): self
     {
         $min = $include ? 1 : null;
         $max = $include ? null : 0;
@@ -362,7 +357,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('mediaObjectsCount', $min, $max);
     }
 
-    public function withVideosFilter(bool $include): OfferQueryBuilderInterface
+    public function withVideosFilter(bool $include): self
     {
         $min = $include ? 1 : null;
         $max = $include ? null : 0;
@@ -370,7 +365,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('videosCount', $min, $max);
     }
 
-    public function withUiTPASFilter($include): self
+    public function withUiTPASFilter(bool $include): self
     {
         $uitpasQuery = 'organizer.labels:(UiTPAS* OR Paspartoe)';
 
@@ -418,7 +413,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withDuplicateFilter(bool $isDuplicate): self
     {
-        return $this->withTermQuery('isDuplicate', (bool) $isDuplicate);
+        return $this->withTermQuery('isDuplicate', $isDuplicate);
     }
 
     public function withProductionIdFilter(string $productionId): self
