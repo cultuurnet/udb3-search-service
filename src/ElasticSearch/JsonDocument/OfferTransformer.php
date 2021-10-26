@@ -32,10 +32,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class OfferTransformer implements JsonTransformer
 {
-    /**
-     * @var CompositeJsonTransformer
-     */
-    private $compositeTransformer;
+    private CompositeJsonTransformer $compositeTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,
