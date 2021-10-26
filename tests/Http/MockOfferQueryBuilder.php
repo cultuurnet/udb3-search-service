@@ -34,7 +34,7 @@ use DateTimeImmutable;
 
 final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 {
-    private $mockQuery = [];
+    private array $mockQuery = [];
 
     public function __construct()
     {

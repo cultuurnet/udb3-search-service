@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\Country;
+use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
@@ -41,21 +42,14 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
-    /**
-     * @var \CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface
-     */
-    private $predefinedQueryStringFields;
+    private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
      * Size to be used for term aggregations.
      *
-     * @var int|null
-     *
-     * @codingStandardsIgnoreStart
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
-     * @codingStandardsIgnoreEnd
      */
-    private $aggregationSize;
+    private ?int $aggregationSize;
 
     public function __construct(int $aggregationSize = null)
     {
