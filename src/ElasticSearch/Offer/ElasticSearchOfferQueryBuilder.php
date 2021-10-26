@@ -357,7 +357,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withRangeQuery('mediaObjectsCount', $min, $max);
     }
 
-    public function withVideosFilter(bool $include): OfferQueryBuilderInterface
+    public function withVideosFilter(bool $include): self
     {
         $min = $include ? 1 : null;
         $max = $include ? null : 0;
