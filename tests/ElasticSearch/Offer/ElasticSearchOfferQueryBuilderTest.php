@@ -2115,6 +2115,84 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_with_an_inclusive_videos_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withVideosFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'videosCount' => [
+                                    'gte' => 1,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_an_exclusive_videos_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withVideosFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'videosCount' => [
+                                    'lte' => 0,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_inclusive_uitpas_filter(): void
     {
         /* @var ElasticSearchOfferQueryBuilder $builder */

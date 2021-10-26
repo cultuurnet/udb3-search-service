@@ -163,6 +163,7 @@ final class OfferSearchControllerTest extends TestCase
                 'maxPrice' => 1.99,
                 'audienceType' => 'members',
                 'hasMediaObjects' => 'true',
+                'hasVideos' => 'true',
                 'labels' => ['foo', 'bar'],
                 'locationLabels' => ['lorem'],
                 'organizerLabels' => ['ipsum'],
@@ -274,6 +275,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withAudienceTypeFilter(new AudienceType('members'))
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
             ->withMediaObjectsFilter(true)
+            ->withVideosFilter(true)
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(

@@ -218,6 +218,11 @@ final class OfferSearchController
             $queryBuilder = $queryBuilder->withMediaObjectsFilter($includeMediaObjects);
         }
 
+        $includeVideos = $parameterBag->getBooleanFromParameter('hasVideos');
+        if (!is_null($includeVideos)) {
+            $queryBuilder = $queryBuilder->withVideosFilter($includeVideos);
+        }
+
         $includeUiTPAS = $parameterBag->getBooleanFromParameter('uitpas');
         if (!is_null($includeUiTPAS)) {
             $queryBuilder = $queryBuilder->withUiTPASFilter($includeUiTPAS);
