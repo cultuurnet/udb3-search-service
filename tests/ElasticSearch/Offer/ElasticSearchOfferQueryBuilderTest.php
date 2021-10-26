@@ -38,7 +38,7 @@ use InvalidArgumentException;
 
 final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
-    protected function getPredefinedQueryStringFields(Language ...$languages)
+    protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         if (empty($languages)) {
             $languages = [
