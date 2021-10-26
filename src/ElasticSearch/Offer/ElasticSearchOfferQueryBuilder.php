@@ -84,9 +84,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('organizer.id', $organizerCdbId->toString());
     }
 
-    public function withMainLanguageFilter(Language $mainLanguages): self
+    public function withMainLanguageFilter(Language $mainLanguage): self
     {
-        return $this->withMatchQuery('mainLanguage', $mainLanguages->getCode());
+        return $this->withMatchQuery('mainLanguage', $mainLanguage->getCode());
     }
 
     public function withLanguageFilter(Language $language): self
