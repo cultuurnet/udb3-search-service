@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use DateTime;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -172,7 +173,7 @@ final class EventTransformerTest extends TestCase
     {
         Chronos::setTestNow(
             Chronos::createFromFormat(
-                DateTime::ATOM,
+                DateTimeInterface::ATOM,
                 '2017-05-09T15:11:32+02:00'
             )
         );
