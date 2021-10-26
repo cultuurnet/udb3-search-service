@@ -258,7 +258,7 @@ final class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $calendarSummaries = array_map(
-            function (string $parameter) {
+            static function (string $parameter) {
                 return CalendarSummaryFormat::fromCombinedParameter($parameter);
             },
             $parameterBag->getArrayFromParameter('embedCalendarSummaries')
