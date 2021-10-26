@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use DateTimeImmutable;
 
 /**
  * Multiple filters are combined using AND.
@@ -23,269 +24,134 @@ use CultuurNet\UDB3\Search\SortOrder;
  */
 interface OfferQueryBuilderInterface extends QueryBuilder
 {
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withCdbIdFilter(Cdbid $cdbid);
+    public function withCdbIdFilter(Cdbid $cdbid): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLocationCdbIdFilter(Cdbid $locationCdbid);
+    public function withLocationCdbIdFilter(Cdbid $locationCdbid): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId);
+    public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withMainLanguageFilter(Language $mainLanguage);
+    public function withMainLanguageFilter(Language $mainLanguage): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLanguageFilter(Language $language);
+    public function withLanguageFilter(Language $language): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withCompletedLanguageFilter(Language $language);
+    public function withCompletedLanguageFilter(Language $language): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withAvailableRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
-    );
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
+    ): OfferQueryBuilderInterface;
 
-    /**
-     * @param WorkflowStatus ...$workflowStatuses
-     * @return OfferQueryBuilderInterface
-     */
-    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses);
+    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withCreatedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
-    );
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
+    ): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withModifiedRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
-    );
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
+    ): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withCreatorFilter(Creator $creator);
+    public function withCreatorFilter(Creator $creator): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withDateRangeFilter(
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
-    );
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
+    ): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withLocalTimeRangeFilter(
         int $localTimeFrom = null,
         int $localTimeTo = null
-    );
+    ): OfferQueryBuilderInterface;
 
-    /**
-     * @param Status ...$statuses
-     * @return static
-     */
-    public function withStatusFilter(Status ...$statuses);
+    public function withStatusFilter(Status ...$statuses): OfferQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withBookingAvailabilityFilter(string $bookingAvailability);
+    public function withBookingAvailabilityFilter(string $bookingAvailability): OfferQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters);
+    public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): OfferQueryBuilderInterface;
 
-    /**
-     * @param CalendarType ...$calendarTypes
-     * @return OfferQueryBuilderInterface
-     */
-    public function withCalendarTypeFilter(CalendarType ...$calendarTypes);
+    public function withCalendarTypeFilter(CalendarType ...$calendarTypes): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withPostalCodeFilter(PostalCode $postalCode);
+    public function withPostalCodeFilter(PostalCode $postalCode): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withAddressCountryFilter(Country $country);
+    public function withAddressCountryFilter(Country $country): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
     public function withRegionFilter(
         string $regionIndexName,
         string $regionDocumentType,
         RegionId $regionId
-    );
+    ): OfferQueryBuilderInterface;
+
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistance): OfferQueryBuilderInterface;
+
+    public function withGeoBoundsFilter(GeoBoundsParameters $geoBounds): OfferQueryBuilderInterface;
+
+    public function withAudienceTypeFilter(AudienceType $audienceType): OfferQueryBuilderInterface;
+
+    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): OfferQueryBuilderInterface;
 
     /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistance);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withGeoBoundsFilter(GeoBoundsParameters $geoBounds);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withAudienceTypeFilter(AudienceType $audienceType);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null);
-
-    /**
-     * @param bool $include
      *   When set to true ONLY offers for all age ranges will be included.
      *   When set to false offers for all age ranges will be excluded.
-     * @return OfferQueryBuilderInterface
      */
-    public function withAllAgesFilter($include);
+    public function withAllAgesFilter($include): OfferQueryBuilderInterface;
+
+    public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null): OfferQueryBuilderInterface;
 
     /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withPriceRangeFilter(Price $minimum = null, Price $maximum = null);
-
-    /**
-     * @param bool $include
      *   When set to true only offers with at least one media object will be
      *   included. When set to false offers with media objects will be excluded.
-     * @return OfferQueryBuilderInterface
      */
-    public function withMediaObjectsFilter($include);
+    public function withMediaObjectsFilter($include): OfferQueryBuilderInterface;
 
     /**
-     * @param bool $include
      *   When set to true only offers with at least one video will be
      *   included. When set to false offers with videos will be excluded.
      */
     public function withVideosFilter(bool $include): OfferQueryBuilderInterface;
 
     /**
-     * @param bool $include
      *   When set to true only UiTPAS offers will be included. When set to
      *   false UiTPAS offers will be excluded.
-     * @return OfferQueryBuilderInterface
      */
-    public function withUiTPASFilter($include);
+    public function withUiTPASFilter($include): OfferQueryBuilderInterface;
+
+    public function withTermIdFilter(TermId $termId): OfferQueryBuilderInterface;
+
+    public function withTermLabelFilter(TermLabel $termLabel): OfferQueryBuilderInterface;
+
+    public function withLocationTermIdFilter(TermId $locationTermId): OfferQueryBuilderInterface;
+
+    public function withLocationTermLabelFilter(TermLabel $locationTermLabel): OfferQueryBuilderInterface;
+
+    public function withLabelFilter(LabelName $label): OfferQueryBuilderInterface;
+
+    public function withLocationLabelFilter(LabelName $locationLabel): OfferQueryBuilderInterface;
+
+    public function withOrganizerLabelFilter(LabelName $organizerLabel): OfferQueryBuilderInterface;
 
     /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withTermIdFilter(TermId $termId);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withTermLabelFilter(TermLabel $termLabel);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLocationTermIdFilter(TermId $locationTermId);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLocationTermLabelFilter(TermLabel $locationTermLabel);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLabelFilter(LabelName $label);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withLocationLabelFilter(LabelName $locationLabel);
-
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withOrganizerLabelFilter(LabelName $organizerLabel);
-
-    /**
-     * @param bool $isDuplicate
      *   When set to true only offers marked as duplicate will be included.
      *   When set to false only canonical offers will be included.
-     * @return OfferQueryBuilderInterface
      */
-    public function withDuplicateFilter(bool $isDuplicate);
+    public function withDuplicateFilter(bool $isDuplicate): OfferQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withProductionIdFilter(string $productionId);
+    public function withProductionIdFilter(string $productionId): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withFacet(FacetName $facetName);
+    public function withFacet(FacetName $facetName): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withSortByScore(SortOrder $sortOrder);
+    public function withSortByScore(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withSortByAvailableTo(SortOrder $sortOrder);
+    public function withSortByAvailableTo(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withSortByCreated(SortOrder $sortOrder);
+    public function withSortByCreated(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withSortByModified(SortOrder $sortOrder);
+    public function withSortByModified(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return OfferQueryBuilderInterface
-     */
-    public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder);
+    public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withSortByPopularity(SortOrder $sortOrder);
+    public function withSortByPopularity(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withGroupByProductionId();
+    public function withGroupByProductionId(): OfferQueryBuilderInterface;
 }
