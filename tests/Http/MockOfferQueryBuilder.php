@@ -301,6 +301,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withVideosFilter(bool $include): OfferQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['videos'] = (bool) $include;
+        return $c;
+    }
+
     public function withUiTPASFilter($include)
     {
         $c = clone $this;
