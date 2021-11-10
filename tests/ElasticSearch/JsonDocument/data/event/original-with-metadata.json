@@ -32,6 +32,16 @@
     "created": "2017-04-22T13:33:37+02:00",
     "creator": "Jane Doe",
     "metadata": {
-        "popularity": 547871
+        "popularity": 547871,
+        "recommendationFor": [
+            {
+                "event": "http:\/\/udb-silex.dev\/event\/45dd6132-4d93-4f4a-ac07-1229fca74fd1",
+                "score": 0.25
+            },
+            {
+                "event": "http:\/\/udb-silex.dev\/event\/84148be4-b850-4cc7-8cb1-e1ba84ec0849",
+                "score": 0.13
+            }
+        ]
     }
 }
