@@ -140,6 +140,12 @@ final class OfferSearchController
             );
         }
 
+        if ($request->hasQueryParam('recommendationFor')) {
+            $queryBuilder = $queryBuilder->withRecommendationForFilter(
+                new Cdbid($request->getQueryParam('recommendationFor'))
+            );
+        }
+
         $regionIds = $this->getRegionIdsFromQuery($parameterBag, 'regions');
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(

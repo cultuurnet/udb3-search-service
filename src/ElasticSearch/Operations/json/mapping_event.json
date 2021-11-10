@@ -493,6 +493,19 @@
             "properties": {
                 "popularity": {
                     "type": "integer"
+                },
+                "recommendationFor" : {
+                    "type": "object",
+                    "properties": {
+                        "event": {
+                            "type": "string",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "score": {
+                            "type": "float"
+                        }
+                    }
                 }
             }
         },

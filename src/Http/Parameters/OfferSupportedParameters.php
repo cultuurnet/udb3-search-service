@@ -54,6 +54,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'locationTermLabels',
             'organizerTermIds',
             'organizerTermLabels',
+            'recommendationFor',
             'facets',
             'creator',
             'sort',

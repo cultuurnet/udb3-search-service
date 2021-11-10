@@ -14,6 +14,22 @@ final class MetadataTransformer implements JsonTransformer
             'popularity' => $from['metadata']['popularity'] ?? 0,
         ];
 
+        if (isset($from['metadata']['recommendationFor'])) {
+            $draft['metadata']['recommendationFor'] =
+                $this->transformRecommendationFor($from['metadata']['recommendationFor']);
+        }
+
         return $draft;
+    }
+
+    private function transformRecommendationFor(array $recommendationFor): array
+    {
+        return array_map(
+            fn ($recommendation) => [
+                'event' => basename($recommendation['event']),
+                'score' => $recommendation['score'],
+            ],
+            $recommendationFor
+        );
     }
 }

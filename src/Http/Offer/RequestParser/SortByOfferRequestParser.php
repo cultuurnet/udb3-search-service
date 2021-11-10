@@ -50,6 +50,9 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             'popularity' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByPopularity($sortOrder);
             },
+            'recommendationScore' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+                return $queryBuilder->withSortByRecommendationScore($sortOrder);
+            },
         ];
 
         foreach ($sorts as $field => $order) {

@@ -3465,4 +3465,45 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_recommendation_for_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withRecommendationForFilter(
+                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'metadata.recommendationFor.event' => [
+                                    'query' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
 }
