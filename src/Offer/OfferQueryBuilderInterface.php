@@ -153,5 +153,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withSortByPopularity(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
+    public function withSortByRecommendationScore(SortOrder $sortOrder): OfferQueryBuilderInterface;
+
     public function withGroupByProductionId(): OfferQueryBuilderInterface;
 }
