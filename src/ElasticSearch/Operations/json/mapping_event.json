@@ -503,7 +503,7 @@
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "score": {
-                            "type": "integer"
+                            "type": "float"
                         }
                     }
                 }
