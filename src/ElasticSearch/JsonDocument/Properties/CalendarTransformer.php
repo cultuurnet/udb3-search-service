@@ -542,16 +542,29 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         if ($startDate) {
-            return [(object) ['gte' => $startTime]];
+            return [
+                (object) [
+                    'gte' => $startTime,
+                    'lte' => null,
+                ],
+            ];
         }
 
         if ($endDate) {
-            return [(object) ['lte' => $endTime]];
+            return [
+                (object) [
+                    'gte' => null,
+                    'lte' => $endTime,
+                ],
+            ];
         }
 
-        // We need to make sure we send an object like {} to Elasticsearch if there's no start or end time.
-        // [[]] would be converted to [[]] in JSON, while we want [{}].
-        return [new stdClass()];
+        return [
+            (object) [
+                'gte' => null,
+                'lte' => null,
+            ],
+        ];
     }
 
     /**
