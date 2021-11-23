@@ -10,7 +10,10 @@
         }
     ],
     "localTimeRange": [
-        {}
+        {
+            "gte": null,
+            "lte": null
+        }
     ],
     "status": "Available",
     "bookingAvailability": "Available",
@@ -20,7 +23,10 @@
                 "gte": null,
                 "lte": null
             },
-            "localTimeRange": {},
+            "localTimeRange": {
+                "gte": null,
+                "lte": null
+            },
             "status": "Available",
             "bookingAvailability": "Available"
         }
