@@ -39,6 +39,7 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
+use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -502,7 +503,21 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByRecommendationScore(Cdbid $recommendationFor, SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+
+        $fieldSort->setNestedFilter(
+            new TermQuery(
+                'metadata.recommendationFor.event',
+                $recommendationFor->toString()
+            )
+        );
+
+        $fieldSort->setParameters(['nested_path' => 'metadata.recommendationFor']);
+
+        $c = $this->getClone();
+        $c->search->addSort($fieldSort);
+
+        return $c;
     }
 
     public function withGroupByProductionId(): self

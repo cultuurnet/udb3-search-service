@@ -3248,7 +3248,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             )
             ->withSortByAvailableTo(SortOrder::asc())
             ->withSortByScore(SortOrder::desc())
-            ->withSortByPopularity(SortOrder::desc());
+            ->withSortByPopularity(SortOrder::desc())
+            ->withSortByRecommendationScore(new Cdbid('6f11ca64-0b8b-45e8-8a99-9673f06935cc'), SortOrder::asc());
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -3282,6 +3283,17 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 [
                     'metadata.popularity' => [
                         'order' => 'desc',
+                    ],
+                ],
+                [
+                    'metadata.recommendationFor.score' => [
+                        'order' => 'asc',
+                        'nested_path' => 'metadata.recommendationFor',
+                        'nested_filter' => [
+                            'term' => [
+                                'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                            ],
+                        ],
                     ],
                 ],
             ],
