@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\MissingParameter;
-use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -58,7 +57,7 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
                         'Required "recommendationFor" parameter missing when sorting by recommendation score.'
                     );
                 }
-                return $queryBuilder->withSortByRecommendationScore(new Cdbid($recommendationFor), $sortOrder);
+                return $queryBuilder->withSortByRecommendationScore($recommendationFor, $sortOrder);
             },
         ];
 

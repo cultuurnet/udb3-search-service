@@ -3249,7 +3249,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByAvailableTo(SortOrder::asc())
             ->withSortByScore(SortOrder::desc())
             ->withSortByPopularity(SortOrder::desc())
-            ->withSortByRecommendationScore(new Cdbid('6f11ca64-0b8b-45e8-8a99-9673f06935cc'), SortOrder::asc());
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],

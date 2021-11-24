@@ -246,7 +246,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withSortByCreated(SortOrder::asc())
             ->withSortByModified(SortOrder::desc())
             ->withSortByPopularity(SortOrder::desc())
-            ->withSortByRecommendationScore(new Cdbid('be4f35c4-a093-4c85-8c9b-0afc16336381'), SortOrder::desc())
+            ->withSortByRecommendationScore('be4f35c4-a093-4c85-8c9b-0afc16336381', SortOrder::desc())
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
             )
