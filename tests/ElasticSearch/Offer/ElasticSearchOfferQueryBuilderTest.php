@@ -3497,10 +3497,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                     'bool' => [
                                         'filter' => [
                                             [
-                                                'match' => [
-                                                    'metadata.recommendationFor.event' => [
-                                                        'query' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
-                                                    ],
+                                                'term' => [
+                                                    'metadata.recommendationFor.event' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
                                                 ],
                                             ],
                                         ],

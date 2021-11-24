@@ -38,6 +38,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -425,7 +426,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         return $this->withBooleanFilterQueryOnNestedObject(
             'metadata.recommendationFor',
-            new MatchQuery('metadata.recommendationFor.event', $eventId->toString())
+            new TermQuery('metadata.recommendationFor.event', $eventId->toString())
         );
     }
 
