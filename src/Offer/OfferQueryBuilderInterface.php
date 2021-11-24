@@ -139,7 +139,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withProductionIdFilter(string $productionId): OfferQueryBuilderInterface;
 
-    public function withRecommendationForFilter(Cdbid $eventId): OfferQueryBuilderInterface;
+    public function withRecommendationForFilter(string $eventId): OfferQueryBuilderInterface;
 
     public function withFacet(FacetName $facetName): OfferQueryBuilderInterface;
 

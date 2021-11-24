@@ -379,10 +379,10 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withRecommendationForFilter(Cdbid $eventId): self
+    public function withRecommendationForFilter(string $eventId): self
     {
         $c = clone $this;
-        $c->mockQuery['recommendationFor'] = $eventId->toString();
+        $c->mockQuery['recommendationFor'] = $eventId;
         return $c;
     }
 

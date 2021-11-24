@@ -423,11 +423,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('production.id', $productionId);
     }
 
-    public function withRecommendationForFilter(Cdbid $eventId): self
+    public function withRecommendationForFilter(string $eventId): self
     {
         return $this->withBooleanFilterQueryOnNestedObject(
             'metadata.recommendationFor',
-            new TermQuery('metadata.recommendationFor.event', $eventId->toString())
+            new TermQuery('metadata.recommendationFor.event', $eventId)
         );
     }
 

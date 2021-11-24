@@ -3486,9 +3486,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withRecommendationForFilter(
-                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
-            );
+            ->withRecommendationForFilter('652ab95e-fdff-41ce-8894-1b29dce0d230');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
