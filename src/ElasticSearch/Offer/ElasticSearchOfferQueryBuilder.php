@@ -423,7 +423,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withRecommendationForFilter(Cdbid $eventId): self
     {
-        return $this->withMatchQuery('metadata.recommendationFor.event', $eventId->toString());
+        return $this->withBooleanFilterQueryOnNestedObject(
+            'metadata.recommendationFor',
+            new MatchQuery('metadata.recommendationFor.event', $eventId->toString())
+        );
     }
 
     public function withFacet(FacetName $facetName): self
