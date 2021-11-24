@@ -437,7 +437,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withSortByRecommendationScore(SortOrder $sortOrder): self
+    public function withSortByRecommendationScore(Cdbid $recommendationFor, SortOrder $sortOrder): self
     {
         $c = clone $this;
         $c->mockQuery['sort']['recommendationScore'] = $sortOrder->toString();

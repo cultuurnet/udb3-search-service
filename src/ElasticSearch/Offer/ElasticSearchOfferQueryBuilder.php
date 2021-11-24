@@ -496,7 +496,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
     }
 
-    public function withSortByRecommendationScore(SortOrder $sortOrder): self
+    public function withSortByRecommendationScore(Cdbid $recommendationFor, SortOrder $sortOrder): self
     {
         return $this->withFieldSort('metadata.recommendationFor.score', $sortOrder->toString());
     }
