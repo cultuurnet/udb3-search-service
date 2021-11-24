@@ -422,15 +422,10 @@ final class CalendarTransformer implements JsonTransformer
      */
     private function convertSubEventToDateRange(array $subEvent): stdClass
     {
-        // Convert to an object so that if both gte and lte are left out (because there's no startDate and no endDate,
-        // like for permanent events, then we need to make sure we send an object like {} to Elasticsearch. An empty
-        // PHP array would get converted to [] in JSON.
-        return (object) array_filter(
-            [
-                'gte' => $subEvent['startDate'] ?? null,
-                'lte' => $subEvent['endDate'] ?? null,
-            ]
-        );
+        return (object) [
+            'gte' => $subEvent['startDate'] ?? null,
+            'lte' => $subEvent['endDate'] ?? null,
+        ];
     }
 
     /**
@@ -547,16 +542,29 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         if ($startDate) {
-            return [(object) ['gte' => $startTime]];
+            return [
+                (object) [
+                    'gte' => $startTime,
+                    'lte' => null,
+                ],
+            ];
         }
 
         if ($endDate) {
-            return [(object) ['lte' => $endTime]];
+            return [
+                (object) [
+                    'gte' => null,
+                    'lte' => $endTime,
+                ],
+            ];
         }
 
-        // We need to make sure we send an object like {} to Elasticsearch if there's no start or end time.
-        // [[]] would be converted to [[]] in JSON, while we want [{}].
-        return [new stdClass()];
+        return [
+            (object) [
+                'gte' => null,
+                'lte' => null,
+            ],
+        ];
     }
 
     /**

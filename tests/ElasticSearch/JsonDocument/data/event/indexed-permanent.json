@@ -4,17 +4,29 @@
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "permanent",
     "dateRange": [
-        {}
+        {
+            "gte": null,
+            "lte": null
+        }
     ],
     "localTimeRange": [
-        {}
+        {
+            "gte": null,
+            "lte": null
+        }
     ],
     "status": "Available",
     "bookingAvailability": "Available",
     "subEvent": [
         {
-            "dateRange": {},
-            "localTimeRange": {},
+            "dateRange": {
+                "gte": null,
+                "lte": null
+            },
+            "localTimeRange": {
+                "gte": null,
+                "lte": null
+            },
             "status": "Available",
             "bookingAvailability": "Available"
         }
