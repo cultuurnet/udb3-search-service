@@ -191,6 +191,7 @@ final class OfferSearchControllerTest extends TestCase
                 'creator' => 'Jane Doe',
                 'isDuplicate' => false,
                 'productionId' => '5df0d426-84b3-4d2b-a7fc-e51270d84643',
+                'recommendationFor' => 'be4f35c4-a093-4c85-8c9b-0afc16336381',
                 'sort' => [
                     'distance' => 'asc',
                     'availableTo' => 'asc',
@@ -311,6 +312,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withOrganizerLabelFilter(new LabelName('ipsum'))
             ->withDuplicateFilter(false)
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
+            ->withRecommendationForFilter(new Cdbid('be4f35c4-a093-4c85-8c9b-0afc16336381'))
             ->withFacet(FacetName::regions())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
