@@ -1050,6 +1050,25 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_exception_for_sort_order_recommendation_score_and_missing_recommendation_for(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'sort' => [
+                    'recommendationScore' => 'asc',
+                ],
+            ]
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Required "recommendationFor" parameter missing when sorting by recommendation score.');
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_exception_for_an_unknown_status(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(['status' => 'Available,Foo']);
