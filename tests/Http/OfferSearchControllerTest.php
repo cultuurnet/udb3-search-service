@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
@@ -1041,7 +1042,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingParameter::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when sorting by distance.');
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -1060,7 +1061,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingParameter::class);
         $this->expectExceptionMessage('Required "recommendationFor" parameter missing when sorting by recommendation score.');
 
         $this->controller->__invoke(new ApiRequest($request));
