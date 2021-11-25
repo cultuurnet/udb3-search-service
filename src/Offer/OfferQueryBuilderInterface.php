@@ -139,7 +139,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withProductionIdFilter(string $productionId): OfferQueryBuilderInterface;
 
-    public function withRecommendationForFilter(Cdbid $eventId): OfferQueryBuilderInterface;
+    public function withRecommendationForFilter(string $eventId): OfferQueryBuilderInterface;
 
     public function withFacet(FacetName $facetName): OfferQueryBuilderInterface;
 
@@ -155,7 +155,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withSortByPopularity(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
-    public function withSortByRecommendationScore(SortOrder $sortOrder): OfferQueryBuilderInterface;
+    public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): OfferQueryBuilderInterface;
 
     public function withGroupByProductionId(): OfferQueryBuilderInterface;
 }

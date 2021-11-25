@@ -50,8 +50,14 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             'popularity' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByPopularity($sortOrder);
             },
-            'recommendationScore' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
-                return $queryBuilder->withSortByRecommendationScore($sortOrder);
+            'recommendationScore' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
+                $recommendationFor = $request->getQueryParam('recommendationFor', false);
+                if (!$recommendationFor) {
+                    throw new MissingParameter(
+                        'Required "recommendationFor" parameter missing when sorting by recommendation score.'
+                    );
+                }
+                return $queryBuilder->withSortByRecommendationScore($recommendationFor, $sortOrder);
             },
         ];
 

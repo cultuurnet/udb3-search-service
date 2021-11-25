@@ -3248,7 +3248,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             )
             ->withSortByAvailableTo(SortOrder::asc())
             ->withSortByScore(SortOrder::desc())
-            ->withSortByPopularity(SortOrder::desc());
+            ->withSortByPopularity(SortOrder::desc())
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -3282,6 +3283,17 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 [
                     'metadata.popularity' => [
                         'order' => 'desc',
+                    ],
+                ],
+                [
+                    'metadata.recommendationFor.score' => [
+                        'order' => 'asc',
+                        'nested_path' => 'metadata.recommendationFor',
+                        'nested_filter' => [
+                            'term' => [
+                                'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -3474,9 +3486,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
-            ->withRecommendationForFilter(
-                new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
-            );
+            ->withRecommendationForFilter('652ab95e-fdff-41ce-8894-1b29dce0d230');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -3491,9 +3501,18 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     ],
                     'filter' => [
                         [
-                            'match' => [
-                                'metadata.recommendationFor.event' => [
-                                    'query' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
+                            'nested' => [
+                                'path' => 'metadata.recommendationFor',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'term' => [
+                                                    'metadata.recommendationFor.event' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],

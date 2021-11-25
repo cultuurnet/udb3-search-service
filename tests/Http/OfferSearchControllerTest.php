@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
@@ -191,6 +192,7 @@ final class OfferSearchControllerTest extends TestCase
                 'creator' => 'Jane Doe',
                 'isDuplicate' => false,
                 'productionId' => '5df0d426-84b3-4d2b-a7fc-e51270d84643',
+                'recommendationFor' => 'be4f35c4-a093-4c85-8c9b-0afc16336381',
                 'sort' => [
                     'distance' => 'asc',
                     'availableTo' => 'asc',
@@ -245,7 +247,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withSortByCreated(SortOrder::asc())
             ->withSortByModified(SortOrder::desc())
             ->withSortByPopularity(SortOrder::desc())
-            ->withSortByRecommendationScore(SortOrder::desc())
+            ->withSortByRecommendationScore('be4f35c4-a093-4c85-8c9b-0afc16336381', SortOrder::desc())
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
             )
@@ -311,6 +313,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withOrganizerLabelFilter(new LabelName('ipsum'))
             ->withDuplicateFilter(false)
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
+            ->withRecommendationForFilter('be4f35c4-a093-4c85-8c9b-0afc16336381')
             ->withFacet(FacetName::regions())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
@@ -1039,8 +1042,27 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(MissingParameter::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when sorting by distance.');
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_for_sort_order_recommendation_score_and_missing_recommendation_for(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'sort' => [
+                    'recommendationScore' => 'asc',
+                ],
+            ]
+        );
+
+        $this->expectException(MissingParameter::class);
+        $this->expectExceptionMessage('Required "recommendationFor" parameter missing when sorting by recommendation score.');
 
         $this->controller->__invoke(new ApiRequest($request));
     }

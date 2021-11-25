@@ -38,6 +38,8 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
+use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -421,9 +423,12 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('production.id', $productionId);
     }
 
-    public function withRecommendationForFilter(Cdbid $eventId): self
+    public function withRecommendationForFilter(string $eventId): self
     {
-        return $this->withMatchQuery('metadata.recommendationFor.event', $eventId->toString());
+        return $this->withBooleanFilterQueryOnNestedObject(
+            'metadata.recommendationFor',
+            new TermQuery('metadata.recommendationFor.event', $eventId)
+        );
     }
 
     public function withFacet(FacetName $facetName): self
@@ -496,9 +501,23 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
     }
 
-    public function withSortByRecommendationScore(SortOrder $sortOrder): self
+    public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+
+        $fieldSort->setNestedFilter(
+            new TermQuery(
+                'metadata.recommendationFor.event',
+                $recommendationFor
+            )
+        );
+
+        $fieldSort->setParameters(['nested_path' => 'metadata.recommendationFor']);
+
+        $c = $this->getClone();
+        $c->search->addSort($fieldSort);
+
+        return $c;
     }
 
     public function withGroupByProductionId(): self

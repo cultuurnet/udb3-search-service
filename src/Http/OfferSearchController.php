@@ -142,7 +142,7 @@ final class OfferSearchController
 
         if ($request->hasQueryParam('recommendationFor')) {
             $queryBuilder = $queryBuilder->withRecommendationForFilter(
-                new Cdbid($request->getQueryParam('recommendationFor'))
+                $request->getQueryParam('recommendationFor')
             );
         }
 

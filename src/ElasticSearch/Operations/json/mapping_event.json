@@ -495,7 +495,7 @@
                     "type": "integer"
                 },
                 "recommendationFor" : {
-                    "type": "object",
+                    "type": "nested",
                     "properties": {
                         "event": {
                             "type": "string",
