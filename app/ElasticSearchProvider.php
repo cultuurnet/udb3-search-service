@@ -14,7 +14,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
-        'offer_region_service',
+        'region_service',
         'elasticsearch_indexation_strategy',
     ];
 
@@ -46,7 +46,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
         );
 
         $this->add(
-            'offer_region_service',
+            'region_service',
             function () {
                 return new GeoShapeQueryRegionService(
                     $this->get(Client::class),

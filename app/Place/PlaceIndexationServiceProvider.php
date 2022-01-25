@@ -33,7 +33,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                             $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
-                        $this->get('offer_region_service')
+                        $this->get('region_service')
                     )
                 );
 
