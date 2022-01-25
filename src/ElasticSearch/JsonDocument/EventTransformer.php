@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransfo
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PerformersTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedLocationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedProductionTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
@@ -25,7 +25,7 @@ final class EventTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        OfferRegionServiceInterface $offerRegionService
+        RegionServiceInterface $offerRegionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(

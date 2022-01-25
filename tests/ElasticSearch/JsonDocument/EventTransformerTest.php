@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class EventTransformerTest extends TestCase
 {
     /**
-     * @var OfferRegionServiceInterface|MockObject
+     * @var RegionServiceInterface|MockObject
      */
     private $offerRegionService;
 
@@ -27,7 +27,7 @@ final class EventTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->offerRegionService = $this->createMock(OfferRegionServiceInterface::class);
+        $this->offerRegionService = $this->createMock(RegionServiceInterface::class);
 
         $this->simpleArrayLogger = new SimpleArrayLogger();
 
