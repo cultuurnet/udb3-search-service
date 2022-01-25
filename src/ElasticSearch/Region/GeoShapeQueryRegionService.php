@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 

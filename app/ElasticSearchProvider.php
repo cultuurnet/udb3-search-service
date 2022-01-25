@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\GeoShapeQueryRegionService;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use Elasticsearch\Client;
 use Elasticsearch\ClientBuilder;
 
