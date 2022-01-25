@@ -16,12 +16,11 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
      */
     private $client;
 
-
     private string $geoShapesIndexName;
 
     private GeoShapeQueryRegionService $regionService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
@@ -35,7 +34,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries()
+    public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries(): void
     {
         $this->client->expects($this->exactly(2))
             ->method('search')
