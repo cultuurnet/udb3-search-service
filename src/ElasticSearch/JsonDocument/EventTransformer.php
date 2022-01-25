@@ -18,15 +18,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class EventTransformer implements JsonTransformer
 {
-    /**
-     * @var CompositeJsonTransformer
-     */
-    private $compositeTransformer;
+    private CompositeJsonTransformer $compositeTransformer;
 
-    /**
-     * @var GeoInformationTransformer
-     */
-    private $geoInformationTransformer;
+    private GeoInformationTransformer $geoInformationTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,

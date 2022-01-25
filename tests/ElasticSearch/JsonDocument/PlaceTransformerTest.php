@@ -20,15 +20,9 @@ final class PlaceTransformerTest extends TestCase
      */
     private $offerRegionService;
 
-    /**
-     * @var SimpleArrayLogger
-     */
-    private $logger;
+    private SimpleArrayLogger $logger;
 
-    /**
-     * @var PlaceTransformer
-     */
-    private $transformer;
+    private PlaceTransformer $transformer;
 
     protected function setUp(): void
     {
