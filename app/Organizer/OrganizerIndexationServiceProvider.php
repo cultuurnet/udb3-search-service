@@ -32,7 +32,8 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                         new JsonTransformerPsrLogger(
                             $this->get('logger.amqp.udb3')
                         ),
-                        new PathEndIdUrlParser()
+                        new PathEndIdUrlParser(),
+                        $this->get('region_service')
                     )
                 );
 

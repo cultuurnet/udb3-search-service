@@ -5,31 +5,36 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
+use CultuurNet\UDB3\Search\Region\RegionId;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class OrganizerTransformerTest extends TestCase
 {
     /**
-     * @var SimpleArrayLogger
+     * @var RegionServiceInterface|MockObject
      */
-    private $logger;
+    private $regionService;
 
-    /**
-     * @var OrganizerTransformer
-     */
-    private $transformer;
+    private SimpleArrayLogger $logger;
+
+    private OrganizerTransformer $transformer;
 
     protected function setUp(): void
     {
+        $this->regionService = $this->createMock(RegionServiceInterface::class);
+
         $this->logger = new SimpleArrayLogger();
 
         $this->transformer = new OrganizerTransformer(
             new JsonTransformerPsrLogger(
                 $this->logger
             ),
-            new PathEndIdUrlParser()
+            new PathEndIdUrlParser(),
+            $this->regionService
         );
     }
 
@@ -111,6 +116,26 @@ final class OrganizerTransformerTest extends TestCase
         $this->transformer->transform($original);
 
         $this->assertEquals($expectedLogs, $this->logger->getLogs());
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_regions_if_there_are_any_matching(): void
+    {
+        $this->regionService->expects($this->once())
+            ->method('getRegionIds')
+            ->willReturn(
+                [
+                    new RegionId('prv-vlaams-brabant'),
+                    new RegionId('gem-leuven'),
+                ]
+            );
+
+        $this->transformAndAssert(
+            __DIR__ . '/data/organizer/original_with_geo.json',
+            __DIR__ . '/data/organizer/indexed_with_regions.json'
+        );
     }
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
