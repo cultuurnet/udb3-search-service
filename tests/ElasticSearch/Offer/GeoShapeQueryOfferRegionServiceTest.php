@@ -16,22 +16,17 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $geoShapesIndexName;
 
-    /**
-     * @var GeoShapeQueryOfferRegionService
-     */
-    private $offerRegionService;
+    private string $geoShapesIndexName;
+
+    private GeoShapeQueryOfferRegionService $regionService;
 
     protected function setUp()
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->offerRegionService = new GeoShapeQueryOfferRegionService(
+        $this->regionService = new GeoShapeQueryOfferRegionService(
             $this->client,
             $this->geoShapesIndexName
         );
@@ -128,7 +123,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
             new RegionId('gem-kortenaken'),
         ];
 
-        $actualRegionIds = $this->offerRegionService->getRegionIds(
+        $actualRegionIds = $this->regionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],
@@ -149,7 +144,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        $this->offerRegionService->getRegionIds(
+        $this->regionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],

@@ -25,7 +25,7 @@ final class EventTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        RegionServiceInterface $offerRegionService
+        RegionServiceInterface $regionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
@@ -43,7 +43,7 @@ final class EventTransformer implements JsonTransformer
             new MetadataTransformer()
         );
 
-        $this->geoInformationTransformer = new GeoInformationTransformer($offerRegionService);
+        $this->geoInformationTransformer = new GeoInformationTransformer($regionService);
     }
 
     public function transform(array $from, array $draft = []): array

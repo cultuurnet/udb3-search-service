@@ -10,11 +10,11 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 
 final class GeoInformationTransformer implements JsonTransformer
 {
-    private RegionServiceInterface $offerRegionService;
+    private RegionServiceInterface $regionService;
 
-    public function __construct(RegionServiceInterface $offerRegionService)
+    public function __construct(RegionServiceInterface $regionService)
     {
-        $this->offerRegionService = $offerRegionService;
+        $this->regionService = $regionService;
     }
 
     public function transform(array $from, array $draft = []): array
@@ -56,7 +56,7 @@ final class GeoInformationTransformer implements JsonTransformer
             return [];
         }
 
-        $regionIds = $this->offerRegionService->getRegionIds($json['geo']);
+        $regionIds = $this->regionService->getRegionIds($json['geo']);
 
         if (empty($regionIds)) {
             return [];

@@ -18,7 +18,7 @@ final class PlaceTransformerTest extends TestCase
     /**
      * @var RegionServiceInterface|MockObject
      */
-    private $offerRegionService;
+    private $regionService;
 
     private SimpleArrayLogger $logger;
 
@@ -26,7 +26,7 @@ final class PlaceTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->offerRegionService = $this->createMock(RegionServiceInterface::class);
+        $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->logger = new SimpleArrayLogger();
 
@@ -35,7 +35,7 @@ final class PlaceTransformerTest extends TestCase
                 $this->logger
             ),
             new PathEndIdUrlParser(),
-            $this->offerRegionService
+            $this->regionService
         );
     }
 
@@ -204,7 +204,7 @@ final class PlaceTransformerTest extends TestCase
      */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
-        $this->offerRegionService->expects($this->once())
+        $this->regionService->expects($this->once())
             ->method('getRegionIds')
             ->willReturn(
                 [

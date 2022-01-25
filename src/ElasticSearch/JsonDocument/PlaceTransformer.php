@@ -21,7 +21,7 @@ final class PlaceTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        RegionServiceInterface $offerRegionService
+        RegionServiceInterface $regionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
@@ -30,7 +30,7 @@ final class PlaceTransformer implements JsonTransformer
                 FallbackType::place()
             ),
             new AddressTransformer($logger, true),
-            new GeoInformationTransformer($offerRegionService),
+            new GeoInformationTransformer($regionService),
             new MetadataTransformer()
         );
     }

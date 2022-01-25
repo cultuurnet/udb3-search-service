@@ -19,7 +19,7 @@ final class EventTransformerTest extends TestCase
     /**
      * @var RegionServiceInterface|MockObject
      */
-    private $offerRegionService;
+    private $regionService;
 
     private SimpleArrayLogger $simpleArrayLogger;
 
@@ -27,7 +27,7 @@ final class EventTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->offerRegionService = $this->createMock(RegionServiceInterface::class);
+        $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->simpleArrayLogger = new SimpleArrayLogger();
 
@@ -36,7 +36,7 @@ final class EventTransformerTest extends TestCase
                 $this->simpleArrayLogger
             ),
             new PathEndIdUrlParser(),
-            $this->offerRegionService
+            $this->regionService
         );
     }
 
@@ -395,7 +395,7 @@ final class EventTransformerTest extends TestCase
      */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
-        $this->offerRegionService->expects($this->once())
+        $this->regionService->expects($this->once())
             ->method('getRegionIds')
             ->willReturn(
                 [
