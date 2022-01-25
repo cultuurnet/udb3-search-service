@@ -6,24 +6,14 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
-use CultuurNet\UDB3\Search\Offer\OfferType;
 use CultuurNet\UDB3\Search\Region\RegionId;
 
 final class GeoInformationTransformer implements JsonTransformer
 {
-    /**
-     * @var OfferType
-     */
-    private $offerType;
+    private OfferRegionServiceInterface $offerRegionService;
 
-    /**
-     * @var OfferRegionServiceInterface
-     */
-    private $offerRegionService;
-
-    public function __construct(OfferType $offerType, OfferRegionServiceInterface $offerRegionService)
+    public function __construct(OfferRegionServiceInterface $offerRegionService)
     {
-        $this->offerType = $offerType;
         $this->offerRegionService = $offerRegionService;
     }
 

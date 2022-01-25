@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\Offer\OfferType;
 
 final class EventTransformer implements JsonTransformer
 {
@@ -50,7 +49,7 @@ final class EventTransformer implements JsonTransformer
             new MetadataTransformer()
         );
 
-        $this->geoInformationTransformer = new GeoInformationTransformer(OfferType::event(), $offerRegionService);
+        $this->geoInformationTransformer = new GeoInformationTransformer($offerRegionService);
     }
 
     public function transform(array $from, array $draft = []): array

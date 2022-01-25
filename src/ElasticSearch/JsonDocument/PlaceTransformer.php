@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\Offer\OfferType;
 
 final class PlaceTransformer implements JsonTransformer
 {
@@ -34,7 +33,7 @@ final class PlaceTransformer implements JsonTransformer
                 FallbackType::place()
             ),
             new AddressTransformer($logger, true),
-            new GeoInformationTransformer(OfferType::place(), $offerRegionService),
+            new GeoInformationTransformer($offerRegionService),
             new MetadataTransformer()
         );
     }
