@@ -14,46 +14,21 @@ use CultuurNet\UDB3\Search\SortOrder;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
-    /**
-     * @return static
-     */
-    public function withAutoCompleteFilter(string $input);
+    public function withAutoCompleteFilter(string $input): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withWebsiteFilter(Url $url);
+    public function withWebsiteFilter(Url $url): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withDomainFilter(string $domain);
+    public function withDomainFilter(string $domain): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withPostalCodeFilter(PostalCode $postalCode);
+    public function withPostalCodeFilter(PostalCode $postalCode): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withAddressCountryFilter(Country $country);
+    public function withAddressCountryFilter(Country $country): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withCreatorFilter(Creator $creator);
+    public function withCreatorFilter(Creator $creator): OrganizerQueryBuilderInterface;
 
-    /**
-     * @return static
-     */
-    public function withLabelFilter(LabelName $label);
+    public function withLabelFilter(LabelName $label): OrganizerQueryBuilderInterface;
 
-    /**
-     * @param WorkflowStatus ...$workflowStatuses
-     * @return static
-     */
-    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses);
+    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OrganizerQueryBuilderInterface;
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 
