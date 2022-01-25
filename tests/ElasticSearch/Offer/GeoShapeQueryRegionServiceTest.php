@@ -9,7 +9,7 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GeoShapeQueryOfferRegionServiceTest extends TestCase
+final class GeoShapeQueryRegionServiceTest extends TestCase
 {
     /**
      * @var Client|MockObject
@@ -19,14 +19,14 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
 
     private string $geoShapesIndexName;
 
-    private GeoShapeQueryOfferRegionService $regionService;
+    private GeoShapeQueryRegionService $regionService;
 
     protected function setUp()
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->regionService = new GeoShapeQueryOfferRegionService(
+        $this->regionService = new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
         );

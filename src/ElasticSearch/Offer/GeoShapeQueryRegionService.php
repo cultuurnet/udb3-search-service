@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 
-final class GeoShapeQueryOfferRegionService implements RegionServiceInterface
+final class GeoShapeQueryRegionService implements RegionServiceInterface
 {
     /**
      * Amount of (matching) regions per page.
