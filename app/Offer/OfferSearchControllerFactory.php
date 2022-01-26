@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestPars
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
+use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 
 final class OfferSearchControllerFactory
@@ -73,7 +74,9 @@ final class OfferSearchControllerFactory
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
-            ->withParser(new DistanceOfferRequestParser(new ElasticSearchDistanceFactory()))
+            ->withParser(new DistanceOfferRequestParser(
+                new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
+            ))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GeoBoundsOfferRequestParser())
             ->withParser(new GroupByOfferRequestParser())
