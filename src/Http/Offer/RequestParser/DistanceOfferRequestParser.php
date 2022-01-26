@@ -4,47 +4,29 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Search\DistanceFactory;
-use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
-use CultuurNet\UDB3\Search\MissingParameter;
+use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
 final class DistanceOfferRequestParser implements OfferRequestParserInterface
 {
-    /**
-     * @var DistanceFactory
-     */
-    private $distanceFactory;
+    private GeoDistanceParametersFactory $geoDistanceParametersFactory;
 
-    public function __construct(DistanceFactory $distanceFactory)
+    public function __construct(GeoDistanceParametersFactory $geoDistanceParametersFactory)
     {
-        $this->distanceFactory = $distanceFactory;
+        $this->geoDistanceParametersFactory = $geoDistanceParametersFactory;
     }
 
     public function parse(
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $coordinates = $request->getQueryParam('coordinates', false);
-        $distance = $request->getQueryParam('distance', false);
+        $geoDistanceParameters = $this->geoDistanceParametersFactory->fromApiRequest($request);
 
-        if ($coordinates && !$distance) {
-            throw new MissingParameter('Required "distance" parameter missing when searching by coordinates.');
-        } elseif ($distance && !$coordinates) {
-            throw new MissingParameter('Required "coordinates" parameter missing when searching by distance.');
-        } elseif ($coordinates && $distance) {
-            $coordinates = Coordinates::fromLatLonString($coordinates);
-
-            $offerQueryBuilder = $offerQueryBuilder->withGeoDistanceFilter(
-                new GeoDistanceParameters(
-                    $coordinates,
-                    $this->distanceFactory->fromString($distance)
-                )
-            );
+        if ($geoDistanceParameters === null) {
+            return $offerQueryBuilder;
         }
 
-        return $offerQueryBuilder;
+        return $offerQueryBuilder->withGeoDistanceFilter($geoDistanceParameters);
     }
 }
