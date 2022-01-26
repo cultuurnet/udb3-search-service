@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\OrganizerTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
@@ -32,7 +33,8 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                         new JsonTransformerPsrLogger(
                             $this->get('logger.amqp.udb3')
                         ),
-                        new PathEndIdUrlParser()
+                        new PathEndIdUrlParser(),
+                        $this->get(GeoShapeQueryRegionService::class)
                     )
                 );
 

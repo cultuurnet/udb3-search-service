@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -16,23 +16,17 @@ use PHPUnit\Framework\TestCase;
 final class PlaceTransformerTest extends TestCase
 {
     /**
-     * @var OfferRegionServiceInterface|MockObject
+     * @var RegionServiceInterface|MockObject
      */
-    private $offerRegionService;
+    private $regionService;
 
-    /**
-     * @var SimpleArrayLogger
-     */
-    private $logger;
+    private SimpleArrayLogger $logger;
 
-    /**
-     * @var PlaceTransformer
-     */
-    private $transformer;
+    private PlaceTransformer $transformer;
 
     protected function setUp(): void
     {
-        $this->offerRegionService = $this->createMock(OfferRegionServiceInterface::class);
+        $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->logger = new SimpleArrayLogger();
 
@@ -41,7 +35,7 @@ final class PlaceTransformerTest extends TestCase
                 $this->logger
             ),
             new PathEndIdUrlParser(),
-            $this->offerRegionService
+            $this->regionService
         );
     }
 
@@ -210,7 +204,7 @@ final class PlaceTransformerTest extends TestCase
      */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
-        $this->offerRegionService->expects($this->once())
+        $this->regionService->expects($this->once())
             ->method('getRegionIds')
             ->willReturn(
                 [

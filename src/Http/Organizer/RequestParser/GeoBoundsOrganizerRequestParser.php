@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
+namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoBoundsParametersFactory;
-use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 
-final class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
+final class GeoBoundsOrganizerRequestParser implements OrganizerRequestParser
 {
     private GeoBoundsParametersFactory $geoBoundsParametersFactory;
 
@@ -19,14 +19,14 @@ final class GeoBoundsOfferRequestParser implements OfferRequestParserInterface
 
     public function parse(
         ApiRequestInterface $request,
-        OfferQueryBuilderInterface $offerQueryBuilder
-    ): OfferQueryBuilderInterface {
+        OrganizerQueryBuilderInterface $organizerQueryBuilder
+    ): OrganizerQueryBuilderInterface {
         $geoBoundsParameters = $this->geoBoundsParametersFactory->fromApiRequest($request);
 
         if ($geoBoundsParameters === null) {
-            return $offerQueryBuilder;
+            return $organizerQueryBuilder;
         }
 
-        return $offerQueryBuilder->withGeoBoundsFilter($geoBoundsParameters);
+        return $organizerQueryBuilder->withGeoBoundsFilter($geoBoundsParameters);
     }
 }

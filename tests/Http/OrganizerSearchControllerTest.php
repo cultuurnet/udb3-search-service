@@ -8,10 +8,16 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\DistanceOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -59,6 +65,9 @@ final class OrganizerSearchControllerTest extends TestCase
             $this->queryBuilder,
             $this->searchService,
             (new CompositeOrganizerRequestParser())
+                ->withParser(new DistanceOrganizerRequestParser(
+                    new GeoDistanceParametersFactory(new MockDistanceFactory())
+                ))
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
             $this->queryStringFactory,
@@ -81,6 +90,8 @@ final class OrganizerSearchControllerTest extends TestCase
                 'website' => 'http://foo.bar',
                 'postalCode' => 3000,
                 'addressCountry' => 'NL',
+                'coordinates' => '-40,70',
+                'distance' => '30km',
                 'creator' => 'Jan Janssens',
                 'labels' => [
                     'Uitpas',
@@ -107,6 +118,15 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))
+            ->withGeoDistanceFilter(
+                new GeoDistanceParameters(
+                    new Coordinates(
+                        new Latitude(-40.0),
+                        new Longitude(70.0)
+                    ),
+                    new MockDistance('30km')
+                )
+            )
             ->withCreatorFilter(new Creator('Jan Janssens'))
             ->withSortByScore(SortOrder::desc())
             ->withSortByCreated(SortOrder::asc())

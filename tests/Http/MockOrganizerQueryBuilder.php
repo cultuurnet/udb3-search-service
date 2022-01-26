@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\GeoBoundsParameters;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -28,56 +30,92 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
-    public function withAutoCompleteFilter(string $input)
+    public function withAutoCompleteFilter(string $input): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['autoComplete'] = $input;
         return $c;
     }
 
-    public function withWebsiteFilter(Url $url)
+    public function withWebsiteFilter(Url $url): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['website'] = $url->toString();
         return $c;
     }
 
-    public function withDomainFilter(string $domain)
+    public function withDomainFilter(string $domain): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['domain'] = $domain;
         return $c;
     }
 
-    public function withPostalCodeFilter(PostalCode $postalCode)
+    public function withPostalCodeFilter(PostalCode $postalCode): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['postalCode'] = $postalCode->toString();
         return $c;
     }
 
-    public function withAddressCountryFilter(Country $country)
+    public function withAddressCountryFilter(Country $country): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['country'] = $country->toString();
         return $c;
     }
 
-    public function withCreatorFilter(Creator $creator)
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): self
+    {
+        $c = clone $this;
+        $c->mockQuery['geoDistance']['lat'] = $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble();
+        $c->mockQuery['geoDistance']['lng'] = $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble();
+        $c->mockQuery['geoDistance']['distance'] = $geoDistanceParameters->getMaximumDistance()->toString();
+        return $c;
+    }
+
+    public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
+    {
+        $c = clone $this;
+
+        $c->mockQuery['geoBounds']['northWest']['lat'] = $geoBoundsParameters->getNorthWestCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['northWest']['lng'] = $geoBoundsParameters->getNorthWestCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['northEast']['lat'] = $geoBoundsParameters->getNorthEastCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['northEast']['lng'] = $geoBoundsParameters->getNorthEastCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['southWest']['lat'] = $geoBoundsParameters->getSouthWestCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['southWest']['lng'] = $geoBoundsParameters->getSouthWestCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['southEast']['lat'] = $geoBoundsParameters->getSouthEastCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['southEast']['lng'] = $geoBoundsParameters->getSouthEastCoordinates()
+            ->getLongitude()->toDouble();
+
+        return $c;
+    }
+
+    public function withCreatorFilter(Creator $creator): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['creator'] = $creator->toString();
         return $c;
     }
 
-    public function withLabelFilter(LabelName $label)
+    public function withLabelFilter(LabelName $label): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['label'][] = $label->toString();
         return $c;
     }
 
-    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses)
+    public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
@@ -89,7 +127,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
+    public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
@@ -102,7 +140,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withTextQuery(string $text, Language ...$textLanguages)
+    public function withTextQuery(string $text, Language ...$textLanguages): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = $text;
@@ -115,14 +153,14 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withStart(Start $start)
+    public function withStart(Start $start): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['start'] = $start->toInteger();
         return $c;
     }
 
-    public function withLimit(Limit $limit)
+    public function withLimit(Limit $limit): MockOrganizerQueryBuilder
     {
         $c = clone $this;
         $c->mockQuery['limit'] = $limit->toInteger();

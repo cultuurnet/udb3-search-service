@@ -2,28 +2,21 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 
-final class GeoShapeQueryOfferRegionService implements OfferRegionServiceInterface
+final class GeoShapeQueryRegionService implements RegionServiceInterface
 {
     /**
      * Amount of (matching) regions per page.
      */
     public const PAGE_SIZE = 10;
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
-
+    private string $indexName;
 
     public function __construct(
         Client $elasticSearchClient,

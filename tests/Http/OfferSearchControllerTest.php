@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParse
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
@@ -105,7 +106,9 @@ final class OfferSearchControllerTest extends TestCase
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
-            ->withParser(new DistanceOfferRequestParser(new MockDistanceFactory()))
+            ->withParser(new DistanceOfferRequestParser(
+                new GeoDistanceParametersFactory(new MockDistanceFactory())
+            ))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GroupByOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())

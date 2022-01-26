@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
+namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
-use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 
-final class DistanceOfferRequestParser implements OfferRequestParserInterface
+final class DistanceOrganizerRequestParser implements OrganizerRequestParser
 {
     private GeoDistanceParametersFactory $geoDistanceParametersFactory;
 
@@ -19,14 +19,14 @@ final class DistanceOfferRequestParser implements OfferRequestParserInterface
 
     public function parse(
         ApiRequestInterface $request,
-        OfferQueryBuilderInterface $offerQueryBuilder
-    ): OfferQueryBuilderInterface {
+        OrganizerQueryBuilderInterface $organizerQueryBuilder
+    ): OrganizerQueryBuilderInterface {
         $geoDistanceParameters = $this->geoDistanceParametersFactory->fromApiRequest($request);
 
         if ($geoDistanceParameters === null) {
-            return $offerQueryBuilder;
+            return $organizerQueryBuilder;
         }
 
-        return $offerQueryBuilder->withGeoDistanceFilter($geoDistanceParameters);
+        return $organizerQueryBuilder->withGeoDistanceFilter($geoDistanceParameters);
     }
 }

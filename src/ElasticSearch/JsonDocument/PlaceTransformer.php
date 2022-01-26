@@ -9,23 +9,19 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransfor
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\Offer\OfferType;
 
 final class PlaceTransformer implements JsonTransformer
 {
-    /**
-     * @var CompositeJsonTransformer
-     */
-    private $compositeTransformer;
+    private CompositeJsonTransformer $compositeTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        OfferRegionServiceInterface $offerRegionService
+        RegionServiceInterface $regionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
@@ -34,7 +30,7 @@ final class PlaceTransformer implements JsonTransformer
                 FallbackType::place()
             ),
             new AddressTransformer($logger, true),
-            new GeoInformationTransformer(OfferType::place(), $offerRegionService),
+            new GeoInformationTransformer($regionService),
             new MetadataTransformer()
         );
     }

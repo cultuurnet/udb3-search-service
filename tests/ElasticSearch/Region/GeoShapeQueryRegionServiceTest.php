@@ -2,36 +2,30 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GeoShapeQueryOfferRegionServiceTest extends TestCase
+final class GeoShapeQueryRegionServiceTest extends TestCase
 {
     /**
      * @var Client|MockObject
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $geoShapesIndexName;
+    private string $geoShapesIndexName;
 
-    /**
-     * @var GeoShapeQueryOfferRegionService
-     */
-    private $offerRegionService;
+    private GeoShapeQueryRegionService $regionService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->offerRegionService = new GeoShapeQueryOfferRegionService(
+        $this->regionService = new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
         );
@@ -40,7 +34,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries()
+    public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries(): void
     {
         $this->client->expects($this->exactly(2))
             ->method('search')
@@ -128,7 +122,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
             new RegionId('gem-kortenaken'),
         ];
 
-        $actualRegionIds = $this->offerRegionService->getRegionIds(
+        $actualRegionIds = $this->regionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],
@@ -149,7 +143,7 @@ final class GeoShapeQueryOfferRegionServiceTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
 
-        $this->offerRegionService->getRegionIds(
+        $this->regionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],

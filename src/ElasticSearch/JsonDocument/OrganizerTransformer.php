@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransfor
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LabelsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\LanguagesTransformer;
@@ -16,20 +17,19 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\NameTransformer
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncodedJsonLdTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\UrlTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\WorkflowStatusTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class OrganizerTransformer implements JsonTransformer
 {
-    /**
-     * @var CompositeJsonTransformer
-     */
-    private $compositeTransformer;
+    private CompositeJsonTransformer $compositeTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,
-        IdUrlParserInterface $idUrlParser
+        IdUrlParserInterface $idUrlParser,
+        RegionServiceInterface $regionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new IdentifierTransformer(
@@ -46,6 +46,7 @@ final class OrganizerTransformer implements JsonTransformer
             new LabelsTransformer(false),
             new UrlTransformer(),
             new WorkflowStatusTransformer($logger, 'ACTIVE'),
+            new GeoInformationTransformer($regionService),
             new OriginalEncodedJsonLdTransformer()
         );
     }

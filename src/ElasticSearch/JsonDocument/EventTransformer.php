@@ -11,28 +11,21 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransfo
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PerformersTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedLocationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedProductionTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\OfferRegionServiceInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use CultuurNet\UDB3\Search\Offer\OfferType;
 
 final class EventTransformer implements JsonTransformer
 {
-    /**
-     * @var CompositeJsonTransformer
-     */
-    private $compositeTransformer;
+    private CompositeJsonTransformer $compositeTransformer;
 
-    /**
-     * @var GeoInformationTransformer
-     */
-    private $geoInformationTransformer;
+    private GeoInformationTransformer $geoInformationTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        OfferRegionServiceInterface $offerRegionService
+        RegionServiceInterface $regionService
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
@@ -50,7 +43,7 @@ final class EventTransformer implements JsonTransformer
             new MetadataTransformer()
         );
 
-        $this->geoInformationTransformer = new GeoInformationTransformer(OfferType::event(), $offerRegionService);
+        $this->geoInformationTransformer = new GeoInformationTransformer($regionService);
     }
 
     public function transform(array $from, array $draft = []): array
