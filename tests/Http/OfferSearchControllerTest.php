@@ -496,9 +496,7 @@ final class OfferSearchControllerTest extends TestCase
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    /**
-     * @return array
-     */
+
     public function defaultsEnabledQueryParametersProvider(): array
     {
         return [
@@ -922,9 +920,7 @@ final class OfferSearchControllerTest extends TestCase
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    /**
-     * @return array
-     */
+
     public function malformedDateTimeProvider(): array
     {
         return [
