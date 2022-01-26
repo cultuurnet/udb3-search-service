@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\Search\Http\Parameters\GeoBoundsParametersFactory;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +30,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
 
     protected function setUp()
     {
-        $this->parser = new GeoBoundsOfferRequestParser();
+        $this->parser = new GeoBoundsOfferRequestParser(new GeoBoundsParametersFactory());
         $this->offerQueryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
     }
 
