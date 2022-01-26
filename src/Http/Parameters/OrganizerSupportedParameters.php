@@ -15,6 +15,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
             'domain',
             'postalCode',
             'addressCountry',
+            'regions',
             'coordinates',
             'distance',
             'bounds',
