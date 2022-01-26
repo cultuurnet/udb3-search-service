@@ -36,31 +36,20 @@ use Slim\Psr7\Request;
 
 final class OrganizerSearchControllerTest extends TestCase
 {
-    /**
-     * @var MockOrganizerQueryBuilder
-     */
-    private $queryBuilder;
+    private MockOrganizerQueryBuilder $queryBuilder;
 
     /**
      * @var OrganizerSearchServiceInterface|MockObject
      */
     private $searchService;
 
-    /**
-     * @var OrganizerSearchController
-     */
-    private $controller;
+    private OrganizerSearchController $controller;
 
-    /**
-     * @var \CultuurNet\UDB3\Search\QueryStringFactory
-     */
-    private $queryStringFactory;
-
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queryBuilder = new MockOrganizerQueryBuilder();
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
-        $this->queryStringFactory = new MockQueryStringFactory();
+
         $this->controller = new OrganizerSearchController(
             $this->queryBuilder,
             $this->searchService,
@@ -70,7 +59,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 ))
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
-            $this->queryStringFactory,
+            new MockQueryStringFactory(),
             new Consumer(null, null)
         );
     }
@@ -78,7 +67,7 @@ final class OrganizerSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_collection_of_search_results_based_on_request_query_parameters()
+    public function it_returns_a_paged_collection_of_search_results_based_on_request_query_parameters(): void
     {
         $request = ServerRequestFactory::createFromGlobals()->withQueryParams(
             [
@@ -172,7 +161,7 @@ final class OrganizerSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given()
+    public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given(): void
     {
         $request = ServerRequestFactory::createFromGlobals()->withQueryParams(
             [
@@ -268,7 +257,7 @@ final class OrganizerSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_filters_out_deleted_organizers_by_default()
+    public function it_filters_out_deleted_organizers_by_default(): void
     {
         $request = ServerRequestFactory::createFromGlobals();
 
@@ -287,20 +276,18 @@ final class OrganizerSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider unknownParameterProvider
-     *
-     * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
         Request $request,
-        $expectedExceptionMessage
-    ) {
+        string $expectedExceptionMessage
+    ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    public function unknownParameterProvider()
+    public function unknownParameterProvider(): array
     {
         $uri = (new UriFactory())->createUri('http://search.uitdatabank.be/organizers/');
         $request = ServerRequestFactory::createFromGlobals()->withUri($uri);
@@ -348,7 +335,7 @@ final class OrganizerSearchControllerTest extends TestCase
     private function expectQueryBuilderWillReturnResultSet(
         OrganizerQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet
-    ) {
+    ): void {
         $this->searchService->expects($this->once())
             ->method('search')
             ->with(
