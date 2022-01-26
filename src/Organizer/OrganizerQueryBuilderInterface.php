@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilder;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
@@ -25,6 +26,12 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     public function withPostalCodeFilter(PostalCode $postalCode): OrganizerQueryBuilderInterface;
 
     public function withAddressCountryFilter(Country $country): OrganizerQueryBuilderInterface;
+
+    public function withRegionFilter(
+        string $regionIndexName,
+        string $regionDocumentType,
+        RegionId $regionId
+    ): OrganizerQueryBuilderInterface;
 
     public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): OrganizerQueryBuilderInterface;
 
