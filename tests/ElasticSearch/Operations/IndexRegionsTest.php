@@ -11,21 +11,15 @@ use Symfony\Component\Finder\Finder;
 
 final class IndexRegionsTest extends AbstractOperationTestCase
 {
-    /**
-     * @var Finder
-     */
-    private $finder;
+    private Finder $finder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->finder = new Finder();
         parent::setUp();
     }
 
-    /**
-     * @return IndexRegions
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): IndexRegions
     {
         return new IndexRegions($client, $logger, $this->finder);
     }
@@ -33,7 +27,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_indexes_all_files_located_in_the_given_path_or_subdirectories_that_match_the_file_name_regex()
+    public function it_indexes_all_files_located_in_the_given_path_or_subdirectories_that_match_the_file_name_regex(): void
     {
         $index = 'mock';
         $path = __DIR__ . '/data/regions/';
