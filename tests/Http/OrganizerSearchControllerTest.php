@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,6 +45,10 @@ final class OrganizerSearchControllerTest extends TestCase
      */
     private $searchService;
 
+    private string $regionIndexName;
+
+    private string $regionDocumentType;
+
     private OrganizerSearchController $controller;
 
     protected function setUp(): void
@@ -51,9 +56,14 @@ final class OrganizerSearchControllerTest extends TestCase
         $this->queryBuilder = new MockOrganizerQueryBuilder();
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
 
+        $this->regionIndexName = 'geoshapes';
+        $this->regionDocumentType = 'region';
+
         $this->controller = new OrganizerSearchController(
             $this->queryBuilder,
             $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
             (new CompositeOrganizerRequestParser())
                 ->withParser(new DistanceOrganizerRequestParser(
                     new GeoDistanceParametersFactory(new MockDistanceFactory())
@@ -80,6 +90,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 'website' => 'http://foo.bar',
                 'postalCode' => 3000,
                 'addressCountry' => 'NL',
+                'regions' => ['gem-leuven', 'prv-limburg'],
                 'coordinates' => '-40,70',
                 'distance' => '30km',
                 'creator' => 'Jan Janssens',
@@ -108,6 +119,16 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))
+            ->withRegionFilter(
+                $this->regionIndexName,
+                $this->regionDocumentType,
+                new RegionId('gem-leuven')
+            )
+            ->withRegionFilter(
+                $this->regionIndexName,
+                $this->regionDocumentType,
+                new RegionId('prv-limburg')
+            )
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
