@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -70,6 +71,33 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c->mockQuery['geoDistance']['lat'] = $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble();
         $c->mockQuery['geoDistance']['lng'] = $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble();
         $c->mockQuery['geoDistance']['distance'] = $geoDistanceParameters->getMaximumDistance()->toString();
+        return $c;
+    }
+
+    public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
+    {
+        $c = clone $this;
+
+        $c->mockQuery['geoBounds']['northWest']['lat'] = $geoBoundsParameters->getNorthWestCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['northWest']['lng'] = $geoBoundsParameters->getNorthWestCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['northEast']['lat'] = $geoBoundsParameters->getNorthEastCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['northEast']['lng'] = $geoBoundsParameters->getNorthEastCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['southWest']['lat'] = $geoBoundsParameters->getSouthWestCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['southWest']['lng'] = $geoBoundsParameters->getSouthWestCoordinates()
+            ->getLongitude()->toDouble();
+
+        $c->mockQuery['geoBounds']['southEast']['lat'] = $geoBoundsParameters->getSouthEastCoordinates()
+            ->getLatitude()->toDouble();
+        $c->mockQuery['geoBounds']['southEast']['lng'] = $geoBoundsParameters->getSouthEastCoordinates()
+            ->getLongitude()->toDouble();
+
         return $c;
     }
 
