@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 
 final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
@@ -445,6 +446,71 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                                 'query' => 'NL',
                                             ],
                                         ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_geoshape_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withRegionFilter(
+                'geoshapes',
+                'regions',
+                new RegionId('gem-leuven')
+            )
+            ->withRegionFilter(
+                'geoshapes',
+                'regions',
+                new RegionId('prv-limburg')
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'index' => 'geoshapes',
+                                        'type' => 'regions',
+                                        'id' => 'gem-leuven',
+                                        'path' => 'location',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'index' => 'geoshapes',
+                                        'type' => 'regions',
+                                        'id' => 'prv-limburg',
+                                        'path' => 'location',
                                     ],
                                 ],
                             ],
