@@ -16,10 +16,12 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
+use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
@@ -72,6 +74,26 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             ),
             $country->toString()
         );
+    }
+
+    public function withRegionFilter(
+        string $regionIndexName,
+        string $regionDocumentType,
+        RegionId $regionId
+    ): self {
+        $geoShapeQuery = new GeoShapeQuery();
+
+        $geoShapeQuery->addPreIndexedShape(
+            'geo',
+            $regionId->toString(),
+            $regionDocumentType,
+            $regionIndexName,
+            'location'
+        );
+
+        $c = $this->getClone();
+        $c->boolQuery->add($geoShapeQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): self
