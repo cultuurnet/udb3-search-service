@@ -677,8 +677,8 @@ final class OfferSearchControllerTest extends TestCase
      * @dataProvider booleanStringDataProvider
      */
     public function it_converts_the_media_objects_toggle_parameter_to_a_correct_boolean(
-        string $stringValue,
-        ?bool $booleanValue
+        $stringValue,
+        $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -706,8 +706,8 @@ final class OfferSearchControllerTest extends TestCase
      * @dataProvider booleanStringDataProvider
      */
     public function it_converts_the_uitpas_toggle_parameter_to_a_correct_boolean(
-        string $stringValue,
-        ?bool $booleanValue
+        $stringValue,
+        $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
