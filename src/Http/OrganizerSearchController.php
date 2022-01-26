@@ -23,35 +23,17 @@ use Psr\Http\Message\ResponseInterface;
 
 final class OrganizerSearchController
 {
-    /**
-     * @var OrganizerQueryBuilderInterface
-     */
-    private $queryBuilder;
+    private OrganizerQueryBuilderInterface $queryBuilder;
 
-    /**
-     * @var OrganizerSearchServiceInterface
-     */
-    private $searchService;
+    private OrganizerSearchServiceInterface $searchService;
 
-    /**
-     * @var OrganizerSupportedParameters
-     */
-    private $organizerParameterWhiteList;
+    private OrganizerSupportedParameters $organizerParameterWhiteList;
 
-    /**
-     * @var QueryStringFactory
-     */
-    private $queryStringFactory;
+    private QueryStringFactory $queryStringFactory;
 
-    /**
-     * @var OrganizerRequestParser
-     */
-    private $organizerRequestParser;
+    private OrganizerRequestParser $organizerRequestParser;
 
-    /**
-     * @var Consumer
-     */
-    private $consumer;
+    private Consumer $consumer;
 
     public function __construct(
         OrganizerQueryBuilderInterface $queryBuilder,
@@ -156,10 +138,9 @@ final class OrganizerSearchController
 
 
     /**
-     * @param string $queryParameter
      * @return LabelName[]
      */
-    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLabelsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
@@ -170,10 +151,9 @@ final class OrganizerSearchController
     }
 
     /**
-     * @param string $queryParameter
      * @return Language[]
      */
-    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, $queryParameter)
+    private function getLanguagesFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
