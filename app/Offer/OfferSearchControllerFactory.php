@@ -28,30 +28,15 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 
 final class OfferSearchControllerFactory
 {
-    /**
-     * @var int
-     */
-    private $aggregationSize;
+    private ?int $aggregationSize;
 
-    /**
-     * @var string
-     */
-    private $regionIndex;
+    private string $regionIndex;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $documentType;
 
-    /**
-     * @var OfferSearchServiceFactory
-     */
-    private $offerSearchServiceFactory;
+    private OfferSearchServiceFactory $offerSearchServiceFactory;
 
-    /**
-     * @var Consumer
-     */
-    private $consumer;
+    private Consumer $consumer;
 
     public function __construct(
         ?int $aggregationSize,
@@ -70,7 +55,7 @@ final class OfferSearchControllerFactory
     public function createFor(
         string $readIndex,
         string $documentType
-    ) {
+    ): OfferSearchController {
         $requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())

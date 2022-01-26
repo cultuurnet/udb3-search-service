@@ -30,7 +30,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
         'event_bus_subscribers',
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->add(
             OrganizerSearchController::class,

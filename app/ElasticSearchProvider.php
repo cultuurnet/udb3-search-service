@@ -18,7 +18,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
         'elasticsearch_indexation_strategy',
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->add(
             Client::class,

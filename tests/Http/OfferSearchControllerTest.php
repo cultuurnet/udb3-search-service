@@ -58,47 +58,26 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class OfferSearchControllerTest extends TestCase
 {
-    /**
-     * @var MockOfferQueryBuilder
-     */
-    private $queryBuilder;
+    private MockOfferQueryBuilder $queryBuilder;
 
-    /**
-     * @var CompositeOfferRequestParser
-     */
-    private $requestParser;
+    private CompositeOfferRequestParser $requestParser;
 
     /**
      * @var OfferSearchServiceInterface|MockObject
      */
     private $searchService;
 
-    /**
-     * @var string
-     */
-    private $regionIndexName;
+    private string $regionIndexName;
 
-    /**
-     * @var string
-     */
-    private $regionDocumentType;
+    private string $regionDocumentType;
 
-    /**
-     * @var MockQueryStringFactory
-     */
-    private $queryStringFactory;
+    private MockQueryStringFactory $queryStringFactory;
 
-    /**
-     * @var NodeAwareFacetTreeNormalizer
-     */
-    private $facetTreeNormalizer;
+    private NodeAwareFacetTreeNormalizer $facetTreeNormalizer;
 
-    /**
-     * @var OfferSearchController
-     */
-    private $controller;
+    private OfferSearchController $controller;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->queryBuilder = new MockOfferQueryBuilder();
 
@@ -140,7 +119,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_collection_of_search_results_based_on_request_query_parameters()
+    public function it_returns_a_paged_collection_of_search_results_based_on_request_query_parameters(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -398,7 +377,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given()
+    public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -496,7 +475,7 @@ final class OfferSearchControllerTest extends TestCase
      * @dataProvider defaultsEnabledQueryParametersProvider
      *
      */
-    public function it_uses_default_parameters_when_default_filters_are_not_disabled(array $queryParameters)
+    public function it_uses_default_parameters_when_default_filters_are_not_disabled(array $queryParameters): void
     {
         $request = $this->getSearchRequestWithQueryParameters($queryParameters);
 
@@ -517,10 +496,8 @@ final class OfferSearchControllerTest extends TestCase
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    /**
-     * @return array
-     */
-    public function defaultsEnabledQueryParametersProvider()
+
+    public function defaultsEnabledQueryParametersProvider(): array
     {
         return [
             [[]],
@@ -533,7 +510,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_apply_default_filters_that_have_been_disabled_one_by_one()
+    public function it_does_not_apply_default_filters_that_have_been_disabled_one_by_one(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -556,7 +533,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_expects_a_valid_available_from_and_available_to_date()
+    public function it_expects_a_valid_available_from_and_available_to_date(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -578,7 +555,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_convert_spaces_in_date_parameters_to_plus_signs()
+    public function it_can_convert_spaces_in_date_parameters_to_plus_signs(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -614,7 +591,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_coordinates_is_given_without_distance()
+    public function it_throws_an_exception_if_coordinates_is_given_without_distance(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             ['coordinates' => '-40,70']
@@ -629,7 +606,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_if_distance_is_given_without_coordinates()
+    public function it_throws_an_exception_if_distance_is_given_without_coordinates(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             ['distance' => '30km']
@@ -644,7 +621,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_works_with_a_min_age_of_zero_and_or_a_max_age_of_zero()
+    public function it_works_with_a_min_age_of_zero_and_or_a_max_age_of_zero(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -671,7 +648,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_works_with_a_min_price_and_max_price_if_no_exact_price_is_set()
+    public function it_works_with_a_min_price_and_max_price_if_no_exact_price_is_set(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -698,14 +675,11 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider booleanStringDataProvider
-     *
-     * @param string $stringValue
-     * @param bool|null $booleanValue
      */
     public function it_converts_the_media_objects_toggle_parameter_to_a_correct_boolean(
         $stringValue,
         $booleanValue
-    ) {
+    ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'hasMediaObjects' => $stringValue,
@@ -730,14 +704,11 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider booleanStringDataProvider
-     *
-     * @param string $stringValue
-     * @param bool|null $booleanValue
      */
     public function it_converts_the_uitpas_toggle_parameter_to_a_correct_boolean(
         $stringValue,
         $booleanValue
-    ) {
+    ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'uitpas' => $stringValue,
@@ -816,7 +787,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_handle_a_single_string_value_for_parameters_that_are_normally_arrays()
+    public function it_can_handle_a_single_string_value_for_parameters_that_are_normally_arrays(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -859,7 +830,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_split_multiple_calendar_types_delimited_with_a_comma()
+    public function it_should_split_multiple_calendar_types_delimited_with_a_comma(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -885,7 +856,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_an_unknown_facet_name_is_given()
+    public function it_throws_an_exception_when_an_unknown_facet_name_is_given(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown facet name 'bla'.");
@@ -900,7 +871,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_an_unknown_address_country_is_given()
+    public function it_throws_an_exception_when_an_unknown_address_country_is_given(): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown country code 'foobar'.");
@@ -915,7 +886,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_transforms_the_request_address_country_to_uppercase()
+    public function it_transforms_the_request_address_country_to_uppercase(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -937,12 +908,9 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider malformedDateTimeProvider
-     *
-     * @param string $malformedDateTimeAsString
      */
-    public function it_throws_an_exception_for_a_malformed_date_from(
-        $malformedDateTimeAsString
-    ) {
+    public function it_throws_an_exception_for_a_malformed_date_from(string $malformedDateTimeAsString): void
+    {
         $request = $this->getSearchRequestWithQueryParameters(
             ['dateFrom' => $malformedDateTimeAsString]
         );
@@ -952,10 +920,8 @@ final class OfferSearchControllerTest extends TestCase
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    /**
-     * @return array
-     */
-    public function malformedDateTimeProvider()
+
+    public function malformedDateTimeProvider(): array
     {
         return [
             ['2017'],
@@ -977,7 +943,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_sort_is_not_an_array()
+    public function it_throws_an_exception_when_sort_is_not_an_array(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -994,7 +960,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_a_sort_field_is_invalid()
+    public function it_throws_an_exception_when_a_sort_field_is_invalid(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1015,7 +981,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_when_a_sort_order_is_invalid()
+    public function it_throws_an_exception_when_a_sort_order_is_invalid(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1035,7 +1001,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_exception_for_sort_order_distance_and_missing_coordinates()
+    public function it_throws_an_exception_for_sort_order_distance_and_missing_coordinates(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1157,20 +1123,18 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider unknownParameterProvider
-     *
-     * @param string $expectedExceptionMessage
      */
     public function it_rejects_queries_with_unknown_parameters(
         ApiRequestInterface $request,
-        $expectedExceptionMessage
-    ) {
+        string $expectedExceptionMessage
+    ): void {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
 
-    public function unknownParameterProvider()
+    public function unknownParameterProvider(): array
     {
         return [
             'single unknown parameter' => [
@@ -1205,7 +1169,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_the_default_query_of_the_api_consumer_if_they_have_one()
+    public function it_should_add_the_default_query_of_the_api_consumer_if_they_have_one(): void
     {
         $controller = new OfferSearchController(
             $this->queryBuilder,
