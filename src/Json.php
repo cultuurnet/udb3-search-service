@@ -44,6 +44,24 @@ final class Json
     }
 
     /**
+     * @param mixed $value
+     *   Data to encode as JSON for a HTTP response
+     *
+     * @return string
+     *   Encoded JSON.
+     *
+     * @throws JsonException
+     *   If the JSON could not be encoded, for example because of too much nesting.
+     */
+    public static function encodeForHttpResponse($value): string
+    {
+        // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
+        $options = JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_THROW_ON_ERROR;
+
+        return json_encode($value, $options, self::$depth);
+    }
+
+    /**
      * @param string $data
      *   Encoded JSON data.
      *
