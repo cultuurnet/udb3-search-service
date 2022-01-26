@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestPars
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
@@ -332,7 +333,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $expectedJsonResponse = json_encode(
+        $expectedJsonResponse = Json::encode(
             [
                 '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
                 '@type' => 'PagedCollection',
@@ -1225,15 +1226,15 @@ final class OfferSearchControllerTest extends TestCase
     private function expectQueryBuilderWillReturnResultSet(
         OfferQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet
-    ) {
+    ): void {
         $this->searchService->expects($this->once())
             ->method('search')
             ->with(
                 $this->callback(
                     function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
                         $this->assertEquals(
-                            json_encode($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
-                            json_encode($actualQueryBuilder->build(), JSON_PRETTY_PRINT)
+                            Json::encodeWithOptions($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
+                            Json::encodeWithOptions($actualQueryBuilder->build(), JSON_PRETTY_PRINT)
                         );
                         return true;
                     }

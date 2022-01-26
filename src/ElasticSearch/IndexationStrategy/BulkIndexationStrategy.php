@@ -4,39 +4,28 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
 final class BulkIndexationStrategy implements IndexationStrategy
 {
-    /**
-     * @var Client
-     */
-    private $elasticSearchClient;
+    private Client $elasticSearchClient;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /**
-     * @var int
-     */
-    private $autoFlushThreshold;
+    private int $autoFlushThreshold;
 
     /**
      * @var JsonDocument[]
      */
-    private $queuedDocuments;
+    private array $queuedDocuments;
 
-    /**
-     * @param int $autoFlushThreshold
-     */
     public function __construct(
         Client $elasticSearchClient,
         LoggerInterface $logger,
-        $autoFlushThreshold
+        int $autoFlushThreshold
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->logger = $logger;
@@ -45,12 +34,11 @@ final class BulkIndexationStrategy implements IndexationStrategy
         $this->queuedDocuments = [];
     }
 
-
     public function indexDocument(
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    ) {
+    ): void {
         $id = $jsonDocument->getId();
         $this->logger->info("Queuing document {$id} for indexation.");
 
@@ -58,7 +46,7 @@ final class BulkIndexationStrategy implements IndexationStrategy
             'index' => $indexName,
             'type' => $documentType,
             'id' => $jsonDocument->getId(),
-            'body' => json_decode($jsonDocument->getRawBody(), true),
+            'body' => Json::decodeAssociatively($jsonDocument->getRawBody()),
         ];
 
         $this->autoFlush();
@@ -95,7 +83,7 @@ final class BulkIndexationStrategy implements IndexationStrategy
         $this->queuedDocuments = [];
     }
 
-    private function autoFlush()
+    private function autoFlush(): void
     {
         if (count($this->queuedDocuments) >= $this->autoFlushThreshold) {
             $this->finish();

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -16,25 +17,13 @@ final class Auth0Client implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
-    /**
-     * @var string
-     */
-    private $clientId;
+    private string $clientId;
 
-    /**
-     * @var string
-     */
-    private $clientSecret;
+    private string $clientSecret;
 
     public function __construct(Client $client, string $domain, string $clientId, string $clientSecret)
     {
@@ -80,7 +69,7 @@ final class Auth0Client implements LoggerAwareInterface
             return null;
         }
 
-        $res = json_decode($response->getBody()->getContents(), true);
+        $res = Json::decodeAssociatively($response->getBody()->getContents());
         return new Auth0Token(
             $res['access_token'],
             new DateTimeImmutable(),
@@ -117,7 +106,7 @@ final class Auth0Client implements LoggerAwareInterface
             return null;
         }
 
-        $res = json_decode($response->getBody()->getContents(), true);
+        $res = Json::decodeAssociatively($response->getBody()->getContents());
         return $res['client_metadata'] ?? [];
     }
 }

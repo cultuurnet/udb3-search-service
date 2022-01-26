@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\UDB3\Search\Json;
 use PHPUnit\Framework\TestCase;
 
 final class JsonLdEmbeddingJsonTransformerTest extends TestCase
 {
-    /**
-     * @var JsonLdEmbeddingJsonTransformer
-     */
-    private $transformer;
+    private JsonLdEmbeddingJsonTransformer $transformer;
 
     protected function setUp(): void
     {
@@ -40,7 +38,7 @@ final class JsonLdEmbeddingJsonTransformerTest extends TestCase
             ],
         ];
 
-        $encodedJsonLd = json_encode($jsonLd);
+        $encodedJsonLd = Json::encode($jsonLd);
 
         $indexed = [
             '@id' => 'https://io.uitdatabank.be/events/8ea290f6-deb2-426e-820a-68eeefde9c4d',

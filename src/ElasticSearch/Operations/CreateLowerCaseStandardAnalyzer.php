@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\Json;
+
 final class CreateLowerCaseStandardAnalyzer extends AbstractElasticSearchOperation
 {
-    public function run()
+    public function run(): void
     {
         $this->client->indices()->putTemplate(
             [
                 'name' => 'lowercase_standard_analyzer',
-                'body' => json_decode(
-                    file_get_contents(__DIR__ . '/json/analyzer_lowercase_standard.json'),
-                    true
+                'body' => Json::decodeAssociatively(
+                    file_get_contents(__DIR__ . '/json/analyzer_lowercase_standard.json')
                 ),
             ]
         );

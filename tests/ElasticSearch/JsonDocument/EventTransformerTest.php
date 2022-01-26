@@ -8,6 +8,7 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use DateTimeInterface;
@@ -506,14 +507,14 @@ final class EventTransformerTest extends TestCase
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
-        $original = json_decode(file_get_contents($givenFilePath), true);
+        $original = Json::decodeAssociatively(file_get_contents($givenFilePath));
 
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects
         // become empty arrays in PHP.
-        $expected = json_decode(file_get_contents($expectedFilePath));
-        $actual = json_decode(
-            json_encode(
+        $expected = Json::decode(file_get_contents($expectedFilePath));
+        $actual = Json::decode(
+            Json::encode(
                 $this->transformer->transform($original, [])
             )
         );

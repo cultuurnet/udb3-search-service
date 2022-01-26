@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\DistanceOrganizerRequest
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -137,7 +138,7 @@ final class OrganizerSearchControllerTest extends TestCase
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $expectedJsonResponse = json_encode(
+        $expectedJsonResponse = Json::encode(
             [
                 '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
                 '@type' => 'PagedCollection',

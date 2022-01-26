@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Json;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Response;
@@ -23,7 +24,7 @@ final class ResponseFactory
         $response = $response->withAddedHeader('Content-Type', 'application/ld+json');
 
         $body = $response->getBody();
-        $body->write(json_encode($data, self::JSON_OPTIONS));
+        $body->write(Json::encodeWithOptions($data, self::JSON_OPTIONS));
 
         return $response->withBody($body);
     }

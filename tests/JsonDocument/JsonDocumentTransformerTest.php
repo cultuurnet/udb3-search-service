@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
@@ -17,10 +18,10 @@ final class JsonDocumentTransformerTest extends TestCase
         $id = 'd1158d19-5c12-4242-85b8-d5ec62d71ca9';
 
         $originalData = ['foo' => 'bar', 'privateProperty' => 'secretValue'];
-        $original = new JsonDocument($id, json_encode($originalData));
+        $original = new JsonDocument($id, Json::encode($originalData));
 
         $expectedData = ['foo' => 'bar'];
-        $expected = new JsonDocument($id, json_encode($expectedData));
+        $expected = new JsonDocument($id, Json::encode($expectedData));
 
         $jsonTransformer = $this->createMock(JsonTransformer::class);
 

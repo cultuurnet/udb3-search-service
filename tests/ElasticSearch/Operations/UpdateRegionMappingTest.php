@@ -9,26 +9,17 @@ use Psr\Log\LoggerInterface;
 
 final class UpdateRegionMappingTest extends AbstractMappingTestCase
 {
-    /**
-     * @return UpdateRegionMapping
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): UpdateRegionMapping
     {
         return new UpdateRegionMapping($client, $logger);
     }
 
-    /**
-     * @return string
-     */
-    protected function getDocumentType()
+    protected function getDocumentType(): string
     {
         return 'region';
     }
 
-    /**
-     * @return array
-     */
-    protected function getExpectedMappingBody()
+    protected function getExpectedMappingBody(): array
     {
         return [
             'properties' => [
@@ -39,10 +30,7 @@ final class UpdateRegionMappingTest extends AbstractMappingTestCase
         ];
     }
 
-    /**
-     * @param string $indexName
-     */
-    protected function runOperation($indexName)
+    protected function runOperation(string $indexName): void
     {
         $this->operation->run($indexName, $this->getDocumentType());
     }

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
 use GuzzleHttp\Client;
@@ -40,15 +41,9 @@ final class AuthenticateRequestTest extends TestCase
      */
     private $cultureFeed;
 
-    /**
-     * @var Auth0TokenProvider
-     */
-    private $auth0TokenProvider;
+    private Auth0TokenProvider $auth0TokenProvider;
 
-    /**
-     * @var AuthenticateRequest
-     */
-    private $authenticateRequest;
+    private AuthenticateRequest $authenticateRequest;
 
     protected function setUp(): void
     {
@@ -247,7 +242,7 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_requests_with_client_id_with_missing_sapi_permission_in_metadata(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode([
+            new Response(200, [], Json::encode([
                 'client_metadata' => ['publiq-apis' => 'ups entry'],
             ])),
         ]);
@@ -285,7 +280,7 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_requests_with_client_id_without_metadata(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode([])),
+            new Response(200, [], Json::encode([])),
         ]);
 
         $authenticateRequest = new AuthenticateRequest(
@@ -368,7 +363,7 @@ final class AuthenticateRequestTest extends TestCase
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode([
+            new Response(200, [], Json::encode([
                 'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
             ])),
         ]);
@@ -428,6 +423,6 @@ final class AuthenticateRequestTest extends TestCase
     {
         $this->assertEquals($apiProblem->getStatus(), $response->getStatusCode());
         $this->assertEquals('application/ld+json', $response->getHeader('Content-Type')[0]);
-        $this->assertEquals(json_encode($apiProblem->asArray()), $response->getBody());
+        $this->assertEquals(Json::encode($apiProblem->asArray()), $response->getBody());
     }
 }

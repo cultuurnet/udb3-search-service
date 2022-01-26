@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
 {
-    /**
-     * @return CreateAutocompleteAnalyzer
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): CreateAutocompleteAnalyzer
     {
         return new CreateAutocompleteAnalyzer($client, $logger);
     }
@@ -20,7 +17,7 @@ final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_puts_a_new_or_updated_index_template_for_an_autocomplete_analyzer()
+    public function it_puts_a_new_or_updated_index_template_for_an_autocomplete_analyzer(): void
     {
         $this->indices->expects($this->once())
             ->method('putTemplate')

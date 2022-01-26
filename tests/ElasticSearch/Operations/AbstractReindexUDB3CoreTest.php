@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
@@ -20,12 +21,9 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
      */
     private $eventBus;
 
-    /**
-     * @var array
-     */
-    private $logMessages;
+    private array $logMessages;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->eventBus = $this->createMock(EventBus::class);
 
@@ -67,7 +65,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_scrolls_through_documents_in_the_index_and_fires_corresponding_events_to_trigger_reindexation()
+    public function it_scrolls_through_documents_in_the_index_and_fires_corresponding_events_to_trigger_reindexation(): void
     {
         $index = 'mock';
 
@@ -186,7 +184,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_skips_hits_that_are_missing_a_property_or_have_an_unknown_type()
+    public function it_skips_hits_that_are_missing_a_property_or_have_an_unknown_type(): void
     {
         $index = 'mock';
 
@@ -280,7 +278,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_should_continue_when_encountering_an_exception_while_publishing_the_event_to_the_event_bus()
+    public function it_should_continue_when_encountering_an_exception_while_publishing_the_event_to_the_event_bus(): void
     {
         $index = 'mock';
 
@@ -392,7 +390,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
                     // Throw one NOT FOUND exception to check that the
                     // operation continues to loop through the other results.
                     if ($event instanceof PlaceProjectedToJSONLD &&
-                        $event->getItemId() == 'a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a') {
+                        $event->getItemId() === 'a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a') {
                         // @codingStandardsIgnoreStart
                         throw new ClientException(
                             'Client error: `GET http://udb-silex.dev/place/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a` resulted in a `410 Gone` response: {"type":"about:blank","status":410}',
@@ -409,13 +407,9 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->assertEquals($expectedEvents, $actualEvents);
     }
 
-    /**
-     * @param string $filePath
-     * @return array
-     */
-    private function getJsonDocumentAsElasticSearchResults($filePath)
+    private function getJsonDocumentAsElasticSearchResults(string $filePath): array
     {
         $contents = file_get_contents($filePath);
-        return json_decode($contents, true);
+        return Json::decodeAssociatively($contents);
     }
 }

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService\Error;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
+use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
@@ -14,10 +15,7 @@ use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
 final class ApiExceptionHandler extends Handler
 {
-    /**
-     * @var EmitterInterface
-     */
-    private $emitter;
+    private EmitterInterface $emitter;
 
     /**
      * ApiExceptionHandler constructor.
@@ -31,7 +29,7 @@ final class ApiExceptionHandler extends Handler
     {
         $exception = $this->getInspector()->getException();
         if ($exception instanceof ElasticsearchException) {
-            $errorData = json_decode($exception->getMessage(), true);
+            $errorData = Json::decodeAssociatively($exception->getMessage());
             $message = $errorData['error']['root_cause'][0]['reason'];
             $jsonSerializableException = new \Exception($message);
         } else {
