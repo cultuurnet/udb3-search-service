@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
+use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
@@ -494,6 +495,63 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                 'geo_point' => (object) [
                                     'lat' => -40.3456,
                                     'lon' => 78.3,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_geo_bounds_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withGeoBoundsFilter(
+                new GeoBoundsParameters(
+                    new Coordinates(
+                        new Latitude(40.73),
+                        new Longitude(-71.12)
+                    ),
+                    new Coordinates(
+                        new Latitude(40.01),
+                        new Longitude(-74.1)
+                    )
+                )
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_bounding_box' => [
+                                'geo_point' => [
+                                    'top_left' => [
+                                        'lat' => 40.73,
+                                        'lon' => -74.1,
+                                    ],
+                                    'bottom_right' => [
+                                        'lat' => 40.01,
+                                        'lon' => -71.12,
+                                    ],
                                 ],
                             ],
                         ],
