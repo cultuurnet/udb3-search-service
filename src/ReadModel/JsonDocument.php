@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ReadModel;
 
 use Broadway\ReadModel\Identifiable;
+use CultuurNet\UDB3\Search\Json;
 use stdClass;
 
 final class JsonDocument implements Identifiable
@@ -45,7 +46,7 @@ final class JsonDocument implements Identifiable
 
     public function withBody($body): JsonDocument
     {
-        return new self($this->id, json_encode($body));
+        return new self($this->id, Json::encode($body));
     }
 
     public function apply(callable $fn): JsonDocument

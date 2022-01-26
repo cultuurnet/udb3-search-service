@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +30,7 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
         $indexed = [
             '@id' => 'https://io.uitdatabank.be/events/8ea290f6-deb2-426e-820a-68eeefde9c4d',
             '@context' => '/contexts/event',
-            'originalEncodedJsonLd' => json_encode($jsonld),
+            'originalEncodedJsonLd' => Json::encode($jsonld),
         ];
 
         $expected = [

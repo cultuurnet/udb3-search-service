@@ -8,6 +8,7 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use DateTimeInterface;
@@ -513,7 +514,7 @@ final class EventTransformerTest extends TestCase
         // become empty arrays in PHP.
         $expected = json_decode(file_get_contents($expectedFilePath));
         $actual = json_decode(
-            json_encode(
+            Json::encode(
                 $this->transformer->transform($original, [])
             )
         );

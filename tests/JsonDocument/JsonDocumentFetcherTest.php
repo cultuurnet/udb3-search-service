@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
@@ -62,7 +63,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 ]
             )
             ->willReturn(
-                new Response(200, [], json_encode($jsonLd))
+                new Response(200, [], Json::encode($jsonLd))
             );
 
         $actualJsonDocument = $this->jsonDocumentFetcher->fetch(
@@ -98,7 +99,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 []
             )
             ->willReturn(
-                new Response(200, [], json_encode($jsonLd))
+                new Response(200, [], Json::encode($jsonLd))
             );
 
         $actualJsonDocument = $jsonDocumentFetcher->fetch(

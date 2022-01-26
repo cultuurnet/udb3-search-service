@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -52,7 +53,7 @@ final class Auth0TokenProviderTest extends TestCase
             ->willReturn(null);
 
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode([
+            new Response(200, [], Json::encode([
                 'access_token' => 'my_auth0_token',
                 'expires_in' => 86400,
             ])),
@@ -90,7 +91,7 @@ final class Auth0TokenProviderTest extends TestCase
             ->willReturn($auth0Token);
 
         $mockHandler = new MockHandler([
-            new Response(200, [], json_encode([
+            new Response(200, [], Json::encode([
                 'access_token' => 'my_new_auth0_token',
                 'expires_in' => 86400,
             ])),

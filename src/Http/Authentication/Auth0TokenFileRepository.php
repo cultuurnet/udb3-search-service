@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 
 final class Auth0TokenFileRepository implements Auth0TokenRepository
@@ -35,7 +36,7 @@ final class Auth0TokenFileRepository implements Auth0TokenRepository
 
     public function set(Auth0Token $token): void
     {
-        $tokenAsJson = json_encode([
+        $tokenAsJson = Json::encode([
             'token' => $token->getToken(),
             'issuesAt' => $token->getIssuedAt()->format(DATE_ATOM),
             'expiresIn' => $token->getExpiresIn(),
