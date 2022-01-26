@@ -1226,7 +1226,7 @@ final class OfferSearchControllerTest extends TestCase
     private function expectQueryBuilderWillReturnResultSet(
         OfferQueryBuilderInterface $expectedQueryBuilder,
         PagedResultSet $pagedResultSet
-    ) {
+    ): void {
         $this->searchService->expects($this->once())
             ->method('search')
             ->with(
