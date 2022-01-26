@@ -530,7 +530,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
             'from' => 30,
             'size' => 10,
             'query' => [
