@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Json;
 
 final class CreateAutocompleteAnalyzer extends AbstractElasticSearchOperation
 {
-    public function run()
+    public function run(): void
     {
         $this->client->indices()->putTemplate(
             [

@@ -13,12 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 final class NodeAwareFacetTreeNormalizerTest extends TestCase
 {
-    /**
-     * @var NodeAwareFacetTreeNormalizer
-     */
-    private $normalizer;
+    private NodeAwareFacetTreeNormalizer $normalizer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->normalizer = new NodeAwareFacetTreeNormalizer();
     }
@@ -26,7 +23,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_normalizes_a_facet_tree_to_an_associative_array_and_includes_node_specific_details()
+    public function it_normalizes_a_facet_tree_to_an_associative_array_and_includes_node_specific_details(): void
     {
         $expectedJson = file_get_contents(__DIR__ . '/data/facets.json');
         $expectedArray = Json::decodeAssociatively($expectedJson);
