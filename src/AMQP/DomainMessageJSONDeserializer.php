@@ -17,15 +17,10 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
     /**
      * Fully qualified class name of the payload. This class should implement
      * Broadway\Serializer\SerializableInterface.
-     *
-     * @var string
      */
-    private $payloadClass;
+    private string $payloadClass;
 
-    /**
-     * @param string $payloadClass
-     */
-    public function __construct($payloadClass)
+    public function __construct(string $payloadClass)
     {
         if (!in_array(Serializable::class, class_implements($payloadClass))) {
             throw new \InvalidArgumentException(
@@ -39,7 +34,7 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
         $this->payloadClass = $payloadClass;
     }
 
-    public function deserialize(string $data)
+    public function deserialize(string $data): DomainMessage
     {
         $data = Json::decodeAssociatively($data);
 
