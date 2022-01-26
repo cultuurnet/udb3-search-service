@@ -9,10 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonLdEmbeddingJsonTransformerTest extends TestCase
 {
-    /**
-     * @var JsonLdEmbeddingJsonTransformer
-     */
-    private $transformer;
+    private JsonLdEmbeddingJsonTransformer $transformer;
 
     protected function setUp(): void
     {

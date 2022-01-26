@@ -9,10 +9,7 @@ use DateTimeImmutable;
 
 final class Auth0TokenFileRepository implements Auth0TokenRepository
 {
-    /**
-     * @var string
-     */
-    private $fullFilePath;
+    private string $fullFilePath;
 
     public function __construct(string $fullFilePath)
     {

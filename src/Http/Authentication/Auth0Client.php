@@ -17,25 +17,13 @@ final class Auth0Client implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
-    /**
-     * @var string
-     */
-    private $domain;
+    private string $domain;
 
-    /**
-     * @var string
-     */
-    private $clientId;
+    private string $clientId;
 
-    /**
-     * @var string
-     */
-    private $clientSecret;
+    private string $clientSecret;
 
     public function __construct(Client $client, string $domain, string $clientId, string $clientSecret)
     {

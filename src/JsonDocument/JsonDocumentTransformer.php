@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class JsonDocumentTransformer
 {
-    /**
-     * @var JsonTransformer
-     */
-    private $jsonTransformer;
+    private JsonTransformer $jsonTransformer;
 
     public function __construct(JsonTransformer $jsonTransformer)
     {

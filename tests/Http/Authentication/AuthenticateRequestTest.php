@@ -41,15 +41,9 @@ final class AuthenticateRequestTest extends TestCase
      */
     private $cultureFeed;
 
-    /**
-     * @var Auth0TokenProvider
-     */
-    private $auth0TokenProvider;
+    private Auth0TokenProvider $auth0TokenProvider;
 
-    /**
-     * @var AuthenticateRequest
-     */
-    private $authenticateRequest;
+    private AuthenticateRequest $authenticateRequest;
 
     protected function setUp(): void
     {

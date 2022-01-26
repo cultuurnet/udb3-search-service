@@ -15,10 +15,7 @@ use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
 final class ApiExceptionHandler extends Handler
 {
-    /**
-     * @var EmitterInterface
-     */
-    private $emitter;
+    private EmitterInterface $emitter;
 
     /**
      * ApiExceptionHandler constructor.
