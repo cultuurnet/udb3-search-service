@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
@@ -23,6 +24,8 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     public function withPostalCodeFilter(PostalCode $postalCode): OrganizerQueryBuilderInterface;
 
     public function withAddressCountryFilter(Country $country): OrganizerQueryBuilderInterface;
+
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): OrganizerQueryBuilderInterface;
 
     public function withCreatorFilter(Creator $creator): OrganizerQueryBuilderInterface;
 

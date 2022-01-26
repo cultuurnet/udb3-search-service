@@ -10,11 +10,14 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\SortOrder;
+use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
@@ -67,6 +70,22 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             ),
             $country->toString()
         );
+    }
+
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): self
+    {
+        $geoDistanceQuery = new GeoDistanceQuery(
+            'geo_point',
+            $geoDistanceParameters->getMaximumDistance()->toString(),
+            (object) [
+                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
+                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
+            ]
+        );
+
+        $c = $this->getClone();
+        $c->boolQuery->add($geoDistanceQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withCreatorFilter(Creator $creator): ElasticSearchOrganizerQueryBuilder

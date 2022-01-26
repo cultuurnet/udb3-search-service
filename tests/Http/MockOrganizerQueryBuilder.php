@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -60,6 +61,15 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['country'] = $country->toString();
+        return $c;
+    }
+
+    public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): self
+    {
+        $c = clone $this;
+        $c->mockQuery['geoDistance']['lat'] = $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble();
+        $c->mockQuery['geoDistance']['lng'] = $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble();
+        $c->mockQuery['geoDistance']['distance'] = $geoDistanceParameters->getMaximumDistance()->toString();
         return $c;
     }
 
