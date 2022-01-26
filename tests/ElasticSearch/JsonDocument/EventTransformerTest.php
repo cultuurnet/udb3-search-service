@@ -512,8 +512,8 @@ final class EventTransformerTest extends TestCase
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects
         // become empty arrays in PHP.
-        $expected = json_decode(file_get_contents($expectedFilePath));
-        $actual = json_decode(
+        $expected = Json::decode(file_get_contents($expectedFilePath));
+        $actual = Json::decode(
             Json::encode(
                 $this->transformer->transform($original, [])
             )

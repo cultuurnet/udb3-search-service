@@ -36,7 +36,7 @@ final class JsonDocument implements Identifiable
 
     public function getBody(): stdClass
     {
-        return json_decode($this->body);
+        return Json::decode($this->body);
     }
 
     public function getRawBody(): string
