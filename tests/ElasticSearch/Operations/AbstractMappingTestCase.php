@@ -6,25 +6,16 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 abstract class AbstractMappingTestCase extends AbstractOperationTestCase
 {
-    /**
-     * @return string
-     */
-    abstract protected function getDocumentType();
+    abstract protected function getDocumentType(): string;
 
-    /**
-     * @return array
-     */
-    abstract protected function getExpectedMappingBody();
+    abstract protected function getExpectedMappingBody(): array;
 
-    /**
-     * @param string $indexName
-     */
-    abstract protected function runOperation($indexName);
+    abstract protected function runOperation(string $indexName): void;
 
     /**
      * @test
      */
-    public function it_updates_the_mapping_of_the_given_document_type_with_the_expected_mapping_body()
+    public function it_updates_the_mapping_of_the_given_document_type_with_the_expected_mapping_body(): void
     {
         $indexName = 'mock';
         $documentType = $this->getDocumentType();

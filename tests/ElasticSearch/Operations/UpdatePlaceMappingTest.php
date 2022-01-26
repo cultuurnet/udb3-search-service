@@ -10,36 +10,24 @@ use Psr\Log\LoggerInterface;
 
 final class UpdatePlaceMappingTest extends AbstractMappingTestCase
 {
-    /**
-     * @return UpdatePlaceMapping
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): UpdatePlaceMapping
     {
         return new UpdatePlaceMapping($client, $logger);
     }
 
-    /**
-     * @return string
-     */
-    protected function getDocumentType()
+    protected function getDocumentType(): string
     {
         return 'place';
     }
 
-    /**
-     * @return array
-     */
-    protected function getExpectedMappingBody()
+    protected function getExpectedMappingBody(): array
     {
         return Json::decodeAssociatively(
             file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_place.json')
         );
     }
 
-    /**
-     * @param string $indexName
-     */
-    protected function runOperation($indexName)
+    protected function runOperation(string $indexName): void
     {
         $this->operation->run($indexName, $this->getDocumentType());
     }

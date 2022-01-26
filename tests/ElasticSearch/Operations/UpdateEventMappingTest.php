@@ -10,36 +10,24 @@ use Psr\Log\LoggerInterface;
 
 final class UpdateEventMappingTest extends AbstractMappingTestCase
 {
-    /**
-     * @return UpdateEventMapping
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): UpdateEventMapping
     {
         return new UpdateEventMapping($client, $logger);
     }
 
-    /**
-     * @return string
-     */
-    protected function getDocumentType()
+    protected function getDocumentType(): string
     {
         return 'event';
     }
 
-    /**
-     * @return array
-     */
-    protected function getExpectedMappingBody()
+    protected function getExpectedMappingBody(): array
     {
         return Json::decodeAssociatively(
             file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_event.json')
         );
     }
 
-    /**
-     * @param string $indexName
-     */
-    protected function runOperation($indexName)
+    protected function runOperation(string $indexName): void
     {
         $this->operation->run($indexName, $this->getDocumentType());
     }
