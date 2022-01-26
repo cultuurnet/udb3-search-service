@@ -8,14 +8,11 @@ use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 final class IndexRegions extends AbstractElasticSearchOperation
 {
-    /**
-     * @var Finder
-     */
-    private $finder;
-
+    private Finder $finder;
 
     public function __construct(
         Client $client,
@@ -26,14 +23,7 @@ final class IndexRegions extends AbstractElasticSearchOperation
         $this->finder = $finder;
     }
 
-    /**
-     * @param string $indexName
-     * @param string $pathToScan
-     *   Path to scan recursively.
-     * @param string $fileNameRegex
-     *   File name (regex) to match.
-     */
-    public function run($indexName, $pathToScan, $fileNameRegex = '*.json')
+    public function run(string $indexName, string $pathToScan, string $fileNameRegex = '*.json'): void
     {
         $files = $this->finder
             ->files()
@@ -41,7 +31,7 @@ final class IndexRegions extends AbstractElasticSearchOperation
             ->in($pathToScan)
             ->sortByName();
 
-        /* @var \Symfony\Component\Finder\SplFileInfo $file */
+        /* @var SplFileInfo $file */
         foreach ($files as $file) {
             $id = pathinfo($file->getFilename(), PATHINFO_FILENAME);
             $json = $file->getContents();
