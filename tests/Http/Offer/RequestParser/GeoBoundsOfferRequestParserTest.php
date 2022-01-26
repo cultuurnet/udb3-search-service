@@ -18,17 +18,14 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class GeoBoundsOfferRequestParserTest extends TestCase
 {
-    /**
-     * @var GeoBoundsOfferRequestParser
-     */
-    private $parser;
+    private GeoBoundsOfferRequestParser $parser;
 
     /**
      * @var OfferQueryBuilderInterface|MockObject
      */
     private $offerQueryBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new GeoBoundsOfferRequestParser(new GeoBoundsParametersFactory());
         $this->offerQueryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
@@ -37,7 +34,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_not_add_a_bounds_filter_if_no_bounds_parameter_is_given()
+    public function it_should_not_add_a_bounds_filter_if_no_bounds_parameter_is_given(): void
     {
         $this->offerQueryBuilder->expects($this->never())
             ->method('withGeoBoundsFilter');
@@ -48,7 +45,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_bounds_parameter_value_is_invalid()
+    public function it_should_throw_an_exception_if_the_bounds_parameter_value_is_invalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $request = $this->request(
@@ -60,7 +57,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_bounds_filter_if_a_valid_bounds_parameter_is_given()
+    public function it_should_add_a_bounds_filter_if_a_valid_bounds_parameter_is_given(): void4
     {
         $request = $this->request(
             [
