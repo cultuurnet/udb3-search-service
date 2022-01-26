@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -30,7 +31,7 @@ final class JsonLdResponse implements ResponseInterface
     public function withData($data)
     {
         $body = $this->response->getBody();
-        $body->write(json_encode($data, self::JSON_OPTIONS));
+        $body->write(Json::encodeWithOptions($data, self::JSON_OPTIONS));
 
         return $this->response->withBody($body);
     }

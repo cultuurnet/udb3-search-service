@@ -1233,8 +1233,8 @@ final class OfferSearchControllerTest extends TestCase
                 $this->callback(
                     function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
                         $this->assertEquals(
-                            json_encode($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
-                            json_encode($actualQueryBuilder->build(), JSON_PRETTY_PRINT)
+                            Json::encodeWithOptions($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
+                            Json::encodeWithOptions($actualQueryBuilder->build(), JSON_PRETTY_PRINT)
                         );
                         return true;
                     }
