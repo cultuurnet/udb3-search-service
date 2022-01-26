@@ -57,7 +57,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_bounds_filter_if_a_valid_bounds_parameter_is_given(): void4
+    public function it_should_add_a_bounds_filter_if_a_valid_bounds_parameter_is_given(): void
     {
         $request = $this->request(
             [
