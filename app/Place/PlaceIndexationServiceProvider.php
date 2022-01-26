@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\SearchService\Place;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
+use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
@@ -33,7 +34,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                             $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
-                        $this->get('region_service')
+                        $this->get(GeoShapeQueryRegionService::class)
                     )
                 );
 
