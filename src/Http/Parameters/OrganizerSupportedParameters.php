@@ -17,6 +17,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
             'addressCountry',
             'coordinates',
             'distance',
+            'bounds',
             'creator',
             'labels',
             'textLanguages',
