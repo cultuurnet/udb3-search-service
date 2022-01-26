@@ -25,7 +25,7 @@ final class Auth0TokenFileRepository implements Auth0TokenRepository
             return null;
         }
 
-        $tokenAsArray = json_decode(file_get_contents($this->fullFilePath), true);
+        $tokenAsArray = Json::decodeAssociatively(file_get_contents($this->fullFilePath));
 
         return new Auth0Token(
             $tokenAsArray['token'],

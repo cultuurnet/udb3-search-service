@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +29,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
     public function it_normalizes_a_facet_tree_to_an_associative_array_and_includes_node_specific_details()
     {
         $expectedJson = file_get_contents(__DIR__ . '/data/facets.json');
-        $expectedArray = json_decode($expectedJson, true);
+        $expectedArray = Json::decodeAssociatively($expectedJson);
 
         $facets = [
             new FacetFilter(

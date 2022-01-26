@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -95,8 +96,8 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
                 ]
             )
             ->willReturnOnConsecutiveCalls(
-                json_decode(file_get_contents(__DIR__ . '/data/regions_1.json'), true),
-                json_decode(file_get_contents(__DIR__ . '/data/regions_2.json'), true)
+                Json::decodeAssociatively(file_get_contents(__DIR__ . '/data/regions_1.json')),
+                Json::decodeAssociatively(file_get_contents(__DIR__ . '/data/regions_2.json'))
             );
 
         $expectedRegionIds = [
@@ -139,7 +140,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     {
         $this->client->expects($this->once())
             ->method('search')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/data/regions_invalid.json'), true));
+            ->willReturn(Json::decodeAssociatively(file_get_contents(__DIR__ . '/data/regions_invalid.json')));
 
         $this->expectException(\RuntimeException::class);
 

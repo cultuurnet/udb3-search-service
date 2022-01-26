@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
@@ -30,9 +31,8 @@ final class UpdateEventMappingTest extends AbstractMappingTestCase
      */
     protected function getExpectedMappingBody()
     {
-        return json_decode(
-            file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_event.json'),
-            true
+        return Json::decodeAssociatively(
+            file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_event.json')
         );
     }
 

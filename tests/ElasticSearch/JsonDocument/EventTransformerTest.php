@@ -507,7 +507,7 @@ final class EventTransformerTest extends TestCase
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
-        $original = json_decode(file_get_contents($givenFilePath), true);
+        $original = Json::decodeAssociatively(file_get_contents($givenFilePath));
 
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects

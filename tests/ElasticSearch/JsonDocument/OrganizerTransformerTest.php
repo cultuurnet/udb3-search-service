@@ -102,9 +102,8 @@ final class OrganizerTransformerTest extends TestCase
      */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete(): void
     {
-        $original = json_decode(
-            file_get_contents(__DIR__ . '/data/organizer/original_with_incomplete_translated_address.json'),
-            true
+        $original = Json::decodeAssociatively(
+            file_get_contents(__DIR__ . '/data/organizer/original_with_incomplete_translated_address.json')
         );
 
         $expectedLogs = [
@@ -141,7 +140,7 @@ final class OrganizerTransformerTest extends TestCase
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
-        $original = json_decode(file_get_contents($givenFilePath), true);
+        $original = Json::decodeAssociatively(file_get_contents($givenFilePath));
 
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects

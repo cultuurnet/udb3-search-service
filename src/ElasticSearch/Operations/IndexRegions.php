@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
@@ -52,7 +53,7 @@ final class IndexRegions extends AbstractElasticSearchOperation
                     'index' => $indexName,
                     'type' => 'region',
                     'id' => $id,
-                    'body' => json_decode($json, true),
+                    'body' => Json::decodeAssociatively($json),
                 ]
             );
         }

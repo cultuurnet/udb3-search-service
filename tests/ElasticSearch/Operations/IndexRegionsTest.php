@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
@@ -45,9 +46,8 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'index' => $index,
                         'id' => 'gem-antwerpen',
                         'type' => 'region',
-                        'body' => json_decode(
-                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json'),
-                            true
+                        'body' => Json::decodeAssociatively(
+                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json')
                         ),
                     ],
                 ],
@@ -56,9 +56,8 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'index' => $index,
                         'id' => 'gem-leuven',
                         'type' => 'region',
-                        'body' => json_decode(
-                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-leuven.json'),
-                            true
+                        'body' => Json::decodeAssociatively(
+                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-leuven.json')
                         ),
                     ],
                 ],
@@ -67,9 +66,8 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'index' => $index,
                         'id' => 'prov-vlaams-brabant',
                         'type' => 'region',
-                        'body' => json_decode(
-                            file_get_contents(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json'),
-                            true
+                        'body' => Json::decodeAssociatively(
+                            file_get_contents(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json')
                         ),
                     ],
                 ]

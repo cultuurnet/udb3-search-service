@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
@@ -58,7 +59,7 @@ final class BulkIndexationStrategy implements IndexationStrategy
             'index' => $indexName,
             'type' => $documentType,
             'id' => $jsonDocument->getId(),
-            'body' => json_decode($jsonDocument->getRawBody(), true),
+            'body' => Json::decodeAssociatively($jsonDocument->getRawBody()),
         ];
 
         $this->autoFlush();
