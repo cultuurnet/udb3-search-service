@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 use Psr\Http\Message\ResponseInterface;
 
@@ -26,6 +27,10 @@ final class OrganizerSearchController
     private OrganizerQueryBuilderInterface $queryBuilder;
 
     private OrganizerSearchServiceInterface $searchService;
+
+    private string $regionIndexName;
+
+    private string $regionDocumentType;
 
     private OrganizerSupportedParameters $organizerParameterWhiteList;
 
@@ -38,12 +43,16 @@ final class OrganizerSearchController
     public function __construct(
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
+        string $regionIndexName,
+        string $regionDocumentType,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactory $queryStringFactory,
         Consumer $consumer
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
+        $this->regionIndexName = $regionIndexName;
+        $this->regionDocumentType = $regionDocumentType;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
         $this->organizerParameterWhiteList = new OrganizerSupportedParameters();
@@ -109,6 +118,19 @@ final class OrganizerSearchController
         if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
+
+        $regionIds = $parameterBag->getArrayFromParameter(
+            'regions',
+            fn ($value) => new RegionId($value)
+        );
+        foreach ($regionIds as $regionId) {
+            $queryBuilder = $queryBuilder->withRegionFilter(
+                $this->regionIndexName,
+                $this->regionDocumentType,
+                $regionId
+            );
+        }
+
         if ($request->hasQueryParam('creator')) {
             $queryBuilder = $queryBuilder->withCreatorFilter(
                 new Creator($request->getQueryParam('creator'))
