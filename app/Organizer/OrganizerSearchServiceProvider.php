@@ -55,6 +55,8 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                             new NullAggregationTransformer()
                         )
                     ),
+                    $this->parameter('elasticsearch.region.read_index'),
+                    $this->parameter('elasticsearch.region.document_type'),
                     $requestParser,
                     new LuceneQueryStringFactory(),
                     $this->get(Consumer::class)
