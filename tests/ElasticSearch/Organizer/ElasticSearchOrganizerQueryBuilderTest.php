@@ -8,8 +8,13 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
+use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
@@ -440,6 +445,55 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                             ],
                                         ],
                                     ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_geodistance_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withGeoDistanceFilter(
+                new GeoDistanceParameters(
+                    new Coordinates(
+                        new Latitude(-40.3456),
+                        new Longitude(78.3)
+                    ),
+                    new ElasticSearchDistance('30km')
+                )
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_distance' => [
+                                'distance' => '30km',
+                                'geo_point' => (object) [
+                                    'lat' => -40.3456,
+                                    'lon' => 78.3,
                                 ],
                             ],
                         ],
