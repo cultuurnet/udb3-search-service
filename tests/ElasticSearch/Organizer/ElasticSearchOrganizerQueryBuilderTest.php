@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
@@ -621,6 +622,73 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                 ],
                             ],
                         ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_single_facet(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withFacet(
+                FacetName::regions()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'aggregations' => [
+                'regions' => [
+                    'terms' => [
+                        'field' => 'regions.keyword',
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_use_a_custom_aggregation_size_for_facets(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder(100))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withFacet(
+                FacetName::regions()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'aggregations' => [
+                'regions' => [
+                    'terms' => [
+                        'field' => 'regions.keyword',
+                        'size' => 100,
                     ],
                 ],
             ],
