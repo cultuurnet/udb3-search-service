@@ -15,11 +15,13 @@ use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
 final class OrganizerSearchController
@@ -36,6 +38,8 @@ final class OrganizerSearchController
 
     private QueryStringFactory $queryStringFactory;
 
+    private FacetTreeNormalizerInterface $facetTreeNormalizer;
+
     private OrganizerRequestParser $organizerRequestParser;
 
     private Consumer $consumer;
@@ -47,6 +51,7 @@ final class OrganizerSearchController
         string $regionDocumentType,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactory $queryStringFactory,
+        FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer
     ) {
         $this->queryBuilder = $queryBuilder;
@@ -55,6 +60,7 @@ final class OrganizerSearchController
         $this->regionDocumentType = $regionDocumentType;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
+        $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->organizerParameterWhiteList = new OrganizerSupportedParameters();
         $this->consumer = $consumer;
     }
@@ -142,6 +148,11 @@ final class OrganizerSearchController
             $queryBuilder = $queryBuilder->withLabelFilter($label);
         }
 
+        $facets = $this->getFacetsFromQuery($parameterBag, 'facets');
+        foreach ($facets as $facet) {
+            $queryBuilder = $queryBuilder->withFacet($facet);
+        }
+
         $resultSet = $this->searchService->search($queryBuilder);
 
         $resultTransformer = ResultTransformerFactory::create(
@@ -155,7 +166,15 @@ final class OrganizerSearchController
             $limit->toInteger()
         );
 
-        return ResponseFactory::jsonLd($pagedCollection);
+        $jsonArray = $pagedCollection->jsonSerialize();
+
+        foreach ($resultSet->getFacets() as $facetFilter) {
+            // Singular "facet" to be consistent with "member" in Hydra
+            // PagedCollection.
+            $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
+        }
+
+        return ResponseFactory::jsonLd($jsonArray);
     }
 
 
@@ -181,6 +200,23 @@ final class OrganizerSearchController
             $queryParameter,
             function ($value) {
                 return new Language($value);
+            }
+        );
+    }
+
+    /**
+     * @return FacetName[]
+     */
+    private function getFacetsFromQuery(ParameterBagInterface $parameterBag, string $queryParameter): array
+    {
+        return $parameterBag->getArrayFromParameter(
+            $queryParameter,
+            function ($value) {
+                try {
+                    return new FacetName(strtolower($value));
+                } catch (UnsupportedParameterValue $e) {
+                    throw new UnsupportedParameterValue("Unknown facet name '$value'.");
+                }
             }
         );
     }
