@@ -35,7 +35,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withLimit(new Limit(10));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -61,7 +61,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -96,7 +96,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -129,7 +129,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAutoCompleteFilter('Collectief Cursief');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -175,7 +175,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -212,7 +212,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withDomainFilter('publiq.be');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -247,7 +247,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withDomainFilter('www.publiq.be');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -285,7 +285,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -340,7 +340,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -406,7 +406,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAddressCountryFilter(new Country('NL'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -481,7 +481,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -545,7 +545,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -597,7 +597,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -645,7 +645,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -678,7 +678,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -710,7 +710,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withCreatorFilter(new Creator('John Doe'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -754,7 +754,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -800,7 +800,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -824,7 +824,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -866,7 +866,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -921,7 +921,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [

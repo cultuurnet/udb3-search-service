@@ -33,7 +33,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
     public function __construct(int $aggregationSize = null)
     {
         parent::__construct();
-        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd'];
+        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
         $this->aggregationSize = $aggregationSize;
     }
 
