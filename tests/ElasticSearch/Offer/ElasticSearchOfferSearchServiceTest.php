@@ -21,22 +21,13 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
+    private string $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $documentType;
 
-    /**
-     * @var ElasticSearchOfferSearchService
-     */
-    private $service;
+    private ElasticSearchOfferSearchService $service;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
@@ -58,7 +49,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_result_set_for_the_given_search_parameters()
+    public function it_returns_a_paged_result_set_for_the_given_search_parameters(): void
     {
         $queryBuilder = (new ElasticSearchOfferQueryBuilder())
             ->withStart(new Start(0))
