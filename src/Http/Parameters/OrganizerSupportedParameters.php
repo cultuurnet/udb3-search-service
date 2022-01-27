@@ -19,6 +19,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
             'coordinates',
             'distance',
             'bounds',
+            'facets',
             'creator',
             'labels',
             'textLanguages',
