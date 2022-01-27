@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\QueryBuilder;
@@ -137,6 +138,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
             },
             $workflowStatuses
         );
+        return $c;
+    }
+
+    public function withFacet(FacetName $facetName): self
+    {
+        $c = clone $this;
+        $c->mockQuery['facet'][] = $facetName->toString();
         return $c;
     }
 

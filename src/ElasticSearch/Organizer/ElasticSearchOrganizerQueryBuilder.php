@@ -14,10 +14,12 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
+use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
@@ -26,10 +28,13 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
-    public function __construct()
+    private ?int $aggregationSize;
+
+    public function __construct(int $aggregationSize = null)
     {
         parent::__construct();
         $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd'];
+        $this->aggregationSize = $aggregationSize;
     }
 
     protected function getPredefinedQueryStringFields(Language ...$languages): array
@@ -155,6 +160,28 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
                 $workflowStatuses
             )
         );
+    }
+
+    public function withFacet(FacetName $facetName): self
+    {
+        $facetFields = [
+            FacetName::regions()->toString() => 'regions.keyword',
+        ];
+
+        if (!isset($facetFields[$facetName->toString()])) {
+            return $this;
+        }
+
+        $facetField = $facetFields[$facetName->toString()];
+        $aggregation = new TermsAggregation($facetName->toString(), $facetField);
+
+        if (null !== $this->aggregationSize) {
+            $aggregation->addParameter('size', $this->aggregationSize);
+        }
+
+        $c = $this->getClone();
+        $c->search->addAggregation($aggregation);
+        return $c;
     }
 
     public function withSortByScore(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
