@@ -18,7 +18,9 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 
 final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
@@ -33,7 +35,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withLimit(new Limit(10));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -59,7 +61,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -94,7 +96,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -127,7 +129,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAutoCompleteFilter('Collectief Cursief');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -173,7 +175,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -210,7 +212,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withDomainFilter('publiq.be');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -245,7 +247,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withDomainFilter('www.publiq.be');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [
@@ -283,7 +285,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -338,7 +340,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -404,7 +406,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withAddressCountryFilter(new Country('NL'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -462,6 +464,71 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
+    public function it_should_build_a_query_with_a_geoshape_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withRegionFilter(
+                'geoshapes',
+                'regions',
+                new RegionId('gem-leuven')
+            )
+            ->withRegionFilter(
+                'geoshapes',
+                'regions',
+                new RegionId('prv-limburg')
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'index' => 'geoshapes',
+                                        'type' => 'regions',
+                                        'id' => 'gem-leuven',
+                                        'path' => 'location',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'index' => 'geoshapes',
+                                        'type' => 'regions',
+                                        'id' => 'prv-limburg',
+                                        'path' => 'location',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_a_geodistance_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
@@ -478,7 +545,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -530,7 +597,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -568,6 +635,73 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
+    public function it_should_build_a_query_with_a_single_facet(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withFacet(
+                FacetName::regions()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'aggregations' => [
+                'regions' => [
+                    'terms' => [
+                        'field' => 'regions.keyword',
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_use_a_custom_aggregation_size_for_facets(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder(100))
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withFacet(
+                FacetName::regions()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+            'aggregations' => [
+                'regions' => [
+                    'terms' => [
+                        'field' => 'regions.keyword',
+                        'size' => 100,
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_a_creator_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
@@ -576,7 +710,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withCreatorFilter(new Creator('John Doe'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -620,7 +754,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -666,7 +800,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -690,7 +824,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -732,7 +866,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -787,7 +921,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withWebsiteFilter(new Url('http://foo.bar'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 0,
             'size' => 30,
             'query' => [

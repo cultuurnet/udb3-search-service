@@ -11,7 +11,9 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\QueryBuilder;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
@@ -26,6 +28,12 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 
     public function withAddressCountryFilter(Country $country): OrganizerQueryBuilderInterface;
 
+    public function withRegionFilter(
+        string $regionIndexName,
+        string $regionDocumentType,
+        RegionId $regionId
+    ): OrganizerQueryBuilderInterface;
+
     public function withGeoDistanceFilter(GeoDistanceParameters $geoDistanceParameters): OrganizerQueryBuilderInterface;
 
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): OrganizerQueryBuilderInterface;
@@ -35,6 +43,8 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     public function withLabelFilter(LabelName $label): OrganizerQueryBuilderInterface;
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OrganizerQueryBuilderInterface;
+
+    public function withFacet(FacetName $facetName): OrganizerQueryBuilderInterface;
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 

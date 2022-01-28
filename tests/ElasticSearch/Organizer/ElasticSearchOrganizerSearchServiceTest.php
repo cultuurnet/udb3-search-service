@@ -21,22 +21,13 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
+    private string $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $documentType;
 
-    /**
-     * @var ElasticSearchOrganizerSearchService
-     */
-    private $service;
+    private ElasticSearchOrganizerSearchService $service;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
@@ -58,7 +49,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_result_set_for_the_given_search_query()
+    public function it_returns_a_paged_result_set_for_the_given_search_query(): void
     {
         $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStart(new Start(960))
@@ -108,7 +99,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                     'index' => $this->indexName,
                     'type' => $this->documentType,
                     'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd'],
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 960,
                         'size' => 30,
                         'query' => [

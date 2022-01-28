@@ -8,6 +8,8 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
+use CultuurNet\UDB3\Search\Facet\FacetFilter;
+use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
@@ -21,12 +23,15 @@ use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,6 +49,10 @@ final class OrganizerSearchControllerTest extends TestCase
      */
     private $searchService;
 
+    private string $regionIndexName;
+
+    private string $regionDocumentType;
+
     private OrganizerSearchController $controller;
 
     protected function setUp(): void
@@ -51,9 +60,14 @@ final class OrganizerSearchControllerTest extends TestCase
         $this->queryBuilder = new MockOrganizerQueryBuilder();
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
 
+        $this->regionIndexName = 'geoshapes';
+        $this->regionDocumentType = 'region';
+
         $this->controller = new OrganizerSearchController(
             $this->queryBuilder,
             $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
             (new CompositeOrganizerRequestParser())
                 ->withParser(new DistanceOrganizerRequestParser(
                     new GeoDistanceParametersFactory(new MockDistanceFactory())
@@ -61,6 +75,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 ->withParser(new WorkflowStatusOrganizerRequestParser())
                 ->withParser(new SortByOrganizerRequestParser()),
             new MockQueryStringFactory(),
+            new NodeAwareFacetTreeNormalizer(),
             new Consumer(null, null)
         );
     }
@@ -80,8 +95,10 @@ final class OrganizerSearchControllerTest extends TestCase
                 'website' => 'http://foo.bar',
                 'postalCode' => 3000,
                 'addressCountry' => 'NL',
+                'regions' => ['gem-leuven', 'prv-limburg'],
                 'coordinates' => '-40,70',
                 'distance' => '30km',
+                'facets' => ['regions'],
                 'creator' => 'Jan Janssens',
                 'labels' => [
                     'Uitpas',
@@ -108,6 +125,16 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))
+            ->withRegionFilter(
+                $this->regionIndexName,
+                $this->regionDocumentType,
+                new RegionId('gem-leuven')
+            )
+            ->withRegionFilter(
+                $this->regionIndexName,
+                $this->regionDocumentType,
+                new RegionId('prv-limburg')
+            )
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
@@ -124,6 +151,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('Uitpas'))
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))
+            ->withFacet(FacetName::regions())
             ->withStart(new Start(30))
             ->withLimit(new Limit(10));
 
@@ -134,6 +162,26 @@ final class OrganizerSearchControllerTest extends TestCase
                 new JsonDocument('3f2ba18c-59a9-4f65-a242-462ad467c72b', '{"@id":"1","@type":"Organizer"}'),
                 new JsonDocument('39d06346-b762-4ccd-8b3a-142a8f6abbbe', '{"@id":"2","@type":"Organizer"}'),
             ]
+        );
+
+        $expectedResultSet = $expectedResultSet->withFacets(
+            new FacetFilter(
+                'regions',
+                [
+                    new FacetNode(
+                        'gem-leuven',
+                        new MultilingualString(new Language('nl'), 'Leuven'),
+                        7,
+                        [
+                            new FacetNode(
+                                'gem-wijgmaal',
+                                new MultilingualString(new Language('nl'), 'Wijgmaal'),
+                                3
+                            ),
+                        ]
+                    ),
+                ]
+            )
         );
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
@@ -147,6 +195,24 @@ final class OrganizerSearchControllerTest extends TestCase
                 'member' => [
                     ['@id' => '1', '@type' => 'Organizer'],
                     ['@id' => '2', '@type' => 'Organizer'],
+                ],
+                'facet' => [
+                    'regions' => [
+                        'gem-leuven' => [
+                            'name' => [
+                                'nl' => 'Leuven',
+                            ],
+                            'count' => 7,
+                            'children' => [
+                                'gem-wijgmaal' => [
+                                    'name' => [
+                                        'nl' => 'Wijgmaal',
+                                    ],
+                                    'count' => 3,
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ]
         );

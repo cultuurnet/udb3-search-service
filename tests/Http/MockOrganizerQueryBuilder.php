@@ -14,9 +14,11 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\QueryBuilder;
+use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 
@@ -62,6 +64,18 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['country'] = $country->toString();
+        return $c;
+    }
+
+    public function withRegionFilter(
+        string $regionIndexName,
+        string $regionDocumentType,
+        RegionId $regionId
+    ): self {
+        $c = clone $this;
+        $c->mockQuery['region']['index'] = $regionIndexName;
+        $c->mockQuery['region']['type'] = $regionDocumentType;
+        $c->mockQuery['region']['id'] = $regionId->toString();
         return $c;
     }
 
@@ -124,6 +138,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
             },
             $workflowStatuses
         );
+        return $c;
+    }
+
+    public function withFacet(FacetName $facetName): self
+    {
+        $c = clone $this;
+        $c->mockQuery['facet'][] = $facetName->toString();
         return $c;
     }
 
