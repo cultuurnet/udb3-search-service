@@ -91,6 +91,95 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_add_missing_id_to_mediaObject_objects_if_id_url_is_set(): void
+    {
+        $this
+            ->given(
+                [
+                    'mediaObject' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                        ],
+                        [
+                            '@type' => 'schema:ImageObject',
+                        ],
+                        [
+                            'id' => 'aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                        ],
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'mediaObject' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                            'id' => 'aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                        ],
+                        [
+                            '@type' => 'schema:ImageObject',
+                        ],
+                        [
+                            'id' => 'aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_add_inLanguage_to_images_if_language_is_set_and_always_add_type_when_missing(): void
+    {
+        $this
+            ->given(
+                [
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                            'language' => 'nl',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            'inLanguage' => 'fr',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            'language' => 'de',
+                        ],
+                    ],
+                ]
+            )
+            ->assertReturnedDocumentContains(
+                [
+                    'images' => [
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'nl',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'fr',
+                        ],
+                        [
+                            '@id' => 'https://io.uitdatabank.dev/images/aa3d494c-894c-4b9c-9a12-8acccba4a6d4',
+                            '@type' => 'schema:ImageObject',
+                            'inLanguage' => 'de',
+                        ],
+                    ],
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_remove_metadata_if_set(): void
     {
         $this
