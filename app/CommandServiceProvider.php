@@ -43,7 +43,9 @@ final class CommandServiceProvider extends BaseServiceProvider
             Application::class,
             function () {
                 $commandMap = [
-                    'consume-udb3-core' => ConsumeCommand::class,
+                    'consume-udb3-core' => 'consume-udb3-core',
+                    'consume-udb3-api' => 'consume-udb3-api',
+                    'consume-udb3-cli' => 'consume-udb3-cli',
                     'facet-mapping:generate-from-taxonomy-terms' => TermTaxonomyToFacetMappingsCommand::class,
                     'facet-mapping:generate-regions-from-flandersregion-terms' => FlandersRegionTaxonomyToFacetMappingsCommand::class,
                     'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
@@ -190,10 +192,26 @@ final class CommandServiceProvider extends BaseServiceProvider
         );
 
         $this->add(
-            ConsumeCommand::class,
+            'consume-udb3-core',
             function () {
                 return (new ConsumeCommand('consume-udb3-core', $this->get('amqp.udb3-core')))
                     ->setDescription('Process messages from UDB3 core');
+            }
+        );
+
+        $this->add(
+            'consume-udb3-api',
+            function () {
+                return (new ConsumeCommand('consume-udb3-api', $this->get('amqp.udb3-api')))
+                    ->setDescription('Process messages from UDB3 api');
+            }
+        );
+
+        $this->add(
+            'consume-udb3-cli',
+            function () {
+                return (new ConsumeCommand('consume-udb3-cli', $this->get('amqp.udb3-cli')))
+                    ->setDescription('Process messages from UDB3 cli');
             }
         );
     }
