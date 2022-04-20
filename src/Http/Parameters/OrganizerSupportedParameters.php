@@ -21,6 +21,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
             'bounds',
             'facets',
             'creator',
+            'hasImages',
             'labels',
             'textLanguages',
             'workflowStatus',
