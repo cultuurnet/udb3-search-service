@@ -89,6 +89,17 @@ final class OrganizerTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_images_to_image_count(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/organizer/original_with_images.json',
+            __DIR__ . '/data/organizer/indexed_with_images.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_copies_workflow_status_if_provided(): void
     {
         $this->transformAndAssert(
