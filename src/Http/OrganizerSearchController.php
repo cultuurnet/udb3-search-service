@@ -143,6 +143,11 @@ final class OrganizerSearchController
             );
         }
 
+        $includeImages = $parameterBag->getBooleanFromParameter('hasImages');
+        if (!is_null($includeImages)) {
+            $queryBuilder = $queryBuilder->withImagesFilter($includeImages);
+        }
+
         $labels = $this->getLabelsFromQuery($parameterBag, 'labels');
         foreach ($labels as $label) {
             $queryBuilder = $queryBuilder->withLabelFilter($label);

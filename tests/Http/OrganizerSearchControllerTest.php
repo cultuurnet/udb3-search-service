@@ -100,6 +100,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 'distance' => '30km',
                 'facets' => ['regions'],
                 'creator' => 'Jan Janssens',
+                'hasImages' => 'true',
                 'labels' => [
                     'Uitpas',
                     'foo',
@@ -148,6 +149,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withSortByScore(SortOrder::desc())
             ->withSortByCreated(SortOrder::asc())
             ->withSortByModified(SortOrder::desc())
+            ->withImagesFilter(true)
             ->withLabelFilter(new LabelName('Uitpas'))
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))
