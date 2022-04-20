@@ -11,6 +11,7 @@
     "completedLanguages": ["nl"],
     "originalEncodedJsonLd": "{\"@id\":\"http:\/\/udb-silex.dev\/organizers\/5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83\",\"@context\":\"\/contexts\/organizer\",\"url\":\"https:\/\/www.meetup.com\/PHP-Leuven-Web-Innovation-Group\/events\/234638670\/\",\"name\":{\"nl\":\"PHPLeuven\"},\"created\":\"2017-02-08T14:06:55+00:00\",\"creator\":\"96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc (bert2dotstwice)\",\"labels\":[\"UiTPAS\"],\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"]}",
     "creator": "96fd6c13-eaab-4dd1-bb6a-1c483d5e40cc (bert2dotstwice)",
+    "imagesCount": 0,
     "labels": [
         "UiTPAS"
     ],
