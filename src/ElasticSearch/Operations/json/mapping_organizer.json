@@ -147,6 +147,10 @@
             }
         },
 
+        "imagesCount": {
+            "type": "integer"
+        },
+
         "geo": {
             "type": "geo_shape"
         },

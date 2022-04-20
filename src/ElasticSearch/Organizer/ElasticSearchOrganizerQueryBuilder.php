@@ -139,6 +139,14 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return $c;
     }
 
+    public function withImagesFilter(bool $include): self
+    {
+        $min = $include ? 1 : null;
+        $max = $include ? null : 0;
+
+        return $this->withRangeQuery('imagesCount', $min, $max);
+    }
+
     public function withCreatorFilter(Creator $creator): ElasticSearchOrganizerQueryBuilder
     {
         return $this->withMatchQuery('creator', $creator->toString());

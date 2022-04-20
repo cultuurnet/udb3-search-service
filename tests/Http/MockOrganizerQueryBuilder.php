@@ -122,6 +122,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
+    public function withImagesFilter(bool $include): MockOrganizerQueryBuilder
+    {
+        $c = clone $this;
+        $c->mockQuery['images'] = $include;
+        return $c;
+    }
+
     public function withLabelFilter(LabelName $label): MockOrganizerQueryBuilder
     {
         $c = clone $this;

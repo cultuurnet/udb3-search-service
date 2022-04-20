@@ -40,6 +40,12 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 
     public function withCreatorFilter(Creator $creator): OrganizerQueryBuilderInterface;
 
+    /**
+     *  When set to true only organizers with at least one image will be included.
+     *  When set to false organizers with images will be excluded.
+     */
+    public function withImagesFilter(bool $include): OrganizerQueryBuilderInterface;
+
     public function withLabelFilter(LabelName $label): OrganizerQueryBuilderInterface;
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OrganizerQueryBuilderInterface;
