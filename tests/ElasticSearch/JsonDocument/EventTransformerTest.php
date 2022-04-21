@@ -81,6 +81,7 @@ final class EventTransformerTest extends TestCase
                 'popularity' => 0,
             ],
             'status' => 'Available',
+            'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
         ];
 

@@ -5,6 +5,7 @@
     "calendarType": "single",
     "status": "Available",
     "bookingAvailability": "Available",
+    "attendanceMode": "offline",
     "workflowStatus": "DRAFT",
     "availableTo": "2017-04-22T18:00:00+02:00",
     "name": {
