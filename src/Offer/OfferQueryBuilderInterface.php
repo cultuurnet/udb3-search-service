@@ -67,6 +67,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withStatusFilter(Status ...$statuses): OfferQueryBuilderInterface;
 
+    public function withAttendanceModeFilter(AttendanceMode ...$attendanceModes): OfferQueryBuilderInterface;
+
     public function withBookingAvailabilityFilter(string $bookingAvailability): OfferQueryBuilderInterface;
 
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): OfferQueryBuilderInterface;

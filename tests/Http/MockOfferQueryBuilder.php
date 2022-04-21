@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\Age;
+use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -159,6 +160,22 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
                 return $status->toString();
             },
             $statuses
+        );
+        return $c;
+    }
+
+    public function withAttendanceModeFilter(AttendanceMode ...$attendanceModes): self
+    {
+        if (empty($attendanceModes)) {
+            return $this;
+        }
+
+        $c = clone $this;
+        $c->mockQuery['attendanceMode'] = array_map(
+            static function (AttendanceMode $attendanceMode) {
+                return $attendanceMode->toString();
+            },
+            $attendanceModes
         );
         return $c;
     }
