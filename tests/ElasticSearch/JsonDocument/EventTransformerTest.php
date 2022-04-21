@@ -304,6 +304,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_attendance_mode(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-attendance-mode-mixed.json',
+            __DIR__ . '/data/event/indexed-with-attendance-mode-mixed.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_unavailable_booking_availability(): void
     {
         $this->transformAndAssert(
