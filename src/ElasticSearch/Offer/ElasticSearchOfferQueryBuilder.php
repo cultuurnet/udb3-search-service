@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
+use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -166,6 +167,19 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                     return $status->toString();
                 },
                 $statuses
+            )
+        );
+    }
+
+    public function withAttendanceModeFilter(AttendanceMode ...$attendanceModes): self
+    {
+        return $this->withMultiValueMatchQuery(
+            'attendanceMode',
+            array_map(
+                static function (AttendanceMode $attendanceMode) {
+                    return $attendanceMode->toString();
+                },
+                $attendanceModes
             )
         );
     }

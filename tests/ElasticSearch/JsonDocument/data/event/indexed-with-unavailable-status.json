@@ -24,6 +24,7 @@
         }
     ],
     "status": "Unavailable",
+    "attendanceMode": "offline",
     "bookingAvailability": "Available",
     "subEvent": [
         {

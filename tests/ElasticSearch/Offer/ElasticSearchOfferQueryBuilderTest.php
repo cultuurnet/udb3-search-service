@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\Age;
+use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
@@ -971,6 +972,104 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                                 'query' => 'Unavailable',
                                             ],
                                         ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_query_with_with_attendanceMode(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withAttendanceModeFilter(
+                AttendanceMode::mixed()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'attendanceMode' => [
+                                    'query' => 'mixed',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_query_with_with_multiple_attendanceMode(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(30))
+            ->withLimit(new Limit(10))
+            ->withAttendanceModeFilter(
+                AttendanceMode::mixed(),
+                AttendanceMode::offline()
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'attendanceMode' => [
+                                                'query' => 'mixed',
+                                            ],
+                                        ],
+
+                                    ],
+                                    [
+                                        'match' => [
+                                            'attendanceMode' => [
+                                                'query' => 'offline',
+                                            ],
+                                        ],
+
                                     ],
                                 ],
                             ],

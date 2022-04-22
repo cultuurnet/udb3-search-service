@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AttendanceModeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
@@ -60,6 +61,7 @@ final class OfferSearchControllerFactory
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
+            ->withParser(new AttendanceModeOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(
                 new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
             ))

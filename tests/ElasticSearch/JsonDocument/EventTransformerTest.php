@@ -81,6 +81,7 @@ final class EventTransformerTest extends TestCase
                 'popularity' => 0,
             ],
             'status' => 'Available',
+            'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
         ];
 
@@ -297,6 +298,17 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-unavailable-status.json',
             __DIR__ . '/data/event/indexed-with-unavailable-status.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_transforms_attendance_mode(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-attendance-mode-mixed.json',
+            __DIR__ . '/data/event/indexed-with-attendance-mode-mixed.json'
         );
     }
 
