@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -3623,5 +3624,29 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_if_a_limit_update_pushes_the_result_window_over_ten_thousand(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStart(new Start(8030))
+            ->withLimit(new Limit(1980));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_if_a_start_update_pushes_the_result_window_over_ten_thousand(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withLimit(new Limit(30))
+            ->withStart(new Start(9980));
     }
 }
