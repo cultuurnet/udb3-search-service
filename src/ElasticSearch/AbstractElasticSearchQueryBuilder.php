@@ -87,6 +87,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     {
         $c = $this->getClone();
         $c->search->setFrom($start->toInteger());
+        $c->guardResultWindowLimit();
         return $c;
     }
 
@@ -94,7 +95,16 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     {
         $c = $this->getClone();
         $c->search->setSize($limit->toInteger());
+        $c->guardResultWindowLimit();
         return $c;
+    }
+
+    private function guardResultWindowLimit(): void
+    {
+        $window = $this->search->getFrom() + $this->search->getSize();
+        if ($window > 10000) {
+            throw new UnsupportedParameterValue('Parameters start + limit must be less than or equal to 10000, got ' . $window . '.');
+        }
     }
 
     public function getLimit(): Limit
