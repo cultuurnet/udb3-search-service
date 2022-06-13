@@ -4,19 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use Crell\ApiProblem\ApiProblem;
-use InvalidArgumentException;
-
-final class MissingParameter extends InvalidArgumentException implements ConvertsToApiProblem
+final class MissingParameter extends AbstractQueryParameterException
 {
-    public function convertToApiProblem(): ApiProblem
-    {
-        $problem = new ApiProblem(
-            'Not Found',
-            'https://api.publiq.be/probs/url/not-found'
-        );
-        $problem->setStatus(404);
-        $problem->setDetail($this->message);
-        return $problem;
-    }
 }
