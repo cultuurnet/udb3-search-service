@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Search\ConvertsToApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
@@ -53,6 +54,10 @@ final class ApiExceptionHandler extends Handler
         if ($throwable instanceof Error) {
             return (new ApiProblem('Internal server error'))
                 ->setStatus(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        }
+
+        if ($throwable instanceof ConvertsToApiProblem) {
+            return $throwable->convertToApiProblem();
         }
 
         $problem = new ApiProblem($throwable->getMessage());
