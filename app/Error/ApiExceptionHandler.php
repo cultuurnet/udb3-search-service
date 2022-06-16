@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
+use League\Route\Http\Exception\MethodNotAllowedException;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
@@ -58,6 +59,12 @@ final class ApiExceptionHandler extends Handler
 
         if ($throwable instanceof ConvertsToApiProblem) {
             return $throwable->convertToApiProblem();
+        }
+
+        if ($throwable instanceof MethodNotAllowedException) {
+            $problem = new ApiProblem('Method not allowed', 'https://api.publiq.be/probs/method/not-allowed');
+            $problem->setStatus(405);
+            return $problem;
         }
 
         $problem = new ApiProblem($throwable->getMessage());
