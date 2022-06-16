@@ -40,7 +40,7 @@ final class ApiExceptionHandler extends Handler
         $problem = $this->createNewApiProblem($jsonSerializableException);
 
         $this->emitter->emit(
-            ResponseFactory::jsonLd(
+            ResponseFactory::apiProblem(
                 $problem->asArray(),
                 $problem->getStatus()
             )

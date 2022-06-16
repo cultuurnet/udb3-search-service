@@ -19,9 +19,24 @@ final class ResponseFactory
      */
     public static function jsonLd($data, int $code = StatusCodeInterface::STATUS_OK): ResponseInterface
     {
+        return self::jsonWithCustomContentType('application/ld+json', $data, $code);
+    }
+
+    /**
+     * @param array|object $data
+     */
+    public static function apiProblem($data, int $code = StatusCodeInterface::STATUS_OK): ResponseInterface
+    {
+        return self::jsonWithCustomContentType('application/problem+json', $data, $code);
+    }
+
+    private static function jsonWithCustomContentType(
+        string $contentType, $data,
+        int $code = StatusCodeInterface::STATUS_OK
+    ): ResponseInterface {
         $response = new Response($code);
 
-        $response = $response->withAddedHeader('Content-Type', 'application/ld+json');
+        $response = $response->withAddedHeader('Content-Type', $contentType);
 
         $body = $response->getBody();
         $body->write(Json::encodeWithOptions($data, self::JSON_OPTIONS));
