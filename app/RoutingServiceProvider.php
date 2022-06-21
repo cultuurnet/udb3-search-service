@@ -85,24 +85,38 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     )
                 );
 
+                $optionsResponse = static fn () => new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+
                 // Register the OPTIONS method for every route to make the CORS middleware registered above work.
-                $router->options('/{path:.*}', static function () {
-                    return new Response(StatusCodeInterface::STATUS_NO_CONTENT);
-                });
-
                 $router->get('/organizers', OrganizerSearchController::class);
-                $router->get('/offers', ['offer_controller', '__invoke']);
-                $router->get('/events', ['event_controller', '__invoke']);
-                $router->get('/places', ['place_controller', '__invoke']);
-                $router->get('/event', ['event_controller', '__invoke']);
-                $router->get('/place', ['place_controller', '__invoke']);
-
+                $router->options('/organizers', $optionsResponse);
                 $router->get('/organizers/', OrganizerSearchController::class);
+                $router->options('/organizers/', $optionsResponse);
+
+                $router->get('/offers', ['offer_controller', '__invoke']);
+                $router->options('/offers', $optionsResponse);
                 $router->get('/offers/', ['offer_controller', '__invoke']);
+                $router->options('/offers/', $optionsResponse);
+
+                $router->get('/events', ['event_controller', '__invoke']);
+                $router->options('/events', $optionsResponse);
                 $router->get('/events/', ['event_controller', '__invoke']);
+                $router->options('/events/', $optionsResponse);
+
+                $router->get('/places', ['place_controller', '__invoke']);
+                $router->options('/places', $optionsResponse);
                 $router->get('/places/', ['place_controller', '__invoke']);
+                $router->options('/places/', $optionsResponse);
+
+                $router->get('/event', ['event_controller', '__invoke']);
+                $router->options('/event', $optionsResponse);
                 $router->get('/event/', ['event_controller', '__invoke']);
+                $router->options('/event/', $optionsResponse);
+
+                $router->get('/place', ['place_controller', '__invoke']);
+                $router->options('/place', $optionsResponse);
                 $router->get('/place/', ['place_controller', '__invoke']);
+                $router->options('/place/', $optionsResponse);
 
                 return $router;
             }
