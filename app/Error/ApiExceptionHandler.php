@@ -12,6 +12,7 @@ use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
 use League\Route\Http\Exception\MethodNotAllowedException;
+use League\Route\Http\Exception\NotFoundException;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
@@ -59,6 +60,12 @@ final class ApiExceptionHandler extends Handler
 
         if ($throwable instanceof ConvertsToApiProblem) {
             return $throwable->convertToApiProblem();
+        }
+
+        if ($throwable instanceof NotFoundException) {
+            $problem = new ApiProblem('Not Found', 'https://api.publiq.be/probs/url/not-found');
+            $problem->setStatus(404);
+            return $problem;
         }
 
         if ($throwable instanceof MethodNotAllowedException) {
