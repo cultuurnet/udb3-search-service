@@ -172,7 +172,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_website_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withWebsiteFilter(new Url('http://foo.bar'));
+            ->withWebsiteFilter('http://foo.bar');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -282,7 +282,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withAutoCompleteFilter('foo')
-            ->withWebsiteFilter(new Url('http://foo.bar'));
+            ->withWebsiteFilter('http://foo.bar');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -918,7 +918,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStart(new Start(30))
             ->withLimit(new Limit(10))
             ->withAutoCompleteFilter('foo')
-            ->withWebsiteFilter(new Url('http://foo.bar'));
+            ->withWebsiteFilter('http://foo.bar');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],

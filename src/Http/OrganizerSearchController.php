@@ -101,9 +101,7 @@ final class OrganizerSearchController
         }
 
         if ($request->hasQueryParam('website')) {
-            $queryBuilder = $queryBuilder->withWebsiteFilter(
-                new Url($request->getQueryParam('website'))
-            );
+            $queryBuilder = $queryBuilder->withWebsiteFilter($request->getQueryParam('website'));
         }
 
         if ($request->hasQueryParam('domain')) {

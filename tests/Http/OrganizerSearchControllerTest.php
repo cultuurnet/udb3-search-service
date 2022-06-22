@@ -122,7 +122,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 new Language('nl'),
                 new Language('en')
             )
-            ->withWebsiteFilter(new Url('http://foo.bar'))
+            ->withWebsiteFilter('http://foo.bar')
             ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))

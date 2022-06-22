@@ -39,10 +39,10 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withWebsiteFilter(Url $url): MockOrganizerQueryBuilder
+    public function withWebsiteFilter(string $url): MockOrganizerQueryBuilder
     {
         $c = clone $this;
-        $c->mockQuery['website'] = $url->toString();
+        $c->mockQuery['website'] = $url;
         return $c;
     }
 

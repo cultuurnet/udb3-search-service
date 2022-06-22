@@ -20,7 +20,7 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
     public function withAutoCompleteFilter(string $input): OrganizerQueryBuilderInterface;
 
-    public function withWebsiteFilter(Url $url): OrganizerQueryBuilderInterface;
+    public function withWebsiteFilter(string $url): OrganizerQueryBuilderInterface;
 
     public function withDomainFilter(string $domain): OrganizerQueryBuilderInterface;
 

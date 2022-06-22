@@ -48,9 +48,20 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return $this->withMatchPhraseQuery('name.nl.autocomplete', $input);
     }
 
-    public function withWebsiteFilter(Url $url): ElasticSearchOrganizerQueryBuilder
+    public function withWebsiteFilter(string $url): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withMatchQuery('url', $url->getNormalizedUrl());
+        // Try to normalize the URL to return as many relevant results as possible.
+        // If the URL could not be parsed, use it as given. This may result in 0 results if the URL is really invalid,
+        // but that is logical since no organizers have that URL then. And in the case that an (older) organizer has
+        // an invalid URL, this still makes it possible to look it up.
+        try {
+            $urlObject = new Url($url);
+            $normalizedUrl = $urlObject->getNormalizedUrl();
+        } catch (\InvalidArgumentException $e) {
+            $normalizedUrl = $url;
+        }
+
+        return $this->withMatchQuery('url', $normalizedUrl);
     }
 
     public function withDomainFilter(string $domain): ElasticSearchOrganizerQueryBuilder
