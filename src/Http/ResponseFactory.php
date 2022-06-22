@@ -31,7 +31,8 @@ final class ResponseFactory
     }
 
     private static function jsonWithCustomContentType(
-        string $contentType, $data,
+        string $contentType,
+        $data,
         int $code = StatusCodeInterface::STATUS_OK
     ): ResponseInterface {
         $response = new Response($code);
