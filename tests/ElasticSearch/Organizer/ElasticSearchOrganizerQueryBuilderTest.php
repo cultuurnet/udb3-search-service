@@ -168,7 +168,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_website_filter(): void
+    public function it_should_build_a_query_with_a_website_filter_and_normalize_it_if_it_is_a_valid_url(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withWebsiteFilter('http://foo.bar');
@@ -189,6 +189,43 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                             'match' => [
                                 'url' => [
                                     'query' => 'foo.bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_for_an_invalid_url_as_website(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withWebsiteFilter('foobar');
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'url' => [
+                                    'query' => 'foobar',
                                 ],
                             ],
                         ],
