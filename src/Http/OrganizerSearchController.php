@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
@@ -101,9 +100,7 @@ final class OrganizerSearchController
         }
 
         if ($request->hasQueryParam('website')) {
-            $queryBuilder = $queryBuilder->withWebsiteFilter(
-                new Url($request->getQueryParam('website'))
-            );
+            $queryBuilder = $queryBuilder->withWebsiteFilter($request->getQueryParam('website'));
         }
 
         if ($request->hasQueryParam('domain')) {

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Organizer;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
@@ -20,7 +19,7 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
     public function withAutoCompleteFilter(string $input): OrganizerQueryBuilderInterface;
 
-    public function withWebsiteFilter(Url $url): OrganizerQueryBuilderInterface;
+    public function withWebsiteFilter(string $url): OrganizerQueryBuilderInterface;
 
     public function withDomainFilter(string $domain): OrganizerQueryBuilderInterface;
 

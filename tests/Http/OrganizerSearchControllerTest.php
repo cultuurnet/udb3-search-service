@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
@@ -122,7 +121,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 new Language('nl'),
                 new Language('en')
             )
-            ->withWebsiteFilter(new Url('http://foo.bar'))
+            ->withWebsiteFilter('http://foo.bar')
             ->withDomainFilter('www.publiq.be')
             ->withPostalCodeFilter(new PostalCode('3000'))
             ->withAddressCountryFilter(new Country('NL'))

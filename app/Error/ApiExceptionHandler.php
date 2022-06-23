@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Search\ConvertsToApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
+use League\Route\Http\Exception\MethodNotAllowedException;
+use League\Route\Http\Exception\NotFoundException;
 use Whoops\Handler\Handler;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
@@ -39,7 +42,7 @@ final class ApiExceptionHandler extends Handler
         $problem = $this->createNewApiProblem($jsonSerializableException);
 
         $this->emitter->emit(
-            ResponseFactory::jsonLd(
+            ResponseFactory::apiProblem(
                 $problem->asArray(),
                 $problem->getStatus()
             )
@@ -53,6 +56,22 @@ final class ApiExceptionHandler extends Handler
         if ($throwable instanceof Error) {
             return (new ApiProblem('Internal server error'))
                 ->setStatus(StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        }
+
+        if ($throwable instanceof ConvertsToApiProblem) {
+            return $throwable->convertToApiProblem();
+        }
+
+        if ($throwable instanceof NotFoundException) {
+            $problem = new ApiProblem('Not Found', 'https://api.publiq.be/probs/url/not-found');
+            $problem->setStatus(404);
+            return $problem;
+        }
+
+        if ($throwable instanceof MethodNotAllowedException) {
+            $problem = new ApiProblem('Method not allowed', 'https://api.publiq.be/probs/method/not-allowed');
+            $problem->setStatus(405);
+            return $problem;
         }
 
         $problem = new ApiProblem($throwable->getMessage());
