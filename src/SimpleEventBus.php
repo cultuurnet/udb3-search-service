@@ -34,10 +34,7 @@ final class SimpleEventBus implements EventBus
         $this->eventBus->subscribe($eventListener);
     }
 
-    /**
-     * @param callable $callback
-     */
-    public function beforeFirstPublication($callback): void
+    public function beforeFirstPublication(callable $callback): void
     {
         $this->beforeFirstPublicationCallback = $callback;
     }
