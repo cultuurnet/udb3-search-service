@@ -34,10 +34,7 @@ final class PlaceProjectedToJSONLD implements Serializable
         return $this->iri;
     }
 
-    /**
-     * @return array
-     */
-    public function serialize()
+    public function serialize(): array
     {
         return [
             'item_id' => $this->placeId,

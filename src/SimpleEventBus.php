@@ -5,19 +5,34 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use Broadway\Domain\DomainEventStream;
+use Broadway\EventHandling\EventBus;
+use Broadway\EventHandling\EventListener;
+use Broadway\EventHandling\SimpleEventBus as BroadwaySimpleEventBus;
 
-final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
+/**
+ * Decorator of Broadway's SimpleEventBus with a configurable callback to be
+ * executed before the first message is published. This callback can be used to
+ * subscribe listeners.
+ */
+final class SimpleEventBus implements EventBus
 {
-    /**
-     * @var bool
-     */
     private $first = true;
+    private BroadwaySimpleEventBus $eventBus;
 
     /**
      * @var null|callable
      */
     private $beforeFirstPublicationCallback;
 
+    public function __construct()
+    {
+        $this->eventBus = new BroadwaySimpleEventBus();
+    }
+
+    public function subscribe(EventListener $eventListener): void
+    {
+        $this->eventBus->subscribe($eventListener);
+    }
 
     public function beforeFirstPublication(callable $callback): void
     {
@@ -28,17 +43,17 @@ final class SimpleEventBus extends \Broadway\EventHandling\SimpleEventBus
     {
         if ($this->beforeFirstPublicationCallback) {
             $callback = $this->beforeFirstPublicationCallback;
-            $callback($this);
+            $callback($this->eventBus);
         }
     }
 
-    public function publish(DomainEventStream $domainMessages)
+    public function publish(DomainEventStream $domainMessages): void
     {
         if ($this->first) {
             $this->first = false;
             $this->callBeforeFirstPublicationCallback();
         }
 
-        parent::publish($domainMessages);
+        $this->eventBus->publish($domainMessages);
     }
 }

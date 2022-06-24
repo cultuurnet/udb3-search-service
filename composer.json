@@ -13,7 +13,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "ext-pcntl": "*",
-        "broadway/broadway": "1.0.0",
+        "broadway/broadway": "^2.4",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/calendar-summary-v3": "^3.4",
