@@ -8,6 +8,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\ConvertsToApiProblem;
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
 use CultuurNet\UDB3\Search\Json;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
@@ -31,15 +32,7 @@ final class ApiExceptionHandler extends Handler
     public function handle(): ?int
     {
         $exception = $this->getInspector()->getException();
-        if ($exception instanceof ElasticsearchException) {
-            $errorData = Json::decodeAssociatively($exception->getMessage());
-            $message = $errorData['error']['root_cause'][0]['reason'];
-            $jsonSerializableException = new \Exception($message);
-        } else {
-            $jsonSerializableException = $exception;
-        }
-
-        $problem = $this->createNewApiProblem($jsonSerializableException);
+        $problem = $this->createNewApiProblem($exception);
 
         $this->emitter->emit(
             ResponseFactory::apiProblem(
@@ -71,6 +64,25 @@ final class ApiExceptionHandler extends Handler
         if ($throwable instanceof MethodNotAllowedException) {
             $problem = new ApiProblem('Method not allowed', 'https://api.publiq.be/probs/method/not-allowed');
             $problem->setStatus(405);
+            return $problem;
+        }
+
+        if ($throwable instanceof ElasticsearchException) {
+            $errorData = Json::decodeAssociatively($throwable->getMessage());
+            $message = $errorData['error']['root_cause'][0]['reason'];
+
+            if (strpos($message,'Failed to parse query') !== false ||
+                strpos($message, 'failed to create query') !== false
+            ) {
+                $exception = new UnsupportedParameterValue(
+                    'Could not parse query given "q" parameter as a valid Lucene query.'
+                );
+                return $exception->convertToApiProblem();
+            }
+
+            $problem = new ApiProblem('Internal Server Error');
+            $problem->setStatus(500);
+            $problem->setDetail('Elasticsearch error: ' . $message);
             return $problem;
         }
 
