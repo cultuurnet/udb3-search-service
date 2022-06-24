@@ -44,7 +44,7 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
 
         return new DomainMessage(
             $data['id'],
-            $data['playhead'],
+            (int) $data['playhead'],
             Metadata::deserialize($data['metadata']),
             $this->payloadClass::deserialize($data['payload']),
             DateTime::fromString($data['recorded_on'])
