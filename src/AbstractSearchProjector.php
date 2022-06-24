@@ -23,7 +23,7 @@ abstract class AbstractSearchProjector implements EventListener
     }
 
 
-    public function handle(DomainMessage $domainMessage)
+    public function handle(DomainMessage $domainMessage): void
     {
         $handlers = $this->getEventHandlers();
 
