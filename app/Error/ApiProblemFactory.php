@@ -58,8 +58,9 @@ final class ApiProblemFactory
             return $problem;
         }
 
-        $problem = new ApiProblem($throwable->getMessage());
-        $problem->setStatus($throwable->getCode() ?: StatusCodeInterface::STATUS_BAD_REQUEST);
+        $problem = new ApiProblem('Internal Server Error');
+        $problem->setStatus($throwable->getCode() ?: StatusCodeInterface::STATUS_INTERNAL_SERVER_ERROR);
+        $problem->setDetail($throwable->getMessage());
         return $problem;
     }
 }
