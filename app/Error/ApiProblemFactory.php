@@ -43,7 +43,7 @@ final class ApiProblemFactory
             $errorData = Json::decodeAssociatively($throwable->getMessage());
             $message = $errorData['error']['root_cause'][0]['reason'];
 
-            if (strpos($message,'Failed to parse query') !== false ||
+            if (strpos($message, 'Failed to parse query') !== false ||
                 strpos($message, 'failed to create query') !== false
             ) {
                 $exception = new UnsupportedParameterValue(
