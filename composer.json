@@ -29,7 +29,6 @@
         "ongr/elasticsearch-dsl": "~5.0.1",
         "php-amqplib/php-amqplib": "3.0.*",
         "ramsey/uuid": "^3.9",
-        "sentry/sdk": "^2.2",
         "slim/psr7": "^0.6",
         "symfony/console": "^4.4",
         "symfony/finder": "~4.4",
