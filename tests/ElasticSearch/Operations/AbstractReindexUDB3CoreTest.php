@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
@@ -394,7 +395,8 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
                         // @codingStandardsIgnoreStart
                         throw new ClientException(
                             'Client error: `GET http://udb-silex.dev/place/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a` resulted in a `410 Gone` response: {"type":"about:blank","status":410}',
-                            new Request('GET', 'http://udb-silex.dev/place/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a')
+                            new Request('GET', 'http://udb-silex.dev/place/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a'),
+                            new Response()
                         );
                         // @codingStandardsIgnoreEnd
                     }
