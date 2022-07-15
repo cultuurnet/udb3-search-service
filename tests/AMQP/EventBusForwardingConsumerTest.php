@@ -7,10 +7,10 @@ namespace CultuurNet\UDB3\Search\AMQP;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
+use Closure;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
-use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -20,127 +20,65 @@ use Psr\Log\LoggerInterface;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
-    /**
-     * @var AMQPStreamConnection|MockObject
-     */
-    private $connection;
-
-    /**
-     * @var string
-     */
-    private $queueName;
-
-    /**
-     * @var string
-     */
-    private $exchangeName;
-
-    /**
-     * @var string
-     */
-    private $consumerTag;
-
-    /**
-     * @var EventBus|MockObject
-     */
-    private $eventBus;
-
-    /**
-     * @var DeserializerLocatorInterface|MockObject
-     */
-    private $deserializerLocator;
-
-    /**
-     * @var AbstractChannel|MockObject
-     */
-    private $channel;
-
-    /**
-     * Seconds to delay the actual consumption of the message after it arrived.
-     *
-     * @var int
-     */
-    private $delay;
-
-    /**
-     * @var EventBusForwardingConsumer
-     */
-    private $eventBusForwardingConsumer;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
-
-    /**
-     * @var DeserializerInterface|MockObject
-     */
-    private $deserializer;
-
+    private MockObject $eventBus;
+    private MockObject $deserializer;
+    private MockObject $deserializerLocator;
+    private MockObject $channel;
+    private MockObject $logger;
+    private Closure $consumeCallback;
 
     protected function setUp(): void
     {
-        $this->connection = $this->createMock(AMQPStreamConnection::class);
-
-        $this->delay = 1;
-
-        $this->queueName = 'my-queue';
-        $this->exchangeName = 'my-exchange';
-        $this->consumerTag = 'my-tag';
         $this->eventBus = $this->createMock(EventBus::class);
+        $this->deserializer = $this->createMock(DeserializerInterface::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods()
             ->getMock();
+        $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->connection->expects($this->any())
+        // Mock the basic_consume call on the AMQPChannel that will be returned by the AMQPStreamConnection mock
+        // injected in EventBusForwardingConsumer, so we can store the callback that gets registered for message
+        // consumption on the AMQPChannel. Then we can test the callback by calling it with call_user_func().
+        $this->channel->expects($this->once())
+            ->method('basic_consume')
+            ->willReturnCallback(
+                function (
+                    string $queueName,
+                    string $consumerTag,
+                    bool $noLocal,
+                    bool $noAck,
+                    bool $exclusive,
+                    bool $noWait,
+                    Closure $consumeCallback
+                ): void {
+                    $this->consumeCallback = $consumeCallback;
+                }
+            );
+
+        $connection = $this->createMock(AMQPStreamConnection::class);
+        $connection->expects($this->any())
             ->method('channel')
             ->willReturn($this->channel);
 
-        $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
-            $this->connection,
-            $this->eventBus,
-            $this->deserializerLocator,
-            $this->consumerTag,
-            $this->exchangeName,
-            $this->queueName,
-            $this->delay
-        );
-
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->eventBusForwardingConsumer->setLogger($this->logger);
-
-        $this->deserializer = $this->createMock(DeserializerInterface::class);
-    }
-
-    /**
-     * @test
-     */
-    public function it_can_get_the_connection()
-    {
-        $this->channel->expects($this->once())
-            ->method('basic_qos')
-            ->with(0, 4, true);
-
         $eventBusForwardingConsumer = new EventBusForwardingConsumer(
-            $this->connection,
+            $connection,
             $this->eventBus,
             $this->deserializerLocator,
-            $this->consumerTag,
-            $this->exchangeName,
-            $this->queueName
+            'my-tag',
+            'my-exchange',
+            'my-queue',
+            '#',
+            1
         );
-
-        $expectedConnection = $this->connection;
-
-        $this->assertEquals($expectedConnection, $eventBusForwardingConsumer->getConnection());
+        $eventBusForwardingConsumer->setLogger($this->logger);
     }
 
     /**
      * @test
      */
-    public function it_can_publish_the_message_on_the_event_bus()
+    public function it_can_publish_the_message_on_the_event_bus(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -190,13 +128,13 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
      * @test
      */
-    public function it_logs_messages_when_consuming()
+    public function it_logs_messages_when_consuming(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -241,13 +179,13 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
      * @test
      */
-    public function it_rejects_the_massage_when_an_error_occurs()
+    public function it_rejects_the_massage_when_an_error_occurs(): void
     {
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
@@ -269,13 +207,13 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
      * @test
      */
-    public function it_logs_messages_when_rejecting_a_message()
+    public function it_logs_messages_when_rejecting_a_message(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -324,7 +262,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
@@ -352,6 +290,6 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 }

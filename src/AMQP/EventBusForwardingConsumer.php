@@ -10,22 +10,25 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
+use Throwable;
 
-/**
- * Forwards messages coming in via AMQP to an event bus.
- */
-final class EventBusForwardingConsumer extends AbstractConsumer
+final class EventBusForwardingConsumer implements ConsumerInterface
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    use LoggerAwareTrait;
 
-    /**
-     * @param int $delay
-     */
+    private array $context;
+    private DeserializerLocatorInterface $deserializerLocator;
+    private AMQPChannel $channel;
+    private int $delay;
+    private EventBus $eventBus;
+
     public function __construct(
         AMQPStreamConnection $connection,
         EventBus $eventBus,
@@ -33,24 +36,88 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $consumerTag,
         string $exchangeName,
         string $queueName,
-        $delay = 0
+        string $routingKey = '#',
+        int $delay = 0
     ) {
+        $this->context = [];
+        $this->logger = new NullLogger();
         $this->eventBus = $eventBus;
 
-        parent::__construct(
-            $connection,
-            $deserializerLocator,
-            $consumerTag,
-            $exchangeName,
+        $this->channel = $connection->channel();
+        $this->channel->basic_qos(0, 4, true);
+
+        $this->deserializerLocator = $deserializerLocator;
+        $this->delay = $delay;
+
+        $this->channel->queue_declare(
             $queueName,
-            $delay,
-            'event bus'
+            $passive = false,
+            $durable = true,
+            $exclusive = false,
+            $autoDelete = false
+        );
+
+        $this->channel->queue_bind(
+            $queueName,
+            $exchangeName,
+            $routingKey
+        );
+
+        $this->channel->basic_consume(
+            $queueName,
+            $consumerTag,
+            $noLocal = false,
+            $noAck = false,
+            $exclusive = false,
+            $noWait = false,
+            function (AMQPMessage $message): void {
+                $this->consume($message);
+            }
         );
     }
 
-
-    protected function handle($deserializedMessage, array $context)
+    public function isConsuming(): bool
     {
+        return $this->channel->is_consuming();
+    }
+
+    public function wait(): void
+    {
+        $this->channel->wait();
+    }
+
+    private function consume(AMQPMessage $message): void
+    {
+        $this->context = [];
+
+        if ($message->has('correlation_id')) {
+            $this->context['correlation_id'] = $message->get('correlation_id');
+        }
+
+        try {
+            $this->handle($message);
+            $this->ack($message, 'message acknowledged');
+        } catch (DeserializerNotFoundException $e) {
+            $this->ack($message, 'auto acknowledged message because no deserializer was configured for it');
+        } catch (Throwable $e) {
+            $this->logger->error($e->getMessage(), $this->context + ['exception' => $e]);
+            $this->reject($message, 'message rejected');
+        }
+    }
+
+    private function handle(AMQPMessage $message): void
+    {
+        $this->logger->info('received message with content-type ' . $message->get('content_type'), $this->context);
+
+        $deserializer = $this->deserializerLocator->getDeserializerForContentType($message->get('content_type'));
+        $deserializedMessage = $deserializer->deserialize($message->body);
+
+        if ($this->delay > 0) {
+            sleep($this->delay);
+        }
+
+        $this->logger->info('passing on message to event bus', $this->context);
+
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
         // DomainMessage.
@@ -58,14 +125,24 @@ final class EventBusForwardingConsumer extends AbstractConsumer
             $deserializedMessage = new DomainMessage(
                 Uuid::uuid4(),
                 0,
-                new Metadata($context),
+                new Metadata($this->context),
                 $deserializedMessage,
                 DateTime::now()
             );
         }
 
-        $this->eventBus->publish(
-            new DomainEventStream([$deserializedMessage])
-        );
+        $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
+    }
+
+    private function ack(AMQPMessage $message, string $logMessage): void
+    {
+        $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+        $this->logger->info($logMessage, $this->context);
+    }
+
+    private function reject(AMQPMessage $message, string $logMessage): void
+    {
+        $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
+        $this->logger->info($logMessage, $this->context);
     }
 }
