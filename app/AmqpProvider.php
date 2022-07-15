@@ -17,7 +17,7 @@ final class AmqpProvider extends BaseServiceProvider
 {
     public function provides(string $alias): bool
     {
-        foreach ($this->consumers() as $consumerId => $consumerConfig) {
+        foreach ($this->getConsumers() as $consumerId => $consumerConfig) {
             if ($alias === $this->consumerName($consumerId)) {
                 return true;
             }
@@ -32,7 +32,7 @@ final class AmqpProvider extends BaseServiceProvider
      */
     public function register(): void
     {
-        foreach ($this->consumers() as $consumerId => $consumerConfig) {
+        foreach ($this->getConsumers() as $consumerId => $consumerConfig) {
             $this->add(
                 $this->consumerName($consumerId),
                 function () use ($consumerConfig) {
@@ -81,7 +81,7 @@ final class AmqpProvider extends BaseServiceProvider
         return 'amqp.' . $consumerId;
     }
 
-    private function consumers(): array
+    private function getConsumers(): array
     {
         $value = $this->parameter('amqp.consumers');
         return is_array($value) ? $value : [];
