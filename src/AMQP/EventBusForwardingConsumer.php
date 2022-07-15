@@ -73,9 +73,14 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         );
     }
 
-    public function getChannel(): AMQPChannel
+    public function isConsuming(): bool
     {
-        return $this->channel;
+        return $this->channel->is_consuming();
+    }
+
+    public function wait(): void
+    {
+        $this->channel->wait();
     }
 
     public function consume(AMQPMessage $message): void

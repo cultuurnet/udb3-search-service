@@ -26,15 +26,13 @@ final class ConsumeCommand extends Command
     {
         $this->registerSignalHandlers($output);
 
-        $output->writeln('Connecting...');
-        $channel = $this->consumer->getChannel();
         $output->writeln('Connected. Listening for incoming messages...');
 
-        while ($channel->is_consuming()) {
+        while ($this->consumer->isConsuming()) {
             pcntl_signal_dispatch();
 
             try {
-                $channel->wait();
+                $this->consumer->wait();
             } catch (AMQPTimeoutException $e) {
                 // Ignore this one.
             }

@@ -9,6 +9,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 interface ConsumerInterface
 {
-    public function getChannel(): AMQPChannel;
+    public function isConsuming(): bool;
+    public function wait(): void;
     public function consume(AMQPMessage $message): void;
 }
