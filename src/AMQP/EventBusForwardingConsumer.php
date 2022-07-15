@@ -22,7 +22,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 {
     use LoggerAwareTrait;
 
-    private AMQPStreamConnection $connection;
     private DeserializerLocatorInterface $deserializerLocator;
     private string $queueName;
     private string $exchangeName;
@@ -43,7 +42,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->logger = new NullLogger();
         $this->eventBus = $eventBus;
 
-        $this->connection = $connection;
         $this->channel = $connection->channel();
         $this->channel->basic_qos(0, 4, true);
 
