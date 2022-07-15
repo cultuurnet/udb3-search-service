@@ -24,7 +24,6 @@ final class EventBusForwardingConsumerTest extends TestCase
     private MockObject $eventBus;
     private MockObject $deserializerLocator;
     private MockObject $channel;
-    private EventBusForwardingConsumer $eventBusForwardingConsumer;
     private MockObject $logger;
     private MockObject $deserializer;
     private Closure $consumeCallback;
@@ -59,7 +58,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->method('channel')
             ->willReturn($this->channel);
 
-        $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
+        $eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $connection,
             $this->eventBus,
             $this->deserializerLocator,
@@ -70,7 +69,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->eventBusForwardingConsumer->setLogger($this->logger);
+        $eventBusForwardingConsumer->setLogger($this->logger);
 
         $this->deserializer = $this->createMock(DeserializerInterface::class);
     }
