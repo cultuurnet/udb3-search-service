@@ -36,10 +36,33 @@ final class AmqpProvider extends BaseServiceProvider
             $this->add(
                 $this->consumerName($consumerId),
                 function () use ($consumerConfig) {
+                    $deserializerLocator = new SimpleDeserializerLocator();
+                    $deserializerMapping = [
+                        EventProjectedToJSONLD::class =>
+                            'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
+                        PlaceProjectedToJSONLD::class =>
+                            'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
+                        OrganizerProjectedToJSONLD::class =>
+                            'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
+                    ];
+
+                    foreach ($deserializerMapping as $payloadClass => $contentType) {
+                        $deserializerLocator->registerDeserializer(
+                            $contentType,
+                            new DomainMessageJSONDeserializer($payloadClass)
+                        );
+                    }
+
                     $eventBusForwardingConsumer = new EventBusForwardingConsumer(
-                        $this->get('amqp.connection'),
+                        new AMQPStreamConnection(
+                            $this->parameter('amqp.host'),
+                            $this->parameter('amqp.port'),
+                            $this->parameter('amqp.user'),
+                            $this->parameter('amqp.password'),
+                            $this->parameter('amqp.vhost')
+                        ),
                         $this->get(EventBus::class),
-                        $this->get('deserializer_locator'),
+                        $deserializerLocator,
                         $this->parameter('amqp.consumer_tag'),
                         $consumerConfig['exchange'],
                         $consumerConfig['queue']
@@ -51,42 +74,6 @@ final class AmqpProvider extends BaseServiceProvider
                 }
             );
         }
-
-        $this->add(
-            'amqp.connection',
-            function () {
-                return new AMQPStreamConnection(
-                    $this->parameter('amqp.host'),
-                    $this->parameter('amqp.port'),
-                    $this->parameter('amqp.user'),
-                    $this->parameter('amqp.password'),
-                    $this->parameter('amqp.vhost')
-                );
-            }
-        );
-
-        $this->add(
-            'deserializer_locator',
-            function () {
-                $deserializerLocator = new SimpleDeserializerLocator();
-                $deserializerMapping = [
-                    EventProjectedToJSONLD::class =>
-                        'application/vnd.cultuurnet.udb3-events.event-projected-to-jsonld+json',
-                    PlaceProjectedToJSONLD::class =>
-                        'application/vnd.cultuurnet.udb3-events.place-projected-to-jsonld+json',
-                    OrganizerProjectedToJSONLD::class =>
-                        'application/vnd.cultuurnet.udb3-events.organizer-projected-to-jsonld+json',
-                ];
-
-                foreach ($deserializerMapping as $payloadClass => $contentType) {
-                    $deserializerLocator->registerDeserializer(
-                        $contentType,
-                        new DomainMessageJSONDeserializer($payloadClass)
-                    );
-                }
-                return $deserializerLocator;
-            }
-        );
     }
 
     private function consumerName(string $consumerId): string
