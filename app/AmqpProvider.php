@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\Search\AMQP\Delay;
 use CultuurNet\UDB3\Search\AMQP\DomainMessageJSONDeserializer;
-use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumerFactory;
+use CultuurNet\UDB3\Search\AMQP\EventBusForwardingConsumer;
 use CultuurNet\UDB3\Search\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
@@ -40,27 +39,21 @@ final class AmqpProvider extends BaseServiceProvider
             $this->add(
                 $this->consumerName($consumerId),
                 function () use ($consumerConfig) {
-                    /** @var EventBusForwardingConsumerFactory $consumerFactory */
-                    $consumerFactory = $this->get('event_bus_forwarding_consumer_factory');
+                    $eventBusForwardingConsumer = new EventBusForwardingConsumer(
+                        $this->get('amqp.connection'),
+                        $this->get(EventBus::class),
+                        $this->get('deserializer_locator'),
+                        $this->parameter('amqp.consumer_tag'),
+                        $consumerConfig['exchange'],
+                        $consumerConfig['queue']
+                    );
 
-                    return $consumerFactory->create($consumerConfig['exchange'], $consumerConfig['queue']);
+                    $eventBusForwardingConsumer->setLogger($this->get('logger.amqp.udb3'));
+
+                    return $eventBusForwardingConsumer;
                 }
             );
         }
-
-        $this->add(
-            'event_bus_forwarding_consumer_factory',
-            function () {
-                return new EventBusForwardingConsumerFactory(
-                    new Delay(0),
-                    $this->get('amqp.connection'),
-                    $this->get('logger.amqp.udb3'),
-                    $this->get('deserializer_locator'),
-                    $this->get(EventBus::class),
-                    $this->parameter('amqp.consumer_tag')
-                );
-            }
-        );
 
         $this->add(
             'amqp.connection',
