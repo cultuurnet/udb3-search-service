@@ -25,11 +25,6 @@ final class AmqpProvider extends BaseServiceProvider
         return false;
     }
 
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     */
     public function register(): void
     {
         foreach ($this->getConsumers() as $consumerId => $consumerConfig) {
