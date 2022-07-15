@@ -11,5 +11,4 @@ interface ConsumerInterface
 {
     public function isConsuming(): bool;
     public function wait(): void;
-    public function consume(AMQPMessage $message): void;
 }
