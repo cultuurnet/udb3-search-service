@@ -109,6 +109,15 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             );
 
             $this->handle($deserializedMessage, $context);
+
+            $message->delivery_info['channel']->basic_ack(
+                $message->delivery_info['delivery_tag']
+            );
+
+            $this->logger->info(
+                'message acknowledged',
+                $context
+            );
         } catch (DeserializerNotFoundException $e) {
             $message->delivery_info['channel']->basic_ack(
                 $message->delivery_info['delivery_tag']
@@ -118,8 +127,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
                 'auto acknowledged message because no deserializer was configured for it',
                 $context
             );
-
-            return;
         } catch (\Exception $e) {
             $this->logger->error(
                 $e->getMessage(),
@@ -135,18 +142,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
                 'message rejected',
                 $context
             );
-
-            return;
         }
-
-        $message->delivery_info['channel']->basic_ack(
-            $message->delivery_info['delivery_tag']
-        );
-
-        $this->logger->info(
-            'message acknowledged',
-            $context
-        );
     }
 
     public function getConnection(): AMQPStreamConnection
