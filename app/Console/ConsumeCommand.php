@@ -44,7 +44,7 @@ final class ConsumeCommand extends Command
         $this->registerSignalHandlers($output);
 
         $output->writeln('Connecting...');
-        $channel = $this->getChannel();
+        $channel = $this->consumer->getChannel();
         $output->writeln('Connected. Listening for incoming messages...');
 
         while (count($channel->callbacks) > 0) {
@@ -58,21 +58,5 @@ final class ConsumeCommand extends Command
         }
 
         return 0;
-    }
-
-    /**
-     * @return AMQPChannel
-     */
-    protected function getChannel()
-    {
-        $channel = $this->consumer->getChannel();
-
-        if (!$channel instanceof AMQPChannel) {
-            throw new RuntimeException(
-                'The consumer channel is not of the expected type AMQPChannel'
-            );
-        }
-
-        return $channel;
     }
 }
