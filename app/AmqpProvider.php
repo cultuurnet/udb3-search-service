@@ -61,7 +61,7 @@ final class AmqpProvider extends BaseServiceProvider
                         $this->parameter('amqp.consumer_tag'),
                         $consumerConfig['exchange'],
                         $consumerConfig['queue'],
-                        $consumerConfig['routingKey'] ?? '#'
+                        $consumerConfig['routing_key'] ?? '#'
                     );
 
                     $eventBusForwardingConsumer->setLogger($this->get('logger.amqp.udb3'));
