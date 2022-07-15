@@ -13,19 +13,10 @@ use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Ramsey\Uuid\Uuid;
 
-/**
- * Forwards messages coming in via AMQP to an event bus.
- */
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @param int $delay
-     */
     public function __construct(
         AMQPStreamConnection $connection,
         EventBus $eventBus,
@@ -33,7 +24,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $consumerTag,
         string $exchangeName,
         string $queueName,
-        $delay = 0
+        int $delay = 0
     ) {
         $this->eventBus = $eventBus;
 
@@ -48,8 +39,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         );
     }
 
-
-    protected function handle($deserializedMessage, array $context)
+    protected function handle($deserializedMessage, array $context): void
     {
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
