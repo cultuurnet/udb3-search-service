@@ -22,18 +22,6 @@ final class ConsumeCommand extends Command
         $this->consumer = $consumer;
     }
 
-    private function registerSignalHandlers(OutputInterface $output): void
-    {
-        $handler = static function () use ($output) {
-            $output->writeln('Signal received, halting.');
-            exit;
-        };
-
-        foreach ([SIGINT, SIGTERM, SIGQUIT] as $signal) {
-            pcntl_signal($signal, $handler);
-        }
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $this->registerSignalHandlers($output);
@@ -53,5 +41,17 @@ final class ConsumeCommand extends Command
         }
 
         return 0;
+    }
+
+    private function registerSignalHandlers(OutputInterface $output): void
+    {
+        $handler = static function () use ($output) {
+            $output->writeln('Signal received, halting.');
+            exit;
+        };
+
+        foreach ([SIGINT, SIGTERM, SIGQUIT] as $signal) {
+            pcntl_signal($signal, $handler);
+        }
     }
 }
