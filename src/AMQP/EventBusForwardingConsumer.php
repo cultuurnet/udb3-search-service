@@ -69,7 +69,9 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $noAck = false,
             $exclusive = false,
             $noWait = false,
-            [$this, 'consume']
+            function (AMQPMessage $message): void {
+                $this->consume($message);
+            }
         );
     }
 
@@ -83,7 +85,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->channel->wait();
     }
 
-    public function consume(AMQPMessage $message): void
+    private function consume(AMQPMessage $message): void
     {
         $this->context = [];
 

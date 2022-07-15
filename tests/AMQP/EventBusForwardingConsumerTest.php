@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\AMQP;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
+use Closure;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
@@ -77,6 +78,7 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     private $deserializer;
 
+    private Closure $consumeCallback;
 
     protected function setUp(): void
     {
@@ -93,6 +95,22 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods()
             ->getMock();
+
+        $this->channel->expects($this->once())
+            ->method('basic_consume')
+            ->willReturnCallback(
+                function (
+                    string $queueName,
+                    string $consumerTag,
+                    bool $noLocal,
+                    bool $noAck,
+                    bool $exclusive,
+                    bool $noWait,
+                    Closure $consumeCallback
+                ): void {
+                    $this->consumeCallback = $consumeCallback;
+                }
+            );
 
         $this->connection->expects($this->any())
             ->method('channel')
@@ -167,7 +185,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
@@ -218,7 +236,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
@@ -246,7 +264,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
@@ -301,7 +319,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 
     /**
@@ -329,6 +347,6 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['channel'] = $this->channel;
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
-        $this->eventBusForwardingConsumer->consume($message);
+        call_user_func($this->consumeCallback, $message);
     }
 }
