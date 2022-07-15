@@ -14,25 +14,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConsumeCommand extends Command
 {
-    /**
-     * @var ConsumerInterface
-     */
-    private $consumer;
+    private ConsumerInterface $consumer;
 
     public function __construct(string $name, ConsumerInterface $consumer)
     {
         parent::__construct($name);
-
         $this->consumer = $consumer;
     }
 
-    private function handleSignal(OutputInterface $output, $signal)
+    private function handleSignal(OutputInterface $output, $signal): void
     {
         $output->writeln('Signal received, halting.');
         exit;
     }
 
-    private function registerSignalHandlers(OutputInterface $output)
+    private function registerSignalHandlers(OutputInterface $output): void
     {
         $handler = function ($signal) use ($output) {
             $this->handleSignal($output, $signal);
