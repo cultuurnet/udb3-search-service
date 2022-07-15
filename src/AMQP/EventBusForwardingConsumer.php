@@ -107,7 +107,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         return $this->channel;
     }
 
-    protected function handle($deserializedMessage, array $context): void
+    private function handle($deserializedMessage, array $context): void
     {
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
