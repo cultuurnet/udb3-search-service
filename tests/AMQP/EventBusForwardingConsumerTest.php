@@ -69,6 +69,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             'my-tag',
             'my-exchange',
             'my-queue',
+            '#',
             1
         );
         $eventBusForwardingConsumer->setLogger($this->logger);
