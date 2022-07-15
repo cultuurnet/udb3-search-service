@@ -117,29 +117,6 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_the_connection()
-    {
-        $this->channel->expects($this->once())
-            ->method('basic_qos')
-            ->with(0, 4, true);
-
-        $eventBusForwardingConsumer = new EventBusForwardingConsumer(
-            $this->connection,
-            $this->eventBus,
-            $this->deserializerLocator,
-            $this->consumerTag,
-            $this->exchangeName,
-            $this->queueName
-        );
-
-        $expectedConnection = $this->connection;
-
-        $this->assertEquals($expectedConnection, $eventBusForwardingConsumer->getConnection());
-    }
-
-    /**
-     * @test
-     */
     public function it_can_publish_the_message_on_the_event_bus()
     {
         $context = [];

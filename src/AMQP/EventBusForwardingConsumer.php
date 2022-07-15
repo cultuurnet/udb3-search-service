@@ -97,11 +97,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
     }
 
-    public function getConnection(): AMQPStreamConnection
-    {
-        return $this->connection;
-    }
-
     public function getChannel(): AMQPChannel
     {
         return $this->channel;
