@@ -22,16 +22,11 @@ final class ConsumeCommand extends Command
         $this->consumer = $consumer;
     }
 
-    private function handleSignal(OutputInterface $output, $signal): void
-    {
-        $output->writeln('Signal received, halting.');
-        exit;
-    }
-
     private function registerSignalHandlers(OutputInterface $output): void
     {
-        $handler = function ($signal) use ($output) {
-            $this->handleSignal($output, $signal);
+        $handler = static function () use ($output) {
+            $output->writeln('Signal received, halting.');
+            exit;
         };
 
         foreach ([SIGINT, SIGTERM, SIGQUIT] as $signal) {
