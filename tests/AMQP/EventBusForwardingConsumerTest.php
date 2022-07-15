@@ -21,14 +21,9 @@ use Psr\Log\LoggerInterface;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
-    private MockObject $connection;
-    private string $queueName;
-    private string $exchangeName;
-    private string $consumerTag;
     private MockObject $eventBus;
     private MockObject $deserializerLocator;
     private MockObject $channel;
-    private int $delay;
     private EventBusForwardingConsumer $eventBusForwardingConsumer;
     private MockObject $logger;
     private MockObject $deserializer;
@@ -36,13 +31,6 @@ final class EventBusForwardingConsumerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->connection = $this->createMock(AMQPStreamConnection::class);
-
-        $this->delay = 1;
-
-        $this->queueName = 'my-queue';
-        $this->exchangeName = 'my-exchange';
-        $this->consumerTag = 'my-tag';
         $this->eventBus = $this->createMock(EventBus::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
@@ -66,18 +54,19 @@ final class EventBusForwardingConsumerTest extends TestCase
                 }
             );
 
-        $this->connection->expects($this->any())
+        $connection = $this->createMock(AMQPStreamConnection::class);
+        $connection->expects($this->any())
             ->method('channel')
             ->willReturn($this->channel);
 
         $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
-            $this->connection,
+            $connection,
             $this->eventBus,
             $this->deserializerLocator,
-            $this->consumerTag,
-            $this->exchangeName,
-            $this->queueName,
-            $this->delay
+            'my-tag',
+            'my-exchange',
+            'my-queue',
+            1
         );
 
         $this->logger = $this->createMock(LoggerInterface::class);
