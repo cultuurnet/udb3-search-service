@@ -65,12 +65,9 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 
         try {
             $this->handle($message, $context);
+            $this->ack($message, 'message acknowledged', $context);
         } catch (DeserializerNotFoundException $e) {
-            $message->delivery_info['channel']->basic_ack(
-                $message->delivery_info['delivery_tag']
-            );
-
-            $this->logger->info('auto acknowledged message because no deserializer was configured for it', $context);
+            $this->ack($message, 'auto acknowledged message because no deserializer was configured for it', $context);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage(), $context + ['exception' => $e]);
 
@@ -112,10 +109,12 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
 
         $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
+    }
 
+    private function ack(AMQPMessage $message, string $logMessage, array $context): void
+    {
         $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
-
-        $this->logger->info('message acknowledged', $context);
+        $this->logger->info($logMessage, $context);
     }
 
     private function declareQueue(): void
