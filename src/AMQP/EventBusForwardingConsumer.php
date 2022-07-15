@@ -73,6 +73,11 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         );
     }
 
+    public function getChannel(): AMQPChannel
+    {
+        return $this->channel;
+    }
+
     public function consume(AMQPMessage $message): void
     {
         $this->context = [];
@@ -90,11 +95,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $this->logger->error($e->getMessage(), $this->context + ['exception' => $e]);
             $this->reject($message, 'message rejected');
         }
-    }
-
-    public function getChannel(): AMQPChannel
-    {
-        return $this->channel;
     }
 
     private function handle(AMQPMessage $message): void
