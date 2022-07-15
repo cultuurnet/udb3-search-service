@@ -17,6 +17,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Ramsey\Uuid\Uuid;
+use Throwable;
 
 final class EventBusForwardingConsumer implements ConsumerInterface
 {
@@ -68,7 +69,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $this->ack($message, 'message acknowledged', $context);
         } catch (DeserializerNotFoundException $e) {
             $this->ack($message, 'auto acknowledged message because no deserializer was configured for it', $context);
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             $this->logger->error($e->getMessage(), $context + ['exception' => $e]);
 
             $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
