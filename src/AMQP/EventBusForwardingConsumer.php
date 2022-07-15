@@ -75,13 +75,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         );
     }
 
-    private function delayIfNecessary(): void
-    {
-        if ($this->delay > 0) {
-            sleep($this->delay);
-        }
-    }
-
     public function consume(AMQPMessage $message): void
     {
         $context = [];
@@ -163,6 +156,23 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
     }
 
+    public function getConnection(): AMQPStreamConnection
+    {
+        return $this->connection;
+    }
+
+    public function getChannel(): AMQPChannel
+    {
+        return $this->channel;
+    }
+
+    private function delayIfNecessary(): void
+    {
+        if ($this->delay > 0) {
+            sleep($this->delay);
+        }
+    }
+
     private function declareQueue(): void
     {
         $this->channel->queue_declare(
@@ -191,15 +201,5 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $noWait = false,
             [$this, 'consume']
         );
-    }
-
-    public function getConnection(): AMQPStreamConnection
-    {
-        return $this->connection;
-    }
-
-    public function getChannel(): AMQPChannel
-    {
-        return $this->channel;
     }
 }
