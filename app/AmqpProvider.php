@@ -81,7 +81,7 @@ final class AmqpProvider extends BaseServiceProvider
         return 'amqp.' . $consumerId;
     }
 
-    public function consumers(): array
+    private function consumers(): array
     {
         $value = $this->parameter('amqp.consumers');
         return is_array($value) ? $value : [];
