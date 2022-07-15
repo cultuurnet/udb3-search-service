@@ -72,9 +72,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             );
         }
 
-        $this->eventBus->publish(
-            new DomainEventStream([$deserializedMessage])
-        );
+        $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
     }
 
     public function consume(AMQPMessage $message): void
@@ -86,62 +84,34 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
 
         try {
-            $this->logger->info(
-                'received message with content-type ' . $message->get(
-                    'content_type'
-                ),
-                $context
-            );
+            $this->logger->info('received message with content-type ' . $message->get('content_type'), $context);
 
-            $deserializer = $this->deserializerLocator->getDeserializerForContentType(
-                $message->get('content_type')
-            );
-
+            $deserializer = $this->deserializerLocator->getDeserializerForContentType($message->get('content_type'));
             $deserializedMessage = $deserializer->deserialize($message->body);
 
             if ($this->delay > 0) {
                 sleep($this->delay);
             }
 
-            $this->logger->info(
-                'passing on message to event bus',
-                $context
-            );
+            $this->logger->info('passing on message to event bus', $context);
 
             $this->handle($deserializedMessage, $context);
 
-            $message->delivery_info['channel']->basic_ack(
-                $message->delivery_info['delivery_tag']
-            );
+            $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
 
-            $this->logger->info(
-                'message acknowledged',
-                $context
-            );
+            $this->logger->info('message acknowledged', $context);
         } catch (DeserializerNotFoundException $e) {
             $message->delivery_info['channel']->basic_ack(
                 $message->delivery_info['delivery_tag']
             );
 
-            $this->logger->info(
-                'auto acknowledged message because no deserializer was configured for it',
-                $context
-            );
+            $this->logger->info('auto acknowledged message because no deserializer was configured for it', $context);
         } catch (\Exception $e) {
-            $this->logger->error(
-                $e->getMessage(),
-                $context + ['exception' => $e]
-            );
+            $this->logger->error($e->getMessage(), $context + ['exception' => $e]);
 
-            $message->delivery_info['channel']->basic_reject(
-                $message->delivery_info['delivery_tag'],
-                false
-            );
+            $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
 
-            $this->logger->info(
-                'message rejected',
-                $context
-            );
+            $this->logger->info('message rejected', $context);
         }
     }
 
