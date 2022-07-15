@@ -30,7 +30,7 @@ final class ConsumeCommand extends Command
         $channel = $this->consumer->getChannel();
         $output->writeln('Connected. Listening for incoming messages...');
 
-        while (count($channel->callbacks) > 0) {
+        while ($channel->is_consuming()) {
             pcntl_signal_dispatch();
 
             try {
