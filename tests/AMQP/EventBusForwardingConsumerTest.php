@@ -11,7 +11,6 @@ use Closure;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
-use PhpAmqpLib\Channel\AbstractChannel;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
