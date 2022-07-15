@@ -36,6 +36,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         string $consumerTag,
         string $exchangeName,
         string $queueName,
+        string $routingKey = '#',
         int $delay = 0
     ) {
         $this->context = [];
@@ -59,7 +60,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->channel->queue_bind(
             $queueName,
             $exchangeName,
-            $routingKey = '#'
+            $routingKey
         );
 
         $this->channel->basic_consume(
