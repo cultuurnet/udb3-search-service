@@ -39,6 +39,9 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->getMock();
         $this->logger = $this->createMock(LoggerInterface::class);
 
+        // Mock the basic_consume call on the AMQPChannel that will be returned by the AMQPStreamConnection mock
+        // injected in EventBusForwardingConsumer, so we can store the callback that gets registered for message
+        // consumption on the AMQPChannel. Then we can test the callback by calling it with call_user_func().
         $this->channel->expects($this->once())
             ->method('basic_consume')
             ->willReturnCallback(
