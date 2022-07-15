@@ -22,20 +22,22 @@ use Psr\Log\LoggerInterface;
 final class EventBusForwardingConsumerTest extends TestCase
 {
     private MockObject $eventBus;
+    private MockObject $deserializer;
     private MockObject $deserializerLocator;
     private MockObject $channel;
     private MockObject $logger;
-    private MockObject $deserializer;
     private Closure $consumeCallback;
 
     protected function setUp(): void
     {
         $this->eventBus = $this->createMock(EventBus::class);
+        $this->deserializer = $this->createMock(DeserializerInterface::class);
         $this->deserializerLocator = $this->createMock(DeserializerLocatorInterface::class);
         $this->channel = $this->getMockBuilder(AMQPChannel::class)
             ->disableOriginalConstructor()
             ->disableProxyingToOriginalMethods()
             ->getMock();
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->channel->expects($this->once())
             ->method('basic_consume')
@@ -67,11 +69,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             'my-queue',
             1
         );
-
-        $this->logger = $this->createMock(LoggerInterface::class);
         $eventBusForwardingConsumer->setLogger($this->logger);
-
-        $this->deserializer = $this->createMock(DeserializerInterface::class);
     }
 
     /**
