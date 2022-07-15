@@ -25,15 +25,12 @@ final class AmqpProvider extends BaseServiceProvider
         return false;
     }
 
-
     /**
      * Use the register method to register items with the container via the
      * protected $this->leagueContainer property or the `getLeagueContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         foreach ($this->consumers() as $consumerId => $consumerConfig) {
             $this->add(
@@ -58,15 +55,13 @@ final class AmqpProvider extends BaseServiceProvider
         $this->add(
             'amqp.connection',
             function () {
-                $connection = new AMQPStreamConnection(
+                return new AMQPStreamConnection(
                     $this->parameter('amqp.host'),
                     $this->parameter('amqp.port'),
                     $this->parameter('amqp.user'),
                     $this->parameter('amqp.password'),
                     $this->parameter('amqp.vhost')
                 );
-
-                return $connection;
             }
         );
 
