@@ -25,9 +25,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 
     private array $context;
     private DeserializerLocatorInterface $deserializerLocator;
-    private string $queueName;
-    private string $exchangeName;
-    private string $consumerTag;
     private AMQPChannel $channel;
     private int $delay;
     private EventBus $eventBus;
@@ -49,13 +46,31 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->channel->basic_qos(0, 4, true);
 
         $this->deserializerLocator = $deserializerLocator;
-        $this->queueName = $queueName;
-        $this->consumerTag = $consumerTag;
-        $this->exchangeName = $exchangeName;
         $this->delay = $delay;
 
-        $this->declareQueue();
-        $this->registerConsumeCallback();
+        $this->channel->queue_declare(
+            $queueName,
+            $passive = false,
+            $durable = true,
+            $exclusive = false,
+            $autoDelete = false
+        );
+
+        $this->channel->queue_bind(
+            $queueName,
+            $exchangeName,
+            $routingKey = '#'
+        );
+
+        $this->channel->basic_consume(
+            $queueName,
+            $consumerTag,
+            $noLocal = false,
+            $noAck = false,
+            $exclusive = false,
+            $noWait = false,
+            [$this, 'consume']
+        );
     }
 
     public function consume(AMQPMessage $message): void
@@ -121,35 +136,5 @@ final class EventBusForwardingConsumer implements ConsumerInterface
     {
         $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
         $this->logger->info($logMessage, $this->context);
-    }
-
-    private function declareQueue(): void
-    {
-        $this->channel->queue_declare(
-            $this->queueName,
-            $passive = false,
-            $durable = true,
-            $exclusive = false,
-            $autoDelete = false
-        );
-
-        $this->channel->queue_bind(
-            $this->queueName,
-            $this->exchangeName,
-            $routingKey = '#'
-        );
-    }
-
-    private function registerConsumeCallback(): void
-    {
-        $this->channel->basic_consume(
-            $this->queueName,
-            $consumerTag = $this->consumerTag,
-            $noLocal = false,
-            $noAck = false,
-            $exclusive = false,
-            $noWait = false,
-            [$this, 'consume']
-        );
     }
 }
