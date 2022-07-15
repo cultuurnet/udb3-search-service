@@ -23,6 +23,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 {
     use LoggerAwareTrait;
 
+    private array $context;
     private DeserializerLocatorInterface $deserializerLocator;
     private string $queueName;
     private string $exchangeName;
@@ -40,6 +41,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         string $queueName,
         int $delay = 0
     ) {
+        $this->context = [];
         $this->logger = new NullLogger();
         $this->eventBus = $eventBus;
 
@@ -58,20 +60,20 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 
     public function consume(AMQPMessage $message): void
     {
-        $context = [];
+        $this->context = [];
 
         if ($message->has('correlation_id')) {
-            $context['correlation_id'] = $message->get('correlation_id');
+            $this->context['correlation_id'] = $message->get('correlation_id');
         }
 
         try {
-            $this->handle($message, $context);
-            $this->ack($message, 'message acknowledged', $context);
+            $this->handle($message);
+            $this->ack($message, 'message acknowledged');
         } catch (DeserializerNotFoundException $e) {
-            $this->ack($message, 'auto acknowledged message because no deserializer was configured for it', $context);
+            $this->ack($message, 'auto acknowledged message because no deserializer was configured for it');
         } catch (Throwable $e) {
-            $this->logger->error($e->getMessage(), $context + ['exception' => $e]);
-            $this->reject($message, 'message rejected', $context);
+            $this->logger->error($e->getMessage(), $this->context + ['exception' => $e]);
+            $this->reject($message, 'message rejected');
         }
     }
 
@@ -80,9 +82,9 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         return $this->channel;
     }
 
-    private function handle(AMQPMessage $message, array $context): void
+    private function handle(AMQPMessage $message): void
     {
-        $this->logger->info('received message with content-type ' . $message->get('content_type'), $context);
+        $this->logger->info('received message with content-type ' . $message->get('content_type'), $this->context);
 
         $deserializer = $this->deserializerLocator->getDeserializerForContentType($message->get('content_type'));
         $deserializedMessage = $deserializer->deserialize($message->body);
@@ -91,7 +93,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             sleep($this->delay);
         }
 
-        $this->logger->info('passing on message to event bus', $context);
+        $this->logger->info('passing on message to event bus', $this->context);
 
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
@@ -100,7 +102,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $deserializedMessage = new DomainMessage(
                 Uuid::uuid4(),
                 0,
-                new Metadata($context),
+                new Metadata($this->context),
                 $deserializedMessage,
                 DateTime::now()
             );
@@ -109,16 +111,16 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
     }
 
-    private function ack(AMQPMessage $message, string $logMessage, array $context): void
+    private function ack(AMQPMessage $message, string $logMessage): void
     {
         $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
-        $this->logger->info($logMessage, $context);
+        $this->logger->info($logMessage, $this->context);
     }
 
-    private function reject(AMQPMessage $message, string $logMessage, array $context): void
+    private function reject(AMQPMessage $message, string $logMessage): void
     {
         $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
-        $this->logger->info($logMessage, $context);
+        $this->logger->info($logMessage, $this->context);
     }
 
     private function declareQueue(): void
