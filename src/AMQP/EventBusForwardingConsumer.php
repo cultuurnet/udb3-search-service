@@ -71,10 +71,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
             $this->ack($message, 'auto acknowledged message because no deserializer was configured for it', $context);
         } catch (Throwable $e) {
             $this->logger->error($e->getMessage(), $context + ['exception' => $e]);
-
-            $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
-
-            $this->logger->info('message rejected', $context);
+            $this->reject($message, 'message rejected', $context);
         }
     }
 
@@ -115,6 +112,12 @@ final class EventBusForwardingConsumer implements ConsumerInterface
     private function ack(AMQPMessage $message, string $logMessage, array $context): void
     {
         $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+        $this->logger->info($logMessage, $context);
+    }
+
+    private function reject(AMQPMessage $message, string $logMessage, array $context): void
+    {
+        $message->delivery_info['channel']->basic_reject($message->delivery_info['delivery_tag'], false);
         $this->logger->info($logMessage, $context);
     }
 
