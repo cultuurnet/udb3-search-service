@@ -21,63 +21,17 @@ use Psr\Log\LoggerInterface;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
-    /**
-     * @var AMQPStreamConnection|MockObject
-     */
-    private $connection;
-
-    /**
-     * @var string
-     */
-    private $queueName;
-
-    /**
-     * @var string
-     */
-    private $exchangeName;
-
-    /**
-     * @var string
-     */
-    private $consumerTag;
-
-    /**
-     * @var EventBus|MockObject
-     */
-    private $eventBus;
-
-    /**
-     * @var DeserializerLocatorInterface|MockObject
-     */
-    private $deserializerLocator;
-
-    /**
-     * @var AbstractChannel|MockObject
-     */
-    private $channel;
-
-    /**
-     * Seconds to delay the actual consumption of the message after it arrived.
-     *
-     * @var int
-     */
-    private $delay;
-
-    /**
-     * @var EventBusForwardingConsumer
-     */
-    private $eventBusForwardingConsumer;
-
-    /**
-     * @var LoggerInterface|MockObject
-     */
-    private $logger;
-
-    /**
-     * @var DeserializerInterface|MockObject
-     */
-    private $deserializer;
-
+    private MockObject $connection;
+    private string $queueName;
+    private string $exchangeName;
+    private string $consumerTag;
+    private MockObject $eventBus;
+    private MockObject $deserializerLocator;
+    private MockObject $channel;
+    private int $delay;
+    private EventBusForwardingConsumer $eventBusForwardingConsumer;
+    private MockObject $logger;
+    private MockObject $deserializer;
     private Closure $consumeCallback;
 
     protected function setUp(): void
@@ -135,7 +89,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_publish_the_message_on_the_event_bus()
+    public function it_can_publish_the_message_on_the_event_bus(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -191,7 +145,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_messages_when_consuming()
+    public function it_logs_messages_when_consuming(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
@@ -242,7 +196,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_rejects_the_massage_when_an_error_occurs()
+    public function it_rejects_the_massage_when_an_error_occurs(): void
     {
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
@@ -270,7 +224,7 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_messages_when_rejecting_a_message()
+    public function it_logs_messages_when_rejecting_a_message(): void
     {
         $context = [];
         $context['correlation_id'] = 'my-correlation-id-123';
