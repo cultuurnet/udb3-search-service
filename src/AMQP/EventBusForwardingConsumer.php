@@ -57,24 +57,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->registerConsumeCallback();
     }
 
-    protected function handle($deserializedMessage, array $context): void
-    {
-        // If the deserializer did not return a DomainMessage yet, then
-        // consider the returned value as the payload, and wrap it in a
-        // DomainMessage.
-        if (!$deserializedMessage instanceof DomainMessage) {
-            $deserializedMessage = new DomainMessage(
-                Uuid::uuid4(),
-                0,
-                new Metadata($context),
-                $deserializedMessage,
-                DateTime::now()
-            );
-        }
-
-        $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
-    }
-
     public function consume(AMQPMessage $message): void
     {
         $context = [];
@@ -123,6 +105,24 @@ final class EventBusForwardingConsumer implements ConsumerInterface
     public function getChannel(): AMQPChannel
     {
         return $this->channel;
+    }
+
+    protected function handle($deserializedMessage, array $context): void
+    {
+        // If the deserializer did not return a DomainMessage yet, then
+        // consider the returned value as the payload, and wrap it in a
+        // DomainMessage.
+        if (!$deserializedMessage instanceof DomainMessage) {
+            $deserializedMessage = new DomainMessage(
+                Uuid::uuid4(),
+                0,
+                new Metadata($context),
+                $deserializedMessage,
+                DateTime::now()
+            );
+        }
+
+        $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
     }
 
     private function declareQueue(): void
