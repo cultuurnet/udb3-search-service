@@ -99,7 +99,9 @@ final class EventBusForwardingConsumer implements ConsumerInterface
 
             $deserializedMessage = $deserializer->deserialize($message->body);
 
-            $this->delayIfNecessary();
+            if ($this->delay > 0) {
+                sleep($this->delay);
+            }
 
             if ($this->logger) {
                 $this->logger->info(
@@ -164,13 +166,6 @@ final class EventBusForwardingConsumer implements ConsumerInterface
     public function getChannel(): AMQPChannel
     {
         return $this->channel;
-    }
-
-    private function delayIfNecessary(): void
-    {
-        if ($this->delay > 0) {
-            sleep($this->delay);
-        }
     }
 
     private function declareQueue(): void
