@@ -64,22 +64,7 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
 
         try {
-            $this->logger->info('received message with content-type ' . $message->get('content_type'), $context);
-
-            $deserializer = $this->deserializerLocator->getDeserializerForContentType($message->get('content_type'));
-            $deserializedMessage = $deserializer->deserialize($message->body);
-
-            if ($this->delay > 0) {
-                sleep($this->delay);
-            }
-
-            $this->logger->info('passing on message to event bus', $context);
-
-            $this->handle($deserializedMessage, $context);
-
-            $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
-
-            $this->logger->info('message acknowledged', $context);
+            $this->handle($message, $context);
         } catch (DeserializerNotFoundException $e) {
             $message->delivery_info['channel']->basic_ack(
                 $message->delivery_info['delivery_tag']
@@ -100,8 +85,19 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         return $this->channel;
     }
 
-    private function handle($deserializedMessage, array $context): void
+    private function handle(AMQPMessage $message, array $context): void
     {
+        $this->logger->info('received message with content-type ' . $message->get('content_type'), $context);
+
+        $deserializer = $this->deserializerLocator->getDeserializerForContentType($message->get('content_type'));
+        $deserializedMessage = $deserializer->deserialize($message->body);
+
+        if ($this->delay > 0) {
+            sleep($this->delay);
+        }
+
+        $this->logger->info('passing on message to event bus', $context);
+
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
         // DomainMessage.
@@ -116,6 +112,10 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         }
 
         $this->eventBus->publish(new DomainEventStream([$deserializedMessage]));
+
+        $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+
+        $this->logger->info('message acknowledged', $context);
     }
 
     private function declareQueue(): void
