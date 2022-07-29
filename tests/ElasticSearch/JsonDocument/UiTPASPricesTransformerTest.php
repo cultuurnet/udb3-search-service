@@ -130,4 +130,22 @@ final class UiTPASPricesTransformerTest extends TestCase
         $actual = $this->transformer->transform([], $draft);
         $this->assertEquals($draft, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_ignore_events_without_price_info(): void
+    {
+        $draft = [
+            '@id' => 'https://io.uitdatabank.dev/event/fa3a2412-211c-4de1-b452-5a3ecea611f6',
+            '@context' => '/contexts/event',
+            'mainLanguage'=> 'nl',
+            'name' => [
+                'nl' => 'Onbekende prijs',
+            ],
+        ];
+
+        $actual = $this->transformer->transform([], $draft);
+        $this->assertEquals($draft, $actual);
+    }
 }
