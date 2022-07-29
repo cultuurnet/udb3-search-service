@@ -10,16 +10,17 @@ final class UiTPASPricesTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        if (!isset($from['priceInfo']) || !is_array($from['priceInfo'])) {
+        if (!isset($draft['priceInfo']) || !is_array($draft['priceInfo'])) {
             return $draft;
         }
 
-        $draft['priceInfo'] = [];
-        foreach ($from['priceInfo'] as $priceInfo) {
+        $priceInfoWithoutUitpas = [];
+        foreach ($draft['priceInfo'] as $priceInfo) {
             if ($priceInfo['category'] !== 'uitpas') {
-                $draft['priceInfo'][] = $priceInfo;
+                $priceInfoWithoutUitpas[] = $priceInfo;
             }
         }
+        $draft['priceInfo'] = $priceInfoWithoutUitpas;
 
         return $draft;
     }
