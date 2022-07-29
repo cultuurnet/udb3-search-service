@@ -72,6 +72,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         return [
             'query' => [
                 'includeMetadata' => true,
+                'embedUitpasPrices' => true,
             ],
         ];
     }
