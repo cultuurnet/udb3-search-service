@@ -59,6 +59,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
                     ],
                 ]
             )
@@ -126,6 +127,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
                     ],
                 ]
             )
@@ -157,6 +159,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 [
                     'query' => [
                         'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
                     ],
                 ]
             )
