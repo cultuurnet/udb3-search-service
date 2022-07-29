@@ -272,7 +272,7 @@ final class OfferSearchController
 
         $resultTransformer = ResultTransformerFactory::create(
             (bool) $parameterBag->getBooleanFromParameter('embed'),
-            (bool) $parameterBag->getBooleanFromParameter('embedUiTPASPrices'),
+            (bool) $parameterBag->getBooleanFromParameter('embedUitpasPrices'),
             ...$calendarSummaries
         );
 
