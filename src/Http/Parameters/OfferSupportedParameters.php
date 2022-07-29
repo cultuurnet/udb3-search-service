@@ -67,6 +67,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'isDuplicate',
             'productionId',
             'groupBy',
+            'embedUitpasPrices',
         ];
     }
 }
