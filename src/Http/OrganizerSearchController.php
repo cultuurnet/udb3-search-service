@@ -158,7 +158,8 @@ final class OrganizerSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $resultTransformer = ResultTransformerFactory::create(
-            (bool) $parameterBag->getBooleanFromParameter('embed')
+            (bool) $parameterBag->getBooleanFromParameter('embed'),
+            false
         );
 
         $pagedCollection = PagedCollectionFactory::fromPagedResultSet(

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonTransfo
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdPolyfillJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\RegionEmbeddingJsonTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\UiTPASPricesTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
@@ -17,6 +18,7 @@ final class ResultTransformerFactory
 {
     public static function create(
         bool $embedded,
+        bool $embedUiTPASPrices,
         CalendarSummaryFormat ...$calendarSummaryFormats
     ): JsonTransformer {
         $transformerStack = new CompositeJsonTransformer();
@@ -25,6 +27,9 @@ final class ResultTransformerFactory
             $transformerStack = $transformerStack->addTransformer(new JsonLdEmbeddingJsonTransformer());
             $transformerStack = $transformerStack->addTransformer(new JsonLdPolyfillJsonTransformer());
             $transformerStack = $transformerStack->addTransformer(new RegionEmbeddingJsonTransformer());
+            if (!$embedUiTPASPrices) {
+                $transformerStack = $transformerStack->addTransformer(new UiTPASPricesTransformer());
+            }
         } else {
             $transformerStack = $transformerStack->addTransformer(new MinimalRequiredInfoJsonTransformer());
         }
