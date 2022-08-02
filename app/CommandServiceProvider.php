@@ -43,9 +43,6 @@ final class CommandServiceProvider extends BaseServiceProvider
             Application::class,
             function () {
                 $commandMap = [
-                    'consume-udb3-core' => 'consume-udb3-core',
-                    'consume-udb3-api' => 'consume-udb3-api',
-                    'consume-udb3-cli' => 'consume-udb3-cli',
                     'facet-mapping:generate-from-taxonomy-terms' => TermTaxonomyToFacetMappingsCommand::class,
                     'facet-mapping:generate-regions-from-flandersregion-terms' => FlandersRegionTaxonomyToFacetMappingsCommand::class,
                     'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
@@ -66,6 +63,11 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'geoshapes:index-regions' => IndexRegionsCommand::class,
                     'geoshapes:install' => InstallGeoShapesCommand::class,
                 ];
+
+                foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
+                    $commandName = $this->getAmqpConsumerCommandName($consumerKey);
+                    $commandMap[$commandName] = $commandName;
+                }
 
                 $application = new Application('udb3-search');
 
@@ -191,28 +193,22 @@ final class CommandServiceProvider extends BaseServiceProvider
             }
         );
 
-        $this->add(
-            'consume-udb3-core',
-            function () {
-                return (new ConsumeCommand('consume-udb3-core', $this->get('amqp.udb3-core')))
-                    ->setDescription('Process messages from UDB3 core');
-            }
-        );
+        foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
+            $name = $this->getAmqpConsumerCommandName($consumerKey);
+            $serviceName = 'amqp.' . $consumerKey;
+            $queueName = $consumerConfig['queue'] ?? 'unknown';
+            $this->add(
+                $name,
+                function () use ($name, $serviceName, $queueName) {
+                    return (new ConsumeCommand($name, $this->get($serviceName)))
+                        ->setDescription('Process messages from ' . $queueName . ' queue');
+                }
+            );
+        }
+    }
 
-        $this->add(
-            'consume-udb3-api',
-            function () {
-                return (new ConsumeCommand('consume-udb3-api', $this->get('amqp.udb3-api')))
-                    ->setDescription('Process messages from UDB3 api');
-            }
-        );
-
-        $this->add(
-            'consume-udb3-cli',
-            function () {
-                return (new ConsumeCommand('consume-udb3-cli', $this->get('amqp.udb3-cli')))
-                    ->setDescription('Process messages from UDB3 cli');
-            }
-        );
+    private function getAmqpConsumerCommandName(string $consumerKey): string
+    {
+        return 'consume-' . $consumerKey;
     }
 }
