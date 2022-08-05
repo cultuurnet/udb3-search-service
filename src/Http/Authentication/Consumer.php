@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 final class Consumer
 {
-    /**
-     * @var ?string
-     */
-    private $id;
+    private ?string $id;
 
-    /**
-     * @var ?string
-     */
-    private $defaultQuery;
+    private ?string $defaultQuery;
 
     public function __construct(?string $id, ?string $defaultQuery)
     {

@@ -27,25 +27,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
-    /**
-     * @var ICultureFeed
-     */
-    private $cultureFeed;
+    private ICultureFeed $cultureFeed;
 
-    /**
-     * @var Auth0TokenProvider
-     */
-    private $auth0TokenProvider;
+    private Auth0TokenProvider $auth0TokenProvider;
 
-    /**
-     * @var Auth0Client
-     */
-    private $auth0Client;
+    private Auth0Client $auth0Client;
 
     public function __construct(
         Container $container,
@@ -80,7 +68,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         return $this->handleApiKey($request, $handler, $apiKey);
     }
-
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
