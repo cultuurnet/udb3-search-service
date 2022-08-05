@@ -62,7 +62,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $this->getLeagueContainer(),
                         new \CultureFeed($oauthClient),
                         $auth0TokenProvider,
-                        $auth0Client
+                        $auth0Client,
+                        file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
