@@ -7,3 +7,4 @@
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
+/.default_queries.php
