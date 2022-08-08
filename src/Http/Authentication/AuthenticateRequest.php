@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
@@ -27,37 +28,29 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var Container
-     */
-    private $container;
+    private Container $container;
 
-    /**
-     * @var ICultureFeed
-     */
-    private $cultureFeed;
+    private ICultureFeed $cultureFeed;
 
-    /**
-     * @var Auth0TokenProvider
-     */
-    private $auth0TokenProvider;
+    private Auth0TokenProvider $auth0TokenProvider;
 
-    /**
-     * @var Auth0Client
-     */
-    private $auth0Client;
+    private Auth0Client $auth0Client;
+
+    private DefaultQueryRepository $defaultQueryRepository;
 
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
         Auth0TokenProvider $auth0TokenProvider,
-        Auth0Client $auth0Client
+        Auth0Client $auth0Client,
+        DefaultQueryRepository $defaultQueryRepository
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
         $this->auth0TokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
-        $this->logger = new NullLogger();
+        $this->defaultQueryRepository = $defaultQueryRepository;
+        $this->setLogger(new NullLogger());
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -80,7 +73,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         return $this->handleApiKey($request, $handler, $apiKey);
     }
-
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
@@ -130,12 +122,17 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
+        $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
+        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
+            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
+        }
+
         $this->container
             ->extend(Consumer::class)
             ->setConcrete(
                 new Consumer(
                     $apiKey,
-                    empty($cultureFeedConsumer->searchPrefixSapi3) ? null : $cultureFeedConsumer->searchPrefixSapi3
+                    $defaultQuery
                 )
             );
 

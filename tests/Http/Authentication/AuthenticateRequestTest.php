@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
@@ -77,7 +78,8 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->auth0TokenProvider,
-            $auth0Client
+            $auth0Client,
+            new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
         );
     }
 
@@ -220,6 +222,43 @@ final class AuthenticateRequestTest extends TestCase
         $this->assertEquals($response, $actualResponse);
     }
 
+    /**
+     * @dataProvider validApiKeyRequestsProvider
+     * @test
+     */
+    public function it_handles_valid_requests_with_api_key_and_default_query_config(ServerRequestInterface $request): void
+    {
+        $cultureFeedConsumer = new CultureFeed_Consumer();
+        $cultureFeedConsumer->status = 'ACTIVE';
+
+        $this->cultureFeed->expects($this->once())
+            ->method('getServiceConsumerByApiKey')
+            ->with('my_active_api_key', true)
+            ->willReturn($cultureFeedConsumer);
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
     public function validApiKeyRequestsProvider(): array
     {
         return [
@@ -256,7 +295,8 @@ final class AuthenticateRequestTest extends TestCase
                 'domain',
                 'clientId',
                 'clientSecret'
-            )
+            ),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -292,7 +332,8 @@ final class AuthenticateRequestTest extends TestCase
                 'domain',
                 'clientId',
                 'clientSecret'
-            )
+            ),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -330,7 +371,8 @@ final class AuthenticateRequestTest extends TestCase
                 'domain',
                 'clientId',
                 'clientSecret'
-            )
+            ),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -377,7 +419,8 @@ final class AuthenticateRequestTest extends TestCase
                 'domain',
                 'clientId',
                 'clientSecret'
-            )
+            ),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $response = (new ResponseFactory())->createResponse(200);
