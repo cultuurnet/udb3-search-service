@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
-use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryConfigRepository;
+use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
@@ -79,7 +79,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->auth0TokenProvider,
             $auth0Client,
-            new DefaultQueryConfigRepository(['my_active_api_key' => 'my_default_search_query']),
+            new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
         );
     }
 
@@ -296,7 +296,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientId',
                 'clientSecret'
             ),
-            new DefaultQueryConfigRepository([]),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -333,7 +333,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientId',
                 'clientSecret'
             ),
-            new DefaultQueryConfigRepository([]),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -372,7 +372,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientId',
                 'clientSecret'
             ),
-            new DefaultQueryConfigRepository([]),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -420,7 +420,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientId',
                 'clientSecret'
             ),
-            new DefaultQueryConfigRepository([]),
+            new InMemoryDefaultQueryRepository([]),
         );
 
         $response = (new ResponseFactory())->createResponse(200);

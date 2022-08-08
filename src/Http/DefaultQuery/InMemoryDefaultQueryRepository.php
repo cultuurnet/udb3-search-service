@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\DefaultQuery;
 
-final class DefaultQueryConfigRepository implements DefaultQueryRepository
+final class InMemoryDefaultQueryRepository implements DefaultQueryRepository
 {
     private array $defaultQueryConfig;
 
