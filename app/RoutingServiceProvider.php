@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenFileRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -63,7 +64,9 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new \CultureFeed($oauthClient),
                         $auth0TokenProvider,
                         $auth0Client,
-                        file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
+                        new InMemoryDefaultQueryRepository(
+                            file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
+                        )
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
