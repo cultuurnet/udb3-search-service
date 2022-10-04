@@ -17,8 +17,8 @@ task :build_artifact do |task|
   system("fpm -s dir -t deb -n #{artifact_name} -v #{version} -a all -p pkg \
     -x '.git*' -x pkg -x lib -x Rakefile -x Gemfile -x Gemfile.lock \
     -x .bundle -x Jenkinsfile -x vendor/bundle \
-    --prefix /var/www/udb3-search \
-    --config-files /var/www/udb3-search/config.yml \
+    --prefix /var/www/udb3-search-service \
+    --config-files /var/www/udb3-search-service/config.yml \
     --deb-user www-data --deb-group www-data \
     --description '#{description}' --url '#{source}' --vendor '#{vendor}' \
     --license '#{license}' -m '#{maintainer}' \
