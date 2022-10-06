@@ -22,6 +22,10 @@ task :build_artifact do |task|
     --deb-user www-data --deb-group www-data \
     --description '#{description}' --url '#{source}' --vendor '#{vendor}' \
     --license '#{license}' -m '#{maintainer}' \
+    --before-remove lib/tasks/prerm \
+    --deb-systemd lib/tasks/udb3-consume-api.service \
+    --deb-systemd lib/tasks/udb3-consume-cli.service \
+    --deb-systemd lib/tasks/udb3-consume-related.service \
     --deb-field 'Pipeline-Version: #{calver_version}' \
     --deb-field 'Git-Ref: #{git_short_ref}' \
     ."
