@@ -2275,7 +2275,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'filter' => [
                         [
                             'query_string' => [
-                                'query' => 'organizer.labels:(UiTPAS* OR Paspartoe)',
+                                'query' => 'labels:(UiTPAS* OR Paspartoe)',
                             ],
                         ],
                     ],
@@ -2312,7 +2312,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'filter' => [
                         [
                             'query_string' => [
-                                'query' => '!(organizer.labels:(UiTPAS* OR Paspartoe))',
+                                'query' => '!(labels:(UiTPAS* OR Paspartoe))',
                             ],
                         ],
                     ],

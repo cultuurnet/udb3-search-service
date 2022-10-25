@@ -383,7 +383,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withUiTPASFilter(bool $include): self
     {
-        $uitpasQuery = 'organizer.labels:(UiTPAS* OR Paspartoe)';
+        $uitpasQuery = 'labels:(UiTPAS* OR Paspartoe)';
 
         if (!$include) {
             $uitpasQuery = "!({$uitpasQuery})";
