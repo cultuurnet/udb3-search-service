@@ -30,8 +30,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_pagination_parameters(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10));
+            ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -53,8 +52,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar')
             );
@@ -90,8 +88,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_free_text_query(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
@@ -315,8 +312,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_multiple_filters(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAutoCompleteFilter('foo')
             ->withWebsiteFilter('http://foo.bar');
 
@@ -371,8 +367,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_postal_code_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
@@ -437,8 +432,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_can_build_a_query_to_filter_on_country(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAddressCountryFilter(new Country('NL'));
 
         $expectedQueryArray = [
@@ -503,8 +497,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRegionFilter(
                 'geoshapes',
                 'regions',
@@ -568,8 +561,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_geodistance_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
@@ -617,8 +609,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_geo_bounds_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoBoundsFilter(
                 new GeoBoundsParameters(
                     new Coordinates(
@@ -674,8 +665,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_single_facet(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
             );
@@ -707,8 +697,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_can_use_a_custom_aggregation_size_for_facets(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder(100))
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
             );
@@ -741,8 +730,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_creator_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatorFilter(new Creator('John Doe'));
 
         $expectedQueryArray = [
@@ -780,8 +768,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_label_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLabelFilter(
                 new LabelName('foo')
             )
@@ -831,8 +818,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
@@ -855,8 +841,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedQueryArray = [
@@ -894,8 +879,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(
                 new WorkflowStatus('ACTIVE'),
                 new WorkflowStatus('DELETED')
@@ -951,8 +935,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $originalBuilder = new ElasticSearchOrganizerQueryBuilder();
 
         $mutatedBuilder = $originalBuilder
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAutoCompleteFilter('foo')
             ->withWebsiteFilter('http://foo.bar');
 

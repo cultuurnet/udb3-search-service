@@ -298,8 +298,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
             ->withRecommendationForFilter('be4f35c4-a093-4c85-8c9b-0afc16336381')
             ->withFacet(FacetName::regions())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGroupByProductionId();
 
         $expectedResultSet = new PagedResultSet(
@@ -389,8 +388,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(30));
+            ->withStartAndLimit(new Start(0), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -571,8 +569,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
                 DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
@@ -635,8 +632,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(30))
+            ->withStartAndLimit(new Start(0), new Limit(30))
             ->withAgeRangeFilter(new Age(0), new Age(0));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -662,8 +658,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(30))
+            ->withStartAndLimit(new Start(0), new Limit(30))
             ->withPriceRangeFilter(Price::fromFloat(0.14), Price::fromFloat(2.24));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -809,8 +804,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTextQuery('foobar', new Language('nl'))
             ->withLanguageFilter(new Language('nl'))
             ->withCompletedLanguageFilter(new Language('nl'))
@@ -843,8 +837,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10))
+            ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCalendarTypeFilter(new CalendarType('SINGLE'), new CalendarType('MULTIPLE'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1202,8 +1195,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withAdvancedQuery(
                 new MockQueryString('labels:bar')
             )
-            ->withStart(new Start(10))
-            ->withLimit(new Limit(30));
+            ->withStartAndLimit(new Start(10), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

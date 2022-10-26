@@ -52,8 +52,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
     public function it_returns_a_paged_result_set_for_the_given_search_query(): void
     {
         $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStart(new Start(960))
-            ->withLimit(new Limit(30))
+            ->withStartAndLimit(new Start(960), new Limit(30))
             ->withAutoCompleteFilter('Collectief');
 
         $idCollectiefCursief = '351b85c1-66ea-463b-82a6-515b7de0d267';
