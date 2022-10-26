@@ -153,8 +153,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))
             ->withFacet(FacetName::regions())
-            ->withStart(new Start(30))
-            ->withLimit(new Limit(10));
+            ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedResultSet = new PagedResultSet(
             32,
@@ -239,8 +238,7 @@ final class OrganizerSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(30))
+            ->withStartAndLimit(new Start(0), new Limit(30))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -330,8 +328,7 @@ final class OrganizerSearchControllerTest extends TestCase
         $request = ServerRequestFactory::createFromGlobals();
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(30))
+            ->withStartAndLimit(new Start(0), new Limit(30))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);

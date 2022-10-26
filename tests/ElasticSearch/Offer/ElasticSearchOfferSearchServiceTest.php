@@ -52,8 +52,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
     public function it_returns_a_paged_result_set_for_the_given_search_parameters(): void
     {
         $queryBuilder = (new ElasticSearchOfferQueryBuilder())
-            ->withStart(new Start(0))
-            ->withLimit(new Limit(2));
+            ->withStartAndLimit(new Start(0), new Limit(2));
 
         $response = [
             'hits' => [

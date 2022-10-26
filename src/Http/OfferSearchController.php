@@ -85,9 +85,7 @@ final class OfferSearchController
         $start = new Start((int) $request->getQueryParam('start', 0));
         $limit = new Limit((int) $request->getQueryParam('limit', 30));
 
-        $queryBuilder = $this->queryBuilder
-            ->withStart($start)
-            ->withLimit($limit);
+        $queryBuilder = $this->queryBuilder->withStartAndLimit($start, $limit);
 
         if ($this->consumer->getId() && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
             $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
