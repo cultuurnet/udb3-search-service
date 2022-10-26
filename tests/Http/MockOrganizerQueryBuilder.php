@@ -180,20 +180,6 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
-    public function withStart(Start $start): MockOrganizerQueryBuilder
-    {
-        $c = clone $this;
-        $c->mockQuery['start'] = $start->toInteger();
-        return $c;
-    }
-
-    public function withLimit(Limit $limit): MockOrganizerQueryBuilder
-    {
-        $c = clone $this;
-        $c->mockQuery['limit'] = $limit->toInteger();
-        return $c;
-    }
-
     public function withStartAndLimit(Start $start, Limit $limit): MockOrganizerQueryBuilder
     {
         $c = clone $this;

@@ -494,20 +494,6 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withStart(Start $start): self
-    {
-        $c = clone $this;
-        $c->mockQuery['start'] = $start->toInteger();
-        return $c;
-    }
-
-    public function withLimit(Limit $limit): self
-    {
-        $c = clone $this;
-        $c->mockQuery['limit'] = $limit->toInteger();
-        return $c;
-    }
-
     public function withStartAndLimit(Start $start, Limit $limit)
     {
         $c = clone $this;
