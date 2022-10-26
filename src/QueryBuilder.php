@@ -32,6 +32,11 @@ interface QueryBuilder
      */
     public function withLimit(Limit $limit);
 
+    /**
+     * @return static
+     */
+    public function withStartAndLimit(Start $start, Limit $limit);
+
     public function getLimit(): Limit;
 
     public function build(): array;
