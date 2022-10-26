@@ -3551,6 +3551,28 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_accept_a_query_with_start_and_limit_just_under_ten_thousand(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(9980), new Limit(10));
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 9980,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object) [],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_if_a_limit_update_pushes_the_result_window_over_ten_thousand(): void
     {
         $this->expectException(UnsupportedParameterValue::class);
