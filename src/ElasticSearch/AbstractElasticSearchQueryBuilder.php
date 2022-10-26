@@ -99,6 +99,15 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
+    public function withStartAndLimit(Start $start, Limit $limit): AbstractElasticSearchQueryBuilder
+    {
+        $c = $this->getClone();
+        $c->search->setFrom($start->toInteger());
+        $c->search->setSize($limit->toInteger());
+        $c->guardResultWindowLimit();
+        return $c;
+    }
+
     private function guardResultWindowLimit(): void
     {
         $window = $this->search->getFrom() + $this->search->getSize();
