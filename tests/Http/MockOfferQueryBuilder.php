@@ -508,6 +508,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withStartAndLimit(Start $start, Limit $limit)
+    {
+        $c = clone $this;
+        $c->mockQuery['start'] = $start->toInteger();
+        $c->mockQuery['limit'] = $limit->toInteger();
+        return $c;
+    }
+
     public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {
