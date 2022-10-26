@@ -75,9 +75,7 @@ final class OrganizerSearchController
 
         $parameterBag = $request->getQueryParameterBag();
 
-        $queryBuilder = $this->queryBuilder
-            ->withStart($start)
-            ->withLimit($limit);
+        $queryBuilder = $this->queryBuilder->withStartAndLimit($start, $limit);
 
         if ($this->consumer->getId() &&
             $queryBuilder instanceof ElasticSearchOrganizerQueryBuilder) {
