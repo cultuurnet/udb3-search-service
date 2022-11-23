@@ -37,38 +37,38 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
             'calendarSummary' => [
                 'nl' => [
                     'text' => [
-                        'xs' => 'Altijd open',
-                        'md' => 'Altijd open',
+                        'xs' => 'Elke dag open',
+                        'md' => 'Elke dag open',
                     ],
                     'html' => [
-                        'md' => '<p class="cf-openinghours">Altijd open</p>',
+                        'md' => '<p class="cf-openinghours">Elke dag open</p>',
                     ],
                 ],
                 'fr' => [
                     'text' => [
-                        'xs' => 'Toujours ouvert',
-                        'md' => 'Toujours ouvert',
+                        'xs' => 'Ouvert tous les jours',
+                        'md' => 'Ouvert tous les jours',
                     ],
                     'html' => [
-                        'md' => '<p class="cf-openinghours">Toujours ouvert</p>',
+                        'md' => '<p class="cf-openinghours">Ouvert tous les jours</p>',
                     ],
                 ],
                 'de' => [
                     'text' => [
-                        'xs' => 'Immer offen',
-                        'md' => 'Immer offen',
+                        'xs' => 'Jeden Tag geöffnet',
+                        'md' => 'Jeden Tag geöffnet',
                     ],
                     'html' => [
-                        'md' => '<p class="cf-openinghours">Immer offen</p>',
+                        'md' => '<p class="cf-openinghours">Jeden Tag geöffnet</p>',
                     ],
                 ],
                 'en' => [
                     'text' => [
-                        'xs' => 'Always open',
-                        'md' => 'Always open',
+                        'xs' => 'Open every day',
+                        'md' => 'Open every day',
                     ],
                     'html' => [
-                        'md' => '<p class="cf-openinghours">Always open</p>',
+                        'md' => '<p class="cf-openinghours">Open every day</p>',
                     ],
                 ],
             ],
