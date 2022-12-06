@@ -37,11 +37,11 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
             'calendarSummary' => [
                 'nl' => [
                     'text' => [
-                        'xs' => 'Elke dag open',
-                        'md' => 'Elke dag open',
+                        'xs' => 'Alle dagen open',
+                        'md' => 'Alle dagen open',
                     ],
                     'html' => [
-                        'md' => '<p class="cf-openinghours">Elke dag open</p>',
+                        'md' => '<p class="cf-openinghours">Alle dagen open</p>',
                     ],
                 ],
                 'fr' => [
