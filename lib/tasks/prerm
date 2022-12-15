@@ -1,5 +1,0 @@
-#!/bin/bash
-
-$(service udb3-consume-api stop || exit 0)
-$(service udb3-consume-cli stop || exit 0)
-$(service udb3-consume-related stop || exit 0)
