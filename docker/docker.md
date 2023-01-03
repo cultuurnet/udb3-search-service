@@ -20,8 +20,6 @@ You'll need to change the following lines to work with docker hosts:
   - `http://localhost:9000`
 - database.host
   - `mysql`
-- cache.redis.host
-  - `redis`
 
 ### RabbitMQ
 
