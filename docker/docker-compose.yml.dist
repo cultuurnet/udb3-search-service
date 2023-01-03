@@ -1,0 +1,58 @@
+version: "3.5"
+
+services:
+
+  php:
+    build: docker/php
+    container_name: php.search
+    volumes:
+      - .:/var/www/html:cached
+    working_dir: /var/www/html
+    command: php -S 0.0.0.0:9000 -t web
+    ports:
+      - "9000:9000"
+    networks:
+      search:
+        aliases:
+          - php.search.dev
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    container_name: mysql.search
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - 'search-mysql:/var/lib/mysql'
+    networks:
+      search:
+        aliases:
+          - mysql.search.dev
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: 'redis:alpine'
+    container_name: redis.search
+    ports:
+      - '${FORWARD_REDIS_PORT:-6379}:6379'
+    volumes:
+      - 'search-redis:/data'
+    networks:
+      -   search
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      retries: 3
+      timeout: 5s
+
+networks:
+  search:
+    driver: bridge
+
+volumes:
+  search-redis:
+    driver: local
+  search-mysql:
+    driver: local
