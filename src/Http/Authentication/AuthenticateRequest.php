@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
@@ -15,6 +16,7 @@ use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,6 +29,8 @@ use Psr\Log\NullLogger;
 final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    private const BEARER = 'Bearer ';
 
     private Container $container;
 
@@ -73,11 +77,17 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         $apiKey = $this->getApiKey($request);
 
-        if (empty($apiKey)) {
-            return (new MissingCredentials())->toResponse();
+        if ($apiKey !== null) {
+            return $this->handleApiKey($request, $handler, $apiKey);
         }
 
-        return $this->handleApiKey($request, $handler, $apiKey);
+        $accessToken = $this->getAccessToken($request);
+
+        if ($accessToken !== null) {
+            return $this->handleAccessToken($request, $handler, $accessToken);
+        }
+
+        return (new MissingCredentials())->toResponse();
     }
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
@@ -104,6 +114,31 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $this->container
             ->extend(Consumer::class)
             ->setConcrete(new Consumer($clientId, null));
+
+        return $handler->handle($request);
+    }
+
+    private function handleAccessToken(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $accessToken
+    ): ResponseInterface {
+        if (strpos($accessToken, self::BEARER) !== 0) {
+            return (
+                new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token')
+            )->toResponse();
+        }
+
+        $tokenString = substr($accessToken, strlen(self::BEARER));
+
+        try {
+            $token = new JsonWebToken($tokenString);
+            if (!$token->validate($this->pemFile)){
+                return (new InvalidToken('Token "' . $tokenString . '" is expired or not valid for Search API.'))->toResponse();
+            }
+        } catch (InvalidTokenStructure $exception) {
+            return (new InvalidToken('Token "' . $tokenString . '" is not a valid JWT.'))->toResponse();
+        }
 
         return $handler->handle($request);
     }
@@ -157,6 +192,15 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         $apis = explode(' ', $metadata['publiq-apis']);
         return in_array('sapi', $apis, true);
+    }
+
+    private function getAccessToken(ServerRequestInterface $request): ?string
+    {
+        if ($this->getHeaderValue($request, 'authorization')) {
+            return $this->getHeaderValue($request, 'authorization');
+        }
+
+        return null;
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string
