@@ -23,6 +23,7 @@
         "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/psr7": "^2.4",
         "hassankhan/config": "^2.1",
+        "lcobucci/jwt": "^4.3",
         "league/container": "^3.3",
         "league/route": "^4.3",
         "monolog/monolog": "~1.11",
