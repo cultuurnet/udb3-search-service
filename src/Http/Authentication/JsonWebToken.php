@@ -16,8 +16,6 @@ use Lcobucci\JWT\Validation\Validator;
 
 final class JsonWebToken
 {
-    private string $jwt;
-
     private UnencryptedToken $token;
 
     public function __construct(string $jwt)
