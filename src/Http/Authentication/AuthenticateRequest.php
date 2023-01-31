@@ -38,18 +38,24 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
+    private ?JsonWebToken $token;
+
+    private string $pemFile;
+
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
         Auth0TokenProvider $auth0TokenProvider,
         Auth0Client $auth0Client,
-        DefaultQueryRepository $defaultQueryRepository
+        DefaultQueryRepository $defaultQueryRepository,
+        string $pemFile
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
         $this->auth0TokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
         $this->defaultQueryRepository = $defaultQueryRepository;
+        $this->pemFile = $pemFile;
         $this->setLogger(new NullLogger());
     }
 
