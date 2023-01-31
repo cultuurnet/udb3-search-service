@@ -46,12 +46,19 @@ final class JsonWebToken
         }
         $allowedApis = $this->token->claims()->get('https://publiq.be/publiq-apis', '');
 
-        return $this->hasSapiAccess($allowedApis);
+        $this->token->claims()->has('nickname') || $this->token->claims()->has('email');
+
+        return $this->hasSapiAccess($allowedApis) && !$this->isV2JwtProviderToken();
     }
 
     private function hasSapiAccess(string $allowedApis): bool
     {
         $apis = explode(' ', $allowedApis);
         return in_array('sapi', $apis, true);
+    }
+
+    private function isV2JwtProviderToken(): bool
+    {
+        return $this->token->claims()->has('nickname') || $this->token->claims()->has('email');
     }
 }
