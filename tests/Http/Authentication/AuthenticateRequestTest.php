@@ -46,10 +46,14 @@ final class AuthenticateRequestTest extends TestCase
 
     private AuthenticateRequest $authenticateRequest;
 
+    private string $pemFile;
+
     protected function setUp(): void
     {
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
+
+        $this->pemFile = file_get_contents(__DIR__ . '/samples/public.pem');
 
         $auth0Client = new Auth0Client(
             $this->createMock(Client::class),
@@ -80,6 +84,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->auth0TokenProvider,
             $auth0Client,
             new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
+            $this->pemFile
         );
     }
 
@@ -297,6 +302,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -334,6 +340,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -373,6 +380,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            '../data/'
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -421,6 +429,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
