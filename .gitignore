@@ -10,3 +10,4 @@
 /.default_queries.php
 /pkg
 /.bundle
+*.pem
