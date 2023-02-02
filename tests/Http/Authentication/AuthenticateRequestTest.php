@@ -475,8 +475,9 @@ final class AuthenticateRequestTest extends TestCase
 
     private function assertProblemReport(ApiProblem $apiProblem, ResponseInterface $response): void
     {
+        $response->getBody()->rewind();
         $this->assertEquals($apiProblem->getStatus(), $response->getStatusCode());
         $this->assertEquals('application/ld+json', $response->getHeader('Content-Type')[0]);
-        $this->assertEquals(Json::encode($apiProblem->asArray()), $response->getBody());
+        $this->assertEquals(Json::encodeWithOptions($apiProblem->asArray(), JSON_HEX_QUOT), $response->getBody()->getContents());
     }
 }
