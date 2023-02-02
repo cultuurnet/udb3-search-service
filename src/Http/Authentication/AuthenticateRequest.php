@@ -147,6 +147,15 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         return $handler->handle($request);
     }
 
+    private function getAccessToken(ServerRequestInterface $request): ?string
+    {
+        if ($this->getHeaderValue($request, 'authorization')) {
+            return $this->getHeaderValue($request, 'authorization');
+        }
+
+        return null;
+    }
+
     private function handleApiKey(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
@@ -196,15 +205,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         $apis = explode(' ', $metadata['publiq-apis']);
         return in_array('sapi', $apis, true);
-    }
-
-    private function getAccessToken(ServerRequestInterface $request): ?string
-    {
-        if ($this->getHeaderValue($request, 'authorization')) {
-            return $this->getHeaderValue($request, 'authorization');
-        }
-
-        return null;
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string
