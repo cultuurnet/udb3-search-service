@@ -26,7 +26,7 @@ final class JsonWebToken
     public function validate(string $publicKey, ?string $keyPassphrase = null): bool
     {
         $signer = new Sha256();
-        $key =  InMemoryKey::file($publicKey, $keyPassphrase);
+        $key =  InMemoryKey::plainText($publicKey, (string) $keyPassphrase);
 
         $validator = new Validator();
         $valid = $validator->validate(
