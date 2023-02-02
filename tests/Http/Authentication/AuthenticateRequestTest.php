@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
@@ -471,6 +472,62 @@ final class AuthenticateRequestTest extends TestCase
                     ->withQueryParams(['clientId' => 'my_active_client_id']),
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requests_without_bearer_in_the_token(): void
+    {
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token'),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_expired_token(): void
+    {
+        $expiredToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkJOamRGTkRkQ09FUkdNek00TlRKRlFVUXhOek0xTVRnMU5UYzFSalJHUWpsRk4wSkRRUSJ9.eyJodHRwczovL3B1YmxpcS5iZS9wdWJsaXEtYXBpcyI6ImVudHJ5IHNhcGkiLCJodHRwczovL3B1YmxpcS5iZS9jbGllbnQtbmFtZSI6ImN1bHR1dXJrdXVyIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LWFjYy51aXRpZC5iZS8iLCJzdWIiOiJyTGxjOTBUU0ZCRFJRYlp3elA1dm0ybmlEWEkxQ1pldkBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9hcGkucHVibGlxLmJlIiwiaWF0IjoxNjU4MzIxMDk2LCJleHAiOjE2NTg0MDc0OTYsImF6cCI6InJMbGM5MFRTRkJEUlFiWnd6UDV2bTJuaURYSTFDWmV2IiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOltdfQ.HqiMXbiPWlOX9o04QAr-Sx1vX6135RtYNs2u601-LH2nPViuaSblYiwH09EArhPBbOHXxQW9YJBf2iJq_wfqDNg86m_In60ykLR2uVpIf0qpDLU_ajvJn3zjzTm0ExgUjkxWB5wVpjYajB7scY8gf4pWxiou1JFWrinyrJwQyY_AQUh79jM-xtSZ4_pViDYTrhVPU9nnBFNA1I1QM4QnhjllOrjIbHwxGG0lm6qY5KRHOMyIgDuwbkeaMWKb2kYinWXQBD0J89-7ekXhxd_yOYV5EB0-eENRFNmooB37nxNCpjRA8Hh4hp7aHO-gRZR6-8I7EFqtKXFKhfNmhWs51A';
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $expiredToken),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Token "' . $expiredToken . '" is expired or not valid for Search API.'),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requests_with_unparsable_token(): void
+    {
+        $unparsableToken = '123';
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $unparsableToken),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Token "' . $unparsableToken . '" is not a valid JWT.'),
+            $response
+        );
     }
 
     private function assertProblemReport(ApiProblem $apiProblem, ResponseInterface $response): void
