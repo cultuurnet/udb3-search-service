@@ -29,7 +29,7 @@ final class JsonWebToken
         $key =  InMemoryKey::plainText($publicKey, (string) $keyPassphrase);
 
         $validator = new Validator();
-        $valid = $validator->validate(
+        return $validator->validate(
             $this->token,
             new LooseValidAt(
                 new SystemClock(
@@ -39,13 +39,11 @@ final class JsonWebToken
             ),
             new SignedWith($signer, $key)
         );
-        if (!$valid) {
-            return false;
-        }
+    }
+
+    public function isAllowedOnSearchApi(): bool
+    {
         $allowedApis = $this->token->claims()->get('https://publiq.be/publiq-apis', '');
-
-        $this->token->claims()->has('nickname') || $this->token->claims()->has('email');
-
         return $this->hasSapiAccess($allowedApis) && !$this->isV2JwtProviderToken();
     }
 

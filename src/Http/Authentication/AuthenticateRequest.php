@@ -133,11 +133,15 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
         try {
             $token = new JsonWebToken($tokenString);
-            if (!$token->validate($this->pemFile)) {
-                return (new InvalidToken('Token "' . $tokenString . '" is expired or not valid for Search API.'))->toResponse();
-            }
         } catch (InvalidTokenStructure $exception) {
             return (new InvalidToken('Token "' . $tokenString . '" is not a valid JWT.'))->toResponse();
+        }
+
+        if (!$token->validate($this->pemFile)) {
+            return (new InvalidToken('Token "' . $tokenString . '" is expired or not valid for Search API.'))->toResponse();
+        }
+        if (!$token->isAllowedOnSearchApi()) {
+            return (new NotAllowedToUseSapi())->toResponse();
         }
 
         return $handler->handle($request);
