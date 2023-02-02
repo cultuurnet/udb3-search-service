@@ -32,6 +32,8 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class AuthenticateRequestTest extends TestCase
 {
+    private const BEARER = 'Bearer ';
+
     /**
      * @var Container|MockObject
      */
