@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
@@ -32,6 +33,8 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class AuthenticateRequestTest extends TestCase
 {
+    private const BEARER = 'Bearer ';
+
     /**
      * @var Container|MockObject
      */
@@ -46,10 +49,14 @@ final class AuthenticateRequestTest extends TestCase
 
     private AuthenticateRequest $authenticateRequest;
 
+    private string $pemFile;
+
     protected function setUp(): void
     {
         $this->container = $this->createMock(Container::class);
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
+
+        $this->pemFile = file_get_contents(__DIR__ . '/samples/public.pem');
 
         $auth0Client = new Auth0Client(
             $this->createMock(Client::class),
@@ -80,6 +87,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->auth0TokenProvider,
             $auth0Client,
             new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
+            $this->pemFile
         );
     }
 
@@ -297,6 +305,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -334,6 +343,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -373,6 +383,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -421,6 +432,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -462,10 +474,158 @@ final class AuthenticateRequestTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function it_handles_valid_requests_with_a_token(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims(['https://publiq.be/publiq-apis' => 'sapi']);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('authorization', self::BEARER . $token);
+        $expectedResponse = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($expectedResponse);
+
+        $actualResponse = $this->authenticateRequest->process(
+            $request,
+            $requestHandler
+        );
+
+        $this->assertEquals($expectedResponse, $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_unallowed_requests_with_a_token(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims(['https://publiq.be/publiq-apis' => 'entry']);
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $token),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new NotAllowedToUseSapi(),
+            $response
+        );
+    }
+
+    /**
+     * @dataProvider v2Claims
+     * @test
+     */
+    public function it_handles_unallowed_requests_with_v2_tokens(array $claims): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims($claims);
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $token),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new NotAllowedToUseSapi(),
+            $response
+        );
+    }
+
+    public function v2Claims(): array
+    {
+        return [
+            'only nickname' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'nickname' => 'foobar',
+                ],
+            ],
+            'only email' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'email' => 'foo@bar.com',
+                ],
+            ],
+            'nickname and email' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'nickname' => 'foobar',
+                    'email' => 'foo@bar.com',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requests_without_bearer_in_the_token(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', $token),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token'),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_invalid_token(): void
+    {
+        $invalidToken = JsonWebTokenFactory::createWithInvalidSignature();
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $invalidToken),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Token "' . $invalidToken . '" is expired or not valid for Search API.'),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requests_with_unparsable_token(): void
+    {
+        $unparsableToken = '123';
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $unparsableToken),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Token "' . $unparsableToken . '" is not a valid JWT.'),
+            $response
+        );
+    }
+
     private function assertProblemReport(ApiProblem $apiProblem, ResponseInterface $response): void
     {
+        $response->getBody()->rewind();
         $this->assertEquals($apiProblem->getStatus(), $response->getStatusCode());
         $this->assertEquals('application/ld+json', $response->getHeader('Content-Type')[0]);
-        $this->assertEquals(Json::encode($apiProblem->asArray()), $response->getBody());
+        $this->assertEquals(Json::encodeWithOptions($apiProblem->asArray(), JSON_HEX_QUOT), $response->getBody()->getContents());
     }
 }

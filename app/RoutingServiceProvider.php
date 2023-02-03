@@ -66,7 +66,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $auth0Client,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
-                        )
+                        ),
+                        file_get_contents('file://' . __DIR__ . '/../public-auth0.pem')
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());

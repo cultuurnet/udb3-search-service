@@ -10,3 +10,5 @@
 /.default_queries.php
 /pkg
 /.bundle
+*.pem
+!tests/Http/Authentication/samples/*.pem
