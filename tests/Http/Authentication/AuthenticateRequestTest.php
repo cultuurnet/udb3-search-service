@@ -477,12 +477,58 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_requests_without_bearer_in_the_token(): void
+    public function it_handles_valid_requests_with_a_token(): void
     {
+        $token = JsonWebTokenFactory::createWithClaims(['https://publiq.be/publiq-apis' => 'sapi']);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('authorization', self::BEARER . $token);
+        $expectedResponse = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($expectedResponse);
+
+        $actualResponse = $this->authenticateRequest->process(
+            $request,
+            $requestHandler
+        );
+
+        $this->assertEquals($expectedResponse, $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_unallowed_requests_with_a_token(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims(['https://publiq.be/publiq-apis' => 'entry']);
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
-                ->withHeader('authorization', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'),
+                ->withHeader('authorization', self::BEARER . $token),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new NotAllowedToUseSapi(),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_requests_without_bearer_in_the_token(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims([]);
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', $token),
             $this->createMock(RequestHandlerInterface::class)
         );
 
@@ -495,18 +541,18 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_expired_token(): void
+    public function it_handles_invalid_token(): void
     {
-        $expiredToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56SkJOamRGTkRkQ09FUkdNek00TlRKRlFVUXhOek0xTVRnMU5UYzFSalJHUWpsRk4wSkRRUSJ9.eyJodHRwczovL3B1YmxpcS5iZS9wdWJsaXEtYXBpcyI6ImVudHJ5IHNhcGkiLCJodHRwczovL3B1YmxpcS5iZS9jbGllbnQtbmFtZSI6ImN1bHR1dXJrdXVyIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50LWFjYy51aXRpZC5iZS8iLCJzdWIiOiJyTGxjOTBUU0ZCRFJRYlp3elA1dm0ybmlEWEkxQ1pldkBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9hcGkucHVibGlxLmJlIiwiaWF0IjoxNjU4MzIxMDk2LCJleHAiOjE2NTg0MDc0OTYsImF6cCI6InJMbGM5MFRTRkJEUlFiWnd6UDV2bTJuaURYSTFDWmV2IiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOltdfQ.HqiMXbiPWlOX9o04QAr-Sx1vX6135RtYNs2u601-LH2nPViuaSblYiwH09EArhPBbOHXxQW9YJBf2iJq_wfqDNg86m_In60ykLR2uVpIf0qpDLU_ajvJn3zjzTm0ExgUjkxWB5wVpjYajB7scY8gf4pWxiou1JFWrinyrJwQyY_AQUh79jM-xtSZ4_pViDYTrhVPU9nnBFNA1I1QM4QnhjllOrjIbHwxGG0lm6qY5KRHOMyIgDuwbkeaMWKb2kYinWXQBD0J89-7ekXhxd_yOYV5EB0-eENRFNmooB37nxNCpjRA8Hh4hp7aHO-gRZR6-8I7EFqtKXFKhfNmhWs51A';
+        $invalidToken = JsonWebTokenFactory::createWithInvalidSignature();
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
-                ->withHeader('authorization', self::BEARER . $expiredToken),
+                ->withHeader('authorization', self::BEARER . $invalidToken),
             $this->createMock(RequestHandlerInterface::class)
         );
 
         $this->assertProblemReport(
-            new InvalidToken('Token "' . $expiredToken . '" is expired or not valid for Search API.'),
+            new InvalidToken('Token "' . $invalidToken . '" is expired or not valid for Search API.'),
             $response
         );
     }
