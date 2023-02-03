@@ -520,6 +520,51 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
+     * @dataProvider v2Claims
+     * @test
+     */
+    public function it_handles_unallowed_requests_with_v2_tokens(array $claims): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims($claims);
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER . $token),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new NotAllowedToUseSapi(),
+            $response
+        );
+    }
+
+    public function v2Claims(): array
+    {
+        return [
+            'only nickname' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'nickname' => 'foobar',
+                ],
+            ],
+            'only email' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'email' => 'foo@bar.com',
+                ],
+            ],
+            'nickname and email' => [
+                [
+                    'https://publiq.be/publiq-apis' => 'sapi',
+                    'nickname' => 'foobar',
+                    'email' => 'foo@bar.com',
+                ],
+            ],
+        ];
+    }
+
+    /**
      * @test
      */
     public function it_handles_requests_without_bearer_in_the_token(): void
