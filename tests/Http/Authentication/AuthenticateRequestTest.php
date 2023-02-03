@@ -383,7 +383,7 @@ final class AuthenticateRequestTest extends TestCase
                 'clientSecret'
             ),
             new InMemoryDefaultQueryRepository([]),
-            '../data/'
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
