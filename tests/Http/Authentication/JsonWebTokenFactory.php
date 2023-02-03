@@ -12,39 +12,35 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 final class JsonWebTokenFactory
 {
-    public static function createWithClaims(array $claims): JsonWebToken
+    public static function createWithClaims(array $claims): string
     {
         $builder = new Builder(new JoseEncoder(), new ChainedFormatter());
         foreach ($claims as $claim => $value) {
             $builder = $builder->withClaim($claim, $value);
         }
 
-        return new JsonWebToken(
-            $builder->getToken(
-                new Sha256(),
-                InMemoryKey::plainText(
-                    file_get_contents('file://' . __DIR__ . '/samples/private.pem'),
-                    'secret'
-                )
-            )->toString()
-        );
+        return $builder->getToken(
+            new Sha256(),
+            InMemoryKey::plainText(
+                file_get_contents('file://' . __DIR__ . '/samples/private.pem'),
+                'secret'
+            )
+        )->toString();
     }
 
-    public static function createWithInvalidSignature(): JsonWebToken
+    public static function createWithInvalidSignature(): string
     {
-        return new JsonWebToken(
-            (new Builder(new JoseEncoder(), new ChainedFormatter()))->getToken(
-                new Sha256(),
-                InMemoryKey::plainText(
-                    file_get_contents('file://' . __DIR__ . '/samples/private-invalid.pem'),
-                    'secret'
-                )
-            )->toString()
-        );
+        return (new Builder(new JoseEncoder(), new ChainedFormatter()))->getToken(
+            new Sha256(),
+            InMemoryKey::plainText(
+                file_get_contents('file://' . __DIR__ . '/samples/private-invalid.pem'),
+                'secret'
+            )
+        )->toString();
     }
 
     public static function getPublicKey(): string
     {
-        return file_get_contents('file://' .__DIR__ . '/samples/public.pem');
+        return file_get_contents('file://' . __DIR__ . '/samples/public.pem');
     }
 }
