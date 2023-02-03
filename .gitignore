@@ -11,3 +11,4 @@
 /pkg
 /.bundle
 *.pem
+!tests/Http/Authentication/samples/*.pem
