@@ -1,6 +1,7 @@
 /vendor
 /build
 /log
+/geojson-data
 /config.yml
 /features.yml
 /facet_mapping_*.yml
@@ -12,4 +13,3 @@
 /.bundle
 *.pem
 !tests/Http/Authentication/samples/*.pem
-/geojson.data
