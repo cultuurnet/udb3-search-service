@@ -44,9 +44,14 @@ and adding `host.docker.internal` to your `/etc/hosts`)
 
 ### Docker
 
-Start the docker containers with the following command. Make sure to execute this inside the root of the project so the `.env` can be used.
+Start the docker containers with the following command. Make sure to execute this inside the root of the project.
 ```
 $ make up
+```
+
+Stop the docker containers with the following command. Make sure to execute this inside the root of the project.
+```
+$ make down
 ```
 
 ### Composer install
