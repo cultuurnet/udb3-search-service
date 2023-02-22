@@ -56,9 +56,9 @@ To install all composer packages, run the:
 $ make install
 ```
 
-### Migrations
+### ElasticSearch Migrations
 
-To migrate the database, run the following command:
+To run the ElasticSearch migrations, run the following command:
 ```
 $ make migrate
 ```
