@@ -169,8 +169,8 @@ Note that you will also need to change the unit tests to include the new request
 
 Lastly, add your new URL parameter(s) to the list(s) of supported query parameters:
 
-- `app/Parameters/OfferSupportedParameters.php`
-- `app/Parameters/OrganizerSupportedParameters.php`
+- `src/Http/Parameters/OfferSupportedParameters.php`
+- `src/Http/Parameters/OrganizerSupportedParameters.php`
 
 #### The `q` parameter
 
