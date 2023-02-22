@@ -217,4 +217,9 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
     {
         return $this->withFieldSort('modified', $sortOrder->toString());
     }
+
+    public function withContributor(string $email): OrganizerQueryBuilderInterface
+    {
+        return $this->withMatchQuery('contributors', $email);
+    }
 }

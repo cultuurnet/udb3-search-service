@@ -56,4 +56,6 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 
     public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
+
+    public function withContributor(string $email): OrganizerQueryBuilderInterface;
 }

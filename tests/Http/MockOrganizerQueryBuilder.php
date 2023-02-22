@@ -218,6 +218,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
+    public function withContributor(string $email): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['contributors'][] = $email;
+        return $c;
+    }
+
     public function build(): array
     {
         $build = $this->mockQuery;
