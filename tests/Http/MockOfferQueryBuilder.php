@@ -502,6 +502,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withContributor(string $email): OfferQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['contributors'][] = $email;
+        return $c;
+    }
+
     public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {

@@ -160,4 +160,6 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): OfferQueryBuilderInterface;
 
     public function withGroupByProductionId(): OfferQueryBuilderInterface;
+
+    public function withContributor(string $email): OfferQueryBuilderInterface;
 }

@@ -548,4 +548,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         return $c;
     }
+
+    public function withContributor(string $email): OfferQueryBuilderInterface
+    {
+        return $this->withMatchQuery('contributors', $email);
+    }
 }
