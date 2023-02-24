@@ -84,7 +84,7 @@ final class JsonLdPolyfillJsonTransformer implements JsonTransformer
 
     private function removeInternalProperties(array $json): array
     {
-        $internalProperties = ['metadata'];
+        $internalProperties = ['metadata', 'contributors'];
         return array_diff_key($json, array_flip($internalProperties));
     }
 }
