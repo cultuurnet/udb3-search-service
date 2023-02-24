@@ -14,7 +14,7 @@ final class ContributorsRequestParser implements OrganizerRequestParser
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
-        $contributor = $parameterBagReader->getStringFromParameter('contributor');
+        $contributor = $parameterBagReader->getStringFromParameter('contributors');
 
         if (!is_null($contributor)) {
             $organizerQueryBuilder = $organizerQueryBuilder->withContributorsFilter($contributor);
