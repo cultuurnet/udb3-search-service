@@ -181,6 +181,11 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         );
     }
 
+    public function withContributorsFilter(string $email): OrganizerQueryBuilderInterface
+    {
+        return $this->withMatchQuery('contributors', $email);
+    }
+
     public function withFacet(FacetName $facetName): self
     {
         $facetFields = [

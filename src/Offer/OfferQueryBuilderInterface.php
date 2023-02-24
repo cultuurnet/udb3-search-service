@@ -133,6 +133,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withOrganizerLabelFilter(LabelName $organizerLabel): OfferQueryBuilderInterface;
 
+    public function withContributorsFilter(string $email): OfferQueryBuilderInterface;
+
     /**
      *   When set to true only offers marked as duplicate will be included.
      *   When set to false only canonical offers will be included.

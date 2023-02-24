@@ -147,6 +147,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
+    public function withContributorsFilter(string $email): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['contributors'] = $email;
+        return $c;
+    }
+
     public function withFacet(FacetName $facetName): self
     {
         $c = clone $this;

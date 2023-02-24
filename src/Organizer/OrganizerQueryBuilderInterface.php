@@ -39,6 +39,8 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 
     public function withCreatorFilter(Creator $creator): OrganizerQueryBuilderInterface;
 
+    public function withContributorsFilter(string $email): OrganizerQueryBuilderInterface;
+
     /**
      *  When set to true only organizers with at least one image will be included.
      *  When set to false organizers with images will be excluded.
