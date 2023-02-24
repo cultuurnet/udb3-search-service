@@ -39,6 +39,3 @@ networks:
   uitdatabank:
     driver: bridge
 
-volumes:
-  udb3-mysql:
-    driver: local
