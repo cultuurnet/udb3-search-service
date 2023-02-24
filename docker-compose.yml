@@ -28,8 +28,6 @@ services:
     restart: always
     ports:
       - '9200:9200'
-    expose:
-      - '9200'
     networks:
       uitdatabank:
         aliases:
