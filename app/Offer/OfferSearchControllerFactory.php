@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AttendanceModeOfferRequestPa
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
@@ -73,6 +74,7 @@ final class OfferSearchControllerFactory
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
+            ->withParser(new ContributorsRequestParser())
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         return new OfferSearchController(

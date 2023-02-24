@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchS
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\DistanceOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\GeoBoundsOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
@@ -45,6 +46,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                         new GeoBoundsParametersFactory()
                     ))
                     ->withParser(new WorkflowStatusOrganizerRequestParser())
+                    ->withParser(new ContributorsRequestParser())
                     ->withParser(new SortByOrganizerRequestParser());
 
                 return new OrganizerSearchController(
