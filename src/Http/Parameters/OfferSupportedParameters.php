@@ -68,6 +68,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'productionId',
             'groupBy',
             'embedUitpasPrices',
+            'contributors',
         ];
     }
 }
