@@ -10,18 +10,21 @@
 
 Copy the latest `config.yml` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service to the root
 
-In your `config.yml` file, you have to change some of the hosts to work with Docker instead of Vagrant.
+In your `config.yml` file, you have to change the elasticsearch host to work with Docker instead of Vagrant.
 
 You'll need to change the following lines to work with docker hosts:
-- elasticsearch.host: 
-    - `elasticsearch`
-- geoshapes_index.indexation.path:
-    - `/geojson-data/output/elasticsearch`
+```
+elasticsearch.host: 
+  elasticsearch
+```
 
-### ElasticSearch
-To setup ElasticSearch you'll have to clone [geojson-data](https://github.com/cultuurnet/geojson-data)
-in your [udb3-search-service](https://github.com/cultuurnet/udb3-search-service) Folder
-and run `make migrate-force`
+Copy all the latest facet files from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service
+
+- facet_mapping_facilities.yml
+- facet_mapping_themes.yml
+- facet_mapping_types.yml
+
+Copy all the regions from https://github.com/cultuurnet/geojson-data/blob/main/output/facet_mapping_regions.yml
 
 ### RabbitMQ
 
