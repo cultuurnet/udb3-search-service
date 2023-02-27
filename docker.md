@@ -1,7 +1,8 @@
 # UDB3 Search Service with Docker
 
 ## Prerequisite
-- Install Docker Desktop
+- Install Docker Desktop 
+- GEO JSON Data: you'll have to clone [geojson-data](https://github.com/cultuurnet/geojson-data) in the same folder as where you will clone [udb3-search-service](https://github.com/cultuurnet/udb3-search-service)
 
 ## Configure
 
