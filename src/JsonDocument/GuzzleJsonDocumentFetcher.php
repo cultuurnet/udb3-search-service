@@ -10,20 +10,11 @@ use Psr\Log\LoggerInterface;
 
 final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 {
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
+    private ClientInterface $httpClient;
 
-    /**
-     * @var bool
-     */
-    private $includeMetadata;
+    private bool $includeMetadata;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(ClientInterface $httpClient, LoggerInterface $logger)
     {
