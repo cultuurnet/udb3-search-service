@@ -19,7 +19,6 @@ final class ContributorsRequestParser implements OfferRequestParserInterface
         if (!is_null($contributor)) {
             $offerQueryBuilder = $offerQueryBuilder->withContributorsFilter($contributor);
         }
-        $offerQueryBuilder->withAgeRangeFilter();
 
         return $offerQueryBuilder;
     }
