@@ -39,10 +39,10 @@ You'll have to update your `config.yml` file accordingly with the values of your
 
 To read messages from [udb3-backend](https://github.com/cultuurnet/udb3-backend):
 - Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
-- Make the url of the docker-container of [udb3-backend](https://github.com/cultuurnet/udb3-backend) available
-to the docker container of [udb3-search-service](https://github.com/cultuurnet/udb3-search-service)
-  (one possible way is using `host.docker.internal` as `url` in [udb3-backend](https://github.com/cultuurnet/udb3-backend)
-and adding `host.docker.internal` to your `/etc/hosts`)
+- Communication between Docker containers is handled through `host.docker.internal`
+
+## Migration
+Run `make migrate`
 
 ## Start
 
