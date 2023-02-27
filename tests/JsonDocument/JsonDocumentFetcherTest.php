@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -14,10 +16,20 @@ use Psr\Log\LoggerInterface;
 
 final class JsonDocumentFetcherTest extends TestCase
 {
+    private const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    private const DOMAIN = 'domain.com';
+    private const CLIENT_ID = 'client_id';
+    private const CLIENT_SECRET = 'client_secret';
+
     /**
      * @var ClientInterface|MockObject
      */
     private $httpClient;
+
+    /**
+     * @var Client|MockObject
+     */
+    private $auth0httpClient;
 
     /**
      * @var LoggerInterface|MockObject
@@ -29,10 +41,17 @@ final class JsonDocumentFetcherTest extends TestCase
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
+        $this->auth0httpClient = $this->createMock(Client::class);
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->jsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
             $this->httpClient,
-            $this->logger
+            $this->logger,
+            new Auth0Client(
+                $this->auth0httpClient,
+                self::DOMAIN,
+                self::CLIENT_ID,
+                self::CLIENT_SECRET
+            )
         ))->withIncludeMetadata();
     }
 
@@ -79,7 +98,13 @@ final class JsonDocumentFetcherTest extends TestCase
     {
         $jsonDocumentFetcher = new GuzzleJsonDocumentFetcher(
             $this->httpClient,
-            $this->logger
+            $this->logger,
+            new Auth0Client(
+                $this->auth0httpClient,
+                self::DOMAIN,
+                self::CLIENT_ID,
+                self::CLIENT_SECRET
+            )
         );
 
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
@@ -167,6 +192,64 @@ final class JsonDocumentFetcherTest extends TestCase
         $this->logger->expects($this->once())
             ->method('error')
             ->with('Could not retrieve JSON-LD from url for indexation.');
+
+        $this->jsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_authorize_requests(): void
+    {
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $this->auth0httpClient->expects($this->once())
+            ->method('post')
+            ->with(
+                'https://' . self::DOMAIN . '/oauth/token',
+                [
+                    'headers' => ['content-type' => 'application/json'],
+                    'json' => [
+                        'client_id' => self::CLIENT_ID,
+                        'client_secret' => self::CLIENT_SECRET,
+                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            )
+            ->willReturn(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 86400000,
+                    ])
+                )
+            );
+
+        $this->httpClient->expects($this->once())
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'headers' =>[
+                        'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
+                    ],
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                    ],
+                ]
+            )
+            ->willReturn(
+                new Response(200)
+            );
 
         $this->jsonDocumentFetcher->fetch(
             $documentId,
