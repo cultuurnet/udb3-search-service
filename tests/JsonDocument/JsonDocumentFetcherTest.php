@@ -24,10 +24,7 @@ final class JsonDocumentFetcherTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var GuzzleJsonDocumentFetcher
-     */
-    private $jsonDocumentFetcher;
+    private GuzzleJsonDocumentFetcher $jsonDocumentFetcher;
 
     protected function setUp(): void
     {
