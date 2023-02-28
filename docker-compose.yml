@@ -30,7 +30,7 @@ services:
     ports:
       - '9200:9200'
     volumes:
-      - 'udb3-es:/usr/share/elasticsearch/data'
+      - 'udb3-es:/elasticsearch/data'
     networks:
       uitdatabank:
         aliases:
