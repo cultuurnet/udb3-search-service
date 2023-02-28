@@ -29,6 +29,8 @@ services:
     container_name: es.uitdatabank
     ports:
       - '9200:9200'
+    volumes:
+      - 'udb3-es:/usr/share/elasticsearch/data'
     networks:
       uitdatabank:
         aliases:
