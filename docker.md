@@ -26,6 +26,8 @@ Copy all the latest facet files from https://github.com/cultuurnet/udb3-vagrant/
 
 Copy all the regions from https://github.com/cultuurnet/geojson-data/blob/main/output/facet_mapping_regions.yml
 
+Copy the `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/blob/main/config/keys/public-auth0.pem
+
 ### RabbitMQ
 
 In the current setup only cloud providers are supported. For example https://www.cloudamqp.com/
