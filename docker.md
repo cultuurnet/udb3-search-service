@@ -30,14 +30,15 @@ Copy the `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/blob
 
 ### RabbitMQ
 
-In the current setup only cloud providers are supported. For example https://www.cloudamqp.com/
-
-You'll have to update your `config.yml` file accordingly with the values of your provider:
-- amqp.host
-- amqp.port
-- amqp.user
-- amqp.password
-- amqp.vhost
+You'll have to update your `config.yml` file accordingly with the values of your RabbitMQ container from `udb3-backend`:
+```
+amqp:
+  host: host.docker.internal
+  port: 5672
+  vhost: /
+  user: guest
+  password: guest
+```
 
 To read messages from [udb3-backend](https://github.com/cultuurnet/udb3-backend):
 - Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
