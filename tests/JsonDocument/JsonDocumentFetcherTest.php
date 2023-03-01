@@ -349,7 +349,7 @@ final class JsonDocumentFetcherTest extends TestCase
     /**
      * @test
      */
-    public function it_will_not_refresh_tokens_infinitely(): void
+    public function it_fails_when_refreshed_token_is_invalid(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
