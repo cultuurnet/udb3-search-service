@@ -25,9 +25,10 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
                     $this->get('logger.amqp.udb3'),
                     new Auth0Client(
                         new Client(),
-                        $this->parameter('auth0.domain'),
+                        $this->parameter('auth0.sapi3_domain'),
                         $this->parameter('auth0.sapi3_client_id'),
-                        $this->parameter('auth0.sapi3_client_secret')
+                        $this->parameter('auth0.sapi3_client_secret'),
+                        false
                     )
                 );
             }
