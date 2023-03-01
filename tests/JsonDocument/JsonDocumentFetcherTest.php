@@ -50,7 +50,8 @@ final class JsonDocumentFetcherTest extends TestCase
                 $this->auth0httpClient,
                 self::DOMAIN,
                 self::CLIENT_ID,
-                self::CLIENT_SECRET
+                self::CLIENT_SECRET,
+                false
             )
         ))->withIncludeMetadata();
     }
@@ -103,7 +104,8 @@ final class JsonDocumentFetcherTest extends TestCase
                 $this->auth0httpClient,
                 self::DOMAIN,
                 self::CLIENT_ID,
-                self::CLIENT_SECRET
+                self::CLIENT_SECRET,
+                false
             )
         );
 
@@ -216,7 +218,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::DOMAIN,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
@@ -274,7 +276,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::DOMAIN,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
@@ -341,7 +343,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::DOMAIN,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
