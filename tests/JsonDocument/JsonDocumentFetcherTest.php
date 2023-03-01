@@ -232,6 +232,17 @@ final class JsonDocumentFetcherTest extends TestCase
                 )
             );
 
+        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
+            $this->httpClient,
+            $this->logger,
+            new Auth0Client(
+                $this->auth0httpClient,
+                self::DOMAIN,
+                self::CLIENT_ID,
+                self::CLIENT_SECRET
+            )
+        ))->withIncludeMetadata();
+
         $this->httpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -251,7 +262,172 @@ final class JsonDocumentFetcherTest extends TestCase
                 new Response(200)
             );
 
-        $this->jsonDocumentFetcher->fetch(
+        $authorizedJsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_refresh_tokens_on_a_401(): void
+    {
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $this->auth0httpClient->expects($this->exactly(2))
+            ->method('post')
+            ->with(
+                'https://' . self::DOMAIN . '/oauth/token',
+                [
+                    'headers' => ['content-type' => 'application/json'],
+                    'json' => [
+                        'client_id' => self::CLIENT_ID,
+                        'client_secret' => self::CLIENT_SECRET,
+                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                ),
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 10000,
+                    ])
+                ),
+            );
+
+        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
+            $this->httpClient,
+            $this->logger,
+            new Auth0Client(
+                $this->auth0httpClient,
+                self::DOMAIN,
+                self::CLIENT_ID,
+                self::CLIENT_SECRET
+            )
+        ))->withIncludeMetadata();
+
+        $this->httpClient->expects($this->exactly(2))
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'headers' =>[
+                        'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
+                    ],
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(401),
+                new Response(200)
+            );
+
+        $authorizedJsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_refresh_tokens_infinitely(): void
+    {
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $this->auth0httpClient->expects($this->exactly(3))
+            ->method('post')
+            ->with(
+                'https://' . self::DOMAIN . '/oauth/token',
+                [
+                    'headers' => ['content-type' => 'application/json'],
+                    'json' => [
+                        'client_id' => self::CLIENT_ID,
+                        'client_secret' => self::CLIENT_SECRET,
+                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                ),
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                ),
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                )
+            );
+
+        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
+            $this->httpClient,
+            $this->logger,
+            new Auth0Client(
+                $this->auth0httpClient,
+                self::DOMAIN,
+                self::CLIENT_ID,
+                self::CLIENT_SECRET
+            )
+        ))->withIncludeMetadata();
+
+        $this->httpClient->expects($this->exactly(3))
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'headers' =>[
+                        'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
+                    ],
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(401),
+                new Response(401),
+                new Response(401)
+            );
+
+        $authorizedJsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
