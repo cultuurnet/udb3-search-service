@@ -190,6 +190,16 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_remove_contributors_if_set(): void
+    {
+        $this
+            ->given(['contributors' => ['info@example.com', 'test@example.com']])
+            ->assertReturnedDocumentDoesNotContainKey('contributors');
+    }
+
+    /**
+     * @test
+     */
     public function it_should_not_complain_if_metadata_property_is_not_found(): void
     {
         $this
