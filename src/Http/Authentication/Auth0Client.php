@@ -46,7 +46,7 @@ final class Auth0Client implements LoggerAwareInterface
                 'json' => [
                     'client_id' => $this->clientId,
                     'client_secret' => $this->clientSecret,
-                    'audience' => 'https://' . $this->domain . '/api/v2/',
+                    'audience' => $this->getDomain(),
                     'grant_type' => 'client_credentials',
                 ],
             ]
