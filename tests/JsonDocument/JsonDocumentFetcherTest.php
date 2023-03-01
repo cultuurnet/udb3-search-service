@@ -354,7 +354,7 @@ final class JsonDocumentFetcherTest extends TestCase
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
 
-        $this->auth0httpClient->expects($this->exactly(3))
+        $this->auth0httpClient->expects($this->exactly(2))
             ->method('post')
             ->with(
                 'https://' . self::DOMAIN . '/oauth/token',
@@ -384,14 +384,6 @@ final class JsonDocumentFetcherTest extends TestCase
                         'access_token' => self::DUMMY_TOKEN,
                         'expires_in' => 1,
                     ])
-                ),
-                new Response(
-                    200,
-                    [],
-                    Json::encode([
-                        'access_token' => self::DUMMY_TOKEN,
-                        'expires_in' => 1,
-                    ])
                 )
             );
 
@@ -406,7 +398,7 @@ final class JsonDocumentFetcherTest extends TestCase
             )
         ))->withIncludeMetadata();
 
-        $this->httpClient->expects($this->exactly(3))
+        $this->httpClient->expects($this->exactly(2))
             ->method('request')
             ->with(
                 'GET',
@@ -422,7 +414,6 @@ final class JsonDocumentFetcherTest extends TestCase
                 ]
             )
             ->willReturnOnConsecutiveCalls(
-                new Response(401),
                 new Response(401),
                 new Response(401)
             );
