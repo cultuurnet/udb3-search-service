@@ -25,12 +25,15 @@ final class Auth0Client implements LoggerAwareInterface
 
     private string $clientSecret;
 
-    public function __construct(Client $client, string $domain, string $clientId, string $clientSecret)
+    private bool $isManagementClient;
+
+    public function __construct(Client $client, string $domain, string $clientId, string $clientSecret, bool $isManagementClient)
     {
         $this->domain = $domain;
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->isManagementClient = $isManagementClient;
         $this->logger = new NullLogger();
     }
 
@@ -108,5 +111,10 @@ final class Auth0Client implements LoggerAwareInterface
 
         $res = Json::decodeAssociatively($response->getBody()->getContents());
         return $res['client_metadata'] ?? [];
+    }
+
+    private function getDomain(): string
+    {
+        return 'https://' . $this->domain . ($this->isManagementClient ? '/api/v2/' : '');
     }
 }
