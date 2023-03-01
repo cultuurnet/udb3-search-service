@@ -1,7 +1,6 @@
 /vendor
 /build
 /log
-/geojson-data
 /config.yml
 /features.yml
 /facet_mapping_*.yml
