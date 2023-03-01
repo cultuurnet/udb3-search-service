@@ -765,6 +765,44 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
+    public function it_should_build_a_query_with_a_contributors_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withContributorsFilter('info@example.com');
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'contributors' => [
+                                    'query' => 'info@example.com',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_a_label_filter(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
