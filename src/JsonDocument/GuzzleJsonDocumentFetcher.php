@@ -41,12 +41,8 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument
     {
-        $attempt = 0;
-        $maximumAttempts = 2;
-
         $response = $this->getResponse($documentIri);
-        while ($response->getStatusCode() === 401 && $attempt < $maximumAttempts) {
-            $attempt++;
+        if ($response->getStatusCode() === 401) {
             $this->refreshToken();
             $response = $this->getResponse($documentIri);
         }
