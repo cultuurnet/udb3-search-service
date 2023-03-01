@@ -29,7 +29,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         $this->includeMetadata = false;
         $this->logger = $logger;
         $this->auth0Client = $auth0Client;
-        $this->auth0Token = $this->auth0Client->getToken();
+        $this->auth0Token = null;
     }
 
     public function withIncludeMetadata(): JsonDocumentFetcher
@@ -41,6 +41,10 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument
     {
+        if ($this->auth0Token === null) {
+            $this->auth0Token = $this->auth0Client->getToken();
+        }
+
         $response = $this->getResponse($documentIri);
         if ($response->getStatusCode() === 401) {
             $this->refreshToken();

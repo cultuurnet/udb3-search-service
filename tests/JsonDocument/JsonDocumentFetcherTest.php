@@ -232,17 +232,6 @@ final class JsonDocumentFetcherTest extends TestCase
                 )
             );
 
-        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
-            $this->httpClient,
-            $this->logger,
-            new Auth0Client(
-                $this->auth0httpClient,
-                self::DOMAIN,
-                self::CLIENT_ID,
-                self::CLIENT_SECRET
-            )
-        ))->withIncludeMetadata();
-
         $this->httpClient->expects($this->once())
             ->method('request')
             ->with(
@@ -262,7 +251,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 new Response(200)
             );
 
-        $authorizedJsonDocumentFetcher->fetch(
+        $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
@@ -309,17 +298,6 @@ final class JsonDocumentFetcherTest extends TestCase
                 ),
             );
 
-        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
-            $this->httpClient,
-            $this->logger,
-            new Auth0Client(
-                $this->auth0httpClient,
-                self::DOMAIN,
-                self::CLIENT_ID,
-                self::CLIENT_SECRET
-            )
-        ))->withIncludeMetadata();
-
         $this->httpClient->expects($this->exactly(2))
             ->method('request')
             ->with(
@@ -340,7 +318,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 new Response(200)
             );
 
-        $authorizedJsonDocumentFetcher->fetch(
+        $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
@@ -387,17 +365,6 @@ final class JsonDocumentFetcherTest extends TestCase
                 )
             );
 
-        $authorizedJsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
-            $this->httpClient,
-            $this->logger,
-            new Auth0Client(
-                $this->auth0httpClient,
-                self::DOMAIN,
-                self::CLIENT_ID,
-                self::CLIENT_SECRET
-            )
-        ))->withIncludeMetadata();
-
         $this->httpClient->expects($this->exactly(2))
             ->method('request')
             ->with(
@@ -422,7 +389,7 @@ final class JsonDocumentFetcherTest extends TestCase
             ->method('error')
             ->with('Could not retrieve JSON-LD from url for indexation.');
 
-        $authorizedJsonDocumentFetcher->fetch(
+        $this->jsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
         );
