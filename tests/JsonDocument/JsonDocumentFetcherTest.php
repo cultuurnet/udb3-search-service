@@ -418,6 +418,10 @@ final class JsonDocumentFetcherTest extends TestCase
                 new Response(401)
             );
 
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Could not retrieve JSON-LD from url for indexation.');
+
         $authorizedJsonDocumentFetcher->fetch(
             $documentId,
             $documentUrl
