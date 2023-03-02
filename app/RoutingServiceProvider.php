@@ -51,8 +51,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         ]),
                         $this->parameter('auth0.domain'),
                         $this->parameter('auth0.client_id'),
-                        $this->parameter('auth0.client_secret'),
-                        true
+                        $this->parameter('auth0.client_secret')
                     );
 
                     $auth0TokenProvider = new Auth0TokenProvider(
