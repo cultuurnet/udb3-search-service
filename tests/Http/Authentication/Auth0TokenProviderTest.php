@@ -35,8 +35,7 @@ final class Auth0TokenProviderTest extends TestCase
                 $this->createMock(Client::class),
                 'domain',
                 'clientId',
-                'clientSecret',
-                true
+                'clientSecret'
             )
         );
 
@@ -66,8 +65,7 @@ final class Auth0TokenProviderTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret',
-                true
+                'clientSecret'
             )
         );
 
@@ -105,8 +103,7 @@ final class Auth0TokenProviderTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret',
-                true
+                'clientSecret'
             )
         );
 
