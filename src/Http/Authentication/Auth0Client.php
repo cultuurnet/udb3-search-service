@@ -25,12 +25,20 @@ final class Auth0Client implements LoggerAwareInterface
 
     private string $clientSecret;
 
-    public function __construct(Client $client, string $domain, string $clientId, string $clientSecret)
-    {
+    private string $audience;
+
+    public function __construct(
+        Client $client,
+        string $domain,
+        string $clientId,
+        string $clientSecret,
+        ?string $audience = null
+    ) {
         $this->domain = $domain;
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
+        $this->audience = $audience ?? $domain . '/api/v2/';
         $this->logger = new NullLogger();
     }
 
@@ -43,7 +51,7 @@ final class Auth0Client implements LoggerAwareInterface
                 'json' => [
                     'client_id' => $this->clientId,
                     'client_secret' => $this->clientSecret,
-                    'audience' => 'https://' . $this->domain . '/api/v2/',
+                    'audience' => 'https://' . $this->audience,
                     'grant_type' => 'client_credentials',
                 ],
             ]
