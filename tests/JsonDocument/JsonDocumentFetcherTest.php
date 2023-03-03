@@ -256,4 +256,142 @@ final class JsonDocumentFetcherTest extends TestCase
             $documentUrl
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_refresh_tokens_on_a_401(): void
+    {
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $this->auth0httpClient->expects($this->exactly(2))
+            ->method('post')
+            ->with(
+                'https://' . self::DOMAIN . '/oauth/token',
+                [
+                    'headers' => ['content-type' => 'application/json'],
+                    'json' => [
+                        'client_id' => self::CLIENT_ID,
+                        'client_secret' => self::CLIENT_SECRET,
+                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                ),
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 10000,
+                    ])
+                ),
+            );
+
+        $this->httpClient->expects($this->exactly(2))
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'headers' =>[
+                        'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
+                    ],
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(401),
+                new Response(200)
+            );
+
+        $this->jsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_fails_when_refreshed_token_is_invalid(): void
+    {
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $this->auth0httpClient->expects($this->exactly(2))
+            ->method('post')
+            ->with(
+                'https://' . self::DOMAIN . '/oauth/token',
+                [
+                    'headers' => ['content-type' => 'application/json'],
+                    'json' => [
+                        'client_id' => self::CLIENT_ID,
+                        'client_secret' => self::CLIENT_SECRET,
+                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'grant_type' => 'client_credentials',
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                ),
+                new Response(
+                    200,
+                    [],
+                    Json::encode([
+                        'access_token' => self::DUMMY_TOKEN,
+                        'expires_in' => 1,
+                    ])
+                )
+            );
+
+        $this->httpClient->expects($this->exactly(2))
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'headers' =>[
+                        'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
+                    ],
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                new Response(401),
+                new Response(401)
+            );
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Could not retrieve JSON-LD from url for indexation.');
+
+        $this->jsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+    }
 }
