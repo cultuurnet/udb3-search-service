@@ -26,8 +26,9 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
                     new Auth0Client(
                         new Client(),
                         $this->parameter('auth0.domain'),
-                        $this->parameter('auth0.sapi3_client_id'),
-                        $this->parameter('auth0.sapi3_client_secret')
+                        $this->parameter('auth0.entry_api_client_id'),
+                        $this->parameter('auth0.entry_api_client_secret'),
+                        $this->parameter('auth0.entry_api_audience')
                     )
                 );
             }

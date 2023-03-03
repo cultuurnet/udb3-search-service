@@ -17,6 +17,7 @@ use Psr\Log\LoggerInterface;
 final class JsonDocumentFetcherTest extends TestCase
 {
     private const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+    private const AUDIENCE = 'audience.com';
     private const DOMAIN = 'domain.com';
     private const CLIENT_ID = 'client_id';
     private const CLIENT_SECRET = 'client_secret';
@@ -50,7 +51,8 @@ final class JsonDocumentFetcherTest extends TestCase
                 $this->auth0httpClient,
                 self::DOMAIN,
                 self::CLIENT_ID,
-                self::CLIENT_SECRET
+                self::CLIENT_SECRET,
+                self::AUDIENCE
             )
         ))->withIncludeMetadata();
     }
@@ -216,7 +218,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::AUDIENCE,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
@@ -274,7 +276,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::AUDIENCE,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
@@ -341,7 +343,7 @@ final class JsonDocumentFetcherTest extends TestCase
                     'json' => [
                         'client_id' => self::CLIENT_ID,
                         'client_secret' => self::CLIENT_SECRET,
-                        'audience' => 'https://' . self::DOMAIN . '/api/v2/',
+                        'audience' => 'https://' . self::AUDIENCE,
                         'grant_type' => 'client_credentials',
                     ],
                 ]
