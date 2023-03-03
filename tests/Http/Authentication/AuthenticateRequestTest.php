@@ -62,7 +62,8 @@ final class AuthenticateRequestTest extends TestCase
             $this->createMock(Client::class),
             'domain',
             'clientId',
-            'clientSecret'
+            'clientSecret',
+            'domain/api/v2/'
         );
 
         $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
@@ -302,7 +303,8 @@ final class AuthenticateRequestTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret'
+                'clientSecret',
+                'domain/api/v2/'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -340,7 +342,8 @@ final class AuthenticateRequestTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret'
+                'clientSecret',
+                'domain/api/v2/'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -380,7 +383,8 @@ final class AuthenticateRequestTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret'
+                'clientSecret',
+                'domain/api/v2/'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -429,7 +433,8 @@ final class AuthenticateRequestTest extends TestCase
                 new Client(['handler' => $mockHandler]),
                 'domain',
                 'clientId',
-                'clientSecret'
+                'clientSecret',
+                'domain/api/v2/'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile

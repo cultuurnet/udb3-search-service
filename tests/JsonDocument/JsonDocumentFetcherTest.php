@@ -105,7 +105,8 @@ final class JsonDocumentFetcherTest extends TestCase
                 $this->auth0httpClient,
                 self::DOMAIN,
                 self::CLIENT_ID,
-                self::CLIENT_SECRET
+                self::CLIENT_SECRET,
+                self::AUDIENCE
             )
         );
 
