@@ -32,13 +32,13 @@ final class Auth0Client implements LoggerAwareInterface
         string $domain,
         string $clientId,
         string $clientSecret,
-        ?string $audience = null
+        string $audience
     ) {
         $this->domain = $domain;
         $this->client = $client;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
-        $this->audience = $audience ?? $domain . '/api/v2/';
+        $this->audience = $audience;
         $this->logger = new NullLogger();
     }
 
