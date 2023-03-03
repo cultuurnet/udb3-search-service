@@ -290,6 +290,17 @@ final class PlaceTransformerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_transforms_contributors(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-contributors.json',
+            __DIR__ . '/data/place/indexed-with-contributors.json'
+        );
+    }
+
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
         $original = Json::decodeAssociatively(file_get_contents($givenFilePath));

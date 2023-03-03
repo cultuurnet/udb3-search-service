@@ -403,6 +403,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withContributorsFilter(string $email): OfferQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['contributors'] = $email;
+        return $c;
+    }
+
     public function withFacet(FacetName $facetName): self
     {
         $c = clone $this;

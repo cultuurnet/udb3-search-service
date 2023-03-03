@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AddressTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ContributorsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
@@ -48,6 +49,7 @@ final class OrganizerTransformer implements JsonTransformer
             new LabelsTransformer(false),
             new UrlTransformer(),
             new WorkflowStatusTransformer($logger, 'ACTIVE'),
+            new ContributorsTransformer(),
             new GeoInformationTransformer($regionService),
             new OriginalEncodedJsonLdTransformer()
         );

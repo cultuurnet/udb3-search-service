@@ -445,6 +445,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         );
     }
 
+    public function withContributorsFilter(string $email): OfferQueryBuilderInterface
+    {
+        return $this->withMatchQuery('contributors', $email);
+    }
+
     public function withFacet(FacetName $facetName): self
     {
         $facetFields = [

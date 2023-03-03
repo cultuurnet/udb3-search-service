@@ -27,6 +27,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
             'workflowStatus',
             'disableDefaultFilters',
             'sort',
+            'contributors',
         ];
     }
 }

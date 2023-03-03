@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
@@ -94,6 +95,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
+            ->withParser(new ContributorsRequestParser())
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         $this->searchService = $this->createMock(OfferSearchServiceInterface::class);

@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 {
-    /**
-     * @var ClientInterface
-     */
-    private $httpClient;
+    private ClientInterface $httpClient;
 
-    /**
-     * @var bool
-     */
-    private $includeMetadata;
+    private bool $includeMetadata;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
-    public function __construct(ClientInterface $httpClient, LoggerInterface $logger)
+    private Auth0Client $auth0Client;
+
+    public function __construct(ClientInterface $httpClient, LoggerInterface $logger, Auth0Client $auth0Client)
     {
         $this->httpClient = $httpClient;
         $this->includeMetadata = false;
         $this->logger = $logger;
+        $this->auth0Client = $auth0Client;
     }
 
     public function withIncludeMetadata(): JsonDocumentFetcher
@@ -44,7 +39,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         $response = $this->httpClient->request(
             'GET',
             $documentIri,
-            $this->getQuery($this->includeMetadata)
+            array_merge($this->getQuery($this->includeMetadata), $this->getHeader())
         );
 
         if ($response->getStatusCode() !== 200) {
@@ -73,6 +68,20 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
             'query' => [
                 'includeMetadata' => true,
                 'embedUitpasPrices' => true,
+            ],
+        ];
+    }
+
+    private function getHeader(): array
+    {
+        $token = $this->auth0Client->getToken();
+        if ($token === null) {
+            return [];
+        }
+
+        return [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token->getToken(),
             ],
         ];
     }
