@@ -27,6 +27,7 @@ services:
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
     container_name: es.uitdatabank
+    hostname: 'udb3-es'
     ports:
       - '9200:9200'
     volumes:
