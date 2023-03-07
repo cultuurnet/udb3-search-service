@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -17,6 +18,8 @@ use CultuurNet\UDB3\Search\SortOrder;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
+    public function withCdbIdFilter(Cdbid $cdbid): OrganizerQueryBuilderInterface;
+
     public function withAutoCompleteFilter(string $input): OrganizerQueryBuilderInterface;
 
     public function withWebsiteFilter(string $url): OrganizerQueryBuilderInterface;
