@@ -30,19 +30,7 @@ Copy the `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/blob
 
 ### RabbitMQ
 
-You'll have to update your `config.yml` file accordingly with the values of your RabbitMQ container from `udb3-backend`:
-```
-amqp:
-  host: host.docker.internal
-  port: 5672
-  vhost: /
-  user: guest
-  password: guest
-```
-
-To read messages from [udb3-backend](https://github.com/cultuurnet/udb3-backend):
-- Create an exchange `udb3.x.domain-events` in your RabbitMQ provider
-- Communication between Docker containers is handled through `host.docker.internal`
+Login to the management console on http://host.docker.internal:15672/ with username `vagrant` and password `vagrant`
 
 ## Migration
 Run `make migrate`
