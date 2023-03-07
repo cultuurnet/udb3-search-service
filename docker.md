@@ -17,6 +17,10 @@ You'll need to change the following lines to work with docker hosts:
 elasticsearch.host: 
   elasticsearch
 ```
+```
+amqp.host: 
+  host.docker.internal
+```
 
 Copy all the latest facet files from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service
 
