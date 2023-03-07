@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -749,6 +750,44 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                             'match' => [
                                 'creator' => [
                                     'query' => 'John Doe',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_an_id_filter(): void
+    {
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withCdbIdFilter(new Cdbid('c71b6dea-e206-4e4a-96fe-a360968c436d'));
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'id' => [
+                                    'query' => 'c71b6dea-e206-4e4a-96fe-a360968c436d',
                                 ],
                             ],
                         ],
