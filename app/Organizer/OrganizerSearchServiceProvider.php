@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\CompositeOrganizerReques
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\DistanceOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\GeoBoundsOrganizerRequestParser;
+use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\IdRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\SortByOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\WorkflowStatusOrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
@@ -39,6 +40,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
             OrganizerSearchController::class,
             function () {
                 $requestParser = (new CompositeOrganizerRequestParser())
+                    ->withParser(new IdRequestParser())
                     ->withParser(new DistanceOrganizerRequestParser(
                         new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
                     ))
