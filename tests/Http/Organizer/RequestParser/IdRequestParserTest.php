@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequest;
-use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -41,8 +40,8 @@ final class IdRequestParserTest extends TestCase
         );
 
         $this->queryBuilder->expects($this->once())
-            ->method('withCdbIdFilter')
-            ->with(new Cdbid($this->organizerId))
+            ->method('withIdFilter')
+            ->with($this->organizerId)
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);

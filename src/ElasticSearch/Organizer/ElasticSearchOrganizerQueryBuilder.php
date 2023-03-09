@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
-use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
@@ -43,9 +42,9 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return [];
     }
 
-    public function withCdbIdFilter(Cdbid $cdbid): self
+    public function withIdFilter(string $organizerId): self
     {
-        return $this->withMatchQuery('id', $cdbid->toString());
+        return $this->withMatchQuery('id', $organizerId);
     }
 
     public function withAutoCompleteFilter(string $input): ElasticSearchOrganizerQueryBuilder

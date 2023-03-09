@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Limit;
-use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -770,7 +769,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withCdbIdFilter(new Cdbid('c71b6dea-e206-4e4a-96fe-a360968c436d'));
+            ->withIdFilter('c71b6dea-e206-4e4a-96fe-a360968c436d');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],

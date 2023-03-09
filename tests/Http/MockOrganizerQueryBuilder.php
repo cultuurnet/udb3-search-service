@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
-use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
@@ -32,10 +31,10 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
-    public function withCdbIdFilter(Cdbid $cdbid): self
+    public function withIdFilter(string $organizerId): self
     {
         $c = clone $this;
-        $c->mockQuery['cdbId'] = $cdbid->toString();
+        $c->mockQuery['organizerId'] = $organizerId;
         return $c;
     }
 
