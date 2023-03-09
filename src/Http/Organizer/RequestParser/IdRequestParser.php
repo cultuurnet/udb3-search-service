@@ -14,10 +14,10 @@ final class IdRequestParser implements OrganizerRequestParser
         OrganizerQueryBuilderInterface $organizerQueryBuilder
     ): OrganizerQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
-        $cdbid = $parameterBagReader->getStringFromParameter('id');
+        $organizerId = $parameterBagReader->getStringFromParameter('id');
 
-        if (!is_null($cdbid)) {
-            $organizerQueryBuilder = $organizerQueryBuilder->withIdFilter($cdbid);
+        if (!is_null($organizerId)) {
+            $organizerQueryBuilder = $organizerQueryBuilder->withIdFilter($organizerId);
         }
 
         return $organizerQueryBuilder;
