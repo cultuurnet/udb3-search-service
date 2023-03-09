@@ -10,6 +10,7 @@ final class OrganizerSupportedParameters extends AbstractSupportedParameters
     {
         return [
             'q',
+            'id',
             'name',
             'website',
             'domain',

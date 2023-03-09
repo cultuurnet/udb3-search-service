@@ -42,6 +42,11 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return [];
     }
 
+    public function withIdFilter(string $organizerId): self
+    {
+        return $this->withMatchQuery('id', $organizerId);
+    }
+
     public function withAutoCompleteFilter(string $input): ElasticSearchOrganizerQueryBuilder
     {
         // Currently not translatable, just look in the Dutch version for now.

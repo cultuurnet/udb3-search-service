@@ -31,6 +31,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $this->mockQuery['start'] = 0;
     }
 
+    public function withIdFilter(string $organizerId): self
+    {
+        $c = clone $this;
+        $c->mockQuery['organizerId'] = $organizerId;
+        return $c;
+    }
+
     public function withAutoCompleteFilter(string $input): MockOrganizerQueryBuilder
     {
         $c = clone $this;
