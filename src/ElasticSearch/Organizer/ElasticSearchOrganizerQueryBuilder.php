@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
+use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
@@ -28,6 +29,8 @@ use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
 {
+    private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
+
     private ?int $aggregationSize;
 
     public function __construct(int $aggregationSize = null)
@@ -35,11 +38,12 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         parent::__construct();
         $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
         $this->aggregationSize = $aggregationSize;
+        $this->predefinedQueryStringFields = new OrganizerPredefinedQueryStringFields();
     }
 
     protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
-        return [];
+        return $this->predefinedQueryStringFields->getPredefinedFields(...$languages);
     }
 
     public function withAutoCompleteFilter(string $input): ElasticSearchOrganizerQueryBuilder
