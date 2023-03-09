@@ -17,6 +17,8 @@ use CultuurNet\UDB3\Search\SortOrder;
 
 interface OrganizerQueryBuilderInterface extends QueryBuilder
 {
+    public function withIdFilter(string $organizerId): OrganizerQueryBuilderInterface;
+
     public function withAutoCompleteFilter(string $input): OrganizerQueryBuilderInterface;
 
     public function withWebsiteFilter(string $url): OrganizerQueryBuilderInterface;
