@@ -122,6 +122,17 @@ final class OrganizerTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_indexes_descriptions(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/organizer/original-with-description.json',
+            __DIR__ . '/data/organizer/indexed-with-description.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete(): void
     {
         $original = Json::decodeAssociatively(

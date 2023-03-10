@@ -46,6 +46,28 @@
             }
         },
 
+        "description": {
+            "type": "object",
+            "properties": {
+                "nl": {
+                    "type": "string",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "fr": {
+                    "type": "string",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "en": {
+                    "type": "string",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "de": {
+                    "type": "string",
+                    "analyzer": "lowercase_standard_analyzer"
+                }
+            }
+        },
+
         "url" : {
             "type": "string",
             "analyzer": "lowercase_exact_match_analyzer"

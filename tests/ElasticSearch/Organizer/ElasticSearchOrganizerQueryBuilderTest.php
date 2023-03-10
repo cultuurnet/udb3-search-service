@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
+use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
@@ -24,6 +25,20 @@ use CultuurNet\UDB3\Search\Start;
 
 final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
+    protected function getPredefinedQueryStringFields(Language ...$languages): array
+    {
+        if (empty($languages)) {
+            $languages = [
+                new Language('nl'),
+                new Language('fr'),
+                new Language('en'),
+                new Language('de'),
+            ];
+        }
+
+        return (new OrganizerPredefinedQueryStringFields())->getPredefinedFields(...$languages);
+    }
+
     /**
      * @test
      */
@@ -70,6 +85,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         [
                             'query_string' => [
                                 'query' => 'foo AND bar',
+                                'fields' => $this->getPredefinedQueryStringFields(),
                             ],
                         ],
                     ],
@@ -103,8 +119,50 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         ],
                         [
                             'query_string' => $this->expectedTextQuery(
-                                '(foo OR baz) AND bar AND labels\\:test'
+                                '(foo OR baz) AND bar AND labels\\:test',
+                                $this->getPredefinedQueryStringFields()
                             ),
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_query_string_query_and_a_subset_of_text_languages(): void
+    {
+        $nl = new Language('nl');
+
+        /* @var ElasticSearchOrganizerQueryBuilder $builder */
+        $builder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withAdvancedQuery(
+                new LuceneQueryString('foo AND bar'),
+                $nl
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object) [],
+                        ],
+                        [
+                            'query_string' => [
+                                'query' => 'foo AND bar',
+                                'fields' => $this->getPredefinedQueryStringFields($nl),
+                            ],
                         ],
                     ],
                 ],
