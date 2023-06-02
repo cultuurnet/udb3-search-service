@@ -9,14 +9,6 @@ services:
       - .:/var/www/html:cached
       - ../geojson-data:/var/www/geojson-data:cached
     working_dir: /var/www/html
-    command:
-      - /bin/bash
-      - -c
-      - |
-        php bin/app.php consume-udb3-api &
-        php bin/app.php consume-udb3-cli &
-        php bin/app.php consume-udb3-related &
-        php -S 0.0.0.0:9000 -t web
     ports:
       - "9000:9000"
     networks:
