@@ -10,7 +10,7 @@ services:
       - ../geojson-data:/var/www/geojson-data:cached
     working_dir: /var/www/html
     ports:
-      - "9000:9000"
+      - "9000:80"
     networks:
       uitdatabank:
         aliases:
