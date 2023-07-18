@@ -6,7 +6,9 @@
 
 ## Configure
 
-### config.yml file
+### Configuration files.
+
+You will have to copy a couple of configuration yml files, place them in the root of the udb3-search-service project.
 
 Copy the latest `config.yml` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service to the root
 
@@ -27,6 +29,8 @@ Copy all the latest facet files from https://github.com/cultuurnet/udb3-vagrant/
 - facet_mapping_facilities.yml
 - facet_mapping_themes.yml
 - facet_mapping_types.yml
+
+Copy the feature file from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service/features.yml
 
 Copy all the regions from https://github.com/cultuurnet/geojson-data/blob/main/output/facet_mapping_regions.yml
 
