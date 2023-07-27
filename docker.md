@@ -3,7 +3,7 @@
 ## Prerequisite
 - Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - GEO JSON Data: you'll have to clone [geojson-data](https://github.com/cultuurnet/geojson-data) in the same folder as where you will clone [udb3-search-service](https://github.com/cultuurnet/udb3-search-service)
-- UDB3 Vagrant: you'll have to clone [udb3-vagrant](https://github.com/cultuurnet/udb3-vagrant) in the same folder.
+- Appconfig: you'll have to clone [appconfig](https://github.com/cultuurnet/appconfig) in the same folder.
 
 ## Configure
 
