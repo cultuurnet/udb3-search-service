@@ -9,7 +9,7 @@
 
 ### Configuration files.
 
-Run the script `./bin/config.sh`, this will copy a couple of configuration yml files, placing them in the root of the udb3-search-service project, and modify the config.yml for local development.
+Run the script `./docker/config.sh`, this will copy a couple of configuration yml files, placing them in the root of the udb3-search-service project.
 
 ### RabbitMQ
 
