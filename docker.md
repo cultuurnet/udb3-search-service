@@ -1,36 +1,15 @@
 # UDB3 Search Service with Docker
 
 ## Prerequisite
-- Install Docker Desktop 
+- Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - GEO JSON Data: you'll have to clone [geojson-data](https://github.com/cultuurnet/geojson-data) in the same folder as where you will clone [udb3-search-service](https://github.com/cultuurnet/udb3-search-service)
+- Appconfig: you'll have to clone [appconfig](https://github.com/cultuurnet/appconfig) in the same folder.
 
 ## Configure
 
-### config.yml file
+### Configuration files.
 
-Copy the latest `config.yml` from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service to the root
-
-In your `config.yml` file, you have to change the elasticsearch host to work with Docker instead of Vagrant.
-
-You'll need to change the following lines to work with docker hosts:
-```
-elasticsearch.host: 
-  elasticsearch
-```
-```
-amqp.host: 
-  host.docker.internal
-```
-
-Copy all the latest facet files from https://github.com/cultuurnet/udb3-vagrant/tree/main/config/udb3-search-service
-
-- facet_mapping_facilities.yml
-- facet_mapping_themes.yml
-- facet_mapping_types.yml
-
-Copy all the regions from https://github.com/cultuurnet/geojson-data/blob/main/output/facet_mapping_regions.yml
-
-Copy the `public-auth0.pem` from https://github.com/cultuurnet/udb3-vagrant/blob/main/config/keys/public-auth0.pem
+Run the script `./docker/config.sh`, this will copy a couple of configuration yml files, placing them in the root of the udb3-search-service project.
 
 ### RabbitMQ
 
