@@ -170,6 +170,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_periodic_last_opening_hours_last_day_open_to_date_ranges(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-opening-hours-last-day-open.json',
+            __DIR__ . '/data/event/indexed-periodic-with-opening-hours-last-day-open.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_permanent_opening_hours_to_date_ranges(): void
     {
         Chronos::setTestNow(
