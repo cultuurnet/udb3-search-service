@@ -1,4 +1,4 @@
-.PHONY: up down bash install ci stan cs cs-fix test migrate migrate-force
+.PHONY: up down bash install ci stan cs cs-fix test migrate migrate-force test-filter
 
 up:
 	docker-compose up -d
@@ -26,6 +26,9 @@ cs-fix:
 
 test:
 	docker exec -it search.uitdatabank composer test
+
+test-filter:
+	docker exec -it search.uitdatabank composer test -- --filter=$(filter)
 
 migrate:
 	docker exec -it search.uitdatabank ./bin/app.php elasticsearch:migrate
