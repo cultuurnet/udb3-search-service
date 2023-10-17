@@ -297,9 +297,14 @@ final class CalendarTransformer implements JsonTransformer
         } else {
             $startDate = Chronos::createFromFormat(DateTime::ATOM, $from['startDate']);
             $endDate = Chronos::createFromFormat(DateTime::ATOM, $from['endDate']);
+            // Remove this next line of code, if we ever switch to PHP 8.2
+            // See below for alternative fix on PHP 8.2
+            $endDate = $endDate->add(new DateInterval('P1D'));
         }
 
         $interval = new DateInterval('P1D');
+        // If we ever switch to PHP replace this with
+        // $period = new DatePeriod($startDate, $interval, $endDate, DatePeriod::INCLUDE_END_DATE);
         $period = new DatePeriod($startDate, $interval, $endDate);
 
         $subEvent = [];
