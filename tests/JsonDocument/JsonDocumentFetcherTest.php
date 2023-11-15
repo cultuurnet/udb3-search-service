@@ -94,7 +94,6 @@ final class JsonDocumentFetcherTest extends TestCase
         );
 
         $this->assertEquals($expectedJsonDocument, $actualJsonDocument);
-        $this->assertTrue(false);
     }
 
     /**
