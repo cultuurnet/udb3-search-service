@@ -46,7 +46,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                 );
 
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata(),
+                    $this->get(JsonDocumentFetcher::class)->withIncludeMetadata()->withEmbedContributors(),
                     $transformer,
                     $repository
                 );

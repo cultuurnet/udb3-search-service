@@ -60,6 +60,45 @@ final class JsonDocumentFetcherTest extends TestCase
     /**
      * @test
      */
+    public function it_can_fetch_json_document_with_embed_contributors(): void
+    {
+        $jsonDocumentFetcher = $this->jsonDocumentFetcher->withEmbedContributors();
+
+        $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
+        $documentUrl = 'event/' . $documentId;
+
+        $jsonLd = ['foo' => 'bar'];
+        $expectedJsonDocument = (new JsonDocument($documentId))
+            ->withBody($jsonLd);
+
+        $this->httpClient->expects($this->once())
+            ->method('request')
+            ->with(
+                'GET',
+                $documentUrl,
+                [
+                    'query' => [
+                        'includeMetadata' => true,
+                        'embedUitpasPrices' => true,
+                        'embedContributors' => true,
+                    ],
+                ]
+            )
+            ->willReturn(
+                new Response(200, [], Json::encode($jsonLd))
+            );
+
+        $actualJsonDocument = $jsonDocumentFetcher->fetch(
+            $documentId,
+            $documentUrl
+        );
+
+        $this->assertEquals($expectedJsonDocument, $actualJsonDocument);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_fetch_json_document_with_metadata(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
