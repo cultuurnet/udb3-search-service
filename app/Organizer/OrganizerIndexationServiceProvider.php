@@ -46,7 +46,7 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                 );
 
                 $service = new TransformingJsonDocumentIndexService(
-                    $this->get(JsonDocumentFetcher::class),
+                    $this->get(JsonDocumentFetcher::class)->withEmbedContributors(),
                     $transformer,
                     $repository
                 );
