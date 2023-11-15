@@ -27,6 +27,9 @@ cs-fix:
 test:
 	docker exec -it search.uitdatabank composer test
 
+test-filter:
+	docker exec -it search.uitdatabank composer test -- --filter=$(filter)
+
 migrate:
 	docker exec -it search.uitdatabank ./bin/app.php elasticsearch:migrate
 

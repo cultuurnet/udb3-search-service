@@ -15,27 +15,34 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 {
     private ClientInterface $httpClient;
 
-    private bool $includeMetadata;
+    private bool $includeMetadata = false;
+
+    private bool $embedContributors = false;
 
     private LoggerInterface $logger;
 
     private Auth0Client $auth0Client;
 
-    private ?Auth0Token $auth0Token;
+    private ?Auth0Token $auth0Token = null;
 
     public function __construct(ClientInterface $httpClient, LoggerInterface $logger, Auth0Client $auth0Client)
     {
         $this->httpClient = $httpClient;
-        $this->includeMetadata = false;
         $this->logger = $logger;
         $this->auth0Client = $auth0Client;
-        $this->auth0Token = null;
     }
 
     public function withIncludeMetadata(): JsonDocumentFetcher
     {
         $clone = clone $this;
         $clone->includeMetadata = true;
+        return $clone;
+    }
+
+    public function withEmbedContributors(): JsonDocumentFetcher
+    {
+        $clone = clone $this;
+        $clone->embedContributors = true;
         return $clone;
     }
 
@@ -64,7 +71,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
             return null;
         }
 
-        return new JsonDocument($documentId, (string) $response->getBody());
+        return new JsonDocument($documentId, (string)$response->getBody());
     }
 
     private function getResponse(string $documentIri): ResponseInterface
@@ -72,22 +79,30 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         return $this->httpClient->request(
             'GET',
             $documentIri,
-            array_merge($this->getQuery($this->includeMetadata), $this->getHeader())
+            array_merge($this->getQuery(), $this->getHeader())
         );
     }
 
-    private function getQuery(bool $includeMetadata): array
+    private function getQuery(): array
     {
-        if (!$includeMetadata) {
+        if (!$this->includeMetadata && ! $this->embedContributors) {
             return [];
         }
 
-        return [
-            'query' => [
-                'includeMetadata' => true,
-                'embedUitpasPrices' => true,
-            ],
+        $params = [
+            'query' => [],
         ];
+
+        if ($this->embedContributors) {
+            $params['query']['embedContributors'] = true;
+        }
+
+        if ($this->includeMetadata) {
+            $params['query']['includeMetadata'] = true;
+            $params['query']['embedUitpasPrices'] = true;
+        }
+
+        return $params;
     }
 
     private function refreshToken(): void
