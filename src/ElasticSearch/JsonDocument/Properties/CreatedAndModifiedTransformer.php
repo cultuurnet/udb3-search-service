@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
+use Carbon\Carbon;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateTimeImmutable;
 
 final class CreatedAndModifiedTransformer implements JsonTransformer
 {
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
     public function __construct(
         JsonTransformerLogger $logger
@@ -23,6 +21,8 @@ final class CreatedAndModifiedTransformer implements JsonTransformer
 
     public function transform(array $from, array $draft = []): array
     {
+        $draft['indexedAt'] = Carbon::now()->format(\DateTime::ATOM);
+
         if (!isset($from['created'])) {
             $this->logger->logMissingExpectedField('created');
             return $draft;
