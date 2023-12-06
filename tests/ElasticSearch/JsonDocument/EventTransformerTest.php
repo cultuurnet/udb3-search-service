@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
+use Carbon\Carbon;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
@@ -28,6 +29,9 @@ final class EventTransformerTest extends TestCase
 
     protected function setUp(): void
     {
+        date_default_timezone_set('Europe/Brussels');
+        Carbon::setTestNowAndTimezone('2022-04-01 11:22:33');
+
         $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->simpleArrayLogger = new SimpleArrayLogger();
@@ -83,6 +87,7 @@ final class EventTransformerTest extends TestCase
             'status' => 'Available',
             'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
+            'indexedAt' => '2022-04-01T11:22:33+02:00',
         ];
 
         $expectedLogs = [
