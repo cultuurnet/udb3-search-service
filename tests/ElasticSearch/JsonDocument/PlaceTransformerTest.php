@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use Cake\Chronos\Chronos;
-use Carbon\Carbon;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -29,8 +27,7 @@ final class PlaceTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        date_default_timezone_set('Europe/Brussels');
-        Carbon::setTestNowAndTimezone('2022-04-01 11:22:33');
+        Chronos::setTestNow(Chronos::createFromFormat(\DateTimeInterface::ATOM, '2017-05-09T15:11:32+02:00'));
 
         $this->regionService = $this->createMock(RegionServiceInterface::class);
 
@@ -75,7 +72,7 @@ final class PlaceTransformerTest extends TestCase
             ],
             'status' => 'Available',
             'bookingAvailability' => 'Available',
-            'indexedAt' => '2022-04-01T11:22:33+02:00',
+            'indexedAt' => '2017-05-09T15:11:32+02:00',
         ];
 
         $expectedLogs = [
@@ -190,13 +187,6 @@ final class PlaceTransformerTest extends TestCase
      */
     public function it_transforms_a_permanent_place_with_opening_hours_to_a_date_range(): void
     {
-        Chronos::setTestNow(
-            Chronos::createFromFormat(
-                DateTimeInterface::ATOM,
-                '2017-05-09T15:11:32+02:00'
-            )
-        );
-
         $this->transformAndAssert(
             __DIR__ . '/data/place/original-with-opening-hours.json',
             __DIR__ . '/data/place/indexed-with-opening-hours.json',
