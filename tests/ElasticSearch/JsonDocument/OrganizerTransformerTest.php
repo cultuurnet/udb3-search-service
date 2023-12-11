@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
@@ -26,6 +27,8 @@ final class OrganizerTransformerTest extends TestCase
 
     protected function setUp(): void
     {
+        Chronos::setTestNow(Chronos::createFromFormat(\DateTimeInterface::ATOM, '2017-05-09T15:11:32+02:00'));
+
         $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->logger = new SimpleArrayLogger();

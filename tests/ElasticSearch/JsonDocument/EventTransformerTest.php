@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -28,6 +27,8 @@ final class EventTransformerTest extends TestCase
 
     protected function setUp(): void
     {
+        Chronos::setTestNow(Chronos::createFromFormat(\DateTimeInterface::ATOM, '2017-05-09T15:11:32+02:00'));
+
         $this->regionService = $this->createMock(RegionServiceInterface::class);
 
         $this->simpleArrayLogger = new SimpleArrayLogger();
@@ -83,6 +84,7 @@ final class EventTransformerTest extends TestCase
             'status' => 'Available',
             'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
+            'indexedAt' => '2017-05-09T15:11:32+02:00',
         ];
 
         $expectedLogs = [
@@ -172,13 +174,6 @@ final class EventTransformerTest extends TestCase
      */
     public function it_transforms_permanent_opening_hours_to_date_ranges(): void
     {
-        Chronos::setTestNow(
-            Chronos::createFromFormat(
-                DateTimeInterface::ATOM,
-                '2017-05-09T15:11:32+02:00'
-            )
-        );
-
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-permanent-with-opening-hours.json',
             __DIR__ . '/data/event/indexed-permanent-with-opening-hours.json'

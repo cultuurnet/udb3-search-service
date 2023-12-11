@@ -386,6 +386,11 @@
             "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
         },
 
+        "indexedAt": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+        },
+
         "creator": {
             "type": "string",
             "analyzer": "lowercase_exact_match_analyzer",
