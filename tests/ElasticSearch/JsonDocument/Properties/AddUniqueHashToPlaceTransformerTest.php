@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use PHPUnit\Framework\TestCase;
 
-class AddUniqueHashToPlaceTransformerTest extends TestCase
+final class AddUniqueHashToPlaceTransformerTest extends TestCase
 {
     /**
      * @dataProvider transformDataProvider
@@ -36,7 +36,7 @@ class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe')
+                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
             ],
             'french main language' => [
                 [
@@ -52,7 +52,7 @@ class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe')
+                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
             ],
             'no man language' => [
                 [
@@ -67,14 +67,14 @@ class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe')
+                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
             ],
             'missing required fields' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioJohn Doe')
+                sha1('DansstudioJohn Doe'),
             ],
             'missing required name and creator' => [
                 [
@@ -87,7 +87,7 @@ class AddUniqueHashToPlaceTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                sha1('Teststraat 12000AntwerpenBE')
+                sha1('Teststraat 12000AntwerpenBE'),
             ],
         ];
     }

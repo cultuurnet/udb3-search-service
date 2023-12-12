@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 use CultuurNet\UDB3\Search\Json;
 use PHPUnit\Framework\TestCase;
 
-class OriginalEncodedJsonLdTransformerTest extends TestCase
+final class OriginalEncodedJsonLdTransformerTest extends TestCase
 {
     public function testTransform()
     {
@@ -32,6 +32,6 @@ class OriginalEncodedJsonLdTransformerTest extends TestCase
         $this->assertArrayNotHasKey('hash', $result);
 
         unset($inputData['hash']);
-        $this->assertEquals(Json::encodeWithOptions((object)$inputData, JSON_UNESCAPED_SLASHES), $result['originalEncodedJsonLd'],);
+        $this->assertEquals(Json::encodeWithOptions((object)$inputData, JSON_UNESCAPED_SLASHES), $result['originalEncodedJsonLd']);
     }
 }
