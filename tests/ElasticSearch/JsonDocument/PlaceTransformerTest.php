@@ -73,6 +73,7 @@ final class PlaceTransformerTest extends TestCase
             'status' => 'Available',
             'bookingAvailability' => 'Available',
             'indexedAt' => '2017-05-09T15:11:32+02:00',
+            'hash' => 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
         ];
 
         $expectedLogs = [

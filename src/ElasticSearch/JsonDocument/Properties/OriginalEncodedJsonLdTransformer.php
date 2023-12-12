@@ -11,6 +11,7 @@ final class OriginalEncodedJsonLdTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
+        unset($from['hash']);
         $draft['originalEncodedJsonLd'] = Json::encodeWithOptions((object)$from, JSON_UNESCAPED_SLASHES);
         return $draft;
     }
