@@ -19,6 +19,14 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
         $this->assertEquals($expectedResult, $result['hash']);
     }
 
+    public function test_do_not_add_empty_hash(): void
+    {
+        $transformer = new AddUniqueHashToPlaceTransformer();
+        $result = $transformer->transform([]);
+
+        $this->assertArrayNotHasKey('hash', $result);
+    }
+    
     public function transformDataProvider(): array
     {
         return [
@@ -36,7 +44,7 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
+                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
             ],
             'french main language' => [
                 [
@@ -52,7 +60,7 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
+                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
             ],
             'no man language' => [
                 [
@@ -67,14 +75,14 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioTeststraat 12000AntwerpenBEJohn Doe'),
+                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
             ],
             'missing required fields' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'creator' => 'John Doe',
                 ],
-                sha1('DansstudioJohn Doe'),
+                'dansstudio_john doe',
             ],
             'missing required name and creator' => [
                 [
@@ -87,7 +95,7 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                sha1('Teststraat 12000AntwerpenBE'),
+                'teststraat 1_2000_antwerpen_be',
             ],
         ];
     }

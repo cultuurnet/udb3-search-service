@@ -12,14 +12,21 @@ final class AddUniqueHashToPlaceTransformer implements JsonTransformer
     {
         $lang = $from['mainLanguage'] ?? 'nl';
 
-        $draft['hash'] = sha1(
-            $from['name'][$lang] .
-            $from['address'][$lang]['streetAddress'] .
-            $from['address'][$lang]['postalCode'] .
-            $from['address'][$lang]['addressLocality'] .
-            $from['address'][$lang]['addressCountry'] .
-            $from['creator']
-        );
+        $parts = [
+            $from['name'][$lang] ?? '',
+            $from['address'][$lang]['streetAddress'] ?? '',
+            $from['address'][$lang]['postalCode'] ?? '',
+            $from['address'][$lang]['addressLocality'] ?? '',
+            $from['address'][$lang]['addressCountry'] ?? '',
+            $from['creator'] ?? '',
+        ];
+
+        //we trim both sides of each part, and remove the empty parts
+        $value = mb_strtolower(implode('_', array_filter(array_map('trim', $parts))));
+
+        if (!empty($value)) {
+            $draft['hash'] = $value;
+        }
 
         return $draft;
     }

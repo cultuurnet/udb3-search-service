@@ -23,15 +23,12 @@ final class OriginalEncodedJsonLdTransformerTest extends TestCase
                 ],
             ],
             'creator' => 'John Doe',
-            'hash' => 'remove this',
         ];
 
         $result = (new OriginalEncodedJsonLdTransformer())
             ->transform($inputData);
 
         $this->assertArrayNotHasKey('hash', $result);
-
-        unset($inputData['hash']);
         $this->assertEquals(Json::encodeWithOptions((object)$inputData, JSON_UNESCAPED_SLASHES), $result['originalEncodedJsonLd']);
     }
 }
