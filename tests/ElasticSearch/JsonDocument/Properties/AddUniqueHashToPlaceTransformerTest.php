@@ -26,7 +26,7 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
 
         $this->assertArrayNotHasKey('hash', $result);
     }
-    
+
     public function transformDataProvider(): array
     {
         return [
