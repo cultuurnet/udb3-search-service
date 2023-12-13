@@ -407,6 +407,10 @@
             "type": "boolean"
         },
 
+        "unique_address_identifier": {
+            "type": "keyword"
+        },
+
         "productionCollapseValue": {
             "type": "keyword"
         },
