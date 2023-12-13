@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
-final class AddUniqueHashToPlaceTransformer implements JsonTransformer
+final class UniqueAddressTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
@@ -21,11 +21,11 @@ final class AddUniqueHashToPlaceTransformer implements JsonTransformer
             $from['creator'] ?? '',
         ];
 
-        //we trim both sides of each part, and remove the empty parts
+        // We trim both sides of each part, and remove the empty parts
         $value = mb_strtolower(implode('_', array_filter(array_map('trim', $parts))));
 
         if (!empty($value)) {
-            $draft['hash'] = $value;
+            $draft['unique_address_identifier'] = $value;
         }
 
         return $draft;

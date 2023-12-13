@@ -6,25 +6,25 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use PHPUnit\Framework\TestCase;
 
-final class AddUniqueHashToPlaceTransformerTest extends TestCase
+final class UniqueAddressTransformerTest extends TestCase
 {
     /**
      * @dataProvider transformDataProvider
      */
     public function testTransform(array $inputData, string $expectedResult): void
     {
-        $transformer = new AddUniqueHashToPlaceTransformer();
+        $transformer = new UniqueAddressTransformer();
         $result = $transformer->transform($inputData);
 
-        $this->assertEquals($expectedResult, $result['hash']);
+        $this->assertEquals($expectedResult, $result['unique_address_identifier']);
     }
 
-    public function test_do_not_add_empty_hash(): void
+    public function test_do_not_add_empty_unique_address_identifier(): void
     {
-        $transformer = new AddUniqueHashToPlaceTransformer();
+        $transformer = new UniqueAddressTransformer();
         $result = $transformer->transform([]);
 
-        $this->assertArrayNotHasKey('hash', $result);
+        $this->assertArrayNotHasKey('unique_address_identifier', $result);
     }
 
     public function transformDataProvider(): array
@@ -62,7 +62,7 @@ final class AddUniqueHashToPlaceTransformerTest extends TestCase
                 ],
                 'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
             ],
-            'no man language' => [
+            'no main language' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'address' => [

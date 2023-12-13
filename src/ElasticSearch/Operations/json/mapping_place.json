@@ -407,7 +407,7 @@
             "type": "boolean"
         },
 
-        "hash": {
+        "unique_address_identifier": {
             "type": "keyword"
         },
 
