@@ -21,8 +21,8 @@ final class UniqueAddressTransformer implements JsonTransformer
             $from['creator'] ?? '',
         ];
 
-        // We trim both sides of each part, and remove the empty parts
-        $value = mb_strtolower(implode('_', array_filter(array_map('trim', $parts))));
+        $parts = array_map(fn ($part) => str_replace(' ', '_', trim($part)), $parts);
+        $value = mb_strtolower(implode('_', array_filter($parts)));
 
         if (!empty($value)) {
             $draft['unique_address_identifier'] = $value;

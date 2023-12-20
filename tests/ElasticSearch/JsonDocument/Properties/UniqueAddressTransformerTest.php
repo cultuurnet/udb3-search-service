@@ -44,7 +44,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
             'french main language' => [
                 [
@@ -60,7 +60,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
             'no main language' => [
                 [
@@ -75,14 +75,14 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
-                'dansstudio_teststraat 1_2000_antwerpen_be_john doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
             'missing required fields' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'creator' => 'John Doe',
                 ],
-                'dansstudio_john doe',
+                'dansstudio_john_doe',
             ],
             'missing required name and creator' => [
                 [
@@ -95,7 +95,7 @@ final class UniqueAddressTransformerTest extends TestCase
                         ],
                     ],
                 ],
-                'teststraat 1_2000_antwerpen_be',
+                'teststraat_1_2000_antwerpen_be',
             ],
         ];
     }
