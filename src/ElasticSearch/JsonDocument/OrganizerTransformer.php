@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ContributorsTra
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DescriptionTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\EducationalDescriptionTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\IdentifierTransformer;
@@ -43,6 +44,7 @@ final class OrganizerTransformer implements JsonTransformer
             ),
             new NameTransformer($logger),
             new DescriptionTransformer(),
+            new EducationalDescriptionTransformer(),
             new LanguagesTransformer($logger, false),
             new AddressTransformer($logger, false),
             new ImagesTransformer(),
