@@ -18,4 +18,6 @@ $errorHandler = ErrorHandlerFactory::forCli($errorLogger);
 $errorHandler->register();
 
 $app = $container->get(Application::class);
+$app->setCatchExceptions(false);
+
 $app->run();
