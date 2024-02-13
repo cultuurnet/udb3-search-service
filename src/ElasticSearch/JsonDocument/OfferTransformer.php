@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AudienceTypeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CompletenessTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ContributorsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatorTransformer;
@@ -70,6 +71,7 @@ final class OfferTransformer implements JsonTransformer
             new ContributorsTransformer(),
             new DuplicateFlagTransformer(),
             new ProductionCollapseValueTransformer($idUrlParser),
+            new CompletenessTransformer(),
             new OriginalEncodedJsonLdTransformer()
         );
     }
