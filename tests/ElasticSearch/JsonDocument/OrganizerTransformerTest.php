@@ -185,6 +185,17 @@ final class OrganizerTransformerTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_handles_completeness(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/organizer/original-with-completeness.json',
+            __DIR__ . '/data/organizer/indexed-with-completeness.json'
+        );
+    }
+
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
         $original = Json::decodeAssociatively(file_get_contents($givenFilePath));

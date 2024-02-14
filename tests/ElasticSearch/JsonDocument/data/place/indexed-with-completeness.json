@@ -1,0 +1,68 @@
+{
+    "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "@type": "Place",
+    "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "calendarType": "permanent",
+    "dateRange": [
+        {
+            "gte": null,
+            "lte": null
+        }
+    ],
+    "localTimeRange": [
+        {
+            "gte": null,
+            "lte": null
+        }
+    ],
+    "status": "Available",
+    "bookingAvailability": "Available",
+    "subEvent": [
+        {
+            "dateRange": {
+                "gte": null,
+                "lte": null
+            },
+            "localTimeRange": {
+                "gte": null,
+                "lte": null
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        }
+    ],
+    "workflowStatus": "DRAFT",
+    "availableTo": "2017-05-01T23:59:59+00:00",
+    "name": {
+        "nl": "Hungaria"
+    },
+    "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
+    "audienceType": "everyone",
+    "mediaObjectsCount": 0,
+    "videosCount": 0,
+    "address": {
+        "nl": {
+            "addressCountry": "BE",
+            "addressLocality": "Leuven",
+            "postalCode": "3000",
+            "streetAddress": "Vaartkom 35"
+        }
+    },
+    "created": "2017-04-22T13:33:37+02:00",
+    "indexedAt": "2017-05-09T15:11:32+02:00",
+    "creator": "Jane Doe",
+    "originalEncodedJsonLd": "{\"@type\":\"Place\",\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"calendarType\":\"permanent\",\"availableTo\":\"2017-05-01T23:59:59+00:00\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\",\"completeness\":60}",
+    "isDuplicate": false,
+    "productionCollapseValue": "single-offer-179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "metadata": {
+        "popularity": 0
+    },
+    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be_jane_doe",
+    "completeness": 60
+}

@@ -526,6 +526,10 @@
             }
         },
 
+        "completeness": {
+            "type": "integer"
+        },
+
         "originalEncodedJsonLd": {
             "type": "object",
             "enabled": false

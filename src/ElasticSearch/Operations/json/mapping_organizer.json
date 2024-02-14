@@ -262,6 +262,10 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "completeness": {
+            "type": "integer"
+        },
+
         "originalEncodedJsonLd": {
             "type": "object",
             "enabled": false
