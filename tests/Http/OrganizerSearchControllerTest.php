@@ -108,6 +108,7 @@ final class OrganizerSearchControllerTest extends TestCase
                 'domain' => 'www.publiq.be',
                 'sort' => [
                     'score' => 'desc',
+                    'completeness' => 'asc',
                     'created' => 'asc',
                     'modified' => 'desc',
                 ],
@@ -146,6 +147,7 @@ final class OrganizerSearchControllerTest extends TestCase
             )
             ->withCreatorFilter(new Creator('Jan Janssens'))
             ->withSortByScore(SortOrder::desc())
+            ->withSortByCompleteness(SortOrder::asc())
             ->withSortByCreated(SortOrder::asc())
             ->withSortByModified(SortOrder::desc())
             ->withImagesFilter(true)
