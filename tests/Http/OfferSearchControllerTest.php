@@ -182,6 +182,7 @@ final class OfferSearchControllerTest extends TestCase
                     'distance' => 'asc',
                     'availableTo' => 'asc',
                     'score' => 'desc',
+                    'completeness' => 'asc',
                     'created' => 'asc',
                     'modified' => 'desc',
                     'popularity' => 'desc',
@@ -229,6 +230,7 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withSortByAvailableTo(SortOrder::asc())
             ->withSortByScore(SortOrder::desc())
+            ->withSortByCompleteness(SortOrder::asc())
             ->withSortByCreated(SortOrder::asc())
             ->withSortByModified(SortOrder::desc())
             ->withSortByPopularity(SortOrder::desc())

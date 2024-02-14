@@ -27,6 +27,9 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             'score' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByScore($sortOrder);
             },
+            'completeness' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+                return $queryBuilder->withSortByCompleteness($sortOrder);
+            },
             'availableTo' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByAvailableTo($sortOrder);
             },

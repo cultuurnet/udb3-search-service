@@ -149,6 +149,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withSortByScore(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
+    public function withSortByCompleteness(SortOrder $sortOrder): OfferQueryBuilderInterface;
+
     public function withSortByAvailableTo(SortOrder $sortOrder): OfferQueryBuilderInterface;
 
     public function withSortByCreated(SortOrder $sortOrder): OfferQueryBuilderInterface;
