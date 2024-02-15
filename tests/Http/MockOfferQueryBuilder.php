@@ -424,6 +424,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withSortByCompleteness(SortOrder $sortOrder): self
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['completeness'] = $sortOrder->toString();
+        return $c;
+    }
+
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
         $c = clone $this;

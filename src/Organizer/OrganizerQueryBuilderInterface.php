@@ -57,6 +57,8 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 
+    public function withSortByCompleteness(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
+
     public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 
     public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface;

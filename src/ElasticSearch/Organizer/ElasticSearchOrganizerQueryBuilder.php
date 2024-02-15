@@ -222,6 +222,11 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return $this->withFieldSort('_score', $sortOrder->toString());
     }
 
+    public function withSortByCompleteness(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
+    {
+        return $this->withFieldSort('completeness', $sortOrder->toString());
+    }
+
     public function withSortByCreated(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
         return $this->withFieldSort('created', $sortOrder->toString());

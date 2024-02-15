@@ -26,6 +26,9 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
             'score' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByScore($sortOrder);
             },
+            'completeness' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+                return $queryBuilder->withSortByCompleteness($sortOrder);
+            },
             'created' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
                 return $queryBuilder->withSortByCreated($sortOrder);
             },

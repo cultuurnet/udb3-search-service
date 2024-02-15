@@ -218,6 +218,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
+    public function withSortByCompleteness(SortOrder $sortOrder): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['sort']['completeness'] = $sortOrder->toString();
+        return $c;
+    }
+
     public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
         $c = clone $this;

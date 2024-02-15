@@ -481,6 +481,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withFieldSort('_score', $sortOrder->toString());
     }
 
+    public function withSortByCompleteness(SortOrder $sortOrder): self
+    {
+        return $this->withFieldSort('completeness', $sortOrder->toString());
+    }
+
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
         return $this->withFieldSort('availableTo', $sortOrder->toString());
