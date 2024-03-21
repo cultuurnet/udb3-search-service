@@ -6,6 +6,9 @@ up:
 down:
 	docker-compose down
 
+build:
+	docker-compose up --build
+
 bash:
 	docker exec -it search.uitdatabank bash
 
