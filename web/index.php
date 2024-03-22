@@ -8,9 +8,9 @@ use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use CultuurNet\UDB3\SearchService\Factory\ConfigFactory;
 use CultuurNet\UDB3\SearchService\Factory\ContainerFactory;
 use CultuurNet\UDB3\SearchService\Factory\ErrorHandlerFactory;
+use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use League\Route\Router;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

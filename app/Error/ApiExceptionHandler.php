@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Error;
 
 use CultuurNet\UDB3\Search\Http\ResponseFactory;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
 use Whoops\Handler\Handler;
-use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 
 final class ApiExceptionHandler extends Handler
 {
