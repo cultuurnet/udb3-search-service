@@ -30,7 +30,7 @@ abstract class AbstractOperationTestCase extends TestCase
 
     protected $operation;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
         $this->indices = $this->createMock(IndicesNamespace::class);

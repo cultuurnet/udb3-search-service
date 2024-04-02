@@ -37,7 +37,7 @@ final class TransformingJsonDocumentIndexServiceTest extends TestCase
      */
     private $indexService;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->jsonDocumentFetcher = $this->createMock(JsonDocumentFetcher::class);
         $this->searchRepository = $this->createMock(DocumentRepository::class);

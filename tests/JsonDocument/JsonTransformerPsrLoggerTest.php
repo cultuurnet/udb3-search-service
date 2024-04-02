@@ -21,7 +21,7 @@ final class JsonTransformerPsrLoggerTest extends TestCase
      */
     private $jsonTransformerPsrLogger;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->psrLogger = $this->createMock(LoggerInterface::class);
 

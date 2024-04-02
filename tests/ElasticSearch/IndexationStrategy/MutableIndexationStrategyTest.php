@@ -25,7 +25,7 @@ final class MutableIndexationStrategyTest extends TestCase
      */
     private $mutableStrategy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->mockStrategy1 = $this->createMock(IndexationStrategy::class);
         $this->mockStrategy2 = $this->createMock(IndexationStrategy::class);

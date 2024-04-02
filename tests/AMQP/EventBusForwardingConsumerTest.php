@@ -20,6 +20,12 @@ use Psr\Log\LoggerInterface;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
+    private const LOG_RECEIVED_MSG = 'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json';
+    private const LOG_PASSING_MSG = 'passing on message to event bus';
+    private const LOG_ACK_MSG = 'message acknowledged';
+    private const LOG_ERROR = 'Deserializerlocator error';
+    private const LOG_REJECTED = 'message rejected';
+
     private MockObject $eventBus;
     private MockObject $deserializer;
     private MockObject $deserializerLocator;
@@ -136,32 +142,26 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_logs_messages_when_consuming(): void
     {
-        $context = [];
-        $context['correlation_id'] = 'my-correlation-id-123';
-
+        $messageLog = [];
         $this->logger
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('info')
-            ->with(
-                'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                $context
-            );
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
+                $this->assertEquals(
+                    ['correlation_id' => 'my-correlation-id-123'],
+                    $context
+                );
 
-        $this->logger
-            ->expects($this->at(1))
-            ->method('info')
-            ->with(
-                'passing on message to event bus',
-                $context
-            );
-
-        $this->logger
-            ->expects($this->at(2))
-            ->method('info')
-            ->with(
-                'message acknowledged',
-                $context
-            );
+                switch ($message) {
+                    case self::LOG_RECEIVED_MSG:
+                    case self::LOG_PASSING_MSG:
+                    case self::LOG_ACK_MSG:
+                        $messageLog[$message] = true;
+                        break;
+                    default:
+                        $this->fail('Unexpected message: ' . $message);
+                }
+            });
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
@@ -180,6 +180,10 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
         call_user_func($this->consumeCallback, $message);
+
+        $this->assertArrayHasKey(self::LOG_RECEIVED_MSG, $messageLog);
+        $this->assertArrayHasKey(self::LOG_PASSING_MSG, $messageLog);
+        $this->assertArrayHasKey(self::LOG_ACK_MSG, $messageLog);
     }
 
     /**
@@ -215,32 +219,38 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_logs_messages_when_rejecting_a_message(): void
     {
-        $context = [];
-        $context['correlation_id'] = 'my-correlation-id-123';
-
+        $messageLog = [];
         $this->logger
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('info')
-            ->with(
-                'received message with content-type application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                $context
-            );
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
+                if ($message === self::LOG_RECEIVED_MSG || $message === self::LOG_REJECTED) {
+                    $this->assertEquals(
+                        ['correlation_id' => 'my-correlation-id-123'],
+                        $context
+                    );
 
+                    $messageLog[$message] = true;
+                } else {
+                    $this->fail('Unexpected message: ' . $message);
+                }
+            });
         $this->logger
-            ->expects($this->at(1))
+            ->expects($this->once())
             ->method('error')
-            ->with(
-                'Deserializerlocator error',
-                $context + ['exception' => new \InvalidArgumentException('Deserializerlocator error')]
-            );
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
+                if ($message !== self::LOG_ERROR) {
+                    $this->fail('Unexpected error message: ' . $message);
+                }
 
-        $this->logger
-            ->expects($this->at(2))
-            ->method('info')
-            ->with(
-                'message rejected',
-                $context
-            );
+                $this->assertEquals(
+                    ['correlation_id' => 'my-correlation-id-123', 'exception' => new \InvalidArgumentException('Deserializerlocator error')],
+                    $context
+                );
+
+                // This check is not technicly needed because there is only 1 call, but I kept it to keep it the same as the info() calls.
+                $messageLog[$message] = true;
+            });
 
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
@@ -263,6 +273,10 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
         call_user_func($this->consumeCallback, $message);
+
+        $this->assertArrayHasKey(self::LOG_RECEIVED_MSG, $messageLog);
+        $this->assertArrayHasKey(self::LOG_ERROR, $messageLog);
+        $this->assertArrayHasKey(self::LOG_REJECTED, $messageLog);
     }
 
     /**

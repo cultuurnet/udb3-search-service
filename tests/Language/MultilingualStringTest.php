@@ -28,7 +28,7 @@ final class MultilingualStringTest extends TestCase
      */
     private $multilingualString;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->originalLanguage = new Language('nl');
         $this->originalString = 'Hebban olla uogala nestas hagunnan hinase hic anda thu uuat unbidan uue nu';

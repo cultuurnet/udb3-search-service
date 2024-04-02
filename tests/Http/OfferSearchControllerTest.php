@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Search\Country;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
@@ -906,8 +906,9 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider malformedDateTimeProvider
+     * @todo PHP8 upgrade: change Type hint to string|bool
      */
-    public function it_throws_an_exception_for_a_malformed_date_from(string $malformedDateTimeAsString): void
+    public function it_throws_an_exception_for_a_malformed_date_from($malformedDateTimeAsString): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             ['dateFrom' => $malformedDateTimeAsString]
@@ -1215,7 +1216,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withRequestTarget('http://search.uitdatabank.be/offers/')
             ->withQueryParams($queryParameters)
             ->withMethod('GET');
-        return  new ApiRequest($request);
+        return new ApiRequest($request);
     }
 
 

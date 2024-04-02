@@ -42,7 +42,7 @@ final class BulkIndexationStrategyTest extends TestCase
      */
     private $strategy;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()

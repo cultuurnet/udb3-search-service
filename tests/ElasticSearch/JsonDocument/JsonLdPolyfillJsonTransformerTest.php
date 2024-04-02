@@ -19,7 +19,7 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
      */
     private $transformer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->given = [];
         $this->transformer = new JsonLdPolyfillJsonTransformer();
