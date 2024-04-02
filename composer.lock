@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "204d4ae991095c771a16d9f1bc5fb587",
+    "content-hash": "ea3f3e3062ed34700558475a9108a24f",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -499,16 +499,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "1.12",
+            "version": "v1.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "be1c7651b1f7cf41da0ca3fbdb4a798c3b7b7387"
+                "reference": "98621a0cf6c8607a34450174cb75819fec75832a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/be1c7651b1f7cf41da0ca3fbdb4a798c3b7b7387",
-                "reference": "be1c7651b1f7cf41da0ca3fbdb4a798c3b7b7387",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/98621a0cf6c8607a34450174cb75819fec75832a",
+                "reference": "98621a0cf6c8607a34450174cb75819fec75832a",
                 "shasum": ""
             },
             "require": {
@@ -544,9 +544,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/1.12"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v1.14"
             },
-            "time": "2020-10-09T11:56:35+00:00"
+            "time": "2024-02-08T08:27:57+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
