@@ -52,7 +52,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -80,7 +80,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => [
@@ -115,7 +115,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => $this->expectedTextQuery(
@@ -156,7 +156,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => [
@@ -190,7 +190,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -236,7 +236,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -273,7 +273,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -310,7 +310,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -345,7 +345,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -382,7 +382,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -436,7 +436,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -501,7 +501,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -575,7 +575,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -588,6 +588,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                         'id' => 'gem-leuven',
                                         'path' => 'location',
                                     ],
+                                    'relation' => 'intersects',
                                 ],
                             ],
                         ],
@@ -600,6 +601,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                         'id' => 'prv-limburg',
                                         'path' => 'location',
                                     ],
+                                    'relation' => 'intersects',
                                 ],
                             ],
                         ],
@@ -638,14 +640,14 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
                         [
                             'geo_distance' => [
                                 'distance' => '30km',
-                                'geo_point' => (object) [
+                                'geo_point' => (object)[
                                     'lat' => -40.3456,
                                     'lon' => 78.3,
                                 ],
@@ -689,7 +691,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -733,7 +735,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -765,7 +767,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -799,7 +801,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -837,7 +839,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -875,7 +877,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -918,7 +920,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -960,7 +962,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -986,7 +988,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1027,7 +1029,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1078,7 +1080,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'from' => 0,
             'size' => 30,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
