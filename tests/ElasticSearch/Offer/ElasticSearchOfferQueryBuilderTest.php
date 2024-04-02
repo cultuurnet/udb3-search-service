@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
-use CultuurNet\UDB3\Search\Country;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
-use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -67,7 +67,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -95,7 +95,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => [
@@ -130,7 +130,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => $this->expectedTextQuery(
@@ -173,7 +173,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                         [
                             'query_string' => [
@@ -213,7 +213,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -253,7 +253,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -293,7 +293,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -328,7 +328,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -354,7 +354,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -395,7 +395,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -449,7 +449,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -490,7 +490,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -531,7 +531,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -577,7 +577,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -661,7 +661,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -724,7 +724,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -799,7 +799,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -874,7 +874,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -934,7 +934,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -987,7 +987,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1028,7 +1028,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1081,7 +1081,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1116,7 +1116,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -1142,7 +1142,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1183,7 +1183,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1237,7 +1237,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1278,7 +1278,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1319,7 +1319,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1375,7 +1375,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
@@ -1410,7 +1410,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1423,6 +1423,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         'id' => 'gem-leuven',
                                         'path' => 'location',
                                     ],
+                                    'relation' => 'intersects',
                                 ],
                             ],
                         ],
@@ -1435,6 +1436,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         'id' => 'prv-limburg',
                                         'path' => 'location',
                                     ],
+                                    'relation' => 'intersects',
                                 ],
                             ],
                         ],
@@ -1473,14 +1475,14 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
                         [
                             'geo_distance' => [
                                 'distance' => '30km',
-                                'geo_point' => (object) [
+                                'geo_point' => (object)[
                                     'lat' => -40.3456,
                                     'lon' => 78.3,
                                 ],
@@ -1524,7 +1526,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1569,7 +1571,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1634,7 +1636,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1699,7 +1701,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1737,7 +1739,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1775,7 +1777,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1815,7 +1817,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1859,7 +1861,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1902,7 +1904,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1940,7 +1942,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -1978,7 +1980,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2031,7 +2033,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2069,7 +2071,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2107,7 +2109,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2145,7 +2147,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2183,7 +2185,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2221,7 +2223,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2257,7 +2259,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2298,7 +2300,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2348,7 +2350,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2398,7 +2400,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2448,7 +2450,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2498,7 +2500,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2548,7 +2550,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2598,7 +2600,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2643,7 +2645,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2683,7 +2685,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2726,7 +2728,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2776,7 +2778,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2821,7 +2823,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2862,7 +2864,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2903,7 +2905,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2944,7 +2946,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -2986,7 +2988,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3027,7 +3029,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3068,7 +3070,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3106,7 +3108,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -3141,7 +3143,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -3187,7 +3189,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -3237,7 +3239,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'aggregations' => [
                 'regions' => [
@@ -3284,7 +3286,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'sort' => [
                 [
@@ -3317,7 +3319,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'metadata.recommendationFor.score' => [
                         'order' => 'asc',
                         'nested_path' => 'metadata.recommendationFor',
-                        'nested_filter' => [
+                        'nested' => [
                             'term' => [
                                 'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
                             ],
@@ -3346,7 +3348,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'sort' => [
                 [
@@ -3376,7 +3378,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'sort' => [
                 [
@@ -3409,7 +3411,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3447,7 +3449,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3485,7 +3487,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3520,7 +3522,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 30,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
             'collapse' => [
                 'field' => 'productionCollapseValue',
@@ -3556,7 +3558,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 'bool' => [
                     'must' => [
                         [
-                            'match_all' => (object) [],
+                            'match_all' => (object)[],
                         ],
                     ],
                     'filter' => [
@@ -3599,7 +3601,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'from' => 9980,
             'size' => 10,
             'query' => [
-                'match_all' => (object) [],
+                'match_all' => (object)[],
             ],
         ];
 
