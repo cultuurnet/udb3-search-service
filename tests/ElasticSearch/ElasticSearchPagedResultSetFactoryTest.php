@@ -26,7 +26,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
      */
     private $factory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->aggregationTransformer = new NodeMapAggregationTransformer(
             FacetName::regions(),

@@ -19,7 +19,7 @@ final class ContributorsRequestParserTest extends TestCase
      */
     private $queryBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new ContributorsRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);

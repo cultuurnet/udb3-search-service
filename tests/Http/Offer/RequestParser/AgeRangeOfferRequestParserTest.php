@@ -23,7 +23,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
      */
     private $queryBuilder;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->parser = new AgeRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);

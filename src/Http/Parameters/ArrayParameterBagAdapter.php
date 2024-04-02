@@ -159,7 +159,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             // something like urlencode() when programming an actual integration, but it's convenient to interpret the
             // spaces in dates as plus signs for testing purposes. The date format we expect should have no spaces
             // anyway, so if we find a space it's more likely that it was meant to be a +.
-            $asString = str_replace(' ', '+', $asString);
+            $asString = str_replace(' ', '+', (string)$asString);
 
             $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
 

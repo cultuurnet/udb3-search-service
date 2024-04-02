@@ -17,7 +17,7 @@
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/calendar-summary-v3": "^4.0",
-        "cultuurnet/culturefeed-php": "~1.12",
+        "cultuurnet/culturefeed-php": "^1.14",
         "filp/whoops": "^2.5",
         "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/psr7": "^2.4",
@@ -40,7 +40,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^0.12.43",
-        "phpunit/phpunit": "^7.5",
+        "phpunit/phpunit": "^9.6",
         "publiq/php-cs-fixer-config": "^2.0"
     },
     "autoload": {

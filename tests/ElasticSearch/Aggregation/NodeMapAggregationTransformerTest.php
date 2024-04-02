@@ -28,7 +28,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
      */
     private $transformer;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->facetName = FacetName::regions();
 
