@@ -14,10 +14,8 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
      */
     private $given;
 
-    /**
-     * @var JsonLdPolyfillJsonTransformer
-     */
-    private $transformer;
+
+    private JsonLdPolyfillJsonTransformer $transformer;
 
     protected function setUp(): void
     {

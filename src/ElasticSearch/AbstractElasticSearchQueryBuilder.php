@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use DateTimeImmutable;
+use DateTime;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -25,20 +27,11 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
-    /**
-     * @var Search
-     */
-    protected $search;
+    protected Search $search;
 
-    /**
-     * @var BoolQuery
-     */
-    protected $boolQuery;
+    protected BoolQuery $boolQuery;
 
-    /**
-     * @var ?string
-     */
-    private $shardPreference;
+    private ?string $shardPreference = null;
 
     /**
      * @var array
@@ -155,8 +148,8 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      */
     protected function guardDateRange(
         $parameterName,
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ) {
         if (!is_null($from) && !is_null($to) && $from > $to) {
             throw new UnsupportedParameterValue(
@@ -200,11 +193,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      *
      * @see self::createMultiValueMatchQuery()
      *
-     * @param string $fieldName
      * @param string[] $terms
      * @return static
      */
-    protected function withMultiValueMatchQuery($fieldName, array $terms)
+    protected function withMultiValueMatchQuery(string $fieldName, array $terms)
     {
         if (empty($terms)) {
             return $this;
@@ -270,12 +262,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
      * @param string|int|float|null $from
      * @param string|int|float|null $to
      * @return static
      */
-    protected function withRangeQuery($fieldName, $from = null, $to = null)
+    protected function withRangeQuery(string $fieldName, $from = null, $to = null)
     {
         $rangeQuery = $this->createRangeQuery($fieldName, $from, $to);
         if (!$rangeQuery) {
@@ -294,9 +285,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
                 RangeQuery::GTE => $from,
                 RangeQuery::LTE => $to,
             ],
-            function ($value) {
-                return !is_null($value);
-            }
+            fn ($value): bool => !is_null($value)
         );
 
         if (empty($parameters)) {
@@ -310,12 +299,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      * @param string $fieldName
      * @return static
      */
-    protected function withDateRangeQuery($fieldName, \DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    protected function withDateRangeQuery($fieldName, DateTimeImmutable $from = null, DateTimeImmutable $to = null)
     {
         return $this->withRangeQuery(
             $fieldName,
-            is_null($from) ? null : $from->format(\DateTime::ATOM),
-            is_null($to) ? null : $to->format(\DateTime::ATOM)
+            is_null($from) ? null : $from->format(DateTime::ATOM),
+            is_null($to) ? null : $to->format(DateTime::ATOM)
         );
     }
 
@@ -362,7 +351,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     /**
      * @return Language[]
      */
-    protected function getDefaultLanguages()
+    protected function getDefaultLanguages(): array
     {
         return [
             new Language('nl'),

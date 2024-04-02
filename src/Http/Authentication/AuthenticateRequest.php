@@ -42,7 +42,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
-    private ?JsonWebToken $token;
+    private ?JsonWebToken $token = null;
 
     private string $pemFile;
 

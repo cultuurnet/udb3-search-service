@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Http\Parameters\ArrayParameterBagAdapter;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,10 +13,7 @@ use Psr\Http\Message\UriInterface;
 
 final class ApiRequest implements ApiRequestInterface
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    private $request;
+    private ServerRequestInterface $request;
 
     /**
      * ApiRequest constructor.
@@ -34,7 +32,7 @@ final class ApiRequest implements ApiRequestInterface
     public function getQueryParam(string $name, $default = null)
     {
         $params = $this->request->getQueryParams();
-        return isset($params[$name]) ? $params[$name] : $default;
+        return $params[$name] ?? $default;
     }
 
     public function getQueryParamsKeys(): ?array
@@ -51,7 +49,7 @@ final class ApiRequest implements ApiRequestInterface
     public function getServerParam(string $name, $default = null)
     {
         $params = $this->request->getServerParams();
-        return isset($params[$name]) ? $params[$name] : $default;
+        return $params[$name] ?? $default;
     }
 
     /**
@@ -184,7 +182,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param string $name Case-insensitive header field name.
      * @param string|string[] $value Header value(s).
      * @return static
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withHeader($name, $value)
     {
@@ -206,7 +204,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param string $name Case-insensitive header field name to add.
      * @param string|string[] $value Header value(s).
      * @return static
-     * @throws \InvalidArgumentException for invalid header names or values.
+     * @throws InvalidArgumentException for invalid header names or values.
      */
     public function withAddedHeader($name, $value)
     {
@@ -253,7 +251,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @param StreamInterface $body Body.
      * @return static
-     * @throws \InvalidArgumentException When the body is not valid.
+     * @throws InvalidArgumentException When the body is not valid.
      */
     public function withBody(StreamInterface $body)
     {
@@ -327,7 +325,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @param string $method Case-sensitive method.
      * @return static
-     * @throws \InvalidArgumentException for invalid HTTP methods.
+     * @throws InvalidArgumentException for invalid HTTP methods.
      */
     public function withMethod($method)
     {
@@ -508,7 +506,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @param array $uploadedFiles An array tree of UploadedFileInterface instances.
      * @return static
-     * @throws \InvalidArgumentException if an invalid structure is provided.
+     * @throws InvalidArgumentException if an invalid structure is provided.
      */
     public function withUploadedFiles(array $uploadedFiles)
     {
@@ -561,7 +559,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param null|array|object $data The deserialized body data. This will
      *     typically be in an array or object.
      * @return static
-     * @throws \InvalidArgumentException if an unsupported argument type is
+     * @throws InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
     public function withParsedBody($data)

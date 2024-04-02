@@ -10,9 +10,8 @@ final class ElasticSearchDistanceFactory implements DistanceFactory
 {
     /**
      * @param string $distance
-     * @return ElasticSearchDistance
      */
-    public function fromString($distance)
+    public function fromString($distance): ElasticSearchDistance
     {
         return new ElasticSearchDistance($distance);
     }

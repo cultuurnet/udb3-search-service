@@ -9,13 +9,13 @@ final class SimpleDeserializerLocator implements DeserializerLocatorInterface
     /**
      * @var DeserializerInterface[]
      */
-    private $deserializers = [];
+    private array $deserializers = [];
 
 
     public function registerDeserializer(
         string $contentType,
         DeserializerInterface $deserializer
-    ) {
+    ): void {
         $this->deserializers[$contentType] = $deserializer;
     }
 

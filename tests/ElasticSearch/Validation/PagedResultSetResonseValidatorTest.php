@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PagedResultSetResponseValidatorTest extends TestCase
 {
-    /**
-     * @var PagedResultSetResponseValidator
-     */
-    private $validator;
+    private PagedResultSetResponseValidator $validator;
 
     protected function setUp(): void
     {
@@ -21,7 +18,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_throw_an_exception_when_the_response_is_valid()
+    public function it_does_not_throw_an_exception_when_the_response_is_valid(): void
     {
         $response = [
             'hits' => [
@@ -45,22 +42,19 @@ final class PagedResultSetResponseValidatorTest extends TestCase
      * @test
      * @dataProvider invalidResponseDataProvider
      *
-     * @param string $expectedExceptionMessage
      */
     public function it_throws_an_exception_when_a_required_property_is_missing(
-        $expectedExceptionMessage,
+        string $expectedExceptionMessage,
         array $responseData
-    ) {
+    ): void {
         $this->expectException(InvalidElasticSearchResponseException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->validator->validate($responseData);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidResponseDataProvider()
+
+    public function invalidResponseDataProvider(): array
     {
         return [
             'missing_hits' => [

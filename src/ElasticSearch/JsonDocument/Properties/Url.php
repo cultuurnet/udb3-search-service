@@ -8,10 +8,7 @@ use InvalidArgumentException;
 
 final class Url
 {
-    /**
-     * @var string
-     */
-    private $url;
+    private string $url;
 
     /**
      * @var array

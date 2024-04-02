@@ -23,10 +23,8 @@ trait HasElasticSearchClient
      */
     private $documentType;
 
-    /**
-     * @return array
-     */
-    private function getDefaultParameters()
+
+    private function getDefaultParameters(): array
     {
         return [
             'index' => $this->indexName,

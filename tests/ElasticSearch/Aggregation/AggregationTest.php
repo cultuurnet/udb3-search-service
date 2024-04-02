@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +13,7 @@ final class AggregationTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_name_and_an_associative_array_of_buckets()
+    public function it_has_a_name_and_an_associative_array_of_buckets(): void
     {
         $name = FacetName::themes();
 
@@ -35,7 +36,7 @@ final class AggregationTest extends TestCase
     /**
      * @test
      */
-    public function it_always_returns_an_array_of_buckets_even_if_its_empty()
+    public function it_always_returns_an_array_of_buckets_even_if_its_empty(): void
     {
         $aggregation = new Aggregation(FacetName::regions());
         $this->assertTrue(is_array($aggregation->getBuckets()));
@@ -44,7 +45,7 @@ final class AggregationTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_created_from_elasticsearch_response_aggregation_data()
+    public function it_can_be_created_from_elasticsearch_response_aggregation_data(): void
     {
         $aggregationResponseData = [
             'doc_count_error_upper_bound' => 0,
@@ -81,13 +82,12 @@ final class AggregationTest extends TestCase
      * @test
      * @dataProvider invalidElasticSearchResponseAggregationDataProvider
      *
-     * @param string $expectedExceptionMessage
      */
     public function it_throws_an_exception_when_the_given_elasticsearch_response_aggregation_data_is_invalid(
         array $invalidElasticSearchResponseAggregationData,
-        $expectedExceptionMessage
-    ) {
-        $this->expectException(\InvalidArgumentException::class);
+        string $expectedExceptionMessage
+    ): void {
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         Aggregation::fromElasticSearchResponseAggregationData(
             FacetName::regions()->toString(),
@@ -95,10 +95,8 @@ final class AggregationTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function invalidElasticSearchResponseAggregationDataProvider()
+
+    public function invalidElasticSearchResponseAggregationDataProvider(): array
     {
         return [
             'it_checks_for_buckets_to_make_sure_the_given_data_is_of_an_aggregation' => [

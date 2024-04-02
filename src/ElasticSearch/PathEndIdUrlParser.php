@@ -8,9 +8,8 @@ final class PathEndIdUrlParser implements IdUrlParserInterface
 {
     /**
      * @param string $url
-     * @return string
      */
-    public function getIdFromUrl($url)
+    public function getIdFromUrl($url): string
     {
         // Remove trailing whitespace and slashes.
         $url = rtrim($url, " \t\n\r\0\x0B/");

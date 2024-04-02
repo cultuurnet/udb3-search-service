@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
@@ -263,7 +264,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -281,7 +282,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -299,7 +300,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -317,7 +318,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -348,7 +349,7 @@ final class OrganizerSearchControllerTest extends TestCase
         Request $request,
         string $expectedExceptionMessage
     ): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -407,7 +408,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->method('search')
             ->with(
                 $this->callback(
-                    function (OrganizerQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
+                    function (OrganizerQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder): bool {
                         $this->assertEquals(
                             $expectedQueryBuilder->build(),
                             $actualQueryBuilder->build()

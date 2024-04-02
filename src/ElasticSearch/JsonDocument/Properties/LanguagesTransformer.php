@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class LanguagesTransformer implements JsonTransformer
 {
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
-    /**
-     * @var bool
-     */
-    private $mainLanguageRequired;
+    private bool $mainLanguageRequired;
 
     public function __construct(JsonTransformerLogger $logger, bool $mainLanguageRequired)
     {

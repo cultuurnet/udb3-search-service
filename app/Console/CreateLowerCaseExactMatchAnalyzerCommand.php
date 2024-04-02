@@ -13,7 +13,7 @@ final class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSear
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('lowercase-exact-match-analyzer:create')

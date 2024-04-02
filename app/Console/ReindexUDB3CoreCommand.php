@@ -13,7 +13,7 @@ final class ReindexUDB3CoreCommand extends AbstractReindexCommand
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('udb3-core:reindex')

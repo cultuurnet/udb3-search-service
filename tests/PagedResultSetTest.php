@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -16,7 +17,7 @@ final class PagedResultSetTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_paged_results_and_metadata()
+    public function it_returns_paged_results_and_metadata(): void
     {
         $total = 1000;
         $perPage = 30;
@@ -46,7 +47,7 @@ final class PagedResultSetTest extends TestCase
     /**
      * @test
      */
-    public function it_guards_that_results_are_all_json_documents()
+    public function it_guards_that_results_are_all_json_documents(): void
     {
         $total = 1000;
         $perPage = 30;
@@ -60,7 +61,7 @@ final class PagedResultSetTest extends TestCase
             'bar',
         ];
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Results should be an array of JsonDocument objects.');
 
         new PagedResultSet(
@@ -73,7 +74,7 @@ final class PagedResultSetTest extends TestCase
     /**
      * @test
      */
-    public function it_has_an_optional_facets_property()
+    public function it_has_an_optional_facets_property(): void
     {
         $total = 1000;
         $perPage = 30;

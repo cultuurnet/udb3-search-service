@@ -18,10 +18,7 @@ final class Status
         self::TEMPORARILY_UNAVAILABLE,
     ];
 
-    /**
-     * @var string
-     */
-    private $status;
+    private string $status;
 
     public function __construct(string $status)
     {

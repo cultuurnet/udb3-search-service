@@ -33,7 +33,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->logger->expects($this->any())
             ->method('info')
             ->willReturnCallback(
-                function ($message) {
+                function ($message): void {
                     $this->logMessages[] = ['info', $message];
                 }
             );
@@ -41,7 +41,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->logger->expects($this->any())
             ->method('warning')
             ->willReturnCallback(
-                function ($message) {
+                function ($message): void {
                     $this->logMessages[] = ['warning', $message];
                 }
             );
@@ -49,7 +49,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->logger->expects($this->any())
             ->method('error')
             ->willReturnCallback(
-                function ($message) {
+                function ($message): void {
                     $this->logMessages[] = ['error', $message];
                 }
             );
@@ -169,7 +169,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->eventBus->expects($this->exactly(10))
             ->method('publish')
             ->willReturnCallback(
-                function (DomainEventStream $stream) use (&$actualEvents) {
+                function (DomainEventStream $stream) use (&$actualEvents): void {
                     $domainMessage = $stream->getIterator()[0];
                     $event = $domainMessage->getPayload();
                     $actualEvents[] = $event;
@@ -263,7 +263,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->eventBus->expects($this->exactly(4))
             ->method('publish')
             ->willReturnCallback(
-                function (DomainEventStream $stream) use (&$actualEvents) {
+                function (DomainEventStream $stream) use (&$actualEvents): void {
                     $domainMessage = $stream->getIterator()[0];
                     $event = $domainMessage->getPayload();
                     $actualEvents[] = $event;
@@ -383,7 +383,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         $this->eventBus->expects($this->exactly(10))
             ->method('publish')
             ->willReturnCallback(
-                function (DomainEventStream $stream) use (&$actualEvents) {
+                function (DomainEventStream $stream) use (&$actualEvents): void {
                     $domainMessage = $stream->getIterator()[0];
                     $event = $domainMessage->getPayload();
                     $actualEvents[] = $event;

@@ -17,25 +17,19 @@ final class SingleFileIndexationStrategyTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $indexName;
+
+
+    private string $documentType;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var SingleFileIndexationStrategy
-     */
-    private $strategy;
+
+    private SingleFileIndexationStrategy $strategy;
 
     protected function setUp(): void
     {
@@ -57,7 +51,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_sends_the_document_directly_to_elasticsearch_for_indexation()
+    public function it_sends_the_document_directly_to_elasticsearch_for_indexation(): void
     {
         $jsonDocument = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar"}');
 

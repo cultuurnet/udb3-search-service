@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 
 final class NodeAwareFacetTreeNormalizer implements FacetTreeNormalizerInterface
 {
-    public function normalize(FacetTreeInterface $facetTree)
+    public function normalize(FacetTreeInterface $facetTree): array
     {
         $data = [];
 

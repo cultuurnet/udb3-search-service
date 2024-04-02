@@ -6,11 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class UpdatePlaceMapping extends AbstractMappingOperation
 {
-    /**
-     * @param string $indexName
-     * @param string $documentType
-     */
-    public function run($indexName, $documentType)
+    public function run(string $indexName, string $documentType): void
     {
         $this->updateMapping(
             $indexName,

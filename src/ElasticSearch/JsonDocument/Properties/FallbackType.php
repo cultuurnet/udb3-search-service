@@ -18,10 +18,7 @@ final class FallbackType
         self::ORGANIZER,
     ];
 
-    /**
-     * @var string
-     */
-    private $fallbackType;
+    private string $fallbackType;
 
     public function __construct(string $fallbackType)
     {

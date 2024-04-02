@@ -13,10 +13,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class AgeRangeOfferRequestParserTest extends TestCase
 {
-    /**
-     * @var DocumentLanguageOfferRequestParser
-     */
-    private $parser;
+    private AgeRangeOfferRequestParser $parser;
 
     /**
      * @var OfferQueryBuilderInterface|MockObject
@@ -32,7 +29,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_an_age_range_filter_with_a_min_age()
+    public function it_should_add_an_age_range_filter_with_a_min_age(): void
     {
         $request = $this->request(
             [
@@ -51,7 +48,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_an_age_range_filter_with_a_max_age()
+    public function it_should_add_an_age_range_filter_with_a_max_age(): void
     {
         $request = $this->request(
             [
@@ -70,7 +67,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_an_age_range_filter_with_a_min_and_max_age()
+    public function it_should_add_an_age_range_filter_with_a_min_and_max_age(): void
     {
         $request = $this->request(
             [
@@ -90,7 +87,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_an_all_ages_filter()
+    public function it_should_add_an_all_ages_filter(): void
     {
         $request = $this->request(
             [

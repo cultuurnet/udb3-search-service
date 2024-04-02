@@ -17,30 +17,22 @@ final class BulkIndexationStrategyTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $indexName;
+
+
+    private string $documentType;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var int
-     */
-    private $autoFlushThreshold;
 
-    /**
-     * @var BulkIndexationStrategy
-     */
-    private $strategy;
+    private int $autoFlushThreshold;
+
+
+    private BulkIndexationStrategy $strategy;
 
     protected function setUp(): void
     {
@@ -65,7 +57,7 @@ final class BulkIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_queues_the_documents_and_indexes_them_in_bulk_when_the_auto_flush_threshold_has_been_reached()
+    public function it_queues_the_documents_and_indexes_them_in_bulk_when_the_auto_flush_threshold_has_been_reached(): void
     {
         $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar1"}');
         $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"foo":"bar2"}');
@@ -154,7 +146,7 @@ final class BulkIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_flushed_on_command()
+    public function it_can_be_flushed_on_command(): void
     {
         $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar1"}');
         $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"foo":"bar2"}');

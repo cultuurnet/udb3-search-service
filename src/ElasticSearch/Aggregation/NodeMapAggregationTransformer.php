@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
@@ -13,15 +15,9 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 
 final class NodeMapAggregationTransformer implements AggregationTransformerInterface
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
-    /**
-     * @var array
-     */
-    private $nodeMap;
+    private array $nodeMap;
 
     /**
      * @param array $nodeMap
@@ -51,22 +47,17 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
         $this->nodeMap = $nodeMap;
     }
 
-    /**
-     * @return bool
-     */
-    public function supports(Aggregation $aggregation)
+
+    public function supports(Aggregation $aggregation): bool
     {
         return $aggregation->getName()->sameValueAs($this->facetName);
     }
 
-    /**
-     * @return FacetTreeInterface
-     */
-    public function toFacetTree(Aggregation $aggregation)
+    public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
         if (!$this->supports($aggregation)) {
             $name = $aggregation->getName()->toString();
-            throw new \LogicException("Aggregation $name not supported for transformation.");
+            throw new LogicException("Aggregation $name not supported for transformation.");
         }
 
         $children = $this->transformNodeMapToFacetNodes($this->nodeMap, $aggregation->getBuckets());
@@ -74,21 +65,21 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    private function validateNodeMap(array $nodeMap)
+    private function validateNodeMap(array $nodeMap): void
     {
         foreach ($nodeMap as $key => $node) {
             if (!is_string($key)) {
-                throw new \InvalidArgumentException("Facet node $key has an invalid key.");
+                throw new InvalidArgumentException("Facet node $key has an invalid key.");
             }
 
             if (!isset($node['name']) || empty($node['name'])) {
-                throw new \InvalidArgumentException("Facet node $key has no name.");
+                throw new InvalidArgumentException("Facet node $key has no name.");
             }
 
             if (!is_array($node['name'])) {
-                throw new \InvalidArgumentException("Facet node $key has a string as name, but it should be an array.");
+                throw new InvalidArgumentException("Facet node $key has a string as name, but it should be an array.");
             }
 
             foreach ($node['name'] as $language => $value) {
@@ -97,7 +88,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
             }
 
             if (isset($node['children']) && !is_array($node['children'])) {
-                throw new \InvalidArgumentException("Children of facet node $key should be an associative array.");
+                throw new InvalidArgumentException("Children of facet node $key should be an associative array.");
             }
 
             if (isset($node['children'])) {
@@ -110,7 +101,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
      * @param Bucket[] $buckets
      * @return FacetNode[]
      */
-    private function transformNodeMapToFacetNodes(array $nodeMap, array $buckets)
+    private function transformNodeMapToFacetNodes(array $nodeMap, array $buckets): array
     {
         $nodes = [];
 

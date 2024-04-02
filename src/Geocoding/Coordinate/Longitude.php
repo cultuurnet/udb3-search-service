@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Longitude extends Coordinate
 {
-    public function __construct($value)
+    public function __construct(float $value)
     {
         parent::__construct($value);
 

@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 final class Country
 {
-    /**
-     * @var string
-     */
-    private $country;
+    private string $country;
 
     public function __construct(string $code)
     {

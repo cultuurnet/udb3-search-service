@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
@@ -66,7 +67,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         try {
             $urlObject = new Url($url);
             $normalizedUrl = $urlObject->getNormalizedUrl();
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $normalizedUrl = $url;
         }
 
@@ -182,9 +183,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return $this->withMultiValueMatchQuery(
             'workflowStatus',
             array_map(
-                function (WorkflowStatus $workflowStatus) {
-                    return $workflowStatus->toString();
-                },
+                fn (WorkflowStatus $workflowStatus): string => $workflowStatus->toString(),
                 $workflowStatuses
             )
         );

@@ -8,15 +8,9 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
 final class GeoDistanceParameters
 {
-    /**
-     * @var Coordinates
-     */
-    private $coordinates;
+    private Coordinates $coordinates;
 
-    /**
-     * @var AbstractDistance
-     */
-    private $maximumDistance;
+    private AbstractDistance $maximumDistance;
 
 
     public function __construct(

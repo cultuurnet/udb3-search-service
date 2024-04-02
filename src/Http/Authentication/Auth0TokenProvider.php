@@ -8,15 +8,9 @@ use DateTime;
 
 final class Auth0TokenProvider
 {
-    /**
-     * @var Auth0TokenRepository
-     */
-    private $auth0TokenRepository;
+    private Auth0TokenRepository $auth0TokenRepository;
 
-    /**
-     * @var Auth0Client
-     */
-    private $auth0Client;
+    private Auth0Client $auth0Client;
 
     public function __construct(Auth0TokenRepository $auth0TokenRepository, Auth0Client $auth0Client)
     {

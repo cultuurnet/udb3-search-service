@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Search\QueryStringFactory;
 
 final class MockQueryStringFactory implements QueryStringFactory
 {
-    /**
-     * @return MockQueryString
-     */
-    public function fromString(string $queryString)
+    public function fromString(string $queryString): MockQueryString
     {
         return new MockQueryString($queryString);
     }

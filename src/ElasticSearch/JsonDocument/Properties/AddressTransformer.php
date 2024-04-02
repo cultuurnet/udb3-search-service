@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class AddressTransformer implements JsonTransformer
 {
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
-    /**
-     * @var bool
-     */
-    private $addressRequired;
+    private bool $addressRequired;
 
     public function __construct(JsonTransformerLogger $logger, bool $addressRequired)
     {

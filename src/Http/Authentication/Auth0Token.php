@@ -8,20 +8,11 @@ use DateTimeImmutable;
 
 final class Auth0Token
 {
-    /**
-     * @var string
-     */
-    private $token;
+    private string $token;
 
-    /**
-     * @var DateTimeImmutable
-     */
-    private $issuedAt;
+    private DateTimeImmutable $issuedAt;
 
-    /**
-     * @var int
-     */
-    private $expiresIn;
+    private int $expiresIn;
 
     public function __construct(string $token, DateTimeImmutable $issuedAt, int $expiresIn)
     {
