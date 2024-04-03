@@ -106,7 +106,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     /**
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName)
+    private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName) : array
     {
         $nestedProperties = explode('.', $propertyName);
         $propertyReference = $json;
@@ -115,11 +115,11 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
 
         while ($nestedPropertyName = array_shift($nestedProperties)) {
             if ($nestedPropertyName === '[]') {
-                foreach ($propertyReference as $key => $arrayItem) {
+                foreach ($propertyReference as $arrayItem) {
                     $remainingPath = implode('.', $nestedProperties);
 
                     $recursiveLanguages = $this->getLanguageStringsFromNestedProperty(
-                        $propertyReference[$key],
+                        $arrayItem,
                         $remainingPath
                     );
 
@@ -136,7 +136,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
             $propertyReference = $propertyReference->{$nestedPropertyName};
         }
 
-        if (is_object($propertyReference) && $propertyReference) {
+        if (is_object($propertyReference)) {
             return array_keys(get_object_vars($propertyReference));
         }
 
