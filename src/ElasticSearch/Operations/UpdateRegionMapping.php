@@ -10,7 +10,7 @@ final class UpdateRegionMapping extends AbstractMappingOperation
      * @param string $indexName
      * @param string $documentType
      */
-    public function run($indexName, $documentType)
+    public function run($indexName, $documentType): void
     {
         $this->updateMapping(
             $indexName,

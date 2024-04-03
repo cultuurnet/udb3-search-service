@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchDistanceTest extends TestCase
@@ -15,7 +16,7 @@ final class ElasticSearchDistanceTest extends TestCase
      * @param string $givenDistanceString
      * @param string $expectedDistanceString
      */
-    public function it_accepts_valid_elasticsearch_distances($givenDistanceString, $expectedDistanceString)
+    public function it_accepts_valid_elasticsearch_distances($givenDistanceString, $expectedDistanceString): void
     {
         $distance = new ElasticSearchDistance($givenDistanceString);
         $this->assertEquals($expectedDistanceString, $distance->toString());
@@ -72,9 +73,9 @@ final class ElasticSearchDistanceTest extends TestCase
      *
      * @param string $malformedDistanceString
      */
-    public function it_throws_an_exception_if_the_distance_string_is_malformed($malformedDistanceString)
+    public function it_throws_an_exception_if_the_distance_string_is_malformed($malformedDistanceString): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Distance is not in a valid format.');
         new ElasticSearchDistance($malformedDistanceString);
     }
@@ -98,9 +99,9 @@ final class ElasticSearchDistanceTest extends TestCase
      *
      * @param string $invalidUnitDistanceString
      */
-    public function it_throws_an_exception_if_the_distance_string_uses_an_invalid_unit($invalidUnitDistanceString)
+    public function it_throws_an_exception_if_the_distance_string_uses_an_invalid_unit($invalidUnitDistanceString): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Distance uses an unsupported unit.');
         new ElasticSearchDistance($invalidUnitDistanceString);
     }

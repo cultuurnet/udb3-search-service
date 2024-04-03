@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Deserializer;
 
-final class MissingValueException extends \RuntimeException
+use RuntimeException;
+final class MissingValueException extends RuntimeException
 {
 }

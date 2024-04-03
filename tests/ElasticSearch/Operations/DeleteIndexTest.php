@@ -20,7 +20,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_deletes_the_index_if_it_exists()
+    public function it_deletes_the_index_if_it_exists(): void
     {
         $indexName = 'mock';
 
@@ -43,7 +43,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_does_nothing_if_the_index_does_not_exist()
+    public function it_does_nothing_if_the_index_does_not_exist(): void
     {
         $indexName = 'mock';
 

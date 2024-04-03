@@ -22,7 +22,7 @@ final class PlaceSearchProjector extends AbstractSearchProjector
     }
 
 
-    protected function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD)
+    protected function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD): void
     {
         $this->getIndexService()->index(
             $placeProjectedToJSONLD->getItemId(),

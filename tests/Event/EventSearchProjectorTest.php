@@ -32,7 +32,7 @@ final class EventSearchProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_new_and_updated_events()
+    public function it_indexes_new_and_updated_events(): void
     {
         $eventId = '23017cb7-e515-47b4-87c4-780735acc942';
         $eventUrl = 'event/' . $eventId;

@@ -36,7 +36,7 @@ final class MutableIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_the_indexing_of_documents_to_the_currently_injected_strategy()
+    public function it_delegates_the_indexing_of_documents_to_the_currently_injected_strategy(): void
     {
         $index = 'udb3_core';
         $type = 'event';
@@ -52,7 +52,7 @@ final class MutableIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_can_swap_out_the_injected_strategy_for_another()
+    public function it_can_swap_out_the_injected_strategy_for_another(): void
     {
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy2);
 
@@ -73,7 +73,7 @@ final class MutableIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_flushes_an_injected_bulk_strategy_before_swapping_it_out()
+    public function it_flushes_an_injected_bulk_strategy_before_swapping_it_out(): void
     {
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy1);
 

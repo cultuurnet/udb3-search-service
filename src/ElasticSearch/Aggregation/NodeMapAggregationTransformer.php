@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
@@ -66,7 +68,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
     {
         if (!$this->supports($aggregation)) {
             $name = $aggregation->getName()->toString();
-            throw new \LogicException("Aggregation $name not supported for transformation.");
+            throw new LogicException("Aggregation $name not supported for transformation.");
         }
 
         $children = $this->transformNodeMapToFacetNodes($this->nodeMap, $aggregation->getBuckets());
@@ -74,21 +76,21 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
-    private function validateNodeMap(array $nodeMap)
+    private function validateNodeMap(array $nodeMap): void
     {
         foreach ($nodeMap as $key => $node) {
             if (!is_string($key)) {
-                throw new \InvalidArgumentException("Facet node $key has an invalid key.");
+                throw new InvalidArgumentException("Facet node $key has an invalid key.");
             }
 
             if (!isset($node['name']) || empty($node['name'])) {
-                throw new \InvalidArgumentException("Facet node $key has no name.");
+                throw new InvalidArgumentException("Facet node $key has no name.");
             }
 
             if (!is_array($node['name'])) {
-                throw new \InvalidArgumentException("Facet node $key has a string as name, but it should be an array.");
+                throw new InvalidArgumentException("Facet node $key has a string as name, but it should be an array.");
             }
 
             foreach ($node['name'] as $language => $value) {
@@ -97,7 +99,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
             }
 
             if (isset($node['children']) && !is_array($node['children'])) {
-                throw new \InvalidArgumentException("Children of facet node $key should be an associative array.");
+                throw new InvalidArgumentException("Children of facet node $key should be an associative array.");
             }
 
             if (isset($node['children'])) {

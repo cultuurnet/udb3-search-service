@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use DateTimeImmutable;
 interface ParameterBagInterface
 {
     /**
@@ -65,7 +66,7 @@ interface ParameterBagInterface
     /**
      * @param string $queryParameter
      * @param string|null $defaultValueAsString
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
     public function getDateTimeFromParameter(
         $queryParameter,

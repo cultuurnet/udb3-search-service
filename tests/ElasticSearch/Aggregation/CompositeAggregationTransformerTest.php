@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -82,7 +83,7 @@ final class CompositeAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_any_aggregation_supported_by_at_least_one_registered_transformer()
+    public function it_supports_any_aggregation_supported_by_at_least_one_registered_transformer(): void
     {
         $supportedAggregation1 = new Aggregation($this->aggregationNameSupportedByTransformer1);
         $supportedAggregation2 = new Aggregation($this->aggregationNameSupportedByTransformer2);
@@ -98,7 +99,7 @@ final class CompositeAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_to_the_first_transformer_that_supports_the_aggregation()
+    public function it_delegates_to_the_first_transformer_that_supports_the_aggregation(): void
     {
         $aggregation = new Aggregation($this->aggregationNameSupportedByBoth);
         $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth->toString());
@@ -119,14 +120,14 @@ final class CompositeAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_works_without_any_registered_transformers_but_then_it_does_not_support_any_aggregation_at_all()
+    public function it_works_without_any_registered_transformers_but_then_it_does_not_support_any_aggregation_at_all(): void
     {
         $aggregation = new Aggregation($this->aggregationNameSupportedByBoth);
         $transformer = new CompositeAggregationTransformer();
 
         $this->assertFalse($transformer->supports($aggregation));
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Aggregation "types" not supported for transformation.');
         $transformer->toFacetTree($aggregation);
     }

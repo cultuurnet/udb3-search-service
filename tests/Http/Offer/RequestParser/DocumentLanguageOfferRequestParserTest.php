@@ -32,7 +32,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_main_language_filter()
+    public function it_should_add_a_main_language_filter(): void
     {
         $request = $this->request(
             [
@@ -51,7 +51,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_language_filters()
+    public function it_should_add_language_filters(): void
     {
         $request = $this->request(
             [
@@ -74,7 +74,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_completed_language_filters()
+    public function it_should_add_completed_language_filters(): void
     {
         $request = $this->request(
             [

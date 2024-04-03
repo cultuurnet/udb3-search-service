@@ -22,7 +22,7 @@ final class OrganizerSearchProjector extends AbstractSearchProjector
     }
 
 
-    protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD)
+    protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD): void
     {
         $this->getIndexService()->index(
             $organizerProjectedToJSONLD->getId(),

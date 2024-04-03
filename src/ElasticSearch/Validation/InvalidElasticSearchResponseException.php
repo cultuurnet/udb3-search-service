@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Validation;
 
-final class InvalidElasticSearchResponseException extends \Exception
+use Exception;
+final class InvalidElasticSearchResponseException extends Exception
 {
 }

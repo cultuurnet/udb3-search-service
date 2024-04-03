@@ -20,7 +20,7 @@ final class CreateIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_creates_the_new_index_if_it_does_not_exist_yet()
+    public function it_creates_the_new_index_if_it_does_not_exist_yet(): void
     {
         $indexName = 'mock';
         $force = false;
@@ -44,7 +44,7 @@ final class CreateIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_does_nothing_if_the_index_already_exists_and_force_is_disabled()
+    public function it_does_nothing_if_the_index_already_exists_and_force_is_disabled(): void
     {
         $indexName = 'mock';
         $force = false;
@@ -64,7 +64,7 @@ final class CreateIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_overwrites_an_existing_index_if_force_is_enabled()
+    public function it_overwrites_an_existing_index_if_force_is_enabled(): void
     {
         $indexName = 'mock';
         $force = true;

@@ -33,7 +33,7 @@ final class JsonTransformerPsrLoggerTest extends TestCase
     /**
      * @test
      */
-    public function it_delegates_the_logging_of_a_missing_field()
+    public function it_delegates_the_logging_of_a_missing_field(): void
     {
         $this->psrLogger->expects($this->once())
             ->method('warning')

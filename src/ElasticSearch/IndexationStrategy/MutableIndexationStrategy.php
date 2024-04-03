@@ -20,7 +20,7 @@ final class MutableIndexationStrategy implements IndexationStrategy
     }
 
 
-    public function setIndexationStrategy(IndexationStrategy $newIndexationStrategy)
+    public function setIndexationStrategy(IndexationStrategy $newIndexationStrategy): void
     {
         $this->indexationStrategy->finish();
         $this->indexationStrategy = $newIndexationStrategy;
@@ -31,7 +31,7 @@ final class MutableIndexationStrategy implements IndexationStrategy
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    ) {
+    ): void {
         $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);
     }
 

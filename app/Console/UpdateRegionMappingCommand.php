@@ -13,7 +13,7 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('geoshapes:region-mapping')

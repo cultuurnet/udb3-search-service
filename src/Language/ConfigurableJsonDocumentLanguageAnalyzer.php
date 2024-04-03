@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
+use stdClass;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
@@ -79,7 +80,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStrings(\stdClass $json, $propertyName)
+    private function getLanguageStrings(stdClass $json, $propertyName)
     {
         if (strpos($propertyName, '.') === false) {
             return $this->getLanguageStringsFromProperty($json, $propertyName);
@@ -92,7 +93,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromProperty(stdClass $json, $propertyName)
     {
         if (!isset($json->{$propertyName})) {
             return [];
@@ -107,7 +108,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
      * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromNestedProperty(stdClass $json, $propertyName)
     {
         $nestedProperties = explode('.', $propertyName);
         $traversedProperties = [];

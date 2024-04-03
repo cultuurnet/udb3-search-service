@@ -57,7 +57,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
     /**
      * @test
      */
-    public function it_sends_the_document_directly_to_elasticsearch_for_indexation()
+    public function it_sends_the_document_directly_to_elasticsearch_for_indexation(): void
     {
         $jsonDocument = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar"}');
 

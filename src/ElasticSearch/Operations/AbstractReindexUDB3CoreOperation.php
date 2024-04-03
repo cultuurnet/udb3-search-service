@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use Exception;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
@@ -61,7 +62,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_search_operations.html#_scan_scroll
      */
-    public function run($indexName)
+    public function run($indexName): void
     {
         $query = [
             'scroll' => $this->scrollTtl,
@@ -103,7 +104,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     }
 
 
-    private function dispatchEventForHit(array $hit)
+    private function dispatchEventForHit(array $hit): void
     {
         if (isset($hit['_type']) && $hit['_type'] == 'region_query') {
             // Skip region queries because they should be re-indexed using
@@ -164,7 +165,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 
         try {
             $this->eventBus->publish(new DomainEventStream([$domainMessage]));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $exceptionMessage = $e->getMessage();
             $this->logger->warning("Could not process {$eventType} with id {$id} and url {$url}. {$exceptionMessage}");
         }

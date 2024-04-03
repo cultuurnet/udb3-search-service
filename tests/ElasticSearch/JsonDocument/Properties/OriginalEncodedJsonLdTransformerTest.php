@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class OriginalEncodedJsonLdTransformerTest extends TestCase
 {
-    public function testTransform()
+    public function testTransform(): void
     {
         $inputData = [
             'name' => ['nl' => 'Dansstudio'],

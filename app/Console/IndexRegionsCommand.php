@@ -50,7 +50,7 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('geoshapes:index-regions')

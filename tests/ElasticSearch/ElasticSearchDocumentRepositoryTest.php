@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use stdClass;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -61,7 +62,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $body = new \stdClass();
+        $body = new stdClass();
         $body->name = 'STUK';
 
         $jsonDocument = (new JsonDocument($id))

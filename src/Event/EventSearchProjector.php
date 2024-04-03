@@ -22,7 +22,7 @@ final class EventSearchProjector extends AbstractSearchProjector
     }
 
 
-    protected function handleEventProjectedToJSONLD(EventProjectedToJSONLD $eventProjectedToJSONLD)
+    protected function handleEventProjectedToJSONLD(EventProjectedToJSONLD $eventProjectedToJSONLD): void
     {
         $this->getIndexService()->index(
             $eventProjectedToJSONLD->getItemId(),

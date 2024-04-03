@@ -15,7 +15,7 @@ final class SimpleDeserializerLocator implements DeserializerLocatorInterface
     public function registerDeserializer(
         string $contentType,
         DeserializerInterface $deserializer
-    ) {
+    ): void {
         $this->deserializers[$contentType] = $deserializer;
     }
 

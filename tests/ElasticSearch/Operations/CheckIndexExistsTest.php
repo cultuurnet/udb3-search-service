@@ -29,7 +29,7 @@ final class CheckIndexExistsTest extends AbstractOperationTestCase
         $indexName,
         $exists,
         $log
-    ) {
+    ): void {
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])

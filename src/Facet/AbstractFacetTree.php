@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
+use InvalidArgumentException;
 abstract class AbstractFacetTree implements FacetTreeInterface
 {
     /**
@@ -46,10 +47,10 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     /**
      * @param string $key
      */
-    private function setKey($key)
+    private function setKey($key): void
     {
         if (!is_string($key)) {
-            throw new \InvalidArgumentException('Facet tree key should be a string.');
+            throw new InvalidArgumentException('Facet tree key should be a string.');
         }
         $this->key = $key;
     }
@@ -57,7 +58,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     /**
      * @param FacetNode[] ...$facetMembers
      */
-    private function setChildren(FacetNode ...$facetMembers)
+    private function setChildren(FacetNode ...$facetMembers): void
     {
         $this->children = $facetMembers;
     }

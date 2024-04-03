@@ -34,7 +34,7 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    ) {
+    ): void {
         $id = $jsonDocument->getId();
 
         $this->logger->info("Sending document {$id} to ElasticSearch...");

@@ -37,7 +37,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         Application::class,
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->add(
             Application::class,

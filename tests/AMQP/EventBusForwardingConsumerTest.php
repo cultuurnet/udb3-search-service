@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
+use InvalidArgumentException;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
@@ -194,7 +195,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
-            ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
+            ->willThrowException(new InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
             ->method('basic_reject')
@@ -244,7 +245,7 @@ final class EventBusForwardingConsumerTest extends TestCase
                 }
 
                 $this->assertEquals(
-                    ['correlation_id' => 'my-correlation-id-123', 'exception' => new \InvalidArgumentException('Deserializerlocator error')],
+                    ['correlation_id' => 'my-correlation-id-123', 'exception' => new InvalidArgumentException('Deserializerlocator error')],
                     $context
                 );
 
@@ -255,7 +256,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
-            ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
+            ->willThrowException(new InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
             ->method('basic_reject')

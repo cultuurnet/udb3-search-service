@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use DateTimeImmutable;
+use DateTime;
 use CultuurNet\UDB3\Search\AbstractQueryString;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
@@ -155,8 +157,8 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      */
     protected function guardDateRange(
         $parameterName,
-        \DateTimeImmutable $from = null,
-        \DateTimeImmutable $to = null
+        DateTimeImmutable $from = null,
+        DateTimeImmutable $to = null
     ) {
         if (!is_null($from) && !is_null($to) && $from > $to) {
             throw new UnsupportedParameterValue(
@@ -310,12 +312,12 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      * @param string $fieldName
      * @return static
      */
-    protected function withDateRangeQuery($fieldName, \DateTimeImmutable $from = null, \DateTimeImmutable $to = null)
+    protected function withDateRangeQuery($fieldName, DateTimeImmutable $from = null, DateTimeImmutable $to = null)
     {
         return $this->withRangeQuery(
             $fieldName,
-            is_null($from) ? null : $from->format(\DateTime::ATOM),
-            is_null($to) ? null : $to->format(\DateTime::ATOM)
+            is_null($from) ? null : $from->format(DateTime::ATOM),
+            is_null($to) ? null : $to->format(DateTime::ATOM)
         );
     }
 

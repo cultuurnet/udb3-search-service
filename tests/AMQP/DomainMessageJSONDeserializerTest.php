@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
+use InvalidArgumentException;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
@@ -28,9 +29,9 @@ final class DomainMessageJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_an_error_if_payloadclass_does_not_implement_SerializableInterface()
+    public function it_throws_an_error_if_payloadclass_does_not_implement_SerializableInterface(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Class \'CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable\' does not implement ' .
             'Broadway\Serializer\Serializable'
@@ -42,7 +43,7 @@ final class DomainMessageJSONDeserializerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_deserialize_a_domain_message()
+    public function it_can_deserialize_a_domain_message(): void
     {
         $jsonData = file_get_contents(__DIR__ . '/Dummies/domain-message-dummy-event.json');
 

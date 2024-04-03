@@ -48,7 +48,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_result_set_after_transforming_each_result()
+    public function it_returns_a_paged_result_set_after_transforming_each_result(): void
     {
         $response = [
             'hits' => [

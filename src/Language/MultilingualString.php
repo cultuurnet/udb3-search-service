@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
+use InvalidArgumentException;
 final class MultilingualString
 {
     /**
@@ -42,7 +43,7 @@ final class MultilingualString
     public function withTranslation(Language $language, string $translation): MultilingualString
     {
         if ($language->getCode() === $this->originalLanguage->getCode()) {
-            throw new \InvalidArgumentException('Can not translate to original language.');
+            throw new InvalidArgumentException('Can not translate to original language.');
         }
 
         $c = clone $this;

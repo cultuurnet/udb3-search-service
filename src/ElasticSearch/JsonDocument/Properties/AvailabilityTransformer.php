@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
+use DateTime;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateTimeImmutable;
@@ -44,7 +45,7 @@ final class AvailabilityTransformer implements JsonTransformer
             // We could also have a half-open availableRange (without end date), but that would not
             // be consistent with existing permanent offers that do have an availableTo set in 2100.
             // We also need to set it to 2100-01-01 instead of leaving it open so we can sort on it.
-            $availableTo = DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2100-01-01T00:00:00+00:00');
+            $availableTo = DateTimeImmutable::createFromFormat(DateTime::ATOM, '2100-01-01T00:00:00+00:00');
         }
 
         if ($availableFrom > $availableTo) {
@@ -56,17 +57,17 @@ final class AvailabilityTransformer implements JsonTransformer
         }
 
         if ($availableTo) {
-            $draft['availableTo'] = $availableTo->format(\DateTime::ATOM);
+            $draft['availableTo'] = $availableTo->format(DateTime::ATOM);
         }
 
         if (!$availableFrom) {
             return $draft;
         }
 
-        $draft['availableRange']['gte'] = $availableFrom->format(\DateTime::ATOM);
+        $draft['availableRange']['gte'] = $availableFrom->format(DateTime::ATOM);
 
         if ($availableTo) {
-            $draft['availableRange']['lte'] = $availableTo->format(\DateTime::ATOM);
+            $draft['availableRange']['lte'] = $availableTo->format(DateTime::ATOM);
         }
 
         return $draft;
@@ -79,7 +80,7 @@ final class AvailabilityTransformer implements JsonTransformer
         }
 
         // Convert to DateTimeImmutable to verify the format is correct.
-        $date = DateTimeImmutable::createFromFormat(\DateTime::ATOM, $from[$propertyName]);
+        $date = DateTimeImmutable::createFromFormat(DateTime::ATOM, $from[$propertyName]);
 
         if (!$date) {
             $this->logger->logError("Could not parse {$propertyName} as an ISO-8601 datetime.");

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
@@ -39,7 +40,7 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
     {
         if (!$this->supports($aggregation)) {
             $name = $aggregation->getName()->toString();
-            throw new \LogicException("Aggregation $name not supported for transformation.");
+            throw new LogicException("Aggregation $name not supported for transformation.");
         }
 
         $nodes = [];

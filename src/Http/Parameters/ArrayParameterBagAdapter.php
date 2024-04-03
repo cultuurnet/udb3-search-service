@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use DateTimeImmutable;
+use DateTime;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ArrayParameterBagAdapter implements ParameterBagInterface
@@ -150,7 +152,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     /**
      * @param string $queryParameter
      * @param string|null $defaultValueAsString
-     * @return \DateTimeImmutable|null
+     * @return DateTimeImmutable|null
      */
     public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
     {
@@ -161,7 +163,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             // anyway, so if we find a space it's more likely that it was meant to be a +.
             $asString = str_replace(' ', '+', (string)$asString);
 
-            $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
+            $asDateTime = DateTimeImmutable::createFromFormat(DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
                 throw new UnsupportedParameterValue(

@@ -20,7 +20,7 @@ final class EventBusProvider extends BaseServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->addShared(
             EventBus::class,

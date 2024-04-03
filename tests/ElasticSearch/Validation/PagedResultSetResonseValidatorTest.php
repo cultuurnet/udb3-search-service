@@ -21,7 +21,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_throw_an_exception_when_the_response_is_valid()
+    public function it_does_not_throw_an_exception_when_the_response_is_valid(): void
     {
         $response = [
             'hits' => [
@@ -50,7 +50,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
     public function it_throws_an_exception_when_a_required_property_is_missing(
         $expectedExceptionMessage,
         array $responseData
-    ) {
+    ): void {
         $this->expectException(InvalidElasticSearchResponseException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 

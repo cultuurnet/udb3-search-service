@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use DateTimeInterface;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
@@ -27,7 +28,7 @@ final class EventTransformerTest extends TestCase
 
     protected function setUp(): void
     {
-        Chronos::setTestNow(Chronos::createFromFormat(\DateTimeInterface::ATOM, '2017-05-09T15:11:32+02:00'));
+        Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2017-05-09T15:11:32+02:00'));
 
         $this->regionService = $this->createMock(RegionServiceInterface::class);
 

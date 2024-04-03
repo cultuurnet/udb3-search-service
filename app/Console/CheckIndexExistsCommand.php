@@ -14,7 +14,7 @@ final class CheckIndexExistsCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('index:exists')

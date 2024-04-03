@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
 use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 
 final class CompositeAggregationTransformer implements AggregationTransformerInterface
@@ -14,7 +15,7 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
     private $transformers = [];
 
 
-    public function register(AggregationTransformerInterface $aggregationTransformer)
+    public function register(AggregationTransformerInterface $aggregationTransformer): void
     {
         $this->transformers[] = $aggregationTransformer;
     }
@@ -34,7 +35,7 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
 
     /**
      * @return FacetTreeInterface
-     * @throws \LogicException
+     * @throws LogicException
      */
     public function toFacetTree(Aggregation $aggregation)
     {
@@ -45,6 +46,6 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
         }
 
         $aggregationName = $aggregation->getName()->toString();
-        throw new \LogicException("Aggregation \"$aggregationName\" not supported for transformation.");
+        throw new LogicException("Aggregation \"$aggregationName\" not supported for transformation.");
     }
 }

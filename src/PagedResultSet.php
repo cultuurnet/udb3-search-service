@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
@@ -80,7 +81,7 @@ final class PagedResultSet
     {
         foreach ($results as $result) {
             if (!($result instanceof JsonDocument)) {
-                throw new \InvalidArgumentException('Results should be an array of JsonDocument objects.');
+                throw new InvalidArgumentException('Results should be an array of JsonDocument objects.');
             }
         }
     }
