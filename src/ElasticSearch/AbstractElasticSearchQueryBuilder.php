@@ -306,14 +306,13 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string[] $fields
-     * @return AbstractElasticSearchQueryBuilder
      */
     protected function withQueryStringQuery(
         string $queryString,
         array $fields = [],
         string $type = BoolQuery::MUST,
         string $defaultOperator = 'OR'
-    ) {
+    ): self {
         $parameters = [];
         if (!empty($fields)) {
             $parameters['fields'] = $fields;
@@ -329,7 +328,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
-    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries)
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries): self
     {
         $boolQuery = new BoolQuery();
         foreach ($queries as $individualQuery) {

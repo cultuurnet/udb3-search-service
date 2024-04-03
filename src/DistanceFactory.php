@@ -6,9 +6,5 @@ namespace CultuurNet\UDB3\Search;
 
 interface DistanceFactory
 {
-    /**
-     * @param string $distance
-     * @return AbstractDistance
-     */
-    public function fromString($distance);
+    public function fromString(string $distance): AbstractDistance;
 }

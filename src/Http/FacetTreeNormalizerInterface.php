@@ -9,8 +9,7 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 interface FacetTreeNormalizerInterface
 {
     /**
-     * @return array
      *   Array with exclusively scalar values.
      */
-    public function normalize(FacetTreeInterface $facetTree);
+    public function normalize(FacetTreeInterface $facetTree): array;
 }

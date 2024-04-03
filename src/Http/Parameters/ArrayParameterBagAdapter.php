@@ -12,24 +12,15 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
     private array $parameterBag;
 
-    /**
-     * @var string
-     */
-    private $resetValue;
+    private string $resetValue;
 
-    /**
-     * @param string $resetValue
-     */
-    public function __construct(array $parameterBag, $resetValue = '*')
+    public function __construct(array $parameterBag, string $resetValue = '*')
     {
         $this->parameterBag = $parameterBag;
         $this->resetValue = $resetValue;
     }
 
-    /**
-     * @param string $queryParameter
-     */
-    public function getArrayFromParameter($queryParameter, callable $callback = null): array
+    public function getArrayFromParameter(string $queryParameter, callable $callback = null): array
     {
         if (empty($this->get($queryParameter))) {
             return [];
@@ -42,13 +33,11 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
+     * @param string|bool|null $defaultValue
      * @return mixed|null
      */
     public function getStringFromParameter(
-        $parameterName,
+        string $parameterName,
         $defaultValue = null,
         callable $callback = null
     ) {
@@ -77,14 +66,11 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
      * @return mixed|null
      */
     public function getIntegerFromParameter(
-        $parameterName,
-        $defaultValue = null,
+        string $parameterName,
+        string $defaultValue = null,
         callable $callback = null
     ) {
         $callback = $this->ensureCallback($callback);
@@ -97,11 +83,6 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($parameterName, $defaultValue, $intCallback);
     }
 
-    /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @param string $delimiter
-     */
     public function getExplodedStringFromParameter(
         $parameterName,
         $defaultValueAsString = null,
@@ -125,14 +106,13 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @return bool|null
+     * @todo Remove docblock when upgrading to PHP8
+     * @param string|bool|null $defaultValueAsString
      */
     public function getBooleanFromParameter(
-        $parameterName,
+        string $parameterName,
         $defaultValueAsString = null
-    ) {
+    ): ?bool {
         $callback = static function ($mixed) {
             if ($mixed === null || $mixed === '') {
                 return null;
@@ -144,12 +124,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($parameterName, $defaultValueAsString, $callback);
     }
 
-    /**
-     * @param string $queryParameter
-     * @param string|null $defaultValueAsString
-     * @return DateTimeImmutable|null
-     */
-    public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
+    public function getDateTimeFromParameter(string $queryParameter, ?string $defaultValueAsString = null): ?DateTimeImmutable
     {
         $callback = static function ($asString) use ($queryParameter) {
             // When you use a + in a URL it gets interpreted as a space. This can be resolved by using %2B instead, or

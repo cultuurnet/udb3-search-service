@@ -48,10 +48,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         $this->scrollSize = $scrollSize;
     }
 
-    /**
-     * @return array
-     */
-    abstract public function getQueryArray();
+    abstract public function getQueryArray(): array;
 
     /**
      * @param string $indexName

@@ -36,10 +36,7 @@ final class OrganizerProjectedToJSONLD implements Serializable
         ];
     }
 
-    /**
-     * @return OrganizerProjectedToJSONLD
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): self
     {
         return new self($data['id'], $data['iri']);
     }

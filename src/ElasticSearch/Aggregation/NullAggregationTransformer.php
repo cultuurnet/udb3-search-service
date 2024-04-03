@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use LogicException;
 
 final class NullAggregationTransformer implements AggregationTransformerInterface
@@ -20,7 +21,7 @@ final class NullAggregationTransformer implements AggregationTransformerInterfac
      * @inheritdoc
      * @never-return
      */
-    public function toFacetTree(Aggregation $aggregation)
+    public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
         throw new LogicException('NullAggregationTransformer does not support any aggregations for transformation.');
     }

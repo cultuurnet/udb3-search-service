@@ -9,15 +9,11 @@ use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 
 interface AggregationTransformerInterface
 {
-    /**
-     * @return bool
-     */
-    public function supports(Aggregation $aggregation);
+    public function supports(Aggregation $aggregation): bool;
 
     /**
-     * @return FacetTreeInterface
      * @throws LogicException
      *   If the transformer does not support this particular aggregation.
      */
-    public function toFacetTree(Aggregation $aggregation);
+    public function toFacetTree(Aggregation $aggregation): FacetTreeInterface;
 }

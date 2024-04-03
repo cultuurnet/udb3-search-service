@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -26,11 +27,21 @@ final class EventBusForwardingConsumerTest extends TestCase
     private const LOG_ERROR = 'Deserializerlocator error';
     private const LOG_REJECTED = 'message rejected';
 
+    /** @var EventBus|MockObject */
     private $eventBus;
+
+    /** @var DeserializerInterface|MockObject */
     private $deserializer;
+
+    /** @var DeserializerLocatorInterface|MockObject */
     private $deserializerLocator;
+
+    /** @var AMQPChannel|MockObject */
     private $channel;
+
+    /** @var LoggerInterface|MockObject */
     private $logger;
+
     private Closure $consumeCallback;
 
     protected function setUp(): void

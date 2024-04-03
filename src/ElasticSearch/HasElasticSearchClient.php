@@ -8,21 +8,11 @@ use Elasticsearch\Client;
 
 trait HasElasticSearchClient
 {
-    /**
-     * @var Client
-     */
-    private $elasticSearchClient;
+    private Client $elasticSearchClient;
 
-    /**
-     * @var string
-     */
-    private $indexName;
+    private string $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
-
+    private string $documentType;
 
     private function getDefaultParameters(): array
     {
@@ -32,10 +22,7 @@ trait HasElasticSearchClient
         ];
     }
 
-    /**
-     * @return array
-     */
-    private function executeQuery(array $body, array $parameters = [])
+    private function executeQuery(array $body, array $parameters = []): array
     {
         $parameters['body'] = $body;
 
@@ -44,10 +31,7 @@ trait HasElasticSearchClient
         );
     }
 
-    /**
-     * @return array
-     */
-    private function createParameters(array $parameters)
+    private function createParameters(array $parameters): array
     {
         return $this->getDefaultParameters() + $parameters;
     }

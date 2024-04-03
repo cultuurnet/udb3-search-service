@@ -32,10 +32,9 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
     }
 
     /**
-     * @return FacetTreeInterface
      * @throws LogicException
      */
-    public function toFacetTree(Aggregation $aggregation)
+    public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
         foreach ($this->transformers as $transformer) {
             if ($transformer->supports($aggregation)) {

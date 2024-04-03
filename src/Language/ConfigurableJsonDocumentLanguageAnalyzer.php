@@ -76,11 +76,11 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
         return $this->getLanguageStringsAsValueObjects($languageStrings);
     }
 
+
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStrings(stdClass $json, $propertyName)
+    private function getLanguageStrings(stdClass $json, string $propertyName): array
     {
         if (strpos($propertyName, '.') === false) {
             return $this->getLanguageStringsFromProperty($json, $propertyName);
@@ -90,10 +90,9 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromProperty(stdClass $json, $propertyName): array
+    private function getLanguageStringsFromProperty(stdClass $json, string $propertyName): array
     {
         if (!isset($json->{$propertyName})) {
             return [];
@@ -110,7 +109,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName)
     {
         $nestedProperties = explode('.', $propertyName);
-        $traversedProperties = [];
+        $traversedProperties = []; //@todo Remove this useless variable
         $propertyReference = $json;
 
         $languages = [];
@@ -141,9 +140,9 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
 
         if (is_object($propertyReference) && $propertyReference) {
             return array_keys(get_object_vars($propertyReference));
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
