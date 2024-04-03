@@ -44,6 +44,7 @@ final class JsonDocumentFetcherTest extends TestCase
         $this->httpClient = $this->createMock(ClientInterface::class);
         $this->auth0httpClient = $this->createMock(Client::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+
         $this->jsonDocumentFetcher = (new GuzzleJsonDocumentFetcher(
             $this->httpClient,
             $this->logger,

@@ -334,7 +334,7 @@ final class CalendarTransformer implements JsonTransformer
     /**
      * @param array $openingHours
      *   JSON-LD of the openingHours property of an event/place, as an associative array
-     * @return array<int,array<int,array<int,string>>>
+     * @return array<string, array<int<0, max>, array<string, mixed>>>
      *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
      *   enclosing array
      */
@@ -379,7 +379,7 @@ final class CalendarTransformer implements JsonTransformer
             }
         }
 
-        foreach ($openingHoursByDay as $day => &$openingHoursForSpecificDay) {
+        foreach ($openingHoursByDay as &$openingHoursForSpecificDay) {
             sort($openingHoursForSpecificDay);
         }
 

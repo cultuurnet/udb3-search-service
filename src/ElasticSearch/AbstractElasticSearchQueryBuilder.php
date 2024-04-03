@@ -47,6 +47,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $this->search->setSize(30);
     }
 
+    /**
+     * @return static
+     */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -59,7 +62,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         );
     }
 
-    public function withTextQuery(string $text, Language ...$textLanguages)
+    /**
+     * @return static
+     */
+    public function withTextQuery(string $text, Language ...$textLanguages): self
     {
         if (empty($textLanguages)) {
             $textLanguages = $this->getDefaultLanguages();
@@ -226,10 +232,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string[] $fieldNames
-     * @param string $term
      * @return static
      */
-    protected function withMultiFieldMatchQuery(array $fieldNames, $term)
+    protected function withMultiFieldMatchQuery(array $fieldNames, string $term)
     {
         $nestedBoolQuery = new BoolQuery();
 
@@ -244,11 +249,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
-     * @param string $term
      * @return static
      */
-    protected function withMatchPhraseQuery($fieldName, $term)
+    protected function withMatchPhraseQuery(string $fieldName, string $term)
     {
         $matchPhraseQuery = new MatchPhraseQuery($fieldName, $term);
 
@@ -306,13 +309,14 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string[] $fields
+     * @return static
      */
     protected function withQueryStringQuery(
         string $queryString,
         array $fields = [],
         string $type = BoolQuery::MUST,
         string $defaultOperator = 'OR'
-    ): self {
+    ) {
         $parameters = [];
         if (!empty($fields)) {
             $parameters['fields'] = $fields;
@@ -328,7 +332,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
-    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries): self
+    /**
+     * @return static
+     */
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries)
     {
         $boolQuery = new BoolQuery();
         foreach ($queries as $individualQuery) {
@@ -354,12 +361,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $field
-     * @param string $order
-     * @param array $parameters
      * @return static
      */
-    protected function withFieldSort($field, $order, $parameters = [])
+    protected function withFieldSort(string $field, string $order, array $parameters = []): AbstractElasticSearchQueryBuilder
     {
         $sort = new FieldSort($field, $order, $parameters);
 
