@@ -13,6 +13,7 @@
         "php": ">=7.4",
         "ext-json": "*",
         "ext-pcntl": "*",
+        "ext-simplexml": "*",
         "broadway/broadway": "^2.4",
         "cakephp/chronos": "^1.1",
         "crell/api-problem": "^3.2",
