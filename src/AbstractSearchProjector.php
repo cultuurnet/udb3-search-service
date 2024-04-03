@@ -42,7 +42,7 @@ abstract class AbstractSearchProjector implements EventListener
     /**
      * @return JsonDocumentIndexServiceInterface
      */
-    protected function getIndexService()
+    protected function getIndexService(): JsonDocumentIndexServiceInterface
     {
         return $this->indexService;
     }

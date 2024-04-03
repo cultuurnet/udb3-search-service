@@ -24,7 +24,7 @@ final class DataValidationException extends Exception
     /**
      * @return string[]
      */
-    public function getValidationMessages()
+    public function getValidationMessages(): array
     {
         return $this->validationMessages;
     }

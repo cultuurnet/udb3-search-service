@@ -31,7 +31,7 @@ final class FacetNode extends AbstractFacetTree
     /**
      * @return MultilingualString
      */
-    public function getName()
+    public function getName(): MultilingualString
     {
         return $this->name;
     }
@@ -39,7 +39,7 @@ final class FacetNode extends AbstractFacetTree
     /**
      * @return int
      */
-    public function getCount()
+    public function getCount(): int
     {
         return $this->count;
     }

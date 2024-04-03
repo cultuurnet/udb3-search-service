@@ -57,7 +57,7 @@ final class SimpleArrayLogger implements LoggerInterface
         $this->logs[] = [$level, $message, $context];
     }
 
-    public function getLogs()
+    public function getLogs(): array
     {
         return $this->logs;
     }

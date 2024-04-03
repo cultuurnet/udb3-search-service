@@ -33,10 +33,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     private ?string $shardPreference = null;
 
-    /**
-     * @var array
-     */
-    protected $extraQueryParameters = [];
+    protected array $extraQueryParameters = [];
 
     public function __construct()
     {
@@ -298,10 +295,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
      * @return static
      */
-    protected function withDateRangeQuery($fieldName, DateTimeImmutable $from = null, DateTimeImmutable $to = null)
+    protected function withDateRangeQuery(string $fieldName, DateTimeImmutable $from = null, DateTimeImmutable $to = null)
     {
         return $this->withRangeQuery(
             $fieldName,
@@ -318,16 +314,16 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      * @return AbstractElasticSearchQueryBuilder
      */
     protected function withQueryStringQuery(
-        $queryString,
+        string $queryString,
         array $fields = [],
-        $type = BoolQuery::MUST,
-        $defaultOperator = 'OR'
+        string $type = BoolQuery::MUST,
+        string $defaultOperator = 'OR'
     ) {
         $parameters = [];
         if (!empty($fields)) {
             $parameters['fields'] = $fields;
         }
-        if ('OR' != \strtoupper($defaultOperator)) {
+        if ('OR' !== \strtoupper($defaultOperator)) {
             $parameters['default_operator'] = $defaultOperator;
         }
 

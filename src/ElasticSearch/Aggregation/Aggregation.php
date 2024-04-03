@@ -36,7 +36,7 @@ final class Aggregation
     /**
      * @return FacetName
      */
-    public function getName()
+    public function getName(): FacetName
     {
         return $this->name;
     }

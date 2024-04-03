@@ -35,7 +35,7 @@ final class GeoBoundsParameters
     /**
      * @return Coordinates
      */
-    public function getNorthWestCoordinates()
+    public function getNorthWestCoordinates(): Coordinates
     {
         return $this->northWestCoordinates;
     }
@@ -43,7 +43,7 @@ final class GeoBoundsParameters
     /**
      * @return Coordinates
      */
-    public function getNorthEastCoordinates()
+    public function getNorthEastCoordinates(): Coordinates
     {
         return $this->northEastCoordinates;
     }
@@ -51,7 +51,7 @@ final class GeoBoundsParameters
     /**
      * @return Coordinates
      */
-    public function getSouthWestCoordinates()
+    public function getSouthWestCoordinates(): Coordinates
     {
         return $this->southWestCoordinates;
     }
@@ -59,7 +59,7 @@ final class GeoBoundsParameters
     /**
      * @return Coordinates
      */
-    public function getSouthEastCoordinates()
+    public function getSouthEastCoordinates(): Coordinates
     {
         return $this->southEastCoordinates;
     }
