@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
+use Broadway\Serializer\Serializable;
 use InvalidArgumentException;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
@@ -34,7 +35,7 @@ final class DomainMessageJSONDeserializerTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'Class \'CultuurNet\UDB3\Search\AMQP\Dummies\DummyEventNotSerializable\' does not implement ' .
-            'Broadway\Serializer\Serializable'
+            Serializable::class
         );
 
         new DomainMessageJSONDeserializer(DummyEventNotSerializable::class);

@@ -193,7 +193,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
         // Instead check if the returned value is null, and if so always set it
         // to false as it means the disableDefaultFilters parameter is not set.
-        $disabled = $disabled === null ? false : $disabled;
+        $disabled = $disabled ?? false;
 
         return !$disabled;
     }

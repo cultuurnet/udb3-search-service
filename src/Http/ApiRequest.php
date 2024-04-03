@@ -35,7 +35,7 @@ final class ApiRequest implements ApiRequestInterface
     public function getQueryParam(string $name, $default = null)
     {
         $params = $this->request->getQueryParams();
-        return isset($params[$name]) ? $params[$name] : $default;
+        return $params[$name] ?? $default;
     }
 
     public function getQueryParamsKeys(): ?array
@@ -52,7 +52,7 @@ final class ApiRequest implements ApiRequestInterface
     public function getServerParam(string $name, $default = null)
     {
         $params = $this->request->getServerParams();
-        return isset($params[$name]) ? $params[$name] : $default;
+        return $params[$name] ?? $default;
     }
 
     /**

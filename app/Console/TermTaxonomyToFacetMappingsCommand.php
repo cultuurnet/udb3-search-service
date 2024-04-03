@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
+use SimpleXMLElement;
 use SimpleXmlElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,7 +81,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param \SimpleXMLElement[] $simpleXmlNodes
+     * @param SimpleXMLElement[] $simpleXmlNodes
      * @return array
      */
     private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)

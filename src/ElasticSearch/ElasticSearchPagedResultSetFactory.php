@@ -51,7 +51,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
             $response['hits']['hits']
         );
 
-        $aggregations = isset($response['aggregations']) ? $response['aggregations'] : [];
+        $aggregations = $response['aggregations'] ?? [];
 
         if (isset($aggregations['total'])) {
             $total = $aggregations['total']['value'];
