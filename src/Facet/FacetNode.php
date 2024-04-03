@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 
 final class FacetNode extends AbstractFacetTree
@@ -12,10 +13,14 @@ final class FacetNode extends AbstractFacetTree
 
     private int $count;
 
+    /**
+     * @param string $key
+     * @param int $count
+     */
     public function __construct(
-        string $key,
+        $key,
         MultilingualString $name,
-        int $count,
+        $count,
         array $children = []
     ) {
         parent::__construct($key, $children);
@@ -29,13 +34,20 @@ final class FacetNode extends AbstractFacetTree
         return $this->name;
     }
 
+
     public function getCount(): int
     {
         return $this->count;
     }
 
-    private function setCount(int $count): void
+    /**
+     * @param int $count
+     */
+    private function setCount($count): void
     {
+        if (!is_int($count)) {
+            throw new InvalidArgumentException('Facet node count should be a int.');
+        }
         $this->count = $count;
     }
 }

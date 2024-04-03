@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
+use InvalidArgumentException;
+
 abstract class AbstractFacetTree implements FacetTreeInterface
 {
     private string $key;
 
     /**
-     * @var FacetNode[]
+     * @var FacetNodeInterface[]
      */
     private array $children = [];
 
@@ -28,7 +30,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     }
 
     /**
-     * @return FacetNode[]
+     * @return FacetNodeInterface[]
      */
     public function getChildren(): array
     {
@@ -40,7 +42,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
         $this->key = $key;
     }
 
-    private function setChildren(FacetNode ...$facetMembers): void
+    private function setChildren(FacetNodeInterface ...$facetMembers): void
     {
         $this->children = $facetMembers;
     }

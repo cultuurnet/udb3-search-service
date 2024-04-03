@@ -32,16 +32,14 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         $this->auth0Client = $auth0Client;
     }
 
-    /** @return static */
-    public function withIncludeMetadata()
+    public function withIncludeMetadata(): JsonDocumentFetcher
     {
         $clone = clone $this;
         $clone->includeMetadata = true;
         return $clone;
     }
 
-    /** @return static */
-    public function withEmbedContributors()
+    public function withEmbedContributors(): JsonDocumentFetcher
     {
         $clone = clone $this;
         $clone->embedContributors = true;

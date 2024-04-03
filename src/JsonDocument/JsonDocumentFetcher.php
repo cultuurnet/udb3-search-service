@@ -8,8 +8,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 interface JsonDocumentFetcher
 {
-    /** @return static */
-    public function withIncludeMetadata();
+    public function withIncludeMetadata(): JsonDocumentFetcher;
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument;
 }

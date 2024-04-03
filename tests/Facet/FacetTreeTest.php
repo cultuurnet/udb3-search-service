@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
@@ -96,20 +97,40 @@ final class FacetTreeTest extends TestCase
         $this->assertFilterEquals('region', [$prvVlaamsBrabant, $prvAntwerpen], $filter);
     }
 
+    /**
+     * @test
+     */
+    public function it_only_accepts_a_string_as_key(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new FacetFilter(123, []);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_accepts_an_int_as_count(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new FacetNode('test', new MultilingualString(new Language('nl'), 'test'), 'count', []);
+    }
+
     private function assertFilterEquals(string $expectedKey, array $expectedChildren, FacetFilter $actual): void
     {
         $this->assertEquals($expectedKey, $actual->getKey());
         $this->assertChildrenEquals($expectedChildren, $actual->getChildren());
     }
 
+
     private function assertChildrenEquals(array $expected, array $actual): void
     {
-        $this->assertSameSize($expected, $actual);
+        $this->assertEquals(count($expected), count($actual));
 
-        for ($i = 0, $iMax = count($expected); $i < $iMax; $i++) {
+        for ($i = 0; $i < count($expected); $i++) {
             $this->assertNodeEquals($expected[$i], $actual[$i]);
         }
     }
+
 
     private function assertNodeEquals(FacetNode $expected, FacetNode $actual): void
     {

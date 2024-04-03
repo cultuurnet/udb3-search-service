@@ -9,7 +9,7 @@ interface FacetTreeInterface
     public function getKey(): string;
 
     /**
-     * @return FacetNode[]
+     * @return FacetNodeInterface[]
      */
     public function getChildren(): array;
 }

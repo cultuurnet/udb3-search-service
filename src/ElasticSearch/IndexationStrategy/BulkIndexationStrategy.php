@@ -17,6 +17,9 @@ final class BulkIndexationStrategy implements IndexationStrategy
 
     private int $autoFlushThreshold;
 
+    /**
+     * @var JsonDocument[]
+     */
     private array $queuedDocuments;
 
     public function __construct(

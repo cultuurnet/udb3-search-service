@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use DateInterval;
 use DateTimeZone;
+use DateInterval;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key\InMemory as InMemoryKey;
@@ -22,16 +22,13 @@ final class JsonWebToken
 
     public function __construct(string $jwt)
     {
-        // Dirty: This docblock is needed for phpstan - a more elegant solution is welcome.
-        /** @var UnencryptedToken $token */
-        $token = (new Parser(new JoseEncoder()))->parse($jwt);
-        $this->token = $token;
+        $this->token = (new Parser(new JoseEncoder()))->parse($jwt);
     }
 
     public function validate(string $publicKey, ?string $keyPassphrase = null): bool
     {
         $signer = new Sha256();
-        $key = InMemoryKey::plainText($publicKey, (string)$keyPassphrase);
+        $key =  InMemoryKey::plainText($publicKey, (string) $keyPassphrase);
 
         $validator = new Validator();
         return $validator->validate(
