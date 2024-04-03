@@ -11,12 +11,15 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     private string $key;
 
     /**
-     * @var FacetNodeInterface[]
+     * @var FacetNode[]
      */
     private array $children = [];
 
+    /**
+     * @param string $key
+     */
     public function __construct(
-        string $key,
+        $key,
         array $children = []
     ) {
         $this->setKey($key);
@@ -30,19 +33,28 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     }
 
     /**
-     * @return FacetNodeInterface[]
+     * @return FacetNode[]
      */
     public function getChildren(): array
     {
         return $this->children;
     }
 
-    private function setKey(string $key): void
+    /**
+     * @param string $key
+     */
+    private function setKey($key): void
     {
+        if (!is_string($key)) {
+            throw new InvalidArgumentException('Facet tree key should be a string.');
+        }
         $this->key = $key;
     }
 
-    private function setChildren(FacetNodeInterface ...$facetMembers): void
+    /**
+     * @param FacetNode[] ...$facetMembers
+     */
+    private function setChildren(FacetNode ...$facetMembers): void
     {
         $this->children = $facetMembers;
     }
