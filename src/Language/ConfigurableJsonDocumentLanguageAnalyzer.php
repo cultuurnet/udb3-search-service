@@ -106,7 +106,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     /**
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName) : array
+    private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName): array
     {
         $nestedProperties = explode('.', $propertyName);
         $propertyReference = $json;

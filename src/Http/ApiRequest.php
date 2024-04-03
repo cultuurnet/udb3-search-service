@@ -35,10 +35,10 @@ final class ApiRequest implements ApiRequestInterface
         return $params[$name] ?? $default;
     }
 
-    public function getQueryParamsKeys(): ?array
+    public function getQueryParamsKeys(): array
     {
         $params = $this->request->getQueryParams();
-        return $params === null ? null : array_keys($params);
+        return empty($params) ? [] : array_keys($params);
     }
 
     public function getQueryParameterBag(): ParameterBagInterface
@@ -445,9 +445,8 @@ final class ApiRequest implements ApiRequestInterface
      * values, you may need to parse the query string from `getUri()->getQuery()`
      * or from the `QUERY_STRING` server param.
      *
-     * @return array
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->request->getQueryParams();
     }

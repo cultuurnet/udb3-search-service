@@ -222,18 +222,15 @@ final class CalendarTransformer implements JsonTransformer
         switch ($from['calendarType']) {
             case 'single':
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
-                break;
 
             case 'multiple':
                 return $from;
-                break;
 
             case 'periodic':
                 if (isset($from['openingHours'])) {
                     return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
                 }
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
-                break;
 
             case 'permanent':
                 if (isset($from['openingHours'])) {
@@ -247,14 +244,12 @@ final class CalendarTransformer implements JsonTransformer
                     ],
                 ];
                 return $from;
-                break;
 
             default:
                 $this->logger->logWarning(
                     "Could not polyfill subEvent for unknown calendarType '{$from['calendarType']}'."
                 );
                 return $from;
-                break;
         }
     }
 

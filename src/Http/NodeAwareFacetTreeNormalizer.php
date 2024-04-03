@@ -27,7 +27,7 @@ final class NodeAwareFacetTreeNormalizer implements FacetTreeNormalizerInterface
             $normalizedChildren[$child->getKey()] = $this->normalize($child);
         }
 
-        if (isset($data['children']) && empty($data['children'])) {
+        if (empty($data['children'])) {
             unset($data['children']);
         }
 
