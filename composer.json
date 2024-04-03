@@ -76,9 +76,9 @@
         "cs": "php-cs-fixer fix -v --diff --dry-run",
         "cs-fix": "php-cs-fixer fix -v --diff",
         "ci": [
-            "composer cs",
             "composer phpstan",
-            "composer test"
+            "composer test",
+            "composer cs"
         ]
     }
 }
