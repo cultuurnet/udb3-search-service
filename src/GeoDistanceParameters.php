@@ -21,17 +21,13 @@ final class GeoDistanceParameters
         $this->maximumDistance = $maximumDistance;
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function getCoordinates(): Coordinates
     {
         return $this->coordinates;
     }
 
-    /**
-     * @return AbstractDistance
-     */
+
     public function getMaximumDistance(): AbstractDistance
     {
         return $this->maximumDistance;

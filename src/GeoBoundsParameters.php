@@ -32,33 +32,25 @@ final class GeoBoundsParameters
         );
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function getNorthWestCoordinates(): Coordinates
     {
         return $this->northWestCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function getNorthEastCoordinates(): Coordinates
     {
         return $this->northEastCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function getSouthWestCoordinates(): Coordinates
     {
         return $this->southWestCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
+
     public function getSouthEastCoordinates(): Coordinates
     {
         return $this->southEastCoordinates;

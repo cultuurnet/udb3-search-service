@@ -16,9 +16,7 @@ final class AgeRangeOfferRequestParser implements OfferRequestParserInterface
     ): OfferQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $ageCallback = function ($age): Age {
-            return new Age($age);
-        };
+        $ageCallback = fn ($age): Age => new Age($age);
 
         $minAge = $parameterBagReader->getIntegerFromParameter('minAge', null, $ageCallback);
         $maxAge = $parameterBagReader->getIntegerFromParameter('maxAge', null, $ageCallback);

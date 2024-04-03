@@ -187,9 +187,7 @@ final class OrganizerSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): LabelName {
-                return new LabelName($value);
-            }
+            fn ($value): LabelName => new LabelName($value)
         );
     }
 
@@ -200,9 +198,7 @@ final class OrganizerSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): Language {
-                return new Language($value);
-            }
+            fn ($value): Language => new Language($value)
         );
     }
 

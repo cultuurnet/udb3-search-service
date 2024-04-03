@@ -188,7 +188,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
         // Instead check if the returned value is null, and if so always set it
         // to false as it means the disableDefaultFilters parameter is not set.
-        $disabled = $disabled ?? false;
+        $disabled ??= false;
 
         return !$disabled;
     }
@@ -199,9 +199,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             return $callback;
         }
 
-        $passThroughCallback = static function ($value) {
-            return $value;
-        };
+        $passThroughCallback = static fn ($value) => $value;
 
         return $passThroughCallback;
     }

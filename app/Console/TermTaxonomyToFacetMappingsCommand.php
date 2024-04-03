@@ -97,9 +97,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation): bool {
-                    return !empty($translation);
-                }
+                fn ($translation): bool => !empty($translation)
             );
 
             $mapping[$id] = ['name' => $name];

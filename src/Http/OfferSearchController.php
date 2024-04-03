@@ -262,9 +262,7 @@ final class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $calendarSummaries = array_map(
-            static function (string $parameter): CalendarSummaryFormat {
-                return CalendarSummaryFormat::fromCombinedParameter($parameter);
-            },
+            static fn (string $parameter): CalendarSummaryFormat => CalendarSummaryFormat::fromCombinedParameter($parameter),
             $parameterBag->getArrayFromParameter('embedCalendarSummaries')
         );
 
@@ -299,9 +297,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): TermId {
-                return new TermId($value);
-            }
+            fn ($value): TermId => new TermId($value)
         );
     }
 
@@ -312,9 +308,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): TermLabel {
-                return new TermLabel($value);
-            }
+            fn ($value): TermLabel => new TermLabel($value)
         );
     }
 
@@ -325,9 +319,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): LabelName {
-                return new LabelName($value);
-            }
+            fn ($value): LabelName => new LabelName($value)
         );
     }
 
@@ -338,9 +330,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): Language {
-                return new Language($value);
-            }
+            fn ($value): Language => new Language($value)
         );
     }
 
@@ -351,9 +341,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value): RegionId {
-                return new RegionId($value);
-            }
+            fn ($value): RegionId => new RegionId($value)
         );
     }
 
@@ -362,9 +350,7 @@ final class OfferSearchController
         return $parameterBag->getStringFromParameter(
             'audienceType',
             'everyone',
-            function ($audienceType): AudienceType {
-                return new AudienceType($audienceType);
-            }
+            fn ($audienceType): AudienceType => new AudienceType($audienceType)
         );
     }
 

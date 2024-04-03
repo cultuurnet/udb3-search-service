@@ -20,9 +20,7 @@ abstract class AbstractElasticSearchCommand extends Command
     }
 
 
-    /**
-     * @return Client
-     */
+
     protected function getElasticSearchClient(): Client
     {
         return $this->client;

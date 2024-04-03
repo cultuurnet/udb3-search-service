@@ -50,19 +50,15 @@ final class CompositeAggregationTransformerTest extends TestCase
         $this->transformer1->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                function (Aggregation $aggregation): bool {
-                    return $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer1) ||
-                        $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth);
-                }
+                fn (Aggregation $aggregation): bool => $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer1) ||
+                    $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth)
             );
 
         $this->transformer2->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                function (Aggregation $aggregation): bool {
-                    return $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer2) ||
-                        $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth);
-                }
+                fn (Aggregation $aggregation): bool => $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer2) ||
+                    $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth)
             );
 
         $this->compositeTransformer = new CompositeAggregationTransformer();

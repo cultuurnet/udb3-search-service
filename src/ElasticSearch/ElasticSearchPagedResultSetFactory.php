@@ -38,10 +38,8 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         $total = $response['hits']['total'];
 
         $results = array_map(
-            function (array $result): JsonDocument {
-                return (new JsonDocument($result['_id']))
-                    ->withBody($result['_source']);
-            },
+            fn (array $result): JsonDocument => (new JsonDocument($result['_id']))
+                ->withBody($result['_source']),
             $response['hits']['hits']
         );
 

@@ -39,7 +39,7 @@ final class RelatedOrganizerTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['organizer'] = $draft['organizer'] ?? [];
+        $draft['organizer'] ??= [];
         $draft['organizer'] = $this->identifierTransformer->transform($from['organizer'], $draft['organizer']);
         $draft['organizer'] = $this->nameTransformer->transform($from['organizer'], $draft['organizer']);
         $draft['organizer'] = $this->labelsTransformer->transform($from['organizer'], $draft['organizer']);

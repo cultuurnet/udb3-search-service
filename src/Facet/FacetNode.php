@@ -28,17 +28,13 @@ final class FacetNode extends AbstractFacetTree
         $this->setcount($count);
     }
 
-    /**
-     * @return MultilingualString
-     */
+
     public function getName(): MultilingualString
     {
         return $this->name;
     }
 
-    /**
-     * @return int
-     */
+
     public function getCount(): int
     {
         return $this->count;

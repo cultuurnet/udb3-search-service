@@ -22,37 +22,31 @@ final class ElasticSearchProvider extends BaseServiceProvider
     {
         $this->add(
             Client::class,
-            function (): Client {
-                return ClientBuilder::create()
-                    ->setHosts(
-                        [
-                            $this->parameter('elasticsearch.host'),
-                        ]
-                    )
-                    ->build();
-            }
+            fn (): Client => ClientBuilder::create()
+                ->setHosts(
+                    [
+                        $this->parameter('elasticsearch.host'),
+                    ]
+                )
+                ->build()
         );
 
         $this->addShared(
             'elasticsearch_indexation_strategy',
-            function (): MutableIndexationStrategy {
-                return new MutableIndexationStrategy(
-                    new SingleFileIndexationStrategy(
-                        $this->get(Client::class),
-                        $this->get('logger.amqp.udb3')
-                    )
-                );
-            }
+            fn (): MutableIndexationStrategy => new MutableIndexationStrategy(
+                new SingleFileIndexationStrategy(
+                    $this->get(Client::class),
+                    $this->get('logger.amqp.udb3')
+                )
+            )
         );
 
         $this->add(
             GeoShapeQueryRegionService::class,
-            function (): GeoShapeQueryRegionService {
-                return new GeoShapeQueryRegionService(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.region.read_index')
-                );
-            }
+            fn (): GeoShapeQueryRegionService => new GeoShapeQueryRegionService(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.region.read_index')
+            )
         );
     }
 }

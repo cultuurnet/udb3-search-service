@@ -183,9 +183,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         return $this->withMultiValueMatchQuery(
             'workflowStatus',
             array_map(
-                function (WorkflowStatus $workflowStatus): string {
-                    return $workflowStatus->toString();
-                },
+                fn (WorkflowStatus $workflowStatus): string => $workflowStatus->toString(),
                 $workflowStatuses
             )
         );

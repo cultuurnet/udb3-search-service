@@ -55,14 +55,12 @@ final class RelatedLocationTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['location'] = $draft['location'] ?? [];
+        $draft['location'] ??= [];
         $draft['location'] = $this->identifierTransformer->transform($from['location'], $draft['location']);
 
         if (isset($from['location']['duplicatedBy'])) {
             $idsOfDuplicates = array_map(
-                function (string $iriOfDuplicate) {
-                    return $this->idUrlParser->getIdFromUrl($iriOfDuplicate);
-                },
+                fn (string $iriOfDuplicate) => $this->idUrlParser->getIdFromUrl($iriOfDuplicate),
                 $from['location']['duplicatedBy']
             );
 

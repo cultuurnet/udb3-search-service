@@ -282,9 +282,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
                 RangeQuery::GTE => $from,
                 RangeQuery::LTE => $to,
             ],
-            function ($value): bool {
-                return !is_null($value);
-            }
+            fn ($value): bool => !is_null($value)
         );
 
         if (empty($parameters)) {
@@ -307,10 +305,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $queryString
      * @param string[] $fields
-     * @param string $type
-     * @param string $defaultOperator
      * @return AbstractElasticSearchQueryBuilder
      */
     protected function withQueryStringQuery(

@@ -153,9 +153,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     private function getLanguageStringsAsValueObjects(array $languageStrings): array
     {
         return array_map(
-            function ($languageString): Language {
-                return new Language($languageString);
-            },
+            fn ($languageString): Language => new Language($languageString),
             $languageStrings
         );
     }

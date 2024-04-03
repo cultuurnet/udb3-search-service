@@ -82,8 +82,6 @@ final class PagedCollection implements JsonSerializable
             'member' => $this->getMembers(),
         ];
 
-        return array_filter($data, static function ($item): bool {
-            return null !== $item;
-        });
+        return array_filter($data, static fn ($item): bool => null !== $item);
     }
 }

@@ -30,17 +30,13 @@ final class Bucket
         $this->count = $count;
     }
 
-    /**
-     * @return string
-     */
+
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return int
-     */
+
     public function getCount(): int
     {
         return $this->count;

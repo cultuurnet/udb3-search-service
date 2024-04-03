@@ -26,9 +26,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
         $this->setChildren(...$children);
     }
 
-    /**
-     * @return string
-     */
+
     public function getKey(): string
     {
         return $this->key;

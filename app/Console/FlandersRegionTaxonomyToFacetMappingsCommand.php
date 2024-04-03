@@ -119,9 +119,7 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation): bool {
-                    return !empty($translation);
-                }
+                fn ($translation): bool => !empty($translation)
             );
 
             $parentIds = [];

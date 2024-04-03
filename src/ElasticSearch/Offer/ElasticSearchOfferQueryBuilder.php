@@ -115,9 +115,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'workflowStatus',
             array_map(
-                static function (WorkflowStatus $workflowStatus): string {
-                    return $workflowStatus->toString();
-                },
+                static fn (WorkflowStatus $workflowStatus): string => $workflowStatus->toString(),
                 $workflowStatuses
             )
         );
@@ -163,9 +161,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'status',
             array_map(
-                static function (Status $status): string {
-                    return $status->toString();
-                },
+                static fn (Status $status): string => $status->toString(),
                 $statuses
             )
         );
@@ -176,9 +172,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'attendanceMode',
             array_map(
-                static function (AttendanceMode $attendanceMode): string {
-                    return $attendanceMode->toString();
-                },
+                static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
                 $attendanceModes
             )
         );
@@ -226,9 +220,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $queries[] = $this->createMultiValueMatchQuery(
                 'subEvent.status',
                 array_map(
-                    static function (Status $status): string {
-                        return $status->toString();
-                    },
+                    static fn (Status $status): string => $status->toString(),
                     $statuses
                 )
             );
@@ -249,9 +241,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'calendarType',
             array_map(
-                static function (CalendarType $calendarType): string {
-                    return $calendarType->toString();
-                },
+                static fn (CalendarType $calendarType): string => $calendarType->toString(),
                 $calendarTypes
             )
         );

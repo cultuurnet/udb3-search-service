@@ -39,15 +39,13 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
 
         $this->add(
             OfferSearchControllerFactory::class,
-            function (): OfferSearchControllerFactory {
-                return new OfferSearchControllerFactory(
-                    $this->parameter('elasticsearch.aggregation_size'),
-                    $this->parameter('elasticsearch.region.read_index'),
-                    $this->parameter('elasticsearch.region.document_type'),
-                    $this->get(OfferSearchServiceFactory::class),
-                    $this->get(Consumer::class)
-                );
-            }
+            fn (): OfferSearchControllerFactory => new OfferSearchControllerFactory(
+                $this->parameter('elasticsearch.aggregation_size'),
+                $this->parameter('elasticsearch.region.read_index'),
+                $this->parameter('elasticsearch.region.document_type'),
+                $this->get(OfferSearchServiceFactory::class),
+                $this->get(Consumer::class)
+            )
         );
 
         $this->add(
