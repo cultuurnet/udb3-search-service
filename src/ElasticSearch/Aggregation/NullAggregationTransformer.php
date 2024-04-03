@@ -18,8 +18,9 @@ final class NullAggregationTransformer implements AggregationTransformerInterfac
 
     /**
      * @inheritdoc
+     * @never-return
      */
-    public function toFacetTree(Aggregation $aggregation): void
+    public function toFacetTree(Aggregation $aggregation)
     {
         throw new LogicException('NullAggregationTransformer does not support any aggregations for transformation.');
     }
