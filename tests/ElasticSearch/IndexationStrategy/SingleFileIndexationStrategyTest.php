@@ -17,25 +17,19 @@ final class SingleFileIndexationStrategyTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $indexName;
+
+
+    private string $documentType;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var SingleFileIndexationStrategy
-     */
-    private $strategy;
+
+    private SingleFileIndexationStrategy $strategy;
 
     protected function setUp(): void
     {

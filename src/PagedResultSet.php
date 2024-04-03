@@ -10,20 +10,14 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class PagedResultSet
 {
-    /**
-     * @var int
-     */
-    private $total;
+    private int $total;
 
-    /**
-     * @var int
-     */
-    private $perPage;
+    private int $perPage;
 
     /**
      * @var JsonDocument[]
      */
-    private $results;
+    private array $results;
 
     /**
      * @var FacetFilter[]

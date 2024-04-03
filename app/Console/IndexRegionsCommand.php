@@ -12,25 +12,13 @@ use Symfony\Component\Finder\Finder;
 
 final class IndexRegionsCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    private $indexName;
+    private string $indexName;
 
-    /**
-     * @var string
-     */
-    private $pathToScan;
+    private string $pathToScan;
 
-    /**
-     * @var string
-     */
-    private $fileNameRegex;
+    private string $fileNameRegex;
 
-    /**
-     * @var Finder
-     */
-    private $finder;
+    private Finder $finder;
 
 
     public function __construct(

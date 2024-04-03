@@ -9,25 +9,18 @@ use PHPUnit\Framework\TestCase;
 
 final class MultilingualStringTest extends TestCase
 {
-    /**
-     * @var Language
-     */
-    private $originalLanguage;
+    private Language $originalLanguage;
 
-    /**
-     * @var string
-     */
-    private $originalString;
+
+    private string $originalString;
 
     /**
      * @var string[]
      */
-    private $translations;
+    private array $translations;
 
-    /**
-     * @var MultilingualString
-     */
-    private $multilingualString;
+
+    private MultilingualString $multilingualString;
 
     protected function setUp(): void
     {

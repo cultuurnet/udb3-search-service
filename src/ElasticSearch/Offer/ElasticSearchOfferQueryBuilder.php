@@ -115,7 +115,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'workflowStatus',
             array_map(
-                static function (WorkflowStatus $workflowStatus) {
+                static function (WorkflowStatus $workflowStatus): string {
                     return $workflowStatus->toString();
                 },
                 $workflowStatuses
@@ -163,7 +163,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'status',
             array_map(
-                static function (Status $status) {
+                static function (Status $status): string {
                     return $status->toString();
                 },
                 $statuses
@@ -176,7 +176,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'attendanceMode',
             array_map(
-                static function (AttendanceMode $attendanceMode) {
+                static function (AttendanceMode $attendanceMode): string {
                     return $attendanceMode->toString();
                 },
                 $attendanceModes
@@ -226,7 +226,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $queries[] = $this->createMultiValueMatchQuery(
                 'subEvent.status',
                 array_map(
-                    static function (Status $status) {
+                    static function (Status $status): string {
                         return $status->toString();
                     },
                     $statuses
@@ -249,7 +249,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'calendarType',
             array_map(
-                static function (CalendarType $calendarType) {
+                static function (CalendarType $calendarType): string {
                     return $calendarType->toString();
                 },
                 $calendarTypes

@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Facet;
 
 use InvalidArgumentException;
+
 abstract class AbstractFacetTree implements FacetTreeInterface
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
     /**
      * @var FacetNode[]
      */
-    private $children = [];
+    private array $children = [];
 
     /**
      * @param string $key

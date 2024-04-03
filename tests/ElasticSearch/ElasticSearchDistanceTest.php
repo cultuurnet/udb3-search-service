@@ -22,10 +22,8 @@ final class ElasticSearchDistanceTest extends TestCase
         $this->assertEquals($expectedDistanceString, $distance->toString());
     }
 
-    /**
-     * @return array
-     */
-    public function validDistanceProvider()
+
+    public function validDistanceProvider(): array
     {
         $data = [];
 
@@ -71,19 +69,16 @@ final class ElasticSearchDistanceTest extends TestCase
      * @test
      * @dataProvider malformedDistanceProvider
      *
-     * @param string $malformedDistanceString
      */
-    public function it_throws_an_exception_if_the_distance_string_is_malformed($malformedDistanceString): void
+    public function it_throws_an_exception_if_the_distance_string_is_malformed(string $malformedDistanceString): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Distance is not in a valid format.');
         new ElasticSearchDistance($malformedDistanceString);
     }
 
-    /**
-     * @return array
-     */
-    public function malformedDistanceProvider()
+
+    public function malformedDistanceProvider(): array
     {
         return [
             ['about 30km'],
@@ -97,19 +92,16 @@ final class ElasticSearchDistanceTest extends TestCase
      * @test
      * @dataProvider invalidUnitProvider
      *
-     * @param string $invalidUnitDistanceString
      */
-    public function it_throws_an_exception_if_the_distance_string_uses_an_invalid_unit($invalidUnitDistanceString): void
+    public function it_throws_an_exception_if_the_distance_string_uses_an_invalid_unit(string $invalidUnitDistanceString): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Distance uses an unsupported unit.');
         new ElasticSearchDistance($invalidUnitDistanceString);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidUnitProvider()
+
+    public function invalidUnitProvider(): array
     {
         return [
             ['30 kilometer'],

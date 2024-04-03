@@ -14,15 +14,9 @@ use InvalidArgumentException;
 
 final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
 {
-    /**
-     * @var AggregationTransformerInterface
-     */
-    private $aggregationTransformer;
+    private AggregationTransformerInterface $aggregationTransformer;
 
-    /**
-     * @var ElasticSearchResponseValidatorInterface
-     */
-    private $responseValidator;
+    private ?ElasticSearchResponseValidatorInterface $responseValidator;
 
 
     public function __construct(
@@ -44,7 +38,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         $total = $response['hits']['total'];
 
         $results = array_map(
-            function (array $result) {
+            function (array $result): JsonDocument {
                 return (new JsonDocument($result['_id']))
                     ->withBody($result['_source']);
             },

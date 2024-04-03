@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class CreateIndexTest extends AbstractOperationTestCase
 {
-    /**
-     * @return CreateIndex
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): CreateIndex
     {
         return new CreateIndex($client, $logger);
     }

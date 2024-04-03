@@ -408,7 +408,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->method('search')
             ->with(
                 $this->callback(
-                    function (OrganizerQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
+                    function (OrganizerQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder): bool {
                         $this->assertEquals(
                             $expectedQueryBuilder->build(),
                             $actualQueryBuilder->build()

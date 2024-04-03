@@ -18,10 +18,8 @@ final class PlaceSearchProjectorTest extends TestCase
      */
     private $indexService;
 
-    /**
-     * @var PlaceSearchProjector
-     */
-    private $projector;
+
+    private PlaceSearchProjector $projector;
 
     protected function setUp(): void
     {

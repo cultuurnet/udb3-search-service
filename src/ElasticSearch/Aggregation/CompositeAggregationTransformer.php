@@ -12,7 +12,7 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
     /**
      * @var AggregationTransformerInterface[]
      */
-    private $transformers = [];
+    private array $transformers = [];
 
 
     public function register(AggregationTransformerInterface $aggregationTransformer): void
@@ -20,10 +20,8 @@ final class CompositeAggregationTransformer implements AggregationTransformerInt
         $this->transformers[] = $aggregationTransformer;
     }
 
-    /**
-     * @return bool
-     */
-    public function supports(Aggregation $aggregation)
+
+    public function supports(Aggregation $aggregation): bool
     {
         foreach ($this->transformers as $transformer) {
             if ($transformer->supports($aggregation)) {

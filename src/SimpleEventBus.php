@@ -16,7 +16,7 @@ use Broadway\EventHandling\SimpleEventBus as BroadwaySimpleEventBus;
  */
 final class SimpleEventBus implements EventBus
 {
-    private $first = true;
+    private bool $first = true;
     private BroadwaySimpleEventBus $eventBus;
 
     /**

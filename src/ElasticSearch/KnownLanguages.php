@@ -13,7 +13,7 @@ final class KnownLanguages
         $knownLanguages = ['nl', 'fr', 'de', 'en'];
 
         return array_map(
-            function ($languageCode) use ($fieldPattern) {
+            function ($languageCode) use ($fieldPattern): string {
                 return str_replace('{{lang}}', $languageCode, $fieldPattern);
             },
             $knownLanguages

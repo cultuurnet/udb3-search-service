@@ -16,7 +16,7 @@ final class AgeRangeOfferRequestParser implements OfferRequestParserInterface
     ): OfferQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $ageCallback = function ($age) {
+        $ageCallback = function ($age): Age {
             return new Age($age);
         };
 

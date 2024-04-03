@@ -679,7 +679,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_converts_the_media_objects_toggle_parameter_to_a_correct_boolean(
         $stringValue,
-        $booleanValue
+        ?bool $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -708,7 +708,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_converts_the_uitpas_toggle_parameter_to_a_correct_boolean(
         $stringValue,
-        $booleanValue
+        ?bool $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -1229,7 +1229,7 @@ final class OfferSearchControllerTest extends TestCase
             ->method('search')
             ->with(
                 $this->callback(
-                    function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
+                    function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder): bool {
                         $this->assertEquals(
                             Json::encodeWithOptions($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
                             Json::encodeWithOptions($actualQueryBuilder->build(), JSON_PRETTY_PRINT)

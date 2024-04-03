@@ -24,7 +24,7 @@ final class PagedCollectionFactoryTest extends TestCase
 
         $this->transformer->method('transform')
             ->willReturnCallback(
-                function (array $original) {
+                function (array $original): array {
                     $original['transformed'] = true;
                     return $original;
                 }

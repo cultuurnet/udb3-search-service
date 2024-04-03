@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 // Could be moved to separate library for reuse on other projects.
 final class SimpleArrayLogger implements LoggerInterface
 {
-    private $logs = [];
+    private array $logs = [];
 
     public function emergency($message, array $context = []): void
     {

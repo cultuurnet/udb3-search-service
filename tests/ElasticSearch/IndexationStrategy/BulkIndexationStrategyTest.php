@@ -17,30 +17,22 @@ final class BulkIndexationStrategyTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $indexName;
+
+
+    private string $documentType;
 
     /**
      * @var LoggerInterface|MockObject
      */
     private $logger;
 
-    /**
-     * @var int
-     */
-    private $autoFlushThreshold;
 
-    /**
-     * @var BulkIndexationStrategy
-     */
-    private $strategy;
+    private int $autoFlushThreshold;
+
+
+    private BulkIndexationStrategy $strategy;
 
     protected function setUp(): void
     {

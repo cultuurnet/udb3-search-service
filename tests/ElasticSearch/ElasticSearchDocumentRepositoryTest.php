@@ -20,20 +20,14 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var string
-     */
-    private $indexName;
 
-    /**
-     * @var string
-     */
-    private $documentType;
+    private string $indexName;
 
-    /**
-     * @var ElasticSearchDocumentRepository
-     */
-    private $repository;
+
+    private string $documentType;
+
+
+    private ElasticSearchDocumentRepository $repository;
 
     protected function setUp(): void
     {

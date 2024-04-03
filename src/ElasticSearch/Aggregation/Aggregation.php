@@ -13,10 +13,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
  */
 final class Aggregation
 {
-    /**
-     * @var FacetName
-     */
-    private $name;
+    private FacetName $name;
 
     /**
      * @var Bucket[]
@@ -59,7 +56,7 @@ final class Aggregation
         }
 
         $buckets = array_map(
-            function (array $bucket) {
+            function (array $bucket): Bucket {
                 if (!isset($bucket['key'])) {
                     throw new InvalidArgumentException('Bucket is missing a key.');
                 }

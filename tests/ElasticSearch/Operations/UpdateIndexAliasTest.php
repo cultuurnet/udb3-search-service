@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class UpdateIndexAliasTest extends AbstractOperationTestCase
 {
-    /**
-     * @return UpdateIndexAlias
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): UpdateIndexAlias
     {
         return new UpdateIndexAlias($client, $logger);
     }

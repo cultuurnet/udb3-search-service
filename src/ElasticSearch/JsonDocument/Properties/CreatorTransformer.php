@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class CreatorTransformer implements JsonTransformer
 {
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
     public function __construct(JsonTransformerLogger $logger)
     {

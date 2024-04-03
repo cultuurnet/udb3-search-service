@@ -10,10 +10,7 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
-    /**
-     * @var array
-     */
-    private $parameterBag;
+    private array $parameterBag;
 
     /**
      * @var string
@@ -31,9 +28,8 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
     /**
      * @param string $queryParameter
-     * @return array
      */
-    public function getArrayFromParameter($queryParameter, callable $callback = null)
+    public function getArrayFromParameter($queryParameter, callable $callback = null): array
     {
         if (empty($this->get($queryParameter))) {
             return [];
@@ -105,14 +101,13 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
      * @param string $parameterName
      * @param string|null $defaultValueAsString
      * @param string $delimiter
-     * @return array
      */
     public function getExplodedStringFromParameter(
         $parameterName,
         $defaultValueAsString = null,
         callable $callback = null,
         $delimiter = ','
-    ) {
+    ): array {
         $callback = $this->ensureCallback($callback);
 
         $asString = $this->getStringFromParameter(

@@ -22,30 +22,20 @@ final class CompositeAggregationTransformerTest extends TestCase
      */
     private $transformer2;
 
-    /**
-     * @var FacetName
-     */
-    private $aggregationNameSupportedByTransformer1;
 
-    /**
-     * @var FacetName
-     */
-    private $aggregationNameSupportedByTransformer2;
+    private FacetName $aggregationNameSupportedByTransformer1;
 
-    /**
-     * @var FacetName
-     */
-    private $aggregationNameSupportedByBoth;
 
-    /**
-     * @var FacetName
-     */
-    private $unsupportedAggregationName;
+    private FacetName $aggregationNameSupportedByTransformer2;
 
-    /**
-     * @var CompositeAggregationTransformer
-     */
-    private $compositeTransformer;
+
+    private FacetName $aggregationNameSupportedByBoth;
+
+
+    private FacetName $unsupportedAggregationName;
+
+
+    private CompositeAggregationTransformer $compositeTransformer;
 
     protected function setUp(): void
     {
@@ -60,7 +50,7 @@ final class CompositeAggregationTransformerTest extends TestCase
         $this->transformer1->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                function (Aggregation $aggregation) {
+                function (Aggregation $aggregation): bool {
                     return $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer1) ||
                         $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth);
                 }
@@ -69,7 +59,7 @@ final class CompositeAggregationTransformerTest extends TestCase
         $this->transformer2->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                function (Aggregation $aggregation) {
+                function (Aggregation $aggregation): bool {
                     return $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer2) ||
                         $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth);
                 }

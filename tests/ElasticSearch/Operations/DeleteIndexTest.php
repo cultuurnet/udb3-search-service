@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class DeleteIndexTest extends AbstractOperationTestCase
 {
-    /**
-     * @return DeleteIndex
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): DeleteIndex
     {
         return new DeleteIndex($client, $logger);
     }

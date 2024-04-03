@@ -16,10 +16,8 @@ final class JsonTransformerPsrLoggerTest extends TestCase
      */
     private $psrLogger;
 
-    /**
-     * @var JsonTransformerPsrLogger
-     */
-    private $jsonTransformerPsrLogger;
+
+    private JsonTransformerPsrLogger $jsonTransformerPsrLogger;
 
     protected function setUp(): void
     {

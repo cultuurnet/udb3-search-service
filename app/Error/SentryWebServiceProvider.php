@@ -20,7 +20,7 @@ final class SentryWebServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             SentryHandlerScopeDecorator::class,
-            function () {
+            function (): SentryHandlerScopeDecorator {
                 return SentryHandlerScopeDecorator::forWeb(
                     new SentryHandler($this->get(HubInterface::class), Logger::ERROR),
                     $this->get(Consumer::class)

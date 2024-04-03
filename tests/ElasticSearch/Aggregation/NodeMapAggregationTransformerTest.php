@@ -15,20 +15,15 @@ use PHPUnit\Framework\TestCase;
 
 final class NodeMapAggregationTransformerTest extends TestCase
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
     /**
      * @var array
      */
     private $nodeMap;
 
-    /**
-     * @var NodeMapAggregationTransformer
-     */
-    private $transformer;
+
+    private NodeMapAggregationTransformer $transformer;
 
     protected function setUp(): void
     {
@@ -193,21 +188,18 @@ final class NodeMapAggregationTransformerTest extends TestCase
      * @test
      * @dataProvider invalidNodeMapDataProvider
      *
-     * @param string $expectedExceptionMessage
      */
     public function it_validates_the_injected_node_map_upon_construction(
         array $invalidNodeMap,
-        $expectedExceptionMessage
+        string $expectedExceptionMessage
     ): void {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         new NodeMapAggregationTransformer(FacetName::regions(), $invalidNodeMap);
     }
 
-    /**
-     * @return array
-     */
-    public function invalidNodeMapDataProvider()
+
+    public function invalidNodeMapDataProvider(): array
     {
         return [
             'missing_key' => [

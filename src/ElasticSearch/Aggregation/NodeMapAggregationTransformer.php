@@ -8,22 +8,15 @@ use LogicException;
 use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
-use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 
 final class NodeMapAggregationTransformer implements AggregationTransformerInterface
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
-    /**
-     * @var array
-     */
-    private $nodeMap;
+    private array $nodeMap;
 
     /**
      * @param array $nodeMap
@@ -53,18 +46,13 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
         $this->nodeMap = $nodeMap;
     }
 
-    /**
-     * @return bool
-     */
-    public function supports(Aggregation $aggregation)
+
+    public function supports(Aggregation $aggregation): bool
     {
         return $aggregation->getName()->sameValueAs($this->facetName);
     }
 
-    /**
-     * @return FacetTreeInterface
-     */
-    public function toFacetTree(Aggregation $aggregation)
+    public function toFacetTree(Aggregation $aggregation): FacetFilter
     {
         if (!$this->supports($aggregation)) {
             $name = $aggregation->getName()->toString();
@@ -112,7 +100,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
      * @param Bucket[] $buckets
      * @return FacetNode[]
      */
-    private function transformNodeMapToFacetNodes(array $nodeMap, array $buckets)
+    private function transformNodeMapToFacetNodes(array $nodeMap, array $buckets): array
     {
         $nodes = [];
 

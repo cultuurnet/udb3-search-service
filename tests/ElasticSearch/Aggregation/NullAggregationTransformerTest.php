@@ -10,10 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 final class NullAggregationTransformerTest extends TestCase
 {
-    /**
-     * @var NullAggregationTransformer
-     */
-    private $transformer;
+    private NullAggregationTransformer $transformer;
 
     protected function setUp(): void
     {

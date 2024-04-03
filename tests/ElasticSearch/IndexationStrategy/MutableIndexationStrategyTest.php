@@ -20,10 +20,8 @@ final class MutableIndexationStrategyTest extends TestCase
      */
     private $mockStrategy2;
 
-    /**
-     * @var MutableIndexationStrategy
-     */
-    private $mutableStrategy;
+
+    private MutableIndexationStrategy $mutableStrategy;
 
     protected function setUp(): void
     {

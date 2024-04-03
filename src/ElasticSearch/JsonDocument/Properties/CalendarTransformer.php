@@ -31,10 +31,7 @@ final class CalendarTransformer implements JsonTransformer
 
     private const BOOKING_AVAILABLE = 'Available';
 
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
     public function __construct(JsonTransformerLogger $logger)
     {

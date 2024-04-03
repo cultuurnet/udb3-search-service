@@ -85,9 +85,8 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 
     /**
      * @param SimpleXMLElement[] $simpleXmlNodes
-     * @return array
      */
-    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)
+    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes): array
     {
         $parentMapping = [];
         $facetMapping = [];
@@ -120,7 +119,7 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation) {
+                function ($translation): bool {
                     return !empty($translation);
                 }
             );

@@ -15,7 +15,7 @@ final class PerformersTransformer implements JsonTransformer
         }
 
         $draft['performer_free_text'] = array_map(
-            function ($performer) {
+            function (array $performer): array {
                 return [
                     'name' => $performer['name'],
                 ];

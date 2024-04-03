@@ -19,7 +19,7 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
     {
         $this->add(
             JsonDocumentFetcher::class,
-            function () {
+            function (): GuzzleJsonDocumentFetcher {
                 return new GuzzleJsonDocumentFetcher(
                     new Client([
                         'http_errors' => false,

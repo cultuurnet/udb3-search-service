@@ -22,7 +22,7 @@ final class WorkflowStatusOfferRequestParser implements OfferRequestParserInterf
         $workflowStatuses = $parameterBagReader->getExplodedStringFromParameter(
             self::PARAMETER,
             self::DEFAULT,
-            function ($workflowStatus) {
+            function ($workflowStatus): WorkflowStatus {
                 return new WorkflowStatus($workflowStatus);
             }
         );

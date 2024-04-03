@@ -64,14 +64,11 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $mappingName
-     * @param string $xpath
-     */
+
     private function generateYmlMapping(
-        $mappingName,
+        string $mappingName,
         SimpleXmlElement $xml,
-        $xpath
+        string $xpath
     ): void {
         $nodes = $xml->xpath($xpath);
         $mapping = [$mappingName => $this->simpleXmlNodesToFacetMapping($nodes)];
@@ -81,9 +78,8 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
 
     /**
      * @param SimpleXMLElement[] $simpleXmlNodes
-     * @return array
      */
-    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)
+    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes): array
     {
         $mapping = [];
 
@@ -101,7 +97,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation) {
+                function ($translation): bool {
                     return !empty($translation);
                 }
             );

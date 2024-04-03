@@ -14,10 +14,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 
 final class LabelsAggregationTransformer implements AggregationTransformerInterface
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
     public function __construct(
         FacetName $facetName
@@ -25,18 +22,12 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
         $this->facetName = $facetName;
     }
 
-    /**
-     * @return bool
-     */
-    public function supports(Aggregation $aggregation)
+    public function supports(Aggregation $aggregation): bool
     {
         return $aggregation->getName()->sameValueAs($this->facetName);
     }
 
-    /**
-     * @return FacetTreeInterface
-     */
-    public function toFacetTree(Aggregation $aggregation)
+    public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
         if (!$this->supports($aggregation)) {
             $name = $aggregation->getName()->toString();
@@ -45,7 +36,7 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
 
         $nodes = [];
         foreach ($aggregation->getBuckets() as $bucket) {
-            if ($bucket->getCount() == 0) {
+            if ($bucket->getCount() === 0) {
                 continue;
             }
 

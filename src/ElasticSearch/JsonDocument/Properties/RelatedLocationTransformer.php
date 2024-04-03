@@ -10,40 +10,19 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class RelatedLocationTransformer implements JsonTransformer
 {
-    /**
-     * @var IdUrlParserInterface
-     */
-    private $idUrlParser;
+    private IdUrlParserInterface $idUrlParser;
 
-    /**
-     * @var IdentifierTransformer
-     */
-    private $identifierTransformer;
+    private IdentifierTransformer $identifierTransformer;
 
-    /**
-     * @var NameTransformer
-     */
-    private $nameTransformer;
+    private NameTransformer $nameTransformer;
 
-    /**
-     * @var TermsTransformer
-     */
-    private $termsTransformer;
+    private TermsTransformer $termsTransformer;
 
-    /**
-     * @var LabelsTransformer
-     */
-    private $labelsTransformer;
+    private LabelsTransformer $labelsTransformer;
 
-    /**
-     * @var AddressTransformer
-     */
-    private $addressTransformer;
+    private AddressTransformer $addressTransformer;
 
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
     public function __construct(
         JsonTransformerLogger $logger,

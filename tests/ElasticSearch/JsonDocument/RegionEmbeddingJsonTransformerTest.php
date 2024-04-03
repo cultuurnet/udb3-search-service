@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RegionEmbeddingJsonTransformerTest extends TestCase
 {
-    /**
-     * @var RegionEmbeddingJsonTransformer
-     */
-    private $transformer;
+    private RegionEmbeddingJsonTransformer $transformer;
 
     protected function setUp(): void
     {

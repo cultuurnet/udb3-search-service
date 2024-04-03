@@ -41,7 +41,7 @@ final class CommandServiceProvider extends BaseServiceProvider
     {
         $this->add(
             Application::class,
-            function () {
+            function (): Application {
                 $commandMap = [
                     'facet-mapping:generate-from-taxonomy-terms' => TermTaxonomyToFacetMappingsCommand::class,
                     'facet-mapping:generate-regions-from-flandersregion-terms' => FlandersRegionTaxonomyToFacetMappingsCommand::class,
@@ -84,7 +84,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateOrganizerMappingCommand::class,
-            function () {
+            function (): UpdateOrganizerMappingCommand {
                 return new UpdateOrganizerMappingCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
@@ -95,7 +95,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateEventMappingCommand::class,
-            function () {
+            function (): UpdateEventMappingCommand {
                 return new UpdateEventMappingCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
@@ -106,7 +106,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdatePlaceMappingCommand::class,
-            function () {
+            function (): UpdatePlaceMappingCommand {
                 return new UpdatePlaceMappingCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
@@ -117,7 +117,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             ReindexUDB3CoreCommand::class,
-            function () {
+            function (): ReindexUDB3CoreCommand {
                 return new ReindexUDB3CoreCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
@@ -132,7 +132,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             ReindexPermanentOffersCommand::class,
-            function () {
+            function (): ReindexPermanentOffersCommand {
                 return new ReindexPermanentOffersCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
@@ -147,7 +147,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             InstallUDB3CoreCommand::class,
-            function () {
+            function (): InstallUDB3CoreCommand {
                 return new InstallUDB3CoreCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
@@ -159,7 +159,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateRegionMappingCommand::class,
-            function () {
+            function (): UpdateRegionMappingCommand {
                 return new UpdateRegionMappingCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
@@ -170,7 +170,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             IndexRegionsCommand::class,
-            function () {
+            function (): IndexRegionsCommand {
                 return new IndexRegionsCommand(
                     $this->get(Client::class),
                     $this->get(Finder::class),
@@ -183,7 +183,7 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             InstallGeoShapesCommand::class,
-            function () {
+            function (): InstallGeoShapesCommand {
                 return new InstallGeoShapesCommand(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,

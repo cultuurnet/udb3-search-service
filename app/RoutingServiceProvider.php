@@ -35,7 +35,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
         $this->leagueContainer->add(
             Router::class,
-            function () {
+            function (): Router {
                 $router = new Router();
                 $strategy = (new ApplicationStrategy())->setContainer($this->getContainer());
                 $router->setStrategy($strategy);
@@ -93,7 +93,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     )
                 );
 
-                $optionsResponse = static fn () => new Response(StatusCodeInterface::STATUS_NO_CONTENT);
+                $optionsResponse = static fn (): Response => new Response(StatusCodeInterface::STATUS_NO_CONTENT);
 
                 // Register the OPTIONS method for every route to make the CORS middleware registered above work.
                 $router->get('/organizers', OrganizerSearchController::class);

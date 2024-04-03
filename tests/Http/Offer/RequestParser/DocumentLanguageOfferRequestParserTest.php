@@ -13,10 +13,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class DocumentLanguageOfferRequestParserTest extends TestCase
 {
-    /**
-     * @var DocumentLanguageOfferRequestParser
-     */
-    private $parser;
+    private DocumentLanguageOfferRequestParser $parser;
 
     /**
      * @var OfferQueryBuilderInterface|MockObject

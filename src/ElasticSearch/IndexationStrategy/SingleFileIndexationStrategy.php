@@ -10,15 +10,9 @@ use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
-    /**
-     * @var Client
-     */
-    private $elasticSearchClient;
+    private Client $elasticSearchClient;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private LoggerInterface $logger;
 
 
     public function __construct(

@@ -27,7 +27,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
     {
         $this->add(
             'place_search_projector',
-            function () {
+            function (): PlaceSearchProjector {
                 $transformer = new JsonDocumentTransformer(
                     new PlaceTransformer(
                         new JsonTransformerPsrLogger(

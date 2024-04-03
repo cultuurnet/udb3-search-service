@@ -33,10 +33,8 @@ final class TransformingJsonDocumentIndexServiceTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var TransformingJsonDocumentIndexService
-     */
-    private $indexService;
+
+    private TransformingJsonDocumentIndexService $indexService;
 
     protected function setUp(): void
     {

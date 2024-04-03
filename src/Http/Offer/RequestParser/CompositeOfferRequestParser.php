@@ -19,7 +19,7 @@ final class CompositeOfferRequestParser implements OfferRequestParserInterface
         $this->parsers = [];
     }
 
-    public function withParser(OfferRequestParserInterface $parser)
+    public function withParser(OfferRequestParserInterface $parser): self
     {
         $c = clone $this;
         $c->parsers[] = $parser;

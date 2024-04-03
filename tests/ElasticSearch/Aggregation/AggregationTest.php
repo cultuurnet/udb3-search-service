@@ -82,11 +82,10 @@ final class AggregationTest extends TestCase
      * @test
      * @dataProvider invalidElasticSearchResponseAggregationDataProvider
      *
-     * @param string $expectedExceptionMessage
      */
     public function it_throws_an_exception_when_the_given_elasticsearch_response_aggregation_data_is_invalid(
         array $invalidElasticSearchResponseAggregationData,
-        $expectedExceptionMessage
+        string $expectedExceptionMessage
     ): void {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
@@ -96,10 +95,8 @@ final class AggregationTest extends TestCase
         );
     }
 
-    /**
-     * @return array
-     */
-    public function invalidElasticSearchResponseAggregationDataProvider()
+
+    public function invalidElasticSearchResponseAggregationDataProvider(): array
     {
         return [
             'it_checks_for_buckets_to_make_sure_the_given_data_is_of_an_aggregation' => [

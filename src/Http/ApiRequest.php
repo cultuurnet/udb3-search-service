@@ -13,10 +13,7 @@ use Psr\Http\Message\UriInterface;
 
 final class ApiRequest implements ApiRequestInterface
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    private $request;
+    private ServerRequestInterface $request;
 
     /**
      * ApiRequest constructor.

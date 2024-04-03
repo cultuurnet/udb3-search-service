@@ -23,7 +23,7 @@ final class WorkflowStatusOrganizerRequestParser implements OrganizerRequestPars
         $workflowStatuses = $parameterBagReader->getExplodedStringFromParameter(
             self::PARAMETER,
             self::DEFAULT,
-            function ($workflowStatus) {
+            function ($workflowStatus): WorkflowStatus {
                 return new WorkflowStatus($workflowStatus);
             }
         );

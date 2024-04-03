@@ -45,7 +45,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
 
     public function arrayParameterDataProvider(): array
     {
-        $callback = static function ($label) {
+        $callback = static function ($label): LabelName {
             return new LabelName($label);
         };
 
@@ -126,7 +126,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
     {
         $parameterBag = new ArrayParameterBagAdapter(['workflowStatus' => 'DRAFT']);
 
-        $callback = static function ($workflowStatus) {
+        $callback = static function ($workflowStatus): WorkflowStatus {
             return new WorkflowStatus($workflowStatus);
         };
 
@@ -161,7 +161,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag = new ArrayParameterBagAdapter([]);
         $default = 'APPROVED';
 
-        $callback = static function ($workflowStatus) {
+        $callback = static function ($workflowStatus): WorkflowStatus {
             return new WorkflowStatus($workflowStatus);
         };
 
@@ -227,7 +227,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
     {
         $parameterBag = new ArrayParameterBagAdapter(['workflowStatus' => 'READY_FOR_VALIDATION,APPROVED']);
 
-        $callback = static function ($workflowStatus) {
+        $callback = static function ($workflowStatus): WorkflowStatus {
             return new WorkflowStatus($workflowStatus);
         };
 
@@ -262,7 +262,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag = new ArrayParameterBagAdapter([]);
         $default = 'READY_FOR_VALIDATION,APPROVED';
 
-        $callback = static function ($workflowStatus) {
+        $callback = static function ($workflowStatus): WorkflowStatus {
             return new WorkflowStatus($workflowStatus);
         };
 
@@ -320,11 +320,10 @@ final class ArrayParameterBagAdapterTest extends TestCase
      * @test
      * @dataProvider booleanDataProvider
      *
-     * @param bool|null $expectedValue
      */
     public function it_should_parse_a_boolean_value_from_a_parameter(
         $parameterValue,
-        $expectedValue
+        ?bool $expectedValue
     ): void {
         $parameterBag = new ArrayParameterBagAdapter(['uitpas' => $parameterValue]);
         $actualValue = $parameterBag->getBooleanFromParameter('uitpas');

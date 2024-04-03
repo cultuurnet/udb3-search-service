@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class LuceneQueryStringFactoryTest extends TestCase
 {
-    /**
-     * @var LuceneQueryStringFactory
-     */
-    private $factory;
+    private LuceneQueryStringFactory $factory;
 
     protected function setUp(): void
     {

@@ -23,16 +23,16 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
         }
 
         $sortBuilders = [
-            'score' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'score' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
                 return $queryBuilder->withSortByScore($sortOrder);
             },
-            'completeness' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'completeness' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
                 return $queryBuilder->withSortByCompleteness($sortOrder);
             },
-            'created' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'created' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
                 return $queryBuilder->withSortByCreated($sortOrder);
             },
-            'modified' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'modified' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
                 return $queryBuilder->withSortByModified($sortOrder);
             },
         ];

@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Search\Language\MultilingualString;
 
 final class FacetNode extends AbstractFacetTree
 {
-    /**
-     * @var MultilingualString
-     */
-    private $name;
+    private MultilingualString $name;
 
-    /**
-     * @var int
-     */
-    private $count;
+    private int $count;
 
     /**
      * @param string $key

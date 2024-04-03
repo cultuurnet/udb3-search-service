@@ -18,10 +18,8 @@ final class OrganizerSearchProjectorTest extends TestCase
      */
     private $indexService;
 
-    /**
-     * @var OrganizerSearchProjector
-     */
-    private $projector;
+
+    private OrganizerSearchProjector $projector;
 
     protected function setUp(): void
     {

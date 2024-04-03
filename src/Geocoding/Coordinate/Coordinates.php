@@ -8,15 +8,9 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Coordinates
 {
-    /**
-     * @var Latitude
-     */
-    private $lat;
+    private Latitude $lat;
 
-    /**
-     * @var Longitude
-     */
-    private $long;
+    private Longitude $long;
 
     public function __construct(Latitude $lat, Longitude $long)
     {

@@ -10,10 +10,7 @@ use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
-    /**
-     * @return GetIndexNamesFromAlias
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): GetIndexNamesFromAlias
     {
         return new GetIndexNamesFromAlias($client, $logger);
     }

@@ -27,20 +27,11 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
-    /**
-     * @var Search
-     */
-    protected $search;
+    protected Search $search;
 
-    /**
-     * @var BoolQuery
-     */
-    protected $boolQuery;
+    protected BoolQuery $boolQuery;
 
-    /**
-     * @var ?string
-     */
-    private $shardPreference;
+    private ?string $shardPreference = null;
 
     /**
      * @var array
@@ -202,11 +193,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      *
      * @see self::createMultiValueMatchQuery()
      *
-     * @param string $fieldName
      * @param string[] $terms
      * @return static
      */
-    protected function withMultiValueMatchQuery($fieldName, array $terms)
+    protected function withMultiValueMatchQuery(string $fieldName, array $terms)
     {
         if (empty($terms)) {
             return $this;
@@ -272,12 +262,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
      * @param string|int|float|null $from
      * @param string|int|float|null $to
      * @return static
      */
-    protected function withRangeQuery($fieldName, $from = null, $to = null)
+    protected function withRangeQuery(string $fieldName, $from = null, $to = null)
     {
         $rangeQuery = $this->createRangeQuery($fieldName, $from, $to);
         if (!$rangeQuery) {
@@ -296,7 +285,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
                 RangeQuery::GTE => $from,
                 RangeQuery::LTE => $to,
             ],
-            function ($value) {
+            function ($value): bool {
                 return !is_null($value);
             }
         );
@@ -364,7 +353,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     /**
      * @return Language[]
      */
-    protected function getDefaultLanguages()
+    protected function getDefaultLanguages(): array
     {
         return [
             new Language('nl'),

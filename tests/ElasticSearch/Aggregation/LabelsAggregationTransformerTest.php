@@ -14,15 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 final class LabelsAggregationTransformerTest extends TestCase
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
-    /**
-     * @var LabelsAggregationTransformer
-     */
-    private $transformer;
+
+    private LabelsAggregationTransformer $transformer;
 
     /**
      * @inheritdoc

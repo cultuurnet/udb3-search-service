@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class CheckIndexExistsTest extends AbstractOperationTestCase
 {
-    /**
-     * @return CheckIndexExists
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): CheckIndexExists
     {
         return new CheckIndexExists($client, $logger);
     }
@@ -21,14 +18,11 @@ final class CheckIndexExistsTest extends AbstractOperationTestCase
      * @test
      * @dataProvider indexExistsDataProvider
      *
-     * @param string $indexName
-     * @param bool $exists
-     * @param string $log
      */
     public function it_returns_the_status_of_the_given_index_returned_by_the_api_client(
-        $indexName,
-        $exists,
-        $log
+        string $indexName,
+        bool $exists,
+        string $log
     ): void {
         $this->indices->expects($this->once())
             ->method('exists')
@@ -42,10 +36,8 @@ final class CheckIndexExistsTest extends AbstractOperationTestCase
         $this->assertEquals($exists, $this->operation->run($indexName));
     }
 
-    /**
-     * @return array
-     */
-    public function indexExistsDataProvider()
+
+    public function indexExistsDataProvider(): array
     {
         return [
             [

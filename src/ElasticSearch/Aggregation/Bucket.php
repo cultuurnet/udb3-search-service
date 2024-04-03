@@ -5,17 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
 use InvalidArgumentException;
+
 final class Bucket
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
-    /**
-     * @var int
-     */
-    private $count;
+    private int $count;
 
     /**
      * @param string $key

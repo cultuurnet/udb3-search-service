@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PathEndIdUrlParserTest extends TestCase
 {
-    /**
-     * @var PathEndIdUrlParser
-     */
-    private $parser;
+    private PathEndIdUrlParser $parser;
 
     protected function setUp(): void
     {

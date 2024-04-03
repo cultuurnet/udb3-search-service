@@ -8,15 +8,9 @@ use Broadway\Serializer\Serializable;
 
 final class PlaceProjectedToJSONLD implements Serializable
 {
-    /**
-     * @var string
-     */
-    private $placeId;
+    private string $placeId;
 
-    /**
-     * @var string
-     */
-    private $iri;
+    private string $iri;
 
     public function __construct(string $placeId, string $iri)
     {

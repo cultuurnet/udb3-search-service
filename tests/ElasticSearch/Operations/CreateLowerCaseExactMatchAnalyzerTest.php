@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class CreateLowerCaseExactMatchAnalyzerTest extends AbstractOperationTestCase
 {
-    /**
-     * @return CreateLowerCaseExactMatchAnalyzer
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): CreateLowerCaseExactMatchAnalyzer
     {
         return new CreateLowerCaseExactMatchAnalyzer($client, $logger);
     }

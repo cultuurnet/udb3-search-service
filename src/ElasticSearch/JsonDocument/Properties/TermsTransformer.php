@@ -8,15 +8,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 final class TermsTransformer implements JsonTransformer
 {
-    /**
-     * @var bool
-     */
-    private $includeTermsForFreeText;
+    private bool $includeTermsForFreeText;
 
-    /**
-     * @var bool
-     */
-    private $includeTermsForAggregations;
+    private bool $includeTermsForAggregations;
 
     public function __construct(bool $includeTermsForFreeText, bool $includeTermsForAggregations)
     {
@@ -52,7 +46,7 @@ final class TermsTransformer implements JsonTransformer
         }
 
         return array_map(
-            function (array $term) {
+            function (array $term): array {
                 // Don't copy all properties, just those we're interested in.;
                 return [
                     'id' => $term['id'],
@@ -92,13 +86,13 @@ final class TermsTransformer implements JsonTransformer
 
         $filteredByDomain = array_filter(
             $terms,
-            function ($term) use ($domain) {
+            function (array $term) use ($domain): bool {
                 return isset($term['domain'], $term['id']) && $term['domain'] === $domain;
             }
         );
 
         $mappedToIds = array_map(
-            function ($term) {
+            function (array $term) {
                 return $term['id'];
             },
             $filteredByDomain

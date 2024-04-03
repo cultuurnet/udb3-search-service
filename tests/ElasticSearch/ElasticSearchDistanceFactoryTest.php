@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchDistanceFactoryTest extends TestCase
 {
-    /**
-     * @var ElasticSearchDistanceFactory
-     */
-    private $factory;
+    private ElasticSearchDistanceFactory $factory;
 
     protected function setUp(): void
     {

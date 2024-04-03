@@ -5,17 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Language;
 
 use InvalidArgumentException;
+
 final class MultilingualString
 {
-    /**
-     * @var Language
-     */
-    private $originalLanguage;
+    private Language $originalLanguage;
 
-    /**
-     * @var string
-     */
-    private $originalString;
+    private string $originalString;
 
     /**
      * @var string[]

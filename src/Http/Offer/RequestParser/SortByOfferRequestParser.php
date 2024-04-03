@@ -24,16 +24,16 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
         }
 
         $sortBuilders = [
-            'score' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'score' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByScore($sortOrder);
             },
-            'completeness' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'completeness' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByCompleteness($sortOrder);
             },
-            'availableTo' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'availableTo' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByAvailableTo($sortOrder);
             },
-            'distance' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
+            'distance' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request): OfferQueryBuilderInterface {
                 $coordinates = $request->getQueryParam('coordinates', false);
                 if (!$coordinates) {
                     throw new MissingParameter(
@@ -44,16 +44,16 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
                 $coordinates = Coordinates::fromLatLonString($coordinates);
                 return $queryBuilder->withSortByDistance($coordinates, $sortOrder);
             },
-            'created' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'created' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByCreated($sortOrder);
             },
-            'modified' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'modified' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByModified($sortOrder);
             },
-            'popularity' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) {
+            'popularity' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OfferQueryBuilderInterface {
                 return $queryBuilder->withSortByPopularity($sortOrder);
             },
-            'recommendationScore' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request) {
+            'recommendationScore' => function (OfferQueryBuilderInterface $queryBuilder, SortOrder $sortOrder) use ($request): OfferQueryBuilderInterface {
                 $recommendationFor = $request->getQueryParam('recommendationFor', false);
                 if (!$recommendationFor) {
                     throw new MissingParameter(

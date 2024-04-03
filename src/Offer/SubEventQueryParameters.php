@@ -8,35 +8,20 @@ use DateTimeImmutable;
 
 final class SubEventQueryParameters
 {
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $dateFrom;
+    private ?DateTimeImmutable $dateFrom = null;
 
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $dateTo;
+    private ?DateTimeImmutable $dateTo = null;
 
-    /**
-     * @var int|null
-     */
-    private $localTimeFrom;
+    private ?int $localTimeFrom = null;
 
-    /**
-     * @var int|null
-     */
-    private $localTimeTo;
+    private ?int $localTimeTo = null;
 
     /**
      * @var Status[]
      */
-    private $statuses = [];
+    private array $statuses = [];
 
-    /**
-     * @var string|null
-     */
-    private $bookingAvailability;
+    private ?string $bookingAvailability = null;
 
     public function getDateFrom(): ?DateTimeImmutable
     {

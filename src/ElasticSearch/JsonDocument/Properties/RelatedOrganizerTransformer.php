@@ -10,20 +10,11 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class RelatedOrganizerTransformer implements JsonTransformer
 {
-    /**
-     * @var IdentifierTransformer
-     */
-    private $identifierTransformer;
+    private IdentifierTransformer $identifierTransformer;
 
-    /**
-     * @var NameTransformer
-     */
-    private $nameTransformer;
+    private NameTransformer $nameTransformer;
 
-    /**
-     * @var LabelsTransformer
-     */
-    private $labelsTransformer;
+    private LabelsTransformer $labelsTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,

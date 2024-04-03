@@ -13,10 +13,7 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class AgeRangeOfferRequestParserTest extends TestCase
 {
-    /**
-     * @var DocumentLanguageOfferRequestParser
-     */
-    private $parser;
+    private AgeRangeOfferRequestParser $parser;
 
     /**
      * @var OfferQueryBuilderInterface|MockObject

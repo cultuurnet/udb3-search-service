@@ -17,10 +17,7 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOperation
 {
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
     /**
      * @var string
@@ -171,10 +168,8 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         }
     }
 
-    /**
-     * @return string
-     */
-    private function getReadableEventType($event)
+
+    private function getReadableEventType($event): string
     {
         $parts = explode('\\', get_class($event));
         return end($parts);
