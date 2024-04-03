@@ -41,7 +41,7 @@ final class ConsumeCommand extends Command
 
     private function registerSignalHandlers(OutputInterface $output): void
     {
-        $handler = static function () use ($output): void {
+        $handler = static function () use ($output) {
             $output->writeln('Signal received, halting.');
             exit;
         };

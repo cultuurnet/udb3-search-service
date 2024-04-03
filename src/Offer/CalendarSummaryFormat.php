@@ -11,9 +11,15 @@ final class CalendarSummaryFormat
     private const ALLOWED_TYPES = ['text', 'html'];
     private const ALLOWED_FORMATS = ['xs', 'sm', 'md', 'lg'];
 
-    private string $type;
+    /**
+     * @var string
+     */
+    private $type;
 
-    private string $format;
+    /**
+     * @var string
+     */
+    private $format;
 
     public function __construct(string $type, string $format)
     {

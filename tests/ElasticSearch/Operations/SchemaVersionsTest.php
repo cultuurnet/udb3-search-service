@@ -11,7 +11,7 @@ final class SchemaVersionsTest extends TestCase
     /**
      * @test
      */
-    public function it_has_the_latest_udb3_core_version(): void
+    public function it_has_the_latest_udb3_core_version()
     {
         $this->assertTrue(defined(SchemaVersions::class . '::UDB3_CORE'));
     }
@@ -19,7 +19,7 @@ final class SchemaVersionsTest extends TestCase
     /**
      * @test
      */
-    public function it_has_the_latest_geoshapes_version(): void
+    public function it_has_the_latest_geoshapes_version()
     {
         $this->assertTrue(defined(SchemaVersions::class . '::GEOSHAPES'));
     }

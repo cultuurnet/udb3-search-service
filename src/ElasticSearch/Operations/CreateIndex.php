@@ -15,7 +15,7 @@ final class CreateIndex extends AbstractElasticSearchOperation
      *   If TRUE, it will drop the index that matches the new version
      *   (if it exists) and then creates the new one.
      */
-    public function run($indexName, $force = false): void
+    public function run($indexName, $force = false)
     {
         if ($this->client->indices()->exists(['index' => $indexName])) {
             if (!$force) {

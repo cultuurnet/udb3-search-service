@@ -9,7 +9,10 @@ use Psr\Log\LoggerInterface;
 
 final class ReindexPermanentOffersTest extends AbstractReindexUDB3CoreTest
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): ReindexPermanentOffers
+    /**
+     * @return ReindexPermanentOffers
+     */
+    protected function createOperation(Client $client, LoggerInterface $logger)
     {
         return new ReindexPermanentOffers(
             $client,

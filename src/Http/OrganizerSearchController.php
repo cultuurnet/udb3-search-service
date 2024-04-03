@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
@@ -117,13 +116,13 @@ final class OrganizerSearchController
             $parameterBag,
             null
         );
-        if ($country instanceof Country) {
+        if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
 
         $regionIds = $parameterBag->getArrayFromParameter(
             'regions',
-            fn ($value): RegionId => new RegionId($value)
+            fn ($value) => new RegionId($value)
         );
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
@@ -187,7 +186,9 @@ final class OrganizerSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): LabelName => new LabelName($value)
+            function ($value) {
+                return new LabelName($value);
+            }
         );
     }
 
@@ -198,7 +199,9 @@ final class OrganizerSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): Language => new Language($value)
+            function ($value) {
+                return new Language($value);
+            }
         );
     }
 

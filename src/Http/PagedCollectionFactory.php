@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
-use stdClass;
 use CultuurNet\UDB3\Search\Http\Hydra\PagedCollection;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -22,7 +21,7 @@ final class PagedCollectionFactory
         $jsonDocumentTransformer = new JsonDocumentTransformer($jsonTransformer);
 
         $results = array_map(
-            function (JsonDocument $document) use ($jsonDocumentTransformer): stdClass {
+            function (JsonDocument $document) use ($jsonDocumentTransformer) {
                 $document = $jsonDocumentTransformer->transform($document);
                 return $document->getBody();
             },

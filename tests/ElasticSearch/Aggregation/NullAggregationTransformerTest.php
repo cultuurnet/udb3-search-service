@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-use LogicException;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 
 final class NullAggregationTransformerTest extends TestCase
 {
-    private NullAggregationTransformer $transformer;
+    /**
+     * @var NullAggregationTransformer
+     */
+    private $transformer;
 
     protected function setUp(): void
     {
@@ -20,7 +22,7 @@ final class NullAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_support_any_aggregation(): void
+    public function it_does_not_support_any_aggregation()
     {
         $aggregation = new Aggregation(FacetName::regions());
         $this->assertFalse($this->transformer->supports($aggregation));
@@ -29,10 +31,10 @@ final class NullAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_always_throws_a_logic_exception_when_trying_to_transform_an_aggregation(): void
+    public function it_always_throws_a_logic_exception_when_trying_to_transform_an_aggregation()
     {
         $aggregation = new Aggregation(FacetName::regions());
-        $this->expectException(LogicException::class);
+        $this->expectException(\LogicException::class);
         $this->transformer->toFacetTree($aggregation);
     }
 }

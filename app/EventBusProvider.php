@@ -18,15 +18,16 @@ final class EventBusProvider extends BaseServiceProvider
      * protected $this->leagueContainer property or the `getLeagueContainer` method
      * from the ContainerAwareTrait.
      *
+     * @return void
      */
-    public function register(): void
+    public function register()
     {
         $this->addShared(
             EventBus::class,
-            function (): SimpleEventBus {
+            function () {
                 $bus = new SimpleEventBus();
 
-                $bus->beforeFirstPublication(function (EventBus $eventBus): void {
+                $bus->beforeFirstPublication(function (EventBus $eventBus) {
                     $subscribers = $this->get('event_bus_subscribers');
 
                     if (!(is_null($this->parameter('config.event_bus'))) &&

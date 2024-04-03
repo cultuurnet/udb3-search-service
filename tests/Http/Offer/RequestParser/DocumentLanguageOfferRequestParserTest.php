@@ -13,7 +13,10 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 
 final class DocumentLanguageOfferRequestParserTest extends TestCase
 {
-    private DocumentLanguageOfferRequestParser $parser;
+    /**
+     * @var DocumentLanguageOfferRequestParser
+     */
+    private $parser;
 
     /**
      * @var OfferQueryBuilderInterface|MockObject
@@ -29,7 +32,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_main_language_filter(): void
+    public function it_should_add_a_main_language_filter()
     {
         $request = $this->request(
             [
@@ -48,7 +51,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_language_filters(): void
+    public function it_should_add_language_filters()
     {
         $request = $this->request(
             [
@@ -71,7 +74,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_completed_language_filters(): void
+    public function it_should_add_completed_language_filters()
     {
         $request = $this->request(
             [

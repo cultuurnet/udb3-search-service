@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
-use DateTimeImmutable;
-use DateTime;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
-    private array $parameterBag;
+    /**
+     * @var array
+     */
+    private $parameterBag;
 
     /**
      * @var string
@@ -28,8 +29,9 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
     /**
      * @param string $queryParameter
+     * @return array
      */
-    public function getArrayFromParameter($queryParameter, callable $callback = null): array
+    public function getArrayFromParameter($queryParameter, callable $callback = null)
     {
         if (empty($this->get($queryParameter))) {
             return [];
@@ -101,13 +103,14 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
      * @param string $parameterName
      * @param string|null $defaultValueAsString
      * @param string $delimiter
+     * @return array
      */
     public function getExplodedStringFromParameter(
         $parameterName,
         $defaultValueAsString = null,
         callable $callback = null,
         $delimiter = ','
-    ): array {
+    ) {
         $callback = $this->ensureCallback($callback);
 
         $asString = $this->getStringFromParameter(
@@ -147,7 +150,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     /**
      * @param string $queryParameter
      * @param string|null $defaultValueAsString
-     * @return DateTimeImmutable|null
+     * @return \DateTimeImmutable|null
      */
     public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
     {
@@ -158,7 +161,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             // anyway, so if we find a space it's more likely that it was meant to be a +.
             $asString = str_replace(' ', '+', (string)$asString);
 
-            $asDateTime = DateTimeImmutable::createFromFormat(DateTime::ATOM, $asString);
+            $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
                 throw new UnsupportedParameterValue(
@@ -188,7 +191,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
         // Instead check if the returned value is null, and if so always set it
         // to false as it means the disableDefaultFilters parameter is not set.
-        $disabled ??= false;
+        $disabled = $disabled === null ? false : $disabled;
 
         return !$disabled;
     }
@@ -199,7 +202,9 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             return $callback;
         }
 
-        $passThroughCallback = static fn ($value) => $value;
+        $passThroughCallback = static function ($value) {
+            return $value;
+        };
 
         return $passThroughCallback;
     }

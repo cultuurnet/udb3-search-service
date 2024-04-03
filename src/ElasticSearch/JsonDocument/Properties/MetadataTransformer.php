@@ -25,7 +25,7 @@ final class MetadataTransformer implements JsonTransformer
     private function transformRecommendationFor(array $recommendationFor): array
     {
         return array_map(
-            fn ($recommendation): array => [
+            fn ($recommendation) => [
                 'event' => basename($recommendation['event']),
                 'score' => $recommendation['score'],
             ],

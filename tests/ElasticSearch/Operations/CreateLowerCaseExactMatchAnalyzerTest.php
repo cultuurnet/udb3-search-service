@@ -9,7 +9,10 @@ use Psr\Log\LoggerInterface;
 
 final class CreateLowerCaseExactMatchAnalyzerTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): CreateLowerCaseExactMatchAnalyzer
+    /**
+     * @return CreateLowerCaseExactMatchAnalyzer
+     */
+    protected function createOperation(Client $client, LoggerInterface $logger)
     {
         return new CreateLowerCaseExactMatchAnalyzer($client, $logger);
     }
@@ -17,7 +20,7 @@ final class CreateLowerCaseExactMatchAnalyzerTest extends AbstractOperationTestC
     /**
      * @test
      */
-    public function it_puts_a_new_or_updated_index_template_for_a_lowercase_exact_match_analyzer(): void
+    public function it_puts_a_new_or_updated_index_template_for_a_lowercase_exact_match_analyzer()
     {
         $this->indices->expects($this->once())
             ->method('putTemplate')

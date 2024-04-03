@@ -22,7 +22,10 @@ final class FacetName
         self::LABELS,
     ];
 
-    private string $facetName;
+    /**
+     * @var string
+     */
+    private $facetName;
 
     public function __construct(string $facetName)
     {

@@ -9,7 +9,10 @@ use Psr\Log\LoggerInterface;
 
 final class DeleteIndexTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): DeleteIndex
+    /**
+     * @return DeleteIndex
+     */
+    protected function createOperation(Client $client, LoggerInterface $logger)
     {
         return new DeleteIndex($client, $logger);
     }
@@ -17,7 +20,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_deletes_the_index_if_it_exists(): void
+    public function it_deletes_the_index_if_it_exists()
     {
         $indexName = 'mock';
 
@@ -40,7 +43,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_does_nothing_if_the_index_does_not_exist(): void
+    public function it_does_nothing_if_the_index_does_not_exist()
     {
         $indexName = 'mock';
 

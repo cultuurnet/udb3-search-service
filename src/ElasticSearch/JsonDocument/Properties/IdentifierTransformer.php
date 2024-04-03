@@ -10,13 +10,25 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class IdentifierTransformer implements JsonTransformer
 {
-    private JsonTransformerLogger $logger;
+    /**
+     * @var JsonTransformerLogger
+     */
+    private $logger;
 
-    private IdUrlParserInterface $idUrlParser;
+    /**
+     * @var IdUrlParserInterface
+     */
+    private $idUrlParser;
 
-    private FallbackType $fallbackType;
+    /**
+     * @var FallbackType
+     */
+    private $fallbackType;
 
-    private bool $setMainId;
+    /**
+     * @var bool
+     */
+    private $setMainId;
 
     public function __construct(
         JsonTransformerLogger $logger,

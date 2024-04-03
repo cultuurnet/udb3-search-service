@@ -15,7 +15,7 @@ final class CreateIndexCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    public function configure(): void
+    public function configure()
     {
         $this
             ->setName('index:create')

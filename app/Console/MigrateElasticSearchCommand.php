@@ -15,7 +15,7 @@ final class MigrateElasticSearchCommand extends Command
     /**
      * @inheritdoc
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this->setName('elasticsearch:migrate')
             ->setDescription(

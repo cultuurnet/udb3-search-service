@@ -8,7 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 final class LuceneQueryStringFactoryTest extends TestCase
 {
-    private LuceneQueryStringFactory $factory;
+    /**
+     * @var LuceneQueryStringFactory
+     */
+    private $factory;
 
     protected function setUp(): void
     {
@@ -18,7 +21,7 @@ final class LuceneQueryStringFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_instance_of_lucene_query_string(): void
+    public function it_returns_an_instance_of_lucene_query_string()
     {
         $queryString = 'foo:bar OR foo:baz';
         $expected = new LuceneQueryString($queryString);

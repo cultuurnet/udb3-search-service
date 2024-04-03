@@ -28,7 +28,9 @@ final class CompositeJsonTransformer implements JsonTransformer
     {
         return array_reduce(
             $this->jsonTransformers,
-            fn ($draft, $jsonTransformer) => $jsonTransformer->transform($from, $draft),
+            function ($draft, $jsonTransformer) use ($from) {
+                return $jsonTransformer->transform($from, $draft);
+            },
             $draft
         );
     }

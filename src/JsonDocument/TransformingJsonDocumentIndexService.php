@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use Exception;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -16,11 +15,20 @@ final class TransformingJsonDocumentIndexService implements
 {
     use LoggerAwareTrait;
 
-    private JsonDocumentFetcher $jsonDocumentFetcher;
+    /**
+     * @var JsonDocumentFetcher
+     */
+    private $jsonDocumentFetcher;
 
-    private JsonDocumentTransformer $jsonDocumentTransformer;
+    /**
+     * @var JsonDocumentTransformer
+     */
+    private $jsonDocumentTransformer;
 
-    private DocumentRepository $searchRepository;
+    /**
+     * @var DocumentRepository
+     */
+    private $searchRepository;
 
     public function __construct(
         JsonDocumentFetcher $jsonDocumentFetcher,
@@ -56,7 +64,7 @@ final class TransformingJsonDocumentIndexService implements
     {
         try {
             $this->searchRepository->remove($documentId);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->logger->error(
                 'Could not remove document from repository.',
                 [

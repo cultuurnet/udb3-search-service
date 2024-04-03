@@ -16,7 +16,10 @@ final class ElasticSearchOrganizerSearchService implements OrganizerSearchServic
 {
     use HasElasticSearchClient;
 
-    private ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory;
+    /**
+     * @var ElasticSearchPagedResultSetFactoryInterface
+     */
+    private $pagedResultSetFactory;
 
     public function __construct(
         Client $elasticSearchClient,

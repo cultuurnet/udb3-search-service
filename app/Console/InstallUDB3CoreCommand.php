@@ -50,7 +50,7 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this->setName('udb3-core:install')
             ->setDescription(

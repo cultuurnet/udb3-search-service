@@ -27,7 +27,7 @@ final class EventIndexationServiceProvider extends BaseServiceProvider
     {
         $this->add(
             'event_search_projector',
-            function (): EventSearchProjector {
+            function () {
                 $transformer = new JsonDocumentTransformer(
                     new EventTransformer(
                         new JsonTransformerPsrLogger(

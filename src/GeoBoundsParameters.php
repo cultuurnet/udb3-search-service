@@ -8,13 +8,25 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
 final class GeoBoundsParameters
 {
-    private Coordinates $northWestCoordinates;
+    /**
+     * @var Coordinates
+     */
+    private $northWestCoordinates;
 
-    private Coordinates $northEastCoordinates;
+    /**
+     * @var Coordinates
+     */
+    private $northEastCoordinates;
 
-    private Coordinates $southWestCoordinates;
+    /**
+     * @var Coordinates
+     */
+    private $southWestCoordinates;
 
-    private Coordinates $southEastCoordinates;
+    /**
+     * @var Coordinates
+     */
+    private $southEastCoordinates;
 
     public function __construct(Coordinates $northEastCoordinates, Coordinates $southWestCoordinates)
     {

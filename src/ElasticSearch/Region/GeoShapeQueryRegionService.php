@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
-use RuntimeException;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 
@@ -66,7 +65,7 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
             );
 
             if (!isset($response['hits']) || !isset($response['hits']['total']) || !isset($response['hits']['hits'])) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     'Got invalid response from ElasticSearch when trying to find matching regions.'
                 );
             }

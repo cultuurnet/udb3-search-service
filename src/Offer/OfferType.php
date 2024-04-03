@@ -16,7 +16,10 @@ final class OfferType
         self::PLACE,
     ];
 
-    private string $offerType;
+    /**
+     * @var string
+     */
+    private $offerType;
 
     public function __construct(string $offerType)
     {

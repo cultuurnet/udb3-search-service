@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-use LogicException;
-
 final class NullAggregationTransformer implements AggregationTransformerInterface
 {
     /**
      * @inheritdoc
      */
-    public function supports(Aggregation $aggregation): bool
+    public function supports(Aggregation $aggregation)
     {
         return false;
     }
@@ -19,8 +17,8 @@ final class NullAggregationTransformer implements AggregationTransformerInterfac
     /**
      * @inheritdoc
      */
-    public function toFacetTree(Aggregation $aggregation): void
+    public function toFacetTree(Aggregation $aggregation)
     {
-        throw new LogicException('NullAggregationTransformer does not support any aggregations for transformation.');
+        throw new \LogicException('NullAggregationTransformer does not support any aggregations for transformation.');
     }
 }

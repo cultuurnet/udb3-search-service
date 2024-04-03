@@ -14,7 +14,7 @@ final class DeleteIndexCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    public function configure(): void
+    public function configure()
     {
         $this
             ->setName('index:delete')

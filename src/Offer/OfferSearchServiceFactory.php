@@ -11,9 +11,15 @@ use Elasticsearch\Client;
 
 final class OfferSearchServiceFactory
 {
-    private Client $client;
+    /**
+     * @var Client
+     */
+    private $client;
 
-    private AggregationTransformerInterface $aggregationTransformer;
+    /**
+     * @var AggregationTransformerInterface
+     */
+    private $aggregationTransformer;
 
     public function __construct(Client $client, AggregationTransformerInterface $aggregationTransformer)
     {

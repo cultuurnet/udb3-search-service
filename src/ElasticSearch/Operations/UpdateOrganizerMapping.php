@@ -6,7 +6,11 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class UpdateOrganizerMapping extends AbstractMappingOperation
 {
-    public function run(string $indexName, string $documentType): void
+    /**
+     * @param string $indexName
+     * @param string $documentType
+     */
+    public function run($indexName, $documentType)
     {
         $this->updateMapping(
             $indexName,

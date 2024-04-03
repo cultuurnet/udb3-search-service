@@ -164,12 +164,12 @@ final class OfferSearchController
             $parameterBag,
             new Country('BE')
         );
-        if ($country instanceof Country) {
+        if (!empty($country)) {
             $queryBuilder = $queryBuilder->withAddressCountryFilter($country);
         }
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
-        if ($audienceType instanceof AudienceType) {
+        if (!empty($audienceType)) {
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
 
@@ -262,7 +262,9 @@ final class OfferSearchController
         $resultSet = $this->searchService->search($queryBuilder);
 
         $calendarSummaries = array_map(
-            static fn (string $parameter): CalendarSummaryFormat => CalendarSummaryFormat::fromCombinedParameter($parameter),
+            static function (string $parameter) {
+                return CalendarSummaryFormat::fromCombinedParameter($parameter);
+            },
             $parameterBag->getArrayFromParameter('embedCalendarSummaries')
         );
 
@@ -297,7 +299,9 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): TermId => new TermId($value)
+            function ($value) {
+                return new TermId($value);
+            }
         );
     }
 
@@ -308,7 +312,9 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): TermLabel => new TermLabel($value)
+            function ($value) {
+                return new TermLabel($value);
+            }
         );
     }
 
@@ -319,7 +325,9 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): LabelName => new LabelName($value)
+            function ($value) {
+                return new LabelName($value);
+            }
         );
     }
 
@@ -330,7 +338,9 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): Language => new Language($value)
+            function ($value) {
+                return new Language($value);
+            }
         );
     }
 
@@ -341,7 +351,9 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            fn ($value): RegionId => new RegionId($value)
+            function ($value) {
+                return new RegionId($value);
+            }
         );
     }
 
@@ -350,7 +362,9 @@ final class OfferSearchController
         return $parameterBag->getStringFromParameter(
             'audienceType',
             'everyone',
-            fn ($audienceType): AudienceType => new AudienceType($audienceType)
+            function ($audienceType) {
+                return new AudienceType($audienceType);
+            }
         );
     }
 

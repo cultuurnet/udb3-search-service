@@ -10,7 +10,10 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentIndexServiceInterface;
 
 abstract class AbstractSearchProjector implements EventListener
 {
-    private JsonDocumentIndexServiceInterface $indexService;
+    /**
+     * @var JsonDocumentIndexServiceInterface
+     */
+    private $indexService;
 
 
     public function __construct(

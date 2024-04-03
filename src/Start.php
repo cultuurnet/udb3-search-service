@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search;
 
 final class Start
 {
-    private int $value;
+    /**
+     * @var int
+     */
+    private $value;
 
     public function __construct(int $value)
     {

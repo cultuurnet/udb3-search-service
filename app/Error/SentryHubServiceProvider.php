@@ -19,7 +19,7 @@ final class SentryHubServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             HubInterface::class,
-            function (): HubInterface {
+            function () {
                 init([
                     'dsn' => $this->parameter('sentry.dsn'),
                     'environment' => $this->parameter('sentry.environment'),

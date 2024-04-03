@@ -15,12 +15,12 @@ final class LoggerFactory
     /**
      * @var Logger[]
      */
-    private static ?array $loggers = null;
+    private static $loggers;
 
     /**
      * @var StreamHandler[]
      */
-    private static array $streamHandlers = [];
+    private static $streamHandlers = [];
 
     public static function create(
         ContainerInterface $container,

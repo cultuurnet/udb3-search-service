@@ -11,7 +11,7 @@ final class DataValidationExceptionTest extends TestCase
     /**
      * @test
      */
-    public function itHasAListOfValidationMessages(): void
+    public function itHasAListOfValidationMessages()
     {
         $messages = [
             'Field foo should not be empty.',
@@ -27,7 +27,7 @@ final class DataValidationExceptionTest extends TestCase
     /**
      * @test
      */
-    public function itHasAnEmptyListOfValidationMessagesByDefault(): void
+    public function itHasAnEmptyListOfValidationMessagesByDefault()
     {
         $exception = new DataValidationException();
         $this->assertEquals([], $exception->getValidationMessages());

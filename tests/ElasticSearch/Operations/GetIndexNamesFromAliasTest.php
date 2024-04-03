@@ -10,7 +10,10 @@ use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): GetIndexNamesFromAlias
+    /**
+     * @return GetIndexNamesFromAlias
+     */
+    protected function createOperation(Client $client, LoggerInterface $logger)
     {
         return new GetIndexNamesFromAlias($client, $logger);
     }
@@ -18,7 +21,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_returns_all_index_names_returned_by_elastic_search_for_a_given_alias(): void
+    public function it_returns_all_index_names_returned_by_elastic_search_for_a_given_alias()
     {
         $aliasName = 'udb3_core_read';
 
@@ -76,7 +79,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_if_the_alias_does_not_exist_or_another_error_occurred(): void
+    public function it_returns_an_empty_list_if_the_alias_does_not_exist_or_another_error_occurred()
     {
         $aliasName = 'foo_bar';
 

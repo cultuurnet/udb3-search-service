@@ -12,7 +12,7 @@ final class OfferPredefinedQueryStringFieldsTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_predefined_query_string_fields(): void
+    public function it_returns_predefined_query_string_fields()
     {
         $fields = (new OfferPredefinedQueryStringFields())->getPredefinedFields(
             new Language('nl'),

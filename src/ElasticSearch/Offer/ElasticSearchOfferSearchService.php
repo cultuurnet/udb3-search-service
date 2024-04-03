@@ -16,7 +16,10 @@ final class ElasticSearchOfferSearchService implements OfferSearchServiceInterfa
 {
     use HasElasticSearchClient;
 
-    private ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory;
+    /**
+     * @var ElasticSearchPagedResultSetFactoryInterface
+     */
+    private $pagedResultSetFactory;
 
     public function __construct(
         Client $elasticSearchClient,

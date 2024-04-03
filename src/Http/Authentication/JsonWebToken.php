@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use DateTimeZone;
-use DateInterval;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key\InMemory as InMemoryKey;
@@ -35,9 +33,9 @@ final class JsonWebToken
             $this->token,
             new LooseValidAt(
                 new SystemClock(
-                    new DateTimeZone('Europe/Brussels')
+                    new \DateTimeZone('Europe/Brussels')
                 ),
-                new DateInterval('PT30S')
+                new \DateInterval('PT30S')
             ),
             new SignedWith($signer, $key)
         );

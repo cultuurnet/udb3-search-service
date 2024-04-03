@@ -19,7 +19,7 @@ final class CompositeOrganizerRequestParser implements OrganizerRequestParser
         $this->parsers = [];
     }
 
-    public function withParser(OrganizerRequestParser $parser): self
+    public function withParser(OrganizerRequestParser $parser)
     {
         $c = clone $this;
         $c->parsers[] = $parser;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
-use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 use PHPUnit\Framework\TestCase;
@@ -14,7 +13,7 @@ final class FacetTreeTest extends TestCase
     /**
      * @test
      */
-    public function it_has_a_multi_level_list_of_facet_node_children(): void
+    public function it_has_a_multi_level_list_of_facet_node_children()
     {
         $gemLeuven = new FacetNode(
             'gem-leuven',
@@ -100,18 +99,18 @@ final class FacetTreeTest extends TestCase
     /**
      * @test
      */
-    public function it_only_accepts_a_string_as_key(): void
+    public function it_only_accepts_a_string_as_key()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new FacetFilter(123, []);
     }
 
     /**
      * @test
      */
-    public function it_only_accepts_an_int_as_count(): void
+    public function it_only_accepts_an_int_as_count()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         new FacetNode('test', new MultilingualString(new Language('nl'), 'test'), 'count', []);
     }
 
@@ -122,7 +121,7 @@ final class FacetTreeTest extends TestCase
     }
 
 
-    private function assertChildrenEquals(array $expected, array $actual): void
+    private function assertChildrenEquals(array $expected, array $actual)
     {
         $this->assertEquals(count($expected), count($actual));
 
@@ -132,7 +131,7 @@ final class FacetTreeTest extends TestCase
     }
 
 
-    private function assertNodeEquals(FacetNode $expected, FacetNode $actual): void
+    private function assertNodeEquals(FacetNode $expected, FacetNode $actual)
     {
         $this->assertEquals($expected->getKey(), $actual->getKey());
         $this->assertEquals($expected->getName(), $actual->getName());

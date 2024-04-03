@@ -9,11 +9,12 @@ use CultuurNet\UDB3\Search\AbstractSearchProjector;
 final class PlaceSearchProjector extends AbstractSearchProjector
 {
     /**
+     * @return array
      *
      * @uses handlePlaceProjectedToJSONLD
      * @uses handlePlaceDeleted
      */
-    protected function getEventHandlers(): array
+    protected function getEventHandlers()
     {
         return [
             PlaceProjectedToJSONLD::class => 'handlePlaceProjectedToJSONLD',
@@ -21,7 +22,7 @@ final class PlaceSearchProjector extends AbstractSearchProjector
     }
 
 
-    protected function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD): void
+    protected function handlePlaceProjectedToJSONLD(PlaceProjectedToJSONLD $placeProjectedToJSONLD)
     {
         $this->getIndexService()->index(
             $placeProjectedToJSONLD->getItemId(),

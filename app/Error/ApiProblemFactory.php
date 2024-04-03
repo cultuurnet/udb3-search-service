@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Error;
 
-use Throwable;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\ConvertsToApiProblem;
 use CultuurNet\UDB3\Search\Json;
@@ -17,7 +16,7 @@ use League\Route\Http\Exception\NotFoundException;
 
 final class ApiProblemFactory
 {
-    public static function createFromThrowable(Throwable $throwable): ApiProblem
+    public static function createFromThrowable(\Throwable $throwable): ApiProblem
     {
         if ($throwable instanceof Error) {
             return (new ApiProblem('Internal server error'))

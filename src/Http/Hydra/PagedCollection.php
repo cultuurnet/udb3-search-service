@@ -8,15 +8,25 @@ use JsonSerializable;
 
 final class PagedCollection implements JsonSerializable
 {
-    private int $pageNumber;
+    /**
+     * @var int
+     */
+    private $pageNumber;
 
+    /**
+     * @var int
+     */
+    private $itemsPerPage;
 
-    private int $itemsPerPage;
+    /**
+     * @var array
+     */
+    private $members;
 
-    private array $members;
-
-
-    private int $totalItems;
+    /**
+     * @var int
+     */
+    private $totalItems;
 
     public function __construct(
         int $pageNumber,
@@ -82,6 +92,8 @@ final class PagedCollection implements JsonSerializable
             'member' => $this->getMembers(),
         ];
 
-        return array_filter($data, static fn ($item): bool => null !== $item);
+        return array_filter($data, static function ($item) {
+            return null !== $item;
+        });
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\CompositeAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\LabelsAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
@@ -26,7 +25,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
     {
         $this->add(
             'offer_controller',
-            function (): OfferSearchController {
+            function () {
                 /** @var OfferSearchControllerFactory $offerControllerFactory */
                 $offerControllerFactory = $this->get(OfferSearchControllerFactory::class);
 
@@ -39,18 +38,20 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
 
         $this->add(
             OfferSearchControllerFactory::class,
-            fn (): OfferSearchControllerFactory => new OfferSearchControllerFactory(
-                $this->parameter('elasticsearch.aggregation_size'),
-                $this->parameter('elasticsearch.region.read_index'),
-                $this->parameter('elasticsearch.region.document_type'),
-                $this->get(OfferSearchServiceFactory::class),
-                $this->get(Consumer::class)
-            )
+            function () {
+                return new OfferSearchControllerFactory(
+                    $this->parameter('elasticsearch.aggregation_size'),
+                    $this->parameter('elasticsearch.region.read_index'),
+                    $this->parameter('elasticsearch.region.document_type'),
+                    $this->get(OfferSearchServiceFactory::class),
+                    $this->get(Consumer::class)
+                );
+            }
         );
 
         $this->add(
             OfferSearchServiceFactory::class,
-            function (): OfferSearchServiceFactory {
+            function () {
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
                     new NodeMapAggregationTransformer(

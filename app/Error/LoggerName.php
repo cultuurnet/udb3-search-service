@@ -6,9 +6,15 @@ namespace CultuurNet\UDB3\SearchService\Error;
 
 final class LoggerName
 {
-    private string $fileNameWithoutSuffix;
+    /**
+     * @var string
+     */
+    private $fileNameWithoutSuffix;
 
-    private string $loggerName;
+    /**
+     * @var string
+     */
+    private $loggerName;
 
     private function __construct(string $fileNameWithoutSuffix, ?string $customLoggerName = null)
     {

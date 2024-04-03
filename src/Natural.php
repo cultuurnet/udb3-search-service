@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search;
 
 abstract class Natural
 {
-    private int $value;
+    /**
+     * @var int
+     */
+    private $value;
 
     public function __construct(int $value)
     {

@@ -45,7 +45,9 @@ final class ArrayParameterBagAdapterTest extends TestCase
 
     public function arrayParameterDataProvider(): array
     {
-        $callback = static fn ($label): LabelName => new LabelName($label);
+        $callback = static function ($label) {
+            return new LabelName($label);
+        };
 
         return [
             [
@@ -124,7 +126,9 @@ final class ArrayParameterBagAdapterTest extends TestCase
     {
         $parameterBag = new ArrayParameterBagAdapter(['workflowStatus' => 'DRAFT']);
 
-        $callback = static fn ($workflowStatus): WorkflowStatus => new WorkflowStatus($workflowStatus);
+        $callback = static function ($workflowStatus) {
+            return new WorkflowStatus($workflowStatus);
+        };
 
         $expected = new WorkflowStatus('DRAFT');
         $actual = $parameterBag->getStringFromParameter('workflowStatus', null, $callback);
@@ -157,7 +161,9 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag = new ArrayParameterBagAdapter([]);
         $default = 'APPROVED';
 
-        $callback = static fn ($workflowStatus): WorkflowStatus => new WorkflowStatus($workflowStatus);
+        $callback = static function ($workflowStatus) {
+            return new WorkflowStatus($workflowStatus);
+        };
 
         $expected = new WorkflowStatus('APPROVED');
         $actual = $parameterBag->getStringFromParameter('workflowStatus', $default, $callback);
@@ -221,7 +227,9 @@ final class ArrayParameterBagAdapterTest extends TestCase
     {
         $parameterBag = new ArrayParameterBagAdapter(['workflowStatus' => 'READY_FOR_VALIDATION,APPROVED']);
 
-        $callback = static fn ($workflowStatus): WorkflowStatus => new WorkflowStatus($workflowStatus);
+        $callback = static function ($workflowStatus) {
+            return new WorkflowStatus($workflowStatus);
+        };
 
         $expected = [new WorkflowStatus('READY_FOR_VALIDATION'), new WorkflowStatus('APPROVED')];
         $actual = $parameterBag->getExplodedStringFromParameter('workflowStatus', null, $callback);
@@ -254,7 +262,9 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag = new ArrayParameterBagAdapter([]);
         $default = 'READY_FOR_VALIDATION,APPROVED';
 
-        $callback = static fn ($workflowStatus): WorkflowStatus => new WorkflowStatus($workflowStatus);
+        $callback = static function ($workflowStatus) {
+            return new WorkflowStatus($workflowStatus);
+        };
 
         $expected = [new WorkflowStatus('READY_FOR_VALIDATION'), new WorkflowStatus('APPROVED')];
         $actual = $parameterBag->getExplodedStringFromParameter('workflowStatus', $default, $callback);
@@ -310,10 +320,11 @@ final class ArrayParameterBagAdapterTest extends TestCase
      * @test
      * @dataProvider booleanDataProvider
      *
+     * @param bool|null $expectedValue
      */
     public function it_should_parse_a_boolean_value_from_a_parameter(
         $parameterValue,
-        ?bool $expectedValue
+        $expectedValue
     ): void {
         $parameterBag = new ArrayParameterBagAdapter(['uitpas' => $parameterValue]);
         $actualValue = $parameterBag->getBooleanFromParameter('uitpas');

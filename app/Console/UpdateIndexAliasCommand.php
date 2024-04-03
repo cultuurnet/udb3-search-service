@@ -14,7 +14,7 @@ final class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    public function configure(): void
+    public function configure()
     {
         $this
             ->setName('index:update-alias')

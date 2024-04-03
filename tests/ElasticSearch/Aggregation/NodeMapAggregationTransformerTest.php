@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
-use LogicException;
-use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -15,15 +13,20 @@ use PHPUnit\Framework\TestCase;
 
 final class NodeMapAggregationTransformerTest extends TestCase
 {
-    private FacetName $facetName;
+    /**
+     * @var FacetName
+     */
+    private $facetName;
 
     /**
      * @var array
      */
     private $nodeMap;
 
-
-    private NodeMapAggregationTransformer $transformer;
+    /**
+     * @var NodeMapAggregationTransformer
+     */
+    private $transformer;
 
     protected function setUp(): void
     {
@@ -89,7 +92,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_only_supports_aggregations_with_the_same_name_as_the_injected_aggregation_name(): void
+    public function it_only_supports_aggregations_with_the_same_name_as_the_injected_aggregation_name()
     {
         $supported = new Aggregation($this->facetName);
         $unsupported = new Aggregation(FacetName::themes());
@@ -97,7 +100,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
         $this->assertTrue($this->transformer->supports($supported));
         $this->assertFalse($this->transformer->supports($unsupported));
 
-        $this->expectException(LogicException::class);
+        $this->expectException(\LogicException::class);
         $this->expectExceptionMessage('Aggregation themes not supported for transformation.');
 
         $this->transformer->toFacetTree($unsupported);
@@ -106,7 +109,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_facet_filter_based_on_the_injected_node_map(): void
+    public function it_returns_a_facet_filter_based_on_the_injected_node_map()
     {
         $aggregation = new Aggregation(
             $this->facetName,
@@ -188,18 +191,21 @@ final class NodeMapAggregationTransformerTest extends TestCase
      * @test
      * @dataProvider invalidNodeMapDataProvider
      *
+     * @param string $expectedExceptionMessage
      */
     public function it_validates_the_injected_node_map_upon_construction(
         array $invalidNodeMap,
-        string $expectedExceptionMessage
-    ): void {
-        $this->expectException(InvalidArgumentException::class);
+        $expectedExceptionMessage
+    ) {
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
         new NodeMapAggregationTransformer(FacetName::regions(), $invalidNodeMap);
     }
 
-
-    public function invalidNodeMapDataProvider(): array
+    /**
+     * @return array
+     */
+    public function invalidNodeMapDataProvider()
     {
         return [
             'missing_key' => [

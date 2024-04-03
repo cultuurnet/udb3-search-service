@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
 abstract class Coordinate
 {
-    private float $value;
+    /**
+     * @var double
+     */
+    private $value;
 
     public function __construct(float $value)
     {

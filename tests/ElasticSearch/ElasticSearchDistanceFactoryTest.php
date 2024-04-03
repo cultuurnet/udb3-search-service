@@ -8,7 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchDistanceFactoryTest extends TestCase
 {
-    private ElasticSearchDistanceFactory $factory;
+    /**
+     * @var ElasticSearchDistanceFactory
+     */
+    private $factory;
 
     protected function setUp(): void
     {
@@ -18,7 +21,7 @@ final class ElasticSearchDistanceFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_elastic_search_distance_object(): void
+    public function it_returns_an_elastic_search_distance_object()
     {
         $expected = new ElasticSearchDistance('30km');
         $actual = $this->factory->fromString('30km');

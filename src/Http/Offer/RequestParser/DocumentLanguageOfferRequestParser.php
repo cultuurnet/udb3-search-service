@@ -16,7 +16,9 @@ final class DocumentLanguageOfferRequestParser implements OfferRequestParserInte
     ): OfferQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $languageCallback = fn ($value): Language => new Language($value);
+        $languageCallback = function ($value) {
+            return new Language($value);
+        };
 
         // Add mainLanguage parameter as a filter.
         $mainLanguage = $parameterBagReader->getStringFromParameter('mainLanguage', null, $languageCallback);

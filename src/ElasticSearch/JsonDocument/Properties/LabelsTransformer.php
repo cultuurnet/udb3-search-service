@@ -8,7 +8,10 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 final class LabelsTransformer implements JsonTransformer
 {
-    private bool $includeLabelsForFreeText;
+    /**
+     * @var bool
+     */
+    private $includeLabelsForFreeText;
 
     public function __construct(bool $includeLabelsForFreeText)
     {

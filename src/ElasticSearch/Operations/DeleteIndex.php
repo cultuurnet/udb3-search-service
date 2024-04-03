@@ -9,7 +9,7 @@ final class DeleteIndex extends AbstractElasticSearchOperation
     /**
      * @param string $indexName
      */
-    public function run($indexName): void
+    public function run($indexName)
     {
         if (!$this->client->indices()->exists(['index' => $indexName])) {
             $this->logger->info("Index {$indexName} does not exist.");

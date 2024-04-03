@@ -14,7 +14,10 @@ final class SortOrder
         self::DESC,
     ];
 
-    private string $order;
+    /**
+     * @var string
+     */
+    private $order;
 
     public function __construct(string $order)
     {

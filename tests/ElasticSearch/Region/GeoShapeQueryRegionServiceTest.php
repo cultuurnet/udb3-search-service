@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
-use RuntimeException;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
@@ -143,7 +142,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
             ->method('search')
             ->willReturn(Json::decodeAssociatively(file_get_contents(__DIR__ . '/data/regions_invalid.json')));
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
 
         $this->regionService->getRegionIds(
             [

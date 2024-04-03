@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Geocoding\Coordinate;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class CoordinatesTest extends TestCase
@@ -12,7 +11,7 @@ final class CoordinatesTest extends TestCase
     /**
      * @test
      */
-    public function it_can_be_compared_to_another_instance_of_coordinates(): void
+    public function it_can_be_compared_to_another_instance_of_coordinates()
     {
         $coordinates = new Coordinates(
             new Latitude(1.07845),
@@ -37,11 +36,12 @@ final class CoordinatesTest extends TestCase
      * @test
      * @dataProvider validLatLonStringProvider
      *
+     * @param string $latLonString
      */
     public function it_can_be_created_from_a_valid_lat_lon_string(
-        string $latLonString,
+        $latLonString,
         Coordinates $expectedCoordinates
-    ): void {
+    ) {
         $coordinates = Coordinates::fromLatLonString($latLonString);
         $this->assertEquals($expectedCoordinates, $coordinates);
     }
@@ -50,15 +50,18 @@ final class CoordinatesTest extends TestCase
      * @test
      * @dataProvider invalidLatLonStringProvider
      *
+     * @param string $latLonString
      */
-    public function it_throws_an_exception_if_the_given_string_is_invalid(string $latLonString): void
+    public function it_throws_an_exception_if_the_given_string_is_invalid($latLonString)
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Coordinates::fromLatLonString($latLonString);
     }
 
-
-    public function validLatLonStringProvider(): array
+    /**
+     * @return array
+     */
+    public function validLatLonStringProvider()
     {
         return [
             [
@@ -134,8 +137,10 @@ final class CoordinatesTest extends TestCase
         ];
     }
 
-
-    public function invalidLatLonStringProvider(): array
+    /**
+     * @return array
+     */
+    public function invalidLatLonStringProvider()
     {
         return [
             ['-45|90'],

@@ -27,7 +27,7 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
     {
         $this->add(
             'organizer_search_projector',
-            function (): OrganizerSearchProjector {
+            function () {
                 $transformer = new JsonDocumentTransformer(
                     new OrganizerTransformer(
                         new JsonTransformerPsrLogger(

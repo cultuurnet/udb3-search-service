@@ -18,8 +18,10 @@ final class OrganizerSearchProjectorTest extends TestCase
      */
     private $indexService;
 
-
-    private OrganizerSearchProjector $projector;
+    /**
+     * @var OrganizerSearchProjector
+     */
+    private $projector;
 
     protected function setUp(): void
     {
@@ -30,7 +32,7 @@ final class OrganizerSearchProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_new_and_updated_organizers(): void
+    public function it_indexes_new_and_updated_organizers()
     {
         $organizerId = '23017cb7-e515-47b4-87c4-780735acc942';
         $organizerUrl = 'organizer/' . $organizerId;

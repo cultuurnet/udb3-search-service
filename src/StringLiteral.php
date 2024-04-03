@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search;
 
 abstract class StringLiteral
 {
-    private string $value;
+    /**
+     * @var string
+     */
+    private $value;
 
     public function __construct(string $value)
     {

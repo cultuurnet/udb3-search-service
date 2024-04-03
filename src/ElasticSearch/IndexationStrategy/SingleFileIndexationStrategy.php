@@ -10,9 +10,15 @@ use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
-    private Client $elasticSearchClient;
+    /**
+     * @var Client
+     */
+    private $elasticSearchClient;
 
-    private LoggerInterface $logger;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
 
     public function __construct(
@@ -28,7 +34,7 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    ): void {
+    ) {
         $id = $jsonDocument->getId();
 
         $this->logger->info("Sending document {$id} to ElasticSearch...");

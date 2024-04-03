@@ -14,7 +14,10 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
 {
     use HasElasticSearchClient;
 
-    private IndexationStrategy $indexationStrategy;
+    /**
+     * @var IndexationStrategy
+     */
+    private $indexationStrategy;
 
     public function __construct(
         Client $elasticSearchClient,

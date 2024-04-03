@@ -8,8 +8,9 @@ final class CheckIndexExists extends AbstractElasticSearchOperation
 {
     /**
      * @param string $indexName
+     * @return bool
      */
-    public function run($indexName): bool
+    public function run($indexName)
     {
         $exists = (bool) $this->client->indices()->exists(['index' => $indexName]);
 

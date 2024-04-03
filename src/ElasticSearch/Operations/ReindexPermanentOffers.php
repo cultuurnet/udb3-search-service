@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class ReindexPermanentOffers extends AbstractReindexUDB3CoreOperation
 {
-    public function getQueryArray(): array
+    /**
+     * @return array
+     */
+    public function getQueryArray()
     {
         return [
             'match' => [

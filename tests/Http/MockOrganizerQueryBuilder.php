@@ -146,7 +146,9 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
-            fn (WorkflowStatus $workflowStatus): string => $workflowStatus->toString(),
+            function (WorkflowStatus $workflowStatus) {
+                return $workflowStatus->toString();
+            },
             $workflowStatuses
         );
         return $c;
@@ -171,7 +173,9 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
-            fn (Language $language): string => (string) $language,
+            function (Language $language) {
+                return (string) $language;
+            },
             $textLanguages
         );
         return $c;
@@ -182,7 +186,9 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
-            fn (Language $language): string => (string) $language,
+            function (Language $language) {
+                return (string) $language;
+            },
             $textLanguages
         );
         return $c;

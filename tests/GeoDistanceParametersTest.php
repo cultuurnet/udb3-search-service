@@ -14,7 +14,7 @@ final class GeoDistanceParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_has_coordinates_and_a_maximum_distance(): void
+    public function it_has_coordinates_and_a_maximum_distance()
     {
         $coordinates = new Coordinates(
             new Latitude(40.443567),

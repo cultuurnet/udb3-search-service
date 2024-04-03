@@ -19,9 +19,11 @@ final class SentryCliServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             SentryHandlerScopeDecorator::class,
-            fn (): SentryHandlerScopeDecorator => SentryHandlerScopeDecorator::forCli(
-                new SentryHandler($this->get(HubInterface::class), Logger::ERROR)
-            )
+            function () {
+                return SentryHandlerScopeDecorator::forCli(
+                    new SentryHandler($this->get(HubInterface::class), Logger::ERROR)
+                );
+            }
         );
     }
 }

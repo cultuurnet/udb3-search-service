@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
-use InvalidArgumentException;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
@@ -24,7 +23,7 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
     public function __construct(string $payloadClass)
     {
         if (!in_array(Serializable::class, class_implements($payloadClass))) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 sprintf(
                     'Class \'%s\' does not implement ' . Serializable::class,
                     $payloadClass

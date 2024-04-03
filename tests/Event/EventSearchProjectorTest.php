@@ -18,8 +18,10 @@ final class EventSearchProjectorTest extends TestCase
      */
     private $indexService;
 
-
-    private EventSearchProjector $projector;
+    /**
+     * @var EventSearchProjector
+     */
+    private $projector;
 
     protected function setUp(): void
     {
@@ -30,7 +32,7 @@ final class EventSearchProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_new_and_updated_events(): void
+    public function it_indexes_new_and_updated_events()
     {
         $eventId = '23017cb7-e515-47b4-87c4-780735acc942';
         $eventUrl = 'event/' . $eventId;

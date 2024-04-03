@@ -12,13 +12,25 @@ use Symfony\Component\Finder\Finder;
 
 final class IndexRegionsCommand extends AbstractElasticSearchCommand
 {
-    private string $indexName;
+    /**
+     * @var string
+     */
+    private $indexName;
 
-    private string $pathToScan;
+    /**
+     * @var string
+     */
+    private $pathToScan;
 
-    private string $fileNameRegex;
+    /**
+     * @var string
+     */
+    private $fileNameRegex;
 
-    private Finder $finder;
+    /**
+     * @var Finder
+     */
+    private $finder;
 
 
     public function __construct(
@@ -38,7 +50,7 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this
             ->setName('geoshapes:index-regions')

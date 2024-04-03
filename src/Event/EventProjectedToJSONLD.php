@@ -8,9 +8,15 @@ use Broadway\Serializer\Serializable;
 
 final class EventProjectedToJSONLD implements Serializable
 {
-    private string $eventId;
+    /**
+     * @var string
+     */
+    private $eventId;
 
-    private string $iri;
+    /**
+     * @var string
+     */
+    private $iri;
 
     public function __construct(string $eventId, string $iri)
     {

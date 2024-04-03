@@ -13,7 +13,7 @@ final class UpdateIndexAlias extends AbstractElasticSearchOperation
     public function run(
         $aliasName,
         $newIndexName
-    ): void {
+    ) {
         $getAliasParams = [
             'name' => $aliasName,
         ];

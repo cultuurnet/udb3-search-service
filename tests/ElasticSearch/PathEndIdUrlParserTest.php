@@ -8,7 +8,10 @@ use PHPUnit\Framework\TestCase;
 
 final class PathEndIdUrlParserTest extends TestCase
 {
-    private PathEndIdUrlParser $parser;
+    /**
+     * @var PathEndIdUrlParser
+     */
+    private $parser;
 
     protected function setUp(): void
     {
@@ -18,7 +21,7 @@ final class PathEndIdUrlParserTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_last_part_of_the_path_as_the_id(): void
+    public function it_returns_the_last_part_of_the_path_as_the_id()
     {
         $url = 'http://foo.bar/event/ab314bf2-703d-4411-ba0d-d2a0c056a7b4';
         $expectedId = 'ab314bf2-703d-4411-ba0d-d2a0c056a7b4';
@@ -29,7 +32,7 @@ final class PathEndIdUrlParserTest extends TestCase
     /**
      * @test
      */
-    public function it_works_with_a_trailing_slash(): void
+    public function it_works_with_a_trailing_slash()
     {
         $url = 'http://foo.bar/event/ab314bf2-703d-4411-ba0d-d2a0c056a7b4/';
         $expectedId = 'ab314bf2-703d-4411-ba0d-d2a0c056a7b4';
@@ -40,7 +43,7 @@ final class PathEndIdUrlParserTest extends TestCase
     /**
      * @test
      */
-    public function it_works_with_trailing_spaces(): void
+    public function it_works_with_trailing_spaces()
     {
         $url = 'http://foo.bar/event/ab314bf2-703d-4411-ba0d-d2a0c056a7b4    ';
         $expectedId = 'ab314bf2-703d-4411-ba0d-d2a0c056a7b4';
@@ -51,7 +54,7 @@ final class PathEndIdUrlParserTest extends TestCase
     /**
      * @test
      */
-    public function it_works_with_a_trailing_slash_and_spaces(): void
+    public function it_works_with_a_trailing_slash_and_spaces()
     {
         $url = 'http://foo.bar/event/ab314bf2-703d-4411-ba0d-d2a0c056a7b4/    ';
         $expectedId = 'ab314bf2-703d-4411-ba0d-d2a0c056a7b4';

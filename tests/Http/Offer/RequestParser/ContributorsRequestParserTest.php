@@ -28,7 +28,7 @@ final class ContributorsRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_should_add_a_contributors_filter(): void
+    public function it_should_add_a_contributors_filter()
     {
         $request = $this->request(
             [

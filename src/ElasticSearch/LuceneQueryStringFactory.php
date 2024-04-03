@@ -8,7 +8,10 @@ use CultuurNet\UDB3\Search\QueryStringFactory;
 
 final class LuceneQueryStringFactory implements QueryStringFactory
 {
-    public function fromString(string $queryString): LuceneQueryString
+    /**
+     * @return LuceneQueryString
+     */
+    public function fromString(string $queryString)
     {
         return new LuceneQueryString($queryString);
     }

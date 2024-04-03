@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\AMQP;
 
-use InvalidArgumentException;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
@@ -15,6 +14,7 @@ use CultuurNet\UDB3\Search\Deserializer\DeserializerNotFoundException;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -26,11 +26,11 @@ final class EventBusForwardingConsumerTest extends TestCase
     private const LOG_ERROR = 'Deserializerlocator error';
     private const LOG_REJECTED = 'message rejected';
 
-    private $eventBus;
-    private $deserializer;
-    private $deserializerLocator;
-    private $channel;
-    private $logger;
+    private MockObject $eventBus;
+    private MockObject $deserializer;
+    private MockObject $deserializerLocator;
+    private MockObject $channel;
+    private MockObject $logger;
     private Closure $consumeCallback;
 
     protected function setUp(): void
@@ -95,7 +95,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->eventBus->expects($this->once())
             ->method('publish')
             ->with($this->callback(
-                function ($domainEventStream) use ($expectedMetadata, $expectedPayload): bool {
+                function ($domainEventStream) use ($expectedMetadata, $expectedPayload) {
                     /** @var DomainEventStream $domainEventStream */
                     $iterator = $domainEventStream->getIterator();
                     $domainMessage = $iterator->offsetGet(0);
@@ -146,7 +146,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->logger
             ->expects($this->exactly(3))
             ->method('info')
-            ->willReturnCallback(function (string $message, $context) use (&$messageLog): void {
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
                 $this->assertEquals(
                     ['correlation_id' => 'my-correlation-id-123'],
                     $context
@@ -194,7 +194,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
-            ->willThrowException(new InvalidArgumentException('Deserializerlocator error'));
+            ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
             ->method('basic_reject')
@@ -223,7 +223,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->logger
             ->expects($this->exactly(2))
             ->method('info')
-            ->willReturnCallback(function (string $message, $context) use (&$messageLog): void {
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
                 if ($message === self::LOG_RECEIVED_MSG || $message === self::LOG_REJECTED) {
                     $this->assertEquals(
                         ['correlation_id' => 'my-correlation-id-123'],
@@ -238,13 +238,13 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->logger
             ->expects($this->once())
             ->method('error')
-            ->willReturnCallback(function (string $message, $context) use (&$messageLog): void {
+            ->willReturnCallback(function ($message, $context) use (&$messageLog) {
                 if ($message !== self::LOG_ERROR) {
                     $this->fail('Unexpected error message: ' . $message);
                 }
 
                 $this->assertEquals(
-                    ['correlation_id' => 'my-correlation-id-123', 'exception' => new InvalidArgumentException('Deserializerlocator error')],
+                    ['correlation_id' => 'my-correlation-id-123', 'exception' => new \InvalidArgumentException('Deserializerlocator error')],
                     $context
                 );
 
@@ -255,7 +255,7 @@ final class EventBusForwardingConsumerTest extends TestCase
         $this->deserializerLocator->expects($this->once())
             ->method('getDeserializerForContentType')
             ->with('application/vnd.cultuurnet.udb3-events.dummy-event+json')
-            ->willThrowException(new InvalidArgumentException('Deserializerlocator error'));
+            ->willThrowException(new \InvalidArgumentException('Deserializerlocator error'));
 
         $this->channel->expects($this->once())
             ->method('basic_reject')

@@ -9,7 +9,7 @@ final class PagedResultSetResponseValidator implements ElasticSearchResponseVali
     /**
      * @throws InvalidElasticSearchResponseException
      */
-    public function validate(array $responseData): void
+    public function validate(array $responseData)
     {
         if (!isset($responseData['hits'])) {
             throw new InvalidElasticSearchResponseException(

@@ -13,7 +13,7 @@ final class CreateLowerCaseStandardAnalyzerCommand extends AbstractElasticSearch
     /**
      * @inheritdoc
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this
             ->setName('lowercase-standard-analyzer:create')

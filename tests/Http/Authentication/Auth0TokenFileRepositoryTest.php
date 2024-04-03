@@ -11,8 +11,10 @@ final class Auth0TokenFileRepositoryTest extends TestCase
 {
     private const CACHE_FILE = __DIR__ . '/auth0-token-cache.json';
 
-
-    private Auth0TokenFileRepository $auth0TokenFileRepository;
+    /**
+     * @var Auth0TokenFileRepository
+     */
+    private $auth0TokenFileRepository;
 
     protected function setUp(): void
     {

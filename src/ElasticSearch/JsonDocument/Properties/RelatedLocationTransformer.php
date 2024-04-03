@@ -10,19 +10,40 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class RelatedLocationTransformer implements JsonTransformer
 {
-    private IdUrlParserInterface $idUrlParser;
+    /**
+     * @var IdUrlParserInterface
+     */
+    private $idUrlParser;
 
-    private IdentifierTransformer $identifierTransformer;
+    /**
+     * @var IdentifierTransformer
+     */
+    private $identifierTransformer;
 
-    private NameTransformer $nameTransformer;
+    /**
+     * @var NameTransformer
+     */
+    private $nameTransformer;
 
-    private TermsTransformer $termsTransformer;
+    /**
+     * @var TermsTransformer
+     */
+    private $termsTransformer;
 
-    private LabelsTransformer $labelsTransformer;
+    /**
+     * @var LabelsTransformer
+     */
+    private $labelsTransformer;
 
-    private AddressTransformer $addressTransformer;
+    /**
+     * @var AddressTransformer
+     */
+    private $addressTransformer;
 
-    private JsonTransformerLogger $logger;
+    /**
+     * @var JsonTransformerLogger
+     */
+    private $logger;
 
     public function __construct(
         JsonTransformerLogger $logger,
@@ -55,12 +76,14 @@ final class RelatedLocationTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['location'] ??= [];
+        $draft['location'] = $draft['location'] ?? [];
         $draft['location'] = $this->identifierTransformer->transform($from['location'], $draft['location']);
 
         if (isset($from['location']['duplicatedBy'])) {
             $idsOfDuplicates = array_map(
-                fn (string $iriOfDuplicate) => $this->idUrlParser->getIdFromUrl($iriOfDuplicate),
+                function (string $iriOfDuplicate) {
+                    return $this->idUrlParser->getIdFromUrl($iriOfDuplicate);
+                },
                 $from['location']['duplicatedBy']
             );
 

@@ -10,11 +10,20 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class RelatedOrganizerTransformer implements JsonTransformer
 {
-    private IdentifierTransformer $identifierTransformer;
+    /**
+     * @var IdentifierTransformer
+     */
+    private $identifierTransformer;
 
-    private NameTransformer $nameTransformer;
+    /**
+     * @var NameTransformer
+     */
+    private $nameTransformer;
 
-    private LabelsTransformer $labelsTransformer;
+    /**
+     * @var LabelsTransformer
+     */
+    private $labelsTransformer;
 
     public function __construct(
         JsonTransformerLogger $logger,
@@ -39,7 +48,7 @@ final class RelatedOrganizerTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['organizer'] ??= [];
+        $draft['organizer'] = $draft['organizer'] ?? [];
         $draft['organizer'] = $this->identifierTransformer->transform($from['organizer'], $draft['organizer']);
         $draft['organizer'] = $this->nameTransformer->transform($from['organizer'], $draft['organizer']);
         $draft['organizer'] = $this->labelsTransformer->transform($from['organizer'], $draft['organizer']);

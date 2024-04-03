@@ -8,9 +8,15 @@ use Broadway\Serializer\Serializable;
 
 final class OrganizerProjectedToJSONLD implements Serializable
 {
-    private string $id;
+    /**
+     * @var string
+     */
+    private $id;
 
-    private string $iri;
+    /**
+     * @var string
+     */
+    private $iri;
 
     public function __construct(string $id, string $iri)
     {

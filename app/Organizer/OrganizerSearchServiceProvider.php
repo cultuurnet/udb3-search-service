@@ -38,7 +38,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
     {
         $this->add(
             OrganizerSearchController::class,
-            function (): OrganizerSearchController {
+            function () {
                 $requestParser = (new CompositeOrganizerRequestParser())
                     ->withParser(new IdRequestParser())
                     ->withParser(new DistanceOrganizerRequestParser(

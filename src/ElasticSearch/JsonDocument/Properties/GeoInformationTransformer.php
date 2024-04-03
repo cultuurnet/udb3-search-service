@@ -63,7 +63,9 @@ final class GeoInformationTransformer implements JsonTransformer
         }
 
         return array_map(
-            fn (RegionId $regionId): string => $regionId->toString(),
+            function (RegionId $regionId) {
+                return $regionId->toString();
+            },
             $regionIds
         );
     }

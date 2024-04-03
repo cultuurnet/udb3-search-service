@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class ReindexUDB3Core extends AbstractReindexUDB3CoreOperation
 {
-    public function getQueryArray(): array
+    /**
+     * @return array
+     */
+    public function getQueryArray()
     {
         return [
             // @see https://github.com/elastic/elasticsearch-php/issues/495

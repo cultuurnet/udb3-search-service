@@ -50,7 +50,7 @@ final class InstallGeoShapesCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function configure(): void
+    protected function configure()
     {
         $this->setName('geoshapes:install')
             ->setDescription(

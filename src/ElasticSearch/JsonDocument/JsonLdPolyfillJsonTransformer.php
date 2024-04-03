@@ -25,10 +25,12 @@ final class JsonLdPolyfillJsonTransformer implements JsonTransformer
         }
 
         $json['subEvent'] = array_map(
-            fn (array $subEvent, int $index): array => array_merge(
-                ['id' => $index],
-                $subEvent
-            ),
+            function (array $subEvent, int $index) {
+                return array_merge(
+                    ['id' => $index],
+                    $subEvent
+                );
+            },
             $json['subEvent'],
             range(0, count($json['subEvent']) - 1)
         );

@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Deserializer;
 
-use Exception;
-
-final class DataValidationException extends Exception
+final class DataValidationException extends \Exception
 {
     /**
      * @var string[]
      */
-    private array $validationMessages = [];
+    private $validationMessages = [];
 
     /**
      * @param string[] $validationMessages
      */
-    public function setValidationMessages(array $validationMessages): void
+    public function setValidationMessages(array $validationMessages)
     {
         $this->validationMessages = $validationMessages;
     }
