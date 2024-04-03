@@ -33,6 +33,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
+     * @todo Remove docblock when upgrading to PHP8
      * @param string|bool|null $defaultValue
      * @return mixed|null
      */
