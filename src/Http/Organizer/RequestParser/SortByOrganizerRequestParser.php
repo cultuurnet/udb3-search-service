@@ -23,10 +23,18 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
         }
 
         $sortBuilders = [
-            'score' => fn (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface => $queryBuilder->withSortByScore($sortOrder),
-            'completeness' => fn (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface => $queryBuilder->withSortByCompleteness($sortOrder),
-            'created' => fn (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface => $queryBuilder->withSortByCreated($sortOrder),
-            'modified' => fn (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface => $queryBuilder->withSortByModified($sortOrder),
+            'score' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
+                return $queryBuilder->withSortByScore($sortOrder);
+            },
+            'completeness' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
+                return $queryBuilder->withSortByCompleteness($sortOrder);
+            },
+            'created' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
+                return $queryBuilder->withSortByCreated($sortOrder);
+            },
+            'modified' => function (OrganizerQueryBuilderInterface $queryBuilder, SortOrder $sortOrder): OrganizerQueryBuilderInterface {
+                return $queryBuilder->withSortByModified($sortOrder);
+            },
         ];
 
         foreach ($sorts as $field => $order) {
