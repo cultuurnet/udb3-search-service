@@ -32,16 +32,14 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
         $this->auth0Client = $auth0Client;
     }
 
-    /** @return static */
-    public function withIncludeMetadata()
+    public function withIncludeMetadata(): self
     {
         $clone = clone $this;
         $clone->includeMetadata = true;
         return $clone;
     }
 
-    /** @return static */
-    public function withEmbedContributors()
+    public function withEmbedContributors(): self
     {
         $clone = clone $this;
         $clone->embedContributors = true;
@@ -87,7 +85,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     private function getQuery(): array
     {
-        if (!$this->includeMetadata && ! $this->embedContributors) {
+        if (!$this->includeMetadata && !$this->embedContributors) {
             return [];
         }
 
@@ -114,14 +112,13 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     private function getHeader(): array
     {
-        $token = $this->auth0Token;
-        if ($token === null) {
+        if ($this->auth0Token === null) {
             return [];
         }
 
         return [
             'headers' => [
-                'Authorization' => 'Bearer ' . $token->getToken(),
+                'Authorization' => 'Bearer ' . $this->auth0Token->getToken(),
             ],
         ];
     }
