@@ -57,11 +57,6 @@ final class Auth0Client implements LoggerAwareInterface
             ]
         );
 
-        if ($response === null) {
-            $this->logger->error('Auth0 error when getting token: unknown');
-            return null;
-        }
-
         if ($response->getStatusCode() !== 200) {
             $message = 'Auth0 error when getting token: ' . $response->getStatusCode();
 
@@ -93,11 +88,6 @@ final class Auth0Client implements LoggerAwareInterface
                 'headers' => ['Authorization' => 'Bearer ' . $token],
             ]
         );
-
-        if ($response === null) {
-            $this->logger->error('Auth0 error when getting metadata: unknown');
-            return null;
-        }
 
         if ($response->getStatusCode() !== 200) {
             $message = 'Auth0 error when getting metadata: ' . $response->getStatusCode();

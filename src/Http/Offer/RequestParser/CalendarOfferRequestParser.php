@@ -55,7 +55,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         // the top level if they are not combined with status or each other.
         switch (true) {
             case $requiresSubEventQueryParameters:
-                $offerQueryBuilder = $offerQueryBuilder->withSubEventFilter(
+                return $offerQueryBuilder->withSubEventFilter(
                     (new SubEventQueryParameters())
                         ->withDateFrom($dateFrom)
                         ->withDateTo($dateTo)
@@ -64,28 +64,18 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
                         ->withStatuses($statuses)
                         ->withBookingAvailability($bookingAvailability)
                 );
-                return $offerQueryBuilder;
-                break;
 
             case $hasDates:
-                $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
-                return $offerQueryBuilder;
-                break;
+                return $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
 
             case $hasStatuses:
-                $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
-                return $offerQueryBuilder;
-                break;
+                return $offerQueryBuilder->withStatusFilter(...$statuses);
 
             case $hasBookingAvailability:
-                $offerQueryBuilder = $offerQueryBuilder->withBookingAvailabilityFilter($bookingAvailability);
-                return $offerQueryBuilder;
-                break;
+                return $offerQueryBuilder->withBookingAvailabilityFilter($bookingAvailability);
 
             case $hasLocalTimes:
-                $offerQueryBuilder = $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
-                return $offerQueryBuilder;
-                break;
+                return $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
         }
 
         return $offerQueryBuilder;

@@ -32,10 +32,10 @@ final class ApiRequest implements ApiRequestInterface
         return $params[$name] ?? $default;
     }
 
-    public function getQueryParamsKeys(): ?array
+    public function getQueryParamsKeys(): array
     {
         $params = $this->request->getQueryParams();
-        return $params === null ? null : array_keys($params);
+        return empty($params) ? [] : array_keys($params);
     }
 
     public function getQueryParameterBag(): ParameterBagInterface

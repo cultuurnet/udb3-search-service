@@ -222,18 +222,15 @@ final class CalendarTransformer implements JsonTransformer
         switch ($from['calendarType']) {
             case 'single':
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
-                break;
 
             case 'multiple':
                 return $from;
-                break;
 
             case 'periodic':
                 if (isset($from['openingHours'])) {
                     return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
                 }
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
-                break;
 
             case 'permanent':
                 if (isset($from['openingHours'])) {
@@ -247,14 +244,12 @@ final class CalendarTransformer implements JsonTransformer
                     ],
                 ];
                 return $from;
-                break;
 
             default:
                 $this->logger->logWarning(
                     "Could not polyfill subEvent for unknown calendarType '{$from['calendarType']}'."
                 );
                 return $from;
-                break;
         }
     }
 
@@ -334,7 +329,7 @@ final class CalendarTransformer implements JsonTransformer
     /**
      * @param array $openingHours
      *   JSON-LD of the openingHours property of an event/place, as an associative array
-     * @return array<int,array<int,array<int,string>>>
+     * @return array<string, array<int<0, max>, array<string, mixed>>>
      *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
      *   enclosing array
      */
@@ -379,7 +374,7 @@ final class CalendarTransformer implements JsonTransformer
             }
         }
 
-        foreach ($openingHoursByDay as $day => &$openingHoursForSpecificDay) {
+        foreach ($openingHoursByDay as &$openingHoursForSpecificDay) {
             sort($openingHoursForSpecificDay);
         }
 

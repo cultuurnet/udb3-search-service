@@ -47,6 +47,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $this->search->setSize(30);
     }
 
+    /**
+     * @return static
+     */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -59,6 +62,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         );
     }
 
+    /**
+     * @return static
+     */
     public function withTextQuery(string $text, Language ...$textLanguages)
     {
         if (empty($textLanguages)) {
@@ -73,6 +79,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         );
     }
 
+    /**
+     * @return static
+     */
     public function withStartAndLimit(Start $start, Limit $limit)
     {
         $c = $this->getClone();
@@ -124,14 +133,13 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $parameterName
      * @throws UnsupportedParameterValue
      */
     protected function guardNaturalIntegerRange(
-        $parameterName,
+        string $parameterName,
         Natural $min = null,
         Natural $max = null
-    ) {
+    ): void {
         if (!is_null($min) && !is_null($max) && $min->toNative() > $max->toNative()) {
             throw new UnsupportedParameterValue(
                 "Minimum {$parameterName} should be smaller or equal to maximum {$parameterName}."
@@ -140,14 +148,13 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $parameterName
      * @throws UnsupportedParameterValue
      */
     protected function guardDateRange(
-        $parameterName,
+        string $parameterName,
         DateTimeImmutable $from = null,
         DateTimeImmutable $to = null
-    ) {
+    ): void {
         if (!is_null($from) && !is_null($to) && $from > $to) {
             throw new UnsupportedParameterValue(
                 "Start {$parameterName} date should be equal to or smaller than end {$parameterName} date."
@@ -156,11 +163,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
-     * @param string $term
      * @return static
      */
-    protected function withMatchQuery($fieldName, $term)
+    protected function withMatchQuery(string $fieldName, string $term)
     {
         $matchQuery = new MatchQuery($fieldName, $term);
 
@@ -170,11 +175,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
-     * @param string $term
+     * @param string|bool|int $term
      * @return static
      */
-    protected function withTermQuery($fieldName, $term)
+    protected function withTermQuery(string $fieldName, $term)
     {
         $termQuery = new TermQuery($fieldName, $term);
 
@@ -226,10 +230,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string[] $fieldNames
-     * @param string $term
      * @return static
      */
-    protected function withMultiFieldMatchQuery(array $fieldNames, $term)
+    protected function withMultiFieldMatchQuery(array $fieldNames, string $term)
     {
         $nestedBoolQuery = new BoolQuery();
 
@@ -244,11 +247,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $fieldName
-     * @param string $term
      * @return static
      */
-    protected function withMatchPhraseQuery($fieldName, $term)
+    protected function withMatchPhraseQuery(string $fieldName, string $term)
     {
         $matchPhraseQuery = new MatchPhraseQuery($fieldName, $term);
 
@@ -306,13 +307,14 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
     /**
      * @param string[] $fields
+     * @return static
      */
     protected function withQueryStringQuery(
         string $queryString,
         array $fields = [],
         string $type = BoolQuery::MUST,
         string $defaultOperator = 'OR'
-    ): self {
+    ) {
         $parameters = [];
         if (!empty($fields)) {
             $parameters['fields'] = $fields;
@@ -328,7 +330,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
-    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries): self
+    /**
+     * @return static
+     */
+    protected function withBooleanFilterQueryOnNestedObject(string $path, BuilderInterface ...$queries)
     {
         $boolQuery = new BoolQuery();
         foreach ($queries as $individualQuery) {
@@ -354,12 +359,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string $field
-     * @param string $order
-     * @param array $parameters
      * @return static
      */
-    protected function withFieldSort($field, $order, $parameters = [])
+    protected function withFieldSort(string $field, string $order, array $parameters = [])
     {
         $sort = new FieldSort($field, $order, $parameters);
 
@@ -368,7 +370,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
-    public function withShardPreference(string $preference): self
+    /**
+     * @return static
+     */
+    public function withShardPreference(string $preference)
     {
         $queryBuilder = clone $this;
         $queryBuilder->shardPreference = $preference;

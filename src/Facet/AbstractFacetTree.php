@@ -9,7 +9,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     private string $key;
 
     /**
-     * @var FacetNodeInterface[]
+     * @var FacetNode[]
      */
     private array $children = [];
 

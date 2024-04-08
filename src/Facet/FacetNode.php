@@ -29,7 +29,6 @@ final class FacetNode extends AbstractFacetTree
         return $this->name;
     }
 
-
     public function getCount(): int
     {
         return $this->count;

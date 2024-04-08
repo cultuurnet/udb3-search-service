@@ -15,31 +15,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    private $latestIndexName;
+    private string $latestIndexName;
+    private string $writeAlias;
+    private string $readAlias;
 
-    /**
-     * @var string
-     */
-    private $writeAlias;
-
-    /**
-     * @var string
-     */
-    private $readAlias;
-
-    /**
-     * @param string $latestIndexName
-     * @param string $writeAlias
-     * @param string $readAlias
-     */
     public function __construct(
         Client $client,
-        $latestIndexName,
-        $writeAlias,
-        $readAlias
+        string $latestIndexName,
+        string $writeAlias,
+        string $readAlias
     ) {
         parent::__construct($client);
         $this->latestIndexName = $latestIndexName;
@@ -88,7 +72,7 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
             return 0;
         }
 
-        if ($latestIndexExists && $force) {
+        if ($latestIndexExists) {
             // Latest index already exists, but force enabled so continue.
             $logger->warning('Latest udb3_core index exists already. Force enabled so continuing installation.');
         } else {

@@ -104,13 +104,13 @@ final class FacetTreeTest extends TestCase
 
     private function assertChildrenEquals(array $expected, array $actual): void
     {
-        $this->assertEquals(count($expected), count($actual));
+        $this->assertSameSize($expected, $actual);
 
-        for ($i = 0; $i < count($expected); $i++) {
+        $iMax = count($expected);
+        for ($i = 0; $i < $iMax; $i++) {
             $this->assertNodeEquals($expected[$i], $actual[$i]);
         }
     }
-
 
     private function assertNodeEquals(FacetNode $expected, FacetNode $actual): void
     {

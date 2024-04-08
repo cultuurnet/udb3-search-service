@@ -6,21 +6,10 @@ namespace CultuurNet\UDB3\Search\AMQP\Dummies;
 
 final class DummyEventNotSerializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    public string $id;
+    public string $content;
 
-    /**
-     * @var string
-     */
-    private $content;
-
-    /**
-     * @param string $id
-     * @param string $content
-     */
-    public function __construct($id, $content)
+    public function __construct(string $id, string $content)
     {
         $this->id = $id;
         $this->content = $content;
