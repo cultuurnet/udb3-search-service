@@ -106,7 +106,8 @@ final class FacetTreeTest extends TestCase
     {
         $this->assertSameSize($expected, $actual);
 
-        for ($i = 0, $iMax = count($expected); $i < $iMax; $i++) {
+        $iMax = count($expected);
+        for ($i = 0; $i < $iMax; $i++) {
             $this->assertNodeEquals($expected[$i], $actual[$i]);
         }
     }
