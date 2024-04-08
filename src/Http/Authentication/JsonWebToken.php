@@ -22,9 +22,9 @@ final class JsonWebToken
 
     public function __construct(string $jwt)
     {
-        // Dirty: This docblock is needed for phpstan - a more elegant solution is welcome.
-        /** @var UnencryptedToken $token */
         $token = (new Parser(new JoseEncoder()))->parse($jwt);
+        // Need this assert to make PHPstan happy
+        assert($token instanceof UnencryptedToken, 'Token should be an instance of UnencryptedToken');
         $this->token = $token;
     }
 

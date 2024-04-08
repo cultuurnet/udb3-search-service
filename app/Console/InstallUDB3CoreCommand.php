@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
 {
-    private string$latestIndexName;
+    private string $latestIndexName;
     private string $writeAlias;
     private string $readAlias;
 
