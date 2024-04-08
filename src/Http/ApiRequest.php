@@ -118,7 +118,7 @@ final class ApiRequest implements ApiRequestInterface
      *     name using a case-insensitive string comparison. Returns false if
      *     no matching header name is found in the message.
      */
-    public function hasHeader($name): bool
+    public function hasHeader(string $name): bool
     {
         return $this->request->hasHeader($name);
     }
@@ -137,7 +137,7 @@ final class ApiRequest implements ApiRequestInterface
      *    header. If the header does not appear in the message, this method MUST
      *    return an empty array.
      */
-    public function getHeader($name)
+    public function getHeader(string $name): array
     {
         return $this->request->getHeader($name);
     }
@@ -161,7 +161,7 @@ final class ApiRequest implements ApiRequestInterface
      *    concatenated together using a comma. If the header does not appear in
      *    the message, this method MUST return an empty string.
      */
-    public function getHeaderLine($name)
+    public function getHeaderLine(string $name): string
     {
         return $this->request->getHeaderLine($name);
     }
@@ -181,7 +181,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @throws InvalidArgumentException for invalid header names or values.
      */
-    public function withHeader($name, $value)
+    public function withHeader(string $name, $value): ApiRequest
     {
         $request = $this->request->withHeader($name, $value);
         return new self($request);
@@ -203,7 +203,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @throws InvalidArgumentException for invalid header names or values.
      */
-    public function withAddedHeader($name, $value)
+    public function withAddedHeader(string $name, $value): ApiRequest
     {
         $request = $this->request->withAddedHeader($name, $value);
         return new self($request);
@@ -221,7 +221,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param string $name Case-insensitive header field name to remove.
      * @return static
      */
-    public function withoutHeader($name)
+    public function withoutHeader(string $name): ApiRequest
     {
         $request = $this->request->withoutHeader($name);
         return new self($request);
@@ -232,7 +232,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return StreamInterface Returns the body as a stream.
      */
-    public function getBody()
+    public function getBody(): StreamInterface
     {
         return $this->request->getBody();
     }
@@ -250,7 +250,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @throws InvalidArgumentException When the body is not valid.
      */
-    public function withBody(StreamInterface $body)
+    public function withBody(StreamInterface $body): self
     {
         $request = $this->request->withBody($body);
         return new self($request);
@@ -270,9 +270,8 @@ final class ApiRequest implements ApiRequestInterface
      * If no URI is available, and no request-target has been specifically
      * provided, this method MUST return the string "/".
      *
-     * @return string
      */
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         return $this->request->getRequestTarget();
     }
@@ -293,7 +292,7 @@ final class ApiRequest implements ApiRequestInterface
      *     request-target forms allowed in request messages)
      * @return static
      */
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget($requestTarget): self
     {
         $request = $this->request->withRequestTarget($requestTarget);
         return new self($request);
@@ -304,7 +303,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return string Returns the request method.
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->request->getMethod();
     }
@@ -324,7 +323,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @throws InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod($method)
+    public function withMethod(string $method): self
     {
         $request = $this->request->withMethod($method);
         return new self($request);
@@ -339,7 +338,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return UriInterface Returns a UriInterface instance
      *     representing the URI of the request.
      */
-    public function getUri()
+    public function getUri(): UriInterface
     {
         return $this->request->getUri();
     }
@@ -374,7 +373,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, bool $preserveHost = false): self
     {
         $request = $this->request->withUri($uri, $preserveHost);
         return new self($request);
@@ -387,9 +386,8 @@ final class ApiRequest implements ApiRequestInterface
      * typically derived from PHP's $_SERVER superglobal. The data IS NOT
      * REQUIRED to originate from $_SERVER.
      *
-     * @return array
      */
-    public function getServerParams()
+    public function getServerParams(): array
     {
         return $this->request->getServerParams();
     }
@@ -402,9 +400,8 @@ final class ApiRequest implements ApiRequestInterface
      * The data MUST be compatible with the structure of the $_COOKIE
      * superglobal.
      *
-     * @return array
      */
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         return $this->request->getCookieParams();
     }
@@ -426,7 +423,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param array $cookies Array of key/value pairs representing cookies.
      * @return static
      */
-    public function withCookieParams(array $cookies)
+    public function withCookieParams(array $cookies): self
     {
         $request = $this->request->withCookieParams($cookies);
         return new self($request);
@@ -442,9 +439,8 @@ final class ApiRequest implements ApiRequestInterface
      * values, you may need to parse the query string from `getUri()->getQuery()`
      * or from the `QUERY_STRING` server param.
      *
-     * @return array
      */
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->request->getQueryParams();
     }
@@ -471,7 +467,7 @@ final class ApiRequest implements ApiRequestInterface
      *     $_GET.
      * @return static
      */
-    public function withQueryParams(array $query)
+    public function withQueryParams(array $query): self
     {
         $request = $this->request->withQueryParams($query);
         return new self($request);
@@ -489,7 +485,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return array An array tree of UploadedFileInterface instances; an empty
      *     array MUST be returned if no data is present.
      */
-    public function getUploadedFiles()
+    public function getUploadedFiles(): array
     {
         return $this->request->getUploadedFiles();
     }
@@ -505,7 +501,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @throws InvalidArgumentException if an invalid structure is provided.
      */
-    public function withUploadedFiles(array $uploadedFiles)
+    public function withUploadedFiles(array $uploadedFiles): self
     {
         $request = $this->request->withUploadedFiles($uploadedFiles);
         return new self($request);
@@ -559,7 +555,7 @@ final class ApiRequest implements ApiRequestInterface
      * @throws InvalidArgumentException if an unsupported argument type is
      *     provided.
      */
-    public function withParsedBody($data)
+    public function withParsedBody($data): self
     {
         $request = $this->request->withParsedBody($data);
         return new self($request);
@@ -576,7 +572,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return array Attributes derived from the request.
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->request->getAttributes();
     }
@@ -595,7 +591,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param mixed $default Default value to return if the attribute does not exist.
      * @see getAttributes()
      */
-    public function getAttribute($name, $default = null)
+    public function getAttribute(string $name, $default = null): array
     {
         return $this->request->getAttribute($name, $default);
     }
@@ -615,7 +611,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withAttribute($name, $value)
+    public function withAttribute(string $name, $value): self
     {
         $request = $this->request->withAttribute($name, $value);
         return new self($request);
@@ -635,7 +631,7 @@ final class ApiRequest implements ApiRequestInterface
      * @return static
      * @see getAttributes()
      */
-    public function withoutAttribute($name)
+    public function withoutAttribute(string $name): ApiRequest
     {
         $request = $this->request->withoutAttribute($name);
         return new self($request);
