@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Facet;
 
-use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
 
 final class FacetNode extends AbstractFacetTree

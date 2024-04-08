@@ -28,7 +28,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     }
 
     /**
-     * @return FacetNodeInterface[]
+     * @return FacetNode[]
      */
     public function getChildren(): array
     {
@@ -40,7 +40,7 @@ abstract class AbstractFacetTree implements FacetTreeInterface
         $this->key = $key;
     }
 
-    private function setChildren(FacetNodeInterface ...$facetMembers): void
+    private function setChildren(FacetNode ...$facetMembers): void
     {
         $this->children = $facetMembers;
     }
