@@ -15,9 +15,6 @@ final class ApiRequest implements ApiRequestInterface
 {
     private ServerRequestInterface $request;
 
-    /**
-     * ApiRequest constructor.
-     */
     public function __construct(ServerRequestInterface $request)
     {
         $this->request = $request;
@@ -59,7 +56,7 @@ final class ApiRequest implements ApiRequestInterface
      *
      * @return string HTTP protocol version.
      */
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->request->getProtocolVersion();
     }
@@ -77,7 +74,7 @@ final class ApiRequest implements ApiRequestInterface
      * @param string $version HTTP protocol version
      * @return static
      */
-    public function withProtocolVersion($version)
+    public function withProtocolVersion(string $version): self
     {
         $request = $this->request->withProtocolVersion($version);
         return new self($request);
@@ -108,7 +105,7 @@ final class ApiRequest implements ApiRequestInterface
      *     key MUST be a header name, and each value MUST be an array of strings
      *     for that header.
      */
-    public function getHeaders()
+    public function getHeaders(): array
     {
         return $this->request->getHeaders();
     }
@@ -121,7 +118,7 @@ final class ApiRequest implements ApiRequestInterface
      *     name using a case-insensitive string comparison. Returns false if
      *     no matching header name is found in the message.
      */
-    public function hasHeader($name)
+    public function hasHeader($name): bool
     {
         return $this->request->hasHeader($name);
     }

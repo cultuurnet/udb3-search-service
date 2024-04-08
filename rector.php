@@ -23,7 +23,8 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         /*
-        Remove these skips once we upgrade to PHP 8 and we have a union type
+         * See https://jira.publiq.be/browse/III-6139
+        Remove these skips once we upgrade to PHP 8, and we have a union type
         Currently it will change code:
             @var RegionServiceInterface|MockObject
         to:

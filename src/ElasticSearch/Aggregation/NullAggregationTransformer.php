@@ -19,7 +19,7 @@ final class NullAggregationTransformer implements AggregationTransformerInterfac
 
     /**
      * @inheritdoc
-     * @never-return
+     * @return never
      */
     public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
