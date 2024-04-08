@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\QueryBuilderFactory;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -33,21 +34,6 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
                 => $queryBuilder->withSortByModified($sortOrder),
         ];
 
-        foreach ($sorts as $field => $order) {
-            if (!isset($sortBuilders[$field])) {
-                throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
-            }
-
-            try {
-                $sortOrder = new SortOrder($order);
-            } catch (UnsupportedParameterValue $e) {
-                throw new UnsupportedParameterValue("Invalid sort order '{$order}' given.");
-            }
-
-            $callback = $sortBuilders[$field];
-            $organizerQueryBuilder = call_user_func($callback, $organizerQueryBuilder, $sortOrder);
-        }
-
-        return $organizerQueryBuilder;
+        return QueryBuilderFactory::getQueryBuilder($sorts, $sortBuilders, $organizerQueryBuilder);
     }
 }
