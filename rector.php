@@ -36,7 +36,4 @@ return RectorConfig::configure()
         TypedPropertyFromStrictSetUpRector::class,
         TypedPropertyFromAssignsRector::class,
         // End skipping until PHP 8
-
-        // We don't always want short array functions because they are more difficult to read (longer line) than old school closure syntax
-        ClosureToArrowFunctionRector::class
     ]);
