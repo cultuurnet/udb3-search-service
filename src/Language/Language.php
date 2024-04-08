@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class Language
 {
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {

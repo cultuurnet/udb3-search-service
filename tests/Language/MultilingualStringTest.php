@@ -4,29 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class MultilingualStringTest extends TestCase
 {
-    /**
-     * @var Language
-     */
-    private $originalLanguage;
+    private Language $originalLanguage;
 
-    /**
-     * @var string
-     */
-    private $originalString;
+
+    private string $originalString;
 
     /**
      * @var string[]
      */
-    private $translations;
+    private array $translations;
 
-    /**
-     * @var MultilingualString
-     */
-    private $multilingualString;
+
+    private MultilingualString $multilingualString;
 
     protected function setUp(): void
     {
@@ -79,7 +73,7 @@ final class MultilingualStringTest extends TestCase
      */
     public function it_does_not_allow_translations_of_the_original_language(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Can not translate to original language.');
 
         $this->multilingualString->withTranslation(

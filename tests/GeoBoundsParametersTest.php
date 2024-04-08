@@ -14,7 +14,7 @@ final class GeoBoundsParametersTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_north_east_and_south_west_to_north_west_and_south_east()
+    public function it_converts_north_east_and_south_west_to_north_west_and_south_east(): void
     {
         $givenNorthEast = new Coordinates(
             new Latitude(34.2355209),

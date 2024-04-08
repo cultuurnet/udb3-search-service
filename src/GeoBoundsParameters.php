@@ -8,25 +8,13 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
 final class GeoBoundsParameters
 {
-    /**
-     * @var Coordinates
-     */
-    private $northWestCoordinates;
+    private Coordinates $northWestCoordinates;
 
-    /**
-     * @var Coordinates
-     */
-    private $northEastCoordinates;
+    private Coordinates $northEastCoordinates;
 
-    /**
-     * @var Coordinates
-     */
-    private $southWestCoordinates;
+    private Coordinates $southWestCoordinates;
 
-    /**
-     * @var Coordinates
-     */
-    private $southEastCoordinates;
+    private Coordinates $southEastCoordinates;
 
     public function __construct(Coordinates $northEastCoordinates, Coordinates $southWestCoordinates)
     {
@@ -44,34 +32,26 @@ final class GeoBoundsParameters
         );
     }
 
-    /**
-     * @return Coordinates
-     */
-    public function getNorthWestCoordinates()
+
+    public function getNorthWestCoordinates(): Coordinates
     {
         return $this->northWestCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
-    public function getNorthEastCoordinates()
+
+    public function getNorthEastCoordinates(): Coordinates
     {
         return $this->northEastCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
-    public function getSouthWestCoordinates()
+
+    public function getSouthWestCoordinates(): Coordinates
     {
         return $this->southWestCoordinates;
     }
 
-    /**
-     * @return Coordinates
-     */
-    public function getSouthEastCoordinates()
+
+    public function getSouthEastCoordinates(): Coordinates
     {
         return $this->southEastCoordinates;
     }

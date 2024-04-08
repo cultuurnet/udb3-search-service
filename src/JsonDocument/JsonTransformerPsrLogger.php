@@ -8,8 +8,7 @@ use Psr\Log\LoggerInterface;
 
 final class JsonTransformerPsrLogger implements JsonTransformerLogger
 {
-    /** @var  LoggerInterface */
-    private $psrLogger;
+    private LoggerInterface $psrLogger;
 
 
     public function __construct(LoggerInterface $psrLogger)

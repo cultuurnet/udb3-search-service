@@ -16,15 +16,10 @@ use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
-    /**
-     * @var NodeMapAggregationTransformer
-     */
-    private $aggregationTransformer;
+    private NodeMapAggregationTransformer $aggregationTransformer;
 
-    /**
-     * @var ElasticSearchPagedResultSetFactory
-     */
-    private $factory;
+
+    private ElasticSearchPagedResultSetFactory $factory;
 
     protected function setUp(): void
     {
@@ -48,7 +43,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_paged_result_set_after_transforming_each_result()
+    public function it_returns_a_paged_result_set_after_transforming_each_result(): void
     {
         $response = [
             'hits' => [

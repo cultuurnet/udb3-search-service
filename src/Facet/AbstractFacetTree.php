@@ -6,31 +6,23 @@ namespace CultuurNet\UDB3\Search\Facet;
 
 abstract class AbstractFacetTree implements FacetTreeInterface
 {
-    /**
-     * @var string
-     */
-    private $key;
+    private string $key;
 
     /**
-     * @var FacetNode[]
+     * @var FacetNodeInterface[]
      */
-    private $children = [];
+    private array $children = [];
 
-    /**
-     * @param string $key
-     */
     public function __construct(
-        $key,
+        string $key,
         array $children = []
     ) {
         $this->setKey($key);
         $this->setChildren(...$children);
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+
+    public function getKey(): string
     {
         return $this->key;
     }
@@ -38,26 +30,17 @@ abstract class AbstractFacetTree implements FacetTreeInterface
     /**
      * @return FacetNode[]
      */
-    public function getChildren()
+    public function getChildren(): array
     {
         return $this->children;
     }
 
-    /**
-     * @param string $key
-     */
-    private function setKey($key)
+    private function setKey(string $key): void
     {
-        if (!is_string($key)) {
-            throw new \InvalidArgumentException('Facet tree key should be a string.');
-        }
         $this->key = $key;
     }
 
-    /**
-     * @param FacetNode[] ...$facetMembers
-     */
-    private function setChildren(FacetNode ...$facetMembers)
+    private function setChildren(FacetNode ...$facetMembers): void
     {
         $this->children = $facetMembers;
     }

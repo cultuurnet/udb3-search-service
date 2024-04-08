@@ -30,7 +30,7 @@ final class AmqpProvider extends BaseServiceProvider
         foreach (self::getConsumers($this) as $consumerId => $consumerConfig) {
             $this->add(
                 $this->consumerName($consumerId),
-                function () use ($consumerConfig) {
+                function () use ($consumerConfig): EventBusForwardingConsumer {
                     $deserializerLocator = new SimpleDeserializerLocator();
                     $deserializerMapping = [
                         EventProjectedToJSONLD::class =>

@@ -98,9 +98,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         $calendarTypes = $parameterBagReader->getExplodedStringFromParameter(
             'calendarType',
             null,
-            function ($calendarType) {
-                return new CalendarType($calendarType);
-            }
+            fn ($calendarType): CalendarType => new CalendarType($calendarType)
         );
 
         if (!empty($calendarTypes)) {

@@ -37,11 +37,11 @@ final class CommandServiceProvider extends BaseServiceProvider
         Application::class,
     ];
 
-    public function register()
+    public function register(): void
     {
         $this->add(
             Application::class,
-            function () {
+            function (): Application {
                 $commandMap = [
                     'facet-mapping:generate-from-taxonomy-terms' => TermTaxonomyToFacetMappingsCommand::class,
                     'facet-mapping:generate-regions-from-flandersregion-terms' => FlandersRegionTaxonomyToFacetMappingsCommand::class,
@@ -84,113 +84,95 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateOrganizerMappingCommand::class,
-            function () {
-                return new UpdateOrganizerMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                    $this->parameter('elasticsearch.organizer.document_type')
-                );
-            }
+            fn (): UpdateOrganizerMappingCommand => new UpdateOrganizerMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.organizer.document_type')
+            )
         );
 
         $this->add(
             UpdateEventMappingCommand::class,
-            function () {
-                return new UpdateEventMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                    $this->parameter('elasticsearch.event.document_type')
-                );
-            }
+            fn (): UpdateEventMappingCommand => new UpdateEventMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.event.document_type')
+            )
         );
 
         $this->add(
             UpdatePlaceMappingCommand::class,
-            function () {
-                return new UpdatePlaceMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                    $this->parameter('elasticsearch.place.document_type')
-                );
-            }
+            fn (): UpdatePlaceMappingCommand => new UpdatePlaceMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.place.document_type')
+            )
         );
 
         $this->add(
             ReindexUDB3CoreCommand::class,
-            function () {
-                return new ReindexUDB3CoreCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                    $this->get(EventBus::class),
-                    $this->get('elasticsearch_indexation_strategy'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-                );
-            }
+            fn (): ReindexUDB3CoreCommand => new ReindexUDB3CoreCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                $this->get(EventBus::class),
+                $this->get('elasticsearch_indexation_strategy'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+            )
         );
 
         $this->add(
             ReindexPermanentOffersCommand::class,
-            function () {
-                return new ReindexPermanentOffersCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                    $this->get(EventBus::class),
-                    $this->get('elasticsearch_indexation_strategy'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-                );
-            }
+            fn (): ReindexPermanentOffersCommand => new ReindexPermanentOffersCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                $this->get(EventBus::class),
+                $this->get('elasticsearch_indexation_strategy'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+            )
         );
 
         $this->add(
             InstallUDB3CoreCommand::class,
-            function () {
-                return new InstallUDB3CoreCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                    $this->parameter('elasticsearch.udb3_core_index.write_alias'),
-                    $this->parameter('elasticsearch.udb3_core_index.read_alias')
-                );
-            }
+            fn (): InstallUDB3CoreCommand => new InstallUDB3CoreCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.udb3_core_index.write_alias'),
+                $this->parameter('elasticsearch.udb3_core_index.read_alias')
+            )
         );
 
         $this->add(
             UpdateRegionMappingCommand::class,
-            function () {
-                return new UpdateRegionMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                    $this->parameter('elasticsearch.region.document_type')
-                );
-            }
+            fn (): UpdateRegionMappingCommand => new UpdateRegionMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                $this->parameter('elasticsearch.region.document_type')
+            )
         );
 
         $this->add(
             IndexRegionsCommand::class,
-            function () {
-                return new IndexRegionsCommand(
-                    $this->get(Client::class),
-                    $this->get(Finder::class),
-                    $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
-                    __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
-                    $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
-                );
-            }
+            fn (): IndexRegionsCommand => new IndexRegionsCommand(
+                $this->get(Client::class),
+                $this->get(Finder::class),
+                $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
+                __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
+                $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
+            )
         );
 
         $this->add(
             InstallGeoShapesCommand::class,
-            function () {
-                return new InstallGeoShapesCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                    $this->parameter('elasticsearch.geoshapes_index.write_alias'),
-                    $this->parameter('elasticsearch.geoshapes_index.read_alias')
-                );
-            }
+            fn (): InstallGeoShapesCommand => new InstallGeoShapesCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                $this->parameter('elasticsearch.geoshapes_index.write_alias'),
+                $this->parameter('elasticsearch.geoshapes_index.read_alias')
+            )
         );
 
         foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
@@ -199,10 +181,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             $queueName = $consumerConfig['queue'] ?? 'unknown';
             $this->add(
                 $name,
-                function () use ($name, $serviceName, $queueName) {
-                    return (new ConsumeCommand($name, $this->get($serviceName)))
-                        ->setDescription('Process messages from ' . $queueName . ' queue');
-                }
+                fn () => (new ConsumeCommand($name, $this->get($serviceName)))
+                    ->setDescription('Process messages from ' . $queueName . ' queue')
             );
         }
     }

@@ -9,15 +9,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractElasticSearchOperation
 {
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    protected LoggerInterface $logger;
 
 
     public function __construct(

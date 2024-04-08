@@ -101,9 +101,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['workflowStatus'] = array_map(
-            static function (WorkflowStatus $workflowStatus) {
-                return $workflowStatus->toString();
-            },
+            static fn (WorkflowStatus $workflowStatus): string => $workflowStatus->toString(),
             $workflowStatuses
         );
         return $c;
@@ -156,9 +154,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['status'] = array_map(
-            static function (Status $status) {
-                return $status->toString();
-            },
+            static fn (Status $status): string => $status->toString(),
             $statuses
         );
         return $c;
@@ -172,9 +168,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['attendanceMode'] = array_map(
-            static function (AttendanceMode $attendanceMode) {
-                return $attendanceMode->toString();
-            },
+            static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
             $attendanceModes
         );
         return $c;
@@ -198,9 +192,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             'dateFrom' => $dateFrom ? $dateFrom->format(DATE_ATOM) : null,
             'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
             'statuses' => array_map(
-                static function (Status $status) {
-                    return $status->toString();
-                },
+                static fn (Status $status): string => $status->toString(),
                 $subEventQueryParameters->getStatuses()
             ),
         ];
@@ -212,9 +204,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['calendarType'] = array_map(
-            static function (CalendarType $calendarType) {
-                return $calendarType->toString();
-            },
+            static fn (CalendarType $calendarType): string => $calendarType->toString(),
             $calendarTypes
         );
         return $c;
@@ -487,9 +477,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['advancedQuery']['query'] = $queryString->toString();
         $c->mockQuery['advancedQuery']['language'] = array_map(
-            static function (Language $language) {
-                return (string) $language;
-            },
+            static fn (Language $language): string => (string) $language,
             $textLanguages
         );
         return $c;
@@ -500,15 +488,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['textQuery']['query'] = $text;
         $c->mockQuery['textQuery']['language'] = array_map(
-            static function (Language $language) {
-                return (string) $language;
-            },
+            static fn (Language $language): string => (string) $language,
             $textLanguages
         );
         return $c;
     }
 
-    public function withStartAndLimit(Start $start, Limit $limit)
+    public function withStartAndLimit(Start $start, Limit $limit): self
     {
         $c = clone $this;
         $c->mockQuery['start'] = $start->toInteger();

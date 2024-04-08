@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
@@ -280,8 +281,8 @@ final class OfferSearchControllerTest extends TestCase
             ->withCalendarTypeFilter(new CalendarType('single'))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
-                    ->withDateFrom(DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T00:00:00+01:00'))
-                    ->withDateTo(DateTimeImmutable::createFromFormat(\DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
+                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
@@ -414,7 +415,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -432,7 +433,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -450,7 +451,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -468,7 +469,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -547,7 +548,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'availableFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00'
         );
@@ -599,7 +600,7 @@ final class OfferSearchControllerTest extends TestCase
             ['coordinates' => '-40,70']
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "distance" parameter missing when searching by coordinates.');
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -614,7 +615,7 @@ final class OfferSearchControllerTest extends TestCase
             ['distance' => '30km']
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Required "coordinates" parameter missing when searching by distance.');
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -678,7 +679,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_converts_the_media_objects_toggle_parameter_to_a_correct_boolean(
         $stringValue,
-        $booleanValue
+        ?bool $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -707,7 +708,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_converts_the_uitpas_toggle_parameter_to_a_correct_boolean(
         $stringValue,
-        $booleanValue
+        ?bool $booleanValue
     ): void {
         $request = $this->getSearchRequestWithQueryParameters(
             [
@@ -856,7 +857,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_throws_an_exception_when_an_unknown_facet_name_is_given(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown facet name 'bla'.");
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -871,7 +872,7 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_throws_an_exception_when_an_unknown_address_country_is_given(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Unknown country code 'foobar'.");
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -914,7 +915,7 @@ final class OfferSearchControllerTest extends TestCase
             ['dateFrom' => $malformedDateTimeAsString]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('dateFrom should be an ISO-8601 datetime, for example 2017-04-26T12:20:05+01:00');
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -950,7 +951,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid sorting syntax given.');
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -971,7 +972,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid sort field 'name.nl' given.");
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -991,7 +992,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid sort order 'ascending' given.");
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -1042,7 +1043,7 @@ final class OfferSearchControllerTest extends TestCase
     {
         $request = $this->getSearchRequestWithQueryParameters(['status' => 'Available,Foo']);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown status value "Foo"');
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -1127,7 +1128,7 @@ final class OfferSearchControllerTest extends TestCase
         ApiRequestInterface $request,
         string $expectedExceptionMessage
     ): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->controller->__invoke(new ApiRequest($request));
@@ -1228,7 +1229,7 @@ final class OfferSearchControllerTest extends TestCase
             ->method('search')
             ->with(
                 $this->callback(
-                    function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder) {
+                    function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder): bool {
                         $this->assertEquals(
                             Json::encodeWithOptions($expectedQueryBuilder->build(), JSON_PRETTY_PRINT),
                             Json::encodeWithOptions($actualQueryBuilder->build(), JSON_PRETTY_PRINT)

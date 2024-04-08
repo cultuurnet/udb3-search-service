@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use LogicException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -13,15 +14,10 @@ use PHPUnit\Framework\TestCase;
 
 final class LabelsAggregationTransformerTest extends TestCase
 {
-    /**
-     * @var FacetName
-     */
-    private $facetName;
+    private FacetName $facetName;
 
-    /**
-     * @var LabelsAggregationTransformer
-     */
-    private $transformer;
+
+    private LabelsAggregationTransformer $transformer;
 
     /**
      * @inheritdoc
@@ -36,7 +32,7 @@ final class LabelsAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_only_supports_aggregations_named_after_the_injected_facet_name()
+    public function it_only_supports_aggregations_named_after_the_injected_facet_name(): void
     {
         $supported = new Aggregation($this->facetName);
         $unsupported = new Aggregation(FacetName::regions());
@@ -44,7 +40,7 @@ final class LabelsAggregationTransformerTest extends TestCase
         $this->assertTrue($this->transformer->supports($supported));
         $this->assertFalse($this->transformer->supports($unsupported));
 
-        $this->expectException(\LogicException::class);
+        $this->expectException(LogicException::class);
         $this->expectExceptionMessage('Aggregation regions not supported for transformation.');
 
         $this->transformer->toFacetTree($unsupported);
@@ -53,7 +49,7 @@ final class LabelsAggregationTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_a_facet_filter_solely_based_on_the_bucket_data()
+    public function it_returns_a_facet_filter_solely_based_on_the_bucket_data(): void
     {
         $aggregation = new Aggregation(
             $this->facetName,

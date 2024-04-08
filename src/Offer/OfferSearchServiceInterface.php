@@ -8,8 +8,5 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 
 interface OfferSearchServiceInterface
 {
-    /**
-     * @return PagedResultSet
-     */
-    public function search(OfferQueryBuilderInterface $queryBuilder);
+    public function search(OfferQueryBuilderInterface $queryBuilder): PagedResultSet;
 }

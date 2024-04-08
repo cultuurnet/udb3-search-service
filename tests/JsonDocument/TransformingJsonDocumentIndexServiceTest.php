@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
+use Exception;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,10 +33,8 @@ final class TransformingJsonDocumentIndexServiceTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var TransformingJsonDocumentIndexService
-     */
-    private $indexService;
+
+    private TransformingJsonDocumentIndexService $indexService;
 
     protected function setUp(): void
     {
@@ -105,11 +104,11 @@ final class TransformingJsonDocumentIndexServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_logs_an_error_when_document_can_not_be_removed()
+    public function it_logs_an_error_when_document_can_not_be_removed(): void
     {
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
 
-        $exception = new \Exception('Document is already gone', 404);
+        $exception = new Exception('Document is already gone', 404);
 
         $this->searchRepository->expects($this->once())
             ->method('remove')

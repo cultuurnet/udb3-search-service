@@ -35,15 +35,9 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
      */
     private $bulkThreshold;
 
-    /**
-     * @var EventBus
-     */
-    private $eventBus;
+    private EventBus $eventBus;
 
-    /**
-     * @var IndexationStrategy
-     */
-    private $indexationStrategy;
+    private IndexationStrategy $indexationStrategy;
 
     /**
      * @param string $readIndexName

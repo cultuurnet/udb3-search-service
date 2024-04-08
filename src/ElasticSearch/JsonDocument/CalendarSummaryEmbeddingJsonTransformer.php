@@ -24,7 +24,7 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     /**
      * @var CalendarSummaryFormat[]
      */
-    private $calendarSummaryFormats;
+    private array $calendarSummaryFormats;
 
     public function __construct(CalendarSummaryFormat ...$calendarSummaryFormats)
     {

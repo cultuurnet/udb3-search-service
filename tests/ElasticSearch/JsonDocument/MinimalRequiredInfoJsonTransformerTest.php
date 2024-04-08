@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class MinimalRequiredInfoJsonTransformerTest extends TestCase
 {
-    /**
-     * @var MinimalRequiredInfoJsonTransformer
-     */
-    private $transformer;
+    private MinimalRequiredInfoJsonTransformer $transformer;
 
     protected function setUp(): void
     {

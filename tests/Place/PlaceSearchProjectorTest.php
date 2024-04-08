@@ -18,10 +18,8 @@ final class PlaceSearchProjectorTest extends TestCase
      */
     private $indexService;
 
-    /**
-     * @var PlaceSearchProjector
-     */
-    private $projector;
+
+    private PlaceSearchProjector $projector;
 
     protected function setUp(): void
     {
@@ -32,7 +30,7 @@ final class PlaceSearchProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_new_and_updated_places()
+    public function it_indexes_new_and_updated_places(): void
     {
         $placeId = '23017cb7-e515-47b4-87c4-780735acc942';
         $placeUrl = 'place/' . $placeId;

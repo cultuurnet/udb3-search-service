@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 final class Limit
 {
-    /**
-     * @var int
-     */
-    private $value;
+    private int $value;
 
     public function __construct(int $value)
     {

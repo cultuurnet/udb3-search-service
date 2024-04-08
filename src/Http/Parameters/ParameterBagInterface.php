@@ -4,71 +4,47 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use DateTimeImmutable;
+
 interface ParameterBagInterface
 {
-    /**
-     * @param string $queryParameter
-     * @return array
-     */
     public function getArrayFromParameter(
-        $queryParameter,
+        string $queryParameter,
         callable $callback = null
-    );
+    ): array;
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
      * @return mixed|null
      */
     public function getStringFromParameter(
-        $parameterName,
-        $defaultValue = null,
+        string $parameterName,
+        ?string $defaultValue = null,
         callable $callback = null
     );
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
      * @return mixed|null
      */
     public function getIntegerFromParameter(
-        $parameterName,
-        $defaultValue = null,
+        string $parameterName,
+        string $defaultValue = null,
         callable $callback = null
     );
 
-    /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @param string $delimiter
-     * @return array
-     */
     public function getExplodedStringFromParameter(
-        $parameterName,
-        $defaultValueAsString = null,
+        string $parameterName,
+        ?string $defaultValueAsString = null,
         callable $callback = null,
-        $delimiter = ','
-    );
+        string $delimiter = ','
+    ): array;
 
-    /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @return bool|null
-     */
     public function getBooleanFromParameter(
-        $parameterName,
-        $defaultValueAsString = null
-    );
+        string $parameterName,
+        ?string $defaultValueAsString = null
+    ): ?bool;
 
-    /**
-     * @param string $queryParameter
-     * @param string|null $defaultValueAsString
-     * @return \DateTimeImmutable|null
-     */
     public function getDateTimeFromParameter(
-        $queryParameter,
-        $defaultValueAsString = null
-    );
+        string $queryParameter,
+        ?string $defaultValueAsString = null
+    ): ?DateTimeImmutable;
 }

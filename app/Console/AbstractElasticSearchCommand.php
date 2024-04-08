@@ -11,10 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractElasticSearchCommand extends Command
 {
-    /**
-     * @var Client
-     */
-    private $client;
+    private Client $client;
 
     public function __construct(Client $client)
     {
@@ -23,18 +20,14 @@ abstract class AbstractElasticSearchCommand extends Command
     }
 
 
-    /**
-     * @return Client
-     */
-    protected function getElasticSearchClient()
+
+    protected function getElasticSearchClient(): Client
     {
         return $this->client;
     }
 
-    /**
-     * @return ConsoleLogger
-     */
-    protected function getLogger(OutputInterface $output)
+
+    protected function getLogger(OutputInterface $output): ConsoleLogger
     {
         $output = clone $output;
         $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);

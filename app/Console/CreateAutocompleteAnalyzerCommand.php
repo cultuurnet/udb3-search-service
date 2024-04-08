@@ -13,7 +13,7 @@ final class CreateAutocompleteAnalyzerCommand extends AbstractElasticSearchComma
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('autocomplete-analyzer:create')

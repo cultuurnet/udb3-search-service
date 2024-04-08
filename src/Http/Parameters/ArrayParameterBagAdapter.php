@@ -4,34 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use DateTimeImmutable;
+use DateTime;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class ArrayParameterBagAdapter implements ParameterBagInterface
 {
-    /**
-     * @var array
-     */
-    private $parameterBag;
+    private array $parameterBag;
 
-    /**
-     * @var string
-     */
-    private $resetValue;
+    private string $resetValue;
 
-    /**
-     * @param string $resetValue
-     */
-    public function __construct(array $parameterBag, $resetValue = '*')
+    public function __construct(array $parameterBag, string $resetValue = '*')
     {
         $this->parameterBag = $parameterBag;
         $this->resetValue = $resetValue;
     }
 
-    /**
-     * @param string $queryParameter
-     * @return array
-     */
-    public function getArrayFromParameter($queryParameter, callable $callback = null)
+    public function getArrayFromParameter(string $queryParameter, callable $callback = null): array
     {
         if (empty($this->get($queryParameter))) {
             return [];
@@ -44,13 +33,12 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
+     * @todo Remove docblock when upgrading to PHP8
+     * @param string|bool|null $defaultValue
      * @return mixed|null
      */
     public function getStringFromParameter(
-        $parameterName,
+        string $parameterName,
         $defaultValue = null,
         callable $callback = null
     ) {
@@ -79,14 +67,11 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValue
-     * @param callable $callback
      * @return mixed|null
      */
     public function getIntegerFromParameter(
-        $parameterName,
-        $defaultValue = null,
+        string $parameterName,
+        string $defaultValue = null,
         callable $callback = null
     ) {
         $callback = $this->ensureCallback($callback);
@@ -99,18 +84,12 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($parameterName, $defaultValue, $intCallback);
     }
 
-    /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @param string $delimiter
-     * @return array
-     */
     public function getExplodedStringFromParameter(
         $parameterName,
         $defaultValueAsString = null,
         callable $callback = null,
         $delimiter = ','
-    ) {
+    ): array {
         $callback = $this->ensureCallback($callback);
 
         $asString = $this->getStringFromParameter(
@@ -128,14 +107,13 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
-     * @param string $parameterName
-     * @param string|null $defaultValueAsString
-     * @return bool|null
+     * @todo Remove docblock when upgrading to PHP8
+     * @param string|bool|null $defaultValueAsString
      */
     public function getBooleanFromParameter(
-        $parameterName,
+        string $parameterName,
         $defaultValueAsString = null
-    ) {
+    ): ?bool {
         $callback = static function ($mixed) {
             if ($mixed === null || $mixed === '') {
                 return null;
@@ -147,12 +125,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($parameterName, $defaultValueAsString, $callback);
     }
 
-    /**
-     * @param string $queryParameter
-     * @param string|null $defaultValueAsString
-     * @return \DateTimeImmutable|null
-     */
-    public function getDateTimeFromParameter($queryParameter, $defaultValueAsString = null)
+    public function getDateTimeFromParameter(string $queryParameter, ?string $defaultValueAsString = null): ?DateTimeImmutable
     {
         $callback = static function ($asString) use ($queryParameter) {
             // When you use a + in a URL it gets interpreted as a space. This can be resolved by using %2B instead, or
@@ -161,7 +134,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             // anyway, so if we find a space it's more likely that it was meant to be a +.
             $asString = str_replace(' ', '+', (string)$asString);
 
-            $asDateTime = \DateTimeImmutable::createFromFormat(\DateTime::ATOM, $asString);
+            $asDateTime = DateTimeImmutable::createFromFormat(DateTime::ATOM, $asString);
 
             if (!$asDateTime) {
                 throw new UnsupportedParameterValue(
@@ -191,7 +164,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
         // Instead check if the returned value is null, and if so always set it
         // to false as it means the disableDefaultFilters parameter is not set.
-        $disabled = $disabled === null ? false : $disabled;
+        $disabled ??= false;
 
         return !$disabled;
     }
@@ -202,9 +175,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             return $callback;
         }
 
-        $passThroughCallback = static function ($value) {
-            return $value;
-        };
+        $passThroughCallback = static fn ($value) => $value;
 
         return $passThroughCallback;
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Language;
 
+use stdClass;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLanguageAnalyzer
@@ -11,7 +12,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     /**
      * @var string[]
      */
-    private $translatableProperties;
+    private array $translatableProperties;
 
     /**
      * @param string[] $translatableProperties
@@ -26,7 +27,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     /**
      * @return Language[]
      */
-    public function determineAvailableLanguages(JsonDocument $jsonDocument)
+    public function determineAvailableLanguages(JsonDocument $jsonDocument): array
     {
         $json = $jsonDocument->getBody();
         $languageStrings = [];
@@ -48,7 +49,7 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     /**
      * @return Language[]
      */
-    public function determineCompletedLanguages(JsonDocument $jsonDocument)
+    public function determineCompletedLanguages(JsonDocument $jsonDocument): array
     {
         $json = $jsonDocument->getBody();
         $languageStrings = [];
@@ -75,11 +76,11 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
         return $this->getLanguageStringsAsValueObjects($languageStrings);
     }
 
+
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStrings(\stdClass $json, $propertyName)
+    private function getLanguageStrings(stdClass $json, string $propertyName): array
     {
         if (strpos($propertyName, '.') === false) {
             return $this->getLanguageStringsFromProperty($json, $propertyName);
@@ -89,10 +90,9 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromProperty(stdClass $json, string $propertyName): array
     {
         if (!isset($json->{$propertyName})) {
             return [];
@@ -104,13 +104,11 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
     }
 
     /**
-     * @param string $propertyName
      * @return string[]
      */
-    private function getLanguageStringsFromNestedProperty(\stdClass $json, $propertyName)
+    private function getLanguageStringsFromNestedProperty(stdClass $json, string $propertyName)
     {
         $nestedProperties = explode('.', $propertyName);
-        $traversedProperties = [];
         $propertyReference = $json;
 
         $languages = [];
@@ -136,26 +134,23 @@ final class ConfigurableJsonDocumentLanguageAnalyzer implements JsonDocumentLang
             }
 
             $propertyReference = $propertyReference->{$nestedPropertyName};
-            $traversedProperties[] = $nestedPropertyName;
         }
 
         if (is_object($propertyReference) && $propertyReference) {
             return array_keys(get_object_vars($propertyReference));
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
      * @param string[] $languageStrings
      * @return Language[]
      */
-    private function getLanguageStringsAsValueObjects(array $languageStrings)
+    private function getLanguageStringsAsValueObjects(array $languageStrings): array
     {
         return array_map(
-            function ($languageString) {
-                return new Language($languageString);
-            },
+            fn ($languageString): Language => new Language($languageString),
             $languageStrings
         );
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
+use SimpleXMLElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -23,7 +24,7 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
      */
     public const REGIONS_XPATH = "//*[name()='term'][@domain='flandersregion']";
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('facet-mapping:generate-regions-from-flandersregion-terms')
@@ -72,7 +73,7 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
             return 1;
         }
 
-        $xml = new \SimpleXmlElement($xmlString);
+        $xml = new SimpleXmlElement($xmlString);
 
         $nodes = $xml->xpath(self::REGIONS_XPATH);
         $mapping = ['facet_mapping_regions' => $this->simpleXmlNodesToFacetMapping($nodes)];
@@ -83,10 +84,9 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param \SimpleXMLElement[] $simpleXmlNodes
-     * @return array
+     * @param SimpleXMLElement[] $simpleXmlNodes
      */
-    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)
+    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes): array
     {
         $parentMapping = [];
         $facetMapping = [];
@@ -119,9 +119,7 @@ final class FlandersRegionTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation) {
-                    return !empty($translation);
-                }
+                fn ($translation): bool => !empty($translation)
             );
 
             $parentIds = [];

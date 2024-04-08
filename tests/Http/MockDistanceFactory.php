@@ -10,9 +10,8 @@ final class MockDistanceFactory implements DistanceFactory
 {
     /**
      * @param string $distance
-     * @return MockDistance
      */
-    public function fromString($distance)
+    public function fromString($distance): MockDistance
     {
         return new MockDistance($distance);
     }

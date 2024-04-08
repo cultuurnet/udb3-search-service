@@ -9,10 +9,7 @@ use Psr\Log\LoggerInterface;
 
 final class UpdateIndexAliasTest extends AbstractOperationTestCase
 {
-    /**
-     * @return UpdateIndexAlias
-     */
-    protected function createOperation(Client $client, LoggerInterface $logger)
+    protected function createOperation(Client $client, LoggerInterface $logger): UpdateIndexAlias
     {
         return new UpdateIndexAlias($client, $logger);
     }
@@ -20,7 +17,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_adds_the_alias_to_the_new_index()
+    public function it_adds_the_alias_to_the_new_index(): void
     {
         $newIndex = 'udb3_core_v1';
         $alias = 'udb3_core_write';
@@ -55,7 +52,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_deletes_the_alias_from_all_indexes_and_adds_it_to_the_new_index()
+    public function it_deletes_the_alias_from_all_indexes_and_adds_it_to_the_new_index(): void
     {
         $oldIndex = 'udb3_core_v1';
         $newIndex = 'udb3_core_v2';

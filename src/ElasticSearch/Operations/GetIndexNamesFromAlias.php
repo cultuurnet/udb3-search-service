@@ -16,7 +16,7 @@ final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
      * @return string[]
      *   All index names the alias points to.
      */
-    public function run($aliasName)
+    public function run($aliasName): array
     {
         try {
             /* @var array $responseData */

@@ -13,7 +13,7 @@ final class UpdateOrganizerMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('udb3-core:organizer-mapping')

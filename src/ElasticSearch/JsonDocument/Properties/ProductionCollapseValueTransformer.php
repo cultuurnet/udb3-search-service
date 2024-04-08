@@ -9,10 +9,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 final class ProductionCollapseValueTransformer implements JsonTransformer
 {
-    /**
-     * @var IdUrlParserInterface
-     */
-    private $idUrlParser;
+    private IdUrlParserInterface $idUrlParser;
 
     public function __construct(IdUrlParserInterface $idUrlParser)
     {

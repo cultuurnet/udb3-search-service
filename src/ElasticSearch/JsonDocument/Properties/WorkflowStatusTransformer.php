@@ -9,15 +9,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class WorkflowStatusTransformer implements JsonTransformer
 {
-    /**
-     * @var JsonTransformerLogger
-     */
-    private $logger;
+    private JsonTransformerLogger $logger;
 
-    /**
-     * @var string|null
-     */
-    private $default;
+    private ?string $default;
 
     public function __construct(JsonTransformerLogger $logger, ?string $default = null)
     {

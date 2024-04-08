@@ -8,15 +8,9 @@ use Broadway\Serializer\Serializable;
 
 final class OrganizerProjectedToJSONLD implements Serializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $iri;
+    private string $iri;
 
     public function __construct(string $id, string $iri)
     {
@@ -42,10 +36,7 @@ final class OrganizerProjectedToJSONLD implements Serializable
         ];
     }
 
-    /**
-     * @return OrganizerProjectedToJSONLD
-     */
-    public static function deserialize(array $data)
+    public static function deserialize(array $data): self
     {
         return new self($data['id'], $data['iri']);
     }

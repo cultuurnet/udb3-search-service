@@ -15,20 +15,11 @@ use function Sentry\withScope;
  */
 final class SentryHandlerScopeDecorator implements HandlerInterface
 {
-    /**
-     * @var HandlerInterface
-     */
-    private $decoratedHandler;
+    private HandlerInterface $decoratedHandler;
 
-    /**
-     * @var Consumer
-     */
-    private $consumer;
+    private Consumer $consumer;
 
-    /**
-     * @var bool
-     */
-    private $console;
+    private bool $console;
 
     private function __construct(HandlerInterface $decoratedHandler, Consumer $consumer, bool $console)
     {

@@ -10,15 +10,10 @@ use PHPUnit\Framework\TestCase;
 
 final class Auth0TokenTest extends TestCase
 {
-    /**
-     * @var DateTimeImmutable
-     */
-    private $issuedAt;
+    private DateTimeImmutable $issuedAt;
 
-    /**
-     * @var Auth0Token
-     */
-    private $auth0Token;
+
+    private Auth0Token $auth0Token;
 
     protected function setUp(): void
     {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
+use SimpleXMLElement;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +27,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
     public const THEMES_XPATH = "//*[name()='term'][@domain='theme']";
     public const FACILITIES_XPATH = "//*[name()='term'][@domain='facility']";
 
-    public function configure()
+    public function configure(): void
     {
         $this
             ->setName('facet-mapping:generate-from-taxonomy-terms')
@@ -55,7 +56,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
             return 1;
         }
 
-        $xml = new \SimpleXmlElement($xmlString);
+        $xml = new SimpleXmlElement($xmlString);
 
         $this->generateYmlMapping('facet_mapping_types', $xml, self::TYPES_XPATH);
         $this->generateYmlMapping('facet_mapping_themes', $xml, self::THEMES_XPATH);
@@ -63,15 +64,12 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $mappingName
-     * @param string $xpath
-     */
+
     private function generateYmlMapping(
-        $mappingName,
-        \SimpleXmlElement $xml,
-        $xpath
-    ) {
+        string $mappingName,
+        SimpleXmlElement $xml,
+        string $xpath
+    ): void {
         $nodes = $xml->xpath($xpath);
         $mapping = [$mappingName => $this->simpleXmlNodesToFacetMapping($nodes)];
         $yml = Yaml::dump($mapping, 4, 2);
@@ -79,10 +77,9 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
     }
 
     /**
-     * @param \SimpleXMLElement[] $simpleXmlNodes
-     * @return array
+     * @param SimpleXMLElement[] $simpleXmlNodes
      */
-    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes)
+    private function simpleXmlNodesToFacetMapping(array $simpleXmlNodes): array
     {
         $mapping = [];
 
@@ -100,9 +97,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
 
             $name = array_filter(
                 $name,
-                function ($translation) {
-                    return !empty($translation);
-                }
+                fn ($translation): bool => !empty($translation)
             );
 
             $mapping[$id] = ['name' => $name];

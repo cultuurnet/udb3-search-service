@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class MutableIndexationStrategy implements IndexationStrategy
 {
-    /**
-     * @var IndexationStrategy
-     */
-    private $indexationStrategy;
+    private IndexationStrategy $indexationStrategy;
 
 
     public function __construct(IndexationStrategy $indexationStrategy)
@@ -20,7 +17,7 @@ final class MutableIndexationStrategy implements IndexationStrategy
     }
 
 
-    public function setIndexationStrategy(IndexationStrategy $newIndexationStrategy)
+    public function setIndexationStrategy(IndexationStrategy $newIndexationStrategy): void
     {
         $this->indexationStrategy->finish();
         $this->indexationStrategy = $newIndexationStrategy;
@@ -31,7 +28,7 @@ final class MutableIndexationStrategy implements IndexationStrategy
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    ) {
+    ): void {
         $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);
     }
 

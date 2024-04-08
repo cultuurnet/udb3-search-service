@@ -13,7 +13,7 @@ final class UpdateEventMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('udb3-core:event-mapping')

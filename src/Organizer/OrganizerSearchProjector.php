@@ -9,12 +9,11 @@ use CultuurNet\UDB3\Search\AbstractSearchProjector;
 final class OrganizerSearchProjector extends AbstractSearchProjector
 {
     /**
-     * @return array
      *
      * @uses handleOrganizerProjectedToJSONLD
      * @uses handleOrganizerDeleted
      */
-    protected function getEventHandlers()
+    protected function getEventHandlers(): array
     {
         return [
             OrganizerProjectedToJSONLD::class => 'handleOrganizerProjectedToJSONLD',
@@ -22,7 +21,7 @@ final class OrganizerSearchProjector extends AbstractSearchProjector
     }
 
 
-    protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD)
+    protected function handleOrganizerProjectedToJSONLD(OrganizerProjectedToJSONLD $organizerProjectedToJSONLD): void
     {
         $this->getIndexService()->index(
             $organizerProjectedToJSONLD->getId(),

@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class PagedResultSet
 {
-    /**
-     * @var int
-     */
-    private $total;
+    private int $total;
 
-    /**
-     * @var int
-     */
-    private $perPage;
+    private int $perPage;
 
     /**
      * @var JsonDocument[]
      */
-    private $results;
+    private array $results;
 
     /**
      * @var FacetFilter[]
@@ -80,7 +75,7 @@ final class PagedResultSet
     {
         foreach ($results as $result) {
             if (!($result instanceof JsonDocument)) {
-                throw new \InvalidArgumentException('Results should be an array of JsonDocument objects.');
+                throw new InvalidArgumentException('Results should be an array of JsonDocument objects.');
             }
         }
     }

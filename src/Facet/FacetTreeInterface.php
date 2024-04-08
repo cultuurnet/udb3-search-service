@@ -6,13 +6,10 @@ namespace CultuurNet\UDB3\Search\Facet;
 
 interface FacetTreeInterface
 {
-    /**
-     * @return string
-     */
-    public function getKey();
+    public function getKey(): string;
 
     /**
      * @return FacetNodeInterface[]
      */
-    public function getChildren();
+    public function getChildren(): array;
 }

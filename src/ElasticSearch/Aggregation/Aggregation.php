@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Aggregation;
 
+use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 
 /**
@@ -12,10 +13,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
  */
 final class Aggregation
 {
-    /**
-     * @var FacetName
-     */
-    private $name;
+    private FacetName $name;
 
     /**
      * @var Bucket[]
@@ -35,10 +33,8 @@ final class Aggregation
         }
     }
 
-    /**
-     * @return FacetName
-     */
-    public function getName()
+
+    public function getName(): FacetName
     {
         return $this->name;
     }
@@ -54,17 +50,17 @@ final class Aggregation
     public static function fromElasticSearchResponseAggregationData(string $name, array $aggregationData): Aggregation
     {
         if (!isset($aggregationData['buckets'])) {
-            throw new \InvalidArgumentException('Aggregation data does not contain any buckets.');
+            throw new InvalidArgumentException('Aggregation data does not contain any buckets.');
         }
 
         $buckets = array_map(
-            function (array $bucket) {
+            function (array $bucket): Bucket {
                 if (!isset($bucket['key'])) {
-                    throw new \InvalidArgumentException('Bucket is missing a key.');
+                    throw new InvalidArgumentException('Bucket is missing a key.');
                 }
 
                 if (!isset($bucket['doc_count'])) {
-                    throw new \InvalidArgumentException('Bucket is missing a doc_count.');
+                    throw new InvalidArgumentException('Bucket is missing a doc_count.');
                 }
 
                 return new Bucket(
