@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
+namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use CultuurNet\UDB3\Search\QueryBuilder;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use PHPUnit\Framework\TestCase;
 
-final class QueryBuilderFactoryTest extends TestCase
+final class SortBuildersTest extends TestCase
 {
     public function testSortsAndBuildersAreMatching(): void
     {
@@ -20,7 +18,7 @@ final class QueryBuilderFactoryTest extends TestCase
             'popularity' => fn () => $queryBuilderMock,
         ];
 
-        $resultQueryBuilder = QueryBuilderFactory::getQueryBuilder($sorts, $sortBuilders, $queryBuilderMock);
+        $resultQueryBuilder = (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $queryBuilderMock);
 
         $this->assertInstanceOf(QueryBuilder::class, $resultQueryBuilder);
     }
@@ -36,6 +34,6 @@ final class QueryBuilderFactoryTest extends TestCase
 
         $this->expectException(UnsupportedParameterValue::class);
 
-        QueryBuilderFactory::getQueryBuilder($sorts, $sortBuilders, $queryBuilderMock);
+        (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $queryBuilderMock);
     }
 }

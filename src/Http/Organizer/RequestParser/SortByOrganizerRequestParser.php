@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Organizer\RequestParser;
 
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\QueryBuilderFactory;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -34,6 +33,6 @@ final class SortByOrganizerRequestParser implements OrganizerRequestParser
                 => $queryBuilder->withSortByModified($sortOrder),
         ];
 
-        return QueryBuilderFactory::getQueryBuilder($sorts, $sortBuilders, $organizerQueryBuilder);
+        return $organizerQueryBuilder->withSortBuilders($sorts, $sortBuilders);
     }
 }

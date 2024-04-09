@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use DateTimeImmutable;
@@ -500,6 +501,11 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c->mockQuery['start'] = $start->toInteger();
         $c->mockQuery['limit'] = $limit->toInteger();
         return $c;
+    }
+
+    public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface
+    {
+        return (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $this);
     }
 
     public function getLimit(): Limit

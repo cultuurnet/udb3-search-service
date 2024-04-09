@@ -58,6 +58,6 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             },
         ];
 
-        return QueryBuilderFactory::getQueryBuilder($sorts, $sortBuilders, $offerQueryBuilder);
+        return $offerQueryBuilder->withSortBuilders($sorts, $sortBuilders);
     }
 }
