@@ -18,7 +18,7 @@ final class SortBuildersTest extends TestCase
             'popularity' => fn () => $queryBuilderMock,
         ];
 
-        $resultQueryBuilder = (new SortBuilders())->build($sorts, $sortBuilders, $queryBuilderMock);
+        $resultQueryBuilder = (new SortBuilders($queryBuilderMock))->build($sorts, $sortBuilders);
 
         $this->assertInstanceOf(QueryBuilder::class, $resultQueryBuilder);
     }
@@ -34,6 +34,6 @@ final class SortBuildersTest extends TestCase
 
         $this->expectException(UnsupportedParameterValue::class);
 
-        (new SortBuilders())->build($sorts, $sortBuilders, $queryBuilderMock);
+        (new SortBuilders($queryBuilderMock))->build($sorts, $sortBuilders);
     }
 }

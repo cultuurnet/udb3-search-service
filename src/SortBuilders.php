@@ -9,9 +9,17 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 
 final class SortBuilders
 {
-    /** @return OrganizerQueryBuilderInterface|OfferQueryBuilderInterface */
-    public function build(array $sorts, array $sortBuilders, QueryBuilder $queryBuilder)
+    private QueryBuilder $queryBuilder;
+
+    public function __construct(QueryBuilder $queryBuilder)
     {
+        $this->queryBuilder = $queryBuilder;
+    }
+
+    /** @return OrganizerQueryBuilderInterface|OfferQueryBuilderInterface */
+    public function build(array $sorts, array $sortBuilders)
+    {
+        $queryBuilder = $this->queryBuilder;
         foreach ($sorts as $field => $order) {
             if (!isset($sortBuilders[$field])) {
                 throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
