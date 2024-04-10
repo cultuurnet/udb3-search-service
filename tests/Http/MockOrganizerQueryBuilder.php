@@ -236,7 +236,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
     {
-        return (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $this);
+        return (new SortBuilders())->build($sorts, $sortBuilders, $this);
     }
 
     public function build(): array

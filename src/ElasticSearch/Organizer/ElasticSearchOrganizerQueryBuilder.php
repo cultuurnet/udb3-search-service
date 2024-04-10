@@ -239,6 +239,6 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
     {
-        return (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $this);
+        return (new SortBuilders())->build($sorts, $sortBuilders, $this);
     }
 }

@@ -552,6 +552,6 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface
     {
-        return (new SortBuilders())->withSortBuilders($sorts, $sortBuilders, $this);
+        return (new SortBuilders())->build($sorts, $sortBuilders, $this);
     }
 }

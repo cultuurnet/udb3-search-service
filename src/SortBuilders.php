@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 final class SortBuilders
 {
     /** @return OrganizerQueryBuilderInterface|OfferQueryBuilderInterface */
-    public function withSortBuilders(array $sorts, array $sortBuilders, QueryBuilder $queryBuilder)
+    public function build(array $sorts, array $sortBuilders, QueryBuilder $queryBuilder)
     {
         foreach ($sorts as $field => $order) {
             if (!isset($sortBuilders[$field])) {
