@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
+use CultuurNet\UDB3\Search\SortBuilders;
 use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
@@ -234,5 +235,10 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
     public function withSortByModified(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
         return $this->withFieldSort('modified', $sortOrder->toString());
+    }
+
+    public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
+    {
+        return (new SortBuilders($this))->build($sorts, $sortBuilders);
     }
 }

@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Search\Offer\Time;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use DateTimeImmutable;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
@@ -547,5 +548,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $c->search->addAggregation($aggregation);
 
         return $c;
+    }
+
+    public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface
+    {
+        return (new SortBuilders($this))->build($sorts, $sortBuilders);
     }
 }

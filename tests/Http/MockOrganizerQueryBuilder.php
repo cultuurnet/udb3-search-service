@@ -18,12 +18,13 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\Region\RegionId;
+use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 
 final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
 {
-    private $mockQuery = [];
+    private array $mockQuery = [];
 
     public function __construct()
     {
@@ -231,6 +232,11 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['sort']['modified'] = $sortOrder->toString();
         return $c;
+    }
+
+    public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
+    {
+        return (new SortBuilders($this))->build($sorts, $sortBuilders);
     }
 
     public function build(): array

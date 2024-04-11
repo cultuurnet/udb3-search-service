@@ -58,21 +58,6 @@ final class SortByOfferRequestParser implements OfferRequestParserInterface
             },
         ];
 
-        foreach ($sorts as $field => $order) {
-            if (!isset($sortBuilders[$field])) {
-                throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
-            }
-
-            try {
-                $sortOrder = new SortOrder($order);
-            } catch (UnsupportedParameterValue $e) {
-                throw new UnsupportedParameterValue("Invalid sort order '{$order}' given.");
-            }
-
-            $callback = $sortBuilders[$field];
-            $offerQueryBuilder = call_user_func($callback, $offerQueryBuilder, $sortOrder);
-        }
-
-        return $offerQueryBuilder;
+        return $offerQueryBuilder->withSortBuilders($sorts, $sortBuilders);
     }
 }
