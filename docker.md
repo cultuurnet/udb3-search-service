@@ -10,6 +10,8 @@
 ### Configuration files.
 
 Run the script `./docker/config.sh`, this will copy a couple of configuration yml files, placing them in the root of the udb3-search-service project.
+If `host.docker.internal` is not in your `/etc/hosts` file, it will also try to add it.
+This requires `sudo` privileges
 
 ### RabbitMQ
 
