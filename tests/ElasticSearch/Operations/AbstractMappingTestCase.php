@@ -26,7 +26,7 @@ abstract class AbstractMappingTestCase extends AbstractOperationTestCase
             ->with(
                 [
                     'index' => $indexName,
-                    'type' => $documentType,
+                    // 'type' => $documentType,
                     'body' => $mappingBody,
                 ]
             );

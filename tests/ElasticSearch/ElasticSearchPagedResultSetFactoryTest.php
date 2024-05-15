@@ -47,7 +47,10 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => 962,
+                'total' => [
+                    'value' => 962,
+                    'relation' => 'eq',
+                ],
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
@@ -169,7 +172,10 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => 962,
+                'total' => [
+                    'value' => 962,
+                    'relation' => 'eq',
+                ],
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
@@ -194,6 +200,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             'aggregations' => [
                 'total' => [
                     'value' => 962,
+                    'relation' => 'eq',
                 ],
                 'regions' => [
                     'doc_count_error_upper_bound' => 0,
@@ -275,7 +282,10 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => 962,
+                'total' => [
+                    'value' => 962,
+                    'relation' => 'eq',
+                ],
                 'hits' => [
                     [
                         '_index' => 'udb3-core',

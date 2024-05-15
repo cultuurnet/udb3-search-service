@@ -25,7 +25,7 @@ final class CreateLowerCaseExactMatchAnalyzerTest extends AbstractOperationTestC
                 [
                     'name' => 'lowercase_exact_match_analyzer',
                     'body' => [
-                        'template' => '*',
+                        'index_patterns' => '*',
                         'settings' => [
                             'analysis' => [
                                 'analyzer' => [

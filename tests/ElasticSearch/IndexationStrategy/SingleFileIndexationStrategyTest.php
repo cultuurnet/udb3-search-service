@@ -64,7 +64,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
-                    'type' => $this->documentType,
+                    // 'type' => $this->documentType,
                     'id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     'body' => ['foo' => 'bar'],
                 ]

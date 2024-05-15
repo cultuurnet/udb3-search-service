@@ -73,7 +73,10 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 
         $response = [
             'hits' => [
-                'total' => 962,
+                'total' => [
+                    'value' => 962,
+                    'relation' => 'eq',
+                ],
                 'hits' => [
                     [
                         '_index' => $this->indexName,
@@ -96,7 +99,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
-                    'type' => $this->documentType,
+                    // 'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 960,

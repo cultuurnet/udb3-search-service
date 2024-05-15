@@ -64,7 +64,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $parameters = [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
             'id' => $id,
             'body' => [
                 'name' => 'STUK',
@@ -87,7 +87,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $parameters = [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
             'id' => $id,
         ];
 
@@ -107,7 +107,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $parameters = [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
             'id' => $id,
         ];
 
@@ -142,7 +142,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $parameters = [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
             'id' => $id,
         ];
 
@@ -173,7 +173,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $parameters = [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
             'id' => $id,
         ];
 
