@@ -36,7 +36,7 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
         $this->elasticSearchClient->index(
             [
                 'index' => $indexName,
-                'type' => $documentType,
+                // 'type' => $documentType,
                 'id' => $id,
                 'body' => (array) $jsonDocument->getBody(),
             ]
