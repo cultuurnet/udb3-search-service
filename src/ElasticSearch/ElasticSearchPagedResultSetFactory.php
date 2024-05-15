@@ -83,7 +83,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         );
 
         $pagedResultSet = (new PagedResultSet(
-            $total,
+            $total['value'],
             $perPage,
             $results
         ))->withFacets(...$facets);
