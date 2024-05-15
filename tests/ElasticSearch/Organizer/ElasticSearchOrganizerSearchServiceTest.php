@@ -99,7 +99,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
-                    'type' => $this->documentType,
+                    // 'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 960,

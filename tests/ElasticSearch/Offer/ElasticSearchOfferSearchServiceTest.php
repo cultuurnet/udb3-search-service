@@ -67,7 +67,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
-                            '@type' => 'Event',
+                            '@type' => 'event,place', // 'Event',
                             'regions' => ['foo', 'bar'],
                             'originalEncodedJsonLd' => '{}',
                         ],
@@ -78,7 +78,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
-                            '@type' => 'Place',
+                            '@type' => 'event,place', // 'Place',
                             'regions' => ['foo', 'bar'],
                             'originalEncodedJsonLd' => '{}',
                         ],
@@ -92,7 +92,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
-                    'type' => $this->documentType,
+                    // 'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
@@ -113,7 +113,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                     ->withBody(
                         (object) [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
-                            '@type' => 'Event',
+                            '@type' => 'event,place', // 'Event',
                             'regions' => ['foo', 'bar'],
                             'originalEncodedJsonLd' => '{}',
                         ]
@@ -122,7 +122,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                     ->withBody(
                         (object) [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
-                            '@type' => 'Place',
+                            '@type' => 'event,place', // 'Place',
                             'regions' => ['foo', 'bar'],
                             'originalEncodedJsonLd' => '{}',
                         ]
