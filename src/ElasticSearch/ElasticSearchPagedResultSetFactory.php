@@ -35,7 +35,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
     {
         $this->responseValidator->validate($response);
 
-        $total = $response['hits']['total'];
+        $total = $response['hits']['total']['value'];
 
         $results = array_map(
             fn (array $result): JsonDocument => (new JsonDocument($result['_id']))
@@ -83,7 +83,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
         );
 
         $pagedResultSet = (new PagedResultSet(
-            $total['value'],
+            $total,
             $perPage,
             $results
         ))->withFacets(...$facets);

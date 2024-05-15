@@ -56,7 +56,10 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
         $response = [
             'hits' => [
-                'total' => 32,
+                'total' => [
+                    'value' => 32,
+                    'relation' => 'eq',
+                ],
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
