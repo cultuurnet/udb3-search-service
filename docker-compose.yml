@@ -29,10 +29,28 @@ services:
         aliases:
             - elasticsearch.uitdatabank.dev
 
+  elasticsearch8:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.2
+    container_name: es8.uitdatabank
+    hostname: 'udb3-es8'
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ports:
+      - '9208:9200'
+    volumes:
+      - 'udb3-es8:/elasticsearch/data'
+    networks:
+      uitdatabank:
+        aliases:
+          - elasticsearch.uitdatabank.dev
+
 networks:
   uitdatabank:
     driver: bridge
 
 volumes:
   udb3-es:
+    driver: local
+  udb3-es8:
     driver: local
