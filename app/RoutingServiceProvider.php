@@ -62,6 +62,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $auth0Client
                     );
 
+                    $pemFile = $this->parameter('keycloak.enabled') ?
+                        $this->parameter('keycloak.pem_file') : $this->parameter('auth0.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
@@ -70,7 +72,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        file_get_contents('file://' . __DIR__ . '/../public-auth0.pem')
+                        file_get_contents('file://' . __DIR__ . '/../' . $pemFile)
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
