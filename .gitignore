@@ -10,5 +10,9 @@
 /.default_queries.php
 /pkg
 /.bundle
+# Ignore configuration files
+config.php
+config.*.php
+
 *.pem
 !tests/Http/Authentication/samples/*.pem
