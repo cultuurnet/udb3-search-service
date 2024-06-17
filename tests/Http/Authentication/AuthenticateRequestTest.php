@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
@@ -47,7 +49,7 @@ final class AuthenticateRequestTest extends TestCase
      */
     private $cultureFeed;
 
-    private Auth0TokenProvider $auth0TokenProvider;
+    private ManagementTokenProvider $managementTokenProvider;
 
     private AuthenticateRequest $authenticateRequest;
 
@@ -60,35 +62,37 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->pemFile = file_get_contents(__DIR__ . '/samples/public.pem');
 
-        $auth0Client = new Auth0Client(
-            $this->createMock(Client::class),
-            'domain',
-            'clientId',
-            'clientSecret',
-            'domain/api/v2/'
+        $managementToken = new ManagementToken(
+            'my_auth0_token',
+            new DateTimeImmutable(),
+            86400
         );
 
-        $auth0TokenRepository = $this->createMock(ManagementTokenRepository::class);
-        $auth0TokenRepository
-            ->method('get')
-            ->willReturn(
-                new ManagementToken(
-                    'my_auth0_token',
-                    new DateTimeImmutable(),
-                    86400
-                )
-            );
+        /** @var ManagementTokenGenerator&MockObject $managementTokenGenerator */
+        $managementTokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        $managementTokenGenerator
+            ->method('newToken')
+            ->willReturn($managementToken);
 
-        $this->auth0TokenProvider = new Auth0TokenProvider(
-            $auth0TokenRepository,
-            $auth0Client
+        /** @var ManagementTokenRepository&MockObject $managementTokenRepository */
+        $managementTokenRepository = $this->createMock(ManagementTokenRepository::class);
+        $managementTokenRepository
+            ->method('get')
+            ->willReturn($managementToken);
+
+        $this->managementTokenProvider = new ManagementTokenProvider(
+            $managementTokenGenerator,
+            $managementTokenRepository
         );
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0TokenProvider,
-            $auth0Client,
+            $this->managementTokenProvider,
+            new Auth0Client(
+                $this->createMock(Client::class),
+                'domain'
+            ),
             new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
             $this->pemFile
         );
@@ -300,13 +304,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0TokenProvider,
+            $this->managementTokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
-                'domain',
-                'clientId',
-                'clientSecret',
-                'domain/api/v2/'
+                'domain'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -339,13 +340,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0TokenProvider,
+            $this->managementTokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
-                'domain',
-                'clientId',
-                'clientSecret',
-                'domain/api/v2/'
+                'domain'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -380,13 +378,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0TokenProvider,
+            $this->managementTokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
-                'domain',
-                'clientId',
-                'clientSecret',
-                'domain/api/v2/'
+                'domain'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -430,13 +425,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->auth0TokenProvider,
+            $this->managementTokenProvider,
             new Auth0Client(
                 new Client(['handler' => $mockHandler]),
-                'domain',
-                'clientId',
-                'clientSecret',
-                'domain/api/v2/'
+                'domain'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -469,12 +461,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         return [
             'client id header' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withHeader('x-client-id', 'my_active_client_id'),
             ],
             'client id param' => [
-                $request = (new ServerRequestFactory())
+                (new ServerRequestFactory())
                     ->createServerRequest('GET', 'https://search.uitdatabank.be')
                     ->withQueryParams(['clientId' => 'my_active_client_id']),
             ],

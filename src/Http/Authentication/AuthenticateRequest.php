@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use Exception;
 use GuzzleHttp\Exception\ConnectException;
@@ -36,7 +37,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private ICultureFeed $cultureFeed;
 
-    private Auth0TokenProvider $auth0TokenProvider;
+    private ManagementTokenProvider $managementTokenProvider;
 
     private Auth0Client $auth0Client;
 
@@ -47,14 +48,14 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
-        Auth0TokenProvider $auth0TokenProvider,
+        ManagementTokenProvider $auth0TokenProvider,
         Auth0Client $auth0Client,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
-        $this->auth0TokenProvider = $auth0TokenProvider;
+        $this->managementTokenProvider = $auth0TokenProvider;
         $this->auth0Client = $auth0Client;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
@@ -94,7 +95,10 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $metadata = [];
 
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get()->getToken());
+            $metadata = $this->auth0Client->getMetadata(
+                $clientId,
+                $this->managementTokenProvider->token()
+            );
 
             if ($metadata === null) {
                 return (new InvalidClientId($clientId))->toResponse();
