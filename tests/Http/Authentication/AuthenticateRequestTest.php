@@ -6,12 +6,13 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;

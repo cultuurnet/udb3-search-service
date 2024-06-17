@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 

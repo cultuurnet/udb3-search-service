@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;

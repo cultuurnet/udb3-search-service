@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
 
 use DateInterval;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class Auth0TokenTest extends TestCase
+final class ManagementTokenTest extends TestCase
 {
     private DateTimeImmutable $issuedAt;
 

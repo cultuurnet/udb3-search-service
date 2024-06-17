@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
 
 use DateTimeImmutable;
 
