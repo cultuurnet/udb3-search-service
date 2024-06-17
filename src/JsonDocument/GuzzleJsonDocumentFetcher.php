@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,22 +14,21 @@ use Psr\Log\LoggerInterface;
 final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 {
     private ClientInterface $httpClient;
+    private LoggerInterface $logger;
+    private ManagementTokenGenerator $tokenGenerator;
 
     private bool $includeMetadata = false;
-
     private bool $embedContributors = false;
-
-    private LoggerInterface $logger;
-
-    private Auth0Client $auth0Client;
-
     private ?ManagementToken $auth0Token = null;
 
-    public function __construct(ClientInterface $httpClient, LoggerInterface $logger, Auth0Client $auth0Client)
-    {
+    public function __construct(
+        ClientInterface $httpClient,
+        LoggerInterface $logger,
+        ManagementTokenGenerator $tokenGenerator
+    ) {
         $this->httpClient = $httpClient;
         $this->logger = $logger;
-        $this->auth0Client = $auth0Client;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function withIncludeMetadata(): self
@@ -49,7 +48,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
     public function fetch(string $documentId, string $documentIri): ?JsonDocument
     {
         if ($this->auth0Token === null) {
-            $this->auth0Token = $this->auth0Client->getToken();
+            $this->auth0Token = $this->tokenGenerator->newToken();
         }
 
         $response = $this->getResponse($documentIri);
@@ -107,7 +106,7 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     private function refreshToken(): void
     {
-        $this->auth0Token = $this->auth0Client->getToken();
+        $this->auth0Token = $this->tokenGenerator->newToken();
     }
 
     private function getHeader(): array
