@@ -70,7 +70,7 @@ final class AuthenticateRequestTest extends TestCase
         $auth0TokenRepository
             ->method('get')
             ->willReturn(
-                new Auth0Token(
+                new ManagementToken(
                     'my_auth0_token',
                     new DateTimeImmutable(),
                     86400

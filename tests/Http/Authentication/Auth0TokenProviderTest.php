@@ -18,7 +18,7 @@ final class Auth0TokenProviderTest extends TestCase
      */
     public function it_returns_a_stored_token(): void
     {
-        $auth0Token = new Auth0Token(
+        $auth0Token = new ManagementToken(
             'my_auth0_token',
             new DateTimeImmutable(),
             86400
@@ -81,7 +81,7 @@ final class Auth0TokenProviderTest extends TestCase
      */
     public function it_stores_a_new_token_when_token_is_expired(): void
     {
-        $auth0Token = new Auth0Token(
+        $auth0Token = new ManagementToken(
             'my_expired_auth0_token',
             new DateTimeImmutable(),
             60

@@ -42,7 +42,7 @@ final class Auth0Client implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function getToken(): ?Auth0Token
+    public function getToken(): ?ManagementToken
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -73,7 +73,7 @@ final class Auth0Client implements LoggerAwareInterface
         }
 
         $res = Json::decodeAssociatively($response->getBody()->getContents());
-        return new Auth0Token(
+        return new ManagementToken(
             $res['access_token'],
             new DateTimeImmutable(),
             $res['expires_in']

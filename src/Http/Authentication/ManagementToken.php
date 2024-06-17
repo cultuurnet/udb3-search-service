@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use DateTimeImmutable;
 
-final class Auth0Token
+final class ManagementToken
 {
     private string $token;
 

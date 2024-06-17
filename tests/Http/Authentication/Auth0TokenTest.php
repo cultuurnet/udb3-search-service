@@ -13,13 +13,13 @@ final class Auth0TokenTest extends TestCase
     private DateTimeImmutable $issuedAt;
 
 
-    private Auth0Token $auth0Token;
+    private ManagementToken $auth0Token;
 
     protected function setUp(): void
     {
         $this->issuedAt = new DateTimeImmutable();
 
-        $this->auth0Token = new Auth0Token(
+        $this->auth0Token = new ManagementToken(
             'my_auth0_token',
             $this->issuedAt,
             10

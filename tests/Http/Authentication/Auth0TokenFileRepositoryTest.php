@@ -39,7 +39,7 @@ final class Auth0TokenFileRepositoryTest extends TestCase
      */
     public function it_stores_an_auth0_token(): void
     {
-        $auth0Token = new Auth0Token(
+        $auth0Token = new ManagementToken(
             'my_auth0_token',
             new DateTimeImmutable('2021-06-21T08:40:00+0000'),
             10

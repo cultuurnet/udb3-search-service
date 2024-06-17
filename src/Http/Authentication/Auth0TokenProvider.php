@@ -18,7 +18,7 @@ final class Auth0TokenProvider
         $this->auth0Client = $auth0Client;
     }
 
-    public function get(): Auth0Token
+    public function get(): ManagementToken
     {
         $token = $this->auth0TokenRepository->get();
 
@@ -30,7 +30,7 @@ final class Auth0TokenProvider
         return $token;
     }
 
-    private function expiresWithin(Auth0Token $token, string $offset): bool
+    private function expiresWithin(ManagementToken $token, string $offset): bool
     {
         return (new DateTime())->modify($offset) > $token->getExpiresAt();
     }
