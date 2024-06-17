@@ -12,15 +12,14 @@ final class ManagementTokenTest extends TestCase
 {
     private DateTimeImmutable $issuedAt;
 
-
-    private ManagementToken $auth0Token;
+    private ManagementToken $managementToken;
 
     protected function setUp(): void
     {
         $this->issuedAt = new DateTimeImmutable();
 
-        $this->auth0Token = new ManagementToken(
-            'my_auth0_token',
+        $this->managementToken = new ManagementToken(
+            'my_management_token',
             $this->issuedAt,
             10
         );
@@ -31,9 +30,9 @@ final class ManagementTokenTest extends TestCase
      */
     public function it_manages_token_properties(): void
     {
-        $this->assertEquals('my_auth0_token', $this->auth0Token->getToken());
-        $this->assertEquals($this->issuedAt, $this->auth0Token->getIssuedAt());
-        $this->assertEquals(10, $this->auth0Token->getExpiresIn());
+        $this->assertEquals('my_management_token', $this->managementToken->getToken());
+        $this->assertEquals($this->issuedAt, $this->managementToken->getIssuedAt());
+        $this->assertEquals(10, $this->managementToken->getExpiresIn());
     }
 
     /**
@@ -43,7 +42,7 @@ final class ManagementTokenTest extends TestCase
     {
         $this->assertEquals(
             $this->issuedAt->add(new DateInterval('PT10S')),
-            $this->auth0Token->getExpiresAt()
+            $this->managementToken->getExpiresAt()
         );
     }
 }
