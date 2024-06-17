@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 
-final class Auth0TokenFileRepository implements Auth0TokenRepository
+final class ManagementTokenFileRepository implements ManagementTokenRepository
 {
     private string $fullFilePath;
 

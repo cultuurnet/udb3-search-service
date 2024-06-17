@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
@@ -25,7 +26,7 @@ final class Auth0TokenProviderTest extends TestCase
             86400
         );
 
-        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository = $this->createMock(ManagementTokenRepository::class);
         $auth0TokenRepository->expects($this->once())
             ->method('get')
             ->willReturn($auth0Token);
@@ -49,7 +50,7 @@ final class Auth0TokenProviderTest extends TestCase
      */
     public function it_stores_a_new_token_when_repo_is_empty(): void
     {
-        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository = $this->createMock(ManagementTokenRepository::class);
         $auth0TokenRepository->expects($this->once())
             ->method('get')
             ->willReturn(null);
@@ -88,7 +89,7 @@ final class Auth0TokenProviderTest extends TestCase
             60
         );
 
-        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository = $this->createMock(ManagementTokenRepository::class);
         $auth0TokenRepository->expects($this->once())
             ->method('get')
             ->willReturn($auth0Token);

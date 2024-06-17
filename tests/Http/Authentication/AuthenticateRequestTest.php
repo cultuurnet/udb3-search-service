@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
@@ -67,7 +68,7 @@ final class AuthenticateRequestTest extends TestCase
             'domain/api/v2/'
         );
 
-        $auth0TokenRepository = $this->createMock(Auth0TokenRepository::class);
+        $auth0TokenRepository = $this->createMock(ManagementTokenRepository::class);
         $auth0TokenRepository
             ->method('get')
             ->willReturn(

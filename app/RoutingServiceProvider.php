@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultureFeed_DefaultOAuthClient;
 use CultureFeed;
+use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenFileRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenFileRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
@@ -58,7 +58,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
 
                     $auth0TokenProvider = new Auth0TokenProvider(
-                        new Auth0TokenFileRepository(__DIR__ . '/../cache/auth0-token-cache.json'),
+                        new ManagementTokenFileRepository(__DIR__ . '/../cache/auth0-token-cache.json'),
                         $auth0Client
                     );
 

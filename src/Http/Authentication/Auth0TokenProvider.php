@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenRepository;
 use DateTime;
 
 final class Auth0TokenProvider
 {
-    private Auth0TokenRepository $auth0TokenRepository;
+    private ManagementTokenRepository $auth0TokenRepository;
 
     private Auth0Client $auth0Client;
 
-    public function __construct(Auth0TokenRepository $auth0TokenRepository, Auth0Client $auth0Client)
+    public function __construct(ManagementTokenRepository $auth0TokenRepository, Auth0Client $auth0Client)
     {
         $this->auth0TokenRepository = $auth0TokenRepository;
         $this->auth0Client = $auth0Client;

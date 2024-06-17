@@ -2,22 +2,20 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class Auth0TokenFileRepositoryTest extends TestCase
+final class ManagementTokenFileRepositoryTest extends TestCase
 {
     private const CACHE_FILE = __DIR__ . '/auth0-token-cache.json';
-
-
-    private Auth0TokenFileRepository $auth0TokenFileRepository;
+    
+    private ManagementTokenFileRepository $auth0TokenFileRepository;
 
     protected function setUp(): void
     {
-        $this->auth0TokenFileRepository = new Auth0TokenFileRepository(self::CACHE_FILE);
+        $this->auth0TokenFileRepository = new ManagementTokenFileRepository(self::CACHE_FILE);
     }
 
     protected function tearDown(): void
