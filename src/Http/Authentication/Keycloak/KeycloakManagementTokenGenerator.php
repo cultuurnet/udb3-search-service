@@ -52,7 +52,6 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
         $response = $this->client->sendRequest($request);
 
         $json = Json::decodeAssociatively($response->getBody()->getContents());
-        var_dump($json); exit;
 
         return new ManagementToken(
             $json['access_token'],
