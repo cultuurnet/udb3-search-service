@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
@@ -89,10 +90,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0Client(
-                $this->createMock(Client::class),
-                'domain'
-            ),
+            $this->createMock(MetadataGenerator::class),
             new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
             $this->pemFile
         );
@@ -305,7 +303,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0Client(
+            new Auth0MetadataGenerator(
                 new Client(['handler' => $mockHandler]),
                 'domain'
             ),
@@ -341,7 +339,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0Client(
+            new Auth0MetadataGenerator(
                 new Client(['handler' => $mockHandler]),
                 'domain'
             ),
@@ -379,7 +377,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0Client(
+            new Auth0MetadataGenerator(
                 new Client(['handler' => $mockHandler]),
                 'domain'
             ),
@@ -426,7 +424,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0Client(
+            new Auth0MetadataGenerator(
                 new Client(['handler' => $mockHandler]),
                 'domain'
             ),

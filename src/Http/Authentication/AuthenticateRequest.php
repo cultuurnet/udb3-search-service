@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultureFeed_Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
@@ -39,7 +39,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private ManagementTokenProvider $managementTokenProvider;
 
-    private Auth0Client $auth0Client;
+    private MetadataGenerator $metadataGenerator;
 
     private DefaultQueryRepository $defaultQueryRepository;
 
@@ -48,15 +48,15 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
-        ManagementTokenProvider $auth0TokenProvider,
-        Auth0Client $auth0Client,
+        ManagementTokenProvider $managementTokenProvider,
+        MetadataGenerator $metadataGenerator,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
-        $this->managementTokenProvider = $auth0TokenProvider;
-        $this->auth0Client = $auth0Client;
+        $this->managementTokenProvider = $managementTokenProvider;
+        $this->metadataGenerator = $metadataGenerator;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
         $this->setLogger(new NullLogger());
@@ -95,7 +95,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $metadata = [];
 
         try {
-            $metadata = $this->auth0Client->getMetadata(
+            $metadata = $this->metadataGenerator->get(
                 $clientId,
                 $this->managementTokenProvider->token()
             );
