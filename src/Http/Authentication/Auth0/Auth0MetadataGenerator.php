@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Auth0;
 
+use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -12,7 +13,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-final class Auth0Client implements LoggerAwareInterface
+final class Auth0MetadataGenerator implements MetadataGenerator, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -29,7 +30,7 @@ final class Auth0Client implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function getMetadata(string $clientId, string $token): ?array
+    public function get(string $clientId, string $token): ?array
     {
         $response = $this->client->get(
             'https://' . $this->domain . '/api/v2/clients/' . $clientId,
