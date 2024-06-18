@@ -9,11 +9,10 @@ use CultuurNet\UDB3\Search\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
-use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-final class Auth0MetadataGenerator implements MetadataGenerator, LoggerAwareInterface
+final class Auth0MetadataGenerator implements MetadataGenerator
 {
     use LoggerAwareTrait;
 
