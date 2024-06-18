@@ -24,7 +24,7 @@ final class ManagementTokenProvider
     {
         $token = $this->tokenRepository->get();
 
-        if ($token === null || $this->expiresWithin($token, '+5 minutes')) {
+        if ($token === null || $this->isExpired($token)) {
             $token = $this->tokenGenerator->newToken();
             $this->tokenRepository->set($token);
         }
@@ -32,8 +32,8 @@ final class ManagementTokenProvider
         return $token->getToken();
     }
 
-    private function expiresWithin(ManagementToken $token, string $offset): bool
+    private function isExpired(ManagementToken $token): bool
     {
-        return (new DateTime())->modify($offset) > $token->getExpiresAt();
+        return (new DateTime())->modify('+5 minutes') > $token->getExpiresAt();
     }
 }
