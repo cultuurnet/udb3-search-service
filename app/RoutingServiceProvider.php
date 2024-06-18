@@ -10,8 +10,11 @@ use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0ManagementTokenGenerat
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenFileRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
@@ -48,33 +51,15 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
-                    $auth0Client = new Auth0MetadataGenerator(
-                        new Client([
-                            'http_errors' => false,
-                        ]),
-                        $this->parameter('auth0.domain')
-                    );
-
-                    $managementTokenProvider = new ManagementTokenProvider(
-                        new Auth0ManagementTokenGenerator(
-                            new Client([
-                                'http_errors' => false,
-                            ]),
-                            $this->parameter('auth0.domain'),
-                            $this->parameter('auth0.client_id'),
-                            $this->parameter('auth0.client_secret'),
-                            $this->parameter('auth0.domain') . '/api/v2/'
-                        ),
-                        new ManagementTokenFileRepository(__DIR__ . '/../cache/auth0-management-token-cache.json'),
-                    );
+                    $metadataGenerator = $this->getMetadataGenerator();
 
                     $pemFile = $this->parameter('keycloak.enabled') ?
                         $this->parameter('keycloak.pem_file') : $this->parameter('auth0.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
-                        $managementTokenProvider,
-                        $auth0Client,
+                        $this->getManagementTokenProvider(),
+                        $metadataGenerator,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
@@ -82,7 +67,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
-                    $auth0Client->setLogger($logger);
+                    $metadataGenerator->setLogger($logger);
                     $authenticateRequest->setLogger($logger);
 
                     $router->middleware($authenticateRequest);
@@ -136,6 +121,55 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                 return $router;
             }
+        );
+    }
+
+    private function getManagementTokenProvider(): ManagementTokenProvider
+    {
+        if ($this->parameter('keycloak.enabled')) {
+            return new ManagementTokenProvider(
+                new KeycloakManagementTokenGenerator(
+                    new Client(),
+                    $this->parameter('keycloak.domain'),
+                    $this->parameter('keycloak.client_id'),
+                    $this->parameter('keycloak.client_secret'),
+                    $this->parameter('keycloak.domain') . '/api/v2/'
+                ),
+                new ManagementTokenFileRepository(__DIR__ . '/../cache/keycloak-management-token-cache.json'),
+            );
+        }
+
+        return new ManagementTokenProvider(
+            new Auth0ManagementTokenGenerator(
+                new Client([
+                    'http_errors' => false,
+                ]),
+                $this->parameter('auth0.domain'),
+                $this->parameter('auth0.client_id'),
+                $this->parameter('auth0.client_secret'),
+                $this->parameter('auth0.domain') . '/api/v2/'
+            ),
+            new ManagementTokenFileRepository(__DIR__ . '/../cache/auth0-management-token-cache.json'),
+        );
+    }
+
+    private function getMetadataGenerator(): MetadataGenerator
+    {
+        if ($this->parameter('keycloak.enabled')) {
+            return new KeycloakMetadataGenerator(
+                new Client([
+                    'http_errors' => false,
+                ]),
+                $this->parameter('keycloak.domain'),
+                $this->parameter('keycloak.realm'),
+            );
+        }
+
+        return new Auth0MetadataGenerator(
+            new Client([
+                'http_errors' => false,
+            ]),
+            $this->parameter('auth0.domain')
         );
     }
 }
