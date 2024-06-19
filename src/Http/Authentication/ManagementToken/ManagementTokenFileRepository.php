@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
 
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 
-final class Auth0TokenFileRepository implements Auth0TokenRepository
+final class ManagementTokenFileRepository implements ManagementTokenRepository
 {
     private string $fullFilePath;
 
@@ -16,7 +16,7 @@ final class Auth0TokenFileRepository implements Auth0TokenRepository
         $this->fullFilePath = $fullFilePath;
     }
 
-    public function get(): ?Auth0Token
+    public function get(): ?ManagementToken
     {
         if (!file_exists($this->fullFilePath)) {
             return null;
@@ -24,14 +24,14 @@ final class Auth0TokenFileRepository implements Auth0TokenRepository
 
         $tokenAsArray = Json::decodeAssociatively(file_get_contents($this->fullFilePath));
 
-        return new Auth0Token(
+        return new ManagementToken(
             $tokenAsArray['token'],
             new DateTimeImmutable($tokenAsArray['issuesAt']),
             $tokenAsArray['expiresIn']
         );
     }
 
-    public function set(Auth0Token $token): void
+    public function set(ManagementToken $token): void
     {
         $tokenAsJson = Json::encode([
             'token' => $token->getToken(),

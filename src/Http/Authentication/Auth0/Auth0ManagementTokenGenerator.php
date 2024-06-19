@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Auth0;
 
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
@@ -13,7 +15,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-final class Auth0Client implements LoggerAwareInterface
+final class Auth0ManagementTokenGenerator implements ManagementTokenGenerator, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -42,7 +44,7 @@ final class Auth0Client implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
-    public function getToken(): ?Auth0Token
+    public function newToken(): ManagementToken
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -69,42 +71,13 @@ final class Auth0Client implements LoggerAwareInterface
             }
 
             $this->logger->info($message);
-            return null;
         }
 
         $res = Json::decodeAssociatively($response->getBody()->getContents());
-        return new Auth0Token(
+        return new ManagementToken(
             $res['access_token'],
             new DateTimeImmutable(),
             $res['expires_in']
         );
-    }
-
-    public function getMetadata(string $clientId, string $token): ?array
-    {
-        $response = $this->client->get(
-            'https://' . $this->domain . '/api/v2/clients/' . $clientId,
-            [
-                'headers' => ['Authorization' => 'Bearer ' . $token],
-            ]
-        );
-
-        if ($response->getStatusCode() !== 200) {
-            $message = 'Auth0 error when getting metadata: ' . $response->getStatusCode();
-
-            if ($response->getStatusCode() >= 500) {
-                $this->logger->error($message);
-                throw new ConnectException(
-                    $message,
-                    new Request('GET', 'https://' . $this->domain . '/api/v2/clients/' . $clientId)
-                );
-            }
-
-            $this->logger->info($message);
-            return null;
-        }
-
-        $res = Json::decodeAssociatively($response->getBody()->getContents());
-        return $res['client_metadata'] ?? [];
     }
 }

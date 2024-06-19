@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultureFeed_DefaultOAuthClient;
 use CultureFeed;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenFileRepository;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
+use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenFileRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
@@ -47,19 +48,24 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
-                    $auth0Client = new Auth0Client(
+                    $auth0Client = new Auth0MetadataGenerator(
                         new Client([
                             'http_errors' => false,
                         ]),
-                        $this->parameter('auth0.domain'),
-                        $this->parameter('auth0.client_id'),
-                        $this->parameter('auth0.client_secret'),
-                        $this->parameter('auth0.domain') . '/api/v2/'
+                        $this->parameter('auth0.domain')
                     );
 
-                    $auth0TokenProvider = new Auth0TokenProvider(
-                        new Auth0TokenFileRepository(__DIR__ . '/../cache/auth0-token-cache.json'),
-                        $auth0Client
+                    $managementTokenProvider = new ManagementTokenProvider(
+                        new Auth0ManagementTokenGenerator(
+                            new Client([
+                                'http_errors' => false,
+                            ]),
+                            $this->parameter('auth0.domain'),
+                            $this->parameter('auth0.client_id'),
+                            $this->parameter('auth0.client_secret'),
+                            $this->parameter('auth0.domain') . '/api/v2/'
+                        ),
+                        new ManagementTokenFileRepository(__DIR__ . '/../cache/auth0-management-token-cache.json'),
                     );
 
                     $pemFile = $this->parameter('keycloak.enabled') ?
@@ -67,7 +73,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
-                        $auth0TokenProvider,
+                        $managementTokenProvider,
                         $auth0Client,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
