@@ -13,10 +13,10 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
@@ -63,16 +63,16 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->pemFile = file_get_contents(__DIR__ . '/samples/public.pem');
 
-        $managementToken = new ManagementToken(
+        $managementToken = new Token(
             'my_auth0_token',
             new DateTimeImmutable(),
             86400
         );
 
-        /** @var ManagementTokenGenerator&MockObject $managementTokenGenerator */
-        $managementTokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        /** @var TokenGenerator&MockObject $managementTokenGenerator */
+        $managementTokenGenerator = $this->createMock(TokenGenerator::class);
         $managementTokenGenerator
-            ->method('newToken')
+            ->method('managementToken')
             ->willReturn($managementToken);
 
         /** @var ManagementTokenRepository&MockObject $managementTokenRepository */

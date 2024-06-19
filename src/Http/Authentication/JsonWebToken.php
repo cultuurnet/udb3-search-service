@@ -60,6 +60,7 @@ final class JsonWebToken
 
     private function isV2JwtProviderToken(): bool
     {
+        // TODO: Find solution for email being present on Keycloak tokens
         return $this->token->claims()->has('nickname') || $this->token->claims()->has('email');
     }
 }

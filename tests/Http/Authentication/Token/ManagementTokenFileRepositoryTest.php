@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +38,7 @@ final class ManagementTokenFileRepositoryTest extends TestCase
      */
     public function it_stores_a_management_token(): void
     {
-        $managementToken = new ManagementToken(
+        $managementToken = new Token(
             'my_management_token',
             new DateTimeImmutable('2021-06-21T08:40:00+0000'),
             10

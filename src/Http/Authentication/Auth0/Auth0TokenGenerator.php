@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication\Auth0;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
@@ -15,18 +15,14 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-final class Auth0ManagementTokenGenerator implements ManagementTokenGenerator, LoggerAwareInterface
+final class Auth0TokenGenerator implements TokenGenerator, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
     private Client $client;
-
     private string $domain;
-
     private string $clientId;
-
     private string $clientSecret;
-
     private string $audience;
 
     public function __construct(
@@ -44,7 +40,17 @@ final class Auth0ManagementTokenGenerator implements ManagementTokenGenerator, L
         $this->logger = new NullLogger();
     }
 
-    public function newToken(): ManagementToken
+    public function managementToken(): Token
+    {
+        return $this->fetchToken();
+    }
+
+    public function loginToken(): Token
+    {
+        return $this->fetchToken();
+    }
+
+    private function fetchToken(): Token
     {
         $response = $this->client->post(
             'https://' . $this->domain . '/oauth/token',
@@ -74,7 +80,7 @@ final class Auth0ManagementTokenGenerator implements ManagementTokenGenerator, L
         }
 
         $res = Json::decodeAssociatively($response->getBody()->getContents());
-        return new ManagementToken(
+        return new Token(
             $res['access_token'],
             new DateTimeImmutable(),
             $res['expires_in']

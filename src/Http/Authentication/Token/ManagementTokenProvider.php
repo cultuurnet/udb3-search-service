@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateTime;
 
 final class ManagementTokenProvider
 {
-    private ManagementTokenGenerator $tokenGenerator;
+    private TokenGenerator $tokenGenerator;
 
     private ManagementTokenRepository $tokenRepository;
 
     public function __construct(
-        ManagementTokenGenerator $tokenGenerator,
+        TokenGenerator $tokenGenerator,
         ManagementTokenRepository $tokenRepository
     ) {
         $this->tokenGenerator = $tokenGenerator;
@@ -25,14 +25,14 @@ final class ManagementTokenProvider
         $token = $this->tokenRepository->get();
 
         if ($token === null || $this->isExpired($token)) {
-            $token = $this->tokenGenerator->newToken();
+            $token = $this->tokenGenerator->managementToken();
             $this->tokenRepository->set($token);
         }
 
         return $token->getToken();
     }
 
-    private function isExpired(ManagementToken $token): bool
+    private function isExpired(Token $token): bool
     {
         return (new DateTime())->modify('+5 minutes') > $token->getExpiresAt();
     }
