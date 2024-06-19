@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SearchService;
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0ManagementTokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenFileRepository;
@@ -48,7 +48,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
-                    $auth0Client = new Auth0Client(
+                    $auth0Client = new Auth0MetadataGenerator(
                         new Client([
                             'http_errors' => false,
                         ]),
