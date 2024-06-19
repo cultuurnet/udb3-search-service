@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateTimeImmutable;
 
-final class ManagementToken
+final class Token
 {
     private string $token;
 

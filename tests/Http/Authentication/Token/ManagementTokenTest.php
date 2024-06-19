@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateInterval;
 use DateTimeImmutable;
@@ -12,13 +12,13 @@ final class ManagementTokenTest extends TestCase
 {
     private DateTimeImmutable $issuedAt;
 
-    private ManagementToken $managementToken;
+    private Token $managementToken;
 
     protected function setUp(): void
     {
         $this->issuedAt = new DateTimeImmutable();
 
-        $this->managementToken = new ManagementToken(
+        $this->managementToken = new Token(
             'my_management_token',
             $this->issuedAt,
             10

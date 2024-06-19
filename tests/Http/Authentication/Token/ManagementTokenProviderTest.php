@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication\ManagementToken;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +19,7 @@ final class ManagementTokenProviderTest extends TestCase
             ->method('get')
             ->willReturn(null);
 
-        $token = new ManagementToken(
+        $token = new Token(
             'my_token',
             new DateTimeImmutable(),
             3600
@@ -29,9 +29,9 @@ final class ManagementTokenProviderTest extends TestCase
             ->method('set')
             ->with($token);
 
-        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(TokenGenerator::class);
         $tokenGenerator->expects($this->atLeast(1))
-            ->method('newToken')
+            ->method('managementToken')
             ->willReturn($token);
 
         $service = new ManagementTokenProvider(
@@ -49,7 +49,7 @@ final class ManagementTokenProviderTest extends TestCase
      */
     public function it_returns_token_if_valid_token_is_in_repository(): void
     {
-        $token = new ManagementToken(
+        $token = new Token(
             'my_token',
             new DateTimeImmutable(),
             3600
@@ -60,9 +60,9 @@ final class ManagementTokenProviderTest extends TestCase
             ->method('get')
             ->willReturn($token);
 
-        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(TokenGenerator::class);
         $tokenGenerator->expects($this->never())
-            ->method('newToken');
+            ->method('managementToken');
 
         $service = new ManagementTokenProvider(
             $tokenGenerator,
@@ -80,13 +80,13 @@ final class ManagementTokenProviderTest extends TestCase
     public function it_generates_new_token_if_current_is_about_to_expire(): void
     {
         // A token is also considered as expired when it will expire within 5 minutes.
-        $expiredToken = new ManagementToken(
+        $expiredToken = new Token(
             'expired_token',
             new DateTimeImmutable(),
             300
         );
 
-        $newToken = new ManagementToken(
+        $newToken = new Token(
             'new_token',
             new DateTimeImmutable(),
             3600
@@ -97,9 +97,9 @@ final class ManagementTokenProviderTest extends TestCase
             ->method('get')
             ->willReturn($expiredToken);
 
-        $tokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        $tokenGenerator = $this->createMock(TokenGenerator::class);
         $tokenGenerator->expects($this->atLeast(1))
-            ->method('newToken')
+            ->method('managementToken')
             ->willReturn($newToken);
 
         $service = new ManagementTokenProvider(

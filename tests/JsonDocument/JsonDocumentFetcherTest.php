@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use DateTimeImmutable;
@@ -30,9 +30,9 @@ final class JsonDocumentFetcherTest extends TestCase
     private $logger;
 
     /**
-     * @var ManagementTokenGenerator|MockObject
+     * @var TokenGenerator|MockObject
      */
-    private $managementTokenGenerator;
+    private $tokenGenerator;
 
     private GuzzleJsonDocumentFetcher $jsonDocumentFetcher;
 
@@ -40,14 +40,14 @@ final class JsonDocumentFetcherTest extends TestCase
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
 
-        $this->managementTokenGenerator = $this->createMock(ManagementTokenGenerator::class);
+        $this->tokenGenerator = $this->createMock(TokenGenerator::class);
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->jsonDocumentFetcher = new GuzzleJsonDocumentFetcher(
             $this->httpClient,
             $this->logger,
-            $this->managementTokenGenerator
+            $this->tokenGenerator
         );
     }
 
@@ -58,7 +58,7 @@ final class JsonDocumentFetcherTest extends TestCase
     {
         $jsonDocumentFetcher = $this->jsonDocumentFetcher->withEmbedContributors();
 
-        $this->givenAValidTokenIsReturned();
+        $this->givenAValidLoginTokenIsReturned();
 
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
@@ -105,7 +105,7 @@ final class JsonDocumentFetcherTest extends TestCase
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
 
-        $this->givenAValidTokenIsReturned();
+        $this->givenAValidLoginTokenIsReturned();
 
         $jsonLd = ['foo' => 'bar'];
         $expectedJsonDocument = (new JsonDocument($documentId))
@@ -148,7 +148,7 @@ final class JsonDocumentFetcherTest extends TestCase
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
 
-        $this->givenAValidTokenIsReturned();
+        $this->givenAValidLoginTokenIsReturned();
 
         $jsonLd = ['foo' => 'bar'];
         $expectedJsonDocument = (new JsonDocument($documentId))
@@ -185,7 +185,7 @@ final class JsonDocumentFetcherTest extends TestCase
         $documentId = '23017cb7-e515-47b4-87c4-780735acc942';
         $documentUrl = 'event/' . $documentId;
 
-        $this->givenAValidTokenIsReturned();
+        $this->givenAValidLoginTokenIsReturned();
 
         $this->httpClient->expects($this->once())
             ->method('request')
@@ -300,12 +300,12 @@ final class JsonDocumentFetcherTest extends TestCase
             );
     }
 
-    private function givenAValidTokenIsReturned(): void
+    private function givenAValidLoginTokenIsReturned(): void
     {
-        $this->managementTokenGenerator->expects($this->once())
-            ->method('newToken')
+        $this->tokenGenerator->expects($this->once())
+            ->method('loginToken')
             ->willReturn(
-                new ManagementToken(
+                new Token(
                     self::DUMMY_TOKEN,
                     new DateTimeImmutable(),
                     3600
@@ -315,15 +315,15 @@ final class JsonDocumentFetcherTest extends TestCase
 
     private function givenARefreshTokenIsRequired(): void
     {
-        $this->managementTokenGenerator->expects($this->exactly(2))
-            ->method('newToken')
+        $this->tokenGenerator->expects($this->exactly(2))
+            ->method('loginToken')
             ->willReturnOnConsecutiveCalls(
-                new ManagementToken(
+                new Token(
                     self::DUMMY_TOKEN,
                     new DateTimeImmutable(),
                     1 // Token needs to be valid for more than 5 minutes
                 ),
-                new ManagementToken(
+                new Token(
                     self::DUMMY_TOKEN,
                     new DateTimeImmutable(),
                     3600
@@ -333,15 +333,15 @@ final class JsonDocumentFetcherTest extends TestCase
 
     private function givenAnInvalidTokenIsReturned(): void
     {
-        $this->managementTokenGenerator->expects($this->exactly(2))
-            ->method('newToken')
+        $this->tokenGenerator->expects($this->exactly(2))
+            ->method('loginToken')
             ->willReturnOnConsecutiveCalls(
-                new ManagementToken(
+                new Token(
                     self::DUMMY_TOKEN,
                     new DateTimeImmutable(),
                     1 // Token needs to be valid for more than 5 minutes
                 ),
-                new ManagementToken(
+                new Token(
                     self::DUMMY_TOKEN,
                     new DateTimeImmutable(),
                     1 // Simulate invalid token by making it expired
