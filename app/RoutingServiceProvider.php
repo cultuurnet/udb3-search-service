@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0TokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
-use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenFileRepository;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenFileRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
@@ -128,7 +128,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
     {
         if ($this->parameter('keycloak.enabled')) {
             return new ManagementTokenProvider(
-                new KeycloakManagementTokenGenerator(
+                new KeycloakTokenGenerator(
                     new Client(),
                     $this->parameter('keycloak.domain'),
                     $this->parameter('keycloak.client_id'),
@@ -140,7 +140,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
         }
 
         return new ManagementTokenProvider(
-            new Auth0ManagementTokenGenerator(
+            new Auth0TokenGenerator(
                 new Client([
                     'http_errors' => false,
                 ]),

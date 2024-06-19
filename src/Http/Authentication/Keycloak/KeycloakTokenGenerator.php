@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication\Keycloak;
 
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementToken;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
-final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
+final class KeycloakTokenGenerator implements TokenGenerator
 {
     private ClientInterface $client;
     private string $domain;
@@ -33,7 +33,7 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
         $this->audience = $audience;
     }
 
-    public function newToken(): ManagementToken
+    public function managementToken(): Token
     {
         $request = new Request(
             'POST',
@@ -53,7 +53,32 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
 
         $json = Json::decodeAssociatively($response->getBody()->getContents());
 
-        return new ManagementToken(
+        return new Token(
+            $json['access_token'],
+            new DateTimeImmutable(),
+            $json['expires_in']
+        );
+    }
+
+    public function loginToken(): Token
+    {
+        $request = new Request(
+            'POST',
+            $this->domain . '/oauth/token',
+            [],
+            Json::encode([
+                'client_id' => $this->clientId,
+                'client_secret' => $this->clientSecret,
+                'grant_type' => 'client_credentials',
+                'audience' => 'https://api.publiq.be',
+            ])
+        );
+
+        $response = $this->client->sendRequest($request);
+
+        $json = Json::decodeAssociatively($response->getBody()->getContents());
+
+        return new Token(
             $json['access_token'],
             new DateTimeImmutable(),
             $json['expires_in']

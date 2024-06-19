@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0ManagementTokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakManagementTokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\ManagementToken\ManagementTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0TokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\JsonDocument\GuzzleJsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use GuzzleHttp\Client;
@@ -26,15 +26,15 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
                     'http_errors' => false,
                 ]),
                 $this->get('logger.amqp.udb3'),
-                $this->getManagementTokenGenerator()
+                $this->getTokenGenerator()
             )
         );
     }
 
-    private function getManagementTokenGenerator(): ManagementTokenGenerator
+    private function getTokenGenerator(): TokenGenerator
     {
         if ($this->parameter('keycloak.enabled')) {
-            return new KeycloakManagementTokenGenerator(
+            return new KeycloakTokenGenerator(
                 new Client(),
                 $this->parameter('keycloak.domain'),
                 $this->parameter('keycloak.entry_api_client_id'),
@@ -43,7 +43,7 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
             );
         }
 
-        return new Auth0ManagementTokenGenerator(
+        return new Auth0TokenGenerator(
             new Client([
                 'http_errors' => false,
             ]),
