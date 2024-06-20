@@ -21,6 +21,7 @@ task :build_artifact do |task|
   system("fpm -s dir -t deb -n #{artifact_name} -v #{version} -a all -p pkg \
     -x '.git*' -x pkg -x lib -x Rakefile -x Gemfile -x Gemfile.lock \
     -x .bundle -x Jenkinsfile -x vendor/bundle \
+    -x tests -x Makefile -x docker -x docker.md -x docker-compose.yml \
     --prefix #{basedir} \
     --config-files #{basedir}/config.yml \
     --config-files #{basedir}/features.yml \
