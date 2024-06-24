@@ -65,7 +65,9 @@ final class KeycloakTokenGenerator implements TokenGenerator
         $request = new Request(
             'POST',
             $this->domain . '/oauth/token',
-            [],
+            [
+                'Content-Type' => 'application/json',
+            ],
             Json::encode([
                 'client_id' => $this->clientId,
                 'client_secret' => $this->clientSecret,
