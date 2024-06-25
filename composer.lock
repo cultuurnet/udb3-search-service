@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42998e3a01acf478d246ee563a5c718c",
+    "content-hash": "a4b91da3c504601e894eae23f0b2b9a7",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -479,16 +479,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.0.7",
+            "version": "v4.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "03c7c20f6d71ed525c1108c92f79bf04b08bea17"
+                "reference": "ce1c52c9b2311d6d0ec5144c226513adb21a5bf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/03c7c20f6d71ed525c1108c92f79bf04b08bea17",
-                "reference": "03c7c20f6d71ed525c1108c92f79bf04b08bea17",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/ce1c52c9b2311d6d0ec5144c226513adb21a5bf6",
+                "reference": "ce1c52c9b2311d6d0ec5144c226513adb21a5bf6",
                 "shasum": ""
             },
             "require": {
@@ -523,9 +523,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.7"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.8"
             },
-            "time": "2024-06-05T09:20:49+00:00"
+            "time": "2024-06-25T09:36:12+00:00"
         },
         {
             "name": "cultuurnet/cdb",
