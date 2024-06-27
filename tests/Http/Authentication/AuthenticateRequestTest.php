@@ -28,6 +28,7 @@ use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
 use League\Container\Container;
 use League\Container\Definition\DefinitionInterface;
+use Noodlehaus\Config;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -59,6 +60,10 @@ final class AuthenticateRequestTest extends TestCase
     protected function setUp(): void
     {
         $this->container = $this->createMock(Container::class);
+        $this->container
+            ->method('get')
+            ->willReturn(new Config([]));
+
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
         $this->pemFile = file_get_contents(__DIR__ . '/samples/public.pem');
