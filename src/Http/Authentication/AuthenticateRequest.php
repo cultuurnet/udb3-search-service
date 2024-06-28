@@ -19,6 +19,7 @@ use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
+use Noodlehaus\Config;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -142,7 +143,10 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         if (!$token->validate($this->pemFile)) {
             return (new InvalidToken('Token "' . $tokenString . '" is expired or not valid for Search API.'))->toResponse();
         }
-        if (!$token->isAllowedOnSearchApi()) {
+
+        $config = $this->container->get(Config::class);
+        $jwtUrl = $config->get('keycloack.enabled') ? $config->get('jwt.domain') : null;
+        if (!$token->isAllowedOnSearchApi($jwtUrl)) {
             return (new NotAllowedToUseSapi())->toResponse();
         }
 

@@ -46,10 +46,10 @@ final class JsonWebToken
         );
     }
 
-    public function isAllowedOnSearchApi(): bool
+    public function isAllowedOnSearchApi(?string $jwtProviderDomain): bool
     {
         $allowedApis = $this->token->claims()->get('https://publiq.be/publiq-apis', '');
-        return $this->hasSapiAccess($allowedApis) && !$this->isV2JwtProviderToken();
+        return $this->hasSapiAccess($allowedApis) && !$this->isV2JwtProviderToken($jwtProviderDomain);
     }
 
     private function hasSapiAccess(string $allowedApis): bool
@@ -58,9 +58,12 @@ final class JsonWebToken
         return in_array('sapi', $apis, true);
     }
 
-    private function isV2JwtProviderToken(): bool
+    private function isV2JwtProviderToken(?string $jwtProviderDomain): bool
     {
-        // TODO: Find solution for email being present on Keycloak tokens
+        if ($jwtProviderDomain) {
+            return $this->token->claims()->get('iss') === $jwtProviderDomain;
+        }
+
         return $this->token->claims()->has('nickname') || $this->token->claims()->has('email');
     }
 }
