@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use CultuurNet\UDB3\Search\Facet\FacetTreeInterface;
 use InvalidArgumentException;
-use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 
 final class PagedResultSet
@@ -20,7 +20,7 @@ final class PagedResultSet
     private array $results;
 
     /**
-     * @var FacetFilter[]
+     * @var FacetTreeInterface[]
      */
     private $facets;
 
@@ -55,7 +55,7 @@ final class PagedResultSet
         return $this->results;
     }
 
-    public function withFacets(FacetFilter ...$facetFilters): PagedResultSet
+    public function withFacets(FacetTreeInterface ...$facetFilters): PagedResultSet
     {
         $c = clone $this;
         $c->facets = $facetFilters;
@@ -63,7 +63,7 @@ final class PagedResultSet
     }
 
     /**
-     * @return FacetFilter[]
+     * @return FacetTreeInterface[]
      */
     public function getFacets(): array
     {
