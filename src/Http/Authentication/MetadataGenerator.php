@@ -10,5 +10,5 @@ interface MetadataGenerator
 {
     public function get(string $clientId, string $token): ?array;
 
-    public function setLogger(LoggerInterface $logger);
+    public function setLogger(LoggerInterface $logger): void;
 }
