@@ -9,7 +9,7 @@ use RuntimeException;
 
 final class DocumentGone extends RuntimeException
 {
-    public function __construct($message = '', $code = 410, Exception $previous = null)
+    public function __construct(string $message = '', int $code = 410, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
