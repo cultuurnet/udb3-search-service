@@ -27,7 +27,7 @@ abstract class AbstractOperationTestCase extends TestCase
      */
     protected $logger;
 
-
+    // @phpstan-ignore-next-line
     protected $operation;
 
     protected function setUp(): void
@@ -43,5 +43,6 @@ abstract class AbstractOperationTestCase extends TestCase
         $this->operation = $this->createOperation($this->client, $this->logger);
     }
 
+    // @phpstan-ignore-next-line
     abstract protected function createOperation(Client $client, LoggerInterface $logger);
 }
