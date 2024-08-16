@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use Broadway\Serializer\Serializable;
 use Exception;
 use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
@@ -166,7 +167,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     }
 
 
-    private function getReadableEventType($event): string
+    private function getReadableEventType(Serializable $event): string
     {
         $parts = explode('\\', get_class($event));
         return end($parts);
