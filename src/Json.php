@@ -65,7 +65,7 @@ final class Json
      * @param string $data
      *   Encoded JSON data.
      *
-     * @returns mixed
+     * @return mixed|null
      *   Decoded data, usually as an array or stdClass object but can also be a string, integer, boolean, etc depending
      *   on the encoded data.
      *
@@ -81,7 +81,7 @@ final class Json
      * @param string $data
      *   Encoded JSON data.
      *
-     * @returns mixed
+     * @return mixed|null
      *   Decoded data, usually as an array but can also be a string, integer, boolean, etc depending on the encoded
      *   data.
      *
