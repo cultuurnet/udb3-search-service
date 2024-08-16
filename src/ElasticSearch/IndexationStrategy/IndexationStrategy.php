@@ -12,7 +12,7 @@ interface IndexationStrategy
         string $indexName,
         string $documentType,
         JsonDocument $jsonDocument
-    );
+    ): void;
 
     public function finish(): void;
 }

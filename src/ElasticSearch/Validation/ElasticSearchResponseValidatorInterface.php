@@ -12,5 +12,5 @@ interface ElasticSearchResponseValidatorInterface
      *
      * @throws InvalidElasticSearchResponseException
      */
-    public function validate(array $responseData);
+    public function validate(array $responseData): void;
 }
