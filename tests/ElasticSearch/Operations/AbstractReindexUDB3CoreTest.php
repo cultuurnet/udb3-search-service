@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
     /**
-     * @var EventBus|MockObject
+     * @var EventBus&MockObject
      */
     private $eventBus;
 
@@ -56,7 +56,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     }
 
     /**
-     * @return EventBus|MockObject
+     * @return EventBus&MockObject
      */
     public function getEventBus()
     {

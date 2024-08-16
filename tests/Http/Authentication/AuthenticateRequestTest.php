@@ -42,12 +42,12 @@ final class AuthenticateRequestTest extends TestCase
     private const BEARER = 'Bearer ';
 
     /**
-     * @var Container|MockObject
+     * @var Container&MockObject
      */
     private $container;
 
     /**
-     * @var ICultureFeed|MockObject
+     * @var ICultureFeed&MockObject
      */
     private $cultureFeed;
 

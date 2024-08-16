@@ -66,7 +66,7 @@ final class OfferSearchControllerTest extends TestCase
     private CompositeOfferRequestParser $requestParser;
 
     /**
-     * @var OfferSearchServiceInterface|MockObject
+     * @var OfferSearchServiceInterface&MockObject
      */
     private $searchService;
 

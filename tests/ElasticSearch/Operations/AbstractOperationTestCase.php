@@ -13,17 +13,17 @@ use Psr\Log\LoggerInterface;
 abstract class AbstractOperationTestCase extends TestCase
 {
     /**
-     * @var Client|MockObject
+     * @var Client&MockObject
      */
     protected $client;
 
     /**
-     * @var IndicesNamespace|MockObject
+     * @var IndicesNamespace&MockObject
      */
     protected $indices;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     protected $logger;
 

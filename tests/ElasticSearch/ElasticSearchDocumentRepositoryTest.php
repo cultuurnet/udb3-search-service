@@ -16,7 +16,7 @@ use Psr\Log\NullLogger;
 final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
     /**
-     * @var Client|MockObject
+     * @var Client&MockObject
      */
     private $client;
 

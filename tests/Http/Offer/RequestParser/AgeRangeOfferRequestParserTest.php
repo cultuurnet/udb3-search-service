@@ -16,7 +16,7 @@ final class AgeRangeOfferRequestParserTest extends TestCase
     private AgeRangeOfferRequestParser $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|MockObject
+     * @var OfferQueryBuilderInterface&MockObject
      */
     private $queryBuilder;
 
