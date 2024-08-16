@@ -31,7 +31,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 
     /**
      * Get parameter from config
-     *
+     * @return mixed|null
      */
     protected function parameter(string $parameter)
     {
@@ -40,7 +40,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 
     /**
      * Get service from container
-     *
+     * @return object
      */
     protected function get(string $name)
     {

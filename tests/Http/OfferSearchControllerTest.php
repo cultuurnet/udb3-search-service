@@ -675,6 +675,7 @@ final class OfferSearchControllerTest extends TestCase
 
     /**
      * @test
+     * @param bool|string|int $stringValue
      * @dataProvider booleanStringDataProvider
      */
     public function it_converts_the_media_objects_toggle_parameter_to_a_correct_boolean(
@@ -704,6 +705,7 @@ final class OfferSearchControllerTest extends TestCase
 
     /**
      * @test
+     * @param bool|string|int $stringValue
      * @dataProvider booleanStringDataProvider
      */
     public function it_converts_the_uitpas_toggle_parameter_to_a_correct_boolean(
@@ -907,6 +909,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      * @dataProvider malformedDateTimeProvider
+     * @param bool|string|int $malformedDateTimeAsString
      * @todo PHP8 upgrade: change Type hint to string|bool
      */
     public function it_throws_an_exception_for_a_malformed_date_from($malformedDateTimeAsString): void
