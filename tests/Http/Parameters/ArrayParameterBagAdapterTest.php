@@ -308,8 +308,8 @@ final class ArrayParameterBagAdapterTest extends TestCase
 
     /**
      * @test
+     * @param bool|string|int $parameterValue
      * @dataProvider booleanDataProvider
-     *
      */
     public function it_should_parse_a_boolean_value_from_a_parameter(
         $parameterValue,

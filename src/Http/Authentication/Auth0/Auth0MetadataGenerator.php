@@ -9,16 +9,16 @@ use CultuurNet\UDB3\Search\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 final class Auth0MetadataGenerator implements MetadataGenerator
 {
-    use LoggerAwareTrait;
-
     private Client $client;
 
     private string $domain;
+
+    private LoggerInterface $logger;
 
     public function __construct(
         Client $client,
@@ -55,5 +55,10 @@ final class Auth0MetadataGenerator implements MetadataGenerator
 
         $res = Json::decodeAssociatively($response->getBody()->getContents());
         return $res['client_metadata'] ?? [];
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 }

@@ -30,6 +30,9 @@ final class ResponseFactory
         return self::jsonWithCustomContentType('application/problem+json', $data, $code);
     }
 
+    /**
+     * @param array|object $data
+     */
     private static function jsonWithCustomContentType(
         string $contentType,
         $data,

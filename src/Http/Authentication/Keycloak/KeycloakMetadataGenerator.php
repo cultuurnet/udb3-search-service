@@ -10,16 +10,15 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 final class KeycloakMetadataGenerator implements MetadataGenerator
 {
-    use LoggerAwareTrait;
-
     private Client $client;
     private string $domain;
     private string $realm;
+    private LoggerInterface $logger;
 
     public function __construct(
         Client $client,
@@ -93,5 +92,10 @@ final class KeycloakMetadataGenerator implements MetadataGenerator
 
         $result['publiq-apis'] = implode(' ', $scopes);
         return $result;
+    }
+
+    public function setLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
     }
 }

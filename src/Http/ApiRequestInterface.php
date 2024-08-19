@@ -17,6 +17,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface ApiRequestInterface extends ServerRequestInterface
 {
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function getQueryParam(string $name, $default = null);
 
     public function hasQueryParam(string $name): bool;
@@ -25,5 +29,9 @@ interface ApiRequestInterface extends ServerRequestInterface
 
     public function getQueryParameterBag(): ParameterBagInterface;
 
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function getServerParam(string $name, $default = null);
 }

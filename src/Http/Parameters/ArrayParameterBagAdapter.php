@@ -85,10 +85,10 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     public function getExplodedStringFromParameter(
-        $parameterName,
-        $defaultValueAsString = null,
+        string $parameterName,
+        ?string $defaultValueAsString = null,
         callable $callback = null,
-        $delimiter = ','
+        string $delimiter = ','
     ): array {
         $callback = $this->ensureCallback($callback);
 
@@ -148,10 +148,13 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
     }
 
-    private function get(string $queryParameter, $default = null)
+    /**
+     * @return mixed|null
+     */
+    private function get(string $queryParameter)
     {
         if (!isset($this->parameterBag[$queryParameter])) {
-            return $default;
+            return null;
         }
 
         return $this->parameterBag[$queryParameter];

@@ -63,14 +63,11 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         $this->indexationStrategy = $indexationStrategy;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function runOperation(
         InputInterface $input,
         OutputInterface $output,
         AbstractReindexUDB3CoreOperation $operation
-    ) {
+    ): void {
         $indexationStrategy = $this->getIndexationStrategy();
         $logger = $this->getLogger($output);
 
