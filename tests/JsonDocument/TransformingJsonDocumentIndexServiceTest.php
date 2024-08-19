@@ -14,22 +14,22 @@ use Psr\Log\LoggerInterface;
 final class TransformingJsonDocumentIndexServiceTest extends TestCase
 {
     /**
-     * @var JsonDocumentFetcher|MockObject
+     * @var JsonDocumentFetcher&MockObject
      */
     private $jsonDocumentFetcher;
 
     /**
-     * @var DocumentRepository|MockObject
+     * @var DocumentRepository&MockObject
      */
     private $searchRepository;
 
     /**
-     * @var JsonTransformer|MockObject
+     * @var JsonTransformer&MockObject
      */
     private $transformer;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 

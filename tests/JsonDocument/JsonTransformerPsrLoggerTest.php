@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 final class JsonTransformerPsrLoggerTest extends TestCase
 {
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $psrLogger;
 

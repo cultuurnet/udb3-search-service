@@ -20,17 +20,17 @@ final class JsonDocumentFetcherTest extends TestCase
     private const DUMMY_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
 
     /**
-     * @var ClientInterface|MockObject
+     * @var ClientInterface&MockObject
      */
     private $httpClient;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 
     /**
-     * @var TokenGenerator|MockObject
+     * @var TokenGenerator&MockObject
      */
     private $tokenGenerator;
 

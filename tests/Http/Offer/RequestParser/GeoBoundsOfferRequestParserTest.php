@@ -21,7 +21,7 @@ final class GeoBoundsOfferRequestParserTest extends TestCase
     private GeoBoundsOfferRequestParser $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|MockObject
+     * @var OfferQueryBuilderInterface&MockObject
      */
     private $offerQueryBuilder;
 

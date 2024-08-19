@@ -27,19 +27,19 @@ final class EventBusForwardingConsumerTest extends TestCase
     private const LOG_ERROR = 'Deserializerlocator error';
     private const LOG_REJECTED = 'message rejected';
 
-    /** @var EventBus|MockObject */
+    /** @var EventBus&MockObject */
     private $eventBus;
 
-    /** @var DeserializerInterface|MockObject */
+    /** @var DeserializerInterface&MockObject */
     private $deserializer;
 
-    /** @var DeserializerLocatorInterface|MockObject */
+    /** @var DeserializerLocatorInterface&MockObject */
     private $deserializerLocator;
 
-    /** @var AMQPChannel|MockObject */
+    /** @var AMQPChannel&MockObject */
     private $channel;
 
-    /** @var LoggerInterface|MockObject */
+    /** @var LoggerInterface&MockObject */
     private $logger;
 
     private Closure $consumeCallback;

@@ -16,7 +16,7 @@ final class DocumentLanguageOfferRequestParserTest extends TestCase
     private DocumentLanguageOfferRequestParser $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|MockObject
+     * @var OfferQueryBuilderInterface&MockObject
      */
     private $queryBuilder;
 

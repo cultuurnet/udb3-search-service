@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 final class EventTransformerTest extends TestCase
 {
     /**
-     * @var RegionServiceInterface|MockObject
+     * @var RegionServiceInterface&MockObject
      */
     private $regionService;
 

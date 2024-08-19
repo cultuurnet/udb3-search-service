@@ -45,7 +45,7 @@ final class OrganizerSearchControllerTest extends TestCase
     private MockOrganizerQueryBuilder $queryBuilder;
 
     /**
-     * @var OrganizerSearchServiceInterface|MockObject
+     * @var OrganizerSearchServiceInterface&MockObject
      */
     private $searchService;
 

@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 final class ElasticSearchOfferSearchServiceTest extends TestCase
 {
     /**
-     * @var Client|MockObject
+     * @var Client&MockObject
      */
     private $client;
 

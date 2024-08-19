@@ -20,14 +20,14 @@ final class CompositeJsonTransformerTest extends TestCase
         $inBetween = ['foo' => 'bar'];
         $final = ['foo' => 'bar', 'extraProperty' => true];
 
-        /** @var JsonTransformer|MockObject $firstTransformer */
+        /** @var JsonTransformer&MockObject $firstTransformer */
         $firstTransformer = $this->createMock(JsonTransformer::class);
         $firstTransformer->expects($this->once())
             ->method('transform')
             ->with($original)
             ->willReturn($inBetween);
 
-        /** @var JsonTransformer|MockObject $secondTransformer */
+        /** @var JsonTransformer&MockObject $secondTransformer */
         $secondTransformer = $this->createMock(JsonTransformer::class);
         $secondTransformer->expects($this->once())
             ->method('transform')
