@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use DateInterval;
@@ -474,13 +475,13 @@ final class CalendarTransformer implements JsonTransformer
         // When converting the dates to times it's important we set the right timezone, because sometimes the dates are
         // in UTC for example and then the time info is not what we'd expect to be in Belgium.
         if (isset($subEvent['startDate'])) {
-            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
+            $startDate = DateTimeFactory::fromAtom($subEvent['startDate']);
             $startDate = $startDate->setTimezone($timezone);
             $startTime = $startDate->format('Hi');
         }
 
         if (isset($subEvent['endDate'])) {
-            $endDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate']);
+            $endDate = DateTimeFactory::fromAtom($subEvent['endDate']);
             $endDate = $endDate->setTimezone($timezone);
             $endTime = $endDate->format('Hi');
         }
