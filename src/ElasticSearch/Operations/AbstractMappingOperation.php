@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 
 abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
@@ -15,7 +16,7 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
                 'index' => $indexName,
                 'type' => $documentType,
                 'body' => Json::decodeAssociatively(
-                    file_get_contents($mappingFilePath)
+                    FileReader::read($mappingFilePath)
                 ),
             ]
         );

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0TokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
@@ -63,7 +64,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        file_get_contents('file://' . __DIR__ . '/../' . $pemFile)
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
