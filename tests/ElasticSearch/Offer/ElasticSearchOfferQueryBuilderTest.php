@@ -35,8 +35,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use DateTime;
-use DateTimeImmutable;
 use InvalidArgumentException;
 
 final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
