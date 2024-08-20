@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 final class AvailabilityOfferRequestParser implements OfferRequestParserInterface
 {
@@ -14,8 +15,11 @@ final class AvailabilityOfferRequestParser implements OfferRequestParserInterfac
     {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $default = DateTimeImmutable::createFromFormat('U', (string) $request->getServerParam('REQUEST_TIME', 0))
-            ->format(DATE_ATOM);
+        $default = DateTimeImmutable::createFromFormat('U', (string) $request->getServerParam('REQUEST_TIME', 0));
+        if (!$default) {
+            throw new InvalidArgumentException('Invalid timestamp provided');
+        }
+        $default = $default->format(DATE_ATOM);
 
         $availableFrom = $parameterBagReader->getDateTimeFromParameter('availableFrom', $default);
         $availableTo = $parameterBagReader->getDateTimeFromParameter('availableTo', $default);
