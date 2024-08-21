@@ -101,6 +101,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             return [];
         }
 
+        /** @var string[] $asArray */
         $asArray = explode($delimiter, $asString);
 
         return array_map($callback, $asArray);
