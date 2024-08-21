@@ -20,23 +20,27 @@ final class JsonWebTokenFactory
             $builder = $builder->withClaim($claim, $value);
         }
 
+        $privatePem = FileReader::read('file://' . __DIR__ . '/samples/private.pem');
+        if (empty($privatePem)) {
+            throw new \RuntimeException('Private key is found but empty');
+        }
+
         return $builder->getToken(
             new Sha256(),
-            InMemoryKey::plainText(
-                FileReader::read('file://' . __DIR__ . '/samples/private.pem'),
-                'secret'
-            )
+            InMemoryKey::plainText($privatePem, 'secret')
         )->toString();
     }
 
     public static function createWithInvalidSignature(): string
     {
+        $invalidPrivatePem = FileReader::read('file://' . __DIR__ . '/samples/private-invalid.pem');
+        if (empty($invalidPrivatePem)) {
+            throw new \RuntimeException('Invalid Private key is found but empty');
+        }
+
         return (new Builder(new JoseEncoder(), new ChainedFormatter()))->getToken(
             new Sha256(),
-            InMemoryKey::plainText(
-                FileReader::read('file://' . __DIR__ . '/samples/private-invalid.pem'),
-                'secret'
-            )
+            InMemoryKey::plainText($invalidPrivatePem, 'secret')
         )->toString();
     }
 
