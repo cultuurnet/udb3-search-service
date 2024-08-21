@@ -17,12 +17,13 @@ final class Url
 
     public function __construct(string $url)
     {
-        $this->urlParts = parse_url($url);
+        $urlParts = parse_url($url);
 
-        if (!is_array($this->urlParts) || !isset($this->urlParts['host'])) {
+        if (!is_array($urlParts) || !isset($urlParts['host'])) {
             throw new InvalidArgumentException('Url ' . $url . ' is not supported');
         }
 
+        $this->urlParts = $urlParts;
         $this->url = $url;
     }
 
