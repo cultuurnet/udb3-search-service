@@ -57,7 +57,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
                 function (array $aggregationData, $aggregationName): ?Aggregation {
                     try {
                         return Aggregation::fromElasticSearchResponseAggregationData(
-                            $aggregationName,
+                            (string) $aggregationName,
                             $aggregationData
                         );
                     } catch (InvalidArgumentException $e) {

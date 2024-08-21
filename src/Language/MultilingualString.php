@@ -103,7 +103,7 @@ final class MultilingualString
         $languages = array_keys($data);
 
         if (!$originalLanguage || !isset($data[$originalLanguage])) {
-            $originalLanguage = reset($languages);
+            $originalLanguage = (string) reset($languages);
         }
 
         $string = new MultilingualString(new Language($originalLanguage), $data[$originalLanguage]);
