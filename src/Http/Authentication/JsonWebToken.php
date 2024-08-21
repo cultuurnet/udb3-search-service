@@ -23,13 +23,17 @@ final class JsonWebToken
     public function __construct(string $jwt)
     {
         $token = (new Parser(new JoseEncoder()))->parse($jwt);
-        // Need this assert to make PHPstan happy
+        // Need this assert to make PHPStan happy
         assert($token instanceof UnencryptedToken, 'Token should be an instance of UnencryptedToken');
         $this->token = $token;
     }
 
     public function validate(string $publicKey, ?string $keyPassphrase = null): bool
     {
+        if (empty($publicKey)) {
+            throw new \RuntimeException('Public key is empty');
+        }
+
         $signer = new Sha256();
         $key = InMemoryKey::plainText($publicKey, (string)$keyPassphrase);
 
