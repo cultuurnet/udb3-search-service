@@ -505,7 +505,9 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface
     {
-        return (new SortBuilders($this))->build($sorts, $sortBuilders);
+        /** @var OfferQueryBuilderInterface $builder */
+        $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
+        return $builder;
     }
 
     public function getLimit(): Limit

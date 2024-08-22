@@ -70,6 +70,7 @@ final class TermTaxonomyToFacetMappingsCommand extends Command
         SimpleXmlElement $xml,
         string $xpath
     ): void {
+        /** @var SimpleXMLElement[] $nodes */
         $nodes = $xml->xpath($xpath);
         $mapping = [$mappingName => $this->simpleXmlNodesToFacetMapping($nodes)];
         $yml = Yaml::dump($mapping, 4, 2);

@@ -40,7 +40,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 
     /**
      * Get service from container
-     * @return object
+     * @return mixed|null
      */
     protected function get(string $name)
     {

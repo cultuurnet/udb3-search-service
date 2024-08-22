@@ -8,6 +8,7 @@ use JsonException;
 
 final class Json
 {
+    /** @var int<1, max> */
     public static int $depth = 512;
 
     /**

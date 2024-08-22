@@ -87,9 +87,13 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     public function getExplodedStringFromParameter(
         string $parameterName,
         ?string $defaultValueAsString = null,
-        callable $callback = null,
-        string $delimiter = ','
+        ?callable $callback = null,
+        ?string $delimiter = null
     ): array {
+        if (empty($delimiter)) {
+            $delimiter = ',';
+        }
+
         $callback = $this->ensureCallback($callback);
 
         $asString = $this->getStringFromParameter(
@@ -101,6 +105,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
             return [];
         }
 
+        /** @var string[] $asArray */
         $asArray = explode($delimiter, $asString);
 
         return array_map($callback, $asArray);

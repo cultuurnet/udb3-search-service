@@ -25,7 +25,7 @@ abstract class AbstractSearchProjector implements EventListener
         $handlers = $this->getEventHandlers();
 
         $payload = $domainMessage->getPayload();
-        $payloadType = get_class($payload);
+        $payloadType = (string) get_class($payload);
 
         if (array_key_exists($payloadType, $handlers) &&
             method_exists($this, $handlers[$payloadType])) {
