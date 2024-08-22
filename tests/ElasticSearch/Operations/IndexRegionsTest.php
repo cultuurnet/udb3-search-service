@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
@@ -41,7 +42,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'id' => 'gem-antwerpen',
                         'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json')
+                            FileReader::read(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json')
                         ),
                     ],
                 ],
@@ -51,7 +52,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'id' => 'gem-leuven',
                         'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            file_get_contents(__DIR__ . '/data/regions/municipalities/gem-leuven.json')
+                            FileReader::read(__DIR__ . '/data/regions/municipalities/gem-leuven.json')
                         ),
                     ],
                 ],
@@ -61,7 +62,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                         'id' => 'prov-vlaams-brabant',
                         'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            file_get_contents(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json')
+                            FileReader::read(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json')
                         ),
                     ],
                 ]

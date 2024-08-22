@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\FileReader;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Key\InMemory as InMemoryKey;
@@ -22,7 +23,7 @@ final class JsonWebTokenFactory
         return $builder->getToken(
             new Sha256(),
             InMemoryKey::plainText(
-                file_get_contents('file://' . __DIR__ . '/samples/private.pem'),
+                FileReader::read('file://' . __DIR__ . '/samples/private.pem'),
                 'secret'
             )
         )->toString();
@@ -33,7 +34,7 @@ final class JsonWebTokenFactory
         return (new Builder(new JoseEncoder(), new ChainedFormatter()))->getToken(
             new Sha256(),
             InMemoryKey::plainText(
-                file_get_contents('file://' . __DIR__ . '/samples/private-invalid.pem'),
+                FileReader::read('file://' . __DIR__ . '/samples/private-invalid.pem'),
                 'secret'
             )
         )->toString();
@@ -41,6 +42,6 @@ final class JsonWebTokenFactory
 
     public static function getPublicKey(): string
     {
-        return file_get_contents('file://' . __DIR__ . '/samples/public.pem');
+        return FileReader::read('file://' . __DIR__ . '/samples/public.pem');
     }
 }

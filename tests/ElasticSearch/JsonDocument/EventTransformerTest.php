@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\UDB3\Search\FileReader;
 use DateTimeInterface;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
@@ -537,12 +538,12 @@ final class EventTransformerTest extends TestCase
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
-        $original = Json::decodeAssociatively(file_get_contents($givenFilePath));
+        $original = Json::decodeAssociatively(FileReader::read($givenFilePath));
 
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects
         // become empty arrays in PHP.
-        $expected = Json::decode(file_get_contents($expectedFilePath));
+        $expected = Json::decode(FileReader::read($expectedFilePath));
         $actual = Json::decode(
             Json::encode(
                 $this->transformer->transform($original, [])

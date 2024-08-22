@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
@@ -23,7 +24,7 @@ final class UpdateOrganizerMappingTest extends AbstractMappingTestCase
     protected function getExpectedMappingBody(): array
     {
         return Json::decodeAssociatively(
-            file_get_contents(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_organizer.json')
+            FileReader::read(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_organizer.json')
         );
     }
 

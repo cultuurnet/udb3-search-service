@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
@@ -411,7 +412,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 
     private function getJsonDocumentAsElasticSearchResults(string $filePath): array
     {
-        $contents = file_get_contents($filePath);
+        $contents = FileReader::read($filePath);
         return Json::decodeAssociatively($contents);
     }
 }

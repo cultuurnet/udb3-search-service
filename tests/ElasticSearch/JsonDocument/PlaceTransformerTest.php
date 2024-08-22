@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
+use CultuurNet\UDB3\Search\FileReader;
 use DateTimeInterface;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
@@ -99,7 +100,7 @@ final class PlaceTransformerTest extends TestCase
      */
     public function it_should_log_a_warning_if_address_is_not_found_in_the_main_language(): void
     {
-        $original = file_get_contents(__DIR__ . '/data/place/original-without-address-in-main-language.json');
+        $original = FileReader::read(__DIR__ . '/data/place/original-without-address-in-main-language.json');
 
         $expectedLogs = [
             ['warning', "Missing expected field 'address.nl'.", []],
@@ -115,7 +116,7 @@ final class PlaceTransformerTest extends TestCase
      */
     public function it_should_log_warnings_if_an_address_translation_is_incomplete(): void
     {
-        $original = file_get_contents(__DIR__ . '/data/place/original-with-incomplete-address-translation.json');
+        $original = FileReader::read(__DIR__ . '/data/place/original-with-incomplete-address-translation.json');
 
         $expectedLogs = [
             ['warning', "Missing expected field 'address.fr.addressCountry'.", []],
@@ -311,12 +312,12 @@ final class PlaceTransformerTest extends TestCase
 
     private function transformAndAssert(string $givenFilePath, string $expectedFilePath, array $expectedLogs = []): void
     {
-        $original = Json::decodeAssociatively(file_get_contents($givenFilePath));
+        $original = Json::decodeAssociatively(FileReader::read($givenFilePath));
 
         // Compare the expected and actual JSON as objects, not arrays. Some Elasticsearch fields expect an empty object
         // specifically instead of an empty array in some scenario's. But if we decode to arrays, empty JSON objects
         // become empty arrays in PHP.
-        $expected = Json::decode(file_get_contents($expectedFilePath));
+        $expected = Json::decode(FileReader::read($expectedFilePath));
         $actual = Json::decode(
             Json::encode(
                 $this->transformer->transform($original, [])
