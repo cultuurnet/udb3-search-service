@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
+use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
@@ -34,8 +35,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use DateTime;
-use DateTimeImmutable;
 use InvalidArgumentException;
 
 final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
@@ -437,8 +436,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                null
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00')
             );
 
         $expectedQueryArray = [
@@ -479,7 +477,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
                 null,
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -519,8 +517,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -562,8 +560,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
-                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
-                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'))
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::temporarilyUnavailable(), Status::unavailable()])
@@ -647,8 +645,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
-                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
-                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'))
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
             );
@@ -711,8 +709,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
-                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'))
-                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'))
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'))
                     ->withStatuses([Status::temporarilyUnavailable(), Status::unavailable()])
             );
 
@@ -1225,8 +1223,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                null
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
             );
 
         $expectedQueryArray = [
@@ -1267,7 +1264,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 null,
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -1307,8 +1304,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -1353,8 +1350,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
 
         (new ElasticSearchOfferQueryBuilder())
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00')
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'),
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00')
             );
     }
 
@@ -2852,8 +2849,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                null
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
             );
 
         $expectedQueryArray = [
@@ -2894,7 +2890,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
                 null,
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2934,8 +2930,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -2976,7 +2972,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
                 null
             );
 
@@ -3018,7 +3014,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
                 null,
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [
@@ -3058,8 +3054,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-25T00:00:00+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+00:00')
+                DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00')
             );
 
         $expectedQueryArray = [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http;
 
+use CultuurNet\UDB3\Search\DateTimeFactory;
 use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
@@ -52,8 +53,6 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
-use DateTime;
-use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -249,8 +248,8 @@ final class OfferSearchControllerTest extends TestCase
                 new WorkflowStatus('DRAFT')
             )
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T00:00:00+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-28T15:30:23+01:00')
+                DateTimeFactory::fromAtom('2017-04-26T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2017-04-28T15:30:23+01:00')
             )
             ->withRegionFilter(
                 $this->regionIndexName,
@@ -271,18 +270,18 @@ final class OfferSearchControllerTest extends TestCase
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00')
+                DateTimeFactory::fromAtom('2017-05-01T13:33:37+01:00'),
+                DateTimeFactory::fromAtom('2017-05-01T13:33:37+01:00')
             )
             ->withModifiedRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T13:33:37+01:00')
+                DateTimeFactory::fromAtom('2017-05-01T13:33:37+01:00'),
+                DateTimeFactory::fromAtom('2017-05-01T13:33:37+01:00')
             )
             ->withCalendarTypeFilter(new CalendarType('single'))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
-                    ->withDateFrom(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'))
-                    ->withDateTo(DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00'))
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
@@ -486,8 +485,8 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T08:34:21+00:00')
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00'),
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00')
             )
             ->withAddressCountryFilter(new Country('BE'))
             ->withAudienceTypeFilter(new AudienceType('everyone'))
@@ -576,12 +575,12 @@ final class OfferSearchControllerTest extends TestCase
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+                DateTimeFactory::fromAtom('2017-04-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2017-04-01T23:59:59+01:00')
             )
             ->withDateRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T00:00:00+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-01T23:59:59+01:00')
+                DateTimeFactory::fromAtom('2017-04-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2017-04-01T23:59:59+01:00')
             );
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1089,8 +1088,8 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withDateRangeFilter(
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T00:00:00+01:00'),
-                DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-05-01T23:59:59+01:00')
+                DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'),
+                DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00')
             );
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
