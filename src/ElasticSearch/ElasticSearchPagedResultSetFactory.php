@@ -16,8 +16,7 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
 {
     private AggregationTransformerInterface $aggregationTransformer;
 
-    private ?ElasticSearchResponseValidatorInterface $responseValidator;
-
+    private ElasticSearchResponseValidatorInterface $responseValidator;
 
     public function __construct(
         AggregationTransformerInterface $aggregationTransformer,
