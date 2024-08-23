@@ -14,7 +14,7 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
         $this->client->indices()->putMapping(
             [
                 'index' => $indexName,
-                'type' => $documentType,
+                // 'type' => $documentType,
                 'body' => Json::decodeAssociatively(
                     FileReader::read($mappingFilePath)
                 ),

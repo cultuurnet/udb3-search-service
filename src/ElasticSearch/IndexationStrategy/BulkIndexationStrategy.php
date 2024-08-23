@@ -41,7 +41,7 @@ final class BulkIndexationStrategy implements IndexationStrategy
 
         $this->queuedDocuments[] = [
             'index' => $indexName,
-            'type' => $documentType,
+            // 'type' => $documentType,
             'id' => $jsonDocument->getId(),
             'body' => Json::decodeAssociatively($jsonDocument->getRawBody()),
         ];

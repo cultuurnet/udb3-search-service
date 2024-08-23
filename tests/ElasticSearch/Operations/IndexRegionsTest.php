@@ -40,7 +40,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'gem-antwerpen',
-                        'type' => 'region',
+                        // 'type' => 'region',
                         'body' => Json::decodeAssociatively(
                             FileReader::read(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json')
                         ),
@@ -50,7 +50,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'gem-leuven',
-                        'type' => 'region',
+                        // 'type' => 'region',
                         'body' => Json::decodeAssociatively(
                             FileReader::read(__DIR__ . '/data/regions/municipalities/gem-leuven.json')
                         ),
@@ -60,7 +60,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'prov-vlaams-brabant',
-                        'type' => 'region',
+                        // 'type' => 'region',
                         'body' => Json::decodeAssociatively(
                             FileReader::read(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json')
                         ),

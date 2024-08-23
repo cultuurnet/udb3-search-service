@@ -1,18 +1,18 @@
 {
     "properties": {
         "@id": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
         "@type": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
         "id": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
@@ -34,12 +34,12 @@
             "type": "integer_range"
         },
         "status": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
         "bookingAvailability": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
@@ -55,12 +55,12 @@
                     "type": "integer_range"
                 },
                 "status": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "bookingAvailability": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 }
@@ -68,13 +68,13 @@
         },
 
         "calendarType": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
         "workflowStatus": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
@@ -83,19 +83,19 @@
             "type": "object",
             "properties": {
                 "nl": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "fr": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "en": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "de": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 }
             }
@@ -104,42 +104,42 @@
             "type": "object",
             "properties": {
                 "nl": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "fr": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "en": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 },
                 "de": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_standard_analyzer"
                 }
             }
         },
 
         "mainLanguage": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
         "languages": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
         "completedLanguages": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
         "labels": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer",
             "fields": {
@@ -149,18 +149,18 @@
             }
         },
         "labels_free_text": {
-            "type": "string"
+            "type": "text"
         },
         "terms": {
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "label": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 }
@@ -170,12 +170,12 @@
             "type": "object",
             "properties": {
                 "id": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "label": {
-                    "type": "string"
+                    "type": "text"
                 }
             }
         },
@@ -196,21 +196,21 @@
                     "type": "object",
                     "properties": {
                         "addressCountry": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "addressLocality": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "streetAddress": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         }
                     }
@@ -219,21 +219,21 @@
                     "type": "object",
                     "properties": {
                         "addressCountry": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "addressLocality": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "streetAddress": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         }
                     }
@@ -242,21 +242,21 @@
                     "type": "object",
                     "properties": {
                         "addressCountry": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "addressLocality": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "streetAddress": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         }
                     }
@@ -265,21 +265,21 @@
                     "type": "object",
                     "properties": {
                         "addressCountry": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "addressLocality": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "postalCode": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_exact_match_analyzer",
                             "search_analyzer": "lowercase_exact_match_analyzer"
                         },
                         "streetAddress": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         }
                     }
@@ -294,7 +294,7 @@
             "type": "geo_point"
         },
         "regions": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer",
             "fields": {
@@ -317,7 +317,7 @@
         },
 
         "audienceType": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
@@ -333,17 +333,17 @@
             "type": "object",
             "properties": {
                 "@id": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "@type": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "id": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
@@ -351,25 +351,25 @@
                     "type": "object",
                     "properties": {
                         "nl": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "fr": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "en": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         },
                         "de": {
-                            "type": "string",
+                            "type": "text",
                             "analyzer": "lowercase_standard_analyzer"
                         }
                     }
                 },
                 "labels": {
-                    "type": "string",
+                    "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 }
@@ -392,13 +392,13 @@
         },
 
         "creator": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
         "contributors": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
@@ -408,7 +408,7 @@
         },
 
         "unique_address_identifier": {
-            "type": "string",
+            "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },

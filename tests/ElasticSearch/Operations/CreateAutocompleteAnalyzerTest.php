@@ -25,7 +25,7 @@ final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
                 [
                     'name' => 'autocomplete_analyzer',
                     'body' => [
-                        'template' => '*',
+                        'index_patterns' => '*',
                         'settings' => [
                             'analysis' => [
                                 'filter' => [

@@ -18,7 +18,7 @@ trait HasElasticSearchClient
     {
         return [
             'index' => $this->indexName,
-            'type' => $this->documentType,
+            // 'type' => $this->documentType,
         ];
     }
 
