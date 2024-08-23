@@ -67,9 +67,11 @@ final class OrganizerSearchController
 
     public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
-        $this->organizerParameterWhiteList->guardAgainstUnsupportedParameters(
-            $request->getQueryParamsKeys()
-        );
+        $keys = $request->getQueryParamsKeys();
+
+        if ($keys) {
+            $this->organizerParameterWhiteList->guardAgainstUnsupportedParameters($keys);
+        }
 
         $start = new Start((int) $request->getQueryParam('start', 0));
         $limit = new Limit((int) $request->getQueryParam('limit', 30));
