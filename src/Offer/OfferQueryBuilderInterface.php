@@ -61,8 +61,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     ): OfferQueryBuilderInterface;
 
     public function withLocalTimeRangeFilter(
-        int $localTimeFrom = null,
-        int $localTimeTo = null
+        int $localTimeFrom,
+        int $localTimeTo
     ): OfferQueryBuilderInterface;
 
     public function withStatusFilter(Status ...$statuses): OfferQueryBuilderInterface;
