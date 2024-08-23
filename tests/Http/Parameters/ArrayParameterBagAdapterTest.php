@@ -514,8 +514,10 @@ final class ArrayParameterBagAdapterTest extends TestCase
     }
 
 
-    private function assertDateTimeEquals(DateTimeImmutable $expected, DateTimeImmutable $actual): void
+    private function assertDateTimeEquals(DateTimeImmutable $expected, ?DateTimeImmutable $actual): void
     {
+        $this->assertNotNull($actual);
+
         $this->assertEquals(
             $expected->format(DateTime::ATOM),
             $actual->format(DateTime::ATOM)
