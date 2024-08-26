@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Auth0;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\Json;
+use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Psr7\Request;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 final class Auth0TokenGenerator implements TokenGenerator, LoggerAwareInterface
