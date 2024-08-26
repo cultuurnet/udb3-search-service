@@ -69,7 +69,7 @@ final class OrganizerSearchController
     {
         $keys = $request->getQueryParamsKeys();
 
-        if ($keys) {
+        if ($keys !== null) {
             $this->organizerParameterWhiteList->guardAgainstUnsupportedParameters($keys);
         }
 
