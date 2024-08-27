@@ -6,3 +6,5 @@ parameters:
 		- app
 		- src
 		- tests
+	excludePaths:
+		- app/RoutingServiceProvider.php
