@@ -5,7 +5,7 @@ if ! grep -q "host.docker.internal" /etc/hosts; then
   sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
 fi
 
-DIR="../appconfig/files/udb3/docker/udb3-search-service/"
+DIR="../appconfig/files/uitdatabank/docker/udb3-search-service/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
@@ -21,7 +21,7 @@ else
   exit 1
 fi
 
-DIR="../appconfig/files/udb3/docker/keys/"
+DIR="../appconfig/files/uitdatabank/docker/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
