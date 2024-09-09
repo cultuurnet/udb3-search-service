@@ -12,3 +12,4 @@
 /.bundle
 *.pem
 !tests/Http/Authentication/samples/*.pem
+.phpunit.result.cache
