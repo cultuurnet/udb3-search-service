@@ -7,8 +7,9 @@
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
-/.default_queries.php
+/default_queries.php
 /pkg
 /.bundle
 *.pem
 !tests/Http/Authentication/samples/*.pem
+.phpunit.result.cache
