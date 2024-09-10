@@ -6,10 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class CheckIndexExists extends AbstractElasticSearchOperation
 {
-    /**
-     * @param string $indexName
-     */
-    public function run($indexName): bool
+    public function run(string $indexName): bool
     {
         $exists = (bool) $this->client->indices()->exists(['index' => $indexName]);
 

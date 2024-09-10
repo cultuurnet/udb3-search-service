@@ -39,20 +39,14 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 
     private IndexationStrategy $indexationStrategy;
 
-    /**
-     * @param string $readIndexName
-     * @param string $scrollTtl
-     * @param int $scrollSize
-     * @param int $bulkThreshold
-     */
     public function __construct(
         Client $client,
-        $readIndexName,
+        string $readIndexName,
         EventBus $eventBus,
         IndexationStrategy $indexationStrategy,
-        $scrollTtl = '1m',
-        $scrollSize = 50,
-        $bulkThreshold = 10
+        string $scrollTtl = '1m',
+        int $bulkThreshold = 10,
+        int $scrollSize = 50
     ) {
         parent::__construct($client);
         $this->readIndexName = $readIndexName;

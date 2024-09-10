@@ -12,9 +12,6 @@ final class ApiExceptionHandler extends Handler
 {
     private EmitterInterface $emitter;
 
-    /**
-     * ApiExceptionHandler constructor.
-     */
     public function __construct(EmitterInterface $emitter)
     {
         $this->emitter = $emitter;

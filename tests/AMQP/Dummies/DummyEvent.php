@@ -18,11 +18,7 @@ final class DummyEvent implements Serializable
      */
     private $content;
 
-    /**
-     * @param string $id
-     * @param string $content
-     */
-    public function __construct($id, $content)
+    public function __construct(string $id, string $content)
     {
         $this->id = $id;
         $this->content = $content;

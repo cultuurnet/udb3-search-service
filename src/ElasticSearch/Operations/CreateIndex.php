@@ -6,16 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class CreateIndex extends AbstractElasticSearchOperation
 {
-    /**
-     * @param string $indexName
-     *   Name of the index to create.
-     * @param bool $force
-     *   If FALSE, it will check whether an index that matches the new
-     *   version already exists, and if so, it stops.
-     *   If TRUE, it will drop the index that matches the new version
-     *   (if it exists) and then creates the new one.
-     */
-    public function run($indexName, $force = false): void
+    public function run(string $indexName, bool $force = false): void
     {
         if ($this->client->indices()->exists(['index' => $indexName])) {
             if (!$force) {
