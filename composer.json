@@ -24,7 +24,7 @@
         "guzzlehttp/psr7": "^2.4",
         "hassankhan/config": "^3.1.0",
         "laminas/laminas-httphandlerrunner": "^2.2",
-        "lcobucci/jwt": "^4.3",
+        "lcobucci/jwt": "^5.3",
         "league/container": "^3.3",
         "league/route": "^4.3",
         "monolog/monolog": "~1.11",
