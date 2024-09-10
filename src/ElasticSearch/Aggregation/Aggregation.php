@@ -18,7 +18,7 @@ final class Aggregation
     /**
      * @var Bucket[]
      */
-    private $buckets;
+    private array $buckets;
 
     /**
      * @param Bucket ...$buckets

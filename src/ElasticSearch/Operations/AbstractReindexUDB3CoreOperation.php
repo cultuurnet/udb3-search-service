@@ -20,15 +20,9 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 {
     private EventBus $eventBus;
 
-    /**
-     * @var string
-     */
-    private $scrollTtl;
+    private string $scrollTtl;
 
-    /**
-     * @var int
-     */
-    private $scrollSize;
+    private int $scrollSize;
 
     public function __construct(
         Client $client,

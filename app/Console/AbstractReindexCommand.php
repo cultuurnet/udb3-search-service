@@ -15,25 +15,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    private $readIndexName;
+    private string $readIndexName;
 
-    /**
-     * @var string
-     */
-    private $scrollTtl;
+    private string $scrollTtl;
 
-    /**
-     * @var int
-     */
-    private $scrollSize;
+    private int $scrollSize;
 
-    /**
-     * @var int
-     */
-    private $bulkThreshold;
+    private int $bulkThreshold;
 
     private EventBus $eventBus;
 

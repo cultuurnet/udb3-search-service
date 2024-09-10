@@ -12,11 +12,7 @@ final class MultilingualString
 
     private string $originalString;
 
-    /**
-     * @var string[]
-     *   Associative array with languages as keys and translations as values.
-     */
-    private $translations;
+    private array $translations;
 
     public function __construct(Language $originalLanguage, string $originalString)
     {
