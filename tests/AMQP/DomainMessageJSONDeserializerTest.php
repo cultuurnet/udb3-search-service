@@ -16,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DomainMessageJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var DomainMessageJSONDeserializer
-     */
-    protected $domainMessageJSONDeserializer;
+    protected DomainMessageJSONDeserializer $domainMessageJSONDeserializer;
 
     protected function setUp(): void
     {

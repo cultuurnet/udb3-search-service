@@ -6,13 +6,9 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class UpdateIndexAlias extends AbstractElasticSearchOperation
 {
-    /**
-     * @param string $aliasName
-     * @param string $newIndexName
-     */
     public function run(
-        $aliasName,
-        $newIndexName
+        string $aliasName,
+        string $newIndexName
     ): void {
         $getAliasParams = [
             'name' => $aliasName,

@@ -12,7 +12,7 @@ final class CompositeOrganizerRequestParser implements OrganizerRequestParser
     /**
      * @var OrganizerRequestParser[]
      */
-    private $parsers = [];
+    private array $parsers = [];
 
     public function __construct()
     {

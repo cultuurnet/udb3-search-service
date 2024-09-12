@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Search\DistanceFactory;
 
 final class ElasticSearchDistanceFactory implements DistanceFactory
 {
-    /**
-     * @param string $distance
-     */
-    public function fromString($distance): ElasticSearchDistance
+    public function fromString(string $distance): ElasticSearchDistance
     {
         return new ElasticSearchDistance($distance);
     }

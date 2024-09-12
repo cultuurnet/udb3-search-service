@@ -10,10 +10,7 @@ final class Url
 {
     private string $url;
 
-    /**
-     * @var array
-     */
-    private $urlParts;
+    private array $urlParts;
 
     public function __construct(string $url)
     {

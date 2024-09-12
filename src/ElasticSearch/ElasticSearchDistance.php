@@ -36,10 +36,7 @@ final class ElasticSearchDistance extends AbstractDistance
         'nauticalmiles',
     ];
 
-    /**
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $matches = [];
         $regexResult = preg_match(self::DISTANCE_REGEX, $value, $matches);

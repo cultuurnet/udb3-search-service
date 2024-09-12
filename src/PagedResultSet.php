@@ -22,7 +22,7 @@ final class PagedResultSet
     /**
      * @var FacetTreeInterface[]
      */
-    private $facets;
+    private array $facets;
 
     /**
      * @param JsonDocument[] $results

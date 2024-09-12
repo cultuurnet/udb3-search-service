@@ -9,7 +9,7 @@ final class CompositeJsonTransformer implements JsonTransformer
     /**
      * @var JsonTransformer[]
      */
-    private $jsonTransformers;
+    private array $jsonTransformers;
 
     public function __construct(JsonTransformer ...$jsonTransformers)
     {

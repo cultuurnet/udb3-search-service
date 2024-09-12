@@ -8,12 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class JsonLdPolyfillJsonTransformerTest extends TestCase
 {
-    /**
-     * @var array
-     *  The JSON-LD that should be poly-filled
-     */
-    private $given;
-
+    private array $given;
 
     private JsonLdPolyfillJsonTransformer $transformer;
 

@@ -20,28 +20,16 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 {
     private EventBus $eventBus;
 
-    /**
-     * @var string
-     */
-    private $scrollTtl;
+    private string $scrollTtl;
 
-    /**
-     * @var int
-     */
-    private $scrollSize;
+    private int $scrollSize;
 
-    /**
-     * @param string $scrollTtl
-     *   Time to keep the scroll alive in-between requests. Should be small!
-     * @param int $scrollSize
-     *   Maximum amount of results to get back per request.
-     */
     public function __construct(
         Client $client,
         LoggerInterface $logger,
         EventBus $eventBus,
-        $scrollTtl = '1m',
-        $scrollSize = 50
+        string $scrollTtl = '1m',
+        int $scrollSize = 50
     ) {
         parent::__construct($client, $logger);
         $this->eventBus = $eventBus;
@@ -52,12 +40,10 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     abstract public function getQueryArray(): array;
 
     /**
-     * @param string $indexName
-     *
      * @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-scroll.html
      * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_search_operations.html#_scan_scroll
      */
-    public function run($indexName): void
+    public function run(string $indexName): void
     {
         $query = [
             'scroll' => $this->scrollTtl,

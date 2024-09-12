@@ -17,19 +17,13 @@ final class NodeMapAggregationTransformerTest extends TestCase
 {
     private FacetName $facetName;
 
-    /**
-     * @var array
-     */
-    private $nodeMap;
-
-
     private NodeMapAggregationTransformer $transformer;
 
     protected function setUp(): void
     {
         $this->facetName = FacetName::regions();
 
-        $this->nodeMap = [
+        $nodeMap = [
             'prv-vlaams-brabant' => [
                 'name' => [
                     'nl' => 'Vlaams-Brabant',
@@ -82,7 +76,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
 
         $this->transformer = new NodeMapAggregationTransformer(
             $this->facetName,
-            $this->nodeMap
+            $nodeMap
         );
     }
 
