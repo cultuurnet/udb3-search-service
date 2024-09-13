@@ -3,10 +3,10 @@
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
 GEOJSON_DATA_ROOTDIR=${GEOJSON_DATA:-'../geojson-data'}
 
-if ! grep -q "host.docker.internal" /etc/hosts; then
-  echo "host.docker.internal has to be in your hosts-file, to add you need sudo privileges"
-  sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
-fi
+#if ! grep -q "host.docker.internal" /etc/hosts; then
+#  echo "host.docker.internal has to be in your hosts-file, to add you need sudo privileges"
+#  sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
+#fi
 
 DIR="${APPCONFIG_ROOTDIR}/files/udb3/docker/udb3-search-service/"
 if [ -d "$DIR" ]; then
