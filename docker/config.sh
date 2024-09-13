@@ -8,7 +8,7 @@ GEOJSON_DATA_ROOTDIR=${GEOJSON_DATA:-'../geojson-data'}
 #  sudo sh -c 'echo "127.0.0.1 host.docker.internal" >> /etc/hosts'
 #fi
 
-DIR="${APPCONFIG_ROOTDIR}/files/udb3/docker/udb3-search-service/"
+DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/udb3-search-service/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
@@ -16,7 +16,7 @@ else
   exit 1
 fi
 
-DIR="${APPCONFIG_ROOTDIR}/files/udb3/docker/keys/"
+DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
