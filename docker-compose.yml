@@ -1,7 +1,4 @@
-version: "3.5"
-
 services:
-
   search:
     build: docker/php
     container_name: search.uitdatabank
@@ -15,7 +12,6 @@ services:
       uitdatabank:
         aliases:
           - search.uitdatabank.dev
-
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
     container_name: es.uitdatabank
