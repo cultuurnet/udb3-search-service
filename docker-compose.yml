@@ -12,6 +12,9 @@ services:
       uitdatabank-search:
         aliases:
           - search.uitdatabank.dev
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
     container_name: es.uitdatabank
@@ -24,6 +27,11 @@ services:
       uitdatabank-search:
         aliases:
             - elasticsearch.uitdatabank.dev
+    healthcheck:
+      #test: 'curl --fail http://127.0.0.1:9200/_cluster/health?wait_for_status=green&timeout=1s'
+      test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
+      interval: 5s
+      timeout: 4s
 
 networks:
   uitdatabank-search:
