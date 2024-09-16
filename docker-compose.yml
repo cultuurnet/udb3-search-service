@@ -9,7 +9,7 @@ services:
     ports:
       - "9000:80"
     networks:
-      uitdatabank:
+      uitdatabank-search:
         aliases:
           - search.uitdatabank.dev
   elasticsearch:
@@ -21,13 +21,14 @@ services:
     volumes:
       - 'udb3-es:/elasticsearch/data'
     networks:
-      uitdatabank:
+      uitdatabank-search:
         aliases:
             - elasticsearch.uitdatabank.dev
 
 networks:
-  uitdatabank:
-    driver: bridge
+  uitdatabank-search:
+    name: uitdatabank
+    external: true
 
 volumes:
   udb3-es:
