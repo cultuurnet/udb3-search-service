@@ -19,7 +19,7 @@ else
   exit 1
 fi
 
-DIR="${GEOJSON_DATA}/output"
+DIR="${GEOJSON_DATA_ROOTDIR}/output"
 if [ -d "$DIR" ]; then
   cp "$DIR"/facet_mapping_regions.yml .
 else
