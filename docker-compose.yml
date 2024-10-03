@@ -1,5 +1,4 @@
 services:
-
   search:
     build: docker/php
     container_name: search.uitdatabank
@@ -10,10 +9,12 @@ services:
     ports:
       - "9000:80"
     networks:
-      uitdatabank:
+      uitdatabank-search:
         aliases:
-          - search.uitdatabank.dev
-
+          - search.uitdatabank.local
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
     container_name: es.uitdatabank
@@ -23,13 +24,19 @@ services:
     volumes:
       - 'udb3-es:/elasticsearch/data'
     networks:
-      uitdatabank:
+      uitdatabank-search:
         aliases:
-            - elasticsearch.uitdatabank.dev
+          - elasticsearch.uitdatabank.dev
+    healthcheck:
+      #test: 'curl --fail http://127.0.0.1:9200/_cluster/health?wait_for_status=green&timeout=1s'
+      test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
+      interval: 5s
+      timeout: 4s
 
 networks:
-  uitdatabank:
-    driver: bridge
+  uitdatabank-search:
+    name: uitdatabank
+    external: true
 
 volumes:
   udb3-es:
