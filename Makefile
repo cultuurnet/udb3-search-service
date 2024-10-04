@@ -10,34 +10,34 @@ build:
 	docker-compose up --build
 
 bash:
-	docker exec -it search.uitdatabank bash
+	docker-compose exec -it search bash
 
 config:
 	sh ./docker/config.sh
 
 install:
-	docker exec -it search.uitdatabank composer install
+	docker-compose exec -it search composer install
 
 migrate:
-	docker exec -it search.uitdatabank ./bin/app.php elasticsearch:migrate
+	docker-compose exec -it search ./bin/app.php elasticsearch:migrate
 
 migrate-force:
-	docker exec -it search.uitdatabank ./bin/app.php elasticsearch:migrate --force
+	docker-compose exec -it search ./bin/app.php elasticsearch:migrate --force
 
 ci:
-	docker exec -it search.uitdatabank composer ci
+	docker-compose exec -it search composer ci
 
 stan:
-	docker exec -it search.uitdatabank composer phpstan
+	docker-compose exec -it search composer phpstan
 
 cs:
-	docker exec -it search.uitdatabank composer cs
+	docker-compose exec -it search composer cs
 
 cs-fix:
-	docker exec -it search.uitdatabank composer cs-fix
+	docker-compose exec -it search composer cs-fix
 
 test:
-	docker exec -it search.uitdatabank composer test
+	docker-compose exec -it search composer test
 
 test-filter:
-	docker exec -it search.uitdatabank composer test -- --filter=$(filter)
+	docker-compose exec -it search composer test -- --filter=$(filter)
