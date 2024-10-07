@@ -26,7 +26,7 @@ services:
     networks:
       uitdatabank-search:
         aliases:
-          - elasticsearch.uitdatabank.dev
+          - elasticsearch.uitdatabank.local
     healthcheck:
       #test: 'curl --fail http://127.0.0.1:9200/_cluster/health?wait_for_status=green&timeout=1s'
       test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
