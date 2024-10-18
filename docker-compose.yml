@@ -12,9 +12,16 @@ services:
       uitdatabank-search:
         aliases:
           - search.uitdatabank.local
+    healthcheck:
+      test: curl http://127.0.0.1:80/
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
     depends_on:
       elasticsearch:
         condition: service_healthy
+
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
     container_name: es.uitdatabank
