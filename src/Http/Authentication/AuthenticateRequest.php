@@ -105,7 +105,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
                 return (new InvalidClientId($clientId))->toResponse();
             }
         } catch (ConnectException $connectException) {
-            $this->logger->error('Auth0 was detected as down, this results in disabling authentication');
+            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
             $auth0Down = true;
         }
 
