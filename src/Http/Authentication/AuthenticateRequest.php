@@ -145,7 +145,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         $config = $this->container->get(Config::class);
-        $jwtUrl = $config->get('keycloak.enabled') ? $config->get('jwt.domain') : null;
+        $jwtUrl = $config->get('jwt.domain');
         if (!$token->isAllowedOnSearchApi($jwtUrl)) {
             return (new NotAllowedToUseSapi())->toResponse();
         }
