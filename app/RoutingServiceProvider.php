@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\SearchService;
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0TokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
@@ -126,50 +124,26 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
     private function getManagementTokenProvider(): ManagementTokenProvider
     {
-        if (true) {
-            return new ManagementTokenProvider(
-                new KeycloakTokenGenerator(
-                    new Client(),
-                    $this->parameter('keycloak.domain'),
-                    $this->parameter('keycloak.client_id'),
-                    $this->parameter('keycloak.client_secret'),
-                    $this->parameter('keycloak.domain') . '/api/v2/'
-                ),
-                new ManagementTokenFileRepository(__DIR__ . '/../cache/keycloak-management-token-cache.json'),
-            );
-        }
-
         return new ManagementTokenProvider(
-            new Auth0TokenGenerator(
-                new Client([
-                    'http_errors' => false,
-                ]),
-                $this->parameter('auth0.domain'),
-                $this->parameter('auth0.client_id'),
-                $this->parameter('auth0.client_secret'),
-                $this->parameter('auth0.domain') . '/api/v2/'
+            new KeycloakTokenGenerator(
+                new Client(),
+                $this->parameter('keycloak.domain'),
+                $this->parameter('keycloak.client_id'),
+                $this->parameter('keycloak.client_secret'),
+                $this->parameter('keycloak.domain') . '/api/v2/'
             ),
-            new ManagementTokenFileRepository(__DIR__ . '/../cache/auth0-management-token-cache.json'),
+            new ManagementTokenFileRepository(__DIR__ . '/../cache/keycloak-management-token-cache.json'),
         );
     }
 
     private function getMetadataGenerator(): MetadataGenerator
     {
-        if (true) {
-            return new KeycloakMetadataGenerator(
-                new Client([
-                    'http_errors' => false,
-                ]),
-                $this->parameter('keycloak.domain'),
-                $this->parameter('keycloak.realm'),
-            );
-        }
-
-        return new Auth0MetadataGenerator(
+        return new KeycloakMetadataGenerator(
             new Client([
                 'http_errors' => false,
             ]),
-            $this->parameter('auth0.domain')
+            $this->parameter('keycloak.domain'),
+            $this->parameter('keycloak.realm'),
         );
     }
 }
