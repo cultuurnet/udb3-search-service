@@ -54,8 +54,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                     $metadataGenerator = $this->getMetadataGenerator();
 
-                    $pemFile = $this->parameter('keycloak.enabled') ?
-                        $this->parameter('keycloak.pem_file') : $this->parameter('auth0.pem_file');
+                    $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
@@ -127,7 +126,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
     private function getManagementTokenProvider(): ManagementTokenProvider
     {
-        if ($this->parameter('keycloak.enabled')) {
+        if (true) {
             return new ManagementTokenProvider(
                 new KeycloakTokenGenerator(
                     new Client(),
@@ -156,7 +155,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
     private function getMetadataGenerator(): MetadataGenerator
     {
-        if ($this->parameter('keycloak.enabled')) {
+        if (true) {
             return new KeycloakMetadataGenerator(
                 new Client([
                     'http_errors' => false,

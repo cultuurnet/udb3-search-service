@@ -33,7 +33,7 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
 
     private function getTokenGenerator(): TokenGenerator
     {
-        if ($this->parameter('keycloak.enabled')) {
+        if (true) {
             return new KeycloakTokenGenerator(
                 new Client(),
                 $this->parameter('keycloak.domain'),
