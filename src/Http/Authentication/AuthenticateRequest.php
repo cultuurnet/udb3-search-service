@@ -109,7 +109,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             $oauthServerDown = true;
         }
 
-        // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
+        // Bypass the sapi access validation when the oauth server is down to make sure sapi requests are still handled.
         if (!$oauthServerDown && !$this->hasSapiAccess($metadata)) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
