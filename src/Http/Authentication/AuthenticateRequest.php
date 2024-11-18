@@ -92,7 +92,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
-        $auth0Down = false;
+        $oauthServerDown = false;
         $metadata = [];
 
         try {
@@ -106,11 +106,11 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             }
         } catch (ConnectException $connectException) {
             $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $auth0Down = true;
+            $oauthServerDown = true;
         }
 
         // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
-        if (!$auth0Down && !$this->hasSapiAccess($metadata)) {
+        if (!$oauthServerDown && !$this->hasSapiAccess($metadata)) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
