@@ -301,7 +301,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], Json::encode([
-                'client_metadata' => ['publiq-apis' => 'ups entry'],
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                    ],
+                ],
             ])),
         ]);
 
@@ -425,7 +430,13 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], Json::encode([
-                'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
             ])),
         ]);
 
