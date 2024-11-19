@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0\Auth0MetadataGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
@@ -70,7 +70,7 @@ final class AuthenticateRequestTest extends TestCase
         $this->pemFile = FileReader::read(__DIR__ . '/samples/public.pem');
 
         $managementToken = new Token(
-            'my_auth0_token',
+            'my_oauth_token',
             new DateTimeImmutable(),
             86400
         );
@@ -301,7 +301,12 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], Json::encode([
-                'client_metadata' => ['publiq-apis' => 'ups entry'],
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                    ],
+                ],
             ])),
         ]);
 
@@ -309,9 +314,10 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0MetadataGenerator(
+            new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
-                'domain'
+                'domain',
+                'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -345,9 +351,10 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0MetadataGenerator(
+            new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
-                'domain'
+                'domain',
+                'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -371,21 +378,22 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_all_access_when_auth0_is_down(): void
+    public function it_allows_all_access_when_oauth_server_is_down(): void
     {
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
             ->withHeader('x-client-id', 'my_active_client_id');
 
-        $mockHandler = new MockHandler([new ConnectException('No connection with Auth0', $request)]);
+        $mockHandler = new MockHandler([new ConnectException('No connection with OAuth server', $request)]);
 
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0MetadataGenerator(
+            new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
-                'domain'
+                'domain',
+                'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -422,7 +430,13 @@ final class AuthenticateRequestTest extends TestCase
     {
         $mockHandler = new MockHandler([
             new Response(200, [], Json::encode([
-                'client_metadata' => ['publiq-apis' => 'ups entry sapi'],
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
             ])),
         ]);
 
@@ -430,9 +444,10 @@ final class AuthenticateRequestTest extends TestCase
             $this->container,
             $this->cultureFeed,
             $this->managementTokenProvider,
-            new Auth0MetadataGenerator(
+            new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
-                'domain'
+                'domain',
+                'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile

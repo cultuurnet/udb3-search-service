@@ -92,7 +92,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
-        $auth0Down = false;
+        $oAuthServerDown = false;
         $metadata = [];
 
         try {
@@ -106,11 +106,11 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             }
         } catch (ConnectException $connectException) {
             $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $auth0Down = true;
+            $oAuthServerDown = true;
         }
 
-        // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
-        if (!$auth0Down && !$this->hasSapiAccess($metadata)) {
+        // Bypass the sapi access validation when the oauth server is down to make sure sapi requests are still handled.
+        if (!$oAuthServerDown && !$this->hasSapiAccess($metadata)) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
@@ -145,7 +145,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         $config = $this->container->get(Config::class);
-        $jwtUrl = $config->get('keycloak.enabled') ? $config->get('jwt.domain') : null;
+        $jwtUrl = $config->get('jwt.domain');
         if (!$token->isAllowedOnSearchApi($jwtUrl)) {
             return (new NotAllowedToUseSapi())->toResponse();
         }
