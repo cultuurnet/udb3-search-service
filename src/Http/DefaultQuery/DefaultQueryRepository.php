@@ -7,4 +7,6 @@ namespace CultuurNet\UDB3\Search\Http\DefaultQuery;
 interface DefaultQueryRepository
 {
     public function getByApiKey(string $apiKey): ?string;
+
+    public function getByClientId(string $clientId): ?string;
 }
