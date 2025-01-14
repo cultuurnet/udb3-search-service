@@ -97,7 +97,10 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->managementTokenProvider,
             $this->createMock(MetadataGenerator::class),
-            new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
+            new InMemoryDefaultQueryRepository([
+                'api_keys' =>
+                    ['my_active_api_key' => 'my_default_search_query'],
+            ]),
             $this->pemFile
         );
     }
@@ -465,6 +468,62 @@ final class AuthenticateRequestTest extends TestCase
         $definitionInterface->expects($this->once())
             ->method('setConcrete')
             ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validClientIdRequestsProvider
+     * @test
+     */
+    public function it_handles_valid_requests_with_client_id_and_default_query(ServerRequestInterface $request): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], Json::encode([
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
+            ])),
+        ]);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->managementTokenProvider,
+            new KeycloakMetadataGenerator(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'realm'
+            ),
+            new InMemoryDefaultQueryRepository([
+                'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
+            ]),
+            $this->pemFile
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', 'my_new_default_search_query'));
 
         $this->container->expects($this->once())
             ->method('extend')

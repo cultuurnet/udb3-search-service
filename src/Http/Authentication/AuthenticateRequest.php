@@ -114,9 +114,11 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
+        $defaultQuery = $this->defaultQueryRepository->getByClientId($clientId);
+
         $this->container
             ->extend(Consumer::class)
-            ->setConcrete(new Consumer($clientId, null));
+            ->setConcrete(new Consumer($clientId, $defaultQuery));
 
         return $handler->handle($request);
     }
