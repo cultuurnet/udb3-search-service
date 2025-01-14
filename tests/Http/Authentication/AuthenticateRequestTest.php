@@ -97,7 +97,10 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->managementTokenProvider,
             $this->createMock(MetadataGenerator::class),
-            new InMemoryDefaultQueryRepository(['my_active_api_key' => 'my_default_search_query']),
+            new InMemoryDefaultQueryRepository([
+                'api_keys' =>
+                    ['my_active_api_key' => 'my_default_search_query'],
+            ]),
             $this->pemFile
         );
     }
