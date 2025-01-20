@@ -135,4 +135,4 @@ jobs:
           run: composer install --no-progress --no-suggest
 
         - name: 🗑 Run unused dependencies check
-          run: composer unused
+          run: vendor/bin/composer-unused
