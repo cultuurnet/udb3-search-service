@@ -69,10 +69,7 @@
             "cultuurnet/*": "source",
             "*": "dist"
         },
-        "sort-packages": true,
-        "allow-plugins": {
-            "php-http/discovery": true
-        }
+        "sort-packages": true
     },
     "scripts": {
         "test": "vendor/bin/phpunit",
