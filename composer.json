@@ -30,7 +30,6 @@
         "monolog/monolog": "~1.11",
         "ongr/elasticsearch-dsl": "^7.2",
         "php-amqplib/php-amqplib": "^v3.1.0",
-        "php-http/guzzle7-adapter": "^1.0",
         "ramsey/uuid": "^3.9",
         "sentry/sentry": "^3.6",
         "slim/psr7": "^1.6",
@@ -40,6 +39,7 @@
         "tuupola/cors-middleware": "^1.1"
     },
     "require-dev": {
+        "icanhazstring/composer-unused": "^0.8.11",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6",
         "publiq/php-cs-fixer-config": "^2.0",
@@ -70,7 +70,7 @@
         },
         "sort-packages": true,
         "allow-plugins": {
-            "php-http/discovery": true
+            "php-http/discovery": false
         }
     },
     "scripts": {
