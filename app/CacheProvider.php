@@ -18,11 +18,11 @@ final class CacheProvider extends BaseServiceProvider
     {
         $this->add(
             CacheInterface::class,
-            fn (): RedisAdapter => new RedisAdapter(
+            fn ($cacheType): RedisAdapter => new RedisAdapter(
                 new Client(
                     $this->parameter('cache.redis')
                 ),
-                '_permissions',
+                $cacheType . '_',
                 86400,
             )
         );
