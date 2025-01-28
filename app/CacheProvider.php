@@ -11,20 +11,21 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class CacheProvider extends BaseServiceProvider
 {
     protected $provides = [
-        CacheInterface::class,
+        RedisAdapter::class,
     ];
 
     public function register(): void
     {
         $this->add(
-            CacheInterface::class,
-            fn ($cacheType): RedisAdapter => new RedisAdapter(
+            RedisAdapter::class,
+            fn (): RedisAdapter =>
+            new RedisAdapter(
                 new Client(
                     $this->parameter('cache.redis')
                 ),
-                $cacheType . '_',
+                'permission' . '_',
                 86400,
-            )
+            ),
         );
     }
 }
