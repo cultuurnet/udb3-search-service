@@ -99,7 +99,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
         $oAuthServerDown = false;
-        $metadata = [];
         /** @var CacheItem $hasSapiAccess */
         $hasSapiAccess = $this->redisCache->getItem($clientId);
 
@@ -122,7 +121,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         // Bypass the sapi access validation when the oauth server is down to make sure sapi requests are still handled.
-        if (!$oAuthServerDown && $hasSapiAccess->get()) {
+        if (!$oAuthServerDown && !$hasSapiAccess->get()) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
