@@ -14,7 +14,6 @@ use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerComma
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\FlandersRegionTaxonomyToFacetMappingsCommand;
-use CultuurNet\UDB3\SearchService\Console\Foobar;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
@@ -84,13 +83,6 @@ final class CommandServiceProvider extends BaseServiceProvider
 
                 return $application;
             }
-        );
-
-        $this->add(
-            Foobar::class,
-            fn (): Foobar => new Foobar(
-                $this->get(RedisAdapter::class)
-            )
         );
 
         $this->add(
