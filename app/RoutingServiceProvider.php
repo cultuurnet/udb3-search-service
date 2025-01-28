@@ -23,6 +23,7 @@ use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
@@ -61,7 +62,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
+                        $this->get(RedisAdapter::class)
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
