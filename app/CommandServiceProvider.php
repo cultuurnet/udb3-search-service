@@ -27,11 +27,9 @@ use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use Elasticsearch\Client;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;
-use Symfony\Contracts\Cache\CacheInterface;
 
 final class CommandServiceProvider extends BaseServiceProvider
 {
@@ -64,7 +62,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'geoshapes:region-mapping' => UpdateRegionMappingCommand::class,
                     'geoshapes:index-regions' => IndexRegionsCommand::class,
                     'geoshapes:install' => InstallGeoShapesCommand::class,
-                    'foobar' => Foobar::class,
                 ];
 
                 foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
