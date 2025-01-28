@@ -552,6 +552,130 @@ final class AuthenticateRequestTest extends TestCase
      * @dataProvider validClientIdRequestsProvider
      * @test
      */
+    public function it_handles_valid_requests_with_an_allowed_cached_client_id(ServerRequestInterface $request): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], Json::encode([
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
+            ])),
+        ]);
+
+        $metadataGenerator = $this->createMock(MetadataGenerator::class);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->managementTokenProvider,
+            $metadataGenerator,
+            new InMemoryDefaultQueryRepository([]),
+            $this->pemFile,
+            $this->redisCache
+        );
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $metadataGenerator->expects($this->never())
+            ->method('get');
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(true);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(true);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validClientIdRequestsProvider
+     * @test
+     */
+    public function it_handles_valid_requests_with_an_unallowed_cached_client_id(ServerRequestInterface $request): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], Json::encode([
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
+            ])),
+        ]);
+
+        $metadataGenerator = $this->createMock(MetadataGenerator::class);
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->cultureFeed,
+            $this->managementTokenProvider,
+            $metadataGenerator,
+            new InMemoryDefaultQueryRepository([]),
+            $this->pemFile,
+            $this->redisCache
+        );
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->never())
+            ->method('handle');
+
+        $metadataGenerator->expects($this->never())
+            ->method('get');
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(true);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(false);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
+    }
+
+    /**
+     * @dataProvider validClientIdRequestsProvider
+     * @test
+     */
     public function it_handles_valid_requests_with_client_id_and_default_query(ServerRequestInterface $request): void
     {
         $mockHandler = new MockHandler([
