@@ -37,6 +37,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 final class AuthenticateRequestTest extends TestCase
 {
@@ -58,6 +60,16 @@ final class AuthenticateRequestTest extends TestCase
 
     private string $pemFile;
 
+    /**
+     * @var RedisAdapter&MockObject
+     */
+    private $redisCache;
+
+    /**
+     * @var ItemInterface&MockObject
+     */
+    private $cacheItem;
+
     protected function setUp(): void
     {
         $this->container = $this->createMock(Container::class);
@@ -68,6 +80,10 @@ final class AuthenticateRequestTest extends TestCase
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
         $this->pemFile = FileReader::read(__DIR__ . '/samples/public.pem');
+
+        $this->redisCache = $this->createMock(RedisAdapter::class);
+
+        $this->cacheItem = $this->createMock(ItemInterface::class);
 
         $managementToken = new Token(
             'my_oauth_token',
@@ -101,7 +117,8 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' =>
                     ['my_active_api_key' => 'my_default_search_query'],
             ]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
     }
 
@@ -323,7 +340,8 @@ final class AuthenticateRequestTest extends TestCase
                 'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -332,6 +350,19 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->container->expects($this->never())
             ->method('extend');
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(false);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -360,7 +391,8 @@ final class AuthenticateRequestTest extends TestCase
                 'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -369,6 +401,19 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->container->expects($this->never())
             ->method('extend');
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(false);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -399,7 +444,8 @@ final class AuthenticateRequestTest extends TestCase
                 'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -419,6 +465,15 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
@@ -453,7 +508,8 @@ final class AuthenticateRequestTest extends TestCase
                 'realm'
             ),
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -473,6 +529,19 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(true);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
@@ -509,7 +578,8 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
-            $this->pemFile
+            $this->pemFile,
+            $this->redisCache
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -529,6 +599,19 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $this->cacheItem->expects($this->once())
+            ->method('get')
+            ->willReturn(true);
+
+        $this->redisCache->expects($this->once())
+            ->method('getItem')
+            ->with('my_active_client_id')
+            ->willReturn($this->cacheItem);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
