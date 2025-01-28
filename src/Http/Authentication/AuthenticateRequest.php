@@ -27,6 +27,8 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\CacheItem;
 
 final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
 {
@@ -46,13 +48,16 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private string $pemFile;
 
+    private RedisAdapter $redisCache;
+
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
         ManagementTokenProvider $managementTokenProvider,
         MetadataGenerator $metadataGenerator,
         DefaultQueryRepository $defaultQueryRepository,
-        string $pemFile
+        string $pemFile,
+        RedisAdapter $redisCache
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
@@ -60,6 +65,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $this->metadataGenerator = $metadataGenerator;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
+        $this->redisCache = $redisCache;
         $this->setLogger(new NullLogger());
     }
 
@@ -94,23 +100,29 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     {
         $oAuthServerDown = false;
         $metadata = [];
+        /** @var CacheItem $hasSapiAccess */
+        $hasSapiAccess = $this->redisCache->getItem($clientId);
 
-        try {
-            $metadata = $this->metadataGenerator->get(
-                $clientId,
-                $this->managementTokenProvider->token()
-            );
+        if (!$hasSapiAccess->isHit()) {
+            try {
+                $metadata = $this->metadataGenerator->get(
+                    $clientId,
+                    $this->managementTokenProvider->token()
+                );
 
-            if ($metadata === null) {
-                return (new InvalidClientId($clientId))->toResponse();
+                if ($metadata === null) {
+                    return (new InvalidClientId($clientId))->toResponse();
+                }
+                $hasSapiAccess->set($this->hasSapiAccess($metadata));
+                $this->redisCache->save($hasSapiAccess);
+            } catch (ConnectException $connectException) {
+                $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
+                $oAuthServerDown = true;
             }
-        } catch (ConnectException $connectException) {
-            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $oAuthServerDown = true;
         }
 
         // Bypass the sapi access validation when the oauth server is down to make sure sapi requests are still handled.
-        if (!$oAuthServerDown && !$this->hasSapiAccess($metadata)) {
+        if (!$oAuthServerDown && $hasSapiAccess->get()) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
