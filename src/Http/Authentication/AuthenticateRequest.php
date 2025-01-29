@@ -180,24 +180,34 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        try {
-            /** @var CultureFeed_Consumer $cultureFeedConsumer */
-            $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
-        } catch (Exception $exception) {
-            return (new InvalidApiKey($apiKey))->toResponse();
+        /** @var CacheItem $apiKeyStatus */
+        /** @var CacheItem $apiKeyStatus */
+        $apiKeyStatus = $this->redisCache->getItem('apikey_' . $apiKey);
+        $apiKeyQuery = $this->redisCache->getItem('query_' . $apiKey);
+        if (!$apiKeyStatus->isHit() || !$apiKeyQuery->isHit()) {
+            try {
+                /** @var CultureFeed_Consumer $cultureFeedConsumer */
+                $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
+                $apiKeyStatus->set($cultureFeedConsumer->status);
+                $this->redisCache->save($apiKeyStatus);
+                $apiKeyQuery->set($cultureFeedConsumer->searchPrefixSapi3);
+                $this->redisCache->save($apiKeyQuery);
+            } catch (Exception $exception) {
+                return (new InvalidApiKey($apiKey))->toResponse();
+            }
         }
 
-        if ($cultureFeedConsumer->status === 'BLOCKED') {
+        if ($apiKeyStatus->get() === 'BLOCKED') {
             return (new BlockedApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'REMOVED') {
+        if ($apiKeyStatus->get() === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
         $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
-            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
+        if ($defaultQuery === null && !empty($apiKeyQuery->get())) {
+            $defaultQuery = $apiKeyQuery->get();
         }
 
         $this->container
