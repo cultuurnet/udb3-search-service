@@ -182,7 +182,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     ): ResponseInterface {
         /** @var CacheItem $apiKeyStatus */
         /** @var CacheItem $apiKeyStatus */
-        $apiKeyStatus = $this->redisCache->getItem('apikey_' . $apiKey);
+        $apiKeyStatus = $this->redisCache->getItem('status_' . $apiKey);
         $apiKeyQuery = $this->redisCache->getItem('query_' . $apiKey);
         if (!$apiKeyStatus->isHit() || !$apiKeyQuery->isHit()) {
             try {
