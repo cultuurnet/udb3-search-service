@@ -167,6 +167,28 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_invalid_api_key', true)
             ->willThrowException(new Exception('Invalid API key'));
 
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $cachedQuery = $this->createMock(ItemInterface::class);
+
+        $cachedQuery->expects($this->never())
+            ->method('get');
+
+        $this->cacheItem->expects($this->never())
+            ->method('get');
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('getItem')
+            ->willReturnMap([
+                ['status_' . 'my_invalid_api_key', $this->cacheItem],
+                ['query_' . 'my_invalid_api_key', $cachedQuery],
+            ]);
+
+        $this->redisCache->expects($this->never())
+            ->method('save');
+
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -262,9 +284,8 @@ final class AuthenticateRequestTest extends TestCase
 
         $cachedQuery = $this->createMock(ItemInterface::class);
 
-        $cachedQuery->expects($this->exactly(0))
-            ->method('get')
-            ->willReturn('my_default_search_query');
+        $cachedQuery->expects($this->never())
+            ->method('get');
 
         $this->cacheItem->expects($this->exactly(2))
             ->method('get')
@@ -323,9 +344,8 @@ final class AuthenticateRequestTest extends TestCase
 
         $cachedQuery = $this->createMock(ItemInterface::class);
 
-        $cachedQuery->expects($this->exactly(0))
-            ->method('get')
-            ->willReturn('my_default_search_query');
+        $cachedQuery->expects($this->never())
+            ->method('get');
 
         $this->cacheItem->expects($this->exactly(2))
             ->method('get')
