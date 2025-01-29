@@ -537,6 +537,9 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_active_client_id')
             ->willReturn($this->cacheItem);
 
+        $this->redisCache->expects($this->once())
+            ->method('save');
+
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
             ->withHeader('x-client-id', 'my_active_client_id');
@@ -587,6 +590,9 @@ final class AuthenticateRequestTest extends TestCase
             ->method('getItem')
             ->with('my_active_client_id')
             ->willReturn($this->cacheItem);
+
+        $this->redisCache->expects($this->once())
+            ->method('save');
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -715,6 +721,9 @@ final class AuthenticateRequestTest extends TestCase
             ->method('getItem')
             ->with('my_active_client_id')
             ->willReturn($this->cacheItem);
+
+        $this->redisCache->expects($this->once())
+            ->method('save');
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
