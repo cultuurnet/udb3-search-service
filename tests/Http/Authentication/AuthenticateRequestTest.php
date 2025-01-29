@@ -256,6 +256,30 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $cachedQuery = $this->createMock(ItemInterface::class);
+
+        $cachedQuery->expects($this->exactly(0))
+            ->method('get')
+            ->willReturn('my_default_search_query');
+
+        $this->cacheItem->expects($this->exactly(2))
+            ->method('get')
+            ->willReturn('ACTIVE');
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('getItem')
+            ->willReturnMap([
+                ['status_' . 'my_active_api_key', $this->cacheItem],
+                ['query_' . 'my_active_api_key', $cachedQuery],
+            ]);
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('save');
+
         $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
@@ -292,6 +316,30 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $cachedQuery = $this->createMock(ItemInterface::class);
+
+        $cachedQuery->expects($this->exactly(0))
+            ->method('get')
+            ->willReturn('my_default_search_query');
+
+        $this->cacheItem->expects($this->exactly(2))
+            ->method('get')
+            ->willReturn('ACTIVE');
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('getItem')
+            ->willReturnMap([
+                ['status_' . 'my_active_api_key', $this->cacheItem],
+                ['query_' . 'my_active_api_key', $cachedQuery],
+            ]);
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('save');
 
         $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
 
