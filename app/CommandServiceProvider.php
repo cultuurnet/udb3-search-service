@@ -65,7 +65,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'geoshapes:region-mapping' => UpdateRegionMappingCommand::class,
                     'geoshapes:index-regions' => IndexRegionsCommand::class,
                     'geoshapes:install' => InstallGeoShapesCommand::class,
-                    'foobar' => Foobar::class,
                 ];
 
                 foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
@@ -84,13 +83,6 @@ final class CommandServiceProvider extends BaseServiceProvider
 
                 return $application;
             }
-        );
-
-        $this->add(
-            Foobar::class,
-            fn (): Foobar => new Foobar(
-                $this->get(RedisAdapter::class)
-            )
         );
 
         $this->add(
