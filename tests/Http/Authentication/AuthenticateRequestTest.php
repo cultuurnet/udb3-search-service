@@ -356,6 +356,65 @@ final class AuthenticateRequestTest extends TestCase
      * @dataProvider validApiKeyRequestsProvider
      * @test
      */
+    public function it_handles_valid_requests_with_cached_api_key(ServerRequestInterface $request): void
+    {
+        $this->cultureFeed->expects($this->never())
+            ->method('getServiceConsumerByApiKey')
+            ->with('my_active_api_key', true);
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(true);
+
+        $cachedQuery = $this->createMock(ItemInterface::class);
+        $cachedQuery->expects($this->once())
+            ->method('isHit')
+            ->willReturn(true);
+
+        $cachedQuery->expects($this->never())
+            ->method('get');
+
+        $this->cacheItem->expects($this->exactly(2))
+            ->method('get')
+            ->willReturn('ACTIVE');
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('getItem')
+            ->willReturnMap([
+                ['status_' . 'my_active_api_key', $this->cacheItem],
+                ['query_' . 'my_active_api_key', $cachedQuery],
+            ]);
+
+        $this->redisCache->expects($this->never())
+            ->method('save');
+
+        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validApiKeyRequestsProvider
+     * @test
+     */
     public function it_handles_valid_requests_with_api_key_and_default_query_config(ServerRequestInterface $request): void
     {
         $cultureFeedConsumer = new CultureFeed_Consumer();
