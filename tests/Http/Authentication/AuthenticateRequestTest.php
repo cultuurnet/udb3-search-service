@@ -258,6 +258,29 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_removed_api_key', true)
             ->willReturn($cultureFeedConsumer);
 
+        $this->cacheItem->expects($this->once())
+            ->method('isHit')
+            ->willReturn(false);
+
+        $cachedQuery = $this->createMock(ItemInterface::class);
+
+        $cachedQuery->expects($this->never())
+            ->method('get');
+
+        $this->cacheItem->expects($this->exactly(2))
+            ->method('get')
+            ->willReturn('REMOVED');
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('getItem')
+            ->willReturnMap([
+                ['status_' . 'my_removed_api_key', $this->cacheItem],
+                ['query_' . 'my_removed_api_key', $cachedQuery],
+            ]);
+
+        $this->redisCache->expects($this->exactly(2))
+            ->method('save');
+
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
