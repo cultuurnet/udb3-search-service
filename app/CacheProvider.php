@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\SearchService;
 
 use Predis\Client;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Contracts\Cache\CacheInterface;
 
 final class CacheProvider extends BaseServiceProvider
 {
