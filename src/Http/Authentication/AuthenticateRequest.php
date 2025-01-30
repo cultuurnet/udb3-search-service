@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultureFeed_Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
@@ -16,7 +18,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use Exception;
-use GuzzleHttp\Exception\ConnectException;
 use ICultureFeed;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
@@ -40,9 +41,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private ICultureFeed $cultureFeed;
 
-    private ManagementTokenProvider $managementTokenProvider;
-
-    private MetadataGenerator $metadataGenerator;
+    private ClientIdProvider $clientIdProvider;
 
     private DefaultQueryRepository $defaultQueryRepository;
 
@@ -53,16 +52,14 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
-        ManagementTokenProvider $managementTokenProvider,
-        MetadataGenerator $metadataGenerator,
+        ClientIdProvider $clientIdProvider,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile,
         RedisAdapter $redisCache
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
-        $this->managementTokenProvider = $managementTokenProvider;
-        $this->metadataGenerator = $metadataGenerator;
+        $this->clientIdProvider = $clientIdProvider;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
         $this->redisCache = $redisCache;
@@ -98,30 +95,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
-        $oAuthServerDown = false;
-        /** @var CacheItem $hasSapiAccess */
-        $hasSapiAccess = $this->redisCache->getItem($clientId);
-
-        if (!$hasSapiAccess->isHit()) {
-            try {
-                $metadata = $this->metadataGenerator->get(
-                    $clientId,
-                    $this->managementTokenProvider->token()
-                );
-
-                if ($metadata === null) {
-                    return (new InvalidClientId($clientId))->toResponse();
-                }
-                $hasSapiAccess->set($this->hasSapiAccess($metadata));
-                $this->redisCache->save($hasSapiAccess);
-            } catch (ConnectException $connectException) {
-                $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-                $oAuthServerDown = true;
-            }
+        try {
+            $hasSapiAccess = $this->clientIdProvider->hasSapiAccess($clientId);
+        } catch (InvalidClient $invalidClient) {
+            return (new InvalidClientId($clientId))->toResponse();
         }
 
-        // Bypass the sapi access validation when the oauth server is down to make sure sapi requests are still handled.
-        if (!$oAuthServerDown && !$hasSapiAccess->get()) {
+        if (!$hasSapiAccess) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
@@ -220,20 +200,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             );
 
         return $handler->handle($request);
-    }
-
-    private function hasSapiAccess(array $metadata): bool
-    {
-        if (empty($metadata)) {
-            return false;
-        }
-
-        if (empty($metadata['publiq-apis'])) {
-            return false;
-        }
-
-        $apis = explode(' ', $metadata['publiq-apis']);
-        return in_array('sapi', $apis, true);
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string
