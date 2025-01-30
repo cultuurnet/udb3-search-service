@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use GuzzleHttp\Exception\ConnectException;
-use Psr\Log\LoggerAwareInterface;
 
 final class MetadataClientIdProvider implements ClientIdProvider
 {
