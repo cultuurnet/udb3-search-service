@@ -1,0 +1,8 @@
+<?php
+
+namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
+
+final class InvalidClient extends \Exception
+{
+
+}
