@@ -7,22 +7,20 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
@@ -38,7 +36,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Contracts\Cache\ItemInterface;
 
 final class AuthenticateRequestTest extends TestCase
 {
@@ -54,21 +51,14 @@ final class AuthenticateRequestTest extends TestCase
      */
     private $cultureFeed;
 
-    private ManagementTokenProvider $managementTokenProvider;
+    /**
+     * @var ClientIdProvider&MockObject
+     */
+    private $clientIdProvider;
 
     private AuthenticateRequest $authenticateRequest;
 
     private string $pemFile;
-
-    /**
-     * @var RedisAdapter&MockObject
-     */
-    private $redisCache;
-
-    /**
-     * @var ItemInterface&MockObject
-     */
-    private $cacheItem;
 
     protected function setUp(): void
     {
@@ -80,10 +70,6 @@ final class AuthenticateRequestTest extends TestCase
         $this->cultureFeed = $this->createMock(ICultureFeed::class);
 
         $this->pemFile = FileReader::read(__DIR__ . '/samples/public.pem');
-
-        $this->redisCache = $this->createMock(RedisAdapter::class);
-
-        $this->cacheItem = $this->createMock(ItemInterface::class);
 
         $managementToken = new Token(
             'my_oauth_token',
@@ -103,22 +89,18 @@ final class AuthenticateRequestTest extends TestCase
             ->method('get')
             ->willReturn($managementToken);
 
-        $this->managementTokenProvider = new ManagementTokenProvider(
-            $managementTokenGenerator,
-            $managementTokenRepository
-        );
+        $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            $this->createMock(MetadataGenerator::class),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
                     ['my_active_api_key' => 'my_default_search_query'],
             ]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
     }
 
@@ -167,28 +149,6 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_invalid_api_key', true)
             ->willThrowException(new Exception('Invalid API key'));
 
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->never())
-            ->method('get');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_invalid_api_key', $this->cacheItem],
-                ['query_' . 'my_invalid_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->never())
-            ->method('save');
-
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -212,29 +172,6 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_blocked_api_key', true)
             ->willReturn($cultureFeedConsumer);
 
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn('BLOCKED');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_blocked_api_key', $this->cacheItem],
-                ['query_' . 'my_blocked_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('save');
-
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -257,29 +194,6 @@ final class AuthenticateRequestTest extends TestCase
             ->method('getServiceConsumerByApiKey')
             ->with('my_removed_api_key', true)
             ->willReturn($cultureFeedConsumer);
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->exactly(2))
-            ->method('get')
-            ->willReturn('REMOVED');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_removed_api_key', $this->cacheItem],
-                ['query_' . 'my_removed_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('save');
 
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
@@ -324,88 +238,6 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->exactly(2))
-            ->method('get')
-            ->willReturn('ACTIVE');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_active_api_key', $this->cacheItem],
-                ['query_' . 'my_active_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('save');
-
-        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
-     * @dataProvider validApiKeyRequestsProvider
-     * @test
-     */
-    public function it_handles_valid_requests_with_cached_api_key(ServerRequestInterface $request): void
-    {
-        $this->cultureFeed->expects($this->never())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_active_api_key', true);
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(true);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-        $cachedQuery->expects($this->once())
-            ->method('isHit')
-            ->willReturn(true);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->exactly(2))
-            ->method('get')
-            ->willReturn('ACTIVE');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_active_api_key', $this->cacheItem],
-                ['query_' . 'my_active_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->never())
-            ->method('save');
-
         $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
@@ -442,29 +274,6 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $cachedQuery = $this->createMock(ItemInterface::class);
-
-        $cachedQuery->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->exactly(2))
-            ->method('get')
-            ->willReturn('ACTIVE');
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('getItem')
-            ->willReturnMap([
-                ['status_' . 'my_active_api_key', $this->cacheItem],
-                ['query_' . 'my_active_api_key', $cachedQuery],
-            ]);
-
-        $this->redisCache->expects($this->exactly(2))
-            ->method('save');
 
         $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
 
@@ -506,15 +315,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -523,22 +327,6 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->container->expects($this->never())
             ->method('extend');
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(false);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
-        $this->redisCache->expects($this->once())
-            ->method('save');
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -560,15 +348,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -577,22 +360,6 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->container->expects($this->never())
             ->method('extend');
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(false);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
-        $this->redisCache->expects($this->once())
-            ->method('save');
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -616,15 +383,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -644,15 +406,6 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
@@ -680,15 +433,10 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -709,149 +457,14 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(true);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
             ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
-        $this->redisCache->expects($this->once())
-            ->method('save');
+            ->willReturn(true);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
-     * @dataProvider validClientIdRequestsProvider
-     * @test
-     */
-    public function it_handles_valid_requests_with_an_allowed_cached_client_id(ServerRequestInterface $request): void
-    {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                        'publiq-api-sapi-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
-        $metadataGenerator = $this->createMock(MetadataGenerator::class);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->managementTokenProvider,
-            $metadataGenerator,
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->redisCache
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_client_id', null));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $metadataGenerator->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(true);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(true);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
-     * @dataProvider validClientIdRequestsProvider
-     * @test
-     */
-    public function it_handles_valid_requests_with_an_unallowed_cached_client_id(ServerRequestInterface $request): void
-    {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                        'publiq-api-sapi-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
-        $metadataGenerator = $this->createMock(MetadataGenerator::class);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->managementTokenProvider,
-            $metadataGenerator,
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->redisCache
-        );
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->never())
-            ->method('handle');
-
-        $metadataGenerator->expects($this->never())
-            ->method('get');
-
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(true);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(false);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
     }
 
     /**
@@ -875,17 +488,12 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
             $this->pemFile,
-            $this->redisCache
+            $this->createMock(RedisAdapter::class)
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -906,18 +514,10 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn(true);
-
-        $this->redisCache->expects($this->once())
-            ->method('getItem')
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
             ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
+            ->willReturn(true);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
