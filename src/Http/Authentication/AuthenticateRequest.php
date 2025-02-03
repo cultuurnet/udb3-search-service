@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -16,8 +16,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
-use Exception;
-use ICultureFeed;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
 use Noodlehaus\Config;
