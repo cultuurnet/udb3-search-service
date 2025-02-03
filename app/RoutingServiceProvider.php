@@ -8,6 +8,7 @@ use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CultureFeedConsumerProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
@@ -53,6 +54,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
+                    $consumerProvider = new CultureFeedConsumerProvider(new CultureFeed($oauthClient));
+
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdProvider = new MetadataClientIdProvider(
                         $this->getManagementTokenProvider(),
@@ -66,7 +69,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
-                        new CultureFeed($oauthClient),
+                        $consumerProvider,
                         $cachedClientIdProvider,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
