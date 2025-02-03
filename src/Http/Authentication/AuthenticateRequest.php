@@ -27,8 +27,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
-use Symfony\Component\Cache\CacheItem;
 
 final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
 {
