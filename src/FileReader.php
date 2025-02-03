@@ -10,8 +10,7 @@ final class FileReader
     {
         try {
             $content = file_get_contents($filepath);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             $content = false;
         }
 
