@@ -232,19 +232,29 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
-     * @dataProvider validApiKeyWithConfigQueryRequestsProvider
+     * @dataProvider validApiKeyRequestsProvider
      * @test
      */
     public function it_handles_valid_requests_with_api_key_and_default_query_config(ServerRequestInterface $request): void
     {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerProvider,
+            $this->clientIdProvider,
+            new InMemoryDefaultQueryRepository([
+                'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
+            ]),
+            $this->pemFile
+        );
+
         $this->consumerProvider->expects($this->once())
             ->method('getStatus')
-            ->with('my_active_api_key_with_config_query')
+            ->with('my_active_api_key')
             ->willReturn('ACTIVE');
 
         $this->consumerProvider->expects($this->never())
             ->method('getDefaultQuery')
-            ->with('my_active_api_key_with_config_query');
+            ->with('my_active_api_key');
 
         $response = (new ResponseFactory())->createResponse(200);
 
@@ -257,14 +267,14 @@ final class AuthenticateRequestTest extends TestCase
         $definitionInterface = $this->createMock(DefinitionInterface::class);
         $definitionInterface->expects($this->once())
             ->method('setConcrete')
-            ->with(new Consumer('my_active_api_key_with_config_query', 'my_default_search_query'));
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
 
         $this->container->expects($this->once())
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
     }
