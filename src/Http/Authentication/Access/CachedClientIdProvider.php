@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
 use Symfony\Component\Cache\CacheItem;
 
 final class CachedClientIdProvider implements ClientIdProvider
 {
-    private RedisAdapter $cache;
+    private AbstractAdapter $cache;
     private ClientIdProvider $clientIdAccess;
 
     public function __construct(
-        RedisAdapter $cache,
+        AbstractAdapter $cache,
         ClientIdProvider $clientIdAccess
     ) {
         $this->cache = $cache;

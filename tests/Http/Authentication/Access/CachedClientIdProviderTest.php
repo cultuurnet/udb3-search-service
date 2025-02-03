@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemInterface;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Adapter\AbstractAdapter;
 
 final class CachedClientIdProviderTest extends TestCase
 {
     /**
-     * @var RedisAdapter&MockObject
+     * @var AbstractAdapter&MockObject
      */
     private $cache;
 
@@ -30,7 +30,7 @@ final class CachedClientIdProviderTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cache = $this->createMock(RedisAdapter::class);
+        $this->cache = $this->createMock(AbstractAdapter::class);
         $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
         $this->cacheItem = $this->createMock(CacheItemInterface::class);
         $this->cachedClientIdProvider = new CachedClientIdProvider(
