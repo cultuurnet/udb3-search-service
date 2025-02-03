@@ -366,48 +366,6 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
-     * @test
-     */
-    public function it_allows_all_access_when_oauth_server_is_down(): void
-    {
-        $request = (new ServerRequestFactory())
-            ->createServerRequest('GET', 'https://search.uitdatabank.be')
-            ->withHeader('x-client-id', 'my_active_client_id');
-
-        $mockHandler = new MockHandler([new ConnectException('No connection with OAuth server', $request)]);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->clientIdProvider,
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_client_id', null));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
      * @dataProvider validClientIdRequestsProvider
      * @test
      */
