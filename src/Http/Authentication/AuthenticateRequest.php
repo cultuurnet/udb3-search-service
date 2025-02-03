@@ -36,7 +36,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private Container $container;
 
-    private ICultureFeed $cultureFeed;
+    private ConsumerProvider $consumerProvider;
 
     private ClientIdProvider $clientIdProvider;
 
@@ -46,13 +46,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     public function __construct(
         Container $container,
-        ICultureFeed $cultureFeed,
+        ConsumerProvider $consumerProvider,
         ClientIdProvider $clientIdProvider,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
-        $this->cultureFeed = $cultureFeed;
+        $this->consumerProvider = $consumerProvider;
         $this->clientIdProvider = $clientIdProvider;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
@@ -153,24 +153,23 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        try {
-            /** @var CultureFeed_Consumer $cultureFeedConsumer */
-            $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
-        } catch (Exception $exception) {
+        $status = $this->consumerProvider->getStatus($apiKey);
+
+        if ($status === 'INVALID') {
             return (new InvalidApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'BLOCKED') {
+        if ($status === 'BLOCKED') {
             return (new BlockedApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'REMOVED') {
+        if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
         $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
-            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
+        if ($defaultQuery === null && !empty($this->consumerProvider->getDefaultQuery($apiKey))) {
+            $defaultQuery = $this->consumerProvider->getDefaultQuery($apiKey);
         }
 
         $this->container
