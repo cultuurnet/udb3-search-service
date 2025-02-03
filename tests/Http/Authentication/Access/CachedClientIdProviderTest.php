@@ -41,8 +41,9 @@ final class CachedClientIdProviderTest extends TestCase
 
     /**
      * @test
+     * @dataProvider hasAccess
      */
-    public function it_will_use_cached_values(): void
+    public function it_will_use_cached_values(bool $hasAccess): void
     {
         $this->cacheItem->expects($this->once())
             ->method('isHit')
@@ -50,7 +51,7 @@ final class CachedClientIdProviderTest extends TestCase
 
         $this->cacheItem->expects($this->once())
             ->method('get')
-            ->willReturn(true);
+            ->willReturn($hasAccess);
 
         $this->cache->expects($this->once())
             ->method('getItem')
@@ -63,15 +64,17 @@ final class CachedClientIdProviderTest extends TestCase
         $this->cacheItem->expects($this->never())
             ->method('set');
 
-        $this->assertTrue(
+        $this->assertEquals(
+            $hasAccess,
             $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id')
         );
     }
 
     /**
      * @test
+     * @dataProvider hasAccess
      */
-    public function it_will_save_values_in_the_cache(): void
+    public function it_will_save_values_in_the_cache(bool $hasAccess): void
     {
         $this->cacheItem->expects($this->once())
             ->method('isHit')
@@ -79,7 +82,7 @@ final class CachedClientIdProviderTest extends TestCase
 
         $this->cacheItem->expects($this->once())
             ->method('get')
-            ->willReturn(true);
+            ->willReturn($hasAccess);
 
         $this->cache->expects($this->once())
             ->method('getItem')
@@ -88,18 +91,27 @@ final class CachedClientIdProviderTest extends TestCase
 
         $this->clientIdProvider->expects($this->once())
             ->method('hasSapiAccess')
-            ->willReturn(true);
+            ->willReturn($hasAccess);
 
         $this->cacheItem->expects($this->once())
             ->method('set')
-            ->with(true);
+            ->with($hasAccess);
 
         $this->cache->expects($this->once())
             ->method('save')
             ->with($this->cacheItem);
 
-        $this->assertTrue(
+        $this->assertEquals(
+            $hasAccess,
             $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id')
         );
+    }
+
+    public static function hasAccess(): array
+    {
+        return [
+            'hasAccess' => [true],
+            'hasNoAccess' => [false],
+        ];
     }
 }
