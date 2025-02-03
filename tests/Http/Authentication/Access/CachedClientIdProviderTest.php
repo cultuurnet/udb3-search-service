@@ -6,37 +6,19 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Cache\CacheItemInterface;
-use Symfony\Component\Cache\Adapter\AbstractAdapter;
 
 final class CachedClientIdProviderTest extends TestCase
 {
-    /**
-     * @var AbstractAdapter&MockObject
-     */
-    private $cache;
-
     /**
      * @var ClientIdProvider&MockObject
      */
     private $clientIdProvider;
 
-    /**
-     * @var CacheItemInterface&MockObject
-     */
-    private $cacheItem;
-
     private CachedClientIdProvider $cachedClientIdProvider;
 
     protected function setUp(): void
     {
-        $this->cache = $this->createMock(AbstractAdapter::class);
         $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
-        $this->cacheItem = $this->createMock(CacheItemInterface::class);
-        $this->cachedClientIdProvider = new CachedClientIdProvider(
-            $this->cache,
-            $this->clientIdProvider
-        );
     }
 
     /**
@@ -45,66 +27,39 @@ final class CachedClientIdProviderTest extends TestCase
      */
     public function it_will_use_cached_values(bool $hasAccess): void
     {
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(true);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn($hasAccess);
-
-        $this->cache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
-
+        $this->cachedClientIdProvider = new CachedClientIdProvider(
+            new InMemoryCache([
+                'my_cached_client_id' => $hasAccess,
+            ]),
+            $this->clientIdProvider
+        );
         $this->clientIdProvider->expects($this->never())
             ->method('hasSapiAccess');
 
-        $this->cacheItem->expects($this->never())
-            ->method('set');
+        $result = $this->cachedClientIdProvider->hasSapiAccess('my_cached_client_id');
 
-        $this->assertEquals(
-            $hasAccess,
-            $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id')
-        );
+        // Assert that the result matches the expected outcome
+        $this->assertEquals($hasAccess, $result);
     }
 
     /**
      * @test
      * @dataProvider hasAccess
      */
-    public function it_will_save_values_in_the_cache(bool $hasAccess): void
+    public function it_can_get_uncached_values_via_the_decoratee(bool $hasAccess): void
     {
-        $this->cacheItem->expects($this->once())
-            ->method('isHit')
-            ->willReturn(false);
-
-        $this->cacheItem->expects($this->once())
-            ->method('get')
-            ->willReturn($hasAccess);
-
-        $this->cache->expects($this->once())
-            ->method('getItem')
-            ->with('my_active_client_id')
-            ->willReturn($this->cacheItem);
+        $this->cachedClientIdProvider = new CachedClientIdProvider(
+            new InMemoryCache([]),
+            $this->clientIdProvider
+        );
 
         $this->clientIdProvider->expects($this->once())
             ->method('hasSapiAccess')
             ->willReturn($hasAccess);
 
-        $this->cacheItem->expects($this->once())
-            ->method('set')
-            ->with($hasAccess);
+        $result = $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id');
 
-        $this->cache->expects($this->once())
-            ->method('save')
-            ->with($this->cacheItem);
-
-        $this->assertEquals(
-            $hasAccess,
-            $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id')
-        );
+        $this->assertEquals($hasAccess, $result);
     }
 
     public static function hasAccess(): array
