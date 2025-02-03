@@ -35,7 +35,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 final class AuthenticateRequestTest extends TestCase
 {
