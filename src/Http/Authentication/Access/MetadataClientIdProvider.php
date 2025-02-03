@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use GuzzleHttp\Exception\ConnectException;
+use Psr\Log\NullLogger;
 
 final class MetadataClientIdProvider implements ClientIdProvider
 {
@@ -22,6 +23,7 @@ final class MetadataClientIdProvider implements ClientIdProvider
     ) {
         $this->managementTokenProvider = $managementTokenProvider;
         $this->metadataGenerator = $metadataGenerator;
+        $this->setLogger(new NullLogger());
     }
 
     public function hasSapiAccess(string $clientId): bool
