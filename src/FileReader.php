@@ -8,7 +8,12 @@ final class FileReader
 {
     public static function read(string $filepath): string
     {
-        $content = file_get_contents($filepath);
+        try {
+            $content = file_get_contents($filepath);
+        }
+        catch (\Exception $e) {
+            $content = false;
+        }
 
         if ($content === false) {
             throw new \RuntimeException('Failed to read file ' . $filepath);
