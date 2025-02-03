@@ -46,22 +46,18 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private string $pemFile;
 
-    private RedisAdapter $redisCache;
-
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
         ClientIdProvider $clientIdProvider,
         DefaultQueryRepository $defaultQueryRepository,
-        string $pemFile,
-        RedisAdapter $redisCache
+        string $pemFile
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
         $this->clientIdProvider = $clientIdProvider;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
-        $this->redisCache = $redisCache;
         $this->setLogger(new NullLogger());
     }
 
@@ -159,34 +155,24 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        /** @var CacheItem $apiKeyStatus */
-        /** @var CacheItem $apiKeyStatus */
-        $apiKeyStatus = $this->redisCache->getItem('status_' . $apiKey);
-        $apiKeyQuery = $this->redisCache->getItem('query_' . $apiKey);
-        if (!$apiKeyStatus->isHit() || !$apiKeyQuery->isHit()) {
-            try {
-                /** @var CultureFeed_Consumer $cultureFeedConsumer */
-                $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
-                $apiKeyStatus->set($cultureFeedConsumer->status);
-                $this->redisCache->save($apiKeyStatus);
-                $apiKeyQuery->set($cultureFeedConsumer->searchPrefixSapi3);
-                $this->redisCache->save($apiKeyQuery);
-            } catch (Exception $exception) {
-                return (new InvalidApiKey($apiKey))->toResponse();
-            }
+        try {
+            /** @var CultureFeed_Consumer $cultureFeedConsumer */
+            $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
+        } catch (Exception $exception) {
+            return (new InvalidApiKey($apiKey))->toResponse();
         }
 
-        if ($apiKeyStatus->get() === 'BLOCKED') {
+        if ($cultureFeedConsumer->status === 'BLOCKED') {
             return (new BlockedApiKey($apiKey))->toResponse();
         }
 
-        if ($apiKeyStatus->get() === 'REMOVED') {
+        if ($cultureFeedConsumer->status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
         $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($apiKeyQuery->get())) {
-            $defaultQuery = $apiKeyQuery->get();
+        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
+            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
         }
 
         $this->container

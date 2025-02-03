@@ -66,8 +66,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
-                        $this->get(RedisAdapter::class)
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());

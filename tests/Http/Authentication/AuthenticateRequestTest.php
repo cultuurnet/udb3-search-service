@@ -99,8 +99,7 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' =>
                     ['my_active_api_key' => 'my_default_search_query'],
             ]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
     }
 
@@ -317,8 +316,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -350,8 +348,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -385,8 +382,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -435,8 +431,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->cultureFeed,
             $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -492,8 +487,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
-            $this->pemFile,
-            $this->createMock(RedisAdapter::class)
+            $this->pemFile
         );
 
         $response = (new ResponseFactory())->createResponse(200);
