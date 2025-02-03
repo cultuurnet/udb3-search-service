@@ -9,10 +9,12 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -67,5 +69,36 @@ final class MetadataClientIdProviderTest extends TestCase
         );
 
         $this->assertTrue($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_allow_sapi_access_when_permission_is_missing_in_metadata(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('x-client-id', 'my_active_client_id');
+        $mockHandler = new MockHandler([
+            new Response(200, [], Json::encode([
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-ups-scope',
+                        'publiq-api-entry-scope',
+                    ],
+                ],
+            ])),
+        ]);
+
+        $metaDataClientIdProvider = new MetadataClientIdProvider(
+            $this->managementTokenProvider,
+            new KeycloakMetadataGenerator(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'realm'
+            )
+        );
+
+        $this->assertFalse($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
     }
 }
