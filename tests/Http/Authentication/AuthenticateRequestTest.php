@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
@@ -297,19 +296,8 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_requests_with_client_id_with_missing_sapi_permission_in_metadata(): void
+    public function it_handles_unallowed_requests_with_a_client_id(): void
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
@@ -325,37 +313,10 @@ final class AuthenticateRequestTest extends TestCase
         $this->container->expects($this->never())
             ->method('extend');
 
-        $request = (new ServerRequestFactory())
-            ->createServerRequest('GET', 'https://search.uitdatabank.be')
-            ->withHeader('x-client-id', 'my_active_client_id');
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_requests_with_client_id_without_metadata(): void
-    {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([])),
-        ]);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->clientIdProvider,
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
-        );
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->never())
-            ->method('handle');
-
-        $this->container->expects($this->never())
-            ->method('extend');
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(false);
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -371,18 +332,6 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                        'publiq-api-sapi-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
