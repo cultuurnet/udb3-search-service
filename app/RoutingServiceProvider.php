@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\SearchService;
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
@@ -24,6 +25,7 @@ use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
@@ -56,12 +58,16 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
+                    $cachedClientIdProvider = new CachedClientIdProvider(
+                        $this->get(RedisAdapter::class),
+                        $clientIdProvider
+                    );
 
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
-                        $clientIdProvider,
+                        $cachedClientIdProvider,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
