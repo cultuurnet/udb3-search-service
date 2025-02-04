@@ -28,18 +28,21 @@ final class CachedClientIdProviderTest extends TestCase
      */
     public function it_will_use_cached_values(bool $hasAccess): void
     {
+        $cache = new ArrayAdapter();
+        $cache->get(
+            'my_cached_client_id',
+            function () use ($hasAccess) {
+                return $hasAccess;
+            }
+        );
         $this->cachedClientIdProvider = new CachedClientIdProvider(
-            new InMemoryCache([
-                'my_cached_client_id' => $hasAccess,
-            ]),
+            $cache,
             $this->clientIdProvider
         );
         $this->clientIdProvider->expects($this->never())
             ->method('hasSapiAccess');
 
         $result = $this->cachedClientIdProvider->hasSapiAccess('my_cached_client_id');
-
-        // Assert that the result matches the expected outcome
         $this->assertEquals($hasAccess, $result);
     }
 
