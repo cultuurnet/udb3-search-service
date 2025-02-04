@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\AmqpProvider;
+use CultuurNet\UDB3\SearchService\CacheProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventIndexationServiceProvider;
@@ -39,6 +40,9 @@ final class ContainerFactory
         $container->addServiceProvider(EventIndexationServiceProvider::class);
         $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(CommandServiceProvider::class);
+        if ($container->get(Config::class)->get('cache.enabled') ?? false) {
+            $container->addServiceProvider(CacheProvider::class);
+        }
         return $container;
     }
 
@@ -51,6 +55,9 @@ final class ContainerFactory
         $container->addServiceProvider(EventSearchServiceProvider::class);
         $container->addServiceProvider(PlaceSearchServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
+        if ($container->get(Config::class)->get('cache.enabled') ?? false) {
+            $container->addServiceProvider(CacheProvider::class);
+        }
         return $container;
     }
 
