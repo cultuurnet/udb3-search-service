@@ -58,16 +58,19 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
-                    $cachedClientIdProvider = new CachedClientIdProvider(
-                        $this->get(CacheInterface::class),
-                        $clientIdProvider
-                    );
+                    $cacheEnabled = $this->parameter('cache.enabled');
+                    if ($cacheEnabled) {
+                        $cachedClientIdProvider = new CachedClientIdProvider(
+                            $this->get(CacheInterface::class),
+                            $clientIdProvider
+                        );
+                    }
 
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CultureFeed($oauthClient),
-                        $cachedClientIdProvider,
+                        $cacheEnabled ? $cachedClientIdProvider : $clientIdProvider,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
