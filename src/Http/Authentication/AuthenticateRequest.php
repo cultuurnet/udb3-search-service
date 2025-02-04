@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultureFeed_Consumer;
-use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -38,7 +38,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private ICultureFeed $cultureFeed;
 
-    private ClientIdProvider $clientIdProvider;
+    private ClientIdResolver $clientIdResolver;
 
     private DefaultQueryRepository $defaultQueryRepository;
 
@@ -47,13 +47,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     public function __construct(
         Container $container,
         ICultureFeed $cultureFeed,
-        ClientIdProvider $clientIdProvider,
+        ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
         $this->cultureFeed = $cultureFeed;
-        $this->clientIdProvider = $clientIdProvider;
+        $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
         $this->setLogger(new NullLogger());
@@ -89,7 +89,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
         try {
-            $hasSapiAccess = $this->clientIdProvider->hasSapiAccess($clientId);
+            $hasSapiAccess = $this->clientIdResolver->hasSapiAccess($clientId);
         } catch (InvalidClient $invalidClient) {
             return (new InvalidClientId($clientId))->toResponse();
         }

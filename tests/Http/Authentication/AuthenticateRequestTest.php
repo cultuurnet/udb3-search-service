@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
@@ -50,9 +50,9 @@ final class AuthenticateRequestTest extends TestCase
     private $cultureFeed;
 
     /**
-     * @var ClientIdProvider&MockObject
+     * @var ClientIdResolver&MockObject
      */
-    private $clientIdProvider;
+    private $clientIdResolver;
 
     private AuthenticateRequest $authenticateRequest;
 
@@ -87,12 +87,12 @@ final class AuthenticateRequestTest extends TestCase
             ->method('get')
             ->willReturn($managementToken);
 
-        $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
+        $this->clientIdResolver = $this->createMock(ClientIdResolver::class);
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->clientIdProvider,
+            $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
                     ['my_active_api_key' => 'my_default_search_query'],
@@ -301,7 +301,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->clientIdProvider,
+            $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
         );
@@ -313,7 +313,7 @@ final class AuthenticateRequestTest extends TestCase
         $this->container->expects($this->never())
             ->method('extend');
 
-        $this->clientIdProvider->expects($this->once())
+        $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
             ->with('my_active_client_id')
             ->willReturn(false);
@@ -335,7 +335,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->clientIdProvider,
+            $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
         );
@@ -358,7 +358,7 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $this->clientIdProvider->expects($this->once())
+        $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
             ->with('my_active_client_id')
             ->willReturn(true);
@@ -389,7 +389,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->clientIdProvider,
+            $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
@@ -414,7 +414,7 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $this->clientIdProvider->expects($this->once())
+        $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
             ->with('my_active_client_id')
             ->willReturn(true);
