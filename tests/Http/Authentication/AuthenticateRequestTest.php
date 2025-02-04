@@ -7,23 +7,20 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use Crell\ApiProblem\ApiProblem;
 use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
-use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use ICultureFeed;
@@ -52,7 +49,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     private $cultureFeed;
 
-    private ManagementTokenProvider $managementTokenProvider;
+    /**
+     * @var ClientIdProvider&MockObject
+     */
+    private $clientIdProvider;
 
     private AuthenticateRequest $authenticateRequest;
 
@@ -87,16 +87,12 @@ final class AuthenticateRequestTest extends TestCase
             ->method('get')
             ->willReturn($managementToken);
 
-        $this->managementTokenProvider = new ManagementTokenProvider(
-            $managementTokenGenerator,
-            $managementTokenRepository
-        );
+        $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            $this->createMock(MetadataGenerator::class),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
                     ['my_active_api_key' => 'my_default_search_query'],
@@ -300,28 +296,12 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_requests_with_client_id_with_missing_sapi_permission_in_metadata(): void
+    public function it_handles_unallowed_requests_with_a_client_id(): void
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
         );
@@ -333,42 +313,10 @@ final class AuthenticateRequestTest extends TestCase
         $this->container->expects($this->never())
             ->method('extend');
 
-        $request = (new ServerRequestFactory())
-            ->createServerRequest('GET', 'https://search.uitdatabank.be')
-            ->withHeader('x-client-id', 'my_active_client_id');
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
-    }
-
-    /**
-     * @test
-     */
-    public function it_handles_requests_with_client_id_without_metadata(): void
-    {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([])),
-        ]);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
-        );
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->never())
-            ->method('handle');
-
-        $this->container->expects($this->never())
-            ->method('extend');
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(false);
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -376,53 +324,6 @@ final class AuthenticateRequestTest extends TestCase
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertProblemReport(new NotAllowedToUseSapi('my_active_client_id'), $actualResponse);
-    }
-
-    /**
-     * @test
-     */
-    public function it_allows_all_access_when_oauth_server_is_down(): void
-    {
-        $request = (new ServerRequestFactory())
-            ->createServerRequest('GET', 'https://search.uitdatabank.be')
-            ->withHeader('x-client-id', 'my_active_client_id');
-
-        $mockHandler = new MockHandler([new ConnectException('No connection with OAuth server', $request)]);
-
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
-            new InMemoryDefaultQueryRepository([]),
-            $this->pemFile
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_client_id', null));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
     }
 
     /**
@@ -431,27 +332,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_client_id(ServerRequestInterface $request): void
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                        'publiq-api-sapi-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
         );
@@ -473,6 +357,11 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(true);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
@@ -500,12 +389,7 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->cultureFeed,
-            $this->managementTokenProvider,
-            new KeycloakMetadataGenerator(
-                new Client(['handler' => $mockHandler]),
-                'domain',
-                'realm'
-            ),
+            $this->clientIdProvider,
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
@@ -529,6 +413,11 @@ final class AuthenticateRequestTest extends TestCase
             ->method('extend')
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
+
+        $this->clientIdProvider->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(true);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
