@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use GuzzleHttp\Exception\ConnectException;
 use Psr\Log\NullLogger;
 
-final class MetadataClientIdProvider implements ClientIdProvider
+final class MetadataClientIdResolver implements ClientIdResolver
 {
     use LoggerAwareTrait;
     private ManagementTokenProvider $managementTokenProvider;

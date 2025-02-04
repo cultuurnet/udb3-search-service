@@ -8,18 +8,18 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-final class CachedClientIdProviderTest extends TestCase
+final class CachedClientIdResolverTest extends TestCase
 {
     /**
-     * @var ClientIdProvider&MockObject
+     * @var ClientIdResolver&MockObject
      */
-    private $clientIdProvider;
+    private $clientIdResolver;
 
-    private CachedClientIdProvider $cachedClientIdProvider;
+    private CachedClientIdResolver $cachedClientIdResolver;
 
     protected function setUp(): void
     {
-        $this->clientIdProvider = $this->createMock(ClientIdProvider::class);
+        $this->clientIdResolver = $this->createMock(ClientIdResolver::class);
     }
 
     /**
@@ -35,14 +35,14 @@ final class CachedClientIdProviderTest extends TestCase
                 return $hasAccess;
             }
         );
-        $this->cachedClientIdProvider = new CachedClientIdProvider(
+        $this->cachedClientIdResolver = new CachedClientIdResolver(
             $cache,
-            $this->clientIdProvider
+            $this->clientIdResolver
         );
-        $this->clientIdProvider->expects($this->never())
+        $this->clientIdResolver->expects($this->never())
             ->method('hasSapiAccess');
 
-        $result = $this->cachedClientIdProvider->hasSapiAccess('my_cached_client_id');
+        $result = $this->cachedClientIdResolver->hasSapiAccess('my_cached_client_id');
         $this->assertEquals($hasAccess, $result);
     }
 
@@ -52,16 +52,16 @@ final class CachedClientIdProviderTest extends TestCase
      */
     public function it_can_get_uncached_values_via_the_decoratee(bool $hasAccess): void
     {
-        $this->cachedClientIdProvider = new CachedClientIdProvider(
+        $this->cachedClientIdResolver = new CachedClientIdResolver(
             new ArrayAdapter(),
-            $this->clientIdProvider
+            $this->clientIdResolver
         );
 
-        $this->clientIdProvider->expects($this->once())
+        $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
             ->willReturn($hasAccess);
 
-        $result = $this->cachedClientIdProvider->hasSapiAccess('my_active_client_id');
+        $result = $this->cachedClientIdResolver->hasSapiAccess('my_active_client_id');
 
         $this->assertEquals($hasAccess, $result);
     }
