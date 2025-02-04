@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedClientIdProviderTest extends TestCase
 {
@@ -49,7 +50,7 @@ final class CachedClientIdProviderTest extends TestCase
     public function it_can_get_uncached_values_via_the_decoratee(bool $hasAccess): void
     {
         $this->cachedClientIdProvider = new CachedClientIdProvider(
-            new InMemoryCache([]),
+            new ArrayAdapter(),
             $this->clientIdProvider
         );
 
