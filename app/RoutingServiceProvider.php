@@ -25,7 +25,7 @@ use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
-use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Contracts\Cache\CacheInterface;
 use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
@@ -59,7 +59,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         $metadataGenerator
                     );
                     $cachedClientIdProvider = new CachedClientIdProvider(
-                        $this->get(RedisAdapter::class),
+                        $this->get(CacheInterface::class),
                         $clientIdProvider
                     );
 
