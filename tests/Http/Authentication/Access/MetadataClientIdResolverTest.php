@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-final class MetadataClientIdProviderTest extends TestCase
+final class MetadataClientIdResolverTest extends TestCase
 {
     private ManagementTokenProvider $managementTokenProvider;
 
@@ -66,7 +66,7 @@ final class MetadataClientIdProviderTest extends TestCase
             ])),
         ]);
 
-        $metaDataClientIdProvider = new MetadataClientIdProvider(
+        $metadataClientIdResolver = new MetadataClientIdResolver(
             $this->managementTokenProvider,
             new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
@@ -75,7 +75,7 @@ final class MetadataClientIdProviderTest extends TestCase
             )
         );
 
-        $this->assertTrue($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
+        $this->assertTrue($metadataClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
 
     /**
@@ -88,7 +88,7 @@ final class MetadataClientIdProviderTest extends TestCase
             ->withHeader('x-client-id', 'my_active_client_id');
         $mockHandler = new MockHandler([new ConnectException('No connection with OAuth server', $request)]);
 
-        $metaDataClientIdProvider = new MetadataClientIdProvider(
+        $metadataClientIdResolver = new MetadataClientIdResolver(
             $this->managementTokenProvider,
             new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
@@ -97,7 +97,7 @@ final class MetadataClientIdProviderTest extends TestCase
             )
         );
 
-        $this->assertTrue($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
+        $this->assertTrue($metadataClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
 
     /**
@@ -109,7 +109,7 @@ final class MetadataClientIdProviderTest extends TestCase
             new Response(200, [], Json::encode([])),
         ]);
 
-        $metaDataClientIdProvider = new MetadataClientIdProvider(
+        $metadataClientIdResolver = new MetadataClientIdResolver(
             $this->managementTokenProvider,
             new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
@@ -118,7 +118,7 @@ final class MetadataClientIdProviderTest extends TestCase
             )
         );
 
-        $this->assertFalse($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
+        $this->assertFalse($metadataClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
 
     /**
@@ -137,7 +137,7 @@ final class MetadataClientIdProviderTest extends TestCase
             ])),
         ]);
 
-        $metaDataClientIdProvider = new MetadataClientIdProvider(
+        $metadataClientIdResolver = new MetadataClientIdResolver(
             $this->managementTokenProvider,
             new KeycloakMetadataGenerator(
                 new Client(['handler' => $mockHandler]),
@@ -146,6 +146,6 @@ final class MetadataClientIdProviderTest extends TestCase
             )
         );
 
-        $this->assertFalse($metaDataClientIdProvider->hasSapiAccess('my_active_client_id'));
+        $this->assertFalse($metadataClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
 }

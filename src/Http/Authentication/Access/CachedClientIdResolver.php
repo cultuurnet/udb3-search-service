@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 
 use Symfony\Contracts\Cache\CacheInterface;
 
-final class CachedClientIdProvider implements ClientIdProvider
+final class CachedClientIdResolver implements ClientIdResolver
 {
     private CacheInterface $cache;
-    private ClientIdProvider $clientIdAccess;
+    private ClientIdResolver $clientIdAccess;
 
     public function __construct(
         CacheInterface $cache,
-        ClientIdProvider $clientIdAccess
+        ClientIdResolver $clientIdAccess
     ) {
         $this->cache = $cache;
         $this->clientIdAccess = $clientIdAccess;
