@@ -72,7 +72,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         }
 
         return $this->withQueryStringQuery(
-            str_replace(':', '\\:', $text),
+            str_replace(['-', '\'', ':'], [' ', ' ', '\\:'], $text),
             $this->getPredefinedQueryStringFields(...$textLanguages),
             BoolQuery::MUST,
             'AND'
