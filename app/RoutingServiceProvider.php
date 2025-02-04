@@ -8,6 +8,7 @@ use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CultureFeedConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
@@ -55,13 +56,19 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
                     $consumerResolver = new CultureFeedConsumerResolver(new CultureFeed($oauthClient));
+                    $cacheEnabled = $this->parameter('cache.enabled');
+                    if ($cacheEnabled) {
+                        $cachedConsumerResolver = new CachedConsumerResolver(
+                            $this->get(CacheInterface::class),
+                            $consumerResolver
+                        );
+                    }
 
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdResolver = new MetadataClientIdResolver(
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
-                    $cacheEnabled = $this->parameter('cache.enabled');
                     if ($cacheEnabled) {
                         $cachedClientIdResolver = new CachedClientIdResolver(
                             $this->get(CacheInterface::class),
@@ -72,7 +79,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
-                        $consumerResolver,
+                        $cacheEnabled ? $cachedConsumerResolver : $consumerResolver,
                         $cacheEnabled ? $cachedClientIdResolver : $clientIdResolver,
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
@@ -82,6 +89,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
                     $metadataGenerator->setLogger($logger);
+                    $consumerResolver->setLogger($logger);
                     $clientIdResolver->setLogger($logger);
                     $authenticateRequest->setLogger($logger);
 
