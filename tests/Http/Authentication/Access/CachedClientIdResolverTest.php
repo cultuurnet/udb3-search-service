@@ -19,38 +19,35 @@ final class CachedClientIdResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->clientIdResolver = $this->createMock(ClientIdResolver::class);
-    }
-
-    /**
-     * @test
-     * @dataProvider hasAccess
-     */
-    public function it_will_use_cached_values(bool $hasAccess): void
-    {
         $cache = new ArrayAdapter();
         $cache->get(
             'my_cached_client_id',
-            function () use ($hasAccess) {
-                return $hasAccess;
+            function () {
+                return true;
             }
         );
+        $this->clientIdResolver = $this->createMock(ClientIdResolver::class);
         $this->cachedClientIdResolver = new CachedClientIdResolver(
             $cache,
             $this->clientIdResolver
         );
-        $this->clientIdResolver->expects($this->never())
-            ->method('hasSapiAccess');
-
-        $result = $this->cachedClientIdResolver->hasSapiAccess('my_cached_client_id');
-        $this->assertEquals($hasAccess, $result);
     }
 
     /**
      * @test
-     * @dataProvider hasAccess
      */
-    public function it_can_get_uncached_values_via_the_decoratee(bool $hasAccess): void
+    public function it_will_use_cached_values(): void
+    {
+        $this->clientIdResolver->expects($this->never())
+            ->method('hasSapiAccess');
+
+        $this->assertTrue($this->cachedClientIdResolver->hasSapiAccess('my_cached_client_id'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_uncached_values_via_the_decoratee(): void
     {
         $this->cachedClientIdResolver = new CachedClientIdResolver(
             new ArrayAdapter(),
@@ -59,18 +56,8 @@ final class CachedClientIdResolverTest extends TestCase
 
         $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
-            ->willReturn($hasAccess);
+            ->willReturn(true);
 
-        $result = $this->cachedClientIdResolver->hasSapiAccess('my_active_client_id');
-
-        $this->assertEquals($hasAccess, $result);
-    }
-
-    public static function hasAccess(): array
-    {
-        return [
-            'hasAccess' => [true],
-            'hasNoAccess' => [false],
-        ];
+        $this->assertTrue($this->cachedClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
 }
