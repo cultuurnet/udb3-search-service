@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -41,9 +41,9 @@ final class AuthenticateRequestTest extends TestCase
     private $container;
 
     /**
-     * @var ConsumerProvider&MockObject
+     * @var ConsumerResolver&MockObject
      */
-    private $consumerProvider;
+    private $consumerResolver;
 
     /**
      * @var ClientIdResolver&MockObject
@@ -61,7 +61,7 @@ final class AuthenticateRequestTest extends TestCase
             ->method('get')
             ->willReturn(new Config([]));
 
-        $this->consumerProvider = $this->createMock(ConsumerProvider::class);
+        $this->consumerResolver = $this->createMock(ConsumerResolver::class);
 
         $this->pemFile = FileReader::read(__DIR__ . '/samples/public.pem');
 
@@ -87,7 +87,7 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->consumerProvider,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
@@ -137,7 +137,7 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_invalid_api_keys(): void
     {
-        $this->consumerProvider->expects($this->once())
+        $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_invalid_api_key')
             ->willReturn('INVALID');
@@ -157,7 +157,7 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_blocked_api_keys(): void
     {
-        $this->consumerProvider->expects($this->once())
+        $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_blocked_api_key')
             ->willReturn('BLOCKED');
@@ -177,7 +177,7 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_removed_api_keys(): void
     {
-        $this->consumerProvider->expects($this->once())
+        $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_removed_api_key')
             ->willReturn('REMOVED');
@@ -198,12 +198,12 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_api_key(ServerRequestInterface $request): void
     {
-        $this->consumerProvider->expects($this->once())
+        $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_active_api_key')
             ->willReturn('ACTIVE');
 
-        $this->consumerProvider->expects($this->exactly(2))
+        $this->consumerResolver->expects($this->exactly(2))
             ->method('getDefaultQuery')
             ->with('my_active_api_key')
             ->willReturn('my_default_search_query');
@@ -239,7 +239,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->consumerProvider,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
@@ -247,12 +247,12 @@ final class AuthenticateRequestTest extends TestCase
             $this->pemFile
         );
 
-        $this->consumerProvider->expects($this->once())
+        $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_active_api_key')
             ->willReturn('ACTIVE');
 
-        $this->consumerProvider->expects($this->never())
+        $this->consumerResolver->expects($this->never())
             ->method('getDefaultQuery')
             ->with('my_active_api_key');
 
@@ -318,7 +318,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->consumerProvider,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -352,7 +352,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->consumerProvider,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -394,7 +394,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->consumerProvider,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],

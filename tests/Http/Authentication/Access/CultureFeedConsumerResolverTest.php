@@ -6,6 +6,6 @@ namespace CultuurNet\UDB3\Search\Http\Authentication\Access;
 
 use PHPUnit\Framework\TestCase;
 
-final class CultureFeedConsumerProviderTest extends TestCase
+final class CultureFeedConsumerResolverTest extends TestCase
 {
 }

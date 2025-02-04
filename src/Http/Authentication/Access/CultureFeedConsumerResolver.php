@@ -11,7 +11,7 @@ use ICultureFeed;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-final class CultureFeedConsumerProvider implements ConsumerProvider
+final class CultureFeedConsumerResolver implements ConsumerResolver
 {
     use LoggerAwareTrait;
 

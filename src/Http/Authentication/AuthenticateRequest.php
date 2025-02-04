@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
@@ -34,7 +34,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private Container $container;
 
-    private ConsumerProvider $consumerProvider;
+    private ConsumerResolver $consumerResolver;
 
     private ClientIdResolver $clientIdResolver;
 
@@ -44,13 +44,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     public function __construct(
         Container $container,
-        ConsumerProvider $consumerProvider,
+        ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
-        $this->consumerProvider = $consumerProvider;
+        $this->consumerResolver = $consumerResolver;
         $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
@@ -151,7 +151,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        $status = $this->consumerProvider->getStatus($apiKey);
+        $status = $this->consumerResolver->getStatus($apiKey);
 
         if ($status === 'INVALID') {
             return (new InvalidApiKey($apiKey))->toResponse();
@@ -166,8 +166,8 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($this->consumerProvider->getDefaultQuery($apiKey))) {
-            $defaultQuery = $this->consumerProvider->getDefaultQuery($apiKey);
+        if ($defaultQuery === null && !empty($this->consumerResolver->getDefaultQuery($apiKey))) {
+            $defaultQuery = $this->consumerResolver->getDefaultQuery($apiKey);
         }
 
         $this->container
