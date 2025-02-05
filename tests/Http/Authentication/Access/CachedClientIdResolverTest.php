@@ -21,7 +21,7 @@ final class CachedClientIdResolverTest extends TestCase
     {
         $cache = new ArrayAdapter();
         $cache->get(
-            'my_cached_client_id',
+            'client_id_my_cached_client_id_sapi_access',
             function () {
                 return true;
             }
@@ -49,11 +49,6 @@ final class CachedClientIdResolverTest extends TestCase
      */
     public function it_can_get_uncached_values_via_the_decoratee(): void
     {
-        $this->cachedClientIdResolver = new CachedClientIdResolver(
-            new ArrayAdapter(),
-            $this->clientIdResolver
-        );
-
         $this->clientIdResolver->expects($this->once())
             ->method('hasSapiAccess')
             ->willReturn(true);
