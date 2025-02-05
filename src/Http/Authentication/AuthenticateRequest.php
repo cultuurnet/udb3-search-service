@@ -165,17 +165,12 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
-        $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($this->consumerResolver->getDefaultQuery($apiKey))) {
-            $defaultQuery = $this->consumerResolver->getDefaultQuery($apiKey);
-        }
-
         $this->container
             ->extend(Consumer::class)
             ->setConcrete(
                 new Consumer(
                     $apiKey,
-                    $defaultQuery
+                    $this->defaultQueryRepository->getByApiKey($apiKey) ?? $this->consumerResolver->getDefaultQuery($apiKey)
                 )
             );
 
