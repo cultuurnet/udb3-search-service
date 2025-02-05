@@ -21,7 +21,7 @@ final class CachedClientIdResolverTest extends TestCase
     {
         $cache = new ArrayAdapter();
         $cache->get(
-            'my_cached_client_id',
+            'client_id_my_cached_client_id_sapi_access',
             function () {
                 return true;
             }
