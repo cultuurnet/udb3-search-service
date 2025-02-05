@@ -203,7 +203,7 @@ final class AuthenticateRequestTest extends TestCase
             ->with('my_active_api_key')
             ->willReturn('ACTIVE');
 
-        $this->consumerResolver->expects($this->exactly(2))
+        $this->consumerResolver->expects($this->once())
             ->method('getDefaultQuery')
             ->with('my_active_api_key')
             ->willReturn('my_default_search_query');
