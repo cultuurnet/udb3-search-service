@@ -63,8 +63,7 @@ final class CachedConsumerResolverTest extends TestCase
     {
         $this->consumerResolver->expects($this->never())
             ->method('getDefaultQuery')
-            ->with('my_cached_api_key')
-            ->willReturn('ACTIVE');
+            ->with('my_cached_api_key');
 
         $this->assertEquals(
             'my_cached_query',
