@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use CultureFeed_Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
@@ -16,8 +16,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
-use Exception;
-use ICultureFeed;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
 use Noodlehaus\Config;
@@ -36,7 +34,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private Container $container;
 
-    private ICultureFeed $cultureFeed;
+    private ConsumerResolver $consumerResolver;
 
     private ClientIdResolver $clientIdResolver;
 
@@ -46,13 +44,13 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     public function __construct(
         Container $container,
-        ICultureFeed $cultureFeed,
+        ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
-        $this->cultureFeed = $cultureFeed;
+        $this->consumerResolver = $consumerResolver;
         $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
@@ -153,24 +151,18 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        try {
-            /** @var CultureFeed_Consumer $cultureFeedConsumer */
-            $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
-        } catch (Exception $exception) {
+        $status = $this->consumerResolver->getStatus($apiKey);
+
+        if ($status === 'INVALID') {
             return (new InvalidApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'BLOCKED') {
+        if ($status === 'BLOCKED') {
             return (new BlockedApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'REMOVED') {
+        if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
-        }
-
-        $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
-            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
         }
 
         $this->container
@@ -178,7 +170,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             ->setConcrete(
                 new Consumer(
                     $apiKey,
-                    $defaultQuery
+                    $this->defaultQueryRepository->getByApiKey($apiKey) ?? $this->consumerResolver->getDefaultQuery($apiKey)
                 )
             );
 

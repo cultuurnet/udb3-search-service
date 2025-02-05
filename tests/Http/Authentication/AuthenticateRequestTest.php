@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
-use CultureFeed_Consumer;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
@@ -20,10 +20,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
-use Exception;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\Psr7\Response;
-use ICultureFeed;
 use League\Container\Container;
 use League\Container\Definition\DefinitionInterface;
 use Noodlehaus\Config;
@@ -45,9 +41,9 @@ final class AuthenticateRequestTest extends TestCase
     private $container;
 
     /**
-     * @var ICultureFeed&MockObject
+     * @var ConsumerResolver&MockObject
      */
-    private $cultureFeed;
+    private $consumerResolver;
 
     /**
      * @var ClientIdResolver&MockObject
@@ -65,7 +61,7 @@ final class AuthenticateRequestTest extends TestCase
             ->method('get')
             ->willReturn(new Config([]));
 
-        $this->cultureFeed = $this->createMock(ICultureFeed::class);
+        $this->consumerResolver = $this->createMock(ConsumerResolver::class);
 
         $this->pemFile = FileReader::read(__DIR__ . '/samples/public.pem');
 
@@ -91,11 +87,11 @@ final class AuthenticateRequestTest extends TestCase
 
         $this->authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
-                    ['my_active_api_key' => 'my_default_search_query'],
+                    ['my_active_api_key_with_config_query' => 'my_default_search_query'],
             ]),
             $this->pemFile
         );
@@ -141,10 +137,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_invalid_api_keys(): void
     {
-        $this->cultureFeed->expects($this->once())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_invalid_api_key', true)
-            ->willThrowException(new Exception('Invalid API key'));
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_invalid_api_key')
+            ->willReturn('INVALID');
 
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
@@ -161,13 +157,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_blocked_api_keys(): void
     {
-        $cultureFeedConsumer = new CultureFeed_Consumer();
-        $cultureFeedConsumer->status = 'BLOCKED';
-
-        $this->cultureFeed->expects($this->once())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_blocked_api_key', true)
-            ->willReturn($cultureFeedConsumer);
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_blocked_api_key')
+            ->willReturn('BLOCKED');
 
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
@@ -184,13 +177,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_removed_api_keys(): void
     {
-        $cultureFeedConsumer = new CultureFeed_Consumer();
-        $cultureFeedConsumer->status = 'REMOVED';
-
-        $this->cultureFeed->expects($this->once())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_removed_api_key', true)
-            ->willReturn($cultureFeedConsumer);
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_removed_api_key')
+            ->willReturn('REMOVED');
 
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())
@@ -208,14 +198,15 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_api_key(ServerRequestInterface $request): void
     {
-        $cultureFeedConsumer = new CultureFeed_Consumer();
-        $cultureFeedConsumer->status = 'ACTIVE';
-        $cultureFeedConsumer->searchPrefixSapi3 = 'my_default_search_query';
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_active_api_key')
+            ->willReturn('ACTIVE');
 
-        $this->cultureFeed->expects($this->once())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_active_api_key', true)
-            ->willReturn($cultureFeedConsumer);
+        $this->consumerResolver->expects($this->once())
+            ->method('getDefaultQuery')
+            ->with('my_active_api_key')
+            ->willReturn('my_default_search_query');
 
         $response = (new ResponseFactory())->createResponse(200);
 
@@ -246,13 +237,24 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_api_key_and_default_query_config(ServerRequestInterface $request): void
     {
-        $cultureFeedConsumer = new CultureFeed_Consumer();
-        $cultureFeedConsumer->status = 'ACTIVE';
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([
+                'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
+            ]),
+            $this->pemFile
+        );
 
-        $this->cultureFeed->expects($this->once())
-            ->method('getServiceConsumerByApiKey')
-            ->with('my_active_api_key', true)
-            ->willReturn($cultureFeedConsumer);
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_active_api_key')
+            ->willReturn('ACTIVE');
+
+        $this->consumerResolver->expects($this->never())
+            ->method('getDefaultQuery')
+            ->with('my_active_api_key');
 
         $response = (new ResponseFactory())->createResponse(200);
 
@@ -272,7 +274,7 @@ final class AuthenticateRequestTest extends TestCase
             ->with(Consumer::class)
             ->willReturn($definitionInterface);
 
-        $actualResponse = $this->authenticateRequest->process($request, $requestHandler);
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
     }
@@ -293,6 +295,22 @@ final class AuthenticateRequestTest extends TestCase
         ];
     }
 
+    public function validApiKeyWithConfigQueryRequestsProvider(): array
+    {
+        return [
+            'api key header' => [
+                (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withHeader('x-api-key', 'my_active_api_key_with_config_query'),
+            ],
+            'api key param' => [
+                (new ServerRequestFactory())
+                    ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                    ->withQueryParams(['apiKey' => 'my_active_api_key_with_config_query']),
+            ],
+        ];
+    }
+
     /**
      * @test
      */
@@ -300,7 +318,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -334,7 +352,7 @@ final class AuthenticateRequestTest extends TestCase
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             $this->pemFile
@@ -374,21 +392,9 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_client_id_and_default_query(ServerRequestInterface $request): void
     {
-        $mockHandler = new MockHandler([
-            new Response(200, [], Json::encode([
-                0 => [
-                    'defaultClientScopes' => [
-                        'publiq-api-ups-scope',
-                        'publiq-api-entry-scope',
-                        'publiq-api-sapi-scope',
-                    ],
-                ],
-            ])),
-        ]);
-
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
-            $this->cultureFeed,
+            $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
