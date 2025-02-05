@@ -22,14 +22,14 @@ final class CachedClientIdResolver implements ClientIdResolver
     public function hasSapiAccess(string $clientId): bool
     {
         return $this->cache->get(
-            $this->addSuffix($clientId),
+            $this->createCacheKey($clientId),
             function () use ($clientId) {
                 return $this->clientIdAccess->hasSapiAccess($clientId);
             }
         );
     }
 
-    private function addSuffix(string $clientId): string
+    private function createCacheKey(string $clientId): string
     {
         return 'client_id_' . $clientId . '_sapi_access';
     }
