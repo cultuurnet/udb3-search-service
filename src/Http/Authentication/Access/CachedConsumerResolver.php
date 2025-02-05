@@ -23,7 +23,7 @@ final class CachedConsumerResolver implements ConsumerResolver
     public function getStatus(string $apiKey): string
     {
         return $this->cache->get(
-            $apiKey,
+            $this->addSuffix($apiKey, 'status'),
             function () use ($apiKey) {
                 return $this->consumerResolver->getStatus($apiKey);
             }
@@ -33,10 +33,15 @@ final class CachedConsumerResolver implements ConsumerResolver
     public function getDefaultQuery(string $apiKey): ?string
     {
         return $this->cache->get(
-            $apiKey,
+            $this->addSuffix($apiKey, 'query'),
             function () use ($apiKey) {
                 return $this->consumerResolver->getDefaultQuery($apiKey);
             }
         );
+    }
+
+    private function addSuffix(string $apiKey, string $property): string
+    {
+        return 'consumer_id_' . $apiKey . '_' . $property;
     }
 }

@@ -21,9 +21,15 @@ final class CachedConsumerResolverTest extends TestCase
     {
         $cache = new ArrayAdapter();
         $cache->get(
-            'my_cached_api_key',
+            'consumer_id_my_cached_api_key_status',
             function () {
                 return 'ACTIVE';
+            }
+        );
+        $cache->get(
+            'consumer_id_my_cached_api_key_query',
+            function () {
+                return 'my_cached_query';
             }
         );
         $this->consumerResolver = $this->createMock(ConsumerResolver::class);
@@ -37,7 +43,7 @@ final class CachedConsumerResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_will_use_cached_values(): void
+    public function it_will_get_the_cached_status_value(): void
     {
         $this->consumerResolver->expects($this->never())
             ->method('getStatus')
@@ -53,7 +59,23 @@ final class CachedConsumerResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_uncached_values_via_the_decoratee(): void
+    public function it_will_get_the_cached_query_value(): void
+    {
+        $this->consumerResolver->expects($this->never())
+            ->method('getDefaultQuery')
+            ->with('my_cached_api_key')
+            ->willReturn('ACTIVE');
+
+        $this->assertEquals(
+            'my_cached_query',
+            $this->cachedConsumerResolver->getDefaultQuery('my_cached_api_key')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_uncached_statuses_via_the_decoratee(): void
     {
         $this->consumerResolver->expects($this->once())
             ->method('getStatus')
@@ -63,6 +85,22 @@ final class CachedConsumerResolverTest extends TestCase
         $this->assertEquals(
             'ACTIVE',
             $this->cachedConsumerResolver->getStatus('my_valid_api_key')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_uncached_queries_via_the_decoratee(): void
+    {
+        $this->consumerResolver->expects($this->once())
+            ->method('getDefaultQuery')
+            ->with('my_valid_api_key')
+            ->willReturn('my_default_query');
+
+        $this->assertEquals(
+            'my_default_query',
+            $this->cachedConsumerResolver->getDefaultQuery('my_valid_api_key')
         );
     }
 }
