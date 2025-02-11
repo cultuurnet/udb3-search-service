@@ -42,7 +42,6 @@
         "tuupola/cors-middleware": "^1.1"
     },
     "require-dev": {
-        "icanhazstring/composer-unused": "^0.8.11",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.6",
         "publiq/php-cs-fixer-config": "^2.0",
