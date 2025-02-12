@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Search\Cache\CacheFactory;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
@@ -27,7 +28,6 @@ use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
 use Slim\Psr7\Response;
-use Symfony\Contracts\Cache\CacheInterface;
 use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
@@ -59,7 +59,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $cacheEnabled = $this->parameter('cache.enabled');
                     if ($cacheEnabled) {
                         $cachedConsumerResolver = new CachedConsumerResolver(
-                            $this->get(CacheInterface::class),
+                            CacheFactory::create(
+                                $this->getContainer(),
+                                'permission',
+                                86400 // one day
+                            ),
                             $consumerResolver
                         );
                     }
@@ -71,7 +75,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     if ($cacheEnabled) {
                         $cachedClientIdResolver = new CachedClientIdResolver(
-                            $this->get(CacheInterface::class),
+                            CacheFactory::create(
+                                $this->getContainer(),
+                                'permission',
+                                86400 // one day
+                            ),
                             $clientIdResolver
                         );
                     }
