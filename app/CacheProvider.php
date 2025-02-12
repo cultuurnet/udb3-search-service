@@ -23,7 +23,7 @@ final class CacheProvider extends BaseServiceProvider
                 new Client(
                     $this->parameter('cache.redis')
                 ),
-                'permission' . '_',
+                'permission',
                 86400,
             ),
         );
