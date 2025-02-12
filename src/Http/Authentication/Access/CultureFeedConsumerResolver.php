@@ -30,8 +30,7 @@ final class CultureFeedConsumerResolver implements ConsumerResolver
             /** @var CultureFeed_Consumer $cultureFeedConsumer */
             $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
         } catch (Exception $exception) {
-            $this->logger->error($exception->getMessage());
-            return 'INVALID';
+            throw new InvalidConsumer();
         }
         return $cultureFeedConsumer->status;
     }

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
@@ -151,9 +152,9 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        $status = $this->consumerResolver->getStatus($apiKey);
-
-        if ($status === 'INVALID') {
+        try {
+            $status = $this->consumerResolver->getStatus($apiKey);
+        } catch (InvalidConsumer $invalidConsumer) {
             return (new InvalidApiKey($apiKey))->toResponse();
         }
 

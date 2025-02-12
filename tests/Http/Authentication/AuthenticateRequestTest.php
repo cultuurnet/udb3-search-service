@@ -8,6 +8,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
@@ -140,7 +141,7 @@ final class AuthenticateRequestTest extends TestCase
         $this->consumerResolver->expects($this->once())
             ->method('getStatus')
             ->with('my_invalid_api_key')
-            ->willReturn('INVALID');
+            ->willThrowException(new InvalidConsumer());
 
         $response = $this->authenticateRequest->process(
             (new ServerRequestFactory())

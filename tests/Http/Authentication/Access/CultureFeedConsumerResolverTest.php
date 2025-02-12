@@ -34,11 +34,9 @@ final class CultureFeedConsumerResolverTest extends TestCase
             ->method('getServiceConsumerByApiKey')
             ->with('my_invalid_api_key', true)
             ->willThrowException(new Exception('Invalid API key'));
+        $this->expectException(InvalidConsumer::class);
 
-        $this->assertEquals(
-            'INVALID',
-            $this->consumerResolver->getStatus('my_invalid_api_key')
-        );
+        $this->consumerResolver->getStatus('my_invalid_api_key');
     }
 
     /**
