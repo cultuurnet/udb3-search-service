@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenFileRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\CacheBasedManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
@@ -165,7 +165,13 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $this->parameter('keycloak.client_secret'),
                 $this->parameter('keycloak.domain') . '/api/v2/'
             ),
-            new ManagementTokenFileRepository(__DIR__ . '/../cache/keycloak-management-token-cache.json'),
+            new CacheBasedManagementTokenRepository(
+                CacheFactory::create(
+                    $this->getContainer(),
+                    '',
+                    -1 // cache does not expire
+                )
+            )
         );
     }
 
