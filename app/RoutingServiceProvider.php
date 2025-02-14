@@ -169,7 +169,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
             new CacheBasedManagementTokenRepository(
                 CacheFactory::create(
                     $this->container->get(PredisClient::class),
-                    '',
+                    'management-token',
                     -1 // cache does not expire
                 )
             )

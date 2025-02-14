@@ -10,7 +10,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 
 final class CacheBasedManagementTokenRepository implements ManagementTokenRepository
 {
-    private const KEY = 'keycloak_management_token';
+    private const KEY = 'keycloak';
     private CacheInterface $cache;
 
     public function __construct(CacheInterface $cache)
