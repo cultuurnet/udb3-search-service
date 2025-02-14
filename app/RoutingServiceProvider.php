@@ -27,6 +27,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
+use Predis\Client as PredisClient;
 use Slim\Psr7\Response;
 use Tuupola\Middleware\CorsMiddleware;
 
@@ -60,7 +61,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     if ($cacheEnabled) {
                         $cachedConsumerResolver = new CachedConsumerResolver(
                             CacheFactory::create(
-                                $this->getContainer(),
+                                $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
@@ -76,7 +77,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     if ($cacheEnabled) {
                         $cachedClientIdResolver = new CachedClientIdResolver(
                             CacheFactory::create(
-                                $this->getContainer(),
+                                $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
@@ -167,7 +168,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
             ),
             new CacheBasedManagementTokenRepository(
                 CacheFactory::create(
-                    $this->getContainer(),
+                    $this->container->get(PredisClient::class),
                     '',
                     -1 // cache does not expire
                 )
