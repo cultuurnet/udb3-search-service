@@ -58,37 +58,31 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                     $consumerResolver = new CultureFeedConsumerResolver(new CultureFeed($oauthClient));
 
-                    $cachedConsumerResolver = new CachedConsumerResolver(
-                        CacheFactory::create(
-                                $this->container->get(PredisClient::class),
-                                'permission',
-                                86400 // one day
-                            ),
-                        $consumerResolver
-                    );
-
-
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdResolver = new MetadataClientIdResolver(
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
 
-                    $cachedClientIdResolver = new CachedClientIdResolver(
-                        CacheFactory::create(
+                    $pemFile = $this->parameter('keycloak.pem_file');
+                    $authenticateRequest = new AuthenticateRequest(
+                        $this->getLeagueContainer(),
+                        new CachedConsumerResolver(
+                            CacheFactory::create(
                                 $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
-                        $clientIdResolver
-                    );
-
-
-                    $pemFile = $this->parameter('keycloak.pem_file');
-                    $authenticateRequest = new AuthenticateRequest(
-                        $this->getLeagueContainer(),
-                        $cacheEnabled ? $cachedConsumerResolver : $consumerResolver,
-                        $cacheEnabled ? $cachedClientIdResolver : $clientIdResolver,
+                            $consumerResolver
+                        ),
+                        new CachedClientIdResolver(
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
+                            $clientIdResolver
+                        ),
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
