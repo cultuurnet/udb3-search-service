@@ -57,33 +57,32 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
                     $consumerResolver = new CultureFeedConsumerResolver(new CultureFeed($oauthClient));
-                    $cacheEnabled = $this->parameter('cache.enabled');
-                    if ($cacheEnabled) {
-                        $cachedConsumerResolver = new CachedConsumerResolver(
-                            CacheFactory::create(
+
+                    $cachedConsumerResolver = new CachedConsumerResolver(
+                        CacheFactory::create(
                                 $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
-                            $consumerResolver
-                        );
-                    }
+                        $consumerResolver
+                    );
+
 
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdResolver = new MetadataClientIdResolver(
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
-                    if ($cacheEnabled) {
-                        $cachedClientIdResolver = new CachedClientIdResolver(
-                            CacheFactory::create(
+
+                    $cachedClientIdResolver = new CachedClientIdResolver(
+                        CacheFactory::create(
                                 $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
-                            $clientIdResolver
-                        );
-                    }
+                        $clientIdResolver
+                    );
+
 
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
