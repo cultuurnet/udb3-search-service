@@ -40,9 +40,7 @@ final class ContainerFactory
         $container->addServiceProvider(EventIndexationServiceProvider::class);
         $container->addServiceProvider(PlaceIndexationServiceProvider::class);
         $container->addServiceProvider(CommandServiceProvider::class);
-        if ($container->get(Config::class)->get('cache.enabled') ?? false) {
-            $container->addServiceProvider(CacheProvider::class);
-        }
+        $container->addServiceProvider(CacheProvider::class);
         return $container;
     }
 
@@ -55,9 +53,7 @@ final class ContainerFactory
         $container->addServiceProvider(EventSearchServiceProvider::class);
         $container->addServiceProvider(PlaceSearchServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
-        if ($container->get(Config::class)->get('cache.enabled') ?? false) {
-            $container->addServiceProvider(CacheProvider::class);
-        }
+        $container->addServiceProvider(CacheProvider::class);
         return $container;
     }
 
