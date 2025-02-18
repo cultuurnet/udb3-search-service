@@ -57,39 +57,32 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
                     $consumerResolver = new CultureFeedConsumerResolver(new CultureFeed($oauthClient));
-                    $cacheEnabled = $this->parameter('cache.enabled');
-                    if ($cacheEnabled) {
-                        $cachedConsumerResolver = new CachedConsumerResolver(
-                            CacheFactory::create(
-                                $this->container->get(PredisClient::class),
-                                'permission',
-                                86400 // one day
-                            ),
-                            $consumerResolver
-                        );
-                    }
 
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdResolver = new MetadataClientIdResolver(
                         $this->getManagementTokenProvider(),
                         $metadataGenerator
                     );
-                    if ($cacheEnabled) {
-                        $cachedClientIdResolver = new CachedClientIdResolver(
+
+                    $pemFile = $this->parameter('keycloak.pem_file');
+                    $authenticateRequest = new AuthenticateRequest(
+                        $this->getLeagueContainer(),
+                        new CachedConsumerResolver(
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
+                            $consumerResolver
+                        ),
+                        new CachedClientIdResolver(
                             CacheFactory::create(
                                 $this->container->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
                             $clientIdResolver
-                        );
-                    }
-
-                    $pemFile = $this->parameter('keycloak.pem_file');
-                    $authenticateRequest = new AuthenticateRequest(
-                        $this->getLeagueContainer(),
-                        $cacheEnabled ? $cachedConsumerResolver : $consumerResolver,
-                        $cacheEnabled ? $cachedClientIdResolver : $clientIdResolver,
+                        ),
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
