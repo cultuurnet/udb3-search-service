@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService;
 
 use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Search\Cache\CacheFactory;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
@@ -15,7 +16,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
 use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
-use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenFileRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\CacheBasedManagementTokenRepository;
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
@@ -26,8 +27,8 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
+use Predis\Client as PredisClient;
 use Slim\Psr7\Response;
-use Symfony\Contracts\Cache\CacheInterface;
 use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
@@ -59,7 +60,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $cacheEnabled = $this->parameter('cache.enabled');
                     if ($cacheEnabled) {
                         $cachedConsumerResolver = new CachedConsumerResolver(
-                            $this->get(CacheInterface::class),
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
                             $consumerResolver
                         );
                     }
@@ -71,7 +76,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     if ($cacheEnabled) {
                         $cachedClientIdResolver = new CachedClientIdResolver(
-                            $this->get(CacheInterface::class),
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
                             $clientIdResolver
                         );
                     }
@@ -157,7 +166,13 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $this->parameter('keycloak.client_secret'),
                 $this->parameter('keycloak.domain') . '/api/v2/'
             ),
-            new ManagementTokenFileRepository(__DIR__ . '/../cache/keycloak-management-token-cache.json'),
+            new CacheBasedManagementTokenRepository(
+                CacheFactory::create(
+                    $this->container->get(PredisClient::class),
+                    'management-token',
+                    -1 // cache does not expire
+                )
+            )
         );
     }
 
