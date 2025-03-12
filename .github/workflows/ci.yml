@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ['8.1', '8.4']
+                php-versions: ['8.1', '8.2']
         name: PHP ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -46,7 +46,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
           matrix:
-            php-versions: ['8.1', '8.4']
+            php-versions: ['8.1', '8.2']
         name: Code style (PHP ${{ matrix.php-versions }})
         steps:
             - name: 📤 Checkout project
@@ -78,7 +78,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
           matrix:
-            php-versions: ['8.1', '8.4']
+            php-versions: ['8.1', '8.2']
         name: Static analysis (PHP ${{ matrix.php-versions }})
         steps:
             - name: 📤 Checkout project
