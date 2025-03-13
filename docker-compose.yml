@@ -7,7 +7,7 @@ services:
       - ../geojson-data:/var/www/geojson-data:cached
     working_dir: /var/www/html
     ports:
-      - "9000:80"
+      - "${FORWARD_PHP_PORT:-9000}:80"
     networks:
       uitdatabank-search:
         aliases:
