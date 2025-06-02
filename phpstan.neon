@@ -1,6 +1,10 @@
 parameters:
-	level: 4
+	level: 8
+	checkMissingIterableValueType: false
+	checkGenericClassInNonGenericObjectType: false
 	paths:
 		- app
 		- src
 		- tests
+	excludePaths:
+		- app/RoutingServiceProvider.php

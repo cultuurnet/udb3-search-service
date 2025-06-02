@@ -15,6 +15,11 @@ final class InMemoryDefaultQueryRepository implements DefaultQueryRepository
 
     public function getByApiKey(string $apiKey): ?string
     {
-        return $this->defaultQueryConfig[$apiKey] ?? null;
+        return $this->defaultQueryConfig['api_keys'][$apiKey] ?? null;
+    }
+
+    public function getByClientId(string $clientId): ?string
+    {
+        return $this->defaultQueryConfig['client_ids'][$clientId] ?? null;
     }
 }

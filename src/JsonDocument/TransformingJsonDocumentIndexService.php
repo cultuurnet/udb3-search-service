@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use Exception;
+use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
+use Exception;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 final class TransformingJsonDocumentIndexService implements

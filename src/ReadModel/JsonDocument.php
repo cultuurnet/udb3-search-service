@@ -35,6 +35,9 @@ final class JsonDocument implements Identifiable
         return $this->body;
     }
 
+    /**
+     * @param object|array $body
+     */
     public function withBody($body): JsonDocument
     {
         return new self($this->id, Json::encode($body));

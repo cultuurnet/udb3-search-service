@@ -8,17 +8,11 @@ use Elasticsearch\Client;
 
 abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    protected $indexName;
+    protected string $indexName;
 
-    /**
-     * @var string
-     */
-    protected $documentType;
+    protected string $documentType;
 
-    public function __construct(Client $client, $indexName, $documentType)
+    public function __construct(Client $client, string $indexName, string $documentType)
     {
         parent::__construct($client);
         $this->indexName = $indexName;

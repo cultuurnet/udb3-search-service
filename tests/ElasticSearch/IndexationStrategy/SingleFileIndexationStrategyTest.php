@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 final class SingleFileIndexationStrategyTest extends TestCase
 {
     /**
-     * @var Client|MockObject
+     * @var Client&MockObject
      */
     private $client;
 
@@ -24,7 +24,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
     private string $documentType;
 
     /**
-     * @var LoggerInterface|MockObject
+     * @var LoggerInterface&MockObject
      */
     private $logger;
 

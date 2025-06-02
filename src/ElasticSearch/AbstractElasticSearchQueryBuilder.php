@@ -276,6 +276,10 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         return $c;
     }
 
+    /**
+     * @param string|int|float|null $from
+     * @param string|int|float|null $to
+     */
     protected function createRangeQuery(string $fieldName, $from = null, $to = null): ?RangeQuery
     {
         $parameters = array_filter(

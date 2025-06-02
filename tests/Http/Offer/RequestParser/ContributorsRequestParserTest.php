@@ -15,7 +15,7 @@ final class ContributorsRequestParserTest extends TestCase
     private ContributorsRequestParser $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|MockObject
+     * @var OfferQueryBuilderInterface&MockObject
      */
     private $queryBuilder;
 

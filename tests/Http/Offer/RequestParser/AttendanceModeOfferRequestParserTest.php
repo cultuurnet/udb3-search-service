@@ -17,7 +17,7 @@ final class AttendanceModeOfferRequestParserTest extends TestCase
     private AttendanceModeOfferRequestParser $parser;
 
     /**
-     * @var OfferQueryBuilderInterface|MockObject
+     * @var OfferQueryBuilderInterface&MockObject
      */
     private $queryBuilder;
 

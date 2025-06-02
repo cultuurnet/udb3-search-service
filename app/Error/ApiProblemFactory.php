@@ -45,8 +45,9 @@ final class ApiProblemFactory
             $message = $errorData['error']['root_cause'][0]['reason'];
 
             if (strpos($message, 'Failed to parse query') !== false ||
-                strpos($message, 'failed to create query') !== false
-            ) {
+                strpos($message, 'failed to create query') !== false ||
+                strpos($message, 'unknown field [nested], parser not found') !== false
+             ) {
                 $exception = new UnsupportedParameterValue(
                     'Could not parse query given "q" parameter as a valid Lucene query.'
                 );

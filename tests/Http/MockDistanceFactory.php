@@ -8,10 +8,7 @@ use CultuurNet\UDB3\Search\DistanceFactory;
 
 final class MockDistanceFactory implements DistanceFactory
 {
-    /**
-     * @param string $distance
-     */
-    public function fromString($distance): MockDistance
+    public function fromString(string $distance): MockDistance
     {
         return new MockDistance($distance);
     }

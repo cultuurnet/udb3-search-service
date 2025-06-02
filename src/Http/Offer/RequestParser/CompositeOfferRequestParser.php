@@ -12,7 +12,7 @@ final class CompositeOfferRequestParser implements OfferRequestParserInterface
     /**
      * @var OfferRequestParserInterface[]
      */
-    private $parsers = [];
+    private array $parsers = [];
 
     public function __construct()
     {

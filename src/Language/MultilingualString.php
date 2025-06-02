@@ -12,11 +12,7 @@ final class MultilingualString
 
     private string $originalString;
 
-    /**
-     * @var string[]
-     *   Associative array with languages as keys and translations as values.
-     */
-    private $translations;
+    private array $translations;
 
     public function __construct(Language $originalLanguage, string $originalString)
     {
@@ -103,7 +99,7 @@ final class MultilingualString
         $languages = array_keys($data);
 
         if (!$originalLanguage || !isset($data[$originalLanguage])) {
-            $originalLanguage = reset($languages);
+            $originalLanguage = (string) reset($languages);
         }
 
         $string = new MultilingualString(new Language($originalLanguage), $data[$originalLanguage]);

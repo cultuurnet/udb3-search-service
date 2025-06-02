@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\JsonDocument;
 
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\Token;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\TokenGenerator;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use GuzzleHttp\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -14,22 +14,21 @@ use Psr\Log\LoggerInterface;
 final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 {
     private ClientInterface $httpClient;
+    private LoggerInterface $logger;
+    private TokenGenerator $tokenGenerator;
 
     private bool $includeMetadata = false;
-
     private bool $embedContributors = false;
+    private ?Token $loginToken = null;
 
-    private LoggerInterface $logger;
-
-    private Auth0Client $auth0Client;
-
-    private ?Auth0Token $auth0Token = null;
-
-    public function __construct(ClientInterface $httpClient, LoggerInterface $logger, Auth0Client $auth0Client)
-    {
+    public function __construct(
+        ClientInterface $httpClient,
+        LoggerInterface $logger,
+        TokenGenerator $tokenGenerator
+    ) {
         $this->httpClient = $httpClient;
         $this->logger = $logger;
-        $this->auth0Client = $auth0Client;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function withIncludeMetadata(): self
@@ -48,8 +47,8 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     public function fetch(string $documentId, string $documentIri): ?JsonDocument
     {
-        if ($this->auth0Token === null) {
-            $this->auth0Token = $this->auth0Client->getToken();
+        if ($this->loginToken === null) {
+            $this->loginToken = $this->tokenGenerator->loginToken();
         }
 
         $response = $this->getResponse($documentIri);
@@ -64,7 +63,8 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
                 [
                     'id' => $documentId,
                     'url' => $documentIri,
-                    'response' => $response,
+                    'status_code' => $response->getStatusCode(),
+                    'status_message' => $response->getReasonPhrase(),
                 ]
             );
 
@@ -107,18 +107,18 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     private function refreshToken(): void
     {
-        $this->auth0Token = $this->auth0Client->getToken();
+        $this->loginToken = $this->tokenGenerator->loginToken();
     }
 
     private function getHeader(): array
     {
-        if ($this->auth0Token === null) {
+        if ($this->loginToken === null) {
             return [];
         }
 
         return [
             'headers' => [
-                'Authorization' => 'Bearer ' . $this->auth0Token->getToken(),
+                'Authorization' => 'Bearer ' . $this->loginToken->getToken(),
             ],
         ];
     }

@@ -8,21 +8,11 @@ use Broadway\Serializer\Serializable;
 
 final class DummyEvent implements Serializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
-    /**
-     * @var string
-     */
-    private $content;
+    private string $content;
 
-    /**
-     * @param string $id
-     * @param string $content
-     */
-    public function __construct($id, $content)
+    public function __construct(string $id, string $content)
     {
         $this->id = $id;
         $this->content = $content;

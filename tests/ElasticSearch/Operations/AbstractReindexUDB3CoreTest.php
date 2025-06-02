@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
+use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
@@ -18,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
     /**
-     * @var EventBus|MockObject
+     * @var EventBus&MockObject
      */
     private $eventBus;
 
@@ -56,7 +57,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
     }
 
     /**
-     * @return EventBus|MockObject
+     * @return EventBus&MockObject
      */
     public function getEventBus()
     {
@@ -411,7 +412,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 
     private function getJsonDocumentAsElasticSearchResults(string $filePath): array
     {
-        $contents = file_get_contents($filePath);
+        $contents = FileReader::read($filePath);
         return Json::decodeAssociatively($contents);
     }
 }

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 final class EventSearchProjectorTest extends TestCase
 {
     /**
-     * @var JsonDocumentIndexServiceInterface|MockObject
+     * @var JsonDocumentIndexServiceInterface&MockObject
      */
     private $indexService;
 

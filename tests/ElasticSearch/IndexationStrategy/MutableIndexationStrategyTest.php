@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 final class MutableIndexationStrategyTest extends TestCase
 {
     /**
-     * @var IndexationStrategy|MockObject
+     * @var IndexationStrategy&MockObject
      */
     private $mockStrategy1;
 
     /**
-     * @var IndexationStrategy|MockObject
+     * @var IndexationStrategy&MockObject
      */
     private $mockStrategy2;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
+use CultuurNet\UDB3\Search\DateTimeFactory;
 use DateTime;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
@@ -42,7 +43,7 @@ final class AvailabilityTransformer implements JsonTransformer
             // We could also have a half-open availableRange (without end date), but that would not
             // be consistent with existing permanent offers that do have an availableTo set in 2100.
             // We also need to set it to 2100-01-01 instead of leaving it open so we can sort on it.
-            $availableTo = DateTimeImmutable::createFromFormat(DateTime::ATOM, '2100-01-01T00:00:00+00:00');
+            $availableTo = DateTimeFactory::fromAtom('2100-01-01T00:00:00+00:00');
         }
 
         if ($availableFrom > $availableTo) {

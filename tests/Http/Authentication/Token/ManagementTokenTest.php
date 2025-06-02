@@ -2,25 +2,24 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\Http\Authentication;
+namespace CultuurNet\UDB3\Search\Http\Authentication\Token;
 
 use DateInterval;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class Auth0TokenTest extends TestCase
+final class ManagementTokenTest extends TestCase
 {
     private DateTimeImmutable $issuedAt;
 
-
-    private Auth0Token $auth0Token;
+    private Token $managementToken;
 
     protected function setUp(): void
     {
         $this->issuedAt = new DateTimeImmutable();
 
-        $this->auth0Token = new Auth0Token(
-            'my_auth0_token',
+        $this->managementToken = new Token(
+            'my_management_token',
             $this->issuedAt,
             10
         );
@@ -31,9 +30,9 @@ final class Auth0TokenTest extends TestCase
      */
     public function it_manages_token_properties(): void
     {
-        $this->assertEquals('my_auth0_token', $this->auth0Token->getToken());
-        $this->assertEquals($this->issuedAt, $this->auth0Token->getIssuedAt());
-        $this->assertEquals(10, $this->auth0Token->getExpiresIn());
+        $this->assertEquals('my_management_token', $this->managementToken->getToken());
+        $this->assertEquals($this->issuedAt, $this->managementToken->getIssuedAt());
+        $this->assertEquals(10, $this->managementToken->getExpiresIn());
     }
 
     /**
@@ -43,7 +42,7 @@ final class Auth0TokenTest extends TestCase
     {
         $this->assertEquals(
             $this->issuedAt->add(new DateInterval('PT10S')),
-            $this->auth0Token->getExpiresAt()
+            $this->managementToken->getExpiresAt()
         );
     }
 }

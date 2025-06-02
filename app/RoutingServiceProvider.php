@@ -4,13 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
-use CultureFeed_DefaultOAuthClient;
 use CultureFeed;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0Client;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenFileRepository;
-use CultuurNet\UDB3\Search\Http\Authentication\Auth0TokenProvider;
+use CultureFeed_DefaultOAuthClient;
+use CultuurNet\UDB3\Search\Cache\CacheFactory;
+use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\CultureFeedConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\AuthenticateRequest;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakTokenGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Keycloak\KeycloakMetadataGenerator;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\CacheBasedManagementTokenRepository;
+use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
+use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
@@ -19,6 +27,7 @@ use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Client;
 use League\Route\Router;
 use League\Route\Strategy\ApplicationStrategy;
+use Predis\Client as PredisClient;
 use Slim\Psr7\Response;
 use Tuupola\Middleware\CorsMiddleware;
 
@@ -47,34 +56,43 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
                     $oauthClient->setEndpoint($this->parameter('uitid.base_url'));
 
-                    $auth0Client = new Auth0Client(
-                        new Client([
-                            'http_errors' => false,
-                        ]),
-                        $this->parameter('auth0.domain'),
-                        $this->parameter('auth0.client_id'),
-                        $this->parameter('auth0.client_secret'),
-                        $this->parameter('auth0.domain') . '/api/v2/'
+                    $consumerResolver = new CultureFeedConsumerResolver(new CultureFeed($oauthClient));
+
+                    $metadataGenerator = $this->getMetadataGenerator();
+                    $clientIdResolver = new MetadataClientIdResolver(
+                        $this->getManagementTokenProvider(),
+                        $metadataGenerator
                     );
 
-                    $auth0TokenProvider = new Auth0TokenProvider(
-                        new Auth0TokenFileRepository(__DIR__ . '/../cache/auth0-token-cache.json'),
-                        $auth0Client
-                    );
-
+                    $pemFile = $this->parameter('keycloak.pem_file');
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
-                        new CultureFeed($oauthClient),
-                        $auth0TokenProvider,
-                        $auth0Client,
+                        new CachedConsumerResolver(
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
+                            $consumerResolver
+                        ),
+                        new CachedClientIdResolver(
+                            CacheFactory::create(
+                                $this->container->get(PredisClient::class),
+                                'permission',
+                                86400 // one day
+                            ),
+                            $clientIdResolver
+                        ),
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        file_get_contents('file://' . __DIR__ . '/../public-auth0.pem')
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
-                    $auth0Client->setLogger($logger);
+                    $metadataGenerator->setLogger($logger);
+                    $consumerResolver->setLogger($logger);
+                    $clientIdResolver->setLogger($logger);
                     $authenticateRequest->setLogger($logger);
 
                     $router->middleware($authenticateRequest);
@@ -128,6 +146,37 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                 return $router;
             }
+        );
+    }
+
+    private function getManagementTokenProvider(): ManagementTokenProvider
+    {
+        return new ManagementTokenProvider(
+            new KeycloakTokenGenerator(
+                new Client(),
+                $this->parameter('keycloak.domain'),
+                $this->parameter('keycloak.client_id'),
+                $this->parameter('keycloak.client_secret'),
+                $this->parameter('keycloak.domain') . '/api/v2/'
+            ),
+            new CacheBasedManagementTokenRepository(
+                CacheFactory::create(
+                    $this->container->get(PredisClient::class),
+                    'management-token',
+                    -1 // cache does not expire
+                )
+            )
+        );
+    }
+
+    private function getMetadataGenerator(): MetadataGenerator
+    {
+        return new KeycloakMetadataGenerator(
+            new Client([
+                'http_errors' => false,
+            ]),
+            $this->parameter('keycloak.domain'),
+            $this->parameter('keycloak.realm'),
         );
     }
 }

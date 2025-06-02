@@ -13,12 +13,12 @@ use PHPUnit\Framework\TestCase;
 final class CompositeAggregationTransformerTest extends TestCase
 {
     /**
-     * @var AggregationTransformerInterface|MockObject
+     * @var AggregationTransformerInterface&MockObject
      */
     private $transformer1;
 
     /**
-     * @var AggregationTransformerInterface|MockObject
+     * @var AggregationTransformerInterface&MockObject
      */
     private $transformer2;
 

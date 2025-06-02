@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\AMQP;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Search\FileReader;
 use InvalidArgumentException;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
@@ -15,10 +16,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DomainMessageJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var DomainMessageJSONDeserializer
-     */
-    protected $domainMessageJSONDeserializer;
+    protected DomainMessageJSONDeserializer $domainMessageJSONDeserializer;
 
     protected function setUp(): void
     {
@@ -46,7 +44,7 @@ final class DomainMessageJSONDeserializerTest extends TestCase
      */
     public function it_can_deserialize_a_domain_message(): void
     {
-        $jsonData = file_get_contents(__DIR__ . '/Dummies/domain-message-dummy-event.json');
+        $jsonData = FileReader::read(__DIR__ . '/Dummies/domain-message-dummy-event.json');
 
         $expectedDomainMessage = new DomainMessage(
             'message-id-123',

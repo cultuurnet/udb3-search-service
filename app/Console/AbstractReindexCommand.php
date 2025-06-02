@@ -15,44 +15,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 {
-    /**
-     * @var string
-     */
-    private $readIndexName;
+    private string $readIndexName;
 
-    /**
-     * @var string
-     */
-    private $scrollTtl;
+    private string $scrollTtl;
 
-    /**
-     * @var int
-     */
-    private $scrollSize;
+    private int $scrollSize;
 
-    /**
-     * @var int
-     */
-    private $bulkThreshold;
+    private int $bulkThreshold;
 
     private EventBus $eventBus;
 
     private IndexationStrategy $indexationStrategy;
 
-    /**
-     * @param string $readIndexName
-     * @param string $scrollTtl
-     * @param int $scrollSize
-     * @param int $bulkThreshold
-     */
     public function __construct(
         Client $client,
-        $readIndexName,
+        string $readIndexName,
         EventBus $eventBus,
         IndexationStrategy $indexationStrategy,
-        $scrollTtl = '1m',
-        $scrollSize = 50,
-        $bulkThreshold = 10
+        string $scrollTtl = '1m',
+        int $bulkThreshold = 10,
+        int $scrollSize = 50
     ) {
         parent::__construct($client);
         $this->readIndexName = $readIndexName;
@@ -63,14 +45,11 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         $this->indexationStrategy = $indexationStrategy;
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function runOperation(
         InputInterface $input,
         OutputInterface $output,
         AbstractReindexUDB3CoreOperation $operation
-    ) {
+    ): void {
         $indexationStrategy = $this->getIndexationStrategy();
         $logger = $this->getLogger($output);
 

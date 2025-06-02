@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Parameters;
 
+use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use DateTime;
@@ -308,8 +309,8 @@ final class ArrayParameterBagAdapterTest extends TestCase
 
     /**
      * @test
+     * @param bool|string|int $parameterValue
      * @dataProvider booleanDataProvider
-     *
      */
     public function it_should_parse_a_boolean_value_from_a_parameter(
         $parameterValue,
@@ -431,7 +432,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
     {
         $parameterBag = new ArrayParameterBagAdapter(['availableFrom' => '2017-04-26T12:20:05+01:00']);
 
-        $expected = DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T12:20:05+01:00');
+        $expected = DateTimeFactory::fromAtom('2017-04-26T12:20:05+01:00');
         $actual = $parameterBag->getDateTimeFromParameter('availableFrom');
 
         $this->assertDateTimeEquals($expected, $actual);
@@ -448,7 +449,7 @@ final class ArrayParameterBagAdapterTest extends TestCase
         $parameterBag = new ArrayParameterBagAdapter([]);
         $default = '2017-04-26T12:20:05+01:00';
 
-        $expected = DateTimeImmutable::createFromFormat(DateTime::ATOM, '2017-04-26T12:20:05+01:00');
+        $expected = DateTimeFactory::fromAtom('2017-04-26T12:20:05+01:00');
         $actual = $parameterBag->getDateTimeFromParameter('availableFrom', $default);
 
         $this->assertDateTimeEquals($expected, $actual);
@@ -513,8 +514,10 @@ final class ArrayParameterBagAdapterTest extends TestCase
     }
 
 
-    private function assertDateTimeEquals(DateTimeImmutable $expected, DateTimeImmutable $actual): void
+    private function assertDateTimeEquals(DateTimeImmutable $expected, ?DateTimeImmutable $actual): void
     {
+        $this->assertNotNull($actual);
+
         $this->assertEquals(
             $expected->format(DateTime::ATOM),
             $actual->format(DateTime::ATOM)

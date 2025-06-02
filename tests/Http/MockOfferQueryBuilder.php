@@ -139,7 +139,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withLocalTimeRangeFilter(int $localTimeFrom = null, int $localTimeTo = null): self
+    public function withLocalTimeRangeFilter(int $localTimeFrom, int $localTimeTo): self
     {
         $c = clone $this;
         $c->mockQuery['localTimeRange']['from'] = $localTimeFrom;
@@ -505,7 +505,9 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface
     {
-        return (new SortBuilders($this))->build($sorts, $sortBuilders);
+        /** @var OfferQueryBuilderInterface $builder */
+        $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
+        return $builder;
     }
 
     public function getLimit(): Limit

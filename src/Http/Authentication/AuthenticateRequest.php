@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use CultureFeed_Consumer;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
+use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
+use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidClientId;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\InvalidToken;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
-use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\BlockedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
-use Exception;
-use GuzzleHttp\Exception\ConnectException;
-use ICultureFeed;
+use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
+use Noodlehaus\Config;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
@@ -34,11 +35,9 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private Container $container;
 
-    private ICultureFeed $cultureFeed;
+    private ConsumerResolver $consumerResolver;
 
-    private Auth0TokenProvider $auth0TokenProvider;
-
-    private Auth0Client $auth0Client;
+    private ClientIdResolver $clientIdResolver;
 
     private DefaultQueryRepository $defaultQueryRepository;
 
@@ -46,16 +45,14 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     public function __construct(
         Container $container,
-        ICultureFeed $cultureFeed,
-        Auth0TokenProvider $auth0TokenProvider,
-        Auth0Client $auth0Client,
+        ConsumerResolver $consumerResolver,
+        ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
         string $pemFile
     ) {
         $this->container = $container;
-        $this->cultureFeed = $cultureFeed;
-        $this->auth0TokenProvider = $auth0TokenProvider;
-        $this->auth0Client = $auth0Client;
+        $this->consumerResolver = $consumerResolver;
+        $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->pemFile = $pemFile;
         $this->setLogger(new NullLogger());
@@ -90,28 +87,21 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private function handleClientId(ServerRequestInterface $request, RequestHandlerInterface $handler, string $clientId): ResponseInterface
     {
-        $auth0Down = false;
-        $metadata = [];
-
         try {
-            $metadata = $this->auth0Client->getMetadata($clientId, $this->auth0TokenProvider->get()->getToken());
-
-            if ($metadata === null) {
-                return (new InvalidClientId($clientId))->toResponse();
-            }
-        } catch (ConnectException $connectException) {
-            $this->logger->error('Auth0 was detected as down, this results in disabling authentication');
-            $auth0Down = true;
+            $hasSapiAccess = $this->clientIdResolver->hasSapiAccess($clientId);
+        } catch (InvalidClient $invalidClient) {
+            return (new InvalidClientId($clientId))->toResponse();
         }
 
-        // Bypass the sapi access validation when Auth0 is down to make sure sapi requests are still handled.
-        if (!$auth0Down && !$this->hasSapiAccess($metadata)) {
+        if (!$hasSapiAccess) {
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
+        $defaultQuery = $this->defaultQueryRepository->getByClientId($clientId);
+
         $this->container
             ->extend(Consumer::class)
-            ->setConcrete(new Consumer($clientId, null));
+            ->setConcrete(new Consumer($clientId, $defaultQuery));
 
         return $handler->handle($request);
     }
@@ -138,7 +128,10 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         if (!$token->validate($this->pemFile)) {
             return (new InvalidToken('Token "' . $tokenString . '" is expired or not valid for Search API.'))->toResponse();
         }
-        if (!$token->isAllowedOnSearchApi()) {
+
+        $config = $this->container->get(Config::class);
+        $jwtUrl = $config->get('jwt.domain');
+        if (!$token->isAllowedOnSearchApi($jwtUrl)) {
             return (new NotAllowedToUseSapi())->toResponse();
         }
 
@@ -160,23 +153,17 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         string $apiKey
     ): ResponseInterface {
         try {
-            /** @var CultureFeed_Consumer $cultureFeedConsumer */
-            $cultureFeedConsumer = $this->cultureFeed->getServiceConsumerByApiKey($apiKey, true);
-        } catch (Exception $exception) {
+            $status = $this->consumerResolver->getStatus($apiKey);
+        } catch (InvalidConsumer $invalidConsumer) {
             return (new InvalidApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'BLOCKED') {
+        if ($status === 'BLOCKED') {
             return (new BlockedApiKey($apiKey))->toResponse();
         }
 
-        if ($cultureFeedConsumer->status === 'REMOVED') {
+        if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
-        }
-
-        $defaultQuery = $this->defaultQueryRepository->getByApiKey($apiKey);
-        if ($defaultQuery === null && !empty($cultureFeedConsumer->searchPrefixSapi3)) {
-            $defaultQuery = $cultureFeedConsumer->searchPrefixSapi3;
         }
 
         $this->container
@@ -184,25 +171,11 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             ->setConcrete(
                 new Consumer(
                     $apiKey,
-                    $defaultQuery
+                    $this->defaultQueryRepository->getByApiKey($apiKey) ?? $this->consumerResolver->getDefaultQuery($apiKey)
                 )
             );
 
         return $handler->handle($request);
-    }
-
-    private function hasSapiAccess(array $metadata): bool
-    {
-        if (empty($metadata)) {
-            return false;
-        }
-
-        if (empty($metadata['publiq-apis'])) {
-            return false;
-        }
-
-        $apis = explode(' ', $metadata['publiq-apis']);
-        return in_array('sapi', $apis, true);
     }
 
     private function getApiKey(ServerRequestInterface $request): ?string

@@ -23,7 +23,7 @@ final class DomainMessageJSONDeserializer implements DeserializerInterface
 
     public function __construct(string $payloadClass)
     {
-        if (!in_array(Serializable::class, class_implements($payloadClass))) {
+        if (!in_array(Serializable::class, (array) class_implements($payloadClass))) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Class \'%s\' does not implement ' . Serializable::class,

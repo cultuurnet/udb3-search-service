@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 final class PagedCollectionFactoryTest extends TestCase
 {
     /**
-     * @var JsonTransformer|MockObject
+     * @var JsonTransformer&MockObject
      */
     private $transformer;
 

@@ -15,7 +15,7 @@ final class IdRequestParserTest extends TestCase
     private IdRequestParser $parser;
 
     /**
-     * @var OrganizerQueryBuilderInterface|MockObject
+     * @var OrganizerQueryBuilderInterface&MockObject
      */
     private $queryBuilder;
 

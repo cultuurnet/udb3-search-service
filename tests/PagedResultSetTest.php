@@ -67,7 +67,7 @@ final class PagedResultSetTest extends TestCase
         new PagedResultSet(
             $total,
             $perPage,
-            $results
+            $results // @phpstan-ignore-line
         );
     }
 
