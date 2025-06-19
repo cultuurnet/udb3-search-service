@@ -63,7 +63,8 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
                 [
                     'id' => $documentId,
                     'url' => $documentIri,
-                    'response' => $response,
+                    'status_code' => $response->getStatusCode(),
+                    'status_message' => $response->getReasonPhrase(),
                 ]
             );
 

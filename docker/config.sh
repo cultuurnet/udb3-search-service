@@ -10,7 +10,7 @@ fi
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
 GEOJSON_DATA_ROOTDIR=${GEOJSON_DATA:-'../geojson-data'}
 
-DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/udb3-search-service/"
+DIR="${APPCONFIG_ROOTDIR}/templates/docker/uitdatabank/udb3-search-service/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
@@ -18,7 +18,7 @@ else
   exit 1
 fi
 
-DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/keys/"
+DIR="${APPCONFIG_ROOTDIR}/templates/docker/uitdatabank/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
