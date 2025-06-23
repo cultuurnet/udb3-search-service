@@ -1,10 +1,13 @@
 services:
-  search-base:
+  search:
     build: docker/php8.0
+    container_name: search.uitdatabank
     volumes:
       - .:/var/www/html:cached
       - ../geojson-data:/var/www/geojson-data:cached
     working_dir: /var/www/html
+    ports:
+      - "${FORWARD_PHP_PORT:-9000}:80"
     networks:
       uitdatabank-search:
         aliases:
@@ -18,13 +21,6 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
-
-  search:
-    container_name: search.uitdatabank
-    extends:
-          service: search-base
-    ports:
-      - "${FORWARD_PHP_PORT:-9000}:80"
 
   elasticsearch:
     image: public.ecr.aws/y2o7k5u2/udb3/elasticsearch:5.3.3
