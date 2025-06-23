@@ -1,6 +1,6 @@
 services:
   search:
-    build: docker/php
+    build: docker/php8.0
     container_name: search.uitdatabank
     volumes:
       - .:/var/www/html:cached
