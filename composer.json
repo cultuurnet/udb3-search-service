@@ -31,7 +31,7 @@
         "ongr/elasticsearch-dsl": "^7.2",
         "php-amqplib/php-amqplib": "^v3.1.0",
         "php-http/guzzle7-adapter": "^1.1",
-        "predis/predis": "^2.3",
+        "predis/predis": "^3.0",
         "ramsey/uuid": "^3.9",
         "sentry/sentry": "^3.6",
         "slim/psr7": "^1.6",
