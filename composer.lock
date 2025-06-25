@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f93903815556bbbda27560fde74ee5e",
+    "content-hash": "873b4bffbef31a11d03f173abd013e82",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -568,16 +568,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.14",
+            "version": "dev-php-8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "98621a0cf6c8607a34450174cb75819fec75832a"
+                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/98621a0cf6c8607a34450174cb75819fec75832a",
-                "reference": "98621a0cf6c8607a34450174cb75819fec75832a",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/38b194af4a5a265932c13ab68e8e38c92fe2c475",
+                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475",
                 "shasum": ""
             },
             "require": {
@@ -613,9 +613,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v1.14"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/php-8.1"
             },
-            "time": "2024-02-08T08:27:57+00:00"
+            "time": "2025-06-25T14:45:44+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -8258,7 +8258,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "cultuurnet/culturefeed-php": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
