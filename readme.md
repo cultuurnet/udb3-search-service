@@ -182,3 +182,7 @@ So we don't process this query ourselves, we only pass it through to ElasticSear
 To "add" a way to filter on a specific field in the `q` parameter, you simply need to index the field with the right analyzer(s) for the intended purpose. 
 **For this reason, it's best to stick to a _similar_ naming (if not the same) for the indexed fields as in the JSON-LD documents.**
 
+### Regression tests
+
+For major upgrades, we have provided a [list of regression tests](https://docs.google.com/spreadsheets/d/1jm2JAcI8WvxdmqQGtBlJlEkmoV-kSYyoVdn8bu7UAkY/edit?usp=sharing), 
+some but not all cases are covered by the acceptance tests.
