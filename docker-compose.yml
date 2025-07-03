@@ -1,6 +1,6 @@
 services:
-  search-base-8-0:
-    build: docker/php8.0
+  search-base-8-1:
+    build: docker/php8.1
     volumes:
       - .:/var/www/html:cached
       - ../geojson-data:/var/www/geojson-data:cached
@@ -22,7 +22,7 @@ services:
   search:
     container_name: search.uitdatabank
     extends:
-      service: search-base-8-0
+      service: search-base-8-1
     ports:
       - "${FORWARD_PHP_PORT:-9000}:80"
 
