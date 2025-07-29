@@ -1,0 +1,139 @@
+facet_mapping_facilities:
+  3.23.2.0.0:
+    name:
+      nl: Assistentie
+      fr: Assistance
+      de: Hilfe
+      en: Assistance
+  3.23.3.0.0:
+    name:
+      nl: 'Rolstoel ter beschikking'
+      fr: 'Disponibilité de fauteuils roulants'
+      de: 'Rollstuhl verfügbar'
+      en: 'Wheelchair available'
+  3.13.1.0.0:
+    name:
+      nl: 'Voorzieningen voor hulp- en/of geleidehonden'
+      fr: 'Facilités de chiens d''aide et/ou d''aveugles'
+      de: 'Einrichtung für Nothunden'
+      en: 'Facilities for guide dogs'
+  3.13.2.0.0:
+    name:
+      nl: Audiodescriptie
+      fr: Audiodéscription
+      de: Audio-Beschreibung
+      en: Audiodescription
+  3.17.1.0.0:
+    name:
+      nl: Ringleiding
+      fr: 'Boucle auditive'
+      de: 'Audio Induktionsschleife'
+      en: 'Audio induction loop'
+  3.17.3.0.0:
+    name:
+      nl: Ondertiteling
+      fr: Soustitrages
+      de: Untertitel
+      en: Subtitles
+  3.25.0.0.0:
+    name:
+      nl: 'Contactpunt voor personen met handicap'
+      fr: 'point de contact pour les personnes avec un handicap'
+      de: 'Kontakpunkt für Menschen mit Behinderung'
+      en: 'Point of contact for people with a disability'
+  3.26.0.0.0:
+    name:
+      nl: Parkeerplaats
+      fr: 'Place de parking'
+      de: Behindertenparkplatz
+      en: 'Parking area'
+  3.27.0.0.0:
+    name:
+      nl: Rolstoeltoegankelijk
+      fr: 'Accessible en fauteuil roulant'
+      de: Rollstuhlgerecht
+      en: 'Accessible for wheelchairs'
+  3.28.0.0.0:
+    name:
+      nl: 'Alternatieve ingang'
+      fr: 'Entrée alternative'
+      de: 'Alternativer Eingang'
+      en: 'Alternative entrance'
+  3.29.0.0.0:
+    name:
+      nl: 'Gegarandeerd zicht'
+      fr: 'Vue garantie'
+      de: 'Gewährleistete Aussicht'
+      en: 'Guaranteed view'
+  3.30.0.0.0:
+    name:
+      nl: Rolstoelpodium
+      fr: 'Podium surélevé'
+      de: Rollstuhlpodest
+      en: 'Viewing platform'
+  3.31.0.0.0:
+    name:
+      nl: 'Toegankelijk sanitair'
+      fr: 'Installations sanitaires accesibles'
+      de: 'Sanitäranlage für Rollstuhlbenutzer'
+      en: 'Accessible sanitary facilities'
+  3.32.0.0.0:
+    name:
+      nl: 'Voorbehouden camping'
+      fr: 'Camping réservé'
+      de: 'Reservierter Campingplatz'
+      en: 'Reserved campsite'
+  3.33.0.0.0:
+    name:
+      nl: 'Tolken Vlaamse Gebarentaal'
+      fr: 'Interprètes de langue de signes'
+      de: 'Gebärdensprachdolmetscher'
+      en: 'Sign language interpreting service'
+  3.34.0.0.0:
+    name:
+      nl: 'Vereenvoudigde informatie'
+      fr: 'Information simplifiée'
+      de: 'Vereinfachte Information'
+      en: 'Simplified information'
+  3.36.0.0.0:
+    name:
+      nl: Verzorgingsruimte
+      fr: 'Salle de soins'
+      de: Pflegeraum
+      en: 'Care room'
+  3.37.0.0.0:
+    name:
+      nl: 'Oplaadzone rolstoelen'
+      fr: 'Zone de chargement pour fauteuils roulants'
+      de: 'Aufladungsmöglichkeit für Rollstuhle'
+      en: 'Charging facility for wheelchairs'
+  3.38.0.0.0:
+    name:
+      nl: 'Inter-assistentie'
+      fr: 'Assistance spéciale'
+      de: 'Spezialhilfe'
+      en: 'Special assistance'
+  3.39.0.0.0:
+    name:
+      nl: 'Begeleiderspas bij gehandicapten'
+      fr: 'Carte d''accompagnateur'
+      de: 'Ausweis Begleitperson'
+      en: 'Carer pass'
+  3.40.0.0.0:
+    name:
+      nl: 'Inter-Toegankelijkheidsgarantie'
+      fr: 'Accessibilité garantie'
+      de: 'Zertifizierte Zugänglichkeit'
+      en: 'Certified accessibility'
+  H28fcfRKFQAQs00K9NF9hh:
+    name:
+      nl: 'Prikkelarm aanbod'
+      fr: 'Offre faiblement incitative'
+      de: 'Anreizarmes Angebot'
+      en: 'Low incentive'
+  4Vz9eZf0cnQmtfqcGGnNMF:
+    name:
+      nl: 'Afspraken en voorspelbaarheid'
+      fr: 'Accords et prévisibilité'
+      de: 'Vereinbarungen und Vorhersehbarkeit'
+      en: 'Agreements and predictability'
