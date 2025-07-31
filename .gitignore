@@ -4,6 +4,7 @@
 /config.yml
 /features.yml
 /facet_mapping_*.yml
+/facet_mapping_regions.yml
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
