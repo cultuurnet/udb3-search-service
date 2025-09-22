@@ -4,12 +4,17 @@
 /config.yml
 /features.yml
 /facet_mapping_*.yml
+/facet_mapping_regions.php
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
 /default_queries.php
 /pkg
 /.bundle
+# Ignore configuration files
+config.php
+config.*.php
+
 *.pem
 !tests/Http/Authentication/samples/*.pem
 .phpunit.result.cache
