@@ -6,6 +6,7 @@ on:
 
 jobs:
   trigger_acceptance_tests:
+    name: Trigger acceptance tests pipeline
     runs-on: ubuntu-24.04
     steps:
       - name: Trigger acceptance tests pipeline on Jenkins
