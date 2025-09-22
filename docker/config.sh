@@ -28,7 +28,7 @@ fi
 
 DIR="${GEOJSON_DATA_ROOTDIR}/output"
 if [ -d "$DIR" ]; then
-  cp "$DIR"/facet_mapping_regions.yml .
+  cp "$DIR"/facet_mapping_regions.php .
 else
   echo "Error: missing geojson-data. The geojson-data repository must be cloned at ${GEOJSON_DATA_ROOTDIR}."
   exit 1
