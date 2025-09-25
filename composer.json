@@ -33,7 +33,7 @@
         "php-http/guzzle7-adapter": "^1.1",
         "predis/predis": "^3.2",
         "ramsey/uuid": "^3.9",
-        "sentry/sentry": "^3.6",
+        "sentry/sentry": "^4.16",
         "slim/psr7": "^1.6",
         "symfony/cache": "^5.4",
         "symfony/console": "^4.4",
