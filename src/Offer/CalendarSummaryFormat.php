@@ -19,13 +19,13 @@ final class CalendarSummaryFormat
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
             throw new UnsupportedParameterValue(
-                'Invalid type: ' . $type . '. Use one of: ' . join(',', self::ALLOWED_TYPES)
+                'Invalid type: ' . $type . '. Use one of: ' . implode(',', self::ALLOWED_TYPES)
             );
         }
 
         if (!in_array($format, self::ALLOWED_FORMATS)) {
             throw new UnsupportedParameterValue(
-                'Invalid format: ' . $format . '. Use one of: ' . join(',', self::ALLOWED_FORMATS)
+                'Invalid format: ' . $format . '. Use one of: ' . implode(',', self::ALLOWED_FORMATS)
             );
         }
 

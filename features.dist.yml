@@ -1,5 +1,0 @@
-toggles:
-  authentication:
-    name: authentication
-    conditions: {}
-    status: inactive
