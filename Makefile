@@ -7,7 +7,7 @@ down:
 	docker-compose down
 
 build:
-	docker-compose up --build
+	docker-compose up --build --detach
 
 bash:
 	docker-compose exec -it search bash
