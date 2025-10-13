@@ -11,9 +11,9 @@ final class UniqueAddressTransformerTest extends TestCase
     /**
      * @dataProvider transformDataProvider
      */
-    public function testTransform(array $inputData, string $expectedResult): void
+    public function testTransform(array $inputData, bool $duplicatedPlacesPerUser, string $expectedResult): void
     {
-        $transformer = new UniqueAddressTransformer();
+        $transformer = new UniqueAddressTransformer($duplicatedPlacesPerUser);
         $result = $transformer->transform($inputData);
 
         $this->assertEquals($expectedResult, $result['unique_address_identifier']);
@@ -21,7 +21,7 @@ final class UniqueAddressTransformerTest extends TestCase
 
     public function test_do_not_add_empty_unique_address_identifier(): void
     {
-        $transformer = new UniqueAddressTransformer();
+        $transformer = new UniqueAddressTransformer(false);
         $result = $transformer->transform([]);
 
         $this->assertArrayNotHasKey('unique_address_identifier', $result);
@@ -30,7 +30,7 @@ final class UniqueAddressTransformerTest extends TestCase
     public function transformDataProvider(): array
     {
         return [
-            [
+            'dutch main language per user' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'mainLanguage' => 'nl',
@@ -44,9 +44,27 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
+                true,
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
-            'french main language' => [
+            'dutch main language global' => [
+                [
+                    'name' => ['nl' => 'Dansstudio'],
+                    'mainLanguage' => 'nl',
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Teststraat 1',
+                            'postalCode' => '2000',
+                            'addressLocality' => 'Antwerpen',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'John Doe',
+                ],
+                false,
+                'dansstudio_teststraat_1_2000_antwerpen_be',
+            ],
+            'french main language per user' => [
                 [
                     'name' => ['fr' => 'Dansstudio'],
                     'mainLanguage' => 'fr',
@@ -60,9 +78,27 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
+                true,
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
-            'no main language' => [
+            'french main language global' => [
+                [
+                    'name' => ['fr' => 'Dansstudio'],
+                    'mainLanguage' => 'fr',
+                    'address' => [
+                        'fr' => [
+                            'streetAddress' => 'Teststraat 1',
+                            'postalCode' => '2000',
+                            'addressLocality' => 'Antwerpen',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'John Doe',
+                ],
+                false,
+                'dansstudio_teststraat_1_2000_antwerpen_be',
+            ],
+            'no main language per user' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'address' => [
@@ -75,14 +111,40 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                     'creator' => 'John Doe',
                 ],
+                true,
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
             ],
-            'missing required fields' => [
+            'no main language global' => [
+                [
+                    'name' => ['nl' => 'Dansstudio'],
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Teststraat 1',
+                            'postalCode' => '2000',
+                            'addressLocality' => 'Antwerpen',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'John Doe',
+                ],
+                false,
+                'dansstudio_teststraat_1_2000_antwerpen_be',
+            ],
+            'missing required fields per user' => [
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'creator' => 'John Doe',
                 ],
+                true,
                 'dansstudio_john_doe',
+            ],
+            'missing required fields global' => [
+                [
+                    'name' => ['nl' => 'Dansstudio'],
+                    'creator' => 'John Doe',
+                ],
+                false,
+                'dansstudio',
             ],
             'missing required name and creator' => [
                 [
@@ -95,6 +157,7 @@ final class UniqueAddressTransformerTest extends TestCase
                         ],
                     ],
                 ],
+                false,
                 'teststraat_1_2000_antwerpen_be',
             ],
         ];

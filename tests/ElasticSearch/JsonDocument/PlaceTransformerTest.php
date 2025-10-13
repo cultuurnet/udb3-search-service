@@ -40,7 +40,8 @@ final class PlaceTransformerTest extends TestCase
                 $this->logger
             ),
             new PathEndIdUrlParser(),
-            $this->regionService
+            $this->regionService,
+            false
         );
     }
 
