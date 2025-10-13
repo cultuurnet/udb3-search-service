@@ -34,7 +34,8 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                             $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
-                        $this->get(GeoShapeQueryRegionService::class)
+                        $this->get(GeoShapeQueryRegionService::class),
+                        $this->get('duplicate_places_per_user') ?? true
                     )
                 );
 
