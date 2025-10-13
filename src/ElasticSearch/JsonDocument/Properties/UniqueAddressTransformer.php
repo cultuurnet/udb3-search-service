@@ -8,6 +8,13 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 final class UniqueAddressTransformer implements JsonTransformer
 {
+    private bool $duplicatePlacesPerUser;
+
+    public function __construct(bool $duplicatePlacesPerUser)
+    {
+        $this->duplicatePlacesPerUser = $duplicatePlacesPerUser;
+    }
+
     public function transform(array $from, array $draft = []): array
     {
         $lang = $from['mainLanguage'] ?? 'nl';
@@ -18,8 +25,10 @@ final class UniqueAddressTransformer implements JsonTransformer
             $from['address'][$lang]['postalCode'] ?? '',
             $from['address'][$lang]['addressLocality'] ?? '',
             $from['address'][$lang]['addressCountry'] ?? '',
-            $from['creator'] ?? '',
         ];
+        if ($this->duplicatePlacesPerUser) {
+            $parts[] = $from['creator'] ?? '';
+        }
 
         $parts = array_map(fn ($part) => str_replace(' ', '_', trim($part)), $parts);
         $value = mb_strtolower(implode('_', array_filter($parts)));
