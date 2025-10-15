@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5dbdc6c0e234b7eeee1a538cda213fc",
+    "content-hash": "29af3d4bd7e85e283caf0c2c1e93a36e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -557,16 +557,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v1.14",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "98621a0cf6c8607a34450174cb75819fec75832a"
+                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/98621a0cf6c8607a34450174cb75819fec75832a",
-                "reference": "98621a0cf6c8607a34450174cb75819fec75832a",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/86d904a4fb85f8ddfbe90fa5b623895855d48941",
+                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941",
                 "shasum": ""
             },
             "require": {
@@ -602,9 +602,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v1.14"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.0"
             },
-            "time": "2024-02-08T08:27:57+00:00"
+            "time": "2025-10-01T12:28:13+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -7978,15 +7978,15 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-json": "*",
         "ext-pcntl": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
