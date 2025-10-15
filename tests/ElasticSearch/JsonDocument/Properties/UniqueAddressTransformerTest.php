@@ -17,7 +17,7 @@ final class UniqueAddressTransformerTest extends TestCase
         $result = $transformer->transform($inputData);
 
         $this->assertEquals($expectedResult, $result['unique_address_identifier']);
-        $this->assertEquals($expectedResultV2, $result['unique_address_identifier_v2']);
+        $this->assertEquals($expectedResultV2, $result['global_address_identifier']);
     }
 
     public function test_do_not_add_empty_unique_address_identifier(): void
@@ -26,7 +26,7 @@ final class UniqueAddressTransformerTest extends TestCase
         $result = $transformer->transform([]);
 
         $this->assertArrayNotHasKey('unique_address_identifier', $result);
-        $this->assertArrayNotHasKey('unique_address_identifier_v2', $result);
+        $this->assertArrayNotHasKey('global_address_identifier', $result);
     }
 
     public function transformDataProvider(): array

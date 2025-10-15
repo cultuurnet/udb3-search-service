@@ -413,7 +413,7 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
-        "unique_address_identifier_v2": {
+        "global_address_identifier": {
             "type": "string",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
