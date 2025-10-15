@@ -30,7 +30,7 @@ final class UniqueAddressTransformerTest extends TestCase
     public function transformDataProvider(): array
     {
         return [
-            [
+            'dutch main language' =>[
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'mainLanguage' => 'nl',
