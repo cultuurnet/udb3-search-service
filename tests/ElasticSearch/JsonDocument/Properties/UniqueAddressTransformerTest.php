@@ -104,6 +104,23 @@ final class UniqueAddressTransformerTest extends TestCase
                 'teststraat_1_2000_antwerpen_be',
                 'teststraat_1_2000_antwerpen_be',
             ],
+            'diacritics' => [
+                [
+                    'name' => ['nl' => 'Ďåñśšțůďíø'],
+                    'mainLanguage' => 'nl',
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Teststraat 1',
+                            'postalCode' => '2000',
+                            'addressLocality' => 'Antwerpen',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'John Doe',
+                ],
+                'ďåñśšțůďíø_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
+            ],
         ];
     }
 }
