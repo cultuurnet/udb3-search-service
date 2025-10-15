@@ -11,13 +11,13 @@ final class UniqueAddressTransformerTest extends TestCase
     /**
      * @dataProvider transformDataProvider
      */
-    public function testTransform(array $inputData, string $expectedResult, string $expectedResultV2): void
+    public function testTransform(array $inputData, string $legacyExpectedResult, string $expectedResult): void
     {
         $transformer = new UniqueAddressTransformer();
         $result = $transformer->transform($inputData);
 
-        $this->assertEquals($expectedResult, $result['unique_address_identifier']);
-        $this->assertEquals($expectedResultV2, $result['global_address_identifier']);
+        $this->assertEquals($legacyExpectedResult, $result['unique_address_identifier']);
+        $this->assertEquals($expectedResult, $result['global_address_identifier']);
     }
 
     public function test_do_not_add_empty_unique_address_identifier(): void
