@@ -413,6 +413,12 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "unique_address_identifier_v2": {
+            "type": "string",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
         "productionCollapseValue": {
             "type": "keyword"
         },
