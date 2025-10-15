@@ -11,12 +11,13 @@ final class UniqueAddressTransformerTest extends TestCase
     /**
      * @dataProvider transformDataProvider
      */
-    public function testTransform(array $inputData, string $expectedResult): void
+    public function testTransform(array $inputData, string $expectedResult, string $expectedResultV2): void
     {
         $transformer = new UniqueAddressTransformer();
         $result = $transformer->transform($inputData);
 
         $this->assertEquals($expectedResult, $result['unique_address_identifier']);
+        $this->assertEquals($expectedResultV2, $result['unique_address_identifier_v2']);
     }
 
     public function test_do_not_add_empty_unique_address_identifier(): void
@@ -25,6 +26,7 @@ final class UniqueAddressTransformerTest extends TestCase
         $result = $transformer->transform([]);
 
         $this->assertArrayNotHasKey('unique_address_identifier', $result);
+        $this->assertArrayNotHasKey('unique_address_identifier_v2', $result);
     }
 
     public function transformDataProvider(): array
@@ -45,6 +47,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'french main language' => [
                 [
@@ -61,6 +64,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'no main language' => [
                 [
@@ -76,6 +80,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'missing required fields' => [
                 [
@@ -83,6 +88,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_john_doe',
+                'dansstudio',
             ],
             'missing required name and creator' => [
                 [
@@ -95,6 +101,7 @@ final class UniqueAddressTransformerTest extends TestCase
                         ],
                     ],
                 ],
+                'teststraat_1_2000_antwerpen_be',
                 'teststraat_1_2000_antwerpen_be',
             ],
         ];
