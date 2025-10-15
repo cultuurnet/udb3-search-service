@@ -67,5 +67,6 @@
         "amy@example.com",
         "john@example.com"
     ],
-    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be_jane_doe"
+    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be_jane_doe",
+    "unique_address_identifier_v2": "hungaria_vaartkom_35_3000_leuven_be"
 }
