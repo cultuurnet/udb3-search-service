@@ -121,6 +121,23 @@ final class UniqueAddressTransformerTest extends TestCase
                 'ďåñśšțůďíø_teststraat_1_2000_antwerpen_be_john_doe',
                 'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
+            'special characters' => [
+                [
+                    'name' => ['nl' => 'S.M.A.K.-Stedelijk*Museum*voor*@ctuele*kunst*'],
+                    'mainLanguage' => 'nl',
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Jan Hoetplein 1',
+                            'postalCode' => '9000',
+                            'addressLocality' => 'Gent',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'Jan Hoet',
+                ],
+                's.m.a.k.-stedelijk*museum*voor*@ctuele*kunst*_jan_hoetplein_1_9000_gent_be_jan_hoet',
+                's_m_a_k_stedelijk_museum_voor_ctuele_kunst_jan_hoetplein_1_9000_gent_be',
+            ],
         ];
     }
 }
