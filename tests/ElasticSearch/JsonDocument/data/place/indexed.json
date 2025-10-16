@@ -63,5 +63,6 @@
     "metadata": {
         "popularity": 0
     },
-    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be_jane_doe"
+    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be_jane_doe",
+    "global_address_identifier": "hungaria_vaartkom_35_3000_leuven_be"
 }
