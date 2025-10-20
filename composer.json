@@ -15,7 +15,7 @@
         "ext-pcntl": "*",
         "ext-simplexml": "*",
         "broadway/broadway": "^2.4",
-        "cakephp/chronos": "^2.4.5",
+        "cakephp/chronos": "^3.2.0",
         "crell/api-problem": "^3.2",
         "cultuurnet/calendar-summary-v3": "^4.0.8",
         "cultuurnet/culturefeed-php": "2.0",
