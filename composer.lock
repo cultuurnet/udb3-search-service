@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a6a0186ff85e3568e00c8a9954fd84d",
+    "content-hash": "4b24596a092f5e74c939afcb85aa3380",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -516,20 +516,20 @@
         },
         {
             "name": "cultuurnet/cdb",
-            "version": "v2.1.3",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "514a9f9bec93f1222671e1bceea9b05ee3f30d33"
+                "reference": "6c1624751671b9349b59b88745cbe7404d6330cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/514a9f9bec93f1222671e1bceea9b05ee3f30d33",
-                "reference": "514a9f9bec93f1222671e1bceea9b05ee3f30d33",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/6c1624751671b9349b59b88745cbe7404d6330cf",
+                "reference": "6c1624751671b9349b59b88745cbe7404d6330cf",
                 "shasum": ""
             },
             "require": {
-                "ext-simplexml": "*"
+                "ext-mbstring": "*"
             },
             "require-dev": {
                 "phing/phing": "~2.11",
@@ -552,38 +552,34 @@
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
             "support": {
                 "issues": "https://github.com/cultuurnet/Cdb/issues",
-                "source": "https://github.com/cultuurnet/Cdb/tree/master"
+                "source": "https://github.com/cultuurnet/Cdb/tree/v2.2.1"
             },
-            "time": "2018-12-14T08:36:04+00:00"
+            "time": "2025-08-20T13:46:18+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v2.0",
+            "version": "v2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941"
+                "reference": "7c3a70fb0c68b122cfdde084f16cfd14892f4e10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/86d904a4fb85f8ddfbe90fa5b623895855d48941",
-                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/7c3a70fb0c68b122cfdde084f16cfd14892f4e10",
+                "reference": "7c3a70fb0c68b122cfdde084f16cfd14892f4e10",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/cdb": "~2.1"
+                "cultuurnet/cdb": "^2.1",
+                "ext-simplexml": "*",
+                "php": ">=7.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7"
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9.x-dev",
-                    "dev-develop": "1.2.x-dev"
-                }
-            },
             "autoload": {
                 "classmap": [
                     "CultureFeed",
@@ -603,9 +599,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.0"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.1"
             },
-            "time": "2025-10-01T12:28:13+00:00"
+            "time": "2025-11-05T08:16:45+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
