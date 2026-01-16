@@ -36,5 +36,5 @@ abstract class AbstractOperationTestCase extends TestCase
     }
 
     // @phpstan-ignore-next-line
-    abstract protected function createOperation(Client $client, LoggerInterface $logger);
+    abstract protected function createOperation(ClientInterface $client, LoggerInterface $logger);
 }

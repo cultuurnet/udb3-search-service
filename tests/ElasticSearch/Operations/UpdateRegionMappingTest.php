@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class UpdateRegionMappingTest extends AbstractMappingTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): UpdateRegionMapping
+    protected function createOperation(ClientInterface $client, LoggerInterface $logger): UpdateRegionMapping
     {
         return new UpdateRegionMapping($client, $logger);
     }

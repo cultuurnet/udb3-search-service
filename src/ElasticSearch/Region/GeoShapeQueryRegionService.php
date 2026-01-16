@@ -16,7 +16,7 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
      */
     public const PAGE_SIZE = 10;
 
-    private Client $client;
+    private ClientInterface $client;
 
     private string $indexName;
 
