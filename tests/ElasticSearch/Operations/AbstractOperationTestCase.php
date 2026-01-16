@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Elastic\Elasticsearch\Namespaces\IndicesNamespace;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -12,10 +13,7 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractOperationTestCase extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    protected $client;
+    protected ClientInterface|MockObject $client;
 
     /**
      * @var IndicesNamespace&MockObject
@@ -32,7 +30,7 @@ abstract class AbstractOperationTestCase extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(Client::class);
+        $this->client = $this->createMock(ClientInterface::class);
         $this->indices = $this->createMock(IndicesNamespace::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 

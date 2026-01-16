@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\FileReader;
 use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -14,10 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GeoShapeQueryRegionServiceTest extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    private $client;
+    private ClientInterface|MockObject $client;
 
     private string $geoShapesIndexName;
 
@@ -25,7 +23,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(Client::class);
+        $this->client = $this->createMock(ClientInterface::class);
         $this->geoShapesIndexName = 'mock';
 
         $this->regionService = new GeoShapeQueryRegionService(
