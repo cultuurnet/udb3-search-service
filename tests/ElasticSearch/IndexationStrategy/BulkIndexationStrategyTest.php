@@ -16,7 +16,7 @@ final class BulkIndexationStrategyTest extends TestCase
 
 
     private string $indexName;
-    
+
     private string $documentType;
 
     private LoggerInterface&MockObject $logger;

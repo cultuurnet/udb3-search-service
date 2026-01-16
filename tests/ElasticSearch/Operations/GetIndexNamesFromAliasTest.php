@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elastic\Elasticsearch\ClientInterface;
-use Elastic\Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
@@ -85,7 +85,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('get')
             ->with(['index' => $aliasName])
-            ->willThrowException(new Missing404Exception());
+            ->willThrowException(new ClientResponseException());
 
         $actualNames = $this->operation->run($aliasName);
 
