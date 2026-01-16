@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientInterface;
 use Elastic\Elasticsearch\Endpoints\Indices;
 use PHPUnit\Framework\MockObject\MockObject;

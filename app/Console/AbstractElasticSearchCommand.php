@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class AbstractElasticSearchCommand extends AbstractCommand
 {
-    private Client $client;
+    private ClientInterface $client;
 
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         parent::__construct();
         $this->client = $client;
     }
 
-    protected function getElasticSearchClient(): Client
+    protected function getElasticSearchClient(): ClientInterface
     {
         return $this->client;
     }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 use Elastic\Elasticsearch\ClientInterface;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Elastic\Elasticsearch\Client;
 
 final class GeoShapeQueryRegionService implements RegionServiceInterface
 {

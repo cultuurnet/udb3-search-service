@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\Json;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -15,7 +15,7 @@ final class IndexRegions extends AbstractElasticSearchOperation
     private Finder $finder;
 
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         LoggerInterface $logger,
         Finder $finder
     ) {

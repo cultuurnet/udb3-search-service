@@ -7,15 +7,15 @@ namespace CultuurNet\UDB3\Search\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\AggregationTransformerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 
 final class OfferSearchServiceFactory
 {
-    private Client $client;
+    private ClientInterface $client;
 
     private AggregationTransformerInterface $aggregationTransformer;
 
-    public function __construct(Client $client, AggregationTransformerInterface $aggregationTransformer)
+    public function __construct(ClientInterface $client, AggregationTransformerInterface $aggregationTransformer)
     {
         $this->client = $client;
         $this->aggregationTransformer = $aggregationTransformer;

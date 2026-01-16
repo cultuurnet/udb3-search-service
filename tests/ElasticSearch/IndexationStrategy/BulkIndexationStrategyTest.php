@@ -5,38 +5,27 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 final class BulkIndexationStrategyTest extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    private $client;
+    private ClientInterface&MockObject $client;
 
 
     private string $indexName;
-
-
+    
     private string $documentType;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
-
-
-    private int $autoFlushThreshold;
-
+    private LoggerInterface&MockObject $logger;
 
     private BulkIndexationStrategy $strategy;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
+        $this->client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -45,12 +34,12 @@ final class BulkIndexationStrategyTest extends TestCase
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->autoFlushThreshold = 5;
+        $autoFlushThreshold = 5;
 
         $this->strategy = new BulkIndexationStrategy(
             $this->client,
             $this->logger,
-            $this->autoFlushThreshold
+            $autoFlushThreshold
         );
     }
 

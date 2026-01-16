@@ -24,7 +24,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;
@@ -81,7 +81,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             UpdateOrganizerMappingCommand::class,
             fn (): UpdateOrganizerMappingCommand => new UpdateOrganizerMappingCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                 $this->parameter('elasticsearch.organizer.document_type')
             )
@@ -90,7 +90,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             UpdateEventMappingCommand::class,
             fn (): UpdateEventMappingCommand => new UpdateEventMappingCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                 $this->parameter('elasticsearch.event.document_type')
             )
@@ -99,7 +99,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             UpdatePlaceMappingCommand::class,
             fn (): UpdatePlaceMappingCommand => new UpdatePlaceMappingCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                 $this->parameter('elasticsearch.place.document_type')
             )
@@ -108,7 +108,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             ReindexUDB3CoreCommand::class,
             fn (): ReindexUDB3CoreCommand => new ReindexUDB3CoreCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                 $this->get(EventBus::class),
                 $this->get('elasticsearch_indexation_strategy'),
@@ -121,7 +121,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             ReindexPermanentOffersCommand::class,
             fn (): ReindexPermanentOffersCommand => new ReindexPermanentOffersCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                 $this->get(EventBus::class),
                 $this->get('elasticsearch_indexation_strategy'),
@@ -134,7 +134,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             InstallUDB3CoreCommand::class,
             fn (): InstallUDB3CoreCommand => new InstallUDB3CoreCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                 $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                 $this->parameter('elasticsearch.udb3_core_index.read_alias')
@@ -144,7 +144,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             UpdateRegionMappingCommand::class,
             fn (): UpdateRegionMappingCommand => new UpdateRegionMappingCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
                 $this->parameter('elasticsearch.region.document_type')
             )
@@ -153,7 +153,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             IndexRegionsCommand::class,
             fn (): IndexRegionsCommand => new IndexRegionsCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->get(Finder::class),
                 $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
                 __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
@@ -164,7 +164,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             InstallGeoShapesCommand::class,
             fn (): InstallGeoShapesCommand => new InstallGeoShapesCommand(
-                $this->get(Client::class),
+                $this->get(ClientInterface::class),
                 $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
                 $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                 $this->parameter('elasticsearch.geoshapes_index.read_alias')

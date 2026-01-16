@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
-use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;

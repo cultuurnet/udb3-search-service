@@ -10,16 +10,13 @@ use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Start;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchOfferSearchServiceTest extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    private $client;
+    private ClientInterface&MockObject $client;
 
     private string $indexName;
 
@@ -29,7 +26,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
+        $this->client = $this->getMockBuilder(ClientInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

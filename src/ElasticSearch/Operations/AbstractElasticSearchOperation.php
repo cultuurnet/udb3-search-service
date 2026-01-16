@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractElasticSearchOperation
 {
-    protected Client $client;
+    protected ClientInterface $client;
 
     protected LoggerInterface $logger;
 
 
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         LoggerInterface $logger
     ) {
         $this->client = $client;

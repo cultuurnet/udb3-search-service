@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class CheckIndexExistsTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): CheckIndexExists
+    protected function createOperation(ClientInterface $client, LoggerInterface $logger): CheckIndexExists
     {
         return new CheckIndexExists($client, $logger);
     }

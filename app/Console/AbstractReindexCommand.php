@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\BulkIndexationStrate
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\AbstractReindexUDB3CoreOperation;
-use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -28,7 +28,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
     private IndexationStrategy $indexationStrategy;
 
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         string $readIndexName,
         EventBus $eventBus,
         IndexationStrategy $indexationStrategy,
