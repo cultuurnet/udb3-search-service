@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use Elastic\Elasticsearch\Common\Exceptions\Missing404Exception;
 
 final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
 {

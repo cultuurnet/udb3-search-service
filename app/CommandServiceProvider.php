@@ -24,7 +24,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;

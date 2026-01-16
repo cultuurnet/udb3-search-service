@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\GeoBoundsParametersFactory;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class OrganizerSearchServiceProvider extends BaseServiceProvider
 {

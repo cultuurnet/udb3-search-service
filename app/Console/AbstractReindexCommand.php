@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\BulkIndexationStrate
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\AbstractReindexUDB3CoreOperation;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\FileReader;
+use Elastic\Elasticsearch\Client;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

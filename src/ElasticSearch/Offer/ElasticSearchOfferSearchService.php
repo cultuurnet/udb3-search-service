@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
 {
