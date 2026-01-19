@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Start;
-use Elastic\Elasticsearch\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 {
-    private ClientInterface&MockObject $client;
+    private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
 
@@ -26,9 +26,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ElasticSearchClientInterface::class);
 
         $this->indexName = 'udb3-core';
         $this->documentType = 'organizer';

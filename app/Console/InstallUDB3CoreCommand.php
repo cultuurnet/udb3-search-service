@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\GetIndexNamesFromAlias;
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +20,7 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
     private string $readAlias;
 
     public function __construct(
-        ClientInterface $client,
+        ElasticSearchClientInterface $client,
         string $latestIndexName,
         string $writeAlias,
         string $readAlias

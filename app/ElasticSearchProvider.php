@@ -7,13 +7,14 @@ namespace CultuurNet\UDB3\SearchService;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 
 final class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
-        ClientInterface::class,
+        ElasticSearchClientInterface::class,
         GeoShapeQueryRegionService::class,
         'elasticsearch_indexation_strategy',
     ];
@@ -21,8 +22,8 @@ final class ElasticSearchProvider extends BaseServiceProvider
     public function register(): void
     {
         $this->add(
-            ClientInterface::class,
-            fn (): ClientInterface => ClientBuilder::create()
+            ElasticSearchClientInterface::class,
+            fn (): Client => ClientBuilder::create()
                 ->setHosts(
                     [
                         $this->parameter('elasticsearch.host'),
@@ -35,7 +36,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
             'elasticsearch_indexation_strategy',
             fn (): MutableIndexationStrategy => new MutableIndexationStrategy(
                 new SingleFileIndexationStrategy(
-                    $this->get(ClientInterface::class),
+                    $this->get(ElasticSearchClientInterface::class),
                     $this->get('logger.amqp.udb3')
                 )
             )
@@ -44,7 +45,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
         $this->add(
             GeoShapeQueryRegionService::class,
             fn (): GeoShapeQueryRegionService => new GeoShapeQueryRegionService(
-                $this->get(ClientInterface::class),
+                $this->get(ElasticSearchClientInterface::class),
                 $this->parameter('elasticsearch.region.read_index')
             )
         );

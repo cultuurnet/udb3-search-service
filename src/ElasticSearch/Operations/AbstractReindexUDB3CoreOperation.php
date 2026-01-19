@@ -10,10 +10,10 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
-use Elastic\Elasticsearch\ClientInterface;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOperation
@@ -25,7 +25,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
     private int $scrollSize;
 
     public function __construct(
-        ClientInterface $client,
+        ElasticSearchClientInterface $client,
         LoggerInterface $logger,
         EventBus $eventBus,
         string $scrollTtl = '1m',

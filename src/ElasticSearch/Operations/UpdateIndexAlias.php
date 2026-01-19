@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
+use Elastic\Elasticsearch\Response\Elasticsearch;
+
 final class UpdateIndexAlias extends AbstractElasticSearchOperation
 {
     public function run(
@@ -20,10 +22,19 @@ final class UpdateIndexAlias extends AbstractElasticSearchOperation
         ];
 
         // To avoid an exception from getAlias first check if the alias exist with existsAlias.
-        if ($this->client->indices()->existsAlias($getAliasParams)) {
+        $doesAliesExist = $this->client->indices()->existsAlias($getAliasParams);
+        if(!$doesAliesExist instanceof ElasticSearch) {
+            throw new \RuntimeException('Async response type from Elasticsearch client not supported');
+        }
+
+        if ($doesAliesExist->asBool()) {
             $aliases = $this->client->indices()->getAlias($getAliasParams);
 
-            foreach ($aliases as $key => $index) {
+            if(!$aliases instanceof ElasticSearch) {
+                throw new \RuntimeException('Async response type from Elasticsearch client not supported');
+            }
+
+            foreach ($aliases->asArray() as $key => $index) {
                 $deleteAlias = [
                     'index' => $key,
                     'name' => $aliasName,

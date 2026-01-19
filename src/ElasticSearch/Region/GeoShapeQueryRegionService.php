@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Region\RegionId;
 
@@ -15,12 +15,12 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
      */
     public const PAGE_SIZE = 10;
 
-    private ClientInterface $client;
+    private ElasticSearchClientInterface $client;
 
     private string $indexName;
 
     public function __construct(
-        ClientInterface $elasticSearchClient,
+        ElasticSearchClientInterface $elasticSearchClient,
         string $geoShapesIndexName
     ) {
         $this->client = $elasticSearchClient;

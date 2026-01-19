@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Search\Http\Parameters\GeoBoundsParametersFactory;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 
 final class OrganizerSearchServiceProvider extends BaseServiceProvider
 {
@@ -56,7 +56,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                         $this->parameter('elasticsearch.aggregation_size')
                     ),
                     new ElasticSearchOrganizerSearchService(
-                        $this->get(ClientInterface::class),
+                        $this->get(ElasticSearchClientInterface::class),
                         $this->parameter('elasticsearch.organizer.read_index'),
                         $this->parameter('elasticsearch.organizer.document_type'),
                         new ElasticSearchPagedResultSetFactory(

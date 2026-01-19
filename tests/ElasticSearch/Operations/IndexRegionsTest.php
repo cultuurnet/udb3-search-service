@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
@@ -20,7 +20,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
         parent::setUp();
     }
 
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): IndexRegions
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): IndexRegions
     {
         return new IndexRegions($client, $logger, $this->finder);
     }

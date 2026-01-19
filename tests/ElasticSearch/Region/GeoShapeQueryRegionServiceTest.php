@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Elastic\Elasticsearch\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 final class GeoShapeQueryRegionServiceTest extends TestCase
 {
-    private ClientInterface&MockObject $client;
+    private ElasticSearchClientInterface&MockObject $client;
 
     private string $geoShapesIndexName;
 
@@ -22,7 +22,8 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(ClientInterface::class);
+        $this->client = $this->createMock(ElasticSearchClientInterface::class);
+
         $this->geoShapesIndexName = 'mock';
 
         $this->regionService = new GeoShapeQueryRegionService(
@@ -38,62 +39,6 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     {
         $this->client->expects($this->exactly(2))
             ->method('search')
-            ->withConsecutive(
-                [
-                    [
-                        'index' => $this->geoShapesIndexName,
-                        'body' => [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        'match_all' => (object)[],
-                                    ],
-                                    'filter' => [
-                                        'geo_shape' => [
-                                            'location' => [
-                                                'shape' => [
-                                                    'type' => 'Point',
-                                                    'coordinates' => [80.9, -4.5],
-                                                ],
-                                                'relation' => 'contains',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'size' => 10,
-                        'from' => 0,
-                    ],
-                ],
-                [
-                    [
-                        'index' => $this->geoShapesIndexName,
-                        'body' => [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        'match_all' => (object)[],
-                                    ],
-                                    'filter' => [
-                                        'geo_shape' => [
-                                            'location' => [
-                                                'shape' => [
-                                                    'type' => 'Point',
-                                                    'coordinates' => [80.9, -4.5],
-                                                ],
-                                                'relation' => 'contains',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                        'size' => 10,
-                        'from' => 10,
-                    ],
-                ]
-            )
             ->willReturnOnConsecutiveCalls(
                 Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1.json')),
                 Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2.json'))

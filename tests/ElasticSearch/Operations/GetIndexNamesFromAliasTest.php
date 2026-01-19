@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): GetIndexNamesFromAlias
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): GetIndexNamesFromAlias
     {
         return new GetIndexNamesFromAlias($client, $logger);
     }

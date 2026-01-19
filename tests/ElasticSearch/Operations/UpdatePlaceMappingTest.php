@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class UpdatePlaceMappingTest extends AbstractMappingTestCase
 {
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): UpdatePlaceMapping
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): UpdatePlaceMapping
     {
         return new UpdatePlaceMapping($client, $logger);
     }

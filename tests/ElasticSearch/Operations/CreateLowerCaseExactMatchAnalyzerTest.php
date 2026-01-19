@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class CreateLowerCaseExactMatchAnalyzerTest extends AbstractOperationTestCase
 {
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): CreateLowerCaseExactMatchAnalyzer
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): CreateLowerCaseExactMatchAnalyzer
     {
         return new CreateLowerCaseExactMatchAnalyzer($client, $logger);
     }

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class DeleteIndexTest extends AbstractOperationTestCase
 {
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): DeleteIndex
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): DeleteIndex
     {
         return new DeleteIndex($client, $logger);
     }

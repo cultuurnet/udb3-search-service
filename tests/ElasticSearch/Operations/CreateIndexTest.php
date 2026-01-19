@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\ClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class CreateIndexTest extends AbstractOperationTestCase
 {
-    protected function createOperation(ClientInterface $client, LoggerInterface $logger): CreateIndex
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): CreateIndex
     {
         return new CreateIndex($client, $logger);
     }

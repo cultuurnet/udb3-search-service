@@ -4,32 +4,27 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\ClientInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategyTest extends TestCase
 {
-    private ClientInterface&MockObject $client;
-
+    private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
-
 
     private string $documentType;
 
     private LoggerInterface&MockObject $logger;
 
-
     private SingleFileIndexationStrategy $strategy;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(ClientInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ElasticSearchClientInterface::class);
 
         $this->indexName = 'udb3-core';
         $this->documentType = 'event';

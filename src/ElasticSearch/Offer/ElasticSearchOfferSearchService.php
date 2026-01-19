@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
-use Elastic\Elasticsearch\ClientInterface;
 
 final class ElasticSearchOfferSearchService implements OfferSearchServiceInterface
 {
@@ -19,7 +19,7 @@ final class ElasticSearchOfferSearchService implements OfferSearchServiceInterfa
     private ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory;
 
     public function __construct(
-        ClientInterface $elasticSearchClient,
+        ElasticSearchClientInterface $elasticSearchClient,
         string $indexName,
         string $documentType,
         ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory
