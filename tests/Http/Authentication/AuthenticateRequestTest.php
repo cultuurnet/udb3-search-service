@@ -303,10 +303,7 @@ final class AuthenticateRequestTest extends TestCase
             true
         );
 
-        $this->consumerResolver->expects($this->never())
-            ->method('getStatus')
-            ->with('my_active_api_key')
-            ->willReturn('ACTIVE');
+        $this->consumerResolver->expects($this->never());
 
         $response = (new ResponseFactory())->createResponse(200);
 
