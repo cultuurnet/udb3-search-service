@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use Elastic\Elasticsearch\Response\Elasticsearch;
+
 trait HasElasticSearchClient
 {
     private ElasticSearchClientInterface $elasticSearchClient;
@@ -24,9 +26,15 @@ trait HasElasticSearchClient
     {
         $parameters['body'] = $body;
 
-        return $this->elasticSearchClient->search(
+        $response = $this->elasticSearchClient->search(
             $this->createParameters($parameters)
         );
+
+        if (!$response instanceof Elasticsearch) {
+            throw new \RuntimeException('Async response type from Elasticsearch client not supported');
+        }
+
+        return $response->asArray();
     }
 
     private function createParameters(array $parameters): array
