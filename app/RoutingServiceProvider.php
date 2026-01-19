@@ -87,11 +87,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        new InMemoryApiKeyMatcher([
+                        new InMemoryApiKeyMatcher(
                             file_exists(__DIR__ . '/../api_key_matcher.php') ? require __DIR__ . '/../api_key_matcher.php' : [],
-                        ]),
+                        ),
                         FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
-                        $this->parameter('toggles.authentication.status') ?? false
+                        $this->parameter('toggles.use_api_key_matcher') ?? false
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
