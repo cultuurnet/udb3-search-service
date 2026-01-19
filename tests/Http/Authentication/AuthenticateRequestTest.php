@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\ApiKeyMatcher\InMemoryApiKeyMatcher;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
@@ -93,6 +94,9 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'api_keys' =>
                     ['my_active_api_key_with_config_query' => 'my_default_search_query'],
+            ]),
+            new InMemoryApiKeyMatcher([
+                'some_api_key' => 'some_client_id',
             ]),
             $this->pemFile
         );
@@ -245,6 +249,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
             ]),
+            new InMemoryApiKeyMatcher([]),
             $this->pemFile
         );
 
@@ -278,6 +283,87 @@ final class AuthenticateRequestTest extends TestCase
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 
         $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validApiKeyRequestsProvider
+     * @test
+     */
+    public function it_matches_api_keys_to_client_ids(ServerRequestInterface $request): void
+    {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeyMatcher([
+                'my_active_api_key' => 'my_active_client_id',
+            ]),
+            $this->pemFile,
+            true
+        );
+
+        $this->consumerResolver->expects($this->never())
+            ->method('getStatus')
+            ->with('my_active_api_key')
+            ->willReturn('ACTIVE');
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $this->clientIdResolver->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(true);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_unmatches_api_keys(): void
+    {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeyMatcher([
+                'some_api_key' => 'some_client_id',
+            ]),
+            $this->pemFile,
+            true
+        );
+
+        $this->consumerResolver->expects($this->never())
+            ->method('getStatus');
+
+        $response = $authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('x-api-key', 'my_unmatched_api_key'),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(new InvalidApiKey('my_unmatched_api_key'), $response);
     }
 
     public function validApiKeyRequestsProvider(): array
@@ -322,6 +408,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeyMatcher([]),
             $this->pemFile
         );
 
@@ -356,6 +443,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeyMatcher([]),
             $this->pemFile
         );
 
@@ -400,6 +488,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
+            new InMemoryApiKeyMatcher([]),
             $this->pemFile
         );
 
