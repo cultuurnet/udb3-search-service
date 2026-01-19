@@ -303,7 +303,8 @@ final class AuthenticateRequestTest extends TestCase
             true
         );
 
-        $this->consumerResolver->expects($this->never())->method('getStatus');
+        $this->consumerResolver->expects($this->never())
+            ->method('getStatus');
 
         $response = (new ResponseFactory())->createResponse(200);
 
