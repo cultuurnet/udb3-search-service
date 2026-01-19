@@ -9,7 +9,7 @@ use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\ConvertsToApiProblem;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use Elastic\Elasticsearch\Common\Exceptions\ElasticsearchException;
+use Elastic\Elasticsearch\Exception\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
 use League\Route\Http\Exception\MethodNotAllowedException;
