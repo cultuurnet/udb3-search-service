@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Http\ApiKeyMatcher\ApiKeyMatcher;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
@@ -41,20 +42,28 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
+    private ApiKeyMatcher $apiKeysMatchedToClientIds;
+
     private string $pemFile;
+
+    private bool $useApiKeyMatcher;
 
     public function __construct(
         Container $container,
         ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
-        string $pemFile
+        ApiKeyMatcher $apiKeysMatchedToClientIds,
+        string $pemFile,
+        bool $useApiKeyMatcher = false
     ) {
         $this->container = $container;
         $this->consumerResolver = $consumerResolver;
         $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
+        $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
         $this->pemFile = $pemFile;
+        $this->useApiKeyMatcher = $useApiKeyMatcher;
         $this->setLogger(new NullLogger());
     }
 

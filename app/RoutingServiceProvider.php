@@ -8,6 +8,7 @@ use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\Cache\CacheFactory;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\ApiKeyMatcher\InMemoryApiKeyMatcher;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdResolver;
@@ -86,7 +87,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
+                        new InMemoryApiKeyMatcher([
+                            file_exists(__DIR__ . '/../api_key_matcher.php') ? require __DIR__ . '/../api_key_matcher.php' : [],
+                        ]),
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
+                        $this->parameter('toggles.authentication.status') ?? false
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
