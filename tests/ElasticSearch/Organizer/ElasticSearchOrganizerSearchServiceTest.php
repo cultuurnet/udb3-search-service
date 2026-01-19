@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\MocksElasticsearchResponse;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -16,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 {
+    use MocksElasticsearchResponse;
     private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
@@ -126,7 +128,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                     ],
                 ]
             )
-            ->willReturn($response);
+            ->willReturn($this->createElasticsearchResponse($response));
 
         $expectedResults = [
             (new JsonDocument($idCollectiefCursief))

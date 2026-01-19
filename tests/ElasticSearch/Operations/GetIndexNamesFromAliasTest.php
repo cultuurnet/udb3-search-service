@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\MocksElasticsearchResponse;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
+    use MocksElasticsearchResponse;
     protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): GetIndexNamesFromAlias
     {
         return new GetIndexNamesFromAlias($client, $logger);
@@ -66,7 +68,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('get')
             ->with(['index' => $aliasName])
-            ->willReturn($mockResponseData);
+            ->willReturn($this->createElasticsearchResponse($mockResponseData));
 
         $actualNames = $this->operation->run($aliasName);
 

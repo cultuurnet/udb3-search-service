@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 use stdClass;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
+use CultuurNet\UDB3\Search\ElasticSearch\MocksElasticsearchResponse;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -14,6 +15,7 @@ use Psr\Log\NullLogger;
 
 final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
+    use MocksElasticsearchResponse;
     private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
@@ -113,7 +115,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
                 'type' => $this->documentType,
                 'id' => $id,
             ])
-            ->willReturn($response);
+            ->willReturn($this->createElasticsearchResponseAsObject($response));
 
         $this->assertEquals($jsonDocument, $this->repository->get($id));
     }
@@ -140,7 +142,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
                 'type' => $this->documentType,
                 'id' => $id,
             ])
-            ->willReturn($response);
+            ->willReturn($this->createElasticsearchResponse($response));
 
         $this->expectException(DocumentGone::class);
 
@@ -168,7 +170,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
                 'type' => $this->documentType,
                 'id' => $id,
             ])
-            ->willReturn($response);
+            ->willReturn($this->createElasticsearchResponse($response));
 
         $this->assertNull($this->repository->get($id));
     }
