@@ -22,6 +22,8 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
         $newIndex = 'udb3_core_v1';
         $alias = 'udb3_core_write';
 
+
+
         $this->indices->expects($this->once())
             ->method('existsAlias')
             ->with(
