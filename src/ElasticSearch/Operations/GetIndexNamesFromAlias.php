@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Elastic\Elasticsearch\Exception\ClientResponseException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
 
 final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
 {
@@ -19,10 +20,14 @@ final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
     public function run(string $aliasName): array
     {
         try {
-            /* @var array $responseData */
             $responseData = $this->client->indices()->get(['index' => $aliasName]);
-            return array_keys($responseData);
-        } catch (ClientResponseException $e) {
+
+            if (!$responseData instanceof Elasticsearch) {
+                throw new \RuntimeException('Async response type from Elasticsearch client not supported');
+            }
+
+            return array_keys($responseData->asArray());
+        } catch (ClientResponseException) {
             return [];
         }
     }
