@@ -339,7 +339,7 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_unmatches_api_keys(): void
+    public function it_handles_unmatched_api_keys(): void
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
