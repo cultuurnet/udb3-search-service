@@ -161,6 +161,21 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
+        if (!$this->useApiKeyMatcher) {
+            return $this->legacyHandleApiKey($request, $handler, $apiKey);
+        }
+        $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
+        if ($clientId === null) {
+            return (new InvalidApiKey($apiKey))->toResponse();
+        }
+        return $this->handleClientId($request, $handler, $clientId);
+    }
+
+    private function legacyHandleApiKey(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler,
+        string $apiKey
+    ): ResponseInterface {
         try {
             $status = $this->consumerResolver->getStatus($apiKey);
         } catch (InvalidConsumer $invalidConsumer) {
