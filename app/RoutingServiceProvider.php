@@ -90,7 +90,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        $this->parameter('toggles.use_api_key_matcher') ?? false ? $apiKeysMatchedToClientIds : null,
+                        $this->parameter('toggles.match_api_keys_to_client_ids') ?? false ? $apiKeysMatchedToClientIds : null,
                         FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
                     );
 
