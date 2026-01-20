@@ -6,11 +6,8 @@ namespace CultuurNet\UDB3\Search\Http\ApiKeyMatcher;
 
 final class InMemoryApiKeyMatcher implements ApiKeyMatcher
 {
-    private array $apiKeyToClientIdMap;
-
-    public function __construct(array $apiKeyToClientIdMap)
+    public function __construct(readonly array $apiKeyToClientIdMap)
     {
-        $this->apiKeyToClientIdMap = $apiKeyToClientIdMap;
     }
 
     public function getClientId(string $apiKey): ?string
