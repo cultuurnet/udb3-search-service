@@ -66,6 +66,9 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
 
                     $pemFile = $this->parameter('keycloak.pem_file');
+                    $apiKeysMatchedToClientIds = new InMemoryApiKeysMatchedToClientIds(
+                        file_exists(__DIR__ . '/../api_key_matcher.php') ? require __DIR__ . '/../api_key_matcher.php' : [],
+                    );
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CachedConsumerResolver(
@@ -87,11 +90,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        new InMemoryApiKeysMatchedToClientIds(
-                            file_exists(__DIR__ . '/../api_key_matcher.php') ? require __DIR__ . '/../api_key_matcher.php' : [],
-                        ),
+                        $this->parameter('toggles.use_api_key_matcher') ?? false ? $apiKeysMatchedToClientIds : null,
                         FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
-                        $this->parameter('toggles.use_api_key_matcher') ?? false
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());

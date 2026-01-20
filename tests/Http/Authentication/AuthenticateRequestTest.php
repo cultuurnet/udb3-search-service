@@ -95,9 +95,7 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' =>
                     ['my_active_api_key_with_config_query' => 'my_default_search_query'],
             ]),
-            new InMemoryApiKeysMatchedToClientIds([
-                'some_api_key' => 'some_client_id',
-            ]),
+            null,
             $this->pemFile
         );
     }
@@ -249,7 +247,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
             ]),
-            new InMemoryApiKeysMatchedToClientIds([]),
+            null,
             $this->pemFile
         );
 
@@ -299,8 +297,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryApiKeysMatchedToClientIds([
                 'my_active_api_key' => 'my_active_client_id',
             ]),
-            $this->pemFile,
-            true
+            $this->pemFile
         );
 
         $this->consumerResolver->expects($this->never())
@@ -347,8 +344,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryApiKeysMatchedToClientIds([
                 'some_api_key' => 'some_client_id',
             ]),
-            $this->pemFile,
-            true
+            $this->pemFile
         );
 
         $this->consumerResolver->expects($this->never())

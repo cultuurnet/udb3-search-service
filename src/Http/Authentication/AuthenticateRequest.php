@@ -42,20 +42,17 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
-    private ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
+    private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     private string $pemFile;
-
-    private bool $useApiKeyMatcher;
 
     public function __construct(
         Container $container,
         ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
-        ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds,
-        string $pemFile,
-        bool $useApiKeyMatcher = false
+        ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds,
+        string $pemFile
     ) {
         $this->container = $container;
         $this->consumerResolver = $consumerResolver;
@@ -63,7 +60,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
         $this->pemFile = $pemFile;
-        $this->useApiKeyMatcher = $useApiKeyMatcher;
         $this->setLogger(new NullLogger());
     }
 
@@ -161,7 +157,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         RequestHandlerInterface $handler,
         string $apiKey
     ): ResponseInterface {
-        if (!$this->useApiKeyMatcher) {
+        if ($this->apiKeysMatchedToClientIds === null) {
             return $this->legacyHandleApiKey($request, $handler, $apiKey);
         }
         $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
