@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Http\ApiKeyMatcher\InMemoryApiKeyMatcher;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\InMemoryApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
@@ -95,7 +95,7 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' =>
                     ['my_active_api_key_with_config_query' => 'my_default_search_query'],
             ]),
-            new InMemoryApiKeyMatcher([
+            new InMemoryApiKeysMatchedToClientIds([
                 'some_api_key' => 'some_client_id',
             ]),
             $this->pemFile
@@ -249,7 +249,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
             ]),
-            new InMemoryApiKeyMatcher([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
@@ -296,7 +296,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeyMatcher([
+            new InMemoryApiKeysMatchedToClientIds([
                 'my_active_api_key' => 'my_active_client_id',
             ]),
             $this->pemFile,
@@ -344,7 +344,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeyMatcher([
+            new InMemoryApiKeysMatchedToClientIds([
                 'some_api_key' => 'some_client_id',
             ]),
             $this->pemFile,
@@ -406,7 +406,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeyMatcher([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
@@ -441,7 +441,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeyMatcher([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
@@ -486,7 +486,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
-            new InMemoryApiKeyMatcher([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 

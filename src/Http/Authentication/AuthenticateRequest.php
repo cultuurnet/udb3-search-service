@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
-use CultuurNet\UDB3\Search\Http\ApiKeyMatcher\ApiKeyMatcher;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\ApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
@@ -42,7 +42,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
-    private ApiKeyMatcher $apiKeysMatchedToClientIds;
+    private ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     private string $pemFile;
 
@@ -53,7 +53,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
-        ApiKeyMatcher $apiKeysMatchedToClientIds,
+        ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds,
         string $pemFile,
         bool $useApiKeyMatcher = false
     ) {
