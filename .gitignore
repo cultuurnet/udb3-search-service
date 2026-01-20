@@ -8,7 +8,7 @@
 /web/autocomplete.json
 /.php_cs.cache
 /.php-cs-fixer.cache
-/api_key_matcher.php
+/api_keys_matched_to_client_ids.php
 /default_queries.php
 /pkg
 /.bundle

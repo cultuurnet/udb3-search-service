@@ -67,7 +67,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
 
                     $pemFile = $this->parameter('keycloak.pem_file');
                     $apiKeysMatchedToClientIds = new InMemoryApiKeysMatchedToClientIds(
-                        file_exists(__DIR__ . '/../api_key_matcher.php') ? require __DIR__ . '/../api_key_matcher.php' : [],
+                        file_exists(__DIR__ . '/../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../api_keys_matched_to_client_ids.php' : [],
                     );
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
