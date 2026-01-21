@@ -14,15 +14,15 @@ trait ElasticSearchResponseHelper
     protected function getElasticSearchResponse(int $status = 200, array $body = []): Elasticsearch
     {
         if (empty($body)) {
-            $body = Json::encode(['ok' => $status === 200]);
+            $content = Json::encode(['ok' => $status === 200]);
         } else {
-            $body = Json::encode($body);
+            $content = Json::encode($body);
         }
 
         $response = new Response(
             $status,
             ['Content-Type' => 'application/json', Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME],
-            $body
+            $content
         );
         return (new AsyncOnSuccess())->success($response, 1);
     }

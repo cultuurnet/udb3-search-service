@@ -11,7 +11,7 @@ final class DeleteIndex extends AbstractElasticSearchOperation
     public function run(string $indexName): void
     {
         $doesIndexExists = $this->client->indices()->exists(['index' => $indexName]);
-        if(!$doesIndexExists instanceof ElasticSearch) {
+        if (!$doesIndexExists instanceof ElasticSearch) {
             throw new \RuntimeException('Async response type from Elasticsearch client not supported');
         }
 

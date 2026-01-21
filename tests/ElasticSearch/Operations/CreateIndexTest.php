@@ -6,10 +6,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
-use CultuurNet\UDB3\Search\Json;
-use Elastic\Elasticsearch\Response\Elasticsearch;
-use Elastic\Elasticsearch\Transport\AsyncOnSuccess;
-use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 final class CreateIndexTest extends AbstractOperationTestCase

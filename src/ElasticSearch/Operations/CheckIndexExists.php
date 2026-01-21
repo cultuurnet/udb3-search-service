@@ -12,7 +12,7 @@ final class CheckIndexExists extends AbstractElasticSearchOperation
     {
         $response = $this->client->indices()->exists(['index' => $indexName]);
 
-        if(!$response instanceof ElasticSearch) {
+        if (!$response instanceof ElasticSearch) {
             throw new \RuntimeException('Async response type from Elasticsearch client not supported');
         }
 

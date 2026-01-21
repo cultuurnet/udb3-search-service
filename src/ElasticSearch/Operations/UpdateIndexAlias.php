@@ -23,14 +23,14 @@ final class UpdateIndexAlias extends AbstractElasticSearchOperation
 
         // To avoid an exception from getAlias first check if the alias exist with existsAlias.
         $doesAliesExist = $this->client->indices()->existsAlias($getAliasParams);
-        if(!$doesAliesExist instanceof ElasticSearch) {
+        if (!$doesAliesExist instanceof ElasticSearch) {
             throw new \RuntimeException('Async response type from Elasticsearch client not supported');
         }
 
         if ($doesAliesExist->asBool()) {
             $aliases = $this->client->indices()->getAlias($getAliasParams);
 
-            if(!$aliases instanceof ElasticSearch) {
+            if (!$aliases instanceof ElasticSearch) {
                 throw new \RuntimeException('Async response type from Elasticsearch client not supported');
             }
 

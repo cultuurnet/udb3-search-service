@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\Response\Elasticsearch;
 
 final class ElasticSearchDocumentRepository implements DocumentRepository
 {

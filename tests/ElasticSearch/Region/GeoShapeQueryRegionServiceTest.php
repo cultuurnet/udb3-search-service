@@ -6,9 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
-use CultuurNet\UDB3\Search\ElasticSearch\MocksElasticsearchResponse;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +14,6 @@ use RuntimeException;
 
 final class GeoShapeQueryRegionServiceTest extends TestCase
 {
-    use MocksElasticsearchResponse;
     use ElasticSearchResponseHelper;
 
     private ElasticSearchClientInterface&MockObject $client;
@@ -85,7 +82,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     {
         $this->client->expects($this->once())
             ->method('search')
-            ->willReturn($this->createElasticsearchResponse(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_invalid.json'))));
+            ->willReturn($this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/regions_invalid.json')));
 
         $this->expectException(RuntimeException::class);
 

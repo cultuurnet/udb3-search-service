@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use Elastic\Elasticsearch\Response\Elasticsearch;
-
 trait HasElasticSearchClient
 {
     private ElasticSearchClientInterface $elasticSearchClient;

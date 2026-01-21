@@ -36,7 +36,7 @@ final class CheckIndexExistsTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn((new AsyncOnSuccess)->success($response, 1));
+            ->willReturn((new AsyncOnSuccess())->success($response, 1));
 
         $this->logger->expects($this->once())
             ->method('info')
