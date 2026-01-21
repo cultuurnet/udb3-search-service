@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use Elasticsearch\Client;
-
 trait HasElasticSearchClient
 {
-    private Client $elasticSearchClient;
+    private ElasticSearchClientInterface $elasticSearchClient;
 
     private string $indexName;
 
@@ -28,7 +26,7 @@ trait HasElasticSearchClient
 
         return $this->elasticSearchClient->search(
             $this->createParameters($parameters)
-        );
+        )->asArray();
     }
 
     private function createParameters(array $parameters): array

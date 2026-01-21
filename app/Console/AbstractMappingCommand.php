@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 
 abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
 {
@@ -12,7 +12,7 @@ abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
 
     protected string $documentType;
 
-    public function __construct(Client $client, string $indexName, string $documentType)
+    public function __construct(ElasticSearchClientInterface $client, string $indexName, string $documentType)
     {
         parent::__construct($client);
         $this->indexName = $indexName;

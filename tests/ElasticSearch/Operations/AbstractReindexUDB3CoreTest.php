@@ -6,9 +6,9 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\FileReader;
-use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
 use GuzzleHttp\Exception\ClientException;
@@ -18,12 +18,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
-    /**
-     * @var EventBus&MockObject
-     */
-    private $eventBus;
+    use ElasticSearchResponseHelper;
 
-    private array $logMessages;
+    private EventBus&MockObject $eventBus;
+
+    private array $logMessages = [];
 
     protected function setUp(): void
     {
@@ -56,10 +55,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
             );
     }
 
-    /**
-     * @return EventBus&MockObject
-     */
-    public function getEventBus()
+    public function getEventBus(): EventBus&MockObject
     {
         return $this->eventBus;
     }
@@ -90,19 +86,17 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1.json');
-
         $this->client->expects($this->once())
             ->method('search')
             ->with($initialQuery)
-            ->willReturn($results);
+            ->willReturn($this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-1.json')));
 
         $this->client->expects($this->exactly(2))
             ->method('scroll')
             ->with($scrollQuery)
             ->willReturnOnConsecutiveCalls(
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-2.json'),
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-3.json')
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-2.json')),
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-3.json'))
             );
 
         // @codingStandardsIgnoreStart
@@ -209,19 +203,17 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1-with-skips.json');
-
         $this->client->expects($this->once())
             ->method('search')
             ->with($initialQuery)
-            ->willReturn($results);
+            ->willReturn($this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-1-with-skips.json')));
 
         $this->client->expects($this->exactly(2))
             ->method('scroll')
             ->with($scrollQuery)
             ->willReturnOnConsecutiveCalls(
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-2-with-skips.json'),
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-3.json')
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-2-with-skips.json')),
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-3.json'))
             );
 
         // @codingStandardsIgnoreStart
@@ -303,19 +295,17 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1.json');
-
         $this->client->expects($this->once())
             ->method('search')
             ->with($initialQuery)
-            ->willReturn($results);
+            ->willReturn($this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-1.json')));
 
         $this->client->expects($this->exactly(2))
             ->method('scroll')
             ->with($scrollQuery)
             ->willReturnOnConsecutiveCalls(
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-2.json'),
-                $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-3.json')
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-2.json')),
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/udb3-core-scroll-3.json'))
             );
 
         // @codingStandardsIgnoreStart
@@ -408,11 +398,5 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 
         $this->assertEquals($expectedLogs, $this->logMessages);
         $this->assertEquals($expectedEvents, $actualEvents);
-    }
-
-    private function getJsonDocumentAsElasticSearchResults(string $filePath): array
-    {
-        $contents = FileReader::read($filePath);
-        return Json::decodeAssociatively($contents);
     }
 }

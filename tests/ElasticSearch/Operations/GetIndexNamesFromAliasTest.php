@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Client;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
+use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): GetIndexNamesFromAlias
+    use ElasticSearchResponseHelper;
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): GetIndexNamesFromAlias
     {
         return new GetIndexNamesFromAlias($client, $logger);
     }
@@ -66,7 +68,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('get')
             ->with(['index' => $aliasName])
-            ->willReturn($mockResponseData);
+            ->willReturn($this->getElasticSearchResponse(200, $mockResponseData));
 
         $actualNames = $this->operation->run($aliasName);
 
@@ -85,7 +87,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('get')
             ->with(['index' => $aliasName])
-            ->willThrowException(new Missing404Exception());
+            ->willThrowException(new ClientResponseException());
 
         $actualNames = $this->operation->run($aliasName);
 

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
-    private Client $elasticSearchClient;
+    private ElasticSearchClientInterface $elasticSearchClient;
 
     private LoggerInterface $logger;
 
 
     public function __construct(
-        Client $elasticSearchClient,
+        ElasticSearchClientInterface $elasticSearchClient,
         LoggerInterface $logger
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
