@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStr
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
-use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 
 final class ElasticSearchProvider extends BaseServiceProvider
@@ -23,7 +22,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
     {
         $this->add(
             ElasticSearchClientInterface::class,
-            fn (): Client => ClientBuilder::create()
+            fn () => ClientBuilder::create()
                 ->setHosts(
                     [
                         $this->parameter('elasticsearch.host'),
