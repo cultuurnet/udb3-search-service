@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
 use CultuurNet\UDB3\Search\ElasticSearch\MocksElasticsearchResponse;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
@@ -16,9 +17,9 @@ use RuntimeException;
 final class GeoShapeQueryRegionServiceTest extends TestCase
 {
     use MocksElasticsearchResponse;
-    private ElasticSearchClientInterface&MockObject $client;
+    use ElasticSearchResponseHelper;
 
-    private string $geoShapesIndexName;
+    private ElasticSearchClientInterface&MockObject $client;
 
     private GeoShapeQueryRegionService $regionService;
 
@@ -26,11 +27,9 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     {
         $this->client = $this->createMock(ElasticSearchClientInterface::class);
 
-        $this->geoShapesIndexName = 'mock';
-
         $this->regionService = new GeoShapeQueryRegionService(
             $this->client,
-            $this->geoShapesIndexName
+            'mock'
         );
     }
 
@@ -42,8 +41,8 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
         $this->client->expects($this->exactly(2))
             ->method('search')
             ->willReturnOnConsecutiveCalls(
-                $this->createElasticsearchResponse(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1.json'))),
-                $this->createElasticsearchResponse(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2.json')))
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/regions_1.json')),
+                $this->getElasticSearchResponseFromString(FileReader::read(__DIR__ . '/data/regions_2.json')),
             );
 
         $expectedRegionIds = [

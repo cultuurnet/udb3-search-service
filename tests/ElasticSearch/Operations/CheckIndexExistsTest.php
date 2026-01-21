@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\Json;
+use Elastic\Elasticsearch\Response\Elasticsearch;
+use Elastic\Elasticsearch\Transport\AsyncOnSuccess;
+use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 final class CheckIndexExistsTest extends AbstractOperationTestCase
@@ -24,10 +28,15 @@ final class CheckIndexExistsTest extends AbstractOperationTestCase
         bool $exists,
         string $log
     ): void {
+        $response = new Response(
+            $exists ? 200 : 301,
+            ['Content-Type' => 'application/json', Elasticsearch::HEADER_CHECK => Elasticsearch::PRODUCT_NAME],
+            Json::encode(['ok' => true])
+        );
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn($exists);
+            ->willReturn((new AsyncOnSuccess)->success($response, 1));
 
         $this->logger->expects($this->once())
             ->method('info')

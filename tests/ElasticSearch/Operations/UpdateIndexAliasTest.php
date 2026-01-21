@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
 use Psr\Log\LoggerInterface;
 
 final class UpdateIndexAliasTest extends AbstractOperationTestCase
 {
+    use ElasticSearchResponseHelper;
+
     protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): UpdateIndexAlias
     {
         return new UpdateIndexAlias($client, $logger);
@@ -22,8 +25,6 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
         $newIndex = 'udb3_core_v1';
         $alias = 'udb3_core_write';
 
-
-
         $this->indices->expects($this->once())
             ->method('existsAlias')
             ->with(
@@ -31,7 +32,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
                     'name' => $alias,
                 ]
             )
-            ->willReturn(false);
+            ->willReturn($this->getElasticSearchResponse(301));
 
         $this->indices->expects($this->once())
             ->method('putAlias')
@@ -67,7 +68,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
                     'name' => $alias,
                 ]
             )
-            ->willReturn(true);
+            ->willReturn($this->getElasticSearchResponse());
 
         $this->indices->expects($this->once())
             ->method('getAlias')
@@ -77,7 +78,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
                 ]
             )
             ->willReturn(
-                [
+                $this->getElasticSearchResponse(200, [
                     $oldIndex => [
                         'aliases' => [
                             $alias => [],
@@ -88,7 +89,7 @@ final class UpdateIndexAliasTest extends AbstractOperationTestCase
                             $alias => [],
                         ],
                     ],
-                ]
+                ])
             );
 
         $this->indices->expects($this->exactly(2))

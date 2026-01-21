@@ -20,12 +20,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
 {
     use MocksElasticsearchResponse;
-    /**
-     * @var EventBus&MockObject
-     */
-    private $eventBus;
 
-    private array $logMessages;
+    private EventBus&MockObject $eventBus;
+
+    private array $logMessages = [];
 
     protected function setUp(): void
     {
@@ -58,10 +56,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
             );
     }
 
-    /**
-     * @return EventBus&MockObject
-     */
-    public function getEventBus()
+    public function getEventBus() : EventBus&MockObject
     {
         return $this->eventBus;
     }

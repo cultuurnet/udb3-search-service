@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
 use Psr\Log\LoggerInterface;
 
 final class DeleteIndexTest extends AbstractOperationTestCase
 {
+    use ElasticSearchResponseHelper;
+
     protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): DeleteIndex
     {
         return new DeleteIndex($client, $logger);
@@ -24,7 +27,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn(true);
+            ->willReturn($this->getElasticSearchResponse());
 
         $this->indices->expects($this->once())
             ->method('delete')
@@ -47,7 +50,7 @@ final class DeleteIndexTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn(false);
+            ->willReturn($this->getElasticSearchResponse(301));
 
         $this->logger->expects($this->once())
             ->method('info')

@@ -26,15 +26,9 @@ trait HasElasticSearchClient
     {
         $parameters['body'] = $body;
 
-        $response = $this->elasticSearchClient->search(
+        return $this->elasticSearchClient->search(
             $this->createParameters($parameters)
-        );
-
-        if (!$response instanceof Elasticsearch) {
-            throw new \RuntimeException('Async response type from Elasticsearch client not supported');
-        }
-
-        return $response->asArray();
+        )->asArray();
     }
 
     private function createParameters(array $parameters): array

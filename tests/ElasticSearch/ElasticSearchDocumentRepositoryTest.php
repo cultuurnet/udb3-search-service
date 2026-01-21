@@ -94,17 +94,6 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $response = [
-            'found' => true,
-            '_index' => $this->indexName,
-            '_type' => $this->documentType,
-            '_id' => $id,
-            '_version' => 2,
-            '_source' => [
-                'name' => 'STUK',
-            ],
-        ];
-
         $jsonDocument = (new JsonDocument($id))
             ->withBody((object) ['name' => 'STUK']);
 
@@ -115,7 +104,16 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
                 'type' => $this->documentType,
                 'id' => $id,
             ])
-            ->willReturn($this->createElasticsearchResponseAsObject($response));
+            ->willReturn($this->createElasticsearchResponse([
+                'found' => true,
+                '_index' => $this->indexName,
+                '_type' => $this->documentType,
+                '_id' => $id,
+                '_version' => 2,
+                '_source' => [
+                    'name' => 'STUK',
+                ],
+            ]));
 
         $this->assertEquals($jsonDocument, $this->repository->get($id));
     }

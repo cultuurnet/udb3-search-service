@@ -5,10 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchResponseHelper;
+use CultuurNet\UDB3\Search\Json;
+use Elastic\Elasticsearch\Response\Elasticsearch;
+use Elastic\Elasticsearch\Transport\AsyncOnSuccess;
+use GuzzleHttp\Psr7\Response;
 use Psr\Log\LoggerInterface;
 
 final class CreateIndexTest extends AbstractOperationTestCase
 {
+    use ElasticSearchResponseHelper;
+
     protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): CreateIndex
     {
         return new CreateIndex($client, $logger);
@@ -20,12 +27,11 @@ final class CreateIndexTest extends AbstractOperationTestCase
     public function it_creates_the_new_index_if_it_does_not_exist_yet(): void
     {
         $indexName = 'mock';
-        $force = false;
 
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn(false);
+            ->willReturn($this->getElasticSearchResponse(301));
 
         $this->indices->expects($this->once())
             ->method('create')
@@ -35,7 +41,7 @@ final class CreateIndexTest extends AbstractOperationTestCase
             ->method('info')
             ->with('Index mock created.');
 
-        $this->operation->run($indexName, $force);
+        $this->operation->run($indexName, false);
     }
 
     /**
@@ -44,18 +50,17 @@ final class CreateIndexTest extends AbstractOperationTestCase
     public function it_does_nothing_if_the_index_already_exists_and_force_is_disabled(): void
     {
         $indexName = 'mock';
-        $force = false;
 
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn(true);
+            ->willReturn($this->getElasticSearchResponse());
 
         $this->logger->expects($this->once())
             ->method('error')
             ->with('Index mock already exists!');
 
-        $this->operation->run($indexName, $force);
+        $this->operation->run($indexName, false);
     }
 
     /**
@@ -64,12 +69,10 @@ final class CreateIndexTest extends AbstractOperationTestCase
     public function it_overwrites_an_existing_index_if_force_is_enabled(): void
     {
         $indexName = 'mock';
-        $force = true;
-
         $this->indices->expects($this->once())
             ->method('exists')
             ->with(['index' => $indexName])
-            ->willReturn(true);
+            ->willReturn($this->getElasticSearchResponse());
 
         $this->indices->expects($this->once())
             ->method('delete')
@@ -86,6 +89,6 @@ final class CreateIndexTest extends AbstractOperationTestCase
                 ['Index mock created.']
             );
 
-        $this->operation->run($indexName, $force);
+        $this->operation->run($indexName, true);
     }
 }

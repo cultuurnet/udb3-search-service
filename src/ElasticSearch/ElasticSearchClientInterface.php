@@ -15,12 +15,12 @@ use Http\Promise\Promise;
  */
 interface ElasticSearchClientInterface extends ClientInterface
 {
-    public function search(array $params = []): Elasticsearch|Promise;
-    public function bulk(array $params = []): Elasticsearch|Promise;
-    public function index(array $params = []): Elasticsearch|Promise;
-    public function delete(array $params = []): Elasticsearch|Promise;
-    public function get(array $params = []): Elasticsearch|Promise;
+    public function search(array $params = []): Elasticsearch;
+    public function bulk(array $params = []): Elasticsearch;
+    public function index(array $params = []): Elasticsearch;
+    public function delete(array $params = []): Elasticsearch;
+    public function get(array $params = []): Elasticsearch;
     public function indices(): Indices;
-    public function scroll(array $params = []): Elasticsearch|Promise;
-    public function clearScroll(array $params = []) : Elasticsearch|Promise;
+    public function scroll(array $params = []): Elasticsearch;
+    public function clearScroll(array $params = []) : Elasticsearch;
 }

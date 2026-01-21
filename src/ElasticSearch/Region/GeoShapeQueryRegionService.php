@@ -74,7 +74,7 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
             $total = $response['hits']['total'];
 
             foreach ($response['hits']['hits'] as $hit) {
-                if ($hit['_type'] == 'region') {
+                if ($hit['_type'] === 'region') {
                     $regionIds[] = new RegionId($hit['_id']);
                 }
 
