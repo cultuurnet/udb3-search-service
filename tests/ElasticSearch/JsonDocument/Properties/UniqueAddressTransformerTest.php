@@ -11,12 +11,13 @@ final class UniqueAddressTransformerTest extends TestCase
     /**
      * @dataProvider transformDataProvider
      */
-    public function testTransform(array $inputData, string $expectedResult): void
+    public function testTransform(array $inputData, string $legacyExpectedResult, string $expectedResult): void
     {
         $transformer = new UniqueAddressTransformer();
         $result = $transformer->transform($inputData);
 
-        $this->assertEquals($expectedResult, $result['unique_address_identifier']);
+        $this->assertEquals($legacyExpectedResult, $result['unique_address_identifier']);
+        $this->assertEquals($expectedResult, $result['global_address_identifier']);
     }
 
     public function test_do_not_add_empty_unique_address_identifier(): void
@@ -25,12 +26,13 @@ final class UniqueAddressTransformerTest extends TestCase
         $result = $transformer->transform([]);
 
         $this->assertArrayNotHasKey('unique_address_identifier', $result);
+        $this->assertArrayNotHasKey('global_address_identifier', $result);
     }
 
     public function transformDataProvider(): array
     {
         return [
-            [
+            'dutch main language' =>[
                 [
                     'name' => ['nl' => 'Dansstudio'],
                     'mainLanguage' => 'nl',
@@ -45,6 +47,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'french main language' => [
                 [
@@ -61,6 +64,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'no main language' => [
                 [
@@ -76,6 +80,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
             ],
             'missing required fields' => [
                 [
@@ -83,6 +88,7 @@ final class UniqueAddressTransformerTest extends TestCase
                     'creator' => 'John Doe',
                 ],
                 'dansstudio_john_doe',
+                'dansstudio',
             ],
             'missing required name and creator' => [
                 [
@@ -96,6 +102,41 @@ final class UniqueAddressTransformerTest extends TestCase
                     ],
                 ],
                 'teststraat_1_2000_antwerpen_be',
+                'teststraat_1_2000_antwerpen_be',
+            ],
+            'diacritics' => [
+                [
+                    'name' => ['nl' => 'Ďåñśšțůďíø'],
+                    'mainLanguage' => 'nl',
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Teststraat 1',
+                            'postalCode' => '2000',
+                            'addressLocality' => 'Antwerpen',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'John Doe',
+                ],
+                'ďåñśšțůďíø_teststraat_1_2000_antwerpen_be_john_doe',
+                'dansstudio_teststraat_1_2000_antwerpen_be',
+            ],
+            'special characters' => [
+                [
+                    'name' => ['nl' => 'S.M.A.K.-Stedelijk*Museum*voor*@ctuele*kunst*'],
+                    'mainLanguage' => 'nl',
+                    'address' => [
+                        'nl' => [
+                            'streetAddress' => 'Jan Hoetplein 1',
+                            'postalCode' => '9000',
+                            'addressLocality' => 'Gent',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'creator' => 'Jan Hoet',
+                ],
+                's.m.a.k.-stedelijk*museum*voor*@ctuele*kunst*_jan_hoetplein_1_9000_gent_be_jan_hoet',
+                's_m_a_k_stedelijk_museum_voor_ctuele_kunst_jan_hoetplein_1_9000_gent_be',
             ],
         ];
     }
