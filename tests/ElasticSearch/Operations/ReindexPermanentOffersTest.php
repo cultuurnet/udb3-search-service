@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use Psr\Log\LoggerInterface;
 
 final class ReindexPermanentOffersTest extends AbstractReindexUDB3CoreTest
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): ReindexPermanentOffers
+    protected function createOperation(ElasticSearchClientInterface $client, LoggerInterface $logger): ReindexPermanentOffers
     {
         return new ReindexPermanentOffers(
             $client,

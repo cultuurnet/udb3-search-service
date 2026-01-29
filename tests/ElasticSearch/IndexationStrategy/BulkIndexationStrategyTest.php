@@ -4,53 +4,39 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchClientInterface;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 final class BulkIndexationStrategyTest extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    private $client;
-
+    private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
 
-
     private string $documentType;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
-
-
-    private int $autoFlushThreshold;
-
+    private LoggerInterface&MockObject $logger;
 
     private BulkIndexationStrategy $strategy;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ElasticSearchClientInterface::class);
 
         $this->indexName = 'udb3-core';
         $this->documentType = 'event';
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->autoFlushThreshold = 5;
+        $autoFlushThreshold = 5;
 
         $this->strategy = new BulkIndexationStrategy(
             $this->client,
             $this->logger,
-            $this->autoFlushThreshold
+            $autoFlushThreshold
         );
     }
 

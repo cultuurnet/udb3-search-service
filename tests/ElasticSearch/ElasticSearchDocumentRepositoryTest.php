@@ -8,32 +8,24 @@ use stdClass;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
 final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
-    /**
-     * @var Client&MockObject
-     */
-    private $client;
-
+    use ElasticSearchResponseHelper;
+    private ElasticSearchClientInterface&MockObject $client;
 
     private string $indexName;
 
-
     private string $documentType;
-
 
     private ElasticSearchDocumentRepository $repository;
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->client = $this->createMock(ElasticSearchClientInterface::class);
 
         $this->indexName = 'udb3-core';
         $this->documentType = 'organizer';
@@ -62,18 +54,16 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $jsonDocument = (new JsonDocument($id))
             ->withBody($body);
 
-        $parameters = [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-            'id' => $id,
-            'body' => [
-                'name' => 'STUK',
-            ],
-        ];
-
         $this->client->expects($this->once())
             ->method('index')
-            ->with($parameters);
+            ->with([
+                'index' => $this->indexName,
+                'type' => $this->documentType,
+                'id' => $id,
+                'body' => [
+                    'name' => 'STUK',
+                ],
+            ]);
 
         $this->repository->save($jsonDocument);
     }
@@ -85,15 +75,13 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $parameters = [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-            'id' => $id,
-        ];
-
         $this->client->expects($this->once())
             ->method('delete')
-            ->with($parameters);
+            ->with([
+                'index' => $this->indexName,
+                'type' => $this->documentType,
+                'id' => $id,
+            ]);
 
         $this->repository->remove($id);
     }
@@ -105,30 +93,26 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $parameters = [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-            'id' => $id,
-        ];
-
-        $response = [
-            'found' => true,
-            '_index' => $this->indexName,
-            '_type' => $this->documentType,
-            '_id' => $id,
-            '_version' => 2,
-            '_source' => [
-                'name' => 'STUK',
-            ],
-        ];
-
         $jsonDocument = (new JsonDocument($id))
             ->withBody((object) ['name' => 'STUK']);
 
         $this->client->expects($this->once())
             ->method('get')
-            ->with($parameters)
-            ->willReturn($response);
+            ->with([
+                'index' => $this->indexName,
+                'type' => $this->documentType,
+                'id' => $id,
+            ])
+            ->willReturn($this->getElasticSearchResponse(200, [
+                'found' => true,
+                '_index' => $this->indexName,
+                '_type' => $this->documentType,
+                '_id' => $id,
+                '_version' => 2,
+                '_source' => [
+                    'name' => 'STUK',
+                ],
+            ]));
 
         $this->assertEquals($jsonDocument, $this->repository->get($id));
     }
@@ -140,12 +124,6 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $parameters = [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-            'id' => $id,
-        ];
-
         $response = [
             'found' => false,
             '_index' => $this->indexName,
@@ -156,8 +134,12 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $this->client->expects($this->once())
             ->method('get')
-            ->with($parameters)
-            ->willReturn($response);
+            ->with([
+                'index' => $this->indexName,
+                'type' => $this->documentType,
+                'id' => $id,
+            ])
+            ->willReturn($this->getElasticSearchResponse(200, $response));
 
         $this->expectException(DocumentGone::class);
 
@@ -171,12 +153,6 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
     {
         $id = '4445a72f-3477-4e8b-b0c2-94cc5fe1bfc4';
 
-        $parameters = [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-            'id' => $id,
-        ];
-
         $response = [
             'found' => false,
             '_index' => $this->indexName,
@@ -186,8 +162,12 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
         $this->client->expects($this->once())
             ->method('get')
-            ->with($parameters)
-            ->willReturn($response);
+            ->with([
+                'index' => $this->indexName,
+                'type' => $this->documentType,
+                'id' => $id,
+            ])
+            ->willReturn($this->getElasticSearchResponse(200, $response));
 
         $this->assertNull($this->repository->get($id));
     }
