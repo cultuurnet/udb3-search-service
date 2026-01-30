@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\ApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\UnmatchedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
@@ -41,6 +43,8 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private DefaultQueryRepository $defaultQueryRepository;
 
+    private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
+
     private string $pemFile;
 
     public function __construct(
@@ -48,12 +52,14 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
+        ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds,
         string $pemFile
     ) {
         $this->container = $container;
         $this->consumerResolver = $consumerResolver;
         $this->clientIdResolver = $clientIdResolver;
         $this->defaultQueryRepository = $defaultQueryRepository;
+        $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
         $this->pemFile = $pemFile;
         $this->setLogger(new NullLogger());
     }
@@ -65,12 +71,19 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         $clientId = $this->getClientId($request);
+        $apiKey = $this->getApiKey($request);
+
+        if ($clientId === null && $apiKey !== null && $this->apiKeysMatchedToClientIds !== null) {
+            try {
+                $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
+            } catch (UnmatchedApiKey $unmatchedApiKey) {
+                $this->logger->warning($unmatchedApiKey->getMessage());
+            }
+        }
 
         if ($clientId !== null) {
             return $this->handleClientId($request, $handler, $clientId);
         }
-
-        $apiKey = $this->getApiKey($request);
 
         if ($apiKey !== null) {
             return $this->handleApiKey($request, $handler, $apiKey);
