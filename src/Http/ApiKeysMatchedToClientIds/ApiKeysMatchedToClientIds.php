@@ -6,5 +6,5 @@ namespace CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds;
 
 interface ApiKeysMatchedToClientIds
 {
-    public function getClientId(string $apiKey): ?string;
+    public function getClientId(string $apiKey): string;
 }

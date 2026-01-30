@@ -332,9 +332,10 @@ final class AuthenticateRequestTest extends TestCase
     }
 
     /**
+     * @dataProvider validApiKeyRequestsProvider
      * @test
      */
-    public function it_handles_unmatched_api_keys(): void
+    public function it_handles_unmatched_api_keys(ServerRequestInterface $request): void
     {
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
@@ -347,17 +348,37 @@ final class AuthenticateRequestTest extends TestCase
             $this->pemFile
         );
 
-        $this->consumerResolver->expects($this->never())
-            ->method('getStatus');
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_active_api_key')
+            ->willReturn('ACTIVE');
 
-        $response = $authenticateRequest->process(
-            (new ServerRequestFactory())
-                ->createServerRequest('GET', 'https://search.uitdatabank.be')
-                ->withHeader('x-api-key', 'my_unmatched_api_key'),
-            $this->createMock(RequestHandlerInterface::class)
-        );
+        $this->consumerResolver->expects($this->once())
+            ->method('getDefaultQuery')
+            ->with('my_active_api_key')
+            ->willReturn('my_default_search_query');
 
-        $this->assertProblemReport(new InvalidApiKey('my_unmatched_api_key'), $response);
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
     }
 
     public function validApiKeyRequestsProvider(): array

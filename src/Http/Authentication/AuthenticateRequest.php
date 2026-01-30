@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\ApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\UnmatchedApiKey;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidClient;
@@ -70,12 +71,19 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         }
 
         $clientId = $this->getClientId($request);
+        $apiKey = $this->getApiKey($request);
+
+        if ($clientId === null && $apiKey !== null && $this->apiKeysMatchedToClientIds !== null) {
+            try {
+                $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
+            } catch (UnmatchedApiKey $unmatchedApiKey) {
+                $this->logger->warning($unmatchedApiKey->getMessage());
+            }
+        }
 
         if ($clientId !== null) {
             return $this->handleClientId($request, $handler, $clientId);
         }
-
-        $apiKey = $this->getApiKey($request);
 
         if ($apiKey !== null) {
             return $this->handleApiKey($request, $handler, $apiKey);
@@ -153,21 +161,6 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
     }
 
     private function handleApiKey(
-        ServerRequestInterface $request,
-        RequestHandlerInterface $handler,
-        string $apiKey
-    ): ResponseInterface {
-        if ($this->apiKeysMatchedToClientIds === null) {
-            return $this->legacyHandleApiKey($request, $handler, $apiKey);
-        }
-        $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
-        if ($clientId === null) {
-            return (new InvalidApiKey($apiKey))->toResponse();
-        }
-        return $this->handleClientId($request, $handler, $clientId);
-    }
-
-    private function legacyHandleApiKey(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
         string $apiKey

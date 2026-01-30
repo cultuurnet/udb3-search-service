@@ -10,8 +10,11 @@ final class InMemoryApiKeysMatchedToClientIds implements ApiKeysMatchedToClientI
     {
     }
 
-    public function getClientId(string $apiKey): ?string
+    public function getClientId(string $apiKey): string
     {
-        return $this->apiKeysMatchedToClientIds[$apiKey] ?? null;
+        if (!array_key_exists($apiKey, $this->apiKeysMatchedToClientIds)) {
+            throw new UnmatchedApiKey($apiKey);
+        }
+        return $this->apiKeysMatchedToClientIds[$apiKey];
     }
 }
