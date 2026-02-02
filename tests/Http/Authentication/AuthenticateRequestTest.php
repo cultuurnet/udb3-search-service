@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\InMemoryApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\InvalidConsumer;
@@ -94,6 +95,7 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' =>
                     ['my_active_api_key_with_config_query' => 'my_default_search_query'],
             ]),
+            null,
             $this->pemFile
         );
     }
@@ -245,6 +247,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
             ]),
+            null,
             $this->pemFile
         );
 
@@ -256,6 +259,104 @@ final class AuthenticateRequestTest extends TestCase
         $this->consumerResolver->expects($this->never())
             ->method('getDefaultQuery')
             ->with('my_active_api_key');
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_api_key', 'my_default_search_query'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validApiKeyRequestsProvider
+     * @test
+     */
+    public function it_matches_api_keys_to_client_ids(ServerRequestInterface $request): void
+    {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeysMatchedToClientIds([
+                'my_active_api_key' => 'my_active_client_id',
+            ]),
+            $this->pemFile
+        );
+
+        $this->consumerResolver->expects($this->never())
+            ->method('getStatus');
+
+        $response = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($response);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer('my_active_client_id', null));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $this->clientIdResolver->expects($this->once())
+            ->method('hasSapiAccess')
+            ->with('my_active_client_id')
+            ->willReturn(true);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($response, $actualResponse);
+    }
+
+    /**
+     * @dataProvider validApiKeyRequestsProvider
+     * @test
+     */
+    public function it_handles_unmatched_api_keys(ServerRequestInterface $request): void
+    {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeysMatchedToClientIds([
+                'some_api_key' => 'some_client_id',
+            ]),
+            $this->pemFile
+        );
+
+        $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with('my_active_api_key')
+            ->willReturn('ACTIVE');
+
+        $this->consumerResolver->expects($this->once())
+            ->method('getDefaultQuery')
+            ->with('my_active_api_key')
+            ->willReturn('my_default_search_query');
 
         $response = (new ResponseFactory())->createResponse(200);
 
@@ -322,6 +423,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
@@ -356,6 +458,7 @@ final class AuthenticateRequestTest extends TestCase
             $this->consumerResolver,
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
@@ -400,6 +503,7 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryDefaultQueryRepository([
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
+            new InMemoryApiKeysMatchedToClientIds([]),
             $this->pemFile
         );
 
