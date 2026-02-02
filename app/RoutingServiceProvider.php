@@ -8,6 +8,7 @@ use CultureFeed;
 use CultureFeed_DefaultOAuthClient;
 use CultuurNet\UDB3\Search\Cache\CacheFactory;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\InMemoryApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedClientIdResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\CachedConsumerResolver;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\MetadataClientIdResolver;
@@ -65,6 +66,9 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     );
 
                     $pemFile = $this->parameter('keycloak.pem_file');
+                    $apiKeysMatchedToClientIds = new InMemoryApiKeysMatchedToClientIds(
+                        file_exists(__DIR__ . '/../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../api_keys_matched_to_client_ids.php' : [],
+                    );
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CachedConsumerResolver(
@@ -86,7 +90,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         new InMemoryDefaultQueryRepository(
                             file_exists(__DIR__ . '/../default_queries.php') ? require __DIR__ . '/../default_queries.php' : []
                         ),
-                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile)
+                        $this->parameter('toggles.match_api_keys_to_client_ids') ?? false ? $apiKeysMatchedToClientIds : null,
+                        FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
