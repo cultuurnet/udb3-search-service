@@ -41,6 +41,11 @@ final class ApiProblemFactory
         }
 
         if ($throwable instanceof ElasticsearchException) {
+
+            echo $throwable->getMessage();
+            die(PHP_EOL . 'die silent');
+
+
             $errorData = Json::decodeAssociatively($throwable->getMessage());
             $message = $errorData['error']['root_cause'][0]['reason'];
 

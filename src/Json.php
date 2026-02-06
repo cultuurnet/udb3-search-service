@@ -75,7 +75,7 @@ final class Json
      */
     public static function decode(string $data)
     {
-        return json_decode($data, false, self::$depth, JSON_THROW_ON_ERROR);
+            return json_decode($data, false, self::$depth, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -91,6 +91,11 @@ final class Json
      */
     public static function decodeAssociatively(string $data)
     {
-        return json_decode($data, true, self::$depth, JSON_THROW_ON_ERROR);
+        try {
+            return json_decode($data, true, self::$depth, JSON_THROW_ON_ERROR);
+        }
+        catch (JsonException $e) {
+     //       die($e->getMessage());
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 use Elastic\Elasticsearch\ClientInterface;
 use Elastic\Elasticsearch\Endpoints\Indices;
 use Elastic\Elasticsearch\Response\Elasticsearch;
+use Http\Promise\Promise;
 
 /**
  * Extended Elasticsearch client interface that includes the actual API methods
@@ -14,12 +15,12 @@ use Elastic\Elasticsearch\Response\Elasticsearch;
  */
 interface ElasticSearchClientInterface extends ClientInterface
 {
-    public function search(array $params = []): Elasticsearch;
-    public function bulk(array $params = []): Elasticsearch;
-    public function index(array $params = []): Elasticsearch;
-    public function delete(array $params = []): Elasticsearch;
-    public function get(array $params = []): Elasticsearch;
+    public function search(array $params = []) ;
+    public function bulk(array $params = []);
+    public function index(array $params = []);
+    public function delete(array $params = []);
+    public function get(array $params = []);
     public function indices(): Indices;
-    public function scroll(array $params = []): Elasticsearch;
-    public function clearScroll(array $params = []): Elasticsearch;
+    public function scroll(array $params = []);
+    public function clearScroll(array $params = []);
 }
