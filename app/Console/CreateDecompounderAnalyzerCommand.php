@@ -17,7 +17,7 @@ final class CreateDecompounderAnalyzerCommand extends AbstractElasticSearchComma
     {
         $this
             ->setName('decompounder-analyzer:create')
-            ->setDescription('Creates or updates the template for a hyphenation decompounder analyzer for Dutch language.');
+            ->setDescription('Creates or updates the template for a ngrok tokenizer .');
     }
 
     /**
