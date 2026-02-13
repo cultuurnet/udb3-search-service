@@ -84,19 +84,43 @@
             "properties": {
                 "nl": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "fr": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "en": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "de": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 }
             }
         },
@@ -105,19 +129,43 @@
             "properties": {
                 "nl": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "fr": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "en": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 },
                 "de": {
                     "type": "string",
-                    "analyzer": "lowercase_standard_analyzer"
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 }
             }
         },
@@ -149,7 +197,13 @@
             }
         },
         "labels_free_text": {
-            "type": "string"
+            "type": "string",
+            "fields": {
+                "decompounder": {
+                    "type": "string",
+                    "analyzer": "decompounder_analyzer"
+                }
+            }
         },
         "terms": {
             "type": "object",
@@ -175,7 +229,13 @@
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 },
                 "label": {
-                    "type": "string"
+                    "type": "string",
+                    "fields": {
+                        "decompounder": {
+                            "type": "string",
+                            "analyzer": "decompounder_analyzer"
+                        }
+                    }
                 }
             }
         },
@@ -202,7 +262,13 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "postalCode": {
                             "type": "string",
@@ -211,7 +277,13 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         }
                     }
                 },
@@ -225,7 +297,13 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "postalCode": {
                             "type": "string",
@@ -234,7 +312,13 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         }
                     }
                 },
@@ -248,7 +332,13 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "postalCode": {
                             "type": "string",
@@ -257,7 +347,13 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         }
                     }
                 },
@@ -271,7 +367,13 @@
                         },
                         "addressLocality": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "postalCode": {
                             "type": "string",
@@ -280,7 +382,13 @@
                         },
                         "streetAddress": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         }
                     }
                 }
@@ -352,19 +460,43 @@
                     "properties": {
                         "nl": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "fr": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "en": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         },
                         "de": {
                             "type": "string",
-                            "analyzer": "lowercase_standard_analyzer"
+                            "analyzer": "lowercase_standard_analyzer",
+                            "fields": {
+                                "decompounder": {
+                                    "type": "string",
+                                    "analyzer": "decompounder_analyzer"
+                                }
+                            }
                         }
                     }
                 },
