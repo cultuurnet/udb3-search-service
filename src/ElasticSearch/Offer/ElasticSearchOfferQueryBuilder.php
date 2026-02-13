@@ -55,11 +55,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      */
     private ?int $aggregationSize;
 
-    public function __construct(int $aggregationSize = null)
+    public function __construct(int $aggregationSize = null, bool $useWordBreaker = false)
     {
         parent::__construct();
 
-        $this->predefinedQueryStringFields = new OfferPredefinedQueryStringFields();
+        $this->predefinedQueryStringFields = new OfferPredefinedQueryStringFields($useWordBreaker);
         $this->aggregationSize = $aggregationSize;
 
         $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
