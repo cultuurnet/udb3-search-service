@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Operations\SchemaVersions;
 use CultuurNet\UDB3\SearchService\Console\CheckIndexExistsCommand;
 use CultuurNet\UDB3\SearchService\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateDecompounderAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
@@ -45,6 +46,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'lowercase-exact-match-analyzer:create' => CreateLowerCaseExactMatchAnalyzerCommand::class,
                     'lowercase-standard-analyzer:create' => CreateLowerCaseStandardAnalyzerCommand::class,
                     'autocomplete-analyzer:create' => CreateAutocompleteAnalyzerCommand::class,
+                    'decompounder-analyzer:create' => CreateDecompounderAnalyzerCommand::class,
                     'index:exists' => CheckIndexExistsCommand::class,
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
