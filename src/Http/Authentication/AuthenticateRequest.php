@@ -29,10 +29,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
-final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
+final class AuthenticateRequest implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     private const BEARER = 'Bearer ';
 
     private Container $container;
@@ -80,7 +78,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             try {
                 $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
             } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->warning($unmatchedApiKey->getMessage());
+                $this->logger->error($unmatchedApiKey->getMessage());
             }
         }
 
