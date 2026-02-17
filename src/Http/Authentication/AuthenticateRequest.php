@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
-use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
 use Noodlehaus\Config;
@@ -26,13 +25,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
-final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInterface
+final class AuthenticateRequest implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     private const BEARER = 'Bearer ';
 
     private Container $container;
@@ -47,13 +43,16 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
 
     private string $pemFile;
 
+    private LoggerInterface $logger;
+
     public function __construct(
         Container $container,
         ConsumerResolver $consumerResolver,
         ClientIdResolver $clientIdResolver,
         DefaultQueryRepository $defaultQueryRepository,
         ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds,
-        string $pemFile
+        string $pemFile,
+        LoggerInterface $logger
     ) {
         $this->container = $container;
         $this->consumerResolver = $consumerResolver;
@@ -61,7 +60,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
         $this->defaultQueryRepository = $defaultQueryRepository;
         $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
         $this->pemFile = $pemFile;
-        $this->setLogger(new NullLogger());
+        $this->logger = $logger;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -77,7 +76,7 @@ final class AuthenticateRequest implements MiddlewareInterface, LoggerAwareInter
             try {
                 $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
             } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->warning($unmatchedApiKey->getMessage());
+                $this->logger->error($unmatchedApiKey->getMessage());
             }
         }
 

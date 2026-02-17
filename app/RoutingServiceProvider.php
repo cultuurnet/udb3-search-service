@@ -92,6 +92,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         ),
                         $this->parameter('toggles.match_api_keys_to_client_ids') ?? false ? $apiKeysMatchedToClientIds : null,
                         FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
+                        LoggerFactory::create($this->container, LoggerName::forWeb())
                     );
 
                     $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());

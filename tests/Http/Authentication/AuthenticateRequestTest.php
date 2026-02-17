@@ -30,6 +30,8 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
@@ -96,7 +98,8 @@ final class AuthenticateRequestTest extends TestCase
                     ['my_active_api_key_with_config_query' => 'my_default_search_query'],
             ]),
             null,
-            $this->pemFile
+            $this->pemFile,
+            new NullLogger()
         );
     }
 
@@ -248,7 +251,8 @@ final class AuthenticateRequestTest extends TestCase
                 'api_keys' => ['my_active_api_key' => 'my_default_search_query'],
             ]),
             null,
-            $this->pemFile
+            $this->pemFile,
+            new NullLogger()
         );
 
         $this->consumerResolver->expects($this->once())
@@ -289,6 +293,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_matches_api_keys_to_client_ids(ServerRequestInterface $request): void
     {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())
+            ->method('error');
+
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->consumerResolver,
@@ -297,7 +305,8 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryApiKeysMatchedToClientIds([
                 'my_active_api_key' => 'my_active_client_id',
             ]),
-            $this->pemFile
+            $this->pemFile,
+            $logger
         );
 
         $this->consumerResolver->expects($this->never())
@@ -337,6 +346,11 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_unmatched_api_keys(ServerRequestInterface $request): void
     {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with('my_active_api_key could not be matched to a clientId.');
+
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->consumerResolver,
@@ -345,7 +359,8 @@ final class AuthenticateRequestTest extends TestCase
             new InMemoryApiKeysMatchedToClientIds([
                 'some_api_key' => 'some_client_id',
             ]),
-            $this->pemFile
+            $this->pemFile,
+            $logger
         );
 
         $this->consumerResolver->expects($this->once())
@@ -424,7 +439,8 @@ final class AuthenticateRequestTest extends TestCase
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile
+            $this->pemFile,
+            new NullLogger()
         );
 
         $requestHandler = $this->createMock(RequestHandlerInterface::class);
@@ -459,7 +475,8 @@ final class AuthenticateRequestTest extends TestCase
             $this->clientIdResolver,
             new InMemoryDefaultQueryRepository([]),
             new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile
+            $this->pemFile,
+            new NullLogger()
         );
 
         $response = (new ResponseFactory())->createResponse(200);
@@ -504,7 +521,8 @@ final class AuthenticateRequestTest extends TestCase
                 'client_ids' => ['my_active_client_id' => 'my_new_default_search_query'],
             ]),
             new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile
+            $this->pemFile,
+            new NullLogger()
         );
 
         $response = (new ResponseFactory())->createResponse(200);
