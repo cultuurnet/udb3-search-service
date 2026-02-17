@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\MissingCredentials;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\NotAllowedToUseSapi;
 use CultuurNet\UDB3\Search\Http\Authentication\ApiProblems\RemovedApiKey;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\DefaultQueryRepository;
-use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use Lcobucci\JWT\Token\InvalidTokenStructure;
 use League\Container\Container;
 use Noodlehaus\Config;
@@ -26,7 +25,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 
 final class AuthenticateRequest implements MiddlewareInterface
