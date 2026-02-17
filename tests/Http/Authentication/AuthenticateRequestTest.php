@@ -30,6 +30,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -292,6 +293,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_matches_api_keys_to_client_ids(ServerRequestInterface $request): void
     {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())
+            ->method('error');
+
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->consumerResolver,
@@ -301,7 +306,7 @@ final class AuthenticateRequestTest extends TestCase
                 'my_active_api_key' => 'my_active_client_id',
             ]),
             $this->pemFile,
-            new NullLogger()
+            $logger
         );
 
         $this->consumerResolver->expects($this->never())
@@ -341,6 +346,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_unmatched_api_keys(ServerRequestInterface $request): void
     {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error');
+
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
             $this->consumerResolver,
@@ -350,7 +359,7 @@ final class AuthenticateRequestTest extends TestCase
                 'some_api_key' => 'some_client_id',
             ]),
             $this->pemFile,
-            new NullLogger()
+            $logger
         );
 
         $this->consumerResolver->expects($this->once())
