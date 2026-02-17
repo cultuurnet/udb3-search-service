@@ -348,7 +348,8 @@ final class AuthenticateRequestTest extends TestCase
     {
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())
-            ->method('error');
+            ->method('error')
+            ->with('my_active_api_key could not be matched to a clientId.');
 
         $authenticateRequest = new AuthenticateRequest(
             $this->container,
