@@ -34,6 +34,7 @@ services:
       - '9200:9200'
     volumes:
       - 'udb3-es:/elasticsearch/data'
+      - './docker/es:/elasticsearch/config/analysis/hyphenation_patterns:ro'
     networks:
       uitdatabank-search:
         aliases:
