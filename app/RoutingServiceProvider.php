@@ -69,6 +69,8 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $apiKeysMatchedToClientIds = new InMemoryApiKeysMatchedToClientIds(
                         file_exists(__DIR__ . '/../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../api_keys_matched_to_client_ids.php' : [],
                     );
+                    $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
+
                     $authenticateRequest = new AuthenticateRequest(
                         $this->getLeagueContainer(),
                         new CachedConsumerResolver(
@@ -92,13 +94,12 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         ),
                         $this->parameter('toggles.match_api_keys_to_client_ids') ?? false ? $apiKeysMatchedToClientIds : null,
                         FileReader::read('file://' . __DIR__ . '/../' . $pemFile),
+                        $logger
                     );
 
-                    $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
                     $metadataGenerator->setLogger($logger);
                     $consumerResolver->setLogger($logger);
                     $clientIdResolver->setLogger($logger);
-                    $authenticateRequest->setLogger($logger);
 
                     $router->middleware($authenticateRequest);
                 }
