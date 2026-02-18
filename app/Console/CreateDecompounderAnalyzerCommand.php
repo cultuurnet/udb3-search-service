@@ -17,7 +17,7 @@ final class CreateDecompounderAnalyzerCommand extends AbstractElasticSearchComma
     {
         $this
             ->setName('decompounder-analyzer:create')
-            ->setDescription('Creates or updates the template for a ngrok tokenizer .');
+            ->setDescription('Creates or updates the template for the analyzer decompounder .');
     }
 
     /**
