@@ -45,7 +45,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 $this->parameter('elasticsearch.region.document_type'),
                 $this->get(OfferSearchServiceFactory::class),
                 $this->get(Consumer::class),
-                $this->parameter('word_breaker') ?? false
+                $this->parameter('toggles.word_breaker') ?? false
             )
         );
 
