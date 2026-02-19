@@ -9,14 +9,21 @@ use CultuurNet\UDB3\Search\Language\Language;
 
 final class OfferPredefinedQueryStringFields implements PredefinedQueryFieldsInterface
 {
+    private bool $useWordBreaker;
+
+    public function __construct(bool $useWordBreaker = false)
+    {
+        $this->useWordBreaker = $useWordBreaker;
+    }
+
     public function getPredefinedFields(Language ...$languages): array
     {
         $fields = [
             'id',
-            'labels_free_text',
+            $this->useWordBreaker ? 'labels_free_text.decompounder' : 'labels_free_text',
             'terms_free_text.id',
-            'terms_free_text.label',
-            'performer_free_text.name',
+            $this->useWordBreaker ? 'terms_free_text.label.decompounder' : 'terms_free_text.label',
+            $this->useWordBreaker ? 'performer_free_text.name.decompounder' : 'performer_free_text.name',
             'location.id',
             'organizer.id',
         ];
@@ -26,13 +33,13 @@ final class OfferPredefinedQueryStringFields implements PredefinedQueryFieldsInt
             $fields = array_merge(
                 $fields,
                 [
-                    "name.{$langCode}",
-                    "description.{$langCode}",
-                    "address.{$langCode}.addressLocality",
+                    $this->useWordBreaker ? "name.{$langCode}.decompounder" : "name.{$langCode}",
+                    $this->useWordBreaker ? "description.{$langCode}.decompounder" : "description.{$langCode}",
+                    $this->useWordBreaker ? "address.{$langCode}.addressLocality.decompounder" : "address.{$langCode}.addressLocality",
                     "address.{$langCode}.postalCode",
-                    "address.{$langCode}.streetAddress",
-                    "location.name.{$langCode}",
-                    "organizer.name.{$langCode}",
+                    $this->useWordBreaker ? "address.{$langCode}.streetAddress.decompounder" : "address.{$langCode}.streetAddress",
+                    $this->useWordBreaker ? "location.name.{$langCode}.decompounder" : "location.name.{$langCode}",
+                    $this->useWordBreaker ? "organizer.name.{$langCode}.decompounder" : "organizer.name.{$langCode}",
                 ]
             );
         }

@@ -42,6 +42,8 @@ final class MigrateElasticSearchCommand extends AbstractCommand
 
         $consoleApp->find('lowercase-exact-match-analyzer:create')->run($emptyInput, $output);
         $consoleApp->find('lowercase-standard-analyzer:create')->run($emptyInput, $output);
+        $consoleApp->find('decompounder-analyzer:create')->run($emptyInput, $output);
+
         $consoleApp->find('autocomplete-analyzer:create')->run($emptyInput, $output);
 
         $consoleApp->find('geoshapes:install')->run($inputWithForceOption, $output);
