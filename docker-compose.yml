@@ -18,6 +18,8 @@ services:
     depends_on:
       elasticsearch:
         condition: service_healthy
+      elasticsearch8:
+        condition: service_healthy
 
   search:
     container_name: search.uitdatabank
