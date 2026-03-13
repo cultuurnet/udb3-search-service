@@ -43,13 +43,14 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
     private function buildElasticSearchClient(): Client
     {
-        $host = $this->parameter('elasticsearch.version') === 8
-            ? $this->parameter('elasticsearch.host8')
+        $version = $this->parameter('elasticsearch.version') ?? 5;
+        $host = $version === 8
+            ? ($this->parameter('elasticsearch.host8') ?? $this->parameter('elasticsearch.host'))
             : $this->parameter('elasticsearch.host');
 
         $builder = ClientBuilder::create()->setHosts([$host]);
 
-        if ($this->parameter('elasticsearch.version') === 8) {
+        if ($version === 8) {
             // The ES7 PHP client requires these headers when connecting to ES8 so that ES8 activates its
             // REST API compatibility layer and accepts v7-shaped requests/responses. This can be removed
             // once the service is fully migrated to the ES8 PHP client (elastic/elasticsearch ^8).
