@@ -25,7 +25,9 @@ final class ElasticSearchProvider extends BaseServiceProvider
             fn (): Client => ClientBuilder::create()
                 ->setHosts(
                     [
-                        $this->parameter('elasticsearch.host'),
+                        $this->parameter('elasticsearch.version') === 8
+                            ? $this->parameter('elasticsearch.host8')
+                            : $this->parameter('elasticsearch.host'),
                     ]
                 )
                 ->build()
