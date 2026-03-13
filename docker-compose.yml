@@ -62,7 +62,7 @@ services:
         aliases:
           - elasticsearch8.uitdatabank.local
     healthcheck:
-      test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
+      test: 'curl -f http://127.0.0.1:9200/_cluster/health'
       interval: 5s
       timeout: 4s
 
