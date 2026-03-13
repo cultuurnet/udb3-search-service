@@ -63,6 +63,7 @@ services:
           - elasticsearch8.uitdatabank.local
     healthcheck:
       test: 'curl -f http://127.0.0.1:9200/_cluster/health'
+      start_period: 10s
       interval: 5s
       timeout: 4s
 
