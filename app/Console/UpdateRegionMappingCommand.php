@@ -5,14 +5,20 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateRegionMapping;
+use Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class UpdateRegionMappingCommand extends AbstractMappingCommand
 {
-    /**
-     * @inheritdoc
-     */
+    private int $elasticsearchVersion;
+
+    public function __construct(Client $client, string $indexName, string $documentType, int $elasticsearchVersion = 5)
+    {
+        parent::__construct($client, $indexName, $documentType);
+        $this->elasticsearchVersion = $elasticsearchVersion;
+    }
+
     protected function configure(): void
     {
         $this
@@ -20,14 +26,12 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
             ->setDescription('Creates or updates the region mapping on the latest geoshapes index.');
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new UpdateRegionMapping(
             $this->getElasticSearchClient(),
-            $this->getLogger($output)
+            $this->getLogger($output),
+            $this->elasticsearchVersion
         );
 
         $operation->run($this->indexName, $this->documentType);

@@ -146,7 +146,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             fn (): UpdateRegionMappingCommand => new UpdateRegionMappingCommand(
                 $this->get(Client::class),
                 $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                $this->parameter('elasticsearch.region.document_type')
+                $this->parameter('elasticsearch.region.document_type'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
             )
         );
 
