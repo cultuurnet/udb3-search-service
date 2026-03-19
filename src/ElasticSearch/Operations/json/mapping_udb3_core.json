@@ -1,9 +1,5 @@
 {
     "properties": {
-        "documentType": {
-            "type": "keyword"
-        },
-
         "@id": {
             "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
