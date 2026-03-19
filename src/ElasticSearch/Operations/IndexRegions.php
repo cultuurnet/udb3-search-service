@@ -14,13 +14,17 @@ final class IndexRegions extends AbstractElasticSearchOperation
 {
     private Finder $finder;
 
+    private int $elasticsearchVersion;
+
     public function __construct(
         Client $client,
         LoggerInterface $logger,
-        Finder $finder
+        Finder $finder,
+        int $elasticsearchVersion = 5
     ) {
         parent::__construct($client, $logger);
         $this->finder = $finder;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function run(string $indexName, string $pathToScan, string $fileNameRegex = '*.json'): void
@@ -38,14 +42,17 @@ final class IndexRegions extends AbstractElasticSearchOperation
 
             $this->logger->info("Indexing region {$id}...");
 
-            $this->client->index(
-                [
-                    'index' => $indexName,
-                    'type' => 'region',
-                    'id' => $id,
-                    'body' => Json::decodeAssociatively($json),
-                ]
-            );
+            $params = [
+                'index' => $indexName,
+                'id' => $id,
+                'body' => Json::decodeAssociatively($json),
+            ];
+
+            if ($this->elasticsearchVersion !== 8) {
+                $params['type'] = 'region';
+            }
+
+            $this->client->index($params);
         }
     }
 }

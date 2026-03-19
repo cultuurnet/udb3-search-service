@@ -155,6 +155,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             fn (): IndexRegionsCommand => new IndexRegionsCommand(
                 $this->get(Client::class),
                 $this->get(Finder::class),
+                (int)($this->parameter('elasticsearch.version') ?? 5),
                 $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
                 __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                 $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')

@@ -20,10 +20,12 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
 
     private Finder $finder;
 
+    private int $elasticsearchVersion;
 
     public function __construct(
         Client $client,
         Finder $finder,
+        int $elasticsearchVersion,
         string $indexName,
         string $pathToScan,
         string $fileNameRegex = '*.json'
@@ -33,6 +35,7 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
         $this->pathToScan = $pathToScan;
         $this->fileNameRegex = $fileNameRegex;
         $this->finder = $finder;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     /**
@@ -53,7 +56,8 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
         $operation = new IndexRegions(
             $this->getElasticSearchClient(),
             $this->getLogger($output),
-            $this->finder
+            $this->finder,
+            $this->elasticsearchVersion
         );
 
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
