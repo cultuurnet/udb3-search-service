@@ -17,16 +17,20 @@ final class BulkIndexationStrategy implements IndexationStrategy
 
     private int $autoFlushThreshold;
 
+    private int $elasticsearchVersion;
+
     private array $queuedDocuments;
 
     public function __construct(
         Client $elasticSearchClient,
         LoggerInterface $logger,
-        int $autoFlushThreshold
+        int $autoFlushThreshold,
+        int $elasticsearchVersion = 5
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->logger = $logger;
         $this->autoFlushThreshold = $autoFlushThreshold;
+        $this->elasticsearchVersion = $elasticsearchVersion;
 
         $this->queuedDocuments = [];
     }
@@ -60,13 +64,16 @@ final class BulkIndexationStrategy implements IndexationStrategy
         $parameters = [];
 
         foreach ($this->queuedDocuments as $queuedDocument) {
-            $parameters['body'][] = [
-                'index' => [
-                    '_index' => $queuedDocument['index'],
-                    '_type' => $queuedDocument['type'],
-                    '_id' => $queuedDocument['id'],
-                ],
+            $action = [
+                '_index' => $queuedDocument['index'],
+                '_id' => $queuedDocument['id'],
             ];
+
+            if ($this->elasticsearchVersion !== 8) {
+                $action['_type'] = $queuedDocument['type'];
+            }
+
+            $parameters['body'][] = ['index' => $action];
 
             $parameters['body'][] = $queuedDocument['body'];
         }

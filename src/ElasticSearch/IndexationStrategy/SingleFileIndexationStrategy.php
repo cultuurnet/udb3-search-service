@@ -14,13 +14,17 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
 
     private LoggerInterface $logger;
 
+    private int $elasticsearchVersion;
+
 
     public function __construct(
         Client $elasticSearchClient,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        int $elasticsearchVersion = 5
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->logger = $logger;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
 
@@ -33,14 +37,17 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
 
         $this->logger->info("Sending document {$id} to ElasticSearch...");
 
-        $this->elasticSearchClient->index(
-            [
-                'index' => $indexName,
-                'type' => $documentType,
-                'id' => $id,
-                'body' => (array) $jsonDocument->getBody(),
-            ]
-        );
+        $params = [
+            'index' => $indexName,
+            'id' => $id,
+            'body' => (array) $jsonDocument->getBody(),
+        ];
+
+        if ($this->elasticsearchVersion !== 8) {
+            $params['type'] = $documentType;
+        }
+
+        $this->elasticSearchClient->index($params);
     }
 
     public function finish(): void

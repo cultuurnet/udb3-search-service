@@ -24,6 +24,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -49,6 +50,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
+                    'udb3-core:update-mapping' => UpdateUdb3CoreMappingCommand::class,
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
                     'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
@@ -76,6 +78,16 @@ final class CommandServiceProvider extends BaseServiceProvider
 
                 return $application;
             }
+        );
+
+        $this->add(
+            UpdateUdb3CoreMappingCommand::class,
+            fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.organizer.document_type'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
+            )
         );
 
         $this->add(
