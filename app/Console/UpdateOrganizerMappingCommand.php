@@ -27,7 +27,8 @@ final class UpdateOrganizerMappingCommand extends AbstractMappingCommand
     {
         $operation = new UpdateOrganizerMapping(
             $this->getElasticSearchClient(),
-            $this->getLogger($output)
+            $this->getLogger($output),
+            $this->elasticsearchVersion
         );
 
         $operation->run($this->indexName, $this->documentType);
