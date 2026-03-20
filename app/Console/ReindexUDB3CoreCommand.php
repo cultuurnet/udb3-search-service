@@ -30,7 +30,8 @@ final class ReindexUDB3CoreCommand extends AbstractReindexCommand
             $this->getLogger($output),
             $this->getEventBus(),
             $this->getScrollTtl(),
-            $this->getScrollSize()
+            $this->getScrollSize(),
+            $this->getElasticsearchVersion()
         );
 
         $this->runOperation($input, $output, $operation);

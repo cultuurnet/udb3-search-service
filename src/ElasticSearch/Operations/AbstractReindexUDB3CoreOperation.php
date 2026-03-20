@@ -24,17 +24,21 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 
     private int $scrollSize;
 
+    private int $elasticsearchVersion;
+
     public function __construct(
         Client $client,
         LoggerInterface $logger,
         EventBus $eventBus,
         string $scrollTtl = '1m',
-        int $scrollSize = 50
+        int $scrollSize = 50,
+        int $elasticsearchVersion = 5
     ) {
         parent::__construct($client, $logger);
         $this->eventBus = $eventBus;
         $this->scrollTtl = $scrollTtl;
         $this->scrollSize = $scrollSize;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     abstract public function getQueryArray(): array;
@@ -87,7 +91,11 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 
     private function dispatchEventForHit(array $hit): void
     {
-        if (isset($hit['_type']) && $hit['_type'] == 'region_query') {
+        $type = $this->elasticsearchVersion === 8
+            ? strtolower($hit['_source']['@type'] ?? '')
+            : ($hit['_type'] ?? '');
+
+        if ($type === 'region_query') {
             // Skip region queries because they should be re-indexed using
             // the IndexRegionQueries operation. Don't check the document for
             // @id property and/or log anything to avoid an unnecessary flood
@@ -101,11 +109,10 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         }
         $id = $hit['_id'];
 
-        if (empty($hit['_type'])) {
+        if (empty($type)) {
             $this->logger->error("Skipping hit {$id} without _type property.");
             return;
         }
-        $type = $hit['_type'];
 
         if (empty($hit['_source'])) {
             $this->logger->error("Skipping hit {$id} without _source property.");

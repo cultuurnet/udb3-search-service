@@ -27,6 +27,8 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
 
     private IndexationStrategy $indexationStrategy;
 
+    private int $elasticsearchVersion;
+
     public function __construct(
         Client $client,
         string $readIndexName,
@@ -34,7 +36,8 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         IndexationStrategy $indexationStrategy,
         string $scrollTtl = '1m',
         int $bulkThreshold = 10,
-        int $scrollSize = 50
+        int $scrollSize = 50,
+        int $elasticsearchVersion = 5
     ) {
         parent::__construct($client);
         $this->readIndexName = $readIndexName;
@@ -43,6 +46,7 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
         $this->bulkThreshold = $bulkThreshold;
         $this->eventBus = $eventBus;
         $this->indexationStrategy = $indexationStrategy;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     protected function runOperation(
@@ -57,7 +61,8 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
             $bulkIndexationStrategy = new BulkIndexationStrategy(
                 $this->getElasticSearchClient(),
                 $logger,
-                $this->bulkThreshold
+                $this->bulkThreshold,
+                $this->elasticsearchVersion
             );
 
             $indexationStrategy->setIndexationStrategy($bulkIndexationStrategy);
@@ -88,5 +93,10 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
     protected function getScrollSize(): int
     {
         return $this->scrollSize;
+    }
+
+    protected function getElasticsearchVersion(): int
+    {
+        return $this->elasticsearchVersion;
     }
 }

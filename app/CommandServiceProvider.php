@@ -126,7 +126,8 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $this->get('elasticsearch_indexation_strategy'),
                 $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
                 $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
             )
         );
 
