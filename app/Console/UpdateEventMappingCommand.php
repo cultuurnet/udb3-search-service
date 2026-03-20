@@ -25,6 +25,8 @@ final class UpdateEventMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        $this->guardAgainstEs8();
+
         $operation = new UpdateEventMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)

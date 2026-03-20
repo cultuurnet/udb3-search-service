@@ -25,6 +25,8 @@ final class UpdateOrganizerMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        $this->guardAgainstEs8();
+
         $operation = new UpdateOrganizerMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output),

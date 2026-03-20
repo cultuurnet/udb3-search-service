@@ -105,7 +105,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             fn (): UpdateEventMappingCommand => new UpdateEventMappingCommand(
                 $this->get(Client::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.event.document_type')
+                $this->parameter('elasticsearch.event.document_type'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
             )
         );
 

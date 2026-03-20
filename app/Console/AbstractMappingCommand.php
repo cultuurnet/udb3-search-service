@@ -21,4 +21,13 @@ abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
         $this->documentType = $documentType;
         $this->elasticsearchVersion = $elasticsearchVersion;
     }
+
+    protected function guardAgainstEs8(): void
+    {
+        if ($this->elasticsearchVersion === 8) {
+            throw new \RuntimeException(
+                'This command is not supported on Elasticsearch 8. Use udb3-core:update-mapping instead.'
+            );
+        }
+    }
 }

@@ -25,6 +25,8 @@ final class UpdatePlaceMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        $this->guardAgainstEs8();
+
         $operation = new UpdatePlaceMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output),
