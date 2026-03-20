@@ -114,7 +114,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             fn (): UpdatePlaceMappingCommand => new UpdatePlaceMappingCommand(
                 $this->get(Client::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.place.document_type')
+                $this->parameter('elasticsearch.place.document_type'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
             )
         );
 
