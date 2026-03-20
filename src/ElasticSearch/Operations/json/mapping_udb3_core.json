@@ -220,17 +220,17 @@
 
         "created": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "strict_date_time_no_millis"
         },
 
         "modified": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "strict_date_time_no_millis"
         },
 
         "indexedAt": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "strict_date_time_no_millis"
         },
 
         "creator": {
