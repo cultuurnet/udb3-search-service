@@ -43,8 +43,10 @@ services:
     healthcheck:
       #test: 'curl --fail http://127.0.0.1:9200/_cluster/health?wait_for_status=green&timeout=1s'
       test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
+      start_period: 30s
       interval: 5s
       timeout: 4s
+      retries: 10
 
   elasticsearch8:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.19.12
@@ -53,6 +55,7 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
     ports:
       - '9201:9200'
     volumes:
@@ -63,9 +66,10 @@ services:
           - elasticsearch8.uitdatabank.local
     healthcheck:
       test: 'curl -f http://127.0.0.1:9200/_cluster/health'
-      start_period: 10s
+      start_period: 30s
       interval: 5s
       timeout: 4s
+      retries: 10
 
 networks:
   uitdatabank-search:
