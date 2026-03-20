@@ -27,7 +27,8 @@ final class UpdatePlaceMappingCommand extends AbstractMappingCommand
     {
         $operation = new UpdatePlaceMapping(
             $this->getElasticSearchClient(),
-            $this->getLogger($output)
+            $this->getLogger($output),
+            $this->elasticsearchVersion
         );
 
         $operation->run($this->indexName, $this->documentType);
