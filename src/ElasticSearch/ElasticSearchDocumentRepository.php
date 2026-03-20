@@ -20,12 +20,14 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
         Client $elasticSearchClient,
         string $indexName,
         string $documentType,
-        IndexationStrategy $indexationStrategy
+        IndexationStrategy $indexationStrategy,
+        int $elasticsearchVersion = 5
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->indexName = $indexName;
         $this->documentType = $documentType;
         $this->indexationStrategy = $indexationStrategy;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function get(string $id): ?JsonDocument

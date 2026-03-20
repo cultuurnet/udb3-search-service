@@ -22,12 +22,14 @@ final class ElasticSearchOrganizerSearchService implements OrganizerSearchServic
         Client $elasticSearchClient,
         string $indexName,
         string $documentType,
-        ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory
+        ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory,
+        int $elasticsearchVersion = 5
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
         $this->indexName = $indexName;
         $this->documentType = $documentType;
         $this->pagedResultSetFactory = $pagedResultSetFactory;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function search(OrganizerQueryBuilderInterface $queryBuilder): PagedResultSet

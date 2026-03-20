@@ -42,7 +42,8 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.organizer.write_index'),
                     $this->parameter('elasticsearch.organizer.document_type'),
-                    $this->get('elasticsearch_indexation_strategy')
+                    $this->get('elasticsearch_indexation_strategy'),
+                    (int)($this->parameter('elasticsearch.version') ?? 5)
                 );
 
                 $service = new TransformingJsonDocumentIndexService(

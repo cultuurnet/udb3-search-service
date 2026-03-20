@@ -64,7 +64,8 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                                 FacetName::regions(),
                                 $this->parameter('facet_mapping_regions')
                             )
-                        )
+                        ),
+                        (int)($this->parameter('elasticsearch.version') ?? 5)
                     ),
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),

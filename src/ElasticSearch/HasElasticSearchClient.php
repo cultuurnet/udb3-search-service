@@ -14,16 +14,28 @@ trait HasElasticSearchClient
 
     private string $documentType;
 
+    private int $elasticsearchVersion = 5;
+
     private function getDefaultParameters(): array
     {
-        return [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-        ];
+        $params = ['index' => $this->indexName];
+
+        if ($this->elasticsearchVersion !== 8) {
+            $params['type'] = $this->documentType;
+        }
+
+        return $params;
     }
 
     private function executeQuery(array $body, array $parameters = []): array
     {
+        if ($this->elasticsearchVersion === 8) {
+            if (!isset($body['query']['bool'])) {
+                $body['query'] = ['bool' => ['must' => [$body['query']]]];
+            }
+            $body['query']['bool']['filter'][] = ['term' => ['@type' => ucfirst($this->documentType)]];
+        }
+
         $parameters['body'] = $body;
 
         return $this->elasticSearchClient->search(
