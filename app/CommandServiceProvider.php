@@ -151,7 +151,8 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $this->get(Client::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
                 $this->parameter('elasticsearch.udb3_core_index.write_alias'),
-                $this->parameter('elasticsearch.udb3_core_index.read_alias')
+                $this->parameter('elasticsearch.udb3_core_index.read_alias'),
+                (int)($this->parameter('elasticsearch.version') ?? 5)
             )
         );
 

@@ -18,17 +18,20 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
     private string $latestIndexName;
     private string $writeAlias;
     private string $readAlias;
+    private int $elasticsearchVersion;
 
     public function __construct(
         Client $client,
         string $latestIndexName,
         string $writeAlias,
-        string $readAlias
+        string $readAlias,
+        int $elasticsearchVersion = 5
     ) {
         parent::__construct($client);
         $this->latestIndexName = $latestIndexName;
         $this->writeAlias = $writeAlias;
         $this->readAlias = $readAlias;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     /**
@@ -87,11 +90,13 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         // Create the organizer mapping on the latest index.
         $consoleApp->find('udb3-core:organizer-mapping')->run($emptyInput, $output);
 
-        // Create the event mapping on the latest index.
-        $consoleApp->find('udb3-core:event-mapping')->run($emptyInput, $output);
+        if ($this->elasticsearchVersion !== 8) {
+            // Create the event mapping on the latest index.
+            $consoleApp->find('udb3-core:event-mapping')->run($emptyInput, $output);
 
-        // Create the place mapping on the latest index.
-        $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
+            // Create the place mapping on the latest index.
+            $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
+        }
 
         // Move the write alias to the newly created index.
         $writeAliasInput = new ArrayInput(['alias' => $this->writeAlias, 'target' => $this->latestIndexName]);
