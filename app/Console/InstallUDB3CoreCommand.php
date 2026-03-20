@@ -87,10 +87,13 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         $createInput = new ArrayInput(['--force' => $force, 'target' => $this->latestIndexName]);
         $consoleApp->find('index:create')->run($createInput, $output);
 
-        // Create the organizer mapping on the latest index.
-        $consoleApp->find('udb3-core:organizer-mapping')->run($emptyInput, $output);
+        // Create the mapping on the latest index.
+        if ($this->elasticsearchVersion === 8) {
+            $consoleApp->find('udb3-core:update-mapping')->run($emptyInput, $output);
+        } else {
+            // Create the organizer mapping on the latest index.
+            $consoleApp->find('udb3-core:organizer-mapping')->run($emptyInput, $output);
 
-        if ($this->elasticsearchVersion !== 8) {
             // Create the event mapping on the latest index.
             $consoleApp->find('udb3-core:event-mapping')->run($emptyInput, $output);
 
