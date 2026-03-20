@@ -42,7 +42,8 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.place.write_index'),
                     $this->parameter('elasticsearch.place.document_type'),
-                    $this->get('elasticsearch_indexation_strategy')
+                    $this->get('elasticsearch_indexation_strategy'),
+                    (int)($this->parameter('elasticsearch.version') ?? 5)
                 );
 
                 $service = new TransformingJsonDocumentIndexService(
