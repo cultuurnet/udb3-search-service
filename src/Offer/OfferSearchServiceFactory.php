@@ -15,10 +15,16 @@ final class OfferSearchServiceFactory
 
     private AggregationTransformerInterface $aggregationTransformer;
 
-    public function __construct(Client $client, AggregationTransformerInterface $aggregationTransformer)
-    {
+    private int $elasticsearchVersion;
+
+    public function __construct(
+        Client $client,
+        AggregationTransformerInterface $aggregationTransformer,
+        int $elasticsearchVersion = 5
+    ) {
         $this->client = $client;
         $this->aggregationTransformer = $aggregationTransformer;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function createFor(string $readIndex, string $documentType): OfferSearchServiceInterface
@@ -28,7 +34,9 @@ final class OfferSearchServiceFactory
             $readIndex,
             $documentType,
             new ElasticSearchPagedResultSetFactory(
-                $this->aggregationTransformer
+                $this->aggregationTransformer,
+                null,
+                $this->elasticsearchVersion
             )
         );
     }

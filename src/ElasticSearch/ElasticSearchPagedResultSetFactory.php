@@ -18,9 +18,12 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
 
     private ElasticSearchResponseValidatorInterface $responseValidator;
 
+    private int $elasticsearchVersion;
+
     public function __construct(
         AggregationTransformerInterface $aggregationTransformer,
-        ElasticSearchResponseValidatorInterface $responseValidator = null
+        ElasticSearchResponseValidatorInterface $responseValidator = null,
+        int $elasticsearchVersion = 5
     ) {
         if (is_null($responseValidator)) {
             $responseValidator = new PagedResultSetResponseValidator();
@@ -28,15 +31,18 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
 
         $this->aggregationTransformer = $aggregationTransformer;
         $this->responseValidator = $responseValidator;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function createPagedResultSet(int $perPage, array $response): PagedResultSet
     {
         $this->responseValidator->validate($response);
 
-        $total = is_array($response['hits']['total'])
-            ? $response['hits']['total']['value']
-            : $response['hits']['total'];
+        if ($this->elasticsearchVersion === 8) {
+            $total = $response['hits']['total']['value'];
+        } else {
+            $total = $response['hits']['total'];
+        }
 
         $results = array_map(
             fn (array $result): JsonDocument => (new JsonDocument($result['_id']))

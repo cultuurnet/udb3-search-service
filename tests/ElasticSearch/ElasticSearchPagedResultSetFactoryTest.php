@@ -18,8 +18,9 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
     private NodeMapAggregationTransformer $aggregationTransformer;
 
-
     private ElasticSearchPagedResultSetFactory $factory;
+
+    private ElasticSearchPagedResultSetFactory $es8Factory;
 
     protected function setUp(): void
     {
@@ -37,6 +38,12 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 
         $this->factory = new ElasticSearchPagedResultSetFactory(
             $this->aggregationTransformer
+        );
+
+        $this->es8Factory = new ElasticSearchPagedResultSetFactory(
+            $this->aggregationTransformer,
+            null,
+            8
         );
     }
 
@@ -289,7 +296,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
             ],
         ];
 
-        $actual = $this->factory->createPagedResultSet(30, $response);
+        $actual = $this->es8Factory->createPagedResultSet(30, $response);
 
         $this->assertEquals(1, $actual->getTotal());
     }

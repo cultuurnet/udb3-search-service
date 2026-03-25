@@ -63,7 +63,9 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                             new NodeMapAggregationTransformer(
                                 FacetName::regions(),
                                 $this->parameter('facet_mapping_regions')
-                            )
+                            ),
+                            null,
+                            (int)($this->parameter('elasticsearch.version') ?? 5)
                         ),
                         (int)($this->parameter('elasticsearch.version') ?? 5)
                     ),

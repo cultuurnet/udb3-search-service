@@ -85,7 +85,8 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
 
                 return new OfferSearchServiceFactory(
                     $this->get(Client::class),
-                    $transformer
+                    $transformer,
+                    (int)($this->parameter('elasticsearch.version') ?? 5)
                 );
             }
         );

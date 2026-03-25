@@ -75,9 +75,11 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
                 );
             }
 
-            $total = is_array($response['hits']['total'])
-                ? $response['hits']['total']['value']
-                : $response['hits']['total'];
+            if ($this->elasticsearchVersion === 8) {
+                $total = $response['hits']['total']['value'];
+            } else {
+                $total = $response['hits']['total'];
+            }
 
             foreach ($response['hits']['hits'] as $hit) {
                 if ($this->elasticsearchVersion !== 8 && $hit['_type'] !== 'region') {
