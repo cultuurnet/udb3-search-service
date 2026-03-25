@@ -22,12 +22,16 @@ final class IndexRegionsTest extends AbstractOperationTestCase
 
     protected function createOperation(Client $client, LoggerInterface $logger): IndexRegions
     {
-        return new IndexRegions($client, $logger, $this->finder, 5);
+        return new IndexRegions($client, $logger, $this->finder);
     }
 
     private function createOperationForVersion(int $version): IndexRegions
     {
-        return new IndexRegions($this->client, $this->logger, new Finder(), $version);
+        $operation = new IndexRegions($this->client, $this->logger, new Finder());
+        if ($version === 5) {
+            $operation->enableType();
+        }
+        return $operation;
     }
 
     /**
@@ -73,6 +77,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                 ]
             );
 
+        $this->operation->enableType();
         $this->operation->run($index, $path);
     }
 

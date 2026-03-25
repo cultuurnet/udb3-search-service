@@ -23,12 +23,19 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
 
     private GeoShapeQueryRegionService $regionService;
 
+    private GeoShapeQueryRegionService $es8RegionService;
+
     protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->regionService = new GeoShapeQueryRegionService(
+        $this->regionService = (new GeoShapeQueryRegionService(
+            $this->client,
+            $this->geoShapesIndexName
+        ))->enableType();
+
+        $this->es8RegionService = new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
         );
@@ -157,12 +164,6 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     /** @test */
     public function it_returns_all_region_ids_on_es8(): void
     {
-        $es8RegionService = new GeoShapeQueryRegionService(
-            $this->client,
-            $this->geoShapesIndexName,
-            8
-        );
-
         $this->client->expects($this->exactly(2))
             ->method('search')
             ->withConsecutive(
@@ -249,7 +250,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
             new RegionId('gem-kortenaken'),
         ];
 
-        $actualRegionIds = $es8RegionService->getRegionIds(
+        $actualRegionIds = $this->es8RegionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],
@@ -262,19 +263,13 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     /** @test */
     public function it_throws_an_exception_if_it_gets_an_invalid_response_from_elasticsearch_on_es8(): void
     {
-        $es8RegionService = new GeoShapeQueryRegionService(
-            $this->client,
-            $this->geoShapesIndexName,
-            8
-        );
-
         $this->client->expects($this->once())
             ->method('search')
             ->willReturn(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_invalid.json')));
 
         $this->expectException(RuntimeException::class);
 
-        $es8RegionService->getRegionIds(
+        $this->es8RegionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],

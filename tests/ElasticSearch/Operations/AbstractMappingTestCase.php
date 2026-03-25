@@ -35,6 +35,7 @@ abstract class AbstractMappingTestCase extends AbstractOperationTestCase
             ->method('info')
             ->with("Mapping for type {$documentType} updated.");
 
+        $this->operation->enableType();
         $this->runOperation($indexName);
     }
 }
