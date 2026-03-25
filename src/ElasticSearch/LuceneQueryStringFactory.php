@@ -8,8 +8,21 @@ use CultuurNet\UDB3\Search\QueryStringFactory;
 
 final class LuceneQueryStringFactory implements QueryStringFactory
 {
+    private int $elasticsearchVersion;
+
+    public function __construct(int $elasticsearchVersion = 5)
+    {
+        $this->elasticsearchVersion = $elasticsearchVersion;
+    }
+
     public function fromString(string $queryString): LuceneQueryString
     {
+        // ES8 removed the _type metadata field. Queries using _type: filters must
+        // use @type: instead. Rewrite here so callers don't need to be ES-version-aware.
+        if ($this->elasticsearchVersion === 8) {
+            $queryString = preg_replace('/_type:(\S+)/', '@type:$1', $queryString);
+        }
+
         return new LuceneQueryString($queryString);
     }
 }

@@ -40,18 +40,22 @@ final class OfferSearchControllerFactory
 
     private Consumer $consumer;
 
+    private int $elasticsearchVersion;
+
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
-        Consumer $consumer
+        Consumer $consumer,
+        int $elasticsearchVersion = 5
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
+        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     public function createFor(
@@ -86,7 +90,7 @@ final class OfferSearchControllerFactory
             ),
             $this->regionIndex,
             $this->documentType,
-            new LuceneQueryStringFactory(),
+            new LuceneQueryStringFactory($this->elasticsearchVersion),
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer
         );

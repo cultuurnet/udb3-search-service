@@ -70,7 +70,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
                     $requestParser,
-                    new LuceneQueryStringFactory(),
+                    new LuceneQueryStringFactory((int)($this->parameter('elasticsearch.version') ?? 5)),
                     new NodeAwareFacetTreeNormalizer(),
                     $this->get(Consumer::class)
                 );
