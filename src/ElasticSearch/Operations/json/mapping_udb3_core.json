@@ -244,6 +244,11 @@
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
+        "attendanceMode": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
 
         "subEvent": {
             "type": "nested",
@@ -417,6 +422,93 @@
             "type": "boolean"
         },
 
+        "location": {
+            "type": "object",
+            "properties": {
+                "@id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "@type": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "mainId": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "nl": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "fr": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "en": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "de": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "terms": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "label": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        }
+                    }
+                },
+                "labels": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
+        "performer_free_text": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "text"
+                }
+            }
+        },
+
+        "production": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
         "unique_address_identifier": {
             "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
@@ -438,6 +530,19 @@
             "properties": {
                 "popularity": {
                     "type": "integer"
+                },
+                "recommendationFor": {
+                    "type": "nested",
+                    "properties": {
+                        "event": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "score": {
+                            "type": "float"
+                        }
+                    }
                 }
             }
         },
