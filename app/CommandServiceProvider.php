@@ -143,24 +143,34 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateRegionMappingCommand::class,
-            fn (): UpdateRegionMappingCommand => new UpdateRegionMappingCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
-                $this->parameter('elasticsearch.region.document_type'),
-                (int)($this->parameter('elasticsearch.version') ?? 5)
-            )
+            function (): UpdateRegionMappingCommand {
+                $command = new UpdateRegionMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                    $this->parameter('elasticsearch.region.document_type')
+                );
+                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                    $command->enableType();
+                }
+                return $command;
+            }
         );
 
         $this->add(
             IndexRegionsCommand::class,
-            fn (): IndexRegionsCommand => new IndexRegionsCommand(
-                $this->get(Client::class),
-                $this->get(Finder::class),
-                (int)($this->parameter('elasticsearch.version') ?? 5),
-                $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
-                __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
-                $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
-            )
+            function (): IndexRegionsCommand {
+                $command = new IndexRegionsCommand(
+                    $this->get(Client::class),
+                    $this->get(Finder::class),
+                    $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
+                    __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
+                    $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
+                );
+                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                    $command->enableType();
+                }
+                return $command;
+            }
         );
 
         $this->add(

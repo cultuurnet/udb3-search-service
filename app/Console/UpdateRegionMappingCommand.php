@@ -11,12 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class UpdateRegionMappingCommand extends AbstractMappingCommand
 {
-    private int $elasticsearchVersion;
-
-    public function __construct(Client $client, string $indexName, string $documentType, int $elasticsearchVersion = 5)
+    public function __construct(Client $client, string $indexName, string $documentType)
     {
         parent::__construct($client, $indexName, $documentType);
-        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     protected function configure(): void
@@ -30,9 +27,12 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
     {
         $operation = new UpdateRegionMapping(
             $this->getElasticSearchClient(),
-            $this->getLogger($output),
-            $this->elasticsearchVersion
+            $this->getLogger($output)
         );
+
+        if ($this->typeEnabled) {
+            $operation->enableType();
+        }
 
         $operation->run($this->indexName, $this->documentType);
 

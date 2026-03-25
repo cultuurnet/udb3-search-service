@@ -34,11 +34,16 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
         $this->add(
             GeoShapeQueryRegionService::class,
-            fn (): GeoShapeQueryRegionService => new GeoShapeQueryRegionService(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.region.read_index'),
-                (int)($this->parameter('elasticsearch.version') ?? 5)
-            )
+            function (): GeoShapeQueryRegionService {
+                $service = new GeoShapeQueryRegionService(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.region.read_index')
+                );
+                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                    $service->enableType();
+                }
+                return $service;
+            }
         );
     }
 

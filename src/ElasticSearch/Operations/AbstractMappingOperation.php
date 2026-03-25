@@ -11,12 +11,9 @@ use Psr\Log\LoggerInterface;
 
 abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
 {
-    private int $elasticsearchVersion;
-
-    public function __construct(Client $client, LoggerInterface $logger, int $elasticsearchVersion = 5)
+    public function __construct(Client $client, LoggerInterface $logger)
     {
         parent::__construct($client, $logger);
-        $this->elasticsearchVersion = $elasticsearchVersion;
     }
 
     protected function updateMapping(string $indexName, string $documentType, string $mappingFilePath): void
@@ -26,7 +23,7 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
             'body' => Json::decodeAssociatively(FileReader::read($mappingFilePath)),
         ];
 
-        if ($this->elasticsearchVersion !== 8) {
+        if ($this->typeEnabled) {
             $params['type'] = $documentType;
         }
 
