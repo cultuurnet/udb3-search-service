@@ -149,7 +149,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
                     $this->parameter('elasticsearch.region.document_type')
                 );
-                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                if ($this->usesElasticSearch5()) {
                     $command->enableType();
                 }
                 return $command;
@@ -166,7 +166,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                 );
-                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                if ($this->usesElasticSearch5()) {
                     $command->enableType();
                 }
                 return $command;

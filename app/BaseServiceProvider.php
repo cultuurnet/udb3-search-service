@@ -46,4 +46,9 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     {
         return $this->getContainer()->get($name);
     }
+
+    protected function usesElasticSearch5(): bool
+    {
+        return ((int)($this->parameter('elasticsearch.version') ?? 5)) === 5;
+    }
 }

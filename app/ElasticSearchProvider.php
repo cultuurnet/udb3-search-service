@@ -39,7 +39,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.region.read_index')
                 );
-                if (((int)($this->parameter('elasticsearch.version') ?? 5)) !== 8) {
+                if ($this->usesElasticSearch5()) {
                     $service->enableType();
                 }
                 return $service;
