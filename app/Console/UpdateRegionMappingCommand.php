@@ -5,17 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateRegionMapping;
-use Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class UpdateRegionMappingCommand extends AbstractMappingCommand
 {
-    public function __construct(Client $client, string $indexName, string $documentType)
-    {
-        parent::__construct($client, $indexName, $documentType);
-    }
-
     protected function configure(): void
     {
         $this
