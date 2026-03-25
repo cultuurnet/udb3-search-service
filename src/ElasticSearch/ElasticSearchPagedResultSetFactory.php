@@ -34,7 +34,9 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
     {
         $this->responseValidator->validate($response);
 
-        $total = $response['hits']['total'];
+        $total = is_array($response['hits']['total'])
+            ? $response['hits']['total']['value']
+            : $response['hits']['total'];
 
         $results = array_map(
             fn (array $result): JsonDocument => (new JsonDocument($result['_id']))

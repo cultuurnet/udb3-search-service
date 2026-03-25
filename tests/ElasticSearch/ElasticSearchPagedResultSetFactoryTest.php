@@ -271,6 +271,32 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_hits_total_as_object_for_es8_compatibility(): void
+    {
+        $response = [
+            'hits' => [
+                'total' => ['value' => 1, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_index' => 'udb3-core',
+                        '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
+                        '_source' => [
+                            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
+                            'name' => 'Collectief Cursief',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actual = $this->factory->createPagedResultSet(30, $response);
+
+        $this->assertEquals(1, $actual->getTotal());
+    }
+
+    /**
+     * @test
+     */
     public function it_uses_the_total_aggregation_for_the_total_count_instead_of_the_hits_total_if_available(): void
     {
         $response = [
