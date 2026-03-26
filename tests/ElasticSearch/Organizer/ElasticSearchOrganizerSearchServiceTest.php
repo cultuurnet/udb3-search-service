@@ -27,6 +27,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 
     private ElasticSearchOrganizerSearchService $service;
 
+    private ElasticSearchOrganizerSearchService $es8Service;
+
     protected function setUp(): void
     {
         $this->client = $this->getMockBuilder(Client::class)
@@ -45,6 +47,60 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             )
         );
         $this->service->enableElasticSearch5CompatibilityMode();
+
+        $this->es8Service = new ElasticSearchOrganizerSearchService(
+            $this->client,
+            $this->indexName,
+            $this->documentType,
+            new ElasticSearchPagedResultSetFactory(
+                new NullAggregationTransformer()
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_injects_a_lowercase_type_filter_and_omits_the_type_parameter_for_es8(): void
+    {
+        $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30));
+
+        $id = '351b85c1-66ea-463b-82a6-515b7de0d267';
+        $source = ['@id' => 'http://foo.bar/organizers/' . $id, '@type' => 'Organizer', 'originalEncodedJsonLd' => '{}'];
+
+        $response = [
+            'hits' => [
+                'total' => ['value' => 1, 'relation' => 'eq'],
+                'hits' => [['_index' => $this->indexName, '_id' => $id, '_source' => $source]],
+            ],
+        ];
+
+        $this->client->expects($this->once())
+            ->method('search')
+            ->with(
+                [
+                    'index' => $this->indexName,
+                    'body' => [
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+                        'from' => 0,
+                        'size' => 30,
+                        'query' => [
+                            'bool' => [
+                                'must' => [['match_all' => (object) []]],
+                                'filter' => [
+                                    ['term' => ['@type' => 'organizer']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->willReturn($response);
+
+        $actualPagedResultSet = $this->es8Service->search($queryBuilder);
+
+        $this->assertEquals(1, $actualPagedResultSet->getTotal());
     }
 
     /**
