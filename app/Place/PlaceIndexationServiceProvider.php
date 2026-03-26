@@ -44,6 +44,9 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.place.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
                 );
+                if ($this->usesElasticSearch5()) {
+                    $repository->enableElasticSearch5CompatibilityMode();
+                }
 
                 $service = new TransformingJsonDocumentIndexService(
                     $this->get(JsonDocumentFetcher::class)->withIncludeMetadata()->withEmbedContributors(),
