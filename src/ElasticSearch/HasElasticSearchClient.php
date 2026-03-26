@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use Elasticsearch\Client;
 
 trait HasElasticSearchClient
