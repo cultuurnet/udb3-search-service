@@ -38,13 +38,16 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
         $this->indexName = 'udb3-core';
         $this->documentType = 'organizer';
 
+        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+            new NullAggregationTransformer()
+        );
+        $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+
         $this->service = new ElasticSearchOrganizerSearchService(
             $this->client,
             $this->indexName,
             $this->documentType,
-            new ElasticSearchPagedResultSetFactory(
-                new NullAggregationTransformer()
-            )
+            $pagedResultSetFactory
         );
         $this->service->enableElasticSearch5CompatibilityMode();
 
