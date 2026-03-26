@@ -15,7 +15,7 @@ final class LuceneQueryStringFactory implements QueryStringFactory
         // ES8 removed the _type metadata field. Queries using _type: filters must
         // use @type: instead. Rewrite here so callers don't need to be ES-version-aware.
         if (!$this->usesDocumentTypes()) {
-            $queryString = preg_replace('/_type:(\S+)/', '@type:$1', $queryString);
+            $queryString = preg_replace('/_type:(\S+)/', '@type:$1', $queryString) ?? $queryString;
         }
 
         return new LuceneQueryString($queryString);
