@@ -11,15 +11,16 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
 {
     protected function updateMapping(string $indexName, string $documentType, string $mappingFilePath): void
     {
-        $this->client->indices()->putMapping(
-            [
-                'index' => $indexName,
-                'type' => $documentType,
-                'body' => Json::decodeAssociatively(
-                    FileReader::read($mappingFilePath)
-                ),
-            ]
-        );
+        $params = [
+            'index' => $indexName,
+            'body' => Json::decodeAssociatively(FileReader::read($mappingFilePath)),
+        ];
+
+        if ($this->typeEnabled) {
+            $params['type'] = $documentType;
+        }
+
+        $this->client->indices()->putMapping($params);
 
         $this->logger->info("Mapping for type {$documentType} updated.");
     }

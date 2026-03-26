@@ -20,7 +20,6 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
 
     private Finder $finder;
 
-
     public function __construct(
         Client $client,
         Finder $finder,
@@ -55,6 +54,10 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
             $this->getLogger($output),
             $this->finder
         );
+
+        if ($this->typeEnabled) {
+            $operation->enableType();
+        }
 
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
 

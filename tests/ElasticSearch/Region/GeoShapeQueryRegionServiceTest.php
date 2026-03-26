@@ -23,12 +23,19 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
 
     private GeoShapeQueryRegionService $regionService;
 
+    private GeoShapeQueryRegionService $es8RegionService;
+
     protected function setUp(): void
     {
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->regionService = new GeoShapeQueryRegionService(
+        $this->regionService = (new GeoShapeQueryRegionService(
+            $this->client,
+            $this->geoShapesIndexName
+        ))->enableType();
+
+        $this->es8RegionService = new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
         );
@@ -147,6 +154,122 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
         $this->expectException(RuntimeException::class);
 
         $this->regionService->getRegionIds(
+            [
+                'type' => 'Point',
+                'coordinates' => [80.9, -4.5],
+            ]
+        );
+    }
+
+    /** @test */
+    public function it_returns_all_region_ids_on_es8(): void
+    {
+        $this->client->expects($this->exactly(2))
+            ->method('search')
+            ->withConsecutive(
+                [
+                    [
+                        'index' => $this->geoShapesIndexName,
+                        'body' => [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        'match_all' => (object) [],
+                                    ],
+                                    'filter' => [
+                                        'geo_shape' => [
+                                            'location' => [
+                                                'shape' => [
+                                                    'type' => 'Point',
+                                                    'coordinates' => [80.9, -4.5],
+                                                ],
+                                                'relation' => 'contains',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'size' => 10,
+                        'from' => 0,
+                    ],
+                ],
+                [
+                    [
+                        'index' => $this->geoShapesIndexName,
+                        'body' => [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [
+                                        'match_all' => (object) [],
+                                    ],
+                                    'filter' => [
+                                        'geo_shape' => [
+                                            'location' => [
+                                                'shape' => [
+                                                    'type' => 'Point',
+                                                    'coordinates' => [80.9, -4.5],
+                                                ],
+                                                'relation' => 'contains',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'size' => 10,
+                        'from' => 10,
+                    ],
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1_es8.json')),
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2_es8.json'))
+            );
+
+        $expectedRegionIds = [
+            new RegionId('gem-nieuwerkerken'),
+            new RegionId('gem-oostkamp'),
+            new RegionId('gem-oostrozebeke'),
+            new RegionId('gem-opglabbeek'),
+            new RegionId('gem-peer'),
+            new RegionId('gem-pittem'),
+            new RegionId('gem-putte'),
+            new RegionId('gem-ronse'),
+            new RegionId('gem-roosdaal'),
+            new RegionId('gem-ruiselede'),
+            new RegionId('gem-rumst'),
+            new RegionId('gem-sint-amands'),
+            new RegionId('gem-sint-genesius-rode'),
+            new RegionId('gem-sint-laureins'),
+            new RegionId('gem-ternat'),
+            new RegionId('gem-tervuren'),
+            new RegionId('gem-kalmthout'),
+            new RegionId('gem-kinrooi'),
+            new RegionId('gem-kluisbergen'),
+            new RegionId('gem-kortenaken'),
+        ];
+
+        $actualRegionIds = $this->es8RegionService->getRegionIds(
+            [
+                'type' => 'Point',
+                'coordinates' => [80.9, -4.5],
+            ]
+        );
+
+        $this->assertEquals($expectedRegionIds, $actualRegionIds);
+    }
+
+    /** @test */
+    public function it_throws_an_exception_if_it_gets_an_invalid_response_from_elasticsearch_on_es8(): void
+    {
+        $this->client->expects($this->once())
+            ->method('search')
+            ->willReturn(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_invalid.json')));
+
+        $this->expectException(RuntimeException::class);
+
+        $this->es8RegionService->getRegionIds(
             [
                 'type' => 'Point',
                 'coordinates' => [80.9, -4.5],

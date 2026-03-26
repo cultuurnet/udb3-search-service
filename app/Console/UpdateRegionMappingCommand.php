@@ -10,9 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class UpdateRegionMappingCommand extends AbstractMappingCommand
 {
-    /**
-     * @inheritdoc
-     */
     protected function configure(): void
     {
         $this
@@ -20,15 +17,16 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
             ->setDescription('Creates or updates the region mapping on the latest geoshapes index.');
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $operation = new UpdateRegionMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
+
+        if ($this->typeEnabled) {
+            $operation->enableType();
+        }
 
         $operation->run($this->indexName, $this->documentType);
 

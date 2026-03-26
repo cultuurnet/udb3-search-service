@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use Elasticsearch\Client;
 
 final class GeoShapeQueryRegionService implements RegionServiceInterface
 {
+    use ElasticSearch5Compatibility;
+
     /**
      * Amount of (matching) regions per page.
      */
@@ -71,13 +74,16 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
                 );
             }
 
-            $total = $response['hits']['total'];
+            $total = is_array($response['hits']['total'])
+                ? $response['hits']['total']['value']
+                : $response['hits']['total'];
 
             foreach ($response['hits']['hits'] as $hit) {
-                if ($hit['_type'] == 'region') {
-                    $regionIds[] = new RegionId($hit['_id']);
+                if ($this->typeEnabled && $hit['_type'] !== 'region') {
+                    $processedHits++;
+                    continue;
                 }
-
+                $regionIds[] = new RegionId($hit['_id']);
                 $processedHits++;
             }
 

@@ -38,14 +38,17 @@ final class IndexRegions extends AbstractElasticSearchOperation
 
             $this->logger->info("Indexing region {$id}...");
 
-            $this->client->index(
-                [
-                    'index' => $indexName,
-                    'type' => 'region',
-                    'id' => $id,
-                    'body' => Json::decodeAssociatively($json),
-                ]
-            );
+            $params = [
+                'index' => $indexName,
+                'id' => $id,
+                'body' => Json::decodeAssociatively($json),
+            ];
+
+            if ($this->typeEnabled) {
+                $params['type'] = 'region';
+            }
+
+            $this->client->index($params);
         }
     }
 }
