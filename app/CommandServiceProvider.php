@@ -106,20 +106,32 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateEventMappingCommand::class,
-            fn (): UpdateEventMappingCommand => new UpdateEventMappingCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.event.document_type')
-            )
+            function (): UpdateEventMappingCommand {
+                $command = new UpdateEventMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.event.document_type')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
             UpdatePlaceMappingCommand::class,
-            fn (): UpdatePlaceMappingCommand => new UpdatePlaceMappingCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.place.document_type')
-            )
+            function (): UpdatePlaceMappingCommand {
+                $command = new UpdatePlaceMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.place.document_type')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
