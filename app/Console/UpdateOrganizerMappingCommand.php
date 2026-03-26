@@ -25,10 +25,18 @@ final class UpdateOrganizerMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        if (!$this->usesSeparateMappingFiles()) {
+            throw new \RuntimeException(
+                'This command is not supported on Elasticsearch 8. Use udb3-core:update-mapping instead.'
+            );
+        }
+
         $operation = new UpdateOrganizerMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
+
+        $operation->enableElasticSearch5CompatibilityMode();
 
         $operation->run($this->indexName, $this->documentType);
 

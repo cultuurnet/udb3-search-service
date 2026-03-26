@@ -91,11 +91,17 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             UpdateOrganizerMappingCommand::class,
-            fn (): UpdateOrganizerMappingCommand => new UpdateOrganizerMappingCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.organizer.document_type')
-            )
+            function (): UpdateOrganizerMappingCommand {
+                $command = new UpdateOrganizerMappingCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.organizer.document_type')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(

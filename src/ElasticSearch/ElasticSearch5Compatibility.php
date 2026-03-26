@@ -24,4 +24,8 @@ trait ElasticSearch5Compatibility
         return $this->compatibilityMode;
     }
 
+    protected function usesSeparateMappingFiles(): bool
+    {
+        return $this->compatibilityMode;
+    }
 }
