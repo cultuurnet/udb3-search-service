@@ -25,6 +25,12 @@ final class UpdateEventMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        if (!$this->usesSeparateMappingFiles()) {
+            throw new \RuntimeException(
+                'This command is not supported on Elasticsearch 8. Use udb3-core:update-mapping instead.'
+            );
+        }
+
         $operation = new UpdateEventMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
