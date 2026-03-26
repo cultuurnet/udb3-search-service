@@ -30,6 +30,10 @@ final class UpdateEventMappingCommand extends AbstractMappingCommand
             $this->getLogger($output)
         );
 
+        if ($this->typeEnabled) {
+            $operation->enableType();
+        }
+
         $operation->run($this->indexName, $this->documentType);
 
         return 0;
