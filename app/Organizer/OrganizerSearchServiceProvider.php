@@ -67,6 +67,11 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     $searchService->enableElasticSearch5CompatibilityMode();
                 }
 
+                $luceneFactory = new LuceneQueryStringFactory();
+                if ($this->usesElasticSearch5()) {
+                    $luceneFactory->enableElasticSearch5CompatibilityMode();
+                }
+
                 return new OrganizerSearchController(
                     new ElasticSearchOrganizerQueryBuilder(
                         $this->parameter('elasticsearch.aggregation_size')
@@ -75,7 +80,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
                     $requestParser,
-                    new LuceneQueryStringFactory(),
+                    $luceneFactory,
                     new NodeAwareFacetTreeNormalizer(),
                     $this->get(Consumer::class)
                 );
