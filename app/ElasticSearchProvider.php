@@ -40,7 +40,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.read_index')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $service->enableType();
+                    $service->enableElasticSearch5CompatibilityMode();
                 }
                 return $service;
             }

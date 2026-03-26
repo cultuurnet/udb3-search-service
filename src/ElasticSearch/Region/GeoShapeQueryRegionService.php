@@ -79,7 +79,7 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
                 : $response['hits']['total'];
 
             foreach ($response['hits']['hits'] as $hit) {
-                if ($this->typeEnabled && $hit['_type'] !== 'region') {
+                if ($this->usesDocumentTypes() && $hit['_type'] !== 'region') {
                     $processedHits++;
                     continue;
                 }

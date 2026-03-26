@@ -29,7 +29,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
     {
         $operation = new IndexRegions($this->client, $this->logger, new Finder());
         if ($version === 5) {
-            $operation->enableType();
+            $operation->enableElasticSearch5CompatibilityMode();
         }
         return $operation;
     }
@@ -77,7 +77,7 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                 ]
             );
 
-        $this->operation->enableType();
+        $this->operation->enableElasticSearch5CompatibilityMode();
         $this->operation->run($index, $path);
     }
 

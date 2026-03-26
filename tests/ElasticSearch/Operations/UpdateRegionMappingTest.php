@@ -63,7 +63,7 @@ final class UpdateRegionMappingTest extends AbstractMappingTestCase
             ->method('info')
             ->with("Mapping for type {$documentType} updated.");
 
-        $this->operation->enableType();
+        $this->operation->enableElasticSearch5CompatibilityMode();
         $this->operation->run($indexName, $documentType);
     }
 

@@ -150,7 +150,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
@@ -167,7 +167,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
