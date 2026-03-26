@@ -162,12 +162,18 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             InstallUDB3CoreCommand::class,
-            fn (): InstallUDB3CoreCommand => new InstallUDB3CoreCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.udb3_core_index.write_alias'),
-                $this->parameter('elasticsearch.udb3_core_index.read_alias')
-            )
+            function (): InstallUDB3CoreCommand {
+                $command = new InstallUDB3CoreCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.write_alias'),
+                    $this->parameter('elasticsearch.udb3_core_index.read_alias')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
