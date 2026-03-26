@@ -51,16 +51,21 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     ->withParser(new ContributorsRequestParser())
                     ->withParser(new SortByOrganizerRequestParser());
 
+                $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+                    new NodeMapAggregationTransformer(
+                        FacetName::regions(),
+                        $this->parameter('facet_mapping_regions')
+                    )
+                );
+                if ($this->usesElasticSearch5()) {
+                    $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+                }
+
                 $searchService = new ElasticSearchOrganizerSearchService(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.organizer.read_index'),
                     $this->parameter('elasticsearch.organizer.document_type'),
-                    new ElasticSearchPagedResultSetFactory(
-                        new NodeMapAggregationTransformer(
-                            FacetName::regions(),
-                            $this->parameter('facet_mapping_regions')
-                        )
-                    )
+                    $pagedResultSetFactory
                 );
 
                 if ($this->usesElasticSearch5()) {

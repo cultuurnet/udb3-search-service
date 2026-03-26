@@ -26,13 +26,18 @@ final class OfferSearchServiceFactory
 
     public function createFor(string $readIndex, string $documentType): OfferSearchServiceInterface
     {
+        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+            $this->aggregationTransformer
+        );
+        if ($this->usesCompatibilityMode()) {
+            $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+        }
+
         $service = new ElasticSearchOfferSearchService(
             $this->client,
             $readIndex,
             $documentType,
-            new ElasticSearchPagedResultSetFactory(
-                $this->aggregationTransformer
-            )
+            $pagedResultSetFactory
         );
 
         if ($this->usesCompatibilityMode()) {

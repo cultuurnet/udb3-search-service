@@ -28,4 +28,9 @@ trait ElasticSearch5Compatibility
     {
         return $this->compatibilityMode;
     }
+
+    protected function usesIntegerTotalHits(): bool
+    {
+        return $this->compatibilityMode;
+    }
 }
