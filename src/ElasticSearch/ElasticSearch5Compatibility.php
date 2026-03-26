@@ -23,4 +23,5 @@ trait ElasticSearch5Compatibility
     {
         return $this->compatibilityMode;
     }
+
 }

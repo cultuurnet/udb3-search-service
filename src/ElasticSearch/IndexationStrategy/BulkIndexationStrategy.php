@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
@@ -11,6 +12,8 @@ use Psr\Log\LoggerInterface;
 
 final class BulkIndexationStrategy implements IndexationStrategy
 {
+    use ElasticSearch5Compatibility;
+
     private Client $elasticSearchClient;
 
     private LoggerInterface $logger;
@@ -60,14 +63,16 @@ final class BulkIndexationStrategy implements IndexationStrategy
         $parameters = [];
 
         foreach ($this->queuedDocuments as $queuedDocument) {
-            $parameters['body'][] = [
-                'index' => [
-                    '_index' => $queuedDocument['index'],
-                    '_type' => $queuedDocument['type'],
-                    '_id' => $queuedDocument['id'],
-                ],
+            $action = [
+                '_index' => $queuedDocument['index'],
+                '_id' => $queuedDocument['id'],
             ];
 
+            if ($this->usesDocumentTypes()) {
+                $action['_type'] = $queuedDocument['type'];
+            }
+
+            $parameters['body'][] = ['index' => $action];
             $parameters['body'][] = $queuedDocument['body'];
         }
 

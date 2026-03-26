@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
+    use ElasticSearch5Compatibility;
+
     private Client $elasticSearchClient;
 
     private LoggerInterface $logger;
@@ -30,17 +33,19 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
         JsonDocument $jsonDocument
     ): void {
         $id = $jsonDocument->getId();
-
         $this->logger->info("Sending document {$id} to ElasticSearch...");
 
-        $this->elasticSearchClient->index(
-            [
-                'index' => $indexName,
-                'type' => $documentType,
-                'id' => $id,
-                'body' => (array) $jsonDocument->getBody(),
-            ]
-        );
+        $params = [
+            'index' => $indexName,
+            'id' => $id,
+            'body' => (array) $jsonDocument->getBody(),
+        ];
+
+        if ($this->usesDocumentTypes()) {
+            $params['type'] = $documentType;
+        }
+
+        $this->elasticSearchClient->index($params);
     }
 
     public function finish(): void

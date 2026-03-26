@@ -60,6 +60,10 @@ abstract class AbstractReindexCommand extends AbstractElasticSearchCommand
                 $this->bulkThreshold
             );
 
+            if ($this->usesCompatibilityMode()) {
+                $bulkIndexationStrategy->enableElasticSearch5CompatibilityMode();
+            }
+
             $indexationStrategy->setIndexationStrategy($bulkIndexationStrategy);
         }
 
