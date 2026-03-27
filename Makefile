@@ -1,4 +1,4 @@
-.PHONY: up down bash config install migrate migrate-force ci stan cs cs-fix test consume
+.PHONY: up down bash config install migrate migrate-force ci stan cs cs-fix test
 
 up:
 	docker compose up -d
@@ -41,6 +41,3 @@ test:
 
 test-filter:
 	docker compose exec -it search composer test -- --filter=$(filter)
-
-consume:
-	docker compose exec -it search ./bin/app.php consume-udb3-ap
