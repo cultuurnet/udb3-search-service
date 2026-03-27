@@ -1,0 +1,25 @@
+{
+    "template": "*",
+    "settings": {
+        "analysis": {
+            "filter": {
+                "decompounder_filter": {
+                    "type": "hyphenation_decompounder",
+                    "hyphenation_patterns_path": "analysis/hyphenation_patterns/nl_NL.xml",
+                    "word_list_path": "analysis/hyphenation_patterns/nl_NL.txt",
+                    "min_word_size": 5,
+                    "min_subword_size": 2,
+                    "max_subword_size": 22,
+                    "only_longest_match": false
+                }
+            },
+            "analyzer": {
+                "decompounder_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "decompounder_filter"]
+                }
+            }
+        }
+    }
+}

@@ -40,18 +40,22 @@ final class OfferSearchControllerFactory
 
     private Consumer $consumer;
 
+    private bool $useWordBreaker;
+
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
-        Consumer $consumer
+        Consumer $consumer,
+        bool $useWordBreaker = false
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
+        $this->useWordBreaker = $useWordBreaker;
     }
 
     public function createFor(
@@ -78,7 +82,7 @@ final class OfferSearchControllerFactory
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         return new OfferSearchController(
-            new ElasticSearchOfferQueryBuilder($this->aggregationSize),
+            new ElasticSearchOfferQueryBuilder($this->aggregationSize, $this->useWordBreaker),
             $requestParser,
             $this->offerSearchServiceFactory->createFor(
                 $readIndex,
