@@ -6,11 +6,26 @@ namespace CultuurNet\UDB3\Search\ElasticSearch;
 
 trait ElasticSearch5Compatibility
 {
-    protected bool $typeEnabled = false;
+    protected bool $compatibilityMode = false;
 
-    public function enableType(): static
+    public function enableElasticSearch5CompatibilityMode(): static
     {
-        $this->typeEnabled = true;
+        $this->compatibilityMode = true;
         return $this;
+    }
+
+    protected function usesCompatibilityMode(): bool
+    {
+        return $this->compatibilityMode;
+    }
+
+    protected function usesDocumentTypes(): bool
+    {
+        return $this->compatibilityMode;
+    }
+
+    protected function usesSeparateMappingFiles(): bool
+    {
+        return $this->compatibilityMode;
     }
 }

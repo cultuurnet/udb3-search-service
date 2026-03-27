@@ -22,6 +22,7 @@ use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
+use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use Elasticsearch\Client;
@@ -49,6 +50,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
+                    'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
                     'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
@@ -79,6 +81,15 @@ final class CommandServiceProvider extends BaseServiceProvider
         );
 
         $this->add(
+            UpdateUdb3CoreMappingCommand::class,
+            fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.organizer.document_type')
+            )
+        );
+
+        $this->add(
             UpdateOrganizerMappingCommand::class,
             function (): UpdateOrganizerMappingCommand {
                 $command = new UpdateOrganizerMappingCommand(
@@ -87,7 +98,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.organizer.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
@@ -102,7 +113,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.event.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
@@ -117,7 +128,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.place.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
@@ -125,38 +136,56 @@ final class CommandServiceProvider extends BaseServiceProvider
 
         $this->add(
             ReindexUDB3CoreCommand::class,
-            fn (): ReindexUDB3CoreCommand => new ReindexUDB3CoreCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                $this->get(EventBus::class),
-                $this->get('elasticsearch_indexation_strategy'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-            )
+            function (): ReindexUDB3CoreCommand {
+                $command = new ReindexUDB3CoreCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                    $this->get(EventBus::class),
+                    $this->get('elasticsearch_indexation_strategy'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
             ReindexPermanentOffersCommand::class,
-            fn (): ReindexPermanentOffersCommand => new ReindexPermanentOffersCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
-                $this->get(EventBus::class),
-                $this->get('elasticsearch_indexation_strategy'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
-                $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
-            )
+            function (): ReindexPermanentOffersCommand {
+                $command = new ReindexPermanentOffersCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
+                    $this->get(EventBus::class),
+                    $this->get('elasticsearch_indexation_strategy'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_ttl'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
+                    $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
             InstallUDB3CoreCommand::class,
-            fn (): InstallUDB3CoreCommand => new InstallUDB3CoreCommand(
-                $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
-                $this->parameter('elasticsearch.udb3_core_index.write_alias'),
-                $this->parameter('elasticsearch.udb3_core_index.read_alias')
-            )
+            function (): InstallUDB3CoreCommand {
+                $command = new InstallUDB3CoreCommand(
+                    $this->get(Client::class),
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.write_alias'),
+                    $this->parameter('elasticsearch.udb3_core_index.read_alias')
+                );
+                if ($this->usesElasticSearch5()) {
+                    $command->enableElasticSearch5CompatibilityMode();
+                }
+                return $command;
+            }
         );
 
         $this->add(
@@ -168,7 +197,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }
@@ -185,7 +214,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $command->enableType();
+                    $command->enableElasticSearch5CompatibilityMode();
                 }
                 return $command;
             }

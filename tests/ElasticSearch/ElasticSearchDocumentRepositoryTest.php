@@ -38,15 +38,19 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
         $this->indexName = 'udb3-core';
         $this->documentType = 'organizer';
 
+        $indexationStrategy = new SingleFileIndexationStrategy(
+            $this->client,
+            new NullLogger()
+        );
+        $indexationStrategy->enableElasticSearch5CompatibilityMode();
+
         $this->repository = new ElasticSearchDocumentRepository(
             $this->client,
             $this->indexName,
             $this->documentType,
-            new SingleFileIndexationStrategy(
-                $this->client,
-                new NullLogger()
-            )
+            $indexationStrategy
         );
+        $this->repository->enableElasticSearch5CompatibilityMode();
     }
 
     /**

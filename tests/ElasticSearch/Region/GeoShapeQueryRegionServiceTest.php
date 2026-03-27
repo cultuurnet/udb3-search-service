@@ -33,7 +33,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
         $this->regionService = (new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
-        ))->enableType();
+        ))->enableElasticSearch5CompatibilityMode();
 
         $this->es8RegionService = new GeoShapeQueryRegionService(
             $this->client,

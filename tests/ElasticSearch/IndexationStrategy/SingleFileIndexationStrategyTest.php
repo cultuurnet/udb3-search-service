@@ -46,6 +46,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
             $this->client,
             $this->logger
         );
+        $this->strategy->enableElasticSearch5CompatibilityMode();
     }
 
     /**

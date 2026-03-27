@@ -52,6 +52,7 @@ final class BulkIndexationStrategyTest extends TestCase
             $this->logger,
             $this->autoFlushThreshold
         );
+        $this->strategy->enableElasticSearch5CompatibilityMode();
     }
 
     /**

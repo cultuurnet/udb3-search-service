@@ -1,0 +1,257 @@
+{
+    "properties": {
+        "@id": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+        "@type": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "id": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "name": {
+            "type": "object",
+            "properties": {
+                "nl": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer",
+                    "fields": {
+                        "autocomplete": {
+                            "type": "text",
+                            "analyzer": "autocomplete_analyzer",
+                            "search_analyzer": "standard"
+                        }
+                    }
+                },
+                "fr": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "en": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "de": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                }
+            }
+        },
+
+        "description": {
+            "type": "object",
+            "properties": {
+                "nl": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "fr": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "en": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "de": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                }
+            }
+        },
+
+        "educationalDescription": {
+            "type": "object",
+            "properties": {
+                "nl": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "fr": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "en": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                },
+                "de": {
+                    "type": "text",
+                    "analyzer": "lowercase_standard_analyzer"
+                }
+            }
+        },
+
+        "url": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "domain": {
+            "type": "keyword"
+        },
+
+        "address": {
+            "type": "object",
+            "properties": {
+                "nl": {
+                    "type": "object",
+                    "properties": {
+                        "addressCountry": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "addressLocality": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "postalCode": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "streetAddress": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "fr": {
+                    "type": "object",
+                    "properties": {
+                        "addressCountry": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "addressLocality": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "postalCode": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "streetAddress": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "de": {
+                    "type": "object",
+                    "properties": {
+                        "addressCountry": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "addressLocality": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "postalCode": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "streetAddress": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "en": {
+                    "type": "object",
+                    "properties": {
+                        "addressCountry": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "addressLocality": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "postalCode": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "streetAddress": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                }
+            }
+        },
+
+        "geo": {
+            "type": "geo_shape"
+        },
+        "geo_point": {
+            "type": "geo_point"
+        },
+        "regions": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer",
+            "fields": {
+                "keyword": {
+                    "type": "keyword"
+                }
+            }
+        },
+
+        "imagesCount": {
+            "type": "integer"
+        },
+
+        "created": {
+            "type": "date",
+            "format": "strict_date_time_no_millis"
+        },
+
+        "modified": {
+            "type": "date",
+            "format": "strict_date_time_no_millis"
+        },
+
+        "indexedAt": {
+            "type": "date",
+            "format": "strict_date_time_no_millis"
+        },
+
+        "creator": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "contributors": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "completeness": {
+            "type": "integer"
+        },
+
+        "originalEncodedJsonLd": {
+            "type": "object",
+            "enabled": false
+        }
+    }
+}

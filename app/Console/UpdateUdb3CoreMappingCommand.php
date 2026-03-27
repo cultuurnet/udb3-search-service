@@ -4,29 +4,25 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateRegionMapping;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdateUdb3CoreMapping;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class UpdateRegionMappingCommand extends AbstractMappingCommand
+final class UpdateUdb3CoreMappingCommand extends AbstractMappingCommand
 {
     protected function configure(): void
     {
         $this
-            ->setName('geoshapes:region-mapping')
-            ->setDescription('Creates or updates the region mapping on the latest geoshapes index.');
+            ->setName('udb3-core:core-mapping')
+            ->setDescription('Creates or updates the udb3 core mapping on the latest udb3_core index.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $operation = new UpdateRegionMapping(
+        $operation = new UpdateUdb3CoreMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );
-
-        if ($this->usesCompatibilityMode()) {
-            $operation->enableElasticSearch5CompatibilityMode();
-        }
 
         $operation->run($this->indexName, $this->documentType);
 

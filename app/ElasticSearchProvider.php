@@ -24,12 +24,16 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
         $this->addShared(
             'elasticsearch_indexation_strategy',
-            fn (): MutableIndexationStrategy => new MutableIndexationStrategy(
-                new SingleFileIndexationStrategy(
+            function (): MutableIndexationStrategy {
+                $strategy = new SingleFileIndexationStrategy(
                     $this->get(Client::class),
                     $this->get('logger.amqp.udb3')
-                )
-            )
+                );
+                if ($this->usesElasticSearch5()) {
+                    $strategy->enableElasticSearch5CompatibilityMode();
+                }
+                return new MutableIndexationStrategy($strategy);
+            }
         );
 
         $this->add(
@@ -40,7 +44,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.read_index')
                 );
                 if ($this->usesElasticSearch5()) {
-                    $service->enableType();
+                    $service->enableElasticSearch5CompatibilityMode();
                 }
                 return $service;
             }

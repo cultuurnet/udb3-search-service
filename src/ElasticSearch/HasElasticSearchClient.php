@@ -8,6 +8,8 @@ use Elasticsearch\Client;
 
 trait HasElasticSearchClient
 {
+    use ElasticSearch5Compatibility;
+
     private Client $elasticSearchClient;
 
     private string $indexName;
@@ -16,14 +18,24 @@ trait HasElasticSearchClient
 
     private function getDefaultParameters(): array
     {
-        return [
-            'index' => $this->indexName,
-            'type' => $this->documentType,
-        ];
+        $params = ['index' => $this->indexName];
+
+        if ($this->usesDocumentTypes()) {
+            $params['type'] = $this->documentType;
+        }
+
+        return $params;
     }
 
     private function executeQuery(array $body, array $parameters = []): array
     {
+        if (!$this->usesDocumentTypes()) {
+            if (!isset($body['query']['bool'])) {
+                $body['query'] = ['bool' => ['must' => [$body['query']]]];
+            }
+            $body['query']['bool']['filter'][] = ['term' => ['@type' => ucfirst($this->documentType)]];
+        }
+
         $parameters['body'] = $body;
 
         return $this->elasticSearchClient->search(

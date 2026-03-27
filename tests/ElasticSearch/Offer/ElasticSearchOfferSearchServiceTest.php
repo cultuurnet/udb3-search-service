@@ -44,6 +44,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                 new NullAggregationTransformer()
             )
         );
+        $this->service->enableElasticSearch5CompatibilityMode();
     }
 
     /**
