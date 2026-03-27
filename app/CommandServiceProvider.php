@@ -50,7 +50,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
-                    'udb3-core:update-mapping' => UpdateUdb3CoreMappingCommand::class,
+                    'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
                     'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,

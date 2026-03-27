@@ -90,7 +90,7 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
             $consoleApp->find('udb3-core:event-mapping')->run($emptyInput, $output);
             $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
         } else {
-            $consoleApp->find('udb3-core:update-mapping')->run($emptyInput, $output);
+            $consoleApp->find('udb3-core:core-mapping')->run($emptyInput, $output);
         }
 
         // Move the write alias to the newly created index.
