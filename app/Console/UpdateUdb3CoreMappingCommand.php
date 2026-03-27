@@ -13,7 +13,7 @@ final class UpdateUdb3CoreMappingCommand extends AbstractMappingCommand
     protected function configure(): void
     {
         $this
-            ->setName('udb3-core:update-mapping')
+            ->setName('udb3-core:core-mapping')
             ->setDescription('Creates or updates the udb3 core mapping on the latest udb3_core index.');
     }
 
