@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\Limit;
-use CultuurNet\UDB3\Search\PagedResultSet;
-use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,13 +19,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
      */
     private $client;
 
-    private string $indexName;
-
-    private string $documentType;
-
     private ElasticSearchOrganizerSearchService $service;
-
-    private ElasticSearchOrganizerSearchService $es8Service;
 
     protected function setUp(): void
     {
@@ -35,29 +27,11 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->indexName = 'udb3-core';
-        $this->documentType = 'organizer';
-
-        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
-            new NullAggregationTransformer()
-        );
-        $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
-
         $this->service = new ElasticSearchOrganizerSearchService(
             $this->client,
-            $this->indexName,
-            $this->documentType,
-            $pagedResultSetFactory
-        );
-        $this->service->enableElasticSearch5CompatibilityMode();
-
-        $this->es8Service = new ElasticSearchOrganizerSearchService(
-            $this->client,
-            $this->indexName,
-            $this->documentType,
-            new ElasticSearchPagedResultSetFactory(
-                new NullAggregationTransformer()
-            )
+            'udb3-core',
+            'organizer',
+            new ElasticSearchPagedResultSetFactory(new NullAggregationTransformer())
         );
     }
 
@@ -75,7 +49,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
         $response = [
             'hits' => [
                 'total' => ['value' => 1, 'relation' => 'eq'],
-                'hits' => [['_index' => $this->indexName, '_id' => $id, '_source' => $source]],
+                'hits' => [['_index' => 'udb3-core', '_id' => $id, '_source' => $source]],
             ],
         ];
 
@@ -83,7 +57,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->method('search')
             ->with(
                 [
-                    'index' => $this->indexName,
+                    'index' => 'udb3-core',
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
@@ -101,113 +75,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             )
             ->willReturn($response);
 
-        $actualPagedResultSet = $this->es8Service->search($queryBuilder);
-
-        $this->assertEquals(1, $actualPagedResultSet->getTotal());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_paged_result_set_for_the_given_search_query(): void
-    {
-        $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStartAndLimit(new Start(960), new Limit(30))
-            ->withAutoCompleteFilter('Collectief');
-
-        $idCollectiefCursief = '351b85c1-66ea-463b-82a6-515b7de0d267';
-
-        $sourceCollectiefCursief = [
-            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
-            '@type' => 'Organizer',
-            'originalEncodedJsonLd' => '{}',
-        ];
-
-        $idCollectiefAC = 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159';
-
-        $sourceAC = [
-            '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
-            '@type' => 'Organizer',
-            'originalEncodedJsonLd' => '{}',
-        ];
-
-        $response = [
-            'hits' => [
-                'total' => 962,
-                'hits' => [
-                    [
-                        '_index' => $this->indexName,
-                        '_type' => $this->documentType,
-                        '_id' => $idCollectiefCursief,
-                        '_source' => $sourceCollectiefCursief,
-                    ],
-                    [
-                        '_index' => $this->indexName,
-                        '_type' => $this->documentType,
-                        '_id' => $idCollectiefAC,
-                        '_source' => $sourceAC,
-                    ],
-                ],
-            ],
-        ];
-
-        $this->client->expects($this->once())
-            ->method('search')
-            ->with(
-                [
-                    'index' => $this->indexName,
-                    'type' => $this->documentType,
-                    'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-                        'from' => 960,
-                        'size' => 30,
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    [
-                                        'match_all' => (object) [],
-                                    ],
-                                ],
-                                'filter' => [
-                                    [
-                                        'match_phrase' => [
-                                            'name.nl.autocomplete' => [
-                                                'query' => 'Collectief',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                                'should' => [
-                                    [
-                                        'match_phrase' => [
-                                            'name.nl.autocomplete' => [
-                                                'query' => 'Collectief',
-                                            ],
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]
-            )
-            ->willReturn($response);
-
-        $expectedResults = [
-            (new JsonDocument($idCollectiefCursief))
-                ->withBody((object) $sourceCollectiefCursief),
-            (new JsonDocument($idCollectiefAC))
-                ->withBody((object) $sourceAC),
-        ];
-
-        $expectedPagedResultSet = new PagedResultSet(
-            962,
-            30,
-            $expectedResults
-        );
-
         $actualPagedResultSet = $this->service->search($queryBuilder);
 
-        $this->assertEquals($expectedPagedResultSet, $actualPagedResultSet);
+        $this->assertEquals(1, $actualPagedResultSet->getTotal());
     }
 }
