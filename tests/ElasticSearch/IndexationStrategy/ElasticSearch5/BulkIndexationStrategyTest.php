@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
+namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\ElasticSearch5;
 
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\BulkIndexationStrategy;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-final class BulkIndexationStrategyTest extends TestCase
+final class BulkIndexationStrategyTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
@@ -52,6 +54,7 @@ final class BulkIndexationStrategyTest extends TestCase
             $this->logger,
             $this->autoFlushThreshold
         );
+        $this->strategy->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -59,11 +62,11 @@ final class BulkIndexationStrategyTest extends TestCase
      */
     public function it_queues_the_documents_and_indexes_them_in_bulk_when_the_auto_flush_threshold_has_been_reached(): void
     {
-        $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"@type":"Event","foo":"bar1"}');
-        $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"@type":"Event","foo":"bar2"}');
-        $jsonDocument3 = new JsonDocument('014aef8c-0b63-4775-9ac6-68d880a11fc7', '{"@type":"Event","foo":"bar3"}');
-        $jsonDocument4 = new JsonDocument('21dc5755-93c1-4443-9ee9-3ca0373a1107', '{"@type":"Event","foo":"bar4"}');
-        $jsonDocument5 = new JsonDocument('8d429d11-ffdb-4c59-a530-792c5bf028df', '{"@type":"Event","foo":"bar5"}');
+        $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar1"}');
+        $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"foo":"bar2"}');
+        $jsonDocument3 = new JsonDocument('014aef8c-0b63-4775-9ac6-68d880a11fc7', '{"foo":"bar3"}');
+        $jsonDocument4 = new JsonDocument('21dc5755-93c1-4443-9ee9-3ca0373a1107', '{"foo":"bar4"}');
+        $jsonDocument5 = new JsonDocument('8d429d11-ffdb-4c59-a530-792c5bf028df', '{"foo":"bar5"}');
 
         $this->logger->expects($this->exactly(7))
             ->method('info')
@@ -82,51 +85,51 @@ final class BulkIndexationStrategyTest extends TestCase
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar1',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '5cb3f31d-ffb4-4de5-86bd-852825d94ff2',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar2',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar3',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '21dc5755-93c1-4443-9ee9-3ca0373a1107',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar4',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '8d429d11-ffdb-4c59-a530-792c5bf028df',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar5',
                 ],
             ],
@@ -148,9 +151,9 @@ final class BulkIndexationStrategyTest extends TestCase
      */
     public function it_can_be_flushed_on_command(): void
     {
-        $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"@type":"Event","foo":"bar1"}');
-        $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"@type":"Event","foo":"bar2"}');
-        $jsonDocument3 = new JsonDocument('014aef8c-0b63-4775-9ac6-68d880a11fc7', '{"@type":"Event","foo":"bar3"}');
+        $jsonDocument1 = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar1"}');
+        $jsonDocument2 = new JsonDocument('5cb3f31d-ffb4-4de5-86bd-852825d94ff2', '{"foo":"bar2"}');
+        $jsonDocument3 = new JsonDocument('014aef8c-0b63-4775-9ac6-68d880a11fc7', '{"foo":"bar3"}');
 
         $this->logger->expects($this->exactly(5))
             ->method('info')
@@ -167,31 +170,31 @@ final class BulkIndexationStrategyTest extends TestCase
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar1',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '5cb3f31d-ffb4-4de5-86bd-852825d94ff2',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar2',
                 ],
                 [
                     'index' => [
                         '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => '014aef8c-0b63-4775-9ac6-68d880a11fc7',
                     ],
                 ],
                 [
-                    '@type' => 'Event',
                     'foo' => 'bar3',
                 ],
             ],
