@@ -33,7 +33,10 @@ trait HasElasticSearchClient
             if (!isset($body['query']['bool'])) {
                 $body['query'] = ['bool' => ['must' => [$body['query']]]];
             }
-            $body['query']['bool']['filter'][] = ['term' => ['@type' => strtolower($this->documentType)]];
+            $types = array_map('strtolower', explode(',', $this->documentType));
+            $body['query']['bool']['filter'][] = count($types) === 1
+                ? ['term' => ['@type' => $types[0]]]
+                : ['terms' => ['@type' => $types]];
         }
 
         $parameters['body'] = $body;
