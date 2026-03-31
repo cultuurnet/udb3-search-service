@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\PagedResultSet;
+use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Start;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -38,18 +40,43 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_injects_a_lowercase_type_filter_and_omits_the_type_parameter_for_es8(): void
+    public function it_returns_a_paged_result_set_for_the_given_search_query(): void
     {
         $queryBuilder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withStartAndLimit(new Start(0), new Limit(30));
+            ->withStartAndLimit(new Start(960), new Limit(30))
+            ->withAutoCompleteFilter('Collectief');
 
-        $id = '351b85c1-66ea-463b-82a6-515b7de0d267';
-        $source = ['@id' => 'http://foo.bar/organizers/' . $id, '@type' => 'Organizer', 'originalEncodedJsonLd' => '{}'];
+        $idCollectiefCursief = '351b85c1-66ea-463b-82a6-515b7de0d267';
+
+        $sourceCollectiefCursief = [
+            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
+            '@type' => 'Organizer',
+            'originalEncodedJsonLd' => '{}',
+        ];
+
+        $idCollectiefAC = 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159';
+
+        $sourceAC = [
+            '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
+            '@type' => 'Organizer',
+            'originalEncodedJsonLd' => '{}',
+        ];
 
         $response = [
             'hits' => [
-                'total' => ['value' => 1, 'relation' => 'eq'],
-                'hits' => [['_index' => 'udb3-core', '_id' => $id, '_source' => $source]],
+                'total' => ['value' => 962, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_index' => 'udb3-core',
+                        '_id' => $idCollectiefCursief,
+                        '_source' => $sourceCollectiefCursief,
+                    ],
+                    [
+                        '_index' => 'udb3-core',
+                        '_id' => $idCollectiefAC,
+                        '_source' => $sourceAC,
+                    ],
+                ],
             ],
         ];
 
@@ -60,13 +87,33 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                     'index' => 'udb3-core',
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-                        'from' => 0,
+                        'from' => 960,
                         'size' => 30,
                         'query' => [
                             'bool' => [
-                                'must' => [['match_all' => (object) []]],
+                                'must' => [
+                                    [
+                                        'match_all' => (object) [],
+                                    ],
+                                ],
                                 'filter' => [
+                                    [
+                                        'match_phrase' => [
+                                            'name.nl.autocomplete' => [
+                                                'query' => 'Collectief',
+                                            ],
+                                        ],
+                                    ],
                                     ['term' => ['@type' => 'organizer']],
+                                ],
+                                'should' => [
+                                    [
+                                        'match_phrase' => [
+                                            'name.nl.autocomplete' => [
+                                                'query' => 'Collectief',
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
@@ -75,8 +122,16 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             )
             ->willReturn($response);
 
-        $actualPagedResultSet = $this->service->search($queryBuilder);
+        $expectedResults = [
+            (new JsonDocument($idCollectiefCursief))
+                ->withBody((object) $sourceCollectiefCursief),
+            (new JsonDocument($idCollectiefAC))
+                ->withBody((object) $sourceAC),
+        ];
 
-        $this->assertEquals(1, $actualPagedResultSet->getTotal());
+        $this->assertEquals(
+            new PagedResultSet(962, 30, $expectedResults),
+            $this->service->search($queryBuilder)
+        );
     }
 }
