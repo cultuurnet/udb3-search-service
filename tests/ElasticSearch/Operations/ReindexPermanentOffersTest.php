@@ -11,14 +11,12 @@ final class ReindexPermanentOffersTest extends AbstractReindexUDB3CoreTest
 {
     protected function createOperation(Client $client, LoggerInterface $logger): ReindexPermanentOffers
     {
-        $operation = new ReindexPermanentOffers(
+        return new ReindexPermanentOffers(
             $client,
             $logger,
             $this->getEventBus(),
             '1m',
             10
         );
-        $operation->enableElasticSearch5CompatibilityMode();
-        return $operation;
     }
 }
