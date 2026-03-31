@@ -23,9 +23,9 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
     private string $indexName;
 
-    private string $documentType;
+    private ElasticSearchOfferSearchService $multiTypeService;
 
-    private ElasticSearchOfferSearchService $service;
+    private ElasticSearchOfferSearchService $singleTypeService;
 
     protected function setUp(): void
     {
@@ -34,16 +34,17 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->getMock();
 
         $this->indexName = 'udb3-core';
-        $this->documentType = 'event,place';
+        $this->multiTypeService = $this->createService('event,place');
+        $this->singleTypeService = $this->createService('event');
+    }
 
-        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
-            new NullAggregationTransformer()
-        );
-        $this->service = new ElasticSearchOfferSearchService(
+    private function createService(string $documentType): ElasticSearchOfferSearchService
+    {
+        return new ElasticSearchOfferSearchService(
             $this->client,
             $this->indexName,
-            $this->documentType,
-            $pagedResultSetFactory
+            $documentType,
+            new ElasticSearchPagedResultSetFactory(new NullAggregationTransformer())
         );
     }
 
@@ -132,8 +133,80 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ]
         );
 
-        $actual = $this->service->search($queryBuilder);
+        $actual = $this->multiTypeService->search($queryBuilder);
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_filters_on_a_single_type_using_a_term_query(): void
+    {
+        $queryBuilder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(1));
+
+        $response = [
+            'hits' => [
+                'total' => ['value' => 1, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_index' => 'udb3-core',
+                        '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
+                        '_source' => [
+                            '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
+                            '@type' => 'Event',
+                            'regions' => [],
+                            'originalEncodedJsonLd' => '{}',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->client->expects($this->once())
+            ->method('search')
+            ->with(
+                [
+                    'index' => $this->indexName,
+                    'body' => [
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+                        'from' => 0,
+                        'size' => 1,
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    ['match_all' => (object) []],
+                                ],
+                                'filter' => [
+                                    ['term' => ['@type' => 'event']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ]
+            )
+            ->willReturn($response);
+
+        $actual = $this->singleTypeService->search($queryBuilder);
+
+        $this->assertEquals(
+            new PagedResultSet(
+                1,
+                1,
+                [
+                    (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
+                        ->withBody(
+                            (object) [
+                                '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
+                                '@type' => 'Event',
+                                'regions' => [],
+                                'originalEncodedJsonLd' => '{}',
+                            ]
+                        ),
+                ]
+            ),
+            $actual
+        );
     }
 }
