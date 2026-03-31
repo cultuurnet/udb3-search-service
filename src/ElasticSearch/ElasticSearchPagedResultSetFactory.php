@@ -14,6 +14,8 @@ use InvalidArgumentException;
 
 final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResultSetFactoryInterface
 {
+    use ElasticSearch5Compatibility;
+
     private AggregationTransformerInterface $aggregationTransformer;
 
     private ElasticSearchResponseValidatorInterface $responseValidator;
@@ -34,7 +36,9 @@ final class ElasticSearchPagedResultSetFactory implements ElasticSearchPagedResu
     {
         $this->responseValidator->validate($response);
 
-        $total = $response['hits']['total'];
+        $total = $this->usesIntegerTotalHits()
+            ? $response['hits']['total']
+            : $response['hits']['total']['value'];
 
         $results = array_map(
             fn (array $result): JsonDocument => (new JsonDocument($result['_id']))

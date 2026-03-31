@@ -18,8 +18,9 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
 {
     private NodeMapAggregationTransformer $aggregationTransformer;
 
-
     private ElasticSearchPagedResultSetFactory $factory;
+
+    private ElasticSearchPagedResultSetFactory $es8Factory;
 
     protected function setUp(): void
     {
@@ -36,6 +37,10 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
         );
 
         $this->factory = new ElasticSearchPagedResultSetFactory(
+            $this->aggregationTransformer
+        );
+        $this->factory->enableElasticSearch5CompatibilityMode();
+        $this->es8Factory = new ElasticSearchPagedResultSetFactory(
             $this->aggregationTransformer
         );
     }
@@ -330,5 +335,31 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
         $actual = $this->factory->createPagedResultSet($perPage, $response);
 
         $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_hits_total_as_object_for_es8_compatibility(): void
+    {
+        $response = [
+            'hits' => [
+                'total' => ['value' => 1, 'relation' => 'eq'],
+                'hits' => [
+                    [
+                        '_index' => 'udb3-core',
+                        '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
+                        '_source' => [
+                            '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
+                            'name' => 'Collectief Cursief',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actual = $this->es8Factory->createPagedResultSet(30, $response);
+
+        $this->assertEquals(1, $actual->getTotal());
     }
 }

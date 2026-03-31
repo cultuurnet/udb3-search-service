@@ -33,7 +33,7 @@ trait HasElasticSearchClient
             if (!isset($body['query']['bool'])) {
                 $body['query'] = ['bool' => ['must' => [$body['query']]]];
             }
-            $body['query']['bool']['filter'][] = ['term' => ['@type' => ucfirst($this->documentType)]];
+            $body['query']['bool']['filter'][] = ['term' => ['@type' => strtolower($this->documentType)]];
         }
 
         $parameters['body'] = $body;
