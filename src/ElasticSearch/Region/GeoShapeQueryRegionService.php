@@ -74,9 +74,9 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
                 );
             }
 
-            $total = is_array($response['hits']['total'])
-                ? $response['hits']['total']['value']
-                : $response['hits']['total'];
+            $total = $this->usesIntegerTotalHits()
+                ? $response['hits']['total']
+                : $response['hits']['total']['value'];
 
             foreach ($response['hits']['hits'] as $hit) {
                 if ($this->usesDocumentTypes() && $hit['_type'] !== 'region') {
