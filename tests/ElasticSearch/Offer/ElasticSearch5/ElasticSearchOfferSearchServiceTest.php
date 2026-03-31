@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearch5;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -14,7 +17,7 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class ElasticSearchOfferSearchServiceTest extends TestCase
+final class ElasticSearchOfferSearchServiceTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
@@ -39,12 +42,15 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
         $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
             new NullAggregationTransformer()
         );
+        $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+
         $this->service = new ElasticSearchOfferSearchService(
             $this->client,
             $this->indexName,
             $this->documentType,
             $pagedResultSetFactory
         );
+        $this->service->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -57,10 +63,11 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
         $response = [
             'hits' => [
-                'total' => ['value' => 32, 'relation' => 'eq'],
+                'total' => 32,
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'event',
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
@@ -71,6 +78,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                     ],
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'place',
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
@@ -88,19 +96,13 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
                         'size' => 2,
                         'query' => [
-                            'bool' => [
-                                'must' => [
-                                    ['match_all' => (object) []],
-                                ],
-                                'filter' => [
-                                    ['terms' => ['@type' => ['event', 'place']]],
-                                ],
-                            ],
+                            'match_all' => (object) [],
                         ],
                     ],
                 ]
