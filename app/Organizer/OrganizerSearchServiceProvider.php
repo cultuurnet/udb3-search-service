@@ -51,20 +51,30 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     ->withParser(new ContributorsRequestParser())
                     ->withParser(new SortByOrganizerRequestParser());
 
+                $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+                    new NodeMapAggregationTransformer(
+                        FacetName::regions(),
+                        $this->parameter('facet_mapping_regions')
+                    )
+                );
+                if ($this->usesElasticSearch5()) {
+                    $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+                }
+
                 $searchService = new ElasticSearchOrganizerSearchService(
                     $this->get(Client::class),
                     $this->parameter('elasticsearch.organizer.read_index'),
                     $this->parameter('elasticsearch.organizer.document_type'),
-                    new ElasticSearchPagedResultSetFactory(
-                        new NodeMapAggregationTransformer(
-                            FacetName::regions(),
-                            $this->parameter('facet_mapping_regions')
-                        )
-                    )
+                    $pagedResultSetFactory
                 );
 
                 if ($this->usesElasticSearch5()) {
                     $searchService->enableElasticSearch5CompatibilityMode();
+                }
+
+                $luceneFactory = new LuceneQueryStringFactory();
+                if ($this->usesElasticSearch5()) {
+                    $luceneFactory->enableElasticSearch5CompatibilityMode();
                 }
 
                 return new OrganizerSearchController(
@@ -75,7 +85,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),
                     $requestParser,
-                    new LuceneQueryStringFactory(),
+                    $luceneFactory,
                     new NodeAwareFacetTreeNormalizer(),
                     $this->get(Consumer::class)
                 );

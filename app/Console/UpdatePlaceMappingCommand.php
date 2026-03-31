@@ -25,6 +25,12 @@ final class UpdatePlaceMappingCommand extends AbstractMappingCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        if (!$this->usesSeparateMappingFiles()) {
+            throw new \RuntimeException(
+                'This command is not supported on Elasticsearch 8. Use udb3-core:core-mapping instead.'
+            );
+        }
+
         $operation = new UpdatePlaceMapping(
             $this->getElasticSearchClient(),
             $this->getLogger($output)

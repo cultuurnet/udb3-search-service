@@ -218,6 +218,341 @@
             "type": "integer"
         },
 
+        "availableRange": {
+            "type": "date_range",
+            "format": "strict_date_time_no_millis"
+        },
+        "availableTo": {
+            "type": "date",
+            "format": "strict_date_time_no_millis"
+        },
+
+        "dateRange": {
+            "type": "date_range",
+            "format": "strict_date_time_no_millis"
+        },
+        "localTimeRange": {
+            "type": "integer_range"
+        },
+        "status": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+        "bookingAvailability": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+        "attendanceMode": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "subEvent": {
+            "type": "nested",
+            "properties": {
+                "dateRange": {
+                    "type": "date_range",
+                    "format": "strict_date_time_no_millis"
+                },
+                "localTimeRange": {
+                    "type": "integer_range"
+                },
+                "status": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "bookingAvailability": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
+        "calendarType": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "mainLanguage": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+        "languages": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+        "completedLanguages": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "labels": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer",
+            "fields": {
+                "keyword": {
+                    "type": "keyword"
+                }
+            }
+        },
+        "labels_free_text": {
+            "type": "text"
+        },
+        "terms": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "label": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+        "terms_free_text": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "label": {
+                    "type": "text"
+                }
+            }
+        },
+        "typeIds": {
+            "type": "keyword"
+        },
+        "themeIds": {
+            "type": "keyword"
+        },
+        "facilityIds": {
+            "type": "keyword"
+        },
+
+        "typicalAgeRange": {
+            "type": "integer_range"
+        },
+        "allAges": {
+            "type": "boolean"
+        },
+
+        "price": {
+            "type": "scaled_float",
+            "scaling_factor": 100
+        },
+
+        "audienceType": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "mediaObjectsCount": {
+            "type": "integer"
+        },
+        "videosCount": {
+            "type": "integer"
+        },
+
+        "organizer": {
+            "type": "object",
+            "properties": {
+                "@id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "@type": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "nl": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "fr": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "en": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "de": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "labels": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
+        "isDuplicate": {
+            "type": "boolean"
+        },
+
+        "location": {
+            "type": "object",
+            "properties": {
+                "@id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "@type": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "mainId": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "name": {
+                    "type": "object",
+                    "properties": {
+                        "nl": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "fr": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "en": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        },
+                        "de": {
+                            "type": "text",
+                            "analyzer": "lowercase_standard_analyzer"
+                        }
+                    }
+                },
+                "terms": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "label": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        }
+                    }
+                },
+                "labels": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
+        "performer_free_text": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "text"
+                }
+            }
+        },
+
+        "production": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "text",
+                    "analyzer": "lowercase_exact_match_analyzer",
+                    "search_analyzer": "lowercase_exact_match_analyzer"
+                }
+            }
+        },
+
+        "unique_address_identifier": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "global_address_identifier": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "productionCollapseValue": {
+            "type": "keyword"
+        },
+
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "popularity": {
+                    "type": "integer"
+                },
+                "recommendationFor": {
+                    "type": "nested",
+                    "properties": {
+                        "event": {
+                            "type": "text",
+                            "analyzer": "lowercase_exact_match_analyzer",
+                            "search_analyzer": "lowercase_exact_match_analyzer"
+                        },
+                        "score": {
+                            "type": "float"
+                        }
+                    }
+                }
+            }
+        },
+
+        "workflowStatus": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
         "created": {
             "type": "date",
             "format": "strict_date_time_no_millis"
