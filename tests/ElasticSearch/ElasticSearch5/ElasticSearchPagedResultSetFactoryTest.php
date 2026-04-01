@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch;
+namespace CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
@@ -14,7 +16,7 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-final class ElasticSearchPagedResultSetFactoryTest extends TestCase
+final class ElasticSearchPagedResultSetFactoryTest extends TestCase implements ElasticSearch5Test
 {
     private NodeMapAggregationTransformer $aggregationTransformer;
 
@@ -37,6 +39,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
         $this->factory = new ElasticSearchPagedResultSetFactory(
             $this->aggregationTransformer
         );
+        $this->factory->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -46,10 +49,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => ['value' => 962, 'relation' => 'eq'],
+                'total' => 962,
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
@@ -58,6 +62,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                     ],
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
@@ -71,9 +76,18 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                     'doc_count_error_upper_bound' => 0,
                     'sum_other_doc_count' => 0,
                     'buckets' => [
-                        ['key' => 'gem-leuven', 'doc_count' => 10],
-                        ['key' => 'gem-antwerpen', 'doc_count' => 12],
-                        ['key' => 'gem-brussel', 'doc_count' => 5],
+                        [
+                            'key' => 'gem-leuven',
+                            'doc_count' => 10,
+                        ],
+                        [
+                            'key' => 'gem-antwerpen',
+                            'doc_count' => 12,
+                        ],
+                        [
+                            'key' => 'gem-brussel',
+                            'doc_count' => 5,
+                        ],
                     ],
                 ],
                 // Should be ignored and not be included in the paged result set facets.
@@ -81,8 +95,14 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                     'doc_count_error_upper_bound' => 0,
                     'sum_other_doc_count' => 0,
                     'buckets' => [
-                        ['key' => 'bucket1', 'doc_count' => 55],
-                        ['key' => 'bucket2', 'doc_count' => 66],
+                        [
+                            'key' => 'bucket1',
+                            'doc_count' => 55,
+                        ],
+                        [
+                            'key' => 'bucket2',
+                            'doc_count' => 66,
+                        ],
                     ],
                 ],
             ],
@@ -141,10 +161,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => ['value' => 962, 'relation' => 'eq'],
+                'total' => 962,
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
@@ -153,6 +174,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                     ],
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
@@ -226,10 +248,11 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => ['value' => 962, 'relation' => 'eq'],
+                'total' => 962,
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/351b85c1-66ea-463b-82a6-515b7de0d267',
@@ -238,6 +261,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase
                     ],
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'organizer',
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/organizers/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
