@@ -27,7 +27,7 @@ final class UpdatePlaceMappingCommand extends AbstractMappingCommand
     {
         if (!$this->usesSeparateMappingFiles()) {
             throw new \RuntimeException(
-                'This command is not supported on Elasticsearch 8. Use udb3-core:update-mapping instead.'
+                'This command is not supported on Elasticsearch 8. Use udb3-core:core-mapping instead.'
             );
         }
 
