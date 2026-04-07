@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NodeMapAggregationTransform
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
+use CultuurNet\UDB3\Search\Taxonomy\TaxonomyApiClient;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use Elasticsearch\Client;
 
@@ -67,19 +68,19 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::themes(),
-                        $this->parameter('facet_mapping_themes')
+                        $this->container->get(TaxonomyApiClient::class)->getThemes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::types(),
-                        $this->parameter('facet_mapping_types')
+                        $this->container->get(TaxonomyApiClient::class)->getTypes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::facilities(),
-                        $this->parameter('facet_mapping_facilities')
+                        $this->container->get(TaxonomyApiClient::class)->getFacilities()
                     )
                 );
                 $transformer->register(
