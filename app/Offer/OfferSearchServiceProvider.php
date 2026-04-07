@@ -58,6 +58,8 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
         $this->add(
             OfferSearchServiceFactory::class,
             function (): OfferSearchServiceFactory {
+                /** @var TaxonomyApiClient $taxonomyApiClient */
+                $taxonomyApiClient = $this->container->get(TaxonomyApiClient::class);
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
                     new NodeMapAggregationTransformer(
@@ -68,19 +70,19 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::themes(),
-                        $this->container->get(TaxonomyApiClient::class)->getThemes()
+                        $taxonomyApiClient->getThemes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::types(),
-                        $this->container->get(TaxonomyApiClient::class)->getTypes()
+                        $taxonomyApiClient->getTypes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
                         FacetName::facilities(),
-                        $this->container->get(TaxonomyApiClient::class)->getFacilities()
+                        $taxonomyApiClient->getFacilities()
                     )
                 );
                 $transformer->register(
