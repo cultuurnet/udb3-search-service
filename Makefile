@@ -1,4 +1,4 @@
-.PHONY: up down bash config install migrate migrate-force ci stan cs cs-fix test
+.PHONY: up down bash config install migrate migrate-force ci stan cs cs-fix test destroy
 
 up:
 	docker compose up -d
@@ -41,3 +41,6 @@ test:
 
 test-filter:
 	docker compose exec -it search composer test -- --filter=$(filter)
+
+destroy:
+	docker compose down --rmi all --volumes
