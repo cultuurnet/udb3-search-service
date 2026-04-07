@@ -25,11 +25,11 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
 
         $response = $this->client->sendRequest($request);
         if ($response->getStatusCode() !== 200) {
-            $this->logger->error('Taxonomy Api returned non-200 status code', [
+            $this->logger->error('Taxonomy Api returned a non-200 status code', [
                 'status_code' => $response->getStatusCode(),
                 'body' => $response->getBody()->getContents(),
             ]);
-            throw new TaxonomyApiProblem('Taxonomy Api returned non-200 status code.');
+            throw new TaxonomyApiProblem('Taxonomy Api returned a non-200 status code.');
         }
         $contents = $response->getBody()->getContents();
         if (empty($contents)) {

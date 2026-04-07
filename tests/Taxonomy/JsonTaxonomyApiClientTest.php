@@ -9,18 +9,18 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
 final class JsonTaxonomyApiClientTest extends TestCase
 {
     private ClientInterface&MockObject $httpClient;
 
-    private NullLogger $logger;
+    private LoggerInterface&MockObject $logger;
 
     public function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->logger = new NullLogger();
+        $this->logger = $this->createMock(LoggerInterface::class);
     }
 
     /**
@@ -134,7 +134,11 @@ final class JsonTaxonomyApiClientTest extends TestCase
             ->willReturn(new Response(500, [], 'Internal Server Error'));
 
         $this->expectException(TaxonomyApiProblem::class);
-        $this->expectExceptionMessage('Taxonomy Api returned non-200 status code.');
+        $this->expectExceptionMessage('Taxonomy Api returned a non-200 status code.');
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Taxonomy Api returned a non-200 status code');
 
         new JsonTaxonomyApiClient(
             $this->httpClient,
@@ -154,6 +158,11 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->expectException(TaxonomyApiProblem::class);
         $this->expectExceptionMessage('Taxonomy Api returned no terms.');
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Taxonomy Api returned no terms');
+
 
         new JsonTaxonomyApiClient(
             $this->httpClient,
