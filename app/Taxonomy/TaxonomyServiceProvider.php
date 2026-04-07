@@ -24,18 +24,6 @@ final class TaxonomyServiceProvider extends BaseServiceProvider
     {
         $this->addShared(
             TaxonomyApiClient::class,
-            fn (): TaxonomyApiClient => new JsonTaxonomyApiClient(
-                new Client(),
-                $this->parameter('taxonomy.terms'),
-                LoggerFactory::create(
-                    $this->getContainer(),
-                    LoggerName::forWeb()
-                )
-            )
-        );
-
-        $this->addShared(
-            CachedTaxonomyApiClient::class,
             fn (): TaxonomyApiClient => new CachedTaxonomyApiClient(
                 CacheFactory::create(
                     $this->container->get(PredisClient::class),
