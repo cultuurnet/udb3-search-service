@@ -1,9 +1,6 @@
 /vendor
 /build
 /log
-/config.yml
-/features.yml
-/facet_mapping_*.yml
 /facet_mapping_regions.php
 /web/autocomplete.json
 /.php_cs.cache
