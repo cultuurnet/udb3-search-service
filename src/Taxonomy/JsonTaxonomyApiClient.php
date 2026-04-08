@@ -63,6 +63,12 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
                 $termsByDomain[$term['id']]['name'] = $term['name'];
             }
         }
+
+        if (count($termsByDomain) === 0) {
+            throw new TaxonomyApiProblem(
+                sprintf('Could not find terms for Domain %s.', $domain)
+            );
+        }
         return $termsByDomain;
     }
 }
