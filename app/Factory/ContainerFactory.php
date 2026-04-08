@@ -22,6 +22,7 @@ use CultuurNet\UDB3\SearchService\RoutingServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryCliServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryHubServiceProvider;
 use CultuurNet\UDB3\SearchService\Error\SentryWebServiceProvider;
+use CultuurNet\UDB3\SearchService\Taxonomy\TaxonomyServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Noodlehaus\Config;
@@ -53,6 +54,7 @@ final class ContainerFactory
         $container->addServiceProvider(EventSearchServiceProvider::class);
         $container->addServiceProvider(PlaceSearchServiceProvider::class);
         $container->addServiceProvider(RoutingServiceProvider::class);
+        $container->addServiceProvider(TaxonomyServiceProvider::class);
         $container->addServiceProvider(CacheProvider::class);
         return $container;
     }
