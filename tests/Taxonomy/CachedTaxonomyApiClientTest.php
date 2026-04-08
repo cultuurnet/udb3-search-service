@@ -12,13 +12,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
 {
     private TaxonomyApiClient&MockObject $baseTaxonomyApiClient;
 
-    private CachedTaxonomyApiClient $cachedClient;
+    private CachedTaxonomyApiClient $cachedTaxonomyApiClient;
 
     public function setUp(): void
     {
         $this->baseTaxonomyApiClient = $this->createMock(TaxonomyApiClient::class);
 
-        $this->cachedClient = new CachedTaxonomyApiClient(
+        $this->cachedTaxonomyApiClient = new CachedTaxonomyApiClient(
             new ArrayAdapter(),
             $this->baseTaxonomyApiClient
         );
@@ -44,7 +44,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getTypes')
             ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->cachedClient->getTypes());
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getTypes());
     }
 
     /**
@@ -67,8 +67,8 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getTypes')
             ->willReturn($expected);
 
-        $this->cachedClient->getTypes();
-        $this->assertEquals($expected, $this->cachedClient->getTypes());
+        $this->cachedTaxonomyApiClient->getTypes();
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getTypes());
     }
 
     /**
@@ -91,7 +91,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getThemes')
             ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->cachedClient->getThemes());
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getThemes());
     }
 
     /**
@@ -114,8 +114,8 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getThemes')
             ->willReturn($expected);
 
-        $this->cachedClient->getThemes();
-        $this->assertEquals($expected, $this->cachedClient->getThemes());
+        $this->cachedTaxonomyApiClient->getThemes();
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getThemes());
     }
 
     /**
@@ -138,7 +138,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getFacilities')
             ->willReturn($expected);
 
-        $this->assertEquals($expected, $this->cachedClient->getFacilities());
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getFacilities());
     }
 
     /**
@@ -161,8 +161,8 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getFacilities')
             ->willReturn($expected);
 
-        $this->cachedClient->getFacilities();
-        $this->assertEquals($expected, $this->cachedClient->getFacilities());
+        $this->cachedTaxonomyApiClient->getFacilities();
+        $this->assertEquals($expected, $this->cachedTaxonomyApiClient->getFacilities());
     }
 
     /**
@@ -199,7 +199,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
             ->method('getThemes')
             ->willReturn($themes);
 
-        $this->assertEquals($types, $this->cachedClient->getTypes());
-        $this->assertEquals($themes, $this->cachedClient->getThemes());
+        $this->assertEquals($types, $this->cachedTaxonomyApiClient->getTypes());
+        $this->assertEquals($themes, $this->cachedTaxonomyApiClient->getThemes());
     }
 }

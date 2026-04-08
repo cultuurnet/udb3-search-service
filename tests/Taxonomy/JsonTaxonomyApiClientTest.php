@@ -28,7 +28,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
      */
     public function it_filters_terms_by_eventtype_domain(): void
     {
-        $client = $this->createClientWithTerms($this->sampleTerms());
+        $taxonomyApiClient = $this->createTaxonomyClientWithTerms($this->sampleTerms());
 
         $this->assertEquals(
             [
@@ -57,7 +57,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
                     ],
                 ],
             ],
-            $client->getTypes()
+            $taxonomyApiClient->getTypes()
         );
     }
 
@@ -66,7 +66,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
      */
     public function it_filters_terms_by_theme_domain(): void
     {
-        $client = $this->createClientWithTerms($this->sampleTerms());
+        $taxonomyApiClient = $this->createTaxonomyClientWithTerms($this->sampleTerms());
 
         $this->assertEquals(
             [
@@ -79,7 +79,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
                     ],
                 ],
             ],
-            $client->getThemes()
+            $taxonomyApiClient->getThemes()
         );
     }
 
@@ -88,7 +88,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
      */
     public function it_filters_terms_by_facility_domain(): void
     {
-        $client = $this->createClientWithTerms($this->sampleTerms());
+        $taxonomyApiClient = $this->createTaxonomyClientWithTerms($this->sampleTerms());
 
         $this->assertEquals(
             [
@@ -101,27 +101,40 @@ final class JsonTaxonomyApiClientTest extends TestCase
                     ],
                 ],
             ],
-            $client->getFacilities()
+            $taxonomyApiClient->getFacilities()
         );
     }
 
     /**
      * @test
      */
-    public function it_returns_empty_array_when_no_terms_match_domain(): void
+    public function it_throws_when_no_terms_match_domain(): void
     {
         $terms = [
             [
                 'id' => '0.50.4.0.0',
                 'domain' => 'eventtype',
-                'name' => ['nl' => 'Concert'],
+                'name' => [
+                    'nl' => 'Concert',
+                    'fr' => 'Concert',
+                    'de' => 'Konzert',
+                    'en' => 'Concert',
+                ],
+                'scope' => 'events',
+                'otherSuggestedTerms' => [],
             ],
         ];
 
-        $client = $this->createClientWithTerms($terms);
+        $taxonomyApiClient = $this->createTaxonomyClientWithTerms($terms);
 
-        $this->assertEquals([], $client->getThemes());
-        $this->assertEquals([], $client->getFacilities());
+        $this->expectException(TaxonomyApiProblem::class);
+        $this->expectExceptionMessage('Could not find terms for Domain theme.');
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('Could not find terms for Domain theme');
+
+        $taxonomyApiClient->getThemes();
     }
 
     /**
@@ -171,7 +184,7 @@ final class JsonTaxonomyApiClientTest extends TestCase
         );
     }
 
-    private function createClientWithTerms(array $terms): JsonTaxonomyApiClient
+    private function createTaxonomyClientWithTerms(array $terms): JsonTaxonomyApiClient
     {
         $body = Json::encode(['terms' => $terms]);
 

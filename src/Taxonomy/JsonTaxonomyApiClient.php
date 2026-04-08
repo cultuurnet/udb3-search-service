@@ -65,6 +65,9 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         }
 
         if (count($termsByDomain) === 0) {
+            $this->logger->error(
+                sprintf('Could not find terms for Domain %s', $domain)
+            );
             throw new TaxonomyApiProblem(
                 sprintf('Could not find terms for Domain %s.', $domain)
             );
