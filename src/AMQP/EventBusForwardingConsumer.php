@@ -37,7 +37,8 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         string $exchangeName,
         string $queueName,
         string $routingKey = '#',
-        int $delay = 0
+        int $delay = 0,
+        bool $declareQueues = true
     ) {
         $this->context = [];
         $this->logger = new NullLogger();
@@ -49,19 +50,21 @@ final class EventBusForwardingConsumer implements ConsumerInterface
         $this->deserializerLocator = $deserializerLocator;
         $this->delay = $delay;
 
-        $this->channel->queue_declare(
-            $queueName,
-            $passive = false,
-            $durable = true,
-            $exclusive = false,
-            $autoDelete = false
-        );
+        if ($declareQueues) {
+            $this->channel->queue_declare(
+                $queueName,
+                $passive = false,
+                $durable = true,
+                $exclusive = false,
+                $autoDelete = false
+            );
 
-        $this->channel->queue_bind(
-            $queueName,
-            $exchangeName,
-            $routingKey
-        );
+            $this->channel->queue_bind(
+                $queueName,
+                $exchangeName,
+                $routingKey
+            );
+        }
 
         $this->channel->basic_consume(
             $queueName,
