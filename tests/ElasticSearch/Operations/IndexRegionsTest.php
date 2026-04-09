@@ -33,8 +33,6 @@ final class IndexRegionsTest extends AbstractOperationTestCase
         $index = 'mock';
         $path = __DIR__ . '/data/regions/';
 
-        $operation = $this->operation;
-
         $this->client->expects($this->exactly(3))
             ->method('index')
             ->withConsecutive(
@@ -67,6 +65,6 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                 ]
             );
 
-        $operation->run($index, $path);
+        $this->operation->run($index, $path);
     }
 }
