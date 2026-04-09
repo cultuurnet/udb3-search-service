@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Operations\ElasticSearch5;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\AbstractOperationTestCase;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\IndexRegions;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 
-final class IndexRegionsTest extends AbstractOperationTestCase
+final class IndexRegionsTest extends AbstractOperationTestCase implements ElasticSearch5Test
 {
     private Finder $finder;
 
@@ -28,10 +31,10 @@ final class IndexRegionsTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_indexes_all_files_without_type(): void
+    public function it_indexes_all_files_located_in_the_given_path_or_subdirectories_that_match_the_file_name_regex(): void
     {
         $index = 'mock';
-        $path = __DIR__ . '/data/regions/';
+        $path = __DIR__ . '/../data/regions/';
 
         $this->client->expects($this->exactly(3))
             ->method('index')
@@ -40,8 +43,9 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'gem-antwerpen',
+                        'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            FileReader::read(__DIR__ . '/data/regions/municipalities/gem-antwerpen.json')
+                            FileReader::read(__DIR__ . '/../data/regions/municipalities/gem-antwerpen.json')
                         ),
                     ],
                 ],
@@ -49,8 +53,9 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'gem-leuven',
+                        'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            FileReader::read(__DIR__ . '/data/regions/municipalities/gem-leuven.json')
+                            FileReader::read(__DIR__ . '/../data/regions/municipalities/gem-leuven.json')
                         ),
                     ],
                 ],
@@ -58,13 +63,15 @@ final class IndexRegionsTest extends AbstractOperationTestCase
                     [
                         'index' => $index,
                         'id' => 'prov-vlaams-brabant',
+                        'type' => 'region',
                         'body' => Json::decodeAssociatively(
-                            FileReader::read(__DIR__ . '/data/regions/provinces/prov-vlaams-brabant.json')
+                            FileReader::read(__DIR__ . '/../data/regions/provinces/prov-vlaams-brabant.json')
                         ),
                     ],
                 ]
             );
 
+        $this->operation->enableElasticSearch5CompatibilityMode();
         $this->operation->run($index, $path);
     }
 }

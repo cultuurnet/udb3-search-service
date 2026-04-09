@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
+namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\ElasticSearch5;
 
+use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-final class SingleFileIndexationStrategyTest extends TestCase
+final class SingleFileIndexationStrategyTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
@@ -46,6 +48,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
             $this->client,
             $this->logger
         );
+        $this->strategy->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -53,7 +56,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
      */
     public function it_sends_the_document_directly_to_elasticsearch_for_indexation(): void
     {
-        $jsonDocument = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"@type":"Event","foo":"bar"}');
+        $jsonDocument = new JsonDocument('cff29f09-5104-4f0d-85ca-8d6cdd28849b', '{"foo":"bar"}');
 
         $this->logger->expects($this->once())
             ->method('info')
@@ -64,8 +67,9 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'id' => 'cff29f09-5104-4f0d-85ca-8d6cdd28849b',
-                    'body' => ['@type' => 'Event', 'foo' => 'bar'],
+                    'body' => ['foo' => 'bar'],
                 ]
             );
 

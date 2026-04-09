@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Operations\ElasticSearch5;
 
-abstract class AbstractMappingTestCase extends AbstractOperationTestCase
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\AbstractOperationTestCase;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
+
+abstract class AbstractMappingTestCase extends AbstractOperationTestCase implements ElasticSearch5Test
 {
     abstract protected function getDocumentType(): string;
 

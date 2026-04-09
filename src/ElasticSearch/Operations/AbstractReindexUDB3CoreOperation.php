@@ -106,7 +106,8 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         $id = $hit['_id'];
 
         if (empty($type)) {
-            $this->logger->error("Skipping hit {$id} without _type property.");
+            $typeField = $this->usesDocumentTypes() ? '_type' : '@type';
+            $this->logger->error("Skipping hit {$id} without {$typeField} property.");
             return;
         }
 

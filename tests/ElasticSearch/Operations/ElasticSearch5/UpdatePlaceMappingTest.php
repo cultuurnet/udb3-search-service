@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Operations\ElasticSearch5;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\UpdatePlaceMapping;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
-final class UpdatePlaceMappingTest extends AbstractMappingTestCase
+final class UpdatePlaceMappingTest extends AbstractMappingTestCase implements ElasticSearch5Test
 {
     protected function createOperation(Client $client, LoggerInterface $logger): UpdatePlaceMapping
     {
@@ -24,7 +26,7 @@ final class UpdatePlaceMappingTest extends AbstractMappingTestCase
     protected function getExpectedMappingBody(): array
     {
         return Json::decodeAssociatively(
-            FileReader::read(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_place.json')
+            FileReader::read(__DIR__ . '/../../../../src/ElasticSearch/Operations/json/mapping_place.json')
         );
     }
 
