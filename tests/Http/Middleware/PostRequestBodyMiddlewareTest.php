@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Middleware;
 
+use CultuurNet\UDB3\Search\Json;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -73,6 +74,22 @@ final class PostRequestBodyMiddlewareTest extends TestCase
     /**
      * @test
      */
+    public function it_accepts_text_plain_with_charset(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'https://search.uitdatabank.be/offers')
+            ->withHeader('Content-Type', 'text/plain; charset=utf-8')
+            ->withBody((new StreamFactory())->createStream('name=test'));
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())->method('handle')->willReturn(new Response());
+
+        $this->middleware->process($request, $handler);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_415_when_post_has_no_content_type(): void
     {
         $request = (new ServerRequestFactory())
@@ -82,8 +99,11 @@ final class PostRequestBodyMiddlewareTest extends TestCase
         $handler->expects($this->never())->method('handle');
 
         $response = $this->middleware->process($request, $handler);
+        $responseBody = Json::decodeAssociatively((string) $response->getBody());
 
         $this->assertEquals(StatusCodeInterface::STATUS_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertEquals(['application/problem+json'], $response->getHeader('Content-Type'));
+        $this->assertEquals('POST requests require Content-Type text/plain.', $responseBody['detail']);
     }
 
     /**
@@ -99,8 +119,11 @@ final class PostRequestBodyMiddlewareTest extends TestCase
         $handler->expects($this->never())->method('handle');
 
         $response = $this->middleware->process($request, $handler);
+        $responseBody = Json::decodeAssociatively((string) $response->getBody());
 
         $this->assertEquals(StatusCodeInterface::STATUS_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertEquals(['application/problem+json'], $response->getHeader('Content-Type'));
+        $this->assertEquals('POST requests require Content-Type text/plain.', $responseBody['detail']);
     }
 
     /**
