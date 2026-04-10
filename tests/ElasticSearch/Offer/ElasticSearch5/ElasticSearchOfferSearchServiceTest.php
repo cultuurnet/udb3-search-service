@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearch5;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -14,7 +17,7 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class ElasticSearchOfferSearchServiceTest extends TestCase
+final class ElasticSearchOfferSearchServiceTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
@@ -23,9 +26,9 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
     private string $indexName;
 
-    private ElasticSearchOfferSearchService $multiTypeService;
+    private string $documentType;
 
-    private ElasticSearchOfferSearchService $singleTypeService;
+    private ElasticSearchOfferSearchService $service;
 
     protected function setUp(): void
     {
@@ -34,18 +37,20 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->getMock();
 
         $this->indexName = 'udb3-core';
-        $this->multiTypeService = $this->createService('event,place');
-        $this->singleTypeService = $this->createService('event');
-    }
+        $this->documentType = 'event,place';
 
-    private function createService(string $documentType): ElasticSearchOfferSearchService
-    {
-        return new ElasticSearchOfferSearchService(
+        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+            new NullAggregationTransformer()
+        );
+        $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+
+        $this->service = new ElasticSearchOfferSearchService(
             $this->client,
             $this->indexName,
-            $documentType,
-            new ElasticSearchPagedResultSetFactory(new NullAggregationTransformer())
+            $this->documentType,
+            $pagedResultSetFactory
         );
+        $this->service->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -58,10 +63,11 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
 
         $response = [
             'hits' => [
-                'total' => ['value' => 32, 'relation' => 'eq'],
+                'total' => 32,
                 'hits' => [
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'event',
                         '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
                         '_source' => [
                             '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
@@ -72,6 +78,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                     ],
                     [
                         '_index' => 'udb3-core',
+                        '_type' => 'place',
                         '_id' => 'bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
                         '_source' => [
                             '@id' => 'http://foo.bar/places/bdc0f4ce-a211-463e-a8d1-d8b699fb1159',
@@ -89,19 +96,13 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ->with(
                 [
                     'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 0,
                         'size' => 2,
                         'query' => [
-                            'bool' => [
-                                'must' => [
-                                    ['match_all' => (object) []],
-                                ],
-                                'filter' => [
-                                    ['terms' => ['@type' => ['event', 'place']]],
-                                ],
-                            ],
+                            'match_all' => (object) [],
                         ],
                     ],
                 ]
@@ -133,80 +134,8 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ]
         );
 
-        $actual = $this->multiTypeService->search($queryBuilder);
+        $actual = $this->service->search($queryBuilder);
 
         $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_filters_on_a_single_type_using_a_term_query(): void
-    {
-        $queryBuilder = (new ElasticSearchOfferQueryBuilder())
-            ->withStartAndLimit(new Start(0), new Limit(1));
-
-        $response = [
-            'hits' => [
-                'total' => ['value' => 1, 'relation' => 'eq'],
-                'hits' => [
-                    [
-                        '_index' => 'udb3-core',
-                        '_id' => '351b85c1-66ea-463b-82a6-515b7de0d267',
-                        '_source' => [
-                            '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
-                            '@type' => 'Event',
-                            'regions' => [],
-                            'originalEncodedJsonLd' => '{}',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->client->expects($this->once())
-            ->method('search')
-            ->with(
-                [
-                    'index' => $this->indexName,
-                    'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-                        'from' => 0,
-                        'size' => 1,
-                        'query' => [
-                            'bool' => [
-                                'must' => [
-                                    ['match_all' => (object) []],
-                                ],
-                                'filter' => [
-                                    ['term' => ['@type' => 'event']],
-                                ],
-                            ],
-                        ],
-                    ],
-                ]
-            )
-            ->willReturn($response);
-
-        $actual = $this->singleTypeService->search($queryBuilder);
-
-        $this->assertEquals(
-            new PagedResultSet(
-                1,
-                1,
-                [
-                    (new JsonDocument('351b85c1-66ea-463b-82a6-515b7de0d267'))
-                        ->withBody(
-                            (object) [
-                                '@id' => 'http://foo.bar/events/351b85c1-66ea-463b-82a6-515b7de0d267',
-                                '@type' => 'Event',
-                                'regions' => [],
-                                'originalEncodedJsonLd' => '{}',
-                            ]
-                        ),
-                ]
-            ),
-            $actual
-        );
     }
 }

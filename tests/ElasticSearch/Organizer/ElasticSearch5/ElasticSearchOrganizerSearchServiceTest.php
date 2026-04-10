@@ -2,10 +2,13 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearch5;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -14,12 +17,16 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class ElasticSearchOrganizerSearchServiceTest extends TestCase
+final class ElasticSearchOrganizerSearchServiceTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
      */
     private $client;
+
+    private string $indexName;
+
+    private string $documentType;
 
     private ElasticSearchOrganizerSearchService $service;
 
@@ -29,12 +36,21 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->indexName = 'udb3-core';
+        $this->documentType = 'organizer';
+
+        $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
+            new NullAggregationTransformer()
+        );
+        $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
+
         $this->service = new ElasticSearchOrganizerSearchService(
             $this->client,
-            'udb3-core',
-            'organizer',
-            new ElasticSearchPagedResultSetFactory(new NullAggregationTransformer())
+            $this->indexName,
+            $this->documentType,
+            $pagedResultSetFactory
         );
+        $this->service->enableElasticSearch5CompatibilityMode();
     }
 
     /**
@@ -64,15 +80,17 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
 
         $response = [
             'hits' => [
-                'total' => ['value' => 962, 'relation' => 'eq'],
+                'total' => 962,
                 'hits' => [
                     [
-                        '_index' => 'udb3-core',
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => $idCollectiefCursief,
                         '_source' => $sourceCollectiefCursief,
                     ],
                     [
-                        '_index' => 'udb3-core',
+                        '_index' => $this->indexName,
+                        '_type' => $this->documentType,
                         '_id' => $idCollectiefAC,
                         '_source' => $sourceAC,
                     ],
@@ -84,7 +102,8 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
             ->method('search')
             ->with(
                 [
-                    'index' => 'udb3-core',
+                    'index' => $this->indexName,
+                    'type' => $this->documentType,
                     'body' => [
                         '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
                         'from' => 960,
@@ -104,7 +123,6 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                                             ],
                                         ],
                                     ],
-                                    ['term' => ['@type' => 'organizer']],
                                 ],
                                 'should' => [
                                     [
@@ -129,9 +147,14 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                 ->withBody((object) $sourceAC),
         ];
 
-        $this->assertEquals(
-            new PagedResultSet(962, 30, $expectedResults),
-            $this->service->search($queryBuilder)
+        $expectedPagedResultSet = new PagedResultSet(
+            962,
+            30,
+            $expectedResults
         );
+
+        $actualPagedResultSet = $this->service->search($queryBuilder);
+
+        $this->assertEquals($expectedPagedResultSet, $actualPagedResultSet);
     }
 }
