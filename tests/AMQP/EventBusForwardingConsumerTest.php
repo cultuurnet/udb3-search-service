@@ -95,6 +95,82 @@ final class EventBusForwardingConsumerTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_declare_or_bind_queue_when_declare_queues_is_false(): void
+    {
+        $channel = $this->getMockBuilder(AMQPChannel::class)
+            ->disableOriginalConstructor()
+            ->disableProxyingToOriginalMethods()
+            ->getMock();
+
+        $channel->expects($this->never())
+            ->method('queue_declare');
+
+        $channel->expects($this->never())
+            ->method('queue_bind');
+
+        $channel->expects($this->once())
+            ->method('basic_consume');
+
+        $connection = $this->createMock(AMQPStreamConnection::class);
+        $connection->expects($this->any())
+            ->method('channel')
+            ->willReturn($channel);
+
+        new EventBusForwardingConsumer(
+            $connection,
+            $this->eventBus,
+            $this->deserializerLocator,
+            'my-tag',
+            'my-exchange',
+            'my-queue',
+            '#',
+            0,
+            false
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_declares_and_binds_queue_when_declare_queues_is_true(): void
+    {
+        $channel = $this->getMockBuilder(AMQPChannel::class)
+            ->disableOriginalConstructor()
+            ->disableProxyingToOriginalMethods()
+            ->getMock();
+
+        $channel->expects($this->once())
+            ->method('queue_declare')
+            ->with('my-queue', false, true, false, false);
+
+        $channel->expects($this->once())
+            ->method('queue_bind')
+            ->with('my-queue', 'my-exchange', '#');
+
+        $channel->expects($this->once())
+            ->method('basic_consume');
+
+        $connection = $this->createMock(AMQPStreamConnection::class);
+        $connection->expects($this->any())
+            ->method('channel')
+            ->willReturn($channel);
+
+        new EventBusForwardingConsumer(
+            $connection,
+            $this->eventBus,
+            $this->deserializerLocator,
+            'my-tag',
+            'my-exchange',
+            'my-queue',
+            '#',
+            0,
+            true
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_can_publish_the_message_on_the_event_bus(): void
     {
         $context = [];
