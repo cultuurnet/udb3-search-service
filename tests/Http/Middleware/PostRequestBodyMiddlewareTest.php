@@ -129,6 +129,27 @@ final class PostRequestBodyMiddlewareTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_400_when_post_has_url_query_params(): void
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'https://search.uitdatabank.be/offers?name=fromUrl')
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody((new StreamFactory())->createStream('name=fromBody'));
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->never())->method('handle');
+
+        $response = $this->middleware->process($request, $handler);
+        $responseBody = Json::decodeAssociatively((string) $response->getBody());
+
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+        $this->assertEquals(['application/problem+json'], $response->getHeader('Content-Type'));
+        $this->assertEquals('POST requests do not allow query parameters in the URL. Use the request body instead.', $responseBody['detail']);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_post_with_empty_body(): void
     {
         $request = (new ServerRequestFactory())
@@ -150,7 +171,7 @@ final class PostRequestBodyMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function it_replaces_url_query_params_with_body_params_on_post(): void
+    public function it_returns_400_when_post_has_url_query_params_and_body(): void
     {
         $request = (new ServerRequestFactory())
             ->createServerRequest('POST', 'https://search.uitdatabank.be/offers?name=fromUrl&start=10')
@@ -158,14 +179,13 @@ final class PostRequestBodyMiddlewareTest extends TestCase
             ->withBody((new StreamFactory())->createStream('name=fromBody&limit=5'));
 
         $handler = $this->createMock(RequestHandlerInterface::class);
-        $handler->expects($this->once())
-            ->method('handle')
-            ->with($this->callback(function (ServerRequestInterface $passedRequest) {
-                $params = $passedRequest->getQueryParams();
-                return $params === ['name' => 'fromBody', 'limit' => '5'];
-            }))
-            ->willReturn(new Response());
+        $handler->expects($this->never())->method('handle');
 
-        $this->middleware->process($request, $handler);
+        $response = $this->middleware->process($request, $handler);
+        $responseBody = Json::decodeAssociatively((string) $response->getBody());
+
+        $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
+        $this->assertEquals(['application/problem+json'], $response->getHeader('Content-Type'));
+        $this->assertEquals('POST requests do not allow query parameters in the URL. Use the request body instead.', $responseBody['detail']);
     }
 }
