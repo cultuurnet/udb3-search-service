@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Search\ElasticSearch\Region;
+namespace CultuurNet\UDB3\Search\ElasticSearch\Region\ElasticSearch5;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
+use CultuurNet\UDB3\Search\ElasticSearch5Test;
 use CultuurNet\UDB3\Search\FileReader;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Json;
@@ -12,7 +14,7 @@ use Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GeoShapeQueryRegionServiceTest extends TestCase
+final class GeoShapeQueryRegionServiceTest extends TestCase implements ElasticSearch5Test
 {
     /**
      * @var Client&MockObject
@@ -28,16 +30,16 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
         $this->client = $this->createMock(Client::class);
         $this->geoShapesIndexName = 'mock';
 
-        $this->service = new GeoShapeQueryRegionService(
+        $this->service = (new GeoShapeQueryRegionService(
             $this->client,
             $this->geoShapesIndexName
-        );
+        ))->enableElasticSearch5CompatibilityMode();
     }
 
     /**
      * @test
      */
-    public function it_returns_all_region_ids(): void
+    public function it_uses_a_percolate_query_and_returns_all_region_ids_of_the_matching_queries(): void
     {
         $this->client->expects($this->exactly(2))
             ->method('search')
@@ -98,8 +100,8 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
                 ]
             )
             ->willReturnOnConsecutiveCalls(
-                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1_es8.json')),
-                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2_es8.json'))
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/../data/regions_1.json')),
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/../data/regions_2.json'))
             );
 
         $expectedRegionIds = [
@@ -138,7 +140,7 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
     {
         $this->client->expects($this->once())
             ->method('search')
-            ->willReturn(Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_invalid.json')));
+            ->willReturn(Json::decodeAssociatively(FileReader::read(__DIR__ . '/../data/regions_invalid.json')));
 
         $this->expectException(RuntimeException::class);
 

@@ -22,7 +22,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
     {
         $response = [
             'hits' => [
-                'total' => 20,
+                'total' => ['value' => 20, 'relation' => 'eq'],
                 'hits' => [
                     [
                         '_id' => 'acd62249-3879-469f-8f85-8df34fea109a',
@@ -73,7 +73,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
                 "ElasticSearch response does not contain a 'hits.hits' property!",
                 [
                     'hits' => [
-                        'total' => 20,
+                        'total' => ['value' => 20, 'relation' => 'eq'],
                     ],
                 ],
             ],
@@ -81,7 +81,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
                 "ElasticSearch response does not contain a 'hits.hits[0]._id' property!",
                 [
                     'hits' => [
-                        'total' => 20,
+                        'total' => ['value' => 20, 'relation' => 'eq'],
                         'hits' => [
                             [
                                 '_source' => [
@@ -96,7 +96,7 @@ final class PagedResultSetResponseValidatorTest extends TestCase
                 "ElasticSearch response does not contain a 'hits.hits[0]._source' property!",
                 [
                     'hits' => [
-                        'total' => 20,
+                        'total' => ['value' => 20, 'relation' => 'eq'],
                         'hits' => [
                             [
                                 '_id' => '36fb2f03-b0b6-4805-9ef0-17c94dee2457',
