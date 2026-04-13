@@ -43,12 +43,12 @@ final class PostRequestBodyMiddleware implements MiddlewareInterface
 
     private function stripAuthenticationParams(array $queryParams): array
     {
-        // Use array_diff_key to create a diff between the given query params (keys) and the authentication- 
+        // Use array_diff_key to create a diff between the given query params (keys) and the authentication-
         // specific query params (keys). The result is either an empty list if no other query params are
         // included in the request, or a list of (unsupported) query params.
         // Since array_diff_key creates a diff based on array keys, we use array_flip to create an array with
         // authentication-specific keys like clientId and apiKey.
-        // E.g. ['clientId', 'apiKey'] becomes ['clientId' => 0, 'apiKey' => 1] 
+        // E.g. ['clientId', 'apiKey'] becomes ['clientId' => 0, 'apiKey' => 1]
         // (the values don't really matter in this case)
         return array_diff_key(
             $queryParams,
