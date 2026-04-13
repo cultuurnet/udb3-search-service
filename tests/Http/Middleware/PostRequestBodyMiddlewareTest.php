@@ -170,6 +170,31 @@ final class PostRequestBodyMiddlewareTest extends TestCase
 
     /**
      * @test
+     * @dataProvider authenticationParams
+     */
+    public function it_allows_authentication_params(string $authenticationParam, string $authenticationValue): void
+    {
+        $body = 'name=test&limit=5';
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('POST', 'https://search.uitdatabank.be/offers?' . $authenticationParam . '=' . $authenticationValue)
+            ->withHeader('Content-Type', 'text/plain')
+            ->withBody((new StreamFactory())->createStream($body));
+
+        $handler = $this->createMock(RequestHandlerInterface::class);
+        $handler->expects($this->once())
+            ->method('handle')
+            ->with($this->callback(function (ServerRequestInterface $passedRequest) {
+                $params = $passedRequest->getQueryParams();
+                return $params === ['name' => 'test', 'limit' => '5'];
+            }))
+            ->willReturn(new Response());
+
+        $this->middleware->process($request, $handler);
+    }
+
+    /**
+     * @test
      */
     public function it_returns_400_when_post_has_url_query_params_and_body(): void
     {
@@ -187,5 +212,13 @@ final class PostRequestBodyMiddlewareTest extends TestCase
         $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $response->getStatusCode());
         $this->assertEquals(['application/problem+json'], $response->getHeader('Content-Type'));
         $this->assertEquals('POST requests do not allow query parameters in the URL. Use the request body instead.', $responseBody['detail']);
+    }
+
+    public function authenticationParams(): array
+    {
+        return [
+            'apiKey' => ['apiKey', 'my-api-key'],
+            'clientId' => ['clientId', 'my-client-id'],
+        ];
     }
 }

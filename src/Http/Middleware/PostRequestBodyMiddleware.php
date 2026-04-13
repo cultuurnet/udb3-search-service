@@ -19,7 +19,7 @@ final class PostRequestBodyMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        if (!empty($request->getQueryParams())) {
+        if (!empty($this->stripAuthenticationParams($request->getQueryParams()))) {
             return (
                 new BadRequest('POST requests do not allow query parameters in the URL. Use the request body instead.')
             )->toResponse();
@@ -39,5 +39,13 @@ final class PostRequestBodyMiddleware implements MiddlewareInterface
         $request = $request->withQueryParams($queryParams);
 
         return $handler->handle($request);
+    }
+
+    private function stripAuthenticationParams(array $queryParams): array
+    {
+        return array_diff_key(
+            $queryParams,
+            array_flip(['clientId', 'apiKey'])
+        );
     }
 }
