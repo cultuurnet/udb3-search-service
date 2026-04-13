@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\CacheBasedManagementTokenRe
 use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
+use CultuurNet\UDB3\Search\Http\Middleware\PostRequestBodyMiddleware;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -117,37 +118,51 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     )
                 );
 
+                $router->middleware(new PostRequestBodyMiddleware());
+
                 $optionsResponse = static fn (): Response => new Response(StatusCodeInterface::STATUS_NO_CONTENT);
 
                 // Register the OPTIONS method for every route to make the CORS middleware registered above work.
                 $router->get('/organizers', OrganizerSearchController::class);
+                $router->post('/organizers', OrganizerSearchController::class);
                 $router->options('/organizers', $optionsResponse);
                 $router->get('/organizers/', OrganizerSearchController::class);
+                $router->post('/organizers/', OrganizerSearchController::class);
                 $router->options('/organizers/', $optionsResponse);
 
                 $router->get('/offers', ['offer_controller', '__invoke']);
+                $router->post('/offers', ['offer_controller', '__invoke']);
                 $router->options('/offers', $optionsResponse);
                 $router->get('/offers/', ['offer_controller', '__invoke']);
+                $router->post('/offers/', ['offer_controller', '__invoke']);
                 $router->options('/offers/', $optionsResponse);
 
                 $router->get('/events', ['event_controller', '__invoke']);
+                $router->post('/events', ['event_controller', '__invoke']);
                 $router->options('/events', $optionsResponse);
                 $router->get('/events/', ['event_controller', '__invoke']);
+                $router->post('/events/', ['event_controller', '__invoke']);
                 $router->options('/events/', $optionsResponse);
 
                 $router->get('/places', ['place_controller', '__invoke']);
+                $router->post('/places', ['place_controller', '__invoke']);
                 $router->options('/places', $optionsResponse);
                 $router->get('/places/', ['place_controller', '__invoke']);
+                $router->post('/places/', ['place_controller', '__invoke']);
                 $router->options('/places/', $optionsResponse);
 
                 $router->get('/event', ['event_controller', '__invoke']);
+                $router->post('/event', ['event_controller', '__invoke']);
                 $router->options('/event', $optionsResponse);
                 $router->get('/event/', ['event_controller', '__invoke']);
+                $router->post('/event/', ['event_controller', '__invoke']);
                 $router->options('/event/', $optionsResponse);
 
                 $router->get('/place', ['place_controller', '__invoke']);
+                $router->post('/place', ['place_controller', '__invoke']);
                 $router->options('/place', $optionsResponse);
                 $router->get('/place/', ['place_controller', '__invoke']);
+                $router->post('/place/', ['place_controller', '__invoke']);
                 $router->options('/place/', $optionsResponse);
 
                 return $router;
