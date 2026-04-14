@@ -13,9 +13,12 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 final class JsonWebTokenFactory
 {
-    public static function createWithClaims(array $claims): string
+    public static function createWithClaims(array $claims, ?string $subject = null): string
     {
         $builder = new Builder(new JoseEncoder(), new ChainedFormatter());
+        if ($subject !== null) {
+            $builder = $builder->relatedTo($subject);
+        }
         foreach ($claims as $claim => $value) {
             $builder = $builder->withClaim($claim, $value);
         }
