@@ -340,6 +340,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $c;
     }
 
+    public function withAudienceTypeExcludeFilterUnlessCreator(AudienceType $audienceType, string $creatorId): self
+    {
+        $excludeQuery = new BoolQuery();
+        $excludeQuery->add(new MatchQuery('audienceType', $audienceType->toString()), BoolQuery::FILTER);
+        $excludeQuery->add(new MatchQuery('creator', $creatorId), BoolQuery::MUST_NOT);
+
+        $c = $this->getClone();
+        $c->boolQuery->add($excludeQuery, BoolQuery::MUST_NOT);
+        return $c;
+    }
+
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self
     {
         $this->guardNaturalIntegerRange('age', $minimum, $maximum);
