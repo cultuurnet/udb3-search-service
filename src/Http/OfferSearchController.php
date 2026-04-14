@@ -169,6 +169,11 @@ final class OfferSearchController
         }
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
+
+        if (!$this->consumer->hasBoaAccess()) {
+            $queryBuilder = $queryBuilder->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+        }
+
         if ($audienceType instanceof AudienceType) {
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
