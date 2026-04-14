@@ -32,27 +32,49 @@ final class MetadataClientIdResolver implements ClientIdResolver
         $metadata = [];
 
         try {
-            $metadata = $this->metadataGenerator->get(
-                $clientId,
-                $this->managementTokenProvider->token()
-            );
-
-            if ($metadata === null) {
-                throw new InvalidClient();
-            }
+            $metadata = $this->fetchMetadata($clientId);
         } catch (ConnectException $connectException) {
             $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
             $oAuthServerDown = true;
         }
 
-        if (!$oAuthServerDown && !$this->hasAccess($metadata)) {
+        if (!$oAuthServerDown && !$this->hasApiAccess($metadata, 'sapi')) {
             return false;
         }
 
         return true;
     }
 
-    private function hasAccess(array $metadata): bool
+    public function hasBoaAccess(string $clientId): bool
+    {
+        try {
+            $metadata = $this->fetchMetadata($clientId);
+        } catch (ConnectException $connectException) {
+            $this->logger->error('OAuth server was detected as down, this results in disabling boa access');
+            return false;
+        }
+
+        return $this->hasApiAccess($metadata, 'boa');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function fetchMetadata(string $clientId): array
+    {
+        $metadata = $this->metadataGenerator->get(
+            $clientId,
+            $this->managementTokenProvider->token()
+        );
+
+        if ($metadata === null) {
+            throw new InvalidClient();
+        }
+
+        return $metadata;
+    }
+
+    private function hasApiAccess(array $metadata, string $api): bool
     {
         if (empty($metadata)) {
             return false;
@@ -63,6 +85,6 @@ final class MetadataClientIdResolver implements ClientIdResolver
         }
 
         $apis = explode(' ', $metadata['publiq-apis']);
-        return in_array('sapi', $apis, true);
+        return in_array($api, $apis, true);
     }
 }
