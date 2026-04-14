@@ -1386,6 +1386,72 @@ final class OfferSearchControllerTest extends TestCase
         $controller->__invoke(new ApiRequest($request));
     }
 
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_unless_creator_for_token_authenticated_user(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer(null, null, false, 'auth0|user-123')
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => 'childrenOnly',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilterUnlessCreator(new AudienceType('childrenOnly'), 'auth0|user-123')
+            ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_unless_creator_when_filter_disabled_for_token_user(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer(null, null, false, 'auth0|user-123')
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilterUnlessCreator(new AudienceType('childrenOnly'), 'auth0|user-123');
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
     private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface
     {
         $_SERVER['REQUEST_TIME'] = 1493195661;
