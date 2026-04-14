@@ -149,6 +149,11 @@ final class AuthenticateRequest implements MiddlewareInterface
             return (new NotAllowedToUseSapi())->toResponse();
         }
 
+        $userId = $token->getUserId();
+        $this->container
+            ->extend(Consumer::class)
+            ->setConcrete(new Consumer(null, null, false, $userId));
+
         return $handler->handle($request);
     }
 

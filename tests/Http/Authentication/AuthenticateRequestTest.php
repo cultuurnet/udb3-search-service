@@ -672,7 +672,10 @@ final class AuthenticateRequestTest extends TestCase
      */
     public function it_handles_valid_requests_with_a_token(): void
     {
-        $token = JsonWebTokenFactory::createWithClaims(['https://publiq.be/publiq-apis' => 'sapi']);
+        $token = JsonWebTokenFactory::createWithClaims(
+            ['https://publiq.be/publiq-apis' => 'sapi'],
+            'auth0|some-user'
+        );
 
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -684,6 +687,55 @@ final class AuthenticateRequestTest extends TestCase
             ->method('handle')
             ->with($request)
             ->willReturn($expectedResponse);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer(null, null, false, 'auth0|some-user'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $actualResponse = $this->authenticateRequest->process(
+            $request,
+            $requestHandler
+        );
+
+        $this->assertEquals($expectedResponse, $actualResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_user_id_on_consumer_for_token_with_sub_claim(): void
+    {
+        $token = JsonWebTokenFactory::createWithClaims(
+            ['https://publiq.be/publiq-apis' => 'sapi'],
+            'auth0|user-123'
+        );
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('authorization', self::BEARER . $token);
+        $expectedResponse = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($expectedResponse);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with(new Consumer(null, null, false, 'auth0|user-123'));
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
 
         $actualResponse = $this->authenticateRequest->process(
             $request,
