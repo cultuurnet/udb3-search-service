@@ -109,11 +109,13 @@ final class AuthenticateRequest implements MiddlewareInterface
             return (new NotAllowedToUseSapi($clientId))->toResponse();
         }
 
+        $hasBoaAccess = $this->clientIdResolver->hasBoaAccess($clientId);
+
         $defaultQuery = $this->defaultQueryRepository->getByClientId($clientId);
 
         $this->container
             ->extend(Consumer::class)
-            ->setConcrete(new Consumer($clientId, $defaultQuery));
+            ->setConcrete(new Consumer($clientId, $defaultQuery, $hasBoaAccess));
 
         return $handler->handle($request);
     }
