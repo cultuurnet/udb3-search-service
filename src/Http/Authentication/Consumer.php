@@ -12,11 +12,14 @@ final class Consumer
 
     private bool $hasBoaAccess;
 
-    public function __construct(?string $id, ?string $defaultQuery, bool $hasBoaAccess = false)
+    private ?string $userId;
+
+    public function __construct(?string $id, ?string $defaultQuery, bool $hasBoaAccess = false, ?string $userId = null)
     {
         $this->id = $id;
         $this->defaultQuery = $defaultQuery;
         $this->hasBoaAccess = $hasBoaAccess;
+        $this->userId = $userId;
     }
 
     public function getId(): ?string
@@ -32,5 +35,10 @@ final class Consumer
     public function hasBoaAccess(): bool
     {
         return $this->hasBoaAccess;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 }
