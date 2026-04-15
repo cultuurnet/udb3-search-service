@@ -280,10 +280,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withAudienceTypeExcludeFilter(AudienceType $audienceType): self
+    public function withAudienceTypeExcludeFilter(AudienceType $audienceType, ?Creator $creator = null): self
     {
         $c = clone $this;
         $c->mockQuery['excludeAudienceType'] = $audienceType->toString();
+        if ($creator !== null) {
+            $c->mockQuery['excludeAudienceTypeExceptCreator'] = $creator->toString();
+        }
         return $c;
     }
 
