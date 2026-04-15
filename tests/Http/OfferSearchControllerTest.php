@@ -1215,7 +1215,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_childrenOnly_requested_without_boa(): void
+    public function it_excludes_childrenOnly_events_not_created_by_client_without_boa(): void
     {
         $controller = new OfferSearchController(
             $this->queryBuilder,
