@@ -174,7 +174,7 @@ final class OfferSearchController
             $clientId = $this->consumer->getId();
             $queryBuilder = $queryBuilder->withAudienceTypeExcludeFilter(
                 new AudienceType('childrenOnly'),
-                $clientId !== null ? new Creator($clientId . '@clients') : null
+                $this->consumer->getCreator() ?? null
             );
         }
 
