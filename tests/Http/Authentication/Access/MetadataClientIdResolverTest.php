@@ -179,7 +179,7 @@ final class MetadataClientIdResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_allow_boa_access_when_oauth_server_is_down(): void
+    public function it_allows_boa_access_when_oauth_server_is_down(): void
     {
         $request = (new ServerRequestFactory())
             ->createServerRequest('GET', 'https://search.uitdatabank.be')
@@ -195,7 +195,7 @@ final class MetadataClientIdResolverTest extends TestCase
             )
         );
 
-        $this->assertFalse($metadataClientIdResolver->hasBoaAccess('my_active_client_id'));
+        $this->assertTrue($metadataClientIdResolver->hasBoaAccess('my_active_client_id'));
     }
 
     /**

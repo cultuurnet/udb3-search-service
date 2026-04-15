@@ -28,33 +28,12 @@ final class MetadataClientIdResolver implements ClientIdResolver
 
     public function hasSapiAccess(string $clientId): bool
     {
-        $oAuthServerDown = false;
-        $metadata = [];
-
-        try {
-            $metadata = $this->fetchMetadata($clientId);
-        } catch (ConnectException $connectException) {
-            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $oAuthServerDown = true;
-        }
-
-        if (!$oAuthServerDown && !$this->hasApiAccess($metadata, 'sapi')) {
-            return false;
-        }
-
-        return true;
+        return $this->hasApiAccess($clientId, 'sapi');
     }
 
     public function hasBoaAccess(string $clientId): bool
     {
-        try {
-            $metadata = $this->fetchMetadata($clientId);
-        } catch (ConnectException $connectException) {
-            $this->logger->error('OAuth server was detected as down, this results in disabling boa access');
-            return false;
-        }
-
-        return $this->hasApiAccess($metadata, 'boa');
+        return $this->hasApiAccess($clientId, 'boa');
     }
 
     /**
@@ -74,17 +53,31 @@ final class MetadataClientIdResolver implements ClientIdResolver
         return $metadata;
     }
 
-    private function hasApiAccess(array $metadata, string $api): bool
+    private function hasApiAccess(string $clientId, string $api): bool
     {
-        if (empty($metadata)) {
-            return false;
+        $oAuthServerDown = false;
+        $metadata = [];
+
+        try {
+            $metadata = $this->fetchMetadata($clientId);
+        } catch (ConnectException $connectException) {
+            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
+            $oAuthServerDown = true;
         }
 
-        if (empty($metadata['publiq-apis'])) {
-            return false;
+        if (!$oAuthServerDown) {
+            if (empty($metadata)) {
+                return false;
+            }
+
+            if (empty($metadata['publiq-apis'])) {
+                return false;
+            }
+
+            $apis = explode(' ', $metadata['publiq-apis']);
+            return in_array($api, $apis, true);
         }
 
-        $apis = explode(' ', $metadata['publiq-apis']);
-        return in_array($api, $apis, true);
+        return true;
     }
 }
