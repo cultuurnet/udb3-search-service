@@ -1236,7 +1236,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'), new Creator('id@clients'))
+            ->withExcludeChildrenOnlyUnlessCreator(new AudienceType('childrenOnly'), new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1270,7 +1270,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'), new Creator('id@clients'));
+            ->withExcludeChildrenOnlyUnlessCreator(new AudienceType('childrenOnly'), new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1302,7 +1302,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'), new Creator('id@clients'));
+            ->withExcludeChildrenOnlyUnlessCreator(new AudienceType('childrenOnly'), new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1376,7 +1376,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'), new Creator('id@clients'))
+            ->withExcludeChildrenOnlyUnlessCreator(new AudienceType('childrenOnly'), new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('education'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1409,7 +1409,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+            ->withExcludeChildrenOnlyUnlessCreator(new AudienceType('childrenOnly'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1441,7 +1441,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(
+            ->withExcludeChildrenOnlyUnlessCreator(
                 new AudienceType('childrenOnly'),
                 new Creator('my-client@clients')
             );
