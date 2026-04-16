@@ -115,7 +115,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', true)
+            new Consumer('id', '', true),
+            true
         );
     }
 
@@ -1181,7 +1182,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true)
+            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1225,7 +1227,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1259,7 +1262,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1292,7 +1296,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1365,7 +1370,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1399,7 +1405,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer(null, '', false)
+            new Consumer(null, '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1431,7 +1438,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('my-client', '', false)
+            new Consumer('my-client', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
