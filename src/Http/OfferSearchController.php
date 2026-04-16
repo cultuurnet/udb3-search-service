@@ -172,7 +172,6 @@ final class OfferSearchController
 
         if (!$this->consumer->hasBoaAccess()) {
             $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
-                new AudienceType('childrenOnly'),
                 $this->consumer->getCreator() ?? null
             );
         }

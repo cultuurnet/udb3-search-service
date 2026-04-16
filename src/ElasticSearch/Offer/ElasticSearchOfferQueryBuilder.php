@@ -331,9 +331,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
-    public function withExcludeChildrenOnlyUnlessCreator(AudienceType $audienceType, ?Creator $creator = null): self
+    public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
     {
-        $matchQuery = new MatchQuery('audienceType', $audienceType->toString());
+        $matchQuery = new MatchQuery('audienceType', 'childrenOnly');
 
         if ($creator !== null) {
             $innerBool = new BoolQuery();

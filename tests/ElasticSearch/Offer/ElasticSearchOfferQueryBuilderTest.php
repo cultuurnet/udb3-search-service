@@ -2058,10 +2058,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withExcludeChildrenOnlyUnlessCreator(
-                new AudienceType('childrenOnly'),
-                new Creator('my-client@clients')
-            );
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
