@@ -55,10 +55,6 @@ final class GeoShapeQueryRegionService implements RegionServiceInterface
             ],
         ];
 
-        if (!$this->usesIntegerTotalHits()) {
-            $query['track_total_hits'] = true;
-        }
-
         $pageNumber = 0;
         $processedHits = 0;
 
