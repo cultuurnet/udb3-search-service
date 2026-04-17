@@ -55,29 +55,22 @@ final class MetadataClientIdResolver implements ClientIdResolver
 
     private function hasApiAccess(string $clientId, string $api): bool
     {
-        $oAuthServerDown = false;
-        $metadata = [];
-
         try {
             $metadata = $this->fetchMetadata($clientId);
         } catch (ConnectException $connectException) {
             $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $oAuthServerDown = true;
+            return true;
         }
 
-        if (!$oAuthServerDown) {
-            if (empty($metadata)) {
-                return false;
-            }
-
-            if (empty($metadata['publiq-apis'])) {
-                return false;
-            }
-
-            $apis = explode(' ', $metadata['publiq-apis']);
-            return in_array($api, $apis, true);
+        if (empty($metadata)) {
+            return false;
         }
 
-        return true;
+        if (empty($metadata['publiq-apis'])) {
+            return false;
+        }
+
+        $apis = explode(' ', $metadata['publiq-apis']);
+        return in_array($api, $apis, true);
     }
 }
