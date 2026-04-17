@@ -39,6 +39,9 @@ trait HasElasticSearchClient
                 : ['terms' => ['@type' => $types]];
         }
 
+        if (!$this->usesIntegerTotalHits()) {
+            $body['track_total_hits'] = true;
+        }
         $parameters['body'] = $body;
 
         return $this->elasticSearchClient->search(

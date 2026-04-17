@@ -103,6 +103,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                                 ],
                             ],
                         ],
+                        'track_total_hits' => true,
                     ],
                 ]
             )
@@ -183,6 +184,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                                 ],
                             ],
                         ],
+                        'track_total_hits' => true,
                     ],
                 ]
             )
