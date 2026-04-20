@@ -26,73 +26,33 @@ final class SchemaVersionsTest extends TestCase
         $this->assertTrue(defined(SchemaVersions::class . '::GEOSHAPES'));
     }
 
-    /**
-     * @test
-     */
-    public function it_has_a_matching_hash_for_udb3_core_mapping(): void
+    public function mappingHashDataProvider(): array
     {
-        $contents = file_get_contents(self::MAPPING_DIR . 'mapping_udb3_core.json');
-        $this->assertNotFalse($contents, 'Could not read mapping_udb3_core.json');
-        $this->assertSame(
-            SchemaVersions::UDB3_CORE_MAPPING_HASH,
-            md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_udb3_core.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
-        );
+        return [
+            'udb3_core' => ['mapping_udb3_core.json', SchemaVersions::UDB3_CORE, SchemaVersions::UDB3_CORE_MAPPING_HASH, 'UDB3_CORE'],
+            'event'     => ['mapping_event.json',     SchemaVersions::UDB3_CORE, SchemaVersions::EVENT_MAPPING_HASH,     'UDB3_CORE'],
+            'place'     => ['mapping_place.json',     SchemaVersions::UDB3_CORE, SchemaVersions::PLACE_MAPPING_HASH,     'UDB3_CORE'],
+            'organizer' => ['mapping_organizer.json', SchemaVersions::UDB3_CORE, SchemaVersions::ORGANIZER_MAPPING_HASH, 'UDB3_CORE'],
+            'region'    => ['mapping_region.json',    SchemaVersions::GEOSHAPES, SchemaVersions::REGION_MAPPING_HASH,    'GEOSHAPES'],
+        ];
     }
 
     /**
      * @test
+     * @dataProvider mappingHashDataProvider
      */
-    public function it_has_a_matching_hash_for_event_mapping(): void
-    {
-        $contents = file_get_contents(self::MAPPING_DIR . 'mapping_event.json');
-        $this->assertNotFalse($contents, 'Could not read mapping_event.json');
+    public function it_has_a_matching_hash_for_mapping(
+        string $file,
+        int $version,
+        string $expectedHash,
+        string $versionConstant
+    ): void {
+        $contents = file_get_contents(self::MAPPING_DIR . $file);
+        $this->assertNotFalse($contents, "Could not read {$file}");
         $this->assertSame(
-            SchemaVersions::EVENT_MAPPING_HASH,
-            md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_event.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_has_a_matching_hash_for_place_mapping(): void
-    {
-        $contents = file_get_contents(self::MAPPING_DIR . 'mapping_place.json');
-        $this->assertNotFalse($contents, 'Could not read mapping_place.json');
-        $this->assertSame(
-            SchemaVersions::PLACE_MAPPING_HASH,
-            md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_place.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_has_a_matching_hash_for_organizer_mapping(): void
-    {
-        $contents = file_get_contents(self::MAPPING_DIR . 'mapping_organizer.json');
-        $this->assertNotFalse($contents, 'Could not read mapping_organizer.json');
-        $this->assertSame(
-            SchemaVersions::ORGANIZER_MAPPING_HASH,
-            md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_organizer.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_has_a_matching_hash_for_region_mapping(): void
-    {
-        $contents = file_get_contents(self::MAPPING_DIR . 'mapping_region.json');
-        $this->assertNotFalse($contents, 'Could not read mapping_region.json');
-        $this->assertSame(
-            SchemaVersions::REGION_MAPPING_HASH,
-            md5($contents . SchemaVersions::GEOSHAPES),
-            'mapping_region.json has changed. Update SchemaVersions::GEOSHAPES and run bin/generate-schema-hashes.php to get the new hash values.'
+            $expectedHash,
+            md5($contents . $version),
+            "{$file} has changed. Update SchemaVersions::{$versionConstant} and run bin/generate-schema-hashes.php to get the new hash values."
         );
     }
 }
