@@ -33,7 +33,13 @@ final class SchemaVersionsTest extends TestCase
     {
         $this->assertSame(
             SchemaVersions::UDB3_CORE_MAPPING_HASH,
-            md5_file(self::MAPPING_DIR . 'mapping_udb3_core.json'),
+        $actualHash = md5_file(self::MAPPING_DIR . 'mapping_udb3_core.json');
+        $this->assertNotFalse($actualHash, 'Could not read mapping_udb3_core.json');
+        $this->assertSame(
+            SchemaVersions::UDB3_CORE_MAPPING_HASH,
+            $actualHash,
+            'mapping_udb3_core.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::UDB3_CORE_MAPPING_HASH.'
+        );
             'mapping_udb3_core.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::UDB3_CORE_MAPPING_HASH.'
         );
     }
