@@ -115,7 +115,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '')
+            new Consumer('id', '', true)
         );
     }
 
@@ -1181,7 +1181,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo')
+            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true)
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1204,6 +1204,180 @@ final class OfferSearchControllerTest extends TestCase
                 new MockQueryString('labels:bar')
             )
             ->withStartAndLimit(new Start(10), new Limit(30));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_nothing_when_childrenOnly_requested_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false)
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => 'childrenOnly',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'))
+            ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_when_filter_disabled_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false)
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => '*',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_when_defaults_disabled_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false)
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_childrenOnly_audience_type_with_boa(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => 'childrenOnly',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_disabled_audience_filter_with_boa(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => '*',
+            ]
+        );
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_education_audience_type_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false)
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => 'education',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'))
+            ->withAudienceTypeFilter(new AudienceType('education'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

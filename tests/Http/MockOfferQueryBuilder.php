@@ -280,6 +280,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withAudienceTypeExcludeFilter(AudienceType $audienceType): self
+    {
+        $c = clone $this;
+        $c->mockQuery['excludeAudienceType'] = $audienceType->toString();
+        return $c;
+    }
+
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self
     {
         $c = clone $this;

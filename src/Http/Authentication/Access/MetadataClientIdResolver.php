@@ -28,32 +28,40 @@ final class MetadataClientIdResolver implements ClientIdResolver
 
     public function hasSapiAccess(string $clientId): bool
     {
-        $oAuthServerDown = false;
-        $metadata = [];
-
-        try {
-            $metadata = $this->metadataGenerator->get(
-                $clientId,
-                $this->managementTokenProvider->token()
-            );
-
-            if ($metadata === null) {
-                throw new InvalidClient();
-            }
-        } catch (ConnectException $connectException) {
-            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
-            $oAuthServerDown = true;
-        }
-
-        if (!$oAuthServerDown && !$this->hasAccess($metadata)) {
-            return false;
-        }
-
-        return true;
+        return $this->hasApiAccess($clientId, 'sapi');
     }
 
-    private function hasAccess(array $metadata): bool
+    public function hasBoaAccess(string $clientId): bool
     {
+        return $this->hasApiAccess($clientId, 'boa');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function fetchMetadata(string $clientId): array
+    {
+        $metadata = $this->metadataGenerator->get(
+            $clientId,
+            $this->managementTokenProvider->token()
+        );
+
+        if ($metadata === null) {
+            throw new InvalidClient();
+        }
+
+        return $metadata;
+    }
+
+    private function hasApiAccess(string $clientId, string $api): bool
+    {
+        try {
+            $metadata = $this->fetchMetadata($clientId);
+        } catch (ConnectException $connectException) {
+            $this->logger->error('OAuth server was detected as down, this results in disabling authentication');
+            return true;
+        }
+
         if (empty($metadata)) {
             return false;
         }
@@ -63,6 +71,6 @@ final class MetadataClientIdResolver implements ClientIdResolver
         }
 
         $apis = explode(' ', $metadata['publiq-apis']);
-        return in_array('sapi', $apis, true);
+        return in_array($api, $apis, true);
     }
 }

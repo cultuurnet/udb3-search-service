@@ -331,6 +331,15 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
+    public function withAudienceTypeExcludeFilter(AudienceType $audienceType): self
+    {
+        $matchQuery = new MatchQuery('audienceType', $audienceType->toString());
+
+        $c = $this->getClone();
+        $c->boolQuery->add($matchQuery, BoolQuery::MUST_NOT);
+        return $c;
+    }
+
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self
     {
         $this->guardNaturalIntegerRange('age', $minimum, $maximum);
