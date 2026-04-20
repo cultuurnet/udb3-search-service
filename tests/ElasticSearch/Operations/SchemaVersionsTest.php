@@ -86,7 +86,13 @@ final class SchemaVersionsTest extends TestCase
     public function it_has_a_matching_hash_for_organizer_mapping(): void
     {
         $this->assertSame(
+        $actualHash = md5_file(self::MAPPING_DIR . 'mapping_organizer.json');
+        $this->assertNotFalse($actualHash, 'Could not read mapping_organizer.json');
+        $this->assertSame(
             SchemaVersions::ORGANIZER_MAPPING_HASH,
+            $actualHash,
+            'mapping_organizer.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::ORGANIZER_MAPPING_HASH.'
+        );
             md5_file(self::MAPPING_DIR . 'mapping_organizer.json'),
             'mapping_organizer.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::ORGANIZER_MAPPING_HASH.'
         );
