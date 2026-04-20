@@ -36,7 +36,7 @@ final class SchemaVersionsTest extends TestCase
         $this->assertSame(
             SchemaVersions::UDB3_CORE_MAPPING_HASH,
             md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_udb3_core.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::UDB3_CORE_MAPPING_HASH.'
+            'mapping_udb3_core.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 
@@ -50,7 +50,7 @@ final class SchemaVersionsTest extends TestCase
         $this->assertSame(
             SchemaVersions::EVENT_MAPPING_HASH,
             md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_event.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::EVENT_MAPPING_HASH.'
+            'mapping_event.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 
@@ -64,7 +64,7 @@ final class SchemaVersionsTest extends TestCase
         $this->assertSame(
             SchemaVersions::PLACE_MAPPING_HASH,
             md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_place.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::PLACE_MAPPING_HASH.'
+            'mapping_place.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 
@@ -78,7 +78,7 @@ final class SchemaVersionsTest extends TestCase
         $this->assertSame(
             SchemaVersions::ORGANIZER_MAPPING_HASH,
             md5($contents . SchemaVersions::UDB3_CORE),
-            'mapping_organizer.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::ORGANIZER_MAPPING_HASH.'
+            'mapping_organizer.json has changed. Update SchemaVersions::UDB3_CORE and run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 
@@ -92,7 +92,7 @@ final class SchemaVersionsTest extends TestCase
         $this->assertSame(
             SchemaVersions::REGION_MAPPING_HASH,
             md5($contents . SchemaVersions::GEOSHAPES),
-            'mapping_region.json has changed. Update SchemaVersions::GEOSHAPES and SchemaVersions::REGION_MAPPING_HASH.'
+            'mapping_region.json has changed. Update SchemaVersions::GEOSHAPES and run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 }
