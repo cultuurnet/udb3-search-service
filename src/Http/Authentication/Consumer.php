@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
+use CultuurNet\UDB3\Search\Creator;
+
 final class Consumer
 {
+    private const CLIENTS_SUFFIX = '@clients';
+
     private ?string $id;
 
     private ?string $defaultQuery;
@@ -32,5 +36,13 @@ final class Consumer
     public function hasBoaAccess(): bool
     {
         return $this->hasBoaAccess;
+    }
+
+    public function getCreator(): ?Creator
+    {
+        if ($this->getId() !== null) {
+            return new Creator($this->getId() . self::CLIENTS_SUFFIX);
+        }
+        return null;
     }
 }

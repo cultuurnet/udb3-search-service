@@ -115,7 +115,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', true)
+            new Consumer('id', '', true),
+            true
         );
     }
 
@@ -1181,7 +1182,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true)
+            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1215,7 +1217,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_nothing_when_childrenOnly_requested_without_boa(): void
+    public function it_excludes_childrenOnly_events_not_created_by_client_without_boa(): void
     {
         $controller = new OfferSearchController(
             $this->queryBuilder,
@@ -1225,7 +1227,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1236,7 +1239,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'))
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1259,7 +1262,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1270,7 +1274,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1292,7 +1296,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1302,7 +1307,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'));
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1365,7 +1370,8 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false)
+            new Consumer('id', '', false),
+            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1376,8 +1382,74 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeExcludeFilter(new AudienceType('childrenOnly'))
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('education'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_without_creator_exception_when_no_clientId(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer(null, '', false),
+            true
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator();
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_childrenOnly_with_creator_exception_when_clientId_present(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('my-client', '', false),
+            true
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
