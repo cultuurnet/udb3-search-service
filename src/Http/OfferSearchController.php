@@ -55,7 +55,7 @@ final class OfferSearchController
 
     private Consumer $consumer;
 
-    private bool $enableBoaFiltering;
+    private bool $enableBoaPermission;
 
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
@@ -66,7 +66,7 @@ final class OfferSearchController
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer,
-        bool $enableBoaFiltering
+        bool $enableBoaPermission
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
@@ -77,7 +77,7 @@ final class OfferSearchController
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
         $this->consumer = $consumer;
-        $this->enableBoaFiltering = $enableBoaFiltering;
+        $this->enableBoaPermission = $enableBoaPermission;
     }
 
     public function __invoke(ApiRequest $request): ResponseInterface
@@ -174,7 +174,7 @@ final class OfferSearchController
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
 
-        if ($this->enableBoaFiltering && !$this->consumer->hasBoaAccess()) {
+        if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
             $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
                 $this->consumer->getCreator() ?? null
             );
