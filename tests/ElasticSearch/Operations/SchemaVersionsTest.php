@@ -50,7 +50,13 @@ final class SchemaVersionsTest extends TestCase
     public function it_has_a_matching_hash_for_event_mapping(): void
     {
         $this->assertSame(
+        $actualHash = md5_file(self::MAPPING_DIR . 'mapping_event.json');
+        $this->assertNotFalse($actualHash, 'Could not read mapping_event.json');
+        $this->assertSame(
             SchemaVersions::EVENT_MAPPING_HASH,
+            $actualHash,
+            'mapping_event.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::EVENT_MAPPING_HASH.'
+        );
             md5_file(self::MAPPING_DIR . 'mapping_event.json'),
             'mapping_event.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::EVENT_MAPPING_HASH.'
         );
