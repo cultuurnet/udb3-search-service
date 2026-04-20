@@ -68,7 +68,13 @@ final class SchemaVersionsTest extends TestCase
     public function it_has_a_matching_hash_for_place_mapping(): void
     {
         $this->assertSame(
+        $actualHash = md5_file(self::MAPPING_DIR . 'mapping_place.json');
+        $this->assertNotFalse($actualHash, 'Could not read mapping_place.json');
+        $this->assertSame(
             SchemaVersions::PLACE_MAPPING_HASH,
+            $actualHash,
+            'mapping_place.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::PLACE_MAPPING_HASH.'
+        );
             md5_file(self::MAPPING_DIR . 'mapping_place.json'),
             'mapping_place.json has changed. Update SchemaVersions::UDB3_CORE and SchemaVersions::PLACE_MAPPING_HASH.'
         );
