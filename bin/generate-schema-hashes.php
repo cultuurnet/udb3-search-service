@@ -2,22 +2,18 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\SchemaVersions;
-
 $mappingDir = __DIR__ . '/../src/ElasticSearch/Operations/json/';
 
-$mappings = [
-    'UDB3_CORE_MAPPING_HASH' => ['file' => 'mapping_udb3_core.json', 'version' => SchemaVersions::UDB3_CORE],
-    'EVENT_MAPPING_HASH'     => ['file' => 'mapping_event.json',     'version' => SchemaVersions::UDB3_CORE],
-    'PLACE_MAPPING_HASH'     => ['file' => 'mapping_place.json',     'version' => SchemaVersions::UDB3_CORE],
-    'ORGANIZER_MAPPING_HASH' => ['file' => 'mapping_organizer.json', 'version' => SchemaVersions::UDB3_CORE],
-    'REGION_MAPPING_HASH'    => ['file' => 'mapping_region.json',    'version' => SchemaVersions::GEOSHAPES],
+$hashes = [
+    'UDB3_CORE' => md5(
+        file_get_contents($mappingDir . 'mapping_udb3_core.json') .
+        file_get_contents($mappingDir . 'mapping_event.json') .
+        file_get_contents($mappingDir . 'mapping_place.json') .
+        file_get_contents($mappingDir . 'mapping_organizer.json')
+    ),
+    'GEOSHAPES' => md5(file_get_contents($mappingDir . 'mapping_region.json')),
 ];
 
-foreach ($mappings as $constant => $mapping) {
-    $contents = file_get_contents($mappingDir . $mapping['file']);
-    $hash = md5($contents . $mapping['version']);
+foreach ($hashes as $constant => $hash) {
     echo "public const {$constant} = '{$hash}';" . PHP_EOL;
 }

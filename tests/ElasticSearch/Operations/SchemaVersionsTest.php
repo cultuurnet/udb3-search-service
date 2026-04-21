@@ -13,46 +13,29 @@ final class SchemaVersionsTest extends TestCase
     /**
      * @test
      */
-    public function it_has_the_latest_udb3_core_version(): void
+    public function it_has_a_matching_hash_for_udb3_core_mappings(): void
     {
-        $this->assertTrue(defined(SchemaVersions::class . '::UDB3_CORE'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_has_the_latest_geoshapes_version(): void
-    {
-        $this->assertTrue(defined(SchemaVersions::class . '::GEOSHAPES'));
-    }
-
-    public function mappingHashDataProvider(): array
-    {
-        return [
-            'udb3_core' => ['mapping_udb3_core.json', SchemaVersions::UDB3_CORE, SchemaVersions::UDB3_CORE_MAPPING_HASH, 'UDB3_CORE'],
-            'event'     => ['mapping_event.json',     SchemaVersions::UDB3_CORE, SchemaVersions::EVENT_MAPPING_HASH,     'UDB3_CORE'],
-            'place'     => ['mapping_place.json',     SchemaVersions::UDB3_CORE, SchemaVersions::PLACE_MAPPING_HASH,     'UDB3_CORE'],
-            'organizer' => ['mapping_organizer.json', SchemaVersions::UDB3_CORE, SchemaVersions::ORGANIZER_MAPPING_HASH, 'UDB3_CORE'],
-            'region'    => ['mapping_region.json',    SchemaVersions::GEOSHAPES, SchemaVersions::REGION_MAPPING_HASH,    'GEOSHAPES'],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider mappingHashDataProvider
-     */
-    public function it_has_a_matching_hash_for_mapping(
-        string $file,
-        int $version,
-        string $expectedHash,
-        string $versionConstant
-    ): void {
-        $contents = file_get_contents(self::MAPPING_DIR . $file);
-        $this->assertNotFalse($contents, "Could not read {$file}");
         $this->assertSame(
-            $expectedHash,
-            md5($contents . $version),
-            "{$file} has changed. Update SchemaVersions::{$versionConstant} and run bin/generate-schema-hashes.php to get the new hash values."
+            SchemaVersions::UDB3_CORE,
+            md5(
+                file_get_contents(self::MAPPING_DIR . 'mapping_udb3_core.json') .
+                file_get_contents(self::MAPPING_DIR . 'mapping_event.json') .
+                file_get_contents(self::MAPPING_DIR . 'mapping_place.json') .
+                file_get_contents(self::MAPPING_DIR . 'mapping_organizer.json')
+            ),
+            'One or more udb3_core mapping files have changed. Run bin/generate-schema-hashes.php to get the new hash values.'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_a_matching_hash_for_geoshapes_mappings(): void
+    {
+        $this->assertSame(
+            SchemaVersions::GEOSHAPES,
+            md5(file_get_contents(self::MAPPING_DIR . 'mapping_region.json')),
+            'mapping_region.json has changed. Run bin/generate-schema-hashes.php to get the new hash values.'
         );
     }
 }
