@@ -55,4 +55,37 @@ final class CachedClientIdResolverTest extends TestCase
 
         $this->assertTrue($this->cachedClientIdResolver->hasSapiAccess('my_active_client_id'));
     }
+
+    /**
+     * @test
+     */
+    public function it_will_use_cached_values_for_boa_access(): void
+    {
+        $cache = new ArrayAdapter();
+        $cache->get(
+            'client_id_my_cached_client_id_boa_access',
+            function () {
+                return true;
+            }
+        );
+        $clientIdResolver = $this->createMock(ClientIdResolver::class);
+        $cachedClientIdResolver = new CachedClientIdResolver($cache, $clientIdResolver);
+
+        $clientIdResolver->expects($this->never())
+            ->method('hasBoaAccess');
+
+        $this->assertTrue($cachedClientIdResolver->hasBoaAccess('my_cached_client_id'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_uncached_boa_access_values_via_the_decoratee(): void
+    {
+        $this->clientIdResolver->expects($this->once())
+            ->method('hasBoaAccess')
+            ->willReturn(true);
+
+        $this->assertTrue($this->cachedClientIdResolver->hasBoaAccess('my_active_client_id'));
+    }
 }

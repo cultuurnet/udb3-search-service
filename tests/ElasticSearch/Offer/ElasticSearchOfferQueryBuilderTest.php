@@ -2054,6 +2054,59 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_excluding_audience_type_except_creator(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'must_not' => [
+                        [
+                            'bool' => [
+                                'must' => [
+                                    [
+                                        'match' => [
+                                            'audienceType' => [
+                                                'query' => 'childrenOnly',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'must_not' => [
+                                    [
+                                        'match' => [
+                                            'creator' => [
+                                                'query' => 'my-client@clients',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_inclusive_media_objects_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())

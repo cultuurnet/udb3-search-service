@@ -81,7 +81,7 @@ final class KeycloakMetadataGenerator implements MetadataGenerator
 
     private function convertDefaultScopes(array $defaultScopes): array
     {
-        $knownScopes = ['sapi', 'entry', 'ups'];
+        $knownScopes = ['sapi', 'entry', 'ups', 'boa'];
 
         $scopes = [];
         foreach ($knownScopes as $knownScope) {

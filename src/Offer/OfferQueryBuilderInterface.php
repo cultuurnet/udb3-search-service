@@ -91,6 +91,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withAudienceTypeFilter(AudienceType $audienceType): OfferQueryBuilderInterface;
 
+    public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): OfferQueryBuilderInterface;
+
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): OfferQueryBuilderInterface;
 
     /**
