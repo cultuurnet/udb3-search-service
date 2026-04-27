@@ -35,33 +35,28 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         return $this->getTermsByDomain('facility');
     }
 
-    private function fetchTerms(): array
-    {
-        if ($this->terms !== null) {
-            return $this->terms;
-        }
-
-        $response = $this->client->sendRequest(new Request('GET', $this->termsEndpoint));
-        if ($response->getStatusCode() !== 200) {
-            $this->logger->error('Taxonomy Api returned a non-200 status code', [
-                'status_code' => $response->getStatusCode(),
-                'body' => $response->getBody()->getContents(),
-            ]);
-            throw new TaxonomyApiProblem('Taxonomy Api returned a non-200 status code.');
-        }
-        $contents = $response->getBody()->getContents();
-        if (empty($contents)) {
-            $this->logger->error('Taxonomy Api returned no terms');
-            throw new TaxonomyApiProblem('Taxonomy Api returned no terms.');
-        }
-        $contentsAsJson = Json::decodeAssociatively($contents);
-        return $this->terms = $contentsAsJson['terms'];
-    }
-
     private function getTermsByDomain(string $domain): array
     {
+        if ($this->terms === null) {
+            $response = $this->client->sendRequest(new Request('GET', $this->termsEndpoint));
+            if ($response->getStatusCode() !== 200) {
+                $this->logger->error('Taxonomy Api returned a non-200 status code', [
+                    'status_code' => $response->getStatusCode(),
+                    'body' => $response->getBody()->getContents(),
+                ]);
+                throw new TaxonomyApiProblem('Taxonomy Api returned a non-200 status code.');
+            }
+            $contents = $response->getBody()->getContents();
+            if (empty($contents)) {
+                $this->logger->error('Taxonomy Api returned no terms');
+                throw new TaxonomyApiProblem('Taxonomy Api returned no terms.');
+            }
+            $contentsAsJson = Json::decodeAssociatively($contents);
+            $this->terms = $contentsAsJson['terms'];
+        }
+
         $termsByDomain = [];
-        foreach ($this->fetchTerms() as $term) {
+        foreach ($this->terms as $term) {
             if ($term['domain'] === $domain) {
                 $termsByDomain[$term['id']]['name'] = $term['name'];
             }
