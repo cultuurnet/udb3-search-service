@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Taxonomy;
 
+use CultuurNet\UDB3\Search\Json;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedTaxonomyApiClientTest extends TestCase
@@ -201,5 +205,50 @@ final class CachedTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals($types, $this->cachedTaxonomyApiClient->getTypes());
         $this->assertEquals($themes, $this->cachedTaxonomyApiClient->getThemes());
+    }
+
+    /**
+     * @test
+     *
+     * @bugfix https://jira.publiq.be/browse/III-7156
+     * Previously JsonTaxonomyApiClient performed the HTTP fetch in its constructor,
+     * so wrapping it in CachedTaxonomyApiClient never short-circuited the call.
+     * This test wires both real classes together and asserts no HTTP call happens until a getter is actually invoked.
+     */
+    public function it_does_not_call_the_taxonomy_api_when_no_getter_is_invoked(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->expects($this->never())->method('sendRequest');
+
+        new CachedTaxonomyApiClient(
+            new ArrayAdapter(),
+            new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_calls_the_taxonomy_api_only_once_across_many_getter_calls(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(
+                new Response(200, [], Json::encode(['terms' => [
+                    ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => 'events'],
+                    ['id' => '1.8.2.0.0', 'domain' => 'theme', 'name' => ['nl' => 'Jazz en blues'], 'scope' => 'events'],
+                    ['id' => '3.23.1.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Voorzieningen voor rolstoelgebruikers'], 'scope' => 'events'],
+                ]]))
+            );
+
+        $client = new CachedTaxonomyApiClient(
+            new ArrayAdapter(),
+            new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger())
+        );
+
+        $client->getTypes();
+        $client->getThemes();
+        $client->getFacilities();
     }
 }
