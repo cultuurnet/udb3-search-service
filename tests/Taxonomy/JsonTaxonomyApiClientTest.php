@@ -146,18 +146,23 @@ final class JsonTaxonomyApiClientTest extends TestCase
             ->method('sendRequest')
             ->willReturn(new Response(500, [], 'Internal Server Error'));
 
-        $this->expectException(TaxonomyApiProblem::class);
-        $this->expectExceptionMessage('Taxonomy Api returned a non-200 status code.');
-
         $this->logger->expects($this->once())
             ->method('error')
-            ->with('Taxonomy Api returned a non-200 status code');
+            ->with(
+                'Taxonomy Api returned a non-200 status code',
+                ['status_code' => 500, 'body' => 'Internal Server Error']
+            );
 
-        new JsonTaxonomyApiClient(
+        $client = new JsonTaxonomyApiClient(
             $this->httpClient,
             'https://taxonomy.example.com/terms',
             $this->logger
         );
+
+        $this->expectException(TaxonomyApiProblem::class);
+        $this->expectExceptionMessage('Taxonomy Api returned a non-200 status code.');
+
+        $client->getTypes();
     }
 
     /**
@@ -169,19 +174,20 @@ final class JsonTaxonomyApiClientTest extends TestCase
             ->method('sendRequest')
             ->willReturn(new Response(200, [], ''));
 
-        $this->expectException(TaxonomyApiProblem::class);
-        $this->expectExceptionMessage('Taxonomy Api returned no terms.');
-
         $this->logger->expects($this->once())
             ->method('error')
             ->with('Taxonomy Api returned no terms');
 
-
-        new JsonTaxonomyApiClient(
+        $client = new JsonTaxonomyApiClient(
             $this->httpClient,
             'https://taxonomy.example.com/terms',
             $this->logger
         );
+
+        $this->expectException(TaxonomyApiProblem::class);
+        $this->expectExceptionMessage('Taxonomy Api returned no terms.');
+
+        $client->getTypes();
     }
 
     private function createTaxonomyClientWithTerms(array $terms): JsonTaxonomyApiClient
