@@ -200,6 +200,52 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
             ->assertReturnedDocumentContains(['@type' => 'Event']);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_pluralize_singular_event_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/event/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/events/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pluralize_singular_place_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/place/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/places/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_modify_already_plural_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/events/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/events/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pluralize_singular_place_id_on_location(): void
+    {
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/event/abc123',
+                'location' => ['@id' => 'https://io.uitdatabank.dev/place/def456'],
+            ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/events/abc123',
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/def456'],
+            ]);
+    }
+
     private function given(array $given): self
     {
         $this->given = $given;

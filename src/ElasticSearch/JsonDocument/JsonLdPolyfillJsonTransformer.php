@@ -11,11 +11,25 @@ final class JsonLdPolyfillJsonTransformer implements JsonTransformer
     public function transform(array $from, array $draft = []): array
     {
         // Apply transformations to the draft of the JSON to return, which should be based on the original JSON-LD
+        $draft = $this->polyfillPluralId($draft);
         $draft = $this->polyfillSubEventIds($draft);
         $draft = $this->polyfillMediaObjectIds($draft);
         $draft = $this->polyfillImagesProperties($draft);
         $draft = $this->removeInternalProperties($draft);
         return $draft;
+    }
+
+    private function polyfillPluralId(array $json): array
+    {
+        if (isset($json['@id']) && is_string($json['@id'])) {
+            $json['@id'] = str_replace(['/event/', '/place/'], ['/events/', '/places/'], $json['@id']);
+        }
+
+        if (isset($json['location']['@id']) && is_string($json['location']['@id'])) {
+            $json['location']['@id'] = str_replace('/place/', '/places/', $json['location']['@id']);
+        }
+
+        return $json;
     }
 
     private function polyfillSubEventIds(array $json): array
