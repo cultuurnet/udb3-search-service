@@ -246,6 +246,22 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
             ]);
     }
 
+    /**
+     * @test
+     */
+    public function it_should_not_modify_already_plural_place_id_on_location(): void
+    {
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/events/abc123',
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/def456'],
+            ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/events/abc123',
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/def456'],
+            ]);
+    }
+
     private function given(array $given): self
     {
         $this->given = $given;
