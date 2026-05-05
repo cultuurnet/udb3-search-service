@@ -21,6 +21,75 @@ final class JsonLdPolyfillJsonTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_singularize_plural_event_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/events/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/event/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_singularize_plural_place_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/places/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/place/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_modify_already_singular_id(): void
+    {
+        $this
+            ->given(['@id' => 'https://io.uitdatabank.dev/event/abc123'])
+            ->assertReturnedDocumentContains(['@id' => 'https://io.uitdatabank.dev/event/abc123']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_singularize_plural_place_id_on_location(): void
+    {
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/events/abc123',
+                'location' => [
+                    '@id' => 'https://io.uitdatabank.dev/places/def456',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                '@id' => 'https://io.uitdatabank.dev/event/abc123',
+                'location' => [
+                    '@id' => 'https://io.uitdatabank.dev/place/def456',
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_modify_already_singular_place_id_on_location(): void
+    {
+        $this
+            ->given([
+                '@id' => 'https://io.uitdatabank.dev/events/abc123',
+                'location' => [
+                    '@id' => 'https://io.uitdatabank.dev/place/def456',
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    '@id' => 'https://io.uitdatabank.dev/place/def456',
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_add_missing_id_to_subEvent_objects(): void
     {
         $this
