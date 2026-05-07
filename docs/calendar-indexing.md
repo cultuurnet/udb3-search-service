@@ -188,6 +188,14 @@ The range covers Monday 3 June to Friday 7 June. The opening hours apply on Mond
 }
 ```
 
+### Permanent offers and the rolling window
+
+Permanent offers with opening hours are indexed with a rolling window of **−6 months to +12 months** from the moment of indexing. The indexer calculates this window relative to the current date and generates one sub-event per day-of-week × time slot within that range.
+
+This means the indexed sub-events become stale over time. To keep the window current, the `udb3-core:reindex-permanent` console command re-indexes all permanent offers. It scrolls through all permanent offers in Elasticsearch and re-runs the full indexing pipeline for each one, recalculating the window based on the current date.
+
+There is no built-in schedule. Running this command periodically (e.g. via a cron job) is the responsibility of the infrastructure.
+
 ---
 
 ## Search parameters
