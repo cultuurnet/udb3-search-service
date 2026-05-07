@@ -83,6 +83,15 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('location.id', $locationCdbid->toString());
     }
 
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): self
+    {
+        $c = $this;
+        foreach ($departurePlaceCdbIds as $id) {
+            $c = $c->withMatchQuery('departurePlaces', $id->toString());
+        }
+        return $c;
+    }
+
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
         return $this->withMatchQuery('organizer.id', $organizerCdbId->toString());

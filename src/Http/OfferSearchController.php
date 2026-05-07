@@ -136,6 +136,14 @@ final class OfferSearchController
             );
         }
 
+        $departurePlaceIds = $parameterBag->getArrayFromParameter(
+            'departurePlaces',
+            fn ($value): Cdbid => new Cdbid($value)
+        );
+        if (!empty($departurePlaceIds)) {
+            $queryBuilder = $queryBuilder->withDeparturePlaceCdbIdFilter(...$departurePlaceIds);
+        }
+
         if ($request->hasQueryParam('organizerId')) {
             $queryBuilder = $queryBuilder->withOrganizerCdbIdFilter(
                 new Cdbid($request->getQueryParam('organizerId'))
