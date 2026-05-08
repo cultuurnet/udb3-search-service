@@ -1,0 +1,401 @@
+# Offer Availability Indexing
+
+This document describes the calendar in JSON-LD format and how its fields are indexed in Elasticsearch before being exposed through search parameters.
+
+---
+
+## Calendar types
+
+Every offer has a `calendarType`. The type determines what date information is stored in JSON-LD and how it gets indexed.
+
+### Events
+
+Events support four types.
+
+| Type | What it means                                                                    |
+|---|----------------------------------------------------------------------------------|
+| `single` | Happens once, on a fixed single period with a start datetime and an end datetime |
+| `multiple` | Happens on several fixed periods, each with their own start and end datetime     |
+| `periodic` | Runs across a date range, with optional opening hours |
+| `permanent` | No fixed period, with optional opening hours |
+
+**single**
+
+```json
+{
+  "calendarType": "single",
+  "startDate": "2024-06-01T10:00:00+00:00",
+  "endDate": "2024-06-01T18:00:00+00:00"
+}
+```
+
+**multiple**
+
+```json
+{
+  "calendarType": "multiple",
+  "startDate": "2024-04-30T00:00:00+00:00",
+  "endDate": "2024-05-07T00:00:00+00:00",
+  "subEvent": [
+    { "startDate": "2024-04-30T10:00:00+00:00", "endDate": "2024-04-30T12:00:00+00:00" },
+    { "startDate": "2024-05-01T10:00:00+00:00", "endDate": "2024-05-01T12:00:00+00:00" },
+    { "startDate": "2024-05-07T10:00:00+00:00", "endDate": "2024-05-07T12:00:00+00:00" }
+  ]
+}
+```
+
+**periodic**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-01T00:00:00+00:00",
+  "endDate": "2024-08-31T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "wednesday", "friday"], "opens": "08:30", "closes": "17:00" }
+  ]
+}
+```
+
+**permanent**
+
+```json
+{
+  "calendarType": "permanent",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" },
+    { "dayOfWeek": ["saturday"], "opens": "10:00", "closes": "14:00" }
+  ]
+}
+```
+
+### Places
+
+Places only support `periodic` and `permanent`. They are physical locations, not one-time occurrences, so `single` and `multiple` do not apply.
+
+| Type | What it means |
+|---|---|
+| `periodic` | Open during a date range, with optional opening hours |
+| `permanent` | Always open (no fixed end date), with optional opening hours |
+
+The JSON-LD shape is the same as for events.
+
+---
+
+## Source fields vs. indexed fields
+
+Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read at index time and then discarded**. Others are **stored and queryable**.
+
+| Role | Fields | Stored in ES? |
+|---|---|---|
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange` | Yes, queryable |
+
+`openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
+
+`startDate` and `endDate` work the same way. They are read to build the top-level `dateRange` field and then discarded.
+
+---
+
+## Indexing
+
+### Top-level date range
+
+Every offer gets a top-level `dateRange` field. It spans from the earliest start datetime to the latest end datetime across all sub-events. This makes simple datetime queries fast. No need to look inside nested sub-events.
+
+A `localTimeRange` is also stored. It holds only the time-of-day part (no date), which enables queries like "open between 14:00 and 18:00."
+
+Both fields sit directly on the document, not inside the `subEvent[]` array:
+
+```json
+{
+  "dateRange": {
+    "gte": "2024-06-01T10:00:00+00:00",
+    "lte": "2024-08-31T17:00:00+00:00"
+  },
+  "localTimeRange": {
+    "gte": "08:30",
+    "lte": "17:00"
+  },
+  "subEvent": [ ... ]
+}
+```
+
+### Sub-event indexing
+
+Every offer also gets a `subEvent[]` array. Each entry represents one time slot. The indexer expands the source calendar into this array.
+
+**Expanding rules:**
+
+| Calendar type | Opening hours | Result |
+|---|---|---|
+| `single` | n/a | 1 sub-event (start → end) |
+| `multiple` | n/a | One sub-event per explicit entry |
+| `periodic` | No | 1 sub-event covering the whole range |
+| `periodic` | Yes | One sub-event per day-of-week × time slot within the range |
+| `permanent` | No | 1 open-ended sub-event |
+| `permanent` | Yes | One sub-event per day-of-week × time slot, from −6 months to +12 months |
+
+Each sub-event in Elasticsearch looks like this:
+
+```json
+{
+  "dateRange": {
+    "gte": "2024-06-03T08:30:00+00:00",
+    "lte": "2024-06-03T17:00:00+00:00"
+  },
+  "localTimeRange": {
+    "gte": "08:30",
+    "lte": "17:00"
+  },
+  "status": "Available",
+  "bookingAvailability": "Available"
+}
+```
+
+**Example: periodic with opening hours**
+
+JSON-LD Input:
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-03T00:00:00+00:00",
+  "endDate": "2024-06-07T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "wednesday"], "opens": "08:30", "closes": "09:17" }
+  ]
+}
+```
+
+The range covers Monday 3 June to Friday 7 June. The opening hours apply on Monday and Wednesday, so the indexer produces two sub-events:
+
+```json
+{
+  "subEvent": [
+    {
+      "dateRange": { "gte": "2024-06-03T08:30:00+00:00", "lte": "2024-06-03T09:17:00+00:00" },
+      "localTimeRange": { "gte": "08:30", "lte": "09:17" },
+      "status": "Available",
+      "bookingAvailability": "Available"
+    },
+    {
+      "dateRange": { "gte": "2024-06-05T08:30:00+00:00", "lte": "2024-06-05T09:17:00+00:00" },
+      "localTimeRange": { "gte": "08:30", "lte": "09:17" },
+      "status": "Available",
+      "bookingAvailability": "Available"
+    }
+  ]
+}
+```
+
+### Permanent offers and the rolling window
+
+Permanent offers with opening hours are indexed with a rolling window of **−6 months to +12 months** from the moment of indexing. The indexer calculates this window relative to the current date and generates one sub-event per day-of-week × time slot within that range.
+
+This means the indexed sub-events become stale over time. To keep the window current, the `udb3-core:reindex-permanent` console command re-indexes all permanent offers. It scrolls through all permanent offers in Elasticsearch and re-runs the full indexing pipeline for each one, recalculating the window based on the current date.
+
+There is no built-in schedule. Running this command periodically (e.g. via a cron job) is the responsibility of the infrastructure.
+
+---
+
+## Search parameters
+
+### Top-level queries
+
+When you filter on datetime, local time, status, or booking availability **on their own**, the query hits the top-level fields.
+
+| Parameter(s) | ES field |
+|---|---|
+| `dateFrom`, `dateTo` | `dateRange` |
+| `localTimeFrom`, `localTimeTo` | `localTimeRange` |
+| `status` | `status` |
+| `bookingAvailability` | `bookingAvailability` |
+| `availableFrom`, `availableTo` | `availableRange` |
+
+`availableRange` is always a top-level filter. It controls the publication window: when the offer is publicly visible. It is separate from when the offer actually takes place.
+
+**Example: events happening on a specific day:**
+```
+GET /offers?dateFrom=2024-06-01T00:00:00+00:00&dateTo=2024-06-01T23:59:59+00:00
+```
+→ runs a range query on the top-level `dateRange` field.
+
+**Example: events with status "Unavailable":**
+```
+GET /offers?status=Unavailable
+```
+→ runs a term query on the top-level `status` field.
+
+### Nested queries (sub-event level)
+
+As soon as you combine **two or more** of `date*`, `localTime*`, `status`, or `bookingAvailability`, the query switches to a nested query against `subEvent[]`.
+
+**Why?** A top-level query could match by accident. Imagine an event with two sub-events: sub-event A is on 1 June but cancelled, sub-event B is available but on 8 June. A top-level query for "1 June AND available" would match this event, even though no single sub-event actually meets both conditions. A nested query fixes this by requiring all conditions to apply to the **same** sub-event.
+
+| Parameter(s) in the combination | Nested ES field |
+|---|---|
+| `dateFrom`, `dateTo` | `subEvent.dateRange` |
+| `localTimeFrom`, `localTimeTo` | `subEvent.localTimeRange` |
+| `status` | `subEvent.status` |
+| `bookingAvailability` | `subEvent.bookingAvailability` |
+
+**Example: available events on a specific day:**
+```
+GET /offers?dateFrom=2024-06-01T00:00:00+00:00&dateTo=2024-06-01T23:59:59+00:00&status=Available
+```
+→ combines `date*` and `status`, so the query runs as a nested query on `subEvent[]`. Both conditions must hold on the same sub-event.
+
+**Example: events bookable on a specific afternoon:**
+```
+GET /offers?localTimeFrom=14:00&localTimeTo=18:00&bookingAvailability=Available
+```
+→ combines `localTime*` and `bookingAvailability`, so again a nested query.
+
+---
+
+## Closed days and adjusted days
+
+Two fields that the backend model supports but are **not yet handled by the indexer**.
+
+### Closed days
+
+A closed day is a date range where the offer is not available, even if it would normally be open on those days.
+
+```json
+{
+  "openingHoursClosedDays": [
+    {
+      "startDate": "2024-07-15T00:00:00+00:00",
+      "endDate": "2024-07-19T23:59:59+00:00",
+      "description": {
+        "nl": "Zomervakantie",
+        "en": "Summer break"
+      }
+    }
+  ]
+}
+```
+
+With the current indexer, the week of 15–19 July would still appear in `subEvent[]` as available. That is wrong.
+
+### Adjusted days
+
+An adjusted day is a date range where the offer uses different opening hours than usual.
+
+```json
+{
+  "openingHoursAdjustedDays": [
+    {
+      "startDate": "2024-12-24T00:00:00+00:00",
+      "endDate": "2024-12-24T23:59:59+00:00",
+      "openingHours": [
+        { "dayOfWeek": ["tuesday"], "opens": "09:00", "closes": "13:00" }
+      ],
+      "description": {
+        "nl": "Kerstavond — vroeger gesloten",
+        "en": "Christmas Eve — closes early"
+      }
+    }
+  ]
+}
+```
+
+With the current indexer, 24 December would use the regular opening hours. That is wrong.
+
+Both fields only apply to `periodic` and `permanent` calendars. `single` and `multiple` carry explicit sub-events and are not affected.
+
+---
+
+## How closed and adjusted days change sub-event generation
+
+Neither field gets indexed on its own. They are source-only, just like `openingHours`. The indexer reads them, uses them to decide which sub-events to generate, and then discards them. The indexed surface stays the same. No mapping changes and no re-index migration needed.
+
+### Closed days
+
+This is straightforward. When generating sub-events, skip any day that falls within a closed range.
+
+**Example: periodic with a closed day**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2026-05-04T00:00:00+00:00",
+  "endDate": "2026-05-08T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "openingHoursClosedDays": [
+    { "startDate": "2026-05-06", "endDate": "2026-05-06" }
+  ]
+}
+```
+
+Without closed days: 5 sub-events (Mon 4 to Fri 8 May, one per day).
+With closed days: 4 sub-events. Wednesday 6 May is skipped.
+
+A search for events on 6 May will not return this offer, because there is no sub-event for that date.
+
+### Adjusted days
+
+This is more involved. When a day falls within an adjusted range, it still gets a sub-event, but built from the adjusted opening hours instead of the regular ones.
+
+**Example: one day closes early**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2026-05-04T00:00:00+00:00",
+  "endDate": "2026-05-08T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "openingHoursAdjustedDays": [
+    {
+      "startDate": "2026-05-06",
+      "endDate": "2026-05-06",
+      "openingHours": [
+        { "dayOfWeek": ["wednesday"], "opens": "09:00", "closes": "12:00" }
+      ],
+      "description": { "nl": "Vroeg gesloten", "en": "Early closing" }
+    }
+  ]
+}
+```
+
+Wednesday 6 May gets a sub-event from 09:00 to 12:00 instead of 09:00 to 17:00. A search for events between 13:00 and 17:00 on 6 May will not return this offer.
+
+**Why this is complex:**
+
+The adjusted opening hours are still structured per `dayOfWeek`. The indexer has to match the actual day of week of each date against the adjusted hours, using the same expansion logic as regular opening hours but scoped to the adjusted range only.
+
+**API constraints (enforced by the backend validators, not JSON schema):**
+
+- Adjusted day entries must not overlap each other. The backend rejects overlapping ranges, so the indexer will never see two adjusted entries that cover the same date.
+- A date can still fall in both a closed range and an adjusted range. Closed days take precedence.
+- For `periodic` calendars, both closed days and adjusted days must fall within the calendar's `startDate`–`endDate` range.
+
+---
+
+## Code reference
+
+### Indexing
+
+- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, `polyFillJsonLdSubEvents()`.
+
+### Elasticsearch mappings
+
+- `mapping_udb3_core.json`: shared core mapping (ES8)
+- `mapping_event.json`: field mapping for events
+- `mapping_place.json`: field mapping for places
+
+### Query building
+
+- `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`.
+- `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
+
+### Backend calendar model (udb3-backend)
+
+- `ClosedDay`: holds `startDate`, `endDate`, and an optional description.
+- `AdjustedDay`: holds `startDate`, `endDate`, its own `openingHours`, and an optional description.
+
