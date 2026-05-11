@@ -28,6 +28,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid): OfferQueryBuilderInterface;
 
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): OfferQueryBuilderInterface;
+
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): OfferQueryBuilderInterface;
 
     public function withMainLanguageFilter(Language $mainLanguage): OfferQueryBuilderInterface;
