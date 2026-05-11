@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AttendanceModeTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DeparturePlacesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransformer;
@@ -42,6 +43,7 @@ final class EventTransformer implements JsonTransformer
             ),
             new RelatedProductionTransformer(),
             new PerformersTransformer(),
+            new DeparturePlacesTransformer($idUrlParser),
             new MetadataTransformer()
         );
 
