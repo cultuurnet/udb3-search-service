@@ -81,6 +81,15 @@ final class CommandServiceProvider extends BaseServiceProvider
         );
 
         $this->add(
+            CreateIndexCommand::class,
+            fn (): CreateIndexCommand => new CreateIndexCommand(
+                $this->get(Client::class),
+                $this->parameter('elasticsearch.number_of_shards'),
+                $this->parameter('elasticsearch.number_of_replicas')
+            )
+        );
+
+        $this->add(
             UpdateUdb3CoreMappingCommand::class,
             fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
                 $this->get(Client::class),
