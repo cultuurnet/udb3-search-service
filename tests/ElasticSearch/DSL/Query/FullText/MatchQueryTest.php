@@ -15,6 +15,6 @@ final class MatchQueryTest extends TestCase
     {
         $query = new MatchQuery('title', 'hello');
 
-        $this->assertSame(['match' => ['title' => 'hello']], $query->toArray());
+        $this->assertSame(['match' => ['title' => ['query' => 'hello']]], $query->toArray());
     }
 }

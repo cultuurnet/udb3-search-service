@@ -51,6 +51,7 @@ final class SearchTest extends TestCase
 
         $boolQuery = new BoolQuery();
         $boolQuery->add(new MatchAllQuery(), BoolQuery::MUST);
+        $boolQuery->add(new MatchAllQuery(), BoolQuery::MUST);
         $search->addQuery($boolQuery);
 
         $result = $search->toArray();
@@ -88,8 +89,8 @@ final class SearchTest extends TestCase
 
         $result = $search->toArray();
 
-        $this->assertArrayHasKey('aggs', $result);
-        $this->assertArrayHasKey('types', $result['aggs']);
+        $this->assertArrayHasKey('aggregations', $result);
+        $this->assertArrayHasKey('types', $result['aggregations']);
     }
 
     /**
@@ -104,6 +105,6 @@ final class SearchTest extends TestCase
         $result = $search->toArray();
 
         $this->assertArrayNotHasKey('sort', $result);
-        $this->assertArrayNotHasKey('aggs', $result);
+        $this->assertArrayNotHasKey('aggregations', $result);
     }
 }

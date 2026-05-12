@@ -35,6 +35,11 @@ final class BoolQuery implements BuilderInterface
             );
         }
 
+        // Collapse: single MUST with no other clauses → return that clause directly
+        if (count($bool) === 1 && isset($bool[self::MUST]) && count($bool[self::MUST]) === 1) {
+            return $bool[self::MUST][0];
+        }
+
         return ['bool' => $bool];
     }
 }

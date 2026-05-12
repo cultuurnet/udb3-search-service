@@ -17,15 +17,29 @@ final class BoolQueryTest extends TestCase
     {
         $query = new BoolQuery();
         $query->add(new MatchAllQuery(), BoolQuery::MUST);
+        $query->add(new TermQuery('status', 'available'), BoolQuery::MUST);
 
         $result = $query->toArray();
 
         $this->assertArrayHasKey('bool', $result);
         $this->assertArrayHasKey('must', $result['bool']);
-        $this->assertCount(1, $result['bool']['must']);
+        $this->assertCount(2, $result['bool']['must']);
         $this->assertArrayNotHasKey('filter', $result['bool']);
         $this->assertArrayNotHasKey('should', $result['bool']);
         $this->assertArrayNotHasKey('must_not', $result['bool']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_collapses_single_must_with_no_other_clauses(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new MatchAllQuery(), BoolQuery::MUST);
+
+        $result = $query->toArray();
+
+        $this->assertEquals(['match_all' => (object)[]], $result);
     }
 
     /**

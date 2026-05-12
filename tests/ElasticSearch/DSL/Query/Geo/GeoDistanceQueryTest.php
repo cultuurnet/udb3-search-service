@@ -19,13 +19,10 @@ final class GeoDistanceQueryTest extends TestCase
         $expected = [
             'geo_distance' => [
                 'distance' => '10km',
-                'geo_point' => [
-                    'lat' => 50.85,
-                    'lon' => 4.35,
-                ],
+                'geo_point' => (object) ['lat' => 50.85, 'lon' => 4.35],
             ],
         ];
 
-        $this->assertSame($expected, $query->toArray());
+        $this->assertEquals($expected, $query->toArray());
     }
 }

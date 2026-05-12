@@ -16,6 +16,6 @@ final class MatchPhraseQuery implements BuilderInterface
 
     public function toArray(): array
     {
-        return ['match_phrase' => [$this->field => $this->value]];
+        return ['match_phrase' => [$this->field => ['query' => $this->value]]];
     }
 }

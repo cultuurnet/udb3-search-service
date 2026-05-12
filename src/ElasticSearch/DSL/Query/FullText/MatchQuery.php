@@ -16,6 +16,6 @@ final class MatchQuery implements BuilderInterface
 
     public function toArray(): array
     {
-        return ['match' => [$this->field => $this->value]];
+        return ['match' => [$this->field => ['query' => $this->value]]];
     }
 }

@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
+use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
@@ -23,8 +24,13 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 
-final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
+    protected function createBuilder(int $aggregationSize = null): OrganizerQueryBuilderInterface
+    {
+        return new ElasticSearchOrganizerQueryBuilder($aggregationSize);
+    }
+
     protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         if (empty($languages)) {
@@ -44,7 +50,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_pagination_parameters(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedQueryArray = [
@@ -66,7 +72,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar')
@@ -103,7 +109,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_free_text_query(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
@@ -141,7 +147,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $nl = new Language('nl');
 
         /* @var ElasticSearchOrganizerQueryBuilder $builder */
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar'),
@@ -179,7 +185,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_an_autocomplete_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withAutoCompleteFilter('Collectief Cursief');
 
         $expectedQueryArray = [
@@ -225,7 +231,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_website_filter_and_normalize_it_if_it_is_a_valid_url(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withWebsiteFilter('http://foo.bar');
 
         $expectedQueryArray = [
@@ -262,7 +268,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_does_not_throw_for_an_invalid_url_as_website(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withWebsiteFilter('foobar');
 
         $expectedQueryArray = [
@@ -299,7 +305,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_builds_a_query_to_filter_on_the_domain_name(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withDomainFilter('publiq.be');
 
         $expectedQueryArray = [
@@ -334,7 +340,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_removes_www_prefix_from_domain_names(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withDomainFilter('www.publiq.be');
 
         $expectedQueryArray = [
@@ -369,7 +375,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_multiple_filters(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAutoCompleteFilter('foo')
             ->withWebsiteFilter('http://foo.bar');
@@ -424,7 +430,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_postal_code_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPostalCodeFilter(new PostalCode('3000'));
 
@@ -489,7 +495,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_can_build_a_query_to_filter_on_country(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAddressCountryFilter(new Country('NL'));
 
@@ -554,7 +560,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRegionFilter(
                 'geoshapes',
@@ -620,7 +626,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_geodistance_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
@@ -668,7 +674,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_geo_bounds_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoBoundsFilter(
                 new GeoBoundsParameters(
@@ -724,7 +730,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_single_facet(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -756,7 +762,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_can_use_a_custom_aggregation_size_for_facets(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder(100))
+        $builder = ($this->createBuilder(100))
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -789,7 +795,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_creator_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatorFilter(new Creator('John Doe'));
 
@@ -827,7 +833,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_an_id_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withIdFilter('c71b6dea-e206-4e4a-96fe-a360968c436d');
 
@@ -865,7 +871,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_contributors_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withContributorsFilter('info@example.com');
 
@@ -903,7 +909,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_label_filter(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLabelFilter(
                 new LabelName('foo')
@@ -953,7 +959,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter();
 
@@ -976,7 +982,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'));
 
@@ -1014,7 +1020,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values(): void
     {
-        $builder = (new ElasticSearchOrganizerQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(
                 new WorkflowStatus('ACTIVE'),
@@ -1068,7 +1074,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
      */
     public function it_should_always_return_a_clone_for_each_mutation(): void
     {
-        $originalBuilder = new ElasticSearchOrganizerQueryBuilder();
+        $originalBuilder = $this->createBuilder();
 
         $mutatedBuilder = $originalBuilder
             ->withStartAndLimit(new Start(30), new Limit(10))

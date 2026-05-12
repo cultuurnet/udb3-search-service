@@ -4,92 +4,67 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
-use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
-use PHPUnit\Framework\TestCase;
 
-final class ES8OrganizerQueryBuilderTest extends TestCase
+final class ES8OrganizerQueryBuilderTest extends ElasticSearchOrganizerQueryBuilderTest
 {
-    private function getPredefinedQueryStringFields(Language ...$languages): array
+    protected function createBuilder(int $aggregationSize = null): OrganizerQueryBuilderInterface
     {
-        if (empty($languages)) {
-            $languages = [
-                new Language('nl'),
-                new Language('fr'),
-                new Language('en'),
-                new Language('de'),
-            ];
-        }
-
-        return (new OrganizerPredefinedQueryStringFields())->getPredefinedFields(...$languages);
+        return new ES8OrganizerQueryBuilder($aggregationSize);
     }
 
     /**
      * @test
      */
-    public function it_should_build_a_basic_query_with_pagination_and_a_filter(): void
+    public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
-        $builder = (new ES8OrganizerQueryBuilder())
+        $builder = $this->createBuilder()
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withAdvancedQuery(new LuceneQueryString('foo AND bar'));
+            ->withRegionFilter('geoshapes', 'regions', new RegionId('gem-leuven'))
+            ->withRegionFilter('geoshapes', 'regions', new RegionId('prv-limburg'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
                 'bool' => [
                     'must' => [
-                        ['match_all' => (object)[]],
                         [
-                            'query_string' => [
-                                'query' => 'foo AND bar',
-                                'fields' => $this->getPredefinedQueryStringFields(),
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'id' => 'gem-leuven',
+                                        'index' => 'geoshapes',
+                                        'path' => 'location',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'id' => 'prv-limburg',
+                                        'index' => 'geoshapes',
+                                        'path' => 'location',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
                 ],
             ],
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
         ];
 
-        $actualQueryArray = $builder->build();
-
-        $this->assertEquals($expectedQueryArray, $actualQueryArray);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_build_a_geoshape_filter_without_type_or_relation(): void
-    {
-        $builder = (new ES8OrganizerQueryBuilder())
-            ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withRegionFilter(
-                'geoshapes',
-                'regions',
-                new RegionId('gem-leuven')
-            );
-
-        $actualQueryArray = $builder->build();
-
-        $filterClauses = $actualQueryArray['query']['bool']['filter'];
-        $this->assertCount(1, $filterClauses);
-
-        $geoShapeClause = $filterClauses[0];
-        $this->assertArrayHasKey('geo_shape', $geoShapeClause);
-        $this->assertArrayHasKey('geo', $geoShapeClause['geo_shape']);
-
-        $geoField = $geoShapeClause['geo_shape']['geo'];
-        $this->assertArrayHasKey('indexed_shape', $geoField);
-        $this->assertArrayNotHasKey('type', $geoField['indexed_shape']);
-        $this->assertArrayNotHasKey('relation', $geoField);
-
-        $indexedShape = $geoField['indexed_shape'];
-        $this->assertEquals('gem-leuven', $indexedShape['id']);
-        $this->assertEquals('geoshapes', $indexedShape['index']);
-        $this->assertEquals('location', $indexedShape['path']);
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 }

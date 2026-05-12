@@ -20,10 +20,7 @@ final class GeoDistanceQuery implements BuilderInterface
         return [
             'geo_distance' => [
                 'distance' => $this->distance,
-                $this->field => [
-                    'lat' => $this->location->lat,
-                    'lon' => $this->location->lon,
-                ],
+                $this->field => $this->location,
             ],
         ];
     }

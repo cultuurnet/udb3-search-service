@@ -84,7 +84,7 @@ final class Search
             foreach ($this->aggregations as $aggregation) {
                 $aggs = array_merge($aggs, $aggregation->toArray());
             }
-            $output['aggs'] = $aggs;
+            $output['aggregations'] = $aggs;
         }
 
         return $output;

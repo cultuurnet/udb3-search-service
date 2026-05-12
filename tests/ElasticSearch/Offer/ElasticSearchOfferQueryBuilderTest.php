@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilderTest;
+use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
@@ -37,8 +38,13 @@ use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use InvalidArgumentException;
 
-final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
+class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQueryBuilderTest
 {
+    protected function createBuilder(int $aggregationSize = null): OfferQueryBuilderInterface
+    {
+        return new ElasticSearchOfferQueryBuilder($aggregationSize);
+    }
+
     protected function getPredefinedQueryStringFields(Language ...$languages): array
     {
         if (empty($languages)) {
@@ -58,7 +64,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_pagination_parameters(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedQueryArray = [
@@ -80,7 +86,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar')
@@ -117,7 +123,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_free_text_query(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
@@ -156,7 +162,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $fr = new Language('fr');
 
         /* @var ElasticSearchOfferQueryBuilder $builder */
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAdvancedQuery(
                 new LuceneQueryString('foo AND bar'),
@@ -198,7 +204,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_cdbid_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCdbIdFilter(
                 new Cdbid('42926044-09f4-4bd5-bc35-427b2fc1a525')
@@ -238,7 +244,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_location_cdbid_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLocationCdbIdFilter(
                 new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230')
@@ -278,7 +284,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_organizer_cdbid_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withOrganizerCdbIdFilter(
                 new Cdbid('392168d7-57c9-4488-8e2e-d492c843054b')
@@ -318,7 +324,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_without_calendar_type_filter_if_no_value_was_given(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCalendarTypeFilter();
 
@@ -341,7 +347,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_calendar_type_filter_with_a_single_value(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCalendarTypeFilter(new CalendarType('single'));
 
@@ -379,7 +385,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_calendar_type_filter_with_multiple_values(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCalendarTypeFilter(
                 new CalendarType('SINGLE'),
@@ -433,7 +439,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_date_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00')
@@ -473,7 +479,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_date_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
                 null,
@@ -514,7 +520,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_date_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDateRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -556,7 +562,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_query_with_a_complete_date_range_and_time_range_filter_for_multiple_statuses(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
@@ -641,7 +647,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_query_with_a_complete_date_range_and_time_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
@@ -705,7 +711,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_query_with_a_complete_date_range_filter_for_multiple_statuses(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
@@ -780,7 +786,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_query_with_a_complete_time_range_filter_for_multiple_statuses(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
@@ -855,7 +861,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_can_build_a_query_with_a_complete_time_range_filter_for_booking_availability(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSubEventFilter(
                 (new SubEventQueryParameters())
@@ -917,7 +923,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withStatusFilter(
                 Status::temporarilyUnavailable(),
@@ -971,7 +977,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_builds_a_query_with_with_attendanceMode(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAttendanceModeFilter(
                 AttendanceMode::mixed()
@@ -1011,7 +1017,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_builds_a_query_with_with_multiple_attendanceMode(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAttendanceModeFilter(
                 AttendanceMode::mixed(),
@@ -1067,7 +1073,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_can_build_a_query_with_a_booking_availability_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withBookingAvailabilityFilter('Unavailable');
 
@@ -1105,7 +1111,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_without_workflow_status_filter_if_no_value_was_given(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter();
 
@@ -1128,7 +1134,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_workflow_status_filter_with_a_single_value(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(new WorkflowStatus('DRAFT'));
 
@@ -1166,7 +1172,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_workflow_status_filter_with_multiple_values(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withWorkflowStatusFilter(
                 new WorkflowStatus('READY_FOR_VALIDATION'),
@@ -1220,7 +1226,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_available_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -1260,7 +1266,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_available_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 null,
@@ -1301,7 +1307,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_available_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -1348,7 +1354,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'Start available date should be equal to or smaller than end available date.'
         );
 
-        (new ElasticSearchOfferQueryBuilder())
+        ($this->createBuilder())
             ->withAvailableRangeFilter(
                 DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'),
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00')
@@ -1360,7 +1366,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_ignore_a_range_filter_without_any_lower_or_upper_bounds(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAvailableRangeFilter(
                 null,
@@ -1386,7 +1392,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRegionFilter(
                 'geoshapes',
@@ -1452,7 +1458,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_geodistance_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
@@ -1500,7 +1506,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_geo_bounds_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGeoBoundsFilter(
                 new GeoBoundsParameters(
@@ -1556,7 +1562,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_postal_code_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPostalCodeFilter(new PostalCode('3000'));
 
@@ -1621,7 +1627,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_country_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAddressCountryFilter(new Country('BE'));
 
@@ -1686,7 +1692,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_age_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAgeRangeFilter(new Age(18), null);
 
@@ -1724,7 +1730,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_age_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAgeRangeFilter(null, new Age(18));
 
@@ -1762,7 +1768,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_age_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAgeRangeFilter(new Age(6), new Age(12));
 
@@ -1801,7 +1807,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_inclusive_all_ages_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAgeRangeFilter(new Age(18), null)
             ->withAllAgesFilter(true);
@@ -1845,7 +1851,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_exclusive_all_ages_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAgeRangeFilter(new Age(18), null)
             ->withAllAgesFilter(false);
@@ -1889,7 +1895,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_price_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPriceRangeFilter(Price::fromFloat(9.99), null);
 
@@ -1927,7 +1933,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_price_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPriceRangeFilter(null, Price::fromFloat(19.99));
 
@@ -1965,7 +1971,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_price_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withPriceRangeFilter(Price::fromFloat(9.99), Price::fromFloat(19.99));
 
@@ -2009,7 +2015,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             'Minimum price should be smaller or equal to maximum price.'
         );
 
-        (new ElasticSearchOfferQueryBuilder())
+        ($this->createBuilder())
             ->withPriceRangeFilter(Price::fromFloat(19.99), Price::fromFloat(9.99));
     }
 
@@ -2018,7 +2024,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_audience_type_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAudienceTypeFilter(new AudienceType('members'));
 
@@ -2056,7 +2062,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_excluding_audience_type_except_creator(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
 
@@ -2109,7 +2115,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_inclusive_media_objects_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withMediaObjectsFilter(true);
 
@@ -2147,7 +2153,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_exclusive_media_objects_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withMediaObjectsFilter(false);
 
@@ -2185,7 +2191,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_inclusive_videos_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withVideosFilter(true);
 
@@ -2223,7 +2229,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_exclusive_videos_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withVideosFilter(false);
 
@@ -2261,7 +2267,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_inclusive_uitpas_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withUiTPASFilter(true);
 
@@ -2297,7 +2303,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_exclusive_uitpas_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withUiTPASFilter(false);
 
@@ -2333,7 +2339,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_term_id_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTermIdFilter(
                 new TermId('0.12.4.86')
@@ -2383,7 +2389,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_term_label_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withTermLabelFilter(
                 new TermLabel('Jeugdhuis')
@@ -2433,7 +2439,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_location_term_id_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLocationTermIdFilter(
                 new TermId('0.12.4.86')
@@ -2483,7 +2489,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_location_term_label_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLocationTermLabelFilter(
                 new TermLabel('Jeugdhuis')
@@ -2533,7 +2539,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_label_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLabelFilter(
                 new LabelName('foo')
@@ -2583,7 +2589,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_location_label_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLocationLabelFilter(
                 new LabelName('foo')
@@ -2633,7 +2639,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_organizer_label_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withOrganizerLabelFilter(
                 new LabelName('foo')
@@ -2683,7 +2689,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_main_language_filter_with_a_single_value(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withMainLanguageFilter(new Language('nl'));
 
@@ -2721,7 +2727,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_main_language_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withMainLanguageFilter(
                 new Language('fr')
@@ -2761,7 +2767,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_language_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withLanguageFilter(
                 new Language('fr')
@@ -2811,7 +2817,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_completed_language_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCompletedLanguageFilter(
                 new Language('fr')
@@ -2861,7 +2867,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_creator_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatorFilter(new Creator('Jane Doe'));
 
@@ -2899,7 +2905,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_created_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -2939,7 +2945,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_created_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
                 null,
@@ -2980,7 +2986,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_created_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withCreatedRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -3022,7 +3028,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_modified_range_filter_without_upper_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -3063,7 +3069,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_modified_range_filter_without_lower_bound(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
                 null,
@@ -3104,7 +3110,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_complete_modified_range_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withModifiedRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'),
@@ -3146,7 +3152,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_single_facet(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -3178,7 +3184,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_multiple_facets(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -3218,7 +3224,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_all_facets(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -3274,7 +3280,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_can_use_a_custom_aggregation_size_for_facets(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder(100))
+        $builder = ($this->createBuilder(100))
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
                 FacetName::regions()
@@ -3316,7 +3322,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_multiple_sorts(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSortByDistance(
                 new Coordinates(
@@ -3388,7 +3394,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_sort_by_created(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSortByCreated(SortOrder::asc());
 
@@ -3418,7 +3424,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_sort_by_modified(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withSortByModified(SortOrder::asc());
 
@@ -3448,7 +3454,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_contributors_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withContributorsFilter('info@example.com');
 
@@ -3486,7 +3492,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_an_is_duplicate_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withDuplicateFilter(true);
 
@@ -3522,7 +3528,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_production_id_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withProductionIdFilter(
                 (new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))->toString()
@@ -3562,7 +3568,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_group_by_production_id(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGroupByProductionId();
 
@@ -3595,7 +3601,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_recommendation_for_filter(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRecommendationForFilter('652ab95e-fdff-41ce-8894-1b29dce0d230');
 
@@ -3642,7 +3648,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_accept_a_query_with_start_and_limit_just_under_ten_thousand(): void
     {
-        $builder = (new ElasticSearchOfferQueryBuilder())
+        $builder = ($this->createBuilder())
             ->withStartAndLimit(new Start(9980), new Limit(10));
 
         $expectedQueryArray = [
@@ -3666,7 +3672,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $this->expectException(UnsupportedParameterValue::class);
 
-        (new ElasticSearchOfferQueryBuilder())
+        ($this->createBuilder())
             ->withStartAndLimit(new Start(8030), new Limit(1980));
     }
 
@@ -3677,7 +3683,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $this->expectException(UnsupportedParameterValue::class);
 
-        (new ElasticSearchOfferQueryBuilder())
+        ($this->createBuilder())
             ->withStartAndLimit(new Start(9980), new Limit(30));
     }
 }

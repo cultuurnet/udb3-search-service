@@ -4,124 +4,143 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryString;
-use CultuurNet\UDB3\Search\Language\Language;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
+use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
-use PHPUnit\Framework\TestCase;
 
-final class ES8OfferQueryBuilderTest extends TestCase
+final class ES8OfferQueryBuilderTest extends ElasticSearchOfferQueryBuilderTest
 {
-    private function getPredefinedQueryStringFields(Language ...$languages): array
+    protected function createBuilder(int $aggregationSize = null): OfferQueryBuilderInterface
     {
-        if (empty($languages)) {
-            $languages = [
-                new Language('nl'),
-                new Language('fr'),
-                new Language('en'),
-                new Language('de'),
-            ];
-        }
-
-        return (new OfferPredefinedQueryStringFields())->getPredefinedFields(...$languages);
+        return new ES8OfferQueryBuilder($aggregationSize);
     }
 
     /**
      * @test
      */
-    public function it_should_build_a_basic_query_with_pagination_and_a_filter(): void
+    public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
-        $builder = (new ES8OfferQueryBuilder())
+        $builder = $this->createBuilder()
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withAdvancedQuery(new LuceneQueryString('foo AND bar'));
+            ->withRegionFilter('geoshapes', 'regions', new RegionId('gem-leuven'))
+            ->withRegionFilter('geoshapes', 'regions', new RegionId('prv-limburg'));
 
         $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
             'from' => 30,
             'size' => 10,
             'query' => [
                 'bool' => [
                     'must' => [
-                        ['match_all' => (object)[]],
                         [
-                            'query_string' => [
-                                'query' => 'foo AND bar',
-                                'fields' => $this->getPredefinedQueryStringFields(),
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'id' => 'gem-leuven',
+                                        'index' => 'geoshapes',
+                                        'path' => 'location',
+                                    ],
+                                ],
+                            ],
+                        ],
+                        [
+                            'geo_shape' => [
+                                'geo' => [
+                                    'indexed_shape' => [
+                                        'id' => 'prv-limburg',
+                                        'index' => 'geoshapes',
+                                        'path' => 'location',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
                 ],
             ],
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
         ];
 
-        $actualQueryArray = $builder->build();
-
-        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 
     /**
      * @test
      */
-    public function it_should_build_a_geoshape_filter_without_type_or_relation(): void
+    public function it_should_build_a_query_with_multiple_sorts(): void
     {
-        $builder = (new ES8OfferQueryBuilder())
+        $builder = $this->createBuilder()
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withRegionFilter(
-                'geoshapes',
-                'regions',
-                new RegionId('gem-leuven')
-            );
-
-        $actualQueryArray = $builder->build();
-
-        $filterClauses = $actualQueryArray['query']['bool']['filter'];
-        $this->assertCount(1, $filterClauses);
-
-        $geoShapeClause = $filterClauses[0];
-        $this->assertArrayHasKey('geo_shape', $geoShapeClause);
-        $this->assertArrayHasKey('geo', $geoShapeClause['geo_shape']);
-
-        $geoField = $geoShapeClause['geo_shape']['geo'];
-        $this->assertArrayHasKey('indexed_shape', $geoField);
-        $this->assertArrayNotHasKey('type', $geoField['indexed_shape']);
-        $this->assertArrayNotHasKey('relation', $geoField);
-
-        $indexedShape = $geoField['indexed_shape'];
-        $this->assertEquals('gem-leuven', $indexedShape['id']);
-        $this->assertEquals('geoshapes', $indexedShape['index']);
-        $this->assertEquals('location', $indexedShape['path']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_build_a_recommendation_score_sort_in_es8_nested_format(): void
-    {
-        $builder = (new ES8OfferQueryBuilder())
-            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withSortByDistance(
+                new Coordinates(
+                    new Latitude(8.674),
+                    new Longitude(50.23)
+                ),
+                SortOrder::asc()
+            )
+            ->withSortByAvailableTo(SortOrder::asc())
+            ->withSortByScore(SortOrder::desc())
+            ->withSortByPopularity(SortOrder::desc())
             ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
 
-        $actualQueryArray = $builder->build();
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object)[],
+            ],
+            'sort' => [
+                [
+                    '_geo_distance' => [
+                        'order' => 'asc',
+                        'geo_point' => [
+                            'lat' => 8.674,
+                            'lon' => 50.23,
+                        ],
+                        'unit' => 'km',
+                        'distance_type' => 'plane',
+                    ],
+                ],
+                [
+                    'availableTo' => [
+                        'order' => 'asc',
+                    ],
+                ],
+                [
+                    '_score' => [
+                        'order' => 'desc',
+                    ],
+                ],
+                [
+                    'metadata.popularity' => [
+                        'order' => 'desc',
+                    ],
+                ],
+                [
+                    'metadata.recommendationFor.score' => [
+                        'order' => 'asc',
+                        'nested' => [
+                            'path' => 'metadata.recommendationFor',
+                            'filter' => [
+                                'term' => [
+                                    'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-        $this->assertArrayHasKey('sort', $actualQueryArray);
-        $sortClauses = $actualQueryArray['sort'];
-        $this->assertCount(1, $sortClauses);
-
-        $scoreSort = $sortClauses[0];
-        $this->assertArrayHasKey('metadata.recommendationFor.score', $scoreSort);
-
-        $sortValue = $scoreSort['metadata.recommendationFor.score'];
-        $this->assertEquals('asc', $sortValue['order']);
-
-        // ES8 format: nested is a sub-object with path + filter, no top-level nested_path
-        $this->assertArrayNotHasKey('nested_path', $sortValue);
-        $this->assertArrayHasKey('nested', $sortValue);
-        $this->assertEquals('metadata.recommendationFor', $sortValue['nested']['path']);
-        $this->assertEquals(
-            ['term' => ['metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc']],
-            $sortValue['nested']['filter']
-        );
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 }

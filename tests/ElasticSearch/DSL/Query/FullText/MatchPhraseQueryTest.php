@@ -15,6 +15,6 @@ final class MatchPhraseQueryTest extends TestCase
     {
         $query = new MatchPhraseQuery('description', 'hello world');
 
-        $this->assertSame(['match_phrase' => ['description' => 'hello world']], $query->toArray());
+        $this->assertSame(['match_phrase' => ['description' => ['query' => 'hello world']]], $query->toArray());
     }
 }
