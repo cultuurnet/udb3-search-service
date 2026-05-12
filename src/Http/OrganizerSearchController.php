@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Organizer\RequestParser\OrganizerRequestParser;
 use CultuurNet\UDB3\Search\Http\Parameters\OrganizerSupportedParameters;
@@ -80,8 +79,7 @@ final class OrganizerSearchController
 
         $queryBuilder = $this->queryBuilder->withStartAndLimit($start, $limit);
 
-        if ($this->consumer->getId() &&
-            $queryBuilder instanceof ElasticSearchOrganizerQueryBuilder) {
+        if ($this->consumer->getId()) {
             $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
         }
 

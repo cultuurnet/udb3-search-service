@@ -241,6 +241,13 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $builder;
     }
 
+    public function withShardPreference(string $preference): OrganizerQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['shardPreference'] = $preference;
+        return $c;
+    }
+
     public function build(): array
     {
         $build = $this->mockQuery;

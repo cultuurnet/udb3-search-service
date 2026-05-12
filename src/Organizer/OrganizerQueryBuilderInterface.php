@@ -64,4 +64,6 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
     public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface;
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface;
+
+    public function withShardPreference(string $preference): OrganizerQueryBuilderInterface;
 }

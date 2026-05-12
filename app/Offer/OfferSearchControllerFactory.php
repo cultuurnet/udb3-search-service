@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\Offer\ES8OfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
@@ -45,13 +46,16 @@ final class OfferSearchControllerFactory
 
     private bool $enableBoaPermission;
 
+    private bool $useES8QueryBuilder;
+
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
         Consumer $consumer,
-        bool $enableBoaPermission
+        bool $enableBoaPermission,
+        bool $useES8QueryBuilder = false
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
@@ -59,6 +63,7 @@ final class OfferSearchControllerFactory
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
         $this->enableBoaPermission = $enableBoaPermission;
+        $this->useES8QueryBuilder = $useES8QueryBuilder;
     }
 
     public function createFor(
@@ -90,7 +95,9 @@ final class OfferSearchControllerFactory
         }
 
         return new OfferSearchController(
-            new ElasticSearchOfferQueryBuilder($this->aggregationSize),
+            $this->useES8QueryBuilder
+                ? new ES8OfferQueryBuilder($this->aggregationSize)
+                : new ElasticSearchOfferQueryBuilder($this->aggregationSize),
             $requestParser,
             $this->offerSearchServiceFactory->createFor(
                 $readIndex,

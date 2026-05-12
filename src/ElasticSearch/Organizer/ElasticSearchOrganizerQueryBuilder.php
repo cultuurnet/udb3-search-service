@@ -243,4 +243,9 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
         return $builder;
     }
+
+    public function withShardPreference(string $preference): OrganizerQueryBuilderInterface
+    {
+        return parent::withShardPreference($preference);
+    }
 }

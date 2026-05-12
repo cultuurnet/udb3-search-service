@@ -243,4 +243,9 @@ final class ES8OrganizerQueryBuilder extends AbstractES8QueryBuilder implements
         $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
         return $builder;
     }
+
+    public function withShardPreference(string $preference): OrganizerQueryBuilderInterface
+    {
+        return parent::withShardPreference($preference);
+    }
 }

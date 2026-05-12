@@ -572,4 +572,9 @@ final class ES8OfferQueryBuilder extends AbstractES8QueryBuilder implements
         $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
         return $builder;
     }
+
+    public function withShardPreference(string $preference): OfferQueryBuilderInterface
+    {
+        return parent::withShardPreference($preference);
+    }
 }

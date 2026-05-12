@@ -168,4 +168,6 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     public function withGroupByProductionId(): OfferQueryBuilderInterface;
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface;
+
+    public function withShardPreference(string $preference): OfferQueryBuilderInterface;
 }

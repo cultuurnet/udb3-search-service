@@ -572,4 +572,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $builder = (new SortBuilders($this))->build($sorts, $sortBuilders);
         return $builder;
     }
+
+    public function withShardPreference(string $preference): OfferQueryBuilderInterface
+    {
+        return parent::withShardPreference($preference);
+    }
 }

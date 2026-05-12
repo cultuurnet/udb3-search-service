@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Http;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
-use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
@@ -91,7 +90,7 @@ final class OfferSearchController
 
         $queryBuilder = $this->queryBuilder->withStartAndLimit($start, $limit);
 
-        if ($this->consumer->getId() && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
+        if ($this->consumer->getId()) {
             $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
         }
 

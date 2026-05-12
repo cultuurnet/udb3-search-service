@@ -47,7 +47,8 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.region.document_type'),
                     $this->get(OfferSearchServiceFactory::class),
                     $this->get(Consumer::class),
-                    $this->parameter('toggles.enable_boa_permission') ?? false
+                    $this->parameter('toggles.enable_boa_permission') ?? false,
+                    $this->usesElasticSearch8()
                 );
                 if ($this->usesElasticSearch5()) {
                     $factory->enableElasticSearch5CompatibilityMode();

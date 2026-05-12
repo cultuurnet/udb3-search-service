@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ES8OrganizerQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\Organizer\ElasticSearchOrganizerSearchService;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
@@ -78,9 +79,13 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                 }
 
                 return new OrganizerSearchController(
-                    new ElasticSearchOrganizerQueryBuilder(
-                        $this->parameter('elasticsearch.aggregation_size')
-                    ),
+                    $this->usesElasticSearch8()
+                        ? new ES8OrganizerQueryBuilder(
+                            $this->parameter('elasticsearch.aggregation_size')
+                        )
+                        : new ElasticSearchOrganizerQueryBuilder(
+                            $this->parameter('elasticsearch.aggregation_size')
+                        ),
                     $searchService,
                     $this->parameter('elasticsearch.region.read_index'),
                     $this->parameter('elasticsearch.region.document_type'),

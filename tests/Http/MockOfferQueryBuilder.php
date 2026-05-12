@@ -520,6 +520,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $builder;
     }
 
+    public function withShardPreference(string $preference): OfferQueryBuilderInterface
+    {
+        $c = clone $this;
+        $c->mockQuery['shardPreference'] = $preference;
+        return $c;
+    }
+
     public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {

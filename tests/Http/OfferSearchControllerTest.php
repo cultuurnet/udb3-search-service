@@ -196,6 +196,7 @@ final class OfferSearchControllerTest extends TestCase
         /* @var OfferQueryBuilderInterface $expectedQueryBuilder */
         $expectedQueryBuilder = $this->queryBuilder;
         $expectedQueryBuilder = $expectedQueryBuilder
+            ->withShardPreference('consumer_id')
             ->withAdvancedQuery(
                 new MockQueryString('dag van de fiets AND labels:foo'),
                 new Language('nl'),
@@ -393,7 +394,8 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStartAndLimit(new Start(0), new Limit(30));
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withShardPreference('consumer_id');
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -484,6 +486,7 @@ final class OfferSearchControllerTest extends TestCase
         $request = $this->getSearchRequestWithQueryParameters($queryParameters);
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
             ->withAvailableRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00'),
@@ -529,7 +532,10 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
-        $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
+        $this->expectQueryBuilderWillReturnResultSet(
+            $this->queryBuilder->withShardPreference('consumer_id'),
+            $expectedResultSet
+        );
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -575,6 +581,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withShardPreference('consumer_id')
             ->withAvailableRangeFilter(
                 DateTimeFactory::fromAtom('2017-04-01T00:00:00+01:00'),
                 DateTimeFactory::fromAtom('2017-04-01T23:59:59+01:00')
@@ -638,6 +645,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withShardPreference('consumer_id')
             ->withAgeRangeFilter(new Age(0), new Age(0));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -664,6 +672,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withShardPreference('consumer_id')
             ->withPriceRangeFilter(Price::fromFloat(0.14), Price::fromFloat(2.24));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -689,7 +698,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $expectedQueryBuilder = $this->queryBuilder;
+        $expectedQueryBuilder = $this->queryBuilder->withShardPreference('consumer_id');
 
         if (!is_null($booleanValue)) {
             $expectedQueryBuilder = $expectedQueryBuilder
@@ -719,7 +728,7 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
-        $expectedQueryBuilder = $this->queryBuilder;
+        $expectedQueryBuilder = $this->queryBuilder->withShardPreference('consumer_id');
 
         if (!is_null($booleanValue)) {
             $expectedQueryBuilder = $expectedQueryBuilder
@@ -812,6 +821,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withShardPreference('consumer_id')
             ->withTextQuery('foobar', new Language('nl'))
             ->withLanguageFilter(new Language('nl'))
             ->withCompletedLanguageFilter(new Language('nl'))
@@ -845,6 +855,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withShardPreference('consumer_id')
             ->withCalendarTypeFilter(new CalendarType('SINGLE'), new CalendarType('MULTIPLE'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -897,6 +908,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withAddressCountryFilter(new Country('NL'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1065,6 +1077,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withStatusFilter(Status::available());
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1088,6 +1101,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withDateRangeFilter(
                 DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'),
                 DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00')
@@ -1114,6 +1128,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withLocalTimeRangeFilter(800, 1600);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1199,6 +1214,7 @@ final class OfferSearchControllerTest extends TestCase
         /* @var OfferQueryBuilderInterface $expectedQueryBuilder */
         $expectedQueryBuilder = $this->queryBuilder;
         $expectedQueryBuilder = $expectedQueryBuilder
+            ->withShardPreference('consumer_d568d2e9-3b53-4704-82a1-eaccf91a6337')
             ->withAdvancedQuery(
                 new MockQueryString('labels:foo')
             )
@@ -1239,6 +1255,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
 
@@ -1274,6 +1291,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1307,6 +1325,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1329,6 +1348,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1352,7 +1372,10 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
-        $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
+        $this->expectQueryBuilderWillReturnResultSet(
+            $this->queryBuilder->withShardPreference('consumer_id'),
+            $expectedResultSet
+        );
 
         $this->controller->__invoke(new ApiRequest($request));
     }
@@ -1382,6 +1405,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_id')
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
             ->withAudienceTypeFilter(new AudienceType('education'));
 
@@ -1449,6 +1473,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
+            ->withShardPreference('consumer_my-client')
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
