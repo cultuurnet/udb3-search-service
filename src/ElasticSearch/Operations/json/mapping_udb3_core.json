@@ -226,6 +226,10 @@
             "type": "date",
             "format": "strict_date_time_no_millis"
         },
+        "birthdateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd"
+        },
 
         "dateRange": {
             "type": "date_range",
