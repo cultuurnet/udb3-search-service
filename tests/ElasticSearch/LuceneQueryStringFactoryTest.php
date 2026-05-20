@@ -59,30 +59,13 @@ final class LuceneQueryStringFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_distributes_the_field_name_over_an_or_group_of_date_ranges(): void
+    public function it_rewrites_each_date_range_shorthand_inside_an_or_group(): void
     {
-        // Lucene's query_string parser does not propagate the `field:` prefix to
-        // bracketed range expressions inside `(...)`, so we have to repeat the
-        // field name on every range or only the first one filters correctly.
         $actual = $this->factory->fromString(
             'birthdateRange:(2020-01-01..2020-12-31 OR 2022-06-30..2022-12-31)'
         );
         $expected = new LuceneQueryString(
-            '(birthdateRange:[2020-01-01 TO 2020-12-31] OR birthdateRange:[2022-06-30 TO 2022-12-31])'
-        );
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_distributes_the_field_name_over_a_compound_query_with_other_clauses(): void
-    {
-        $actual = $this->factory->fromString(
-            'id:abc AND birthdateRange:(2020-01-01..2020-12-31 OR 2022-06-30..2022-12-31)'
-        );
-        $expected = new LuceneQueryString(
-            'id:abc AND (birthdateRange:[2020-01-01 TO 2020-12-31] OR birthdateRange:[2022-06-30 TO 2022-12-31])'
+            'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])'
         );
         $this->assertEquals($expected, $actual);
     }

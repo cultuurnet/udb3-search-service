@@ -12,27 +12,9 @@ final class LuceneQueryStringFactory implements QueryStringFactory
 
     public function fromString(string $queryString): LuceneQueryString
     {
-        // Rewrite `field:(a..b OR c..d)` first and distribute the field name onto
-        // every range. Lucene's query_string parser does NOT propagate the field
-        // prefix to bracketed range expressions inside a group, so leaving them
-        // as `field:([a TO b] OR [c TO d])` would only attach the field to the
-        // first range — the rest fall back to the default field.
-        $queryString = preg_replace_callback(
-            '/([\w.]+):\(([^()]*\d{4}-\d{2}-\d{2}\.\.\d{4}-\d{2}-\d{2}[^()]*)\)/',
-            static function (array $matches): string {
-                $field = $matches[1];
-                $inner = preg_replace(
-                    '/(\d{4}-\d{2}-\d{2})\.\.(\d{4}-\d{2}-\d{2})/',
-                    "{$field}:[$1 TO $2]",
-                    $matches[2]
-                ) ?? $matches[2];
-                return "({$inner})";
-            },
-            $queryString
-        ) ?? $queryString;
-
-        // Any remaining shorthand date ranges `YYYY-MM-DD..YYYY-MM-DD` (outside
-        // of `field:(...)` groups) are rewritten to standard Lucene range syntax.
+        // Rewrite shorthand date ranges `YYYY-MM-DD..YYYY-MM-DD` to the
+        // standard Lucene range syntax `[YYYY-MM-DD TO YYYY-MM-DD]`, so they
+        // can be used inside `q` queries (incl. within OR-groups).
         $queryString = preg_replace(
             '/(\d{4}-\d{2}-\d{2})\.\.(\d{4}-\d{2}-\d{2})/',
             '[$1 TO $2]',
