@@ -12,6 +12,15 @@ final class LuceneQueryStringFactory implements QueryStringFactory
 
     public function fromString(string $queryString): LuceneQueryString
     {
+        // Rewrite shorthand date ranges `YYYY-MM-DD..YYYY-MM-DD` to the
+        // standard Lucene range syntax `[YYYY-MM-DD TO YYYY-MM-DD]`, so they
+        // can be used inside `q` queries (incl. within OR-groups).
+        $queryString = preg_replace(
+            '/(\d{4}-\d{2}-\d{2})\.\.(\d{4}-\d{2}-\d{2})/',
+            '[$1 TO $2]',
+            $queryString
+        ) ?? $queryString;
+
         // ES8 removed the _type metadata field. Queries using _type: filters must
         // use @type: instead. Rewrite here so callers don't need to be ES-version-aware.
         if (!$this->usesDocumentTypes()) {
