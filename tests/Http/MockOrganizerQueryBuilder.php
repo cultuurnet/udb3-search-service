@@ -248,6 +248,11 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
         return $c;
     }
 
+    public function createUrlParameters(): array
+    {
+        return [];
+    }
+
     public function build(): array
     {
         $build = $this->mockQuery;

@@ -30,4 +30,6 @@ interface QueryBuilder
     public function getLimit(): Limit;
 
     public function build(): array;
+
+    public function createUrlParameters(): array;
 }

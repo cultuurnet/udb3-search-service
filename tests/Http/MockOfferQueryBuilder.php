@@ -527,6 +527,11 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function createUrlParameters(): array
+    {
+        return [];
+    }
+
     public function getLimit(): Limit
     {
         if (!isset($this->mockQuery['limit'])) {
