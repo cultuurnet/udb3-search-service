@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
+use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -40,6 +41,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -118,6 +120,39 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
+    }
+
+    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): self
+    {
+        if (empty($ranges)) {
+            return $this;
+        }
+
+        $rangeQueries = [];
+        foreach ($ranges as $range) {
+            $this->guardDateRange('birthdate', $range->getFrom(), $range->getTo());
+            $rangeQueries[] = new RangeQuery(
+                'birthdateRange',
+                [
+                    RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
+                    RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
+                ]
+            );
+        }
+
+        $c = $this->getClone();
+
+        if (count($rangeQueries) === 1) {
+            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
+            return $c;
+        }
+
+        $shouldQuery = new BoolQuery();
+        foreach ($rangeQueries as $rangeQuery) {
+            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+        }
+        $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self

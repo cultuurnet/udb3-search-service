@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
+use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -98,6 +99,23 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['availableRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
         $c->mockQuery['availableRange']['to'] = $to ? $to->format(DATE_ATOM) : null;
+        return $c;
+    }
+
+    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): self
+    {
+        if (empty($ranges)) {
+            return $this;
+        }
+
+        $c = clone $this;
+        $c->mockQuery['birthdateRange'] = array_map(
+            static fn (BirthdateRange $range): array => [
+                'from' => $range->getFrom()->format('Y-m-d'),
+                'to' => $range->getTo()->format('Y-m-d'),
+            ],
+            $ranges
+        );
         return $c;
     }
 
