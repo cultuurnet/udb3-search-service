@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 
-final class ES8OfferQueryBuilderTest extends ElasticSearchOfferQueryBuilderTest
+final class ES8OfferQueryBuilderTest extends AbstractElasticSearchOfferQueryBuilderTest
 {
     protected function createBuilder(int $aggregationSize = null): OfferQueryBuilderInterface
     {

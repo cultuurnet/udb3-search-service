@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
 
-final class ES8OrganizerQueryBuilderTest extends ElasticSearchOrganizerQueryBuilderTest
+final class ES8OrganizerQueryBuilderTest extends AbstractElasticSearchOrganizerQueryBuilderTest
 {
     protected function createBuilder(int $aggregationSize = null): OrganizerQueryBuilderInterface
     {

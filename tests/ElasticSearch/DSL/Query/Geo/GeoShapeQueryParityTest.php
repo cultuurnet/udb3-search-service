@@ -20,7 +20,7 @@ final class GeoShapeQueryParityTest extends TestCase
         $ongr->addPreIndexedShape('geo', 'region-1', 'region', 'regions-index', 'location');
 
         $custom = new GeoShapeQuery();
-        $custom->addPreIndexedShape('geo', 'region-1', 'region', 'regions-index', 'location');
+        $custom->addPreIndexedShape('geo', 'region-1', 'regions-index', 'location');
 
         $ongrOutput = $ongr->toArray();
         $customOutput = $custom->toArray();

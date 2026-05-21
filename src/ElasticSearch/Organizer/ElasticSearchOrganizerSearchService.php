@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Organizer;
 
-
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactoryInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
