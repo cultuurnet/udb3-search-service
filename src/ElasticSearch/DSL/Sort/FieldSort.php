@@ -8,6 +8,9 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
 
 final class FieldSort implements BuilderInterface
 {
+    public const ASC = 'asc';
+    public const DESC = 'desc';
+
     private ?BuilderInterface $nestedFilter = null;
 
     private array $parameters;
@@ -23,11 +26,6 @@ final class FieldSort implements BuilderInterface
     public function setNestedFilter(BuilderInterface $filter): void
     {
         $this->nestedFilter = $filter;
-    }
-
-    public function setParameters(array $parameters): void
-    {
-        $this->parameters = array_merge($this->parameters, $parameters);
     }
 
     public function toArray(): array

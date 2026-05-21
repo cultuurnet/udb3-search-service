@@ -533,7 +533,7 @@ final class ES8OfferQueryBuilder extends AbstractES8QueryBuilder implements
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString(), ['nested_path' => 'metadata.recommendationFor']);
 
         $fieldSort->setNestedFilter(
             new TermQuery(
@@ -541,8 +541,6 @@ final class ES8OfferQueryBuilder extends AbstractES8QueryBuilder implements
                 $recommendationFor
             )
         );
-
-        $fieldSort->setParameters(['nested_path' => 'metadata.recommendationFor']);
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);

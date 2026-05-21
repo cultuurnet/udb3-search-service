@@ -45,9 +45,8 @@ final class FieldSortTest extends TestCase
      */
     public function it_produces_nested_sort_when_nested_filter_and_nested_path_are_set(): void
     {
-        $sort = new FieldSort('metadata.recommendationFor.score', 'desc');
+        $sort = new FieldSort('metadata.recommendationFor.score', 'desc', ['nested_path' => 'metadata.recommendationFor']);
         $sort->setNestedFilter(new TermQuery('metadata.recommendationFor.event', 'event-123'));
-        $sort->setParameters(['nested_path' => 'metadata.recommendationFor']);
 
         $expected = [
             'metadata.recommendationFor.score' => [
@@ -81,9 +80,8 @@ final class FieldSortTest extends TestCase
      */
     public function it_does_not_leave_nested_path_in_flat_parameters(): void
     {
-        $sort = new FieldSort('metadata.recommendationFor.score', 'asc');
+        $sort = new FieldSort('metadata.recommendationFor.score', 'asc', ['nested_path' => 'metadata.recommendationFor']);
         $sort->setNestedFilter(new TermQuery('metadata.recommendationFor.event', 'event-abc'));
-        $sort->setParameters(['nested_path' => 'metadata.recommendationFor']);
 
         $result = $sort->toArray();
         $fieldValue = $result['metadata.recommendationFor.score'];
@@ -94,14 +92,9 @@ final class FieldSortTest extends TestCase
     /**
      * @test
      */
-    public function it_merges_parameters_via_set_parameters(): void
+    public function it_has_correct_order_constants(): void
     {
-        $sort = new FieldSort('field', 'asc', ['unit' => 'km']);
-        $sort->setParameters(['distance_type' => 'plane']);
-
-        $result = $sort->toArray();
-
-        $this->assertSame('km', $result['field']['unit']);
-        $this->assertSame('plane', $result['field']['distance_type']);
+        $this->assertSame('asc', FieldSort::ASC);
+        $this->assertSame('desc', FieldSort::DESC);
     }
 }
