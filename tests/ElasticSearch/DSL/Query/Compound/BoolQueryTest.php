@@ -103,4 +103,50 @@ final class BoolQueryTest extends TestCase
 
         $this->assertCount(2, $result['bool']['filter']);
     }
+
+    /**
+     * @test
+     */
+    public function it_does_not_collapse_single_filter_clause(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new TermQuery('status', 'available'), BoolQuery::FILTER);
+
+        $result = $query->toArray();
+
+        $this->assertArrayHasKey('bool', $result);
+        $this->assertArrayHasKey('filter', $result['bool']);
+        $this->assertArrayNotHasKey('must', $result['bool']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_collapse_single_should_clause(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new TermQuery('status', 'available'), BoolQuery::SHOULD);
+
+        $result = $query->toArray();
+
+        $this->assertArrayHasKey('bool', $result);
+        $this->assertArrayHasKey('should', $result['bool']);
+        $this->assertArrayNotHasKey('must', $result['bool']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_collapse_single_must_when_combined_with_must_not(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new TermQuery('type', 'event'), BoolQuery::MUST);
+        $query->add(new TermQuery('hidden', 'true'), BoolQuery::MUST_NOT);
+
+        $result = $query->toArray();
+
+        $this->assertArrayHasKey('bool', $result);
+        $this->assertArrayHasKey('must', $result['bool']);
+        $this->assertArrayHasKey('must_not', $result['bool']);
+    }
 }
