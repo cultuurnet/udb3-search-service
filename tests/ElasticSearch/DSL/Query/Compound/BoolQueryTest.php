@@ -87,7 +87,7 @@ final class BoolQueryTest extends TestCase
 
         $result = $query->toArray();
 
-        $this->assertSame(['bool' => []], $result);
+        $this->assertEquals(['bool' => new \stdClass()], $result);
     }
 
     /**

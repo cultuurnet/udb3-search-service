@@ -40,6 +40,6 @@ final class BoolQuery implements BuilderInterface
             return $bool[self::MUST][0];
         }
 
-        return ['bool' => $bool];
+        return ['bool' => empty($bool) ? new \stdClass() : $bool];
     }
 }
