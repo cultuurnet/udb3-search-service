@@ -153,4 +153,40 @@ final class BoolQueryParityTest extends TestCase
 
         $this->assertSame(json_encode($ongr->toArray()), json_encode($custom->toArray()));
     }
+
+    /**
+     * @test
+     */
+    public function it_preserves_single_must_not_clause_identically_to_ongr(): void
+    {
+        $ongr = new OngrBoolQuery();
+        $ongr->add(new OngrTermQuery('status', 'deleted'), OngrBoolQuery::MUST_NOT);
+
+        $custom = new BoolQuery();
+        $custom->add(new TermQuery('status', 'deleted'), BoolQuery::MUST_NOT);
+
+        $this->assertSame(json_encode($ongr->toArray()), json_encode($custom->toArray()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_serializes_nested_bool_query_identically_to_ongr(): void
+    {
+        $innerOngr = new OngrBoolQuery();
+        $innerOngr->add(new OngrTermQuery('status', 'available'), OngrBoolQuery::FILTER);
+
+        $outerOngr = new OngrBoolQuery();
+        $outerOngr->add(new OngrMatchAllQuery(), OngrBoolQuery::MUST);
+        $outerOngr->add($innerOngr, OngrBoolQuery::FILTER);
+
+        $innerCustom = new BoolQuery();
+        $innerCustom->add(new TermQuery('status', 'available'), BoolQuery::FILTER);
+
+        $outerCustom = new BoolQuery();
+        $outerCustom->add(new MatchAllQuery(), BoolQuery::MUST);
+        $outerCustom->add($innerCustom, BoolQuery::FILTER);
+
+        $this->assertSame(json_encode($outerOngr->toArray()), json_encode($outerCustom->toArray()));
+    }
 }
