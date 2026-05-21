@@ -33,6 +33,15 @@ final class GeoShapeQuery implements BuilderInterface
         $this->path = $path;
     }
 
+    public function addShape(
+        string $field,
+        string $type,
+        array $coordinates,
+        string $relation = 'intersects'
+    ): void {
+        throw new \RuntimeException('addShape is not yet implemented in the custom DSL library.');
+    }
+
     public function toArray(): array
     {
         return [
