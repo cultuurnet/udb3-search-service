@@ -113,7 +113,6 @@ final class ES8OrganizerQueryBuilder extends AbstractES8QueryBuilder implements
         $geoShapeQuery->addPreIndexedShape(
             'geo',
             $regionId->toString(),
-            $regionDocumentType,
             $regionIndexName,
             'location'
         );

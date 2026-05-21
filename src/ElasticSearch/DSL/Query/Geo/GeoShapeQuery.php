@@ -16,14 +16,9 @@ final class GeoShapeQuery implements BuilderInterface
 
     private string $path = '';
 
-    /**
-     * The $type parameter is accepted for API compatibility but is not emitted —
-     * ES8 removed the type field from indexed shape queries.
-     */
     public function addPreIndexedShape(
         string $field,
         string $id,
-        string $type,
         string $index,
         string $path
     ): void {
