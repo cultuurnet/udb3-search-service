@@ -14,6 +14,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'id',
             'text',
             'locationId',
+            'departurePlaces',
             'organizerId',
             'availableFrom',
             'availableTo',

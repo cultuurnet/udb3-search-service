@@ -58,6 +58,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): self
+    {
+        $c = clone $this;
+        $c->mockQuery['departurePlaceCdbIds'] = array_map(fn (Cdbid $id): string => $id->toString(), $departurePlaceCdbIds);
+        return $c;
+    }
+
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
         $c = clone $this;
