@@ -54,4 +54,14 @@ final class GeoShapeQueryTest extends TestCase
         $query = new GeoShapeQuery();
         $query->addShape('geo', 'polygon', []);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_to_array_is_called_without_adding_a_shape(): void
+    {
+        $this->expectException(\LogicException::class);
+
+        (new GeoShapeQuery())->toArray();
+    }
 }

@@ -8,13 +8,13 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
 
 final class GeoShapeQuery implements BuilderInterface
 {
-    private string $field = '';
+    private ?string $field = null;
 
-    private string $id = '';
+    private ?string $id = null;
 
-    private string $index = '';
+    private ?string $index = null;
 
-    private string $path = '';
+    private ?string $path = null;
 
     public function addPreIndexedShape(
         string $field,
@@ -39,6 +39,10 @@ final class GeoShapeQuery implements BuilderInterface
 
     public function toArray(): array
     {
+        if ($this->field === null) {
+            throw new \LogicException('addPreIndexedShape() must be called before toArray().');
+        }
+
         return [
             'geo_shape' => [
                 $this->field => [
