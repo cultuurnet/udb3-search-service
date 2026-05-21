@@ -379,7 +379,7 @@ abstract class AbstractES8QueryBuilder implements QueryBuilder
      */
     public function withShardPreference(string $preference)
     {
-        $queryBuilder = clone $this;
+        $queryBuilder = $this->getClone();
         $queryBuilder->shardPreference = $preference;
         return $queryBuilder;
     }
