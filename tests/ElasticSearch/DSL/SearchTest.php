@@ -96,6 +96,34 @@ final class SearchTest extends TestCase
     /**
      * @test
      */
+    public function it_omits_query_when_none_is_added(): void
+    {
+        $search = new Search();
+        $search->setFrom(0);
+        $search->setSize(10);
+
+        $this->assertArrayNotHasKey('query', $search->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function it_wraps_multiple_queries_in_bool_must(): void
+    {
+        $search = new Search();
+        $search->addQuery(new MatchAllQuery());
+        $search->addQuery(new MatchAllQuery());
+
+        $result = $search->toArray();
+
+        $this->assertArrayHasKey('bool', $result['query']);
+        $this->assertArrayHasKey('must', $result['query']['bool']);
+        $this->assertCount(2, $result['query']['bool']['must']);
+    }
+
+    /**
+     * @test
+     */
     public function it_omits_sort_and_aggs_when_empty(): void
     {
         $search = new Search();
