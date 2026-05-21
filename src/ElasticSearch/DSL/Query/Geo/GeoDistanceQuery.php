@@ -11,7 +11,7 @@ final class GeoDistanceQuery implements BuilderInterface
     public function __construct(
         private readonly string $field,
         private readonly string $distance,
-        private readonly object $location
+        private readonly mixed $location
     ) {
     }
 

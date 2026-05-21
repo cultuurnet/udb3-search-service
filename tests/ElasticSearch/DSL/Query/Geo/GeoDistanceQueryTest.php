@@ -25,4 +25,21 @@ final class GeoDistanceQueryTest extends TestCase
 
         $this->assertEquals($expected, $query->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_produces_geo_distance_query_with_string_location(): void
+    {
+        $query = new GeoDistanceQuery('geo_point', '10km', '50.85,4.35');
+
+        $expected = [
+            'geo_distance' => [
+                'distance' => '10km',
+                'geo_point' => '50.85,4.35',
+            ],
+        ];
+
+        $this->assertSame($expected, $query->toArray());
+    }
 }
