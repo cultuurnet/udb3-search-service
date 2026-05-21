@@ -13,8 +13,7 @@ final class CardinalityAggregationTest extends TestCase
      */
     public function it_produces_cardinality_aggregation(): void
     {
-        $aggregation = new CardinalityAggregation('total');
-        $aggregation->setField('productionCollapseValue');
+        $aggregation = new CardinalityAggregation('total', 'productionCollapseValue');
 
         $this->assertSame('total', $aggregation->getName());
         $this->assertSame(

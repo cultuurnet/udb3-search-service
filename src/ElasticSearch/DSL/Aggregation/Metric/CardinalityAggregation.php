@@ -8,16 +8,10 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\NamedBuilderInterface;
 
 final class CardinalityAggregation implements NamedBuilderInterface
 {
-    private string $field = '';
-
     public function __construct(
-        private readonly string $name
+        private readonly string $name,
+        private readonly string $field
     ) {
-    }
-
-    public function setField(string $field): void
-    {
-        $this->field = $field;
     }
 
     public function getName(): string

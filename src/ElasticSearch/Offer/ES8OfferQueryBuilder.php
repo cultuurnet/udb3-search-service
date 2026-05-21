@@ -556,8 +556,7 @@ final class ES8OfferQueryBuilder extends AbstractES8QueryBuilder implements
         // Add a "total" aggregation based on the number of results with a distinct value for productionCollapseValue
         // to calculate the correct number of total results. (The normal total number of hits is unaffected by a
         // collapse. See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-collapse.html)
-        $aggregation = new CardinalityAggregation('total');
-        $aggregation->setField('productionCollapseValue');
+        $aggregation = new CardinalityAggregation('total', 'productionCollapseValue');
         $c->search->addAggregation($aggregation);
 
         return $c;
