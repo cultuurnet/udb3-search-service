@@ -16,7 +16,7 @@ final class Search
     /** @var BuilderInterface[] */
     private array $sorts = [];
 
-    /** @var BuilderInterface[] */
+    /** @var NamedBuilderInterface[] */
     private array $aggregations = [];
 
     public function addQuery(BuilderInterface $query): void
@@ -49,7 +49,7 @@ final class Search
         $this->sorts[] = $sort;
     }
 
-    public function addAggregation(BuilderInterface $aggregation): void
+    public function addAggregation(NamedBuilderInterface $aggregation): void
     {
         $this->aggregations[] = $aggregation;
     }
@@ -82,7 +82,7 @@ final class Search
         if (!empty($this->aggregations)) {
             $aggs = [];
             foreach ($this->aggregations as $aggregation) {
-                $aggs = array_merge($aggs, $aggregation->toArray());
+                $aggs[$aggregation->getName()] = $aggregation->toArray();
             }
             $output['aggregations'] = $aggs;
         }

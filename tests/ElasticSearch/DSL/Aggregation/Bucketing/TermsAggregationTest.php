@@ -15,13 +15,8 @@ final class TermsAggregationTest extends TestCase
     {
         $aggregation = new TermsAggregation('types', 'typeIds');
 
-        $expected = [
-            'types' => [
-                'terms' => ['field' => 'typeIds'],
-            ],
-        ];
-
-        $this->assertSame($expected, $aggregation->toArray());
+        $this->assertSame('types', $aggregation->getName());
+        $this->assertSame(['terms' => ['field' => 'typeIds']], $aggregation->toArray());
     }
 
     /**
@@ -33,11 +28,9 @@ final class TermsAggregationTest extends TestCase
         $aggregation->addParameter('size', 200);
 
         $expected = [
-            'labels' => [
-                'terms' => [
-                    'field' => 'labels.keyword',
-                    'size' => 200,
-                ],
+            'terms' => [
+                'field' => 'labels.keyword',
+                'size' => 200,
             ],
         ];
 

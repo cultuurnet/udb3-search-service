@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\Bucketing;
 
-use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\NamedBuilderInterface;
 
-final class TermsAggregation implements BuilderInterface
+final class TermsAggregation implements NamedBuilderInterface
 {
     private array $extraParameters = [];
 
@@ -21,15 +21,18 @@ final class TermsAggregation implements BuilderInterface
         $this->extraParameters[$key] = $value;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function toArray(): array
     {
         return [
-            $this->name => [
-                'terms' => array_merge(
-                    ['field' => $this->field],
-                    $this->extraParameters
-                ),
-            ],
+            'terms' => array_merge(
+                ['field' => $this->field],
+                $this->extraParameters
+            ),
         ];
     }
 }

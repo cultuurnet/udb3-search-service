@@ -16,14 +16,10 @@ final class CardinalityAggregationTest extends TestCase
         $aggregation = new CardinalityAggregation('total');
         $aggregation->setField('productionCollapseValue');
 
-        $expected = [
-            'total' => [
-                'cardinality' => [
-                    'field' => 'productionCollapseValue',
-                ],
-            ],
-        ];
-
-        $this->assertSame($expected, $aggregation->toArray());
+        $this->assertSame('total', $aggregation->getName());
+        $this->assertSame(
+            ['cardinality' => ['field' => 'productionCollapseValue']],
+            $aggregation->toArray()
+        );
     }
 }
