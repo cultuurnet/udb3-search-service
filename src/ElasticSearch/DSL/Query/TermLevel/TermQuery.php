@@ -10,7 +10,7 @@ final class TermQuery implements BuilderInterface
 {
     public function __construct(
         private readonly string $field,
-        private readonly string|bool|int $value
+        private readonly string|bool|int|float $value
     ) {
     }
 

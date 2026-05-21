@@ -37,4 +37,14 @@ final class TermQueryTest extends TestCase
 
         $this->assertSame(['term' => ['count' => 42]], $query->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_produces_term_query_with_float_value(): void
+    {
+        $query = new TermQuery('price', 9.99);
+
+        $this->assertSame(['term' => ['price' => 9.99]], $query->toArray());
+    }
 }
