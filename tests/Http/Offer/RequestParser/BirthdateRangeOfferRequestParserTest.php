@@ -31,7 +31,9 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     {
         $this->parser = new BirthdateRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
-        $this->now = DateTimeImmutable::createFromFormat('U', (string) self::REQUEST_TIME);
+        $now = DateTimeImmutable::createFromFormat('U', (string) self::REQUEST_TIME);
+        $this->assertInstanceOf(DateTimeImmutable::class, $now);
+        $this->now = $now;
     }
 
     /**
