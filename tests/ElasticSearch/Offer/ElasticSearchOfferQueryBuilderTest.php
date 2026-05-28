@@ -1387,58 +1387,15 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_single_birthdate_range_filter(): void
     {
+        $now = DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00');
+
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withBirthdateRangeFilter(
                 new BirthdateRange(
                     DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
-                )
-            );
-
-        $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-            'from' => 30,
-            'size' => 10,
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        [
-                            'match_all' => (object)[],
-                        ],
-                    ],
-                    'filter' => [
-                        [
-                            'range' => [
-                                'birthdateRange' => [
-                                    'gte' => '2020-01-01',
-                                    'lte' => '2020-12-31',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->assertEquals($expectedQueryArray, $builder->build());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_build_a_query_with_multiple_birthdate_ranges_using_or_semantics(): void
-    {
-        $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withBirthdateRangeFilter(
-                new BirthdateRange(
-                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
-                ),
-                new BirthdateRange(
-                    DateTimeFactory::fromAtom('2022-06-30T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2022-12-31T00:00:00+00:00')
+                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
+                    $now
                 )
             );
 
@@ -1467,9 +1424,89 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                     ],
                                     [
                                         'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 5,
+                                                'lte' => 6,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_multiple_birthdate_ranges_using_or_semantics(): void
+    {
+        $now = DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00');
+
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
+                    $now
+                ),
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2022-06-30T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2022-12-31T00:00:00+00:00'),
+                    $now
+                )
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'birthdateRange' => [
+                                                'gte' => '2020-01-01',
+                                                'lte' => '2020-12-31',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 5,
+                                                'lte' => 6,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
                                             'birthdateRange' => [
                                                 'gte' => '2022-06-30',
                                                 'lte' => '2022-12-31',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 3,
+                                                'lte' => 3,
                                             ],
                                         ],
                                     ],
@@ -1498,7 +1535,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withBirthdateRangeFilter(
                 new BirthdateRange(
                     DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00')
+                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00')
                 )
             );
     }
