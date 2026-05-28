@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -16,10 +17,15 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
+        $now = DateTimeImmutable::createFromFormat('U', (string) $request->getServerParam('REQUEST_TIME', 0));
+        if (!$now) {
+            throw new InvalidArgumentException('Invalid timestamp provided');
+        }
+
         $ranges = $request->getQueryParameterBag()->getExplodedStringFromParameter(
             'birthdateRange',
             null,
-            static function (string $range): BirthdateRange {
+            function (string $range) use ($now): BirthdateRange {
                 $parts = explode('..', $range);
                 if (count($parts) !== 2) {
                     throw new UnsupportedParameterValue(
@@ -36,7 +42,7 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
                     );
                 }
 
-                return new BirthdateRange($from, $to);
+                return new BirthdateRange($from, $to, $now);
             }
         );
 
