@@ -1524,6 +1524,65 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_clamps_typical_age_range_clause_to_zero_for_future_birthdate_ranges(): void
+    {
+        $now = DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00');
+
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2030-01-01T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2030-12-31T00:00:00+00:00'),
+                    $now
+                )
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'birthdateRange' => [
+                                                'gte' => '2030-01-01',
+                                                'lte' => '2030-12-31',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 0,
+                                                'lte' => 0,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_for_an_invalid_birthdate_range(): void
     {
         $this->expectException(InvalidArgumentException::class);
