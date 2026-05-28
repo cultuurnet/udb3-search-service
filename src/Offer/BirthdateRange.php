@@ -46,10 +46,10 @@ final class BirthdateRange
 
     private static function ageInYears(DateTimeImmutable $birthdate, DateTimeImmutable $now): int
     {
-        $diff = $now->diff($birthdate);
-        if ($diff->invert === 0) {
-            return $diff->y;
+        $diff = $birthdate->diff($now);
+        if ($diff->invert === 1) {
+            return 0;
         }
-        return 0;
+        return $diff->y;
     }
 }
