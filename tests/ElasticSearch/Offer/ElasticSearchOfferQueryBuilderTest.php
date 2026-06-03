@@ -3368,7 +3368,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'metadata.recommendationFor.score' => [
                         'order' => 'asc',
                         'nested_path' => 'metadata.recommendationFor',
-                        'nested' => [
+                        'nested_filter' => [
                             'term' => [
                                 'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
                             ],
