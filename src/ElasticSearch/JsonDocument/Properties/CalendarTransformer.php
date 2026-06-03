@@ -299,6 +299,10 @@ final class CalendarTransformer implements JsonTransformer
 
         /* @var DateTime $date */
         foreach ($period as $date) {
+            if ($this->isClosedDay($date, $from)) {
+                continue;
+            }
+
             $day = strtolower($date->format('l'));
 
             foreach ($openingHoursByDay[$day] as $openingHours) {
@@ -380,6 +384,18 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $openingHoursByDay;
+    }
+
+    private function isClosedDay(\DateTimeInterface $date, array $from): bool
+    {
+        $dateString = $date->format('Y-m-d');
+        foreach ($from['openingHoursClosedDays'] ?? [] as $closedDay) {
+            if ($dateString >= $closedDay['startDate'] && $dateString <= $closedDay['endDate']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -185,6 +185,50 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_closed_days_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-closed-days.json',
+            __DIR__ . '/data/event/indexed-periodic-with-closed-days.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_closed_days_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-closed-days.json',
+            __DIR__ . '/data/event/indexed-permanent-with-closed-days.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multi-day-closed-range.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multi-day-closed-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-multi-day-closed-range.json',
+            __DIR__ . '/data/event/indexed-permanent-with-multi-day-closed-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_incorrect_opening_hours_and_does_not_transform_them(): void
     {
         $this->transformAndAssert(

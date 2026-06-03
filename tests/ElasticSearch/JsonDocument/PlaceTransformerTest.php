@@ -201,6 +201,54 @@ final class PlaceTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_closed_days_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-closed-days.json',
+            __DIR__ . '/data/place/indexed-with-period-and-closed-days.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_closed_days_for_a_permanent_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-permanent-and-closed-days.json',
+            __DIR__ . '/data/place/indexed-with-permanent-and-closed-days.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-multi-day-closed-range.json',
+            __DIR__ . '/data/place/indexed-with-period-and-multi-day-closed-range.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_a_permanent_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-permanent-and-multi-day-closed-range.json',
+            __DIR__ . '/data/place/indexed-with-permanent-and-multi-day-closed-range.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
         $this->regionService->expects($this->once())
