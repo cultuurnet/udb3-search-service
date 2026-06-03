@@ -229,6 +229,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_multiple_closed_ranges_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multiple-closed-ranges.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multiple-closed-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_incorrect_opening_hours_and_does_not_transform_them(): void
     {
         $this->transformAndAssert(

@@ -249,6 +249,18 @@ final class PlaceTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_multiple_closed_ranges_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-multiple-closed-ranges.json',
+            __DIR__ . '/data/place/indexed-with-period-and-multiple-closed-ranges.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
         $this->regionService->expects($this->once())
