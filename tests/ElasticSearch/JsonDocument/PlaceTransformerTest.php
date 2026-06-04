@@ -261,11 +261,71 @@ final class PlaceTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_multiple_closed_ranges_for_a_permanent_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-permanent-and-multiple-closed-ranges.json',
+            __DIR__ . '/data/place/indexed-with-permanent-and-multiple-closed-ranges.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_uses_adjusted_opening_hours_for_a_periodic_place(): void
     {
         $this->transformAndAssert(
             __DIR__ . '/data/place/original-with-period-and-adjusted-day.json',
             __DIR__ . '/data/place/indexed-with-period-and-adjusted-day.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_generates_sub_events_for_exceptionally_open_adjusted_days_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-adjusted-day-exceptional-opening.json',
+            __DIR__ . '/data/place/indexed-with-period-and-adjusted-day-exceptional-opening.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multi_day_adjusted_ranges_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-adjusted-multi-day-range.json',
+            __DIR__ . '/data/place/indexed-with-period-and-adjusted-multi-day-range.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_adjusted_days_when_overridden_by_a_closed_day_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-adjusted-day-overridden-by-closed-day.json',
+            __DIR__ . '/data/place/indexed-with-period-and-adjusted-day-overridden-by-closed-day.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multiple_adjusted_ranges_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-multiple-adjusted-ranges.json',
+            __DIR__ . '/data/place/indexed-with-period-and-multiple-adjusted-ranges.json',
             [['warning', 'Missing expected field \'creator\'.', []]]
         );
     }
