@@ -240,6 +240,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_multiple_closed_ranges_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-multiple-closed-ranges.json',
+            __DIR__ . '/data/event/indexed-permanent-with-multiple-closed-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_uses_adjusted_opening_hours_for_adjusted_days(): void
     {
         $this->transformAndAssert(
