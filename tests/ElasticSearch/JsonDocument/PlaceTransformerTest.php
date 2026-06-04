@@ -261,6 +261,30 @@ final class PlaceTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_uses_adjusted_opening_hours_for_a_periodic_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-period-and-adjusted-day.json',
+            __DIR__ . '/data/place/indexed-with-period-and-adjusted-day.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_a_permanent_place(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/place/original-with-permanent-and-adjusted-day.json',
+            __DIR__ . '/data/place/indexed-with-permanent-and-adjusted-day.json',
+            [['warning', 'Missing expected field \'creator\'.', []]]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_regions_if_there_are_any_matching(): void
     {
         $this->regionService->expects($this->once())
