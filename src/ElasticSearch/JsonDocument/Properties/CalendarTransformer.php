@@ -299,13 +299,9 @@ final class CalendarTransformer implements JsonTransformer
 
         /* @var DateTime $date */
         foreach ($period as $date) {
-            if ($this->isClosedDay($date, $from)) {
-                continue;
-            }
-
             $day = strtolower($date->format('l'));
 
-            foreach ($openingHoursByDay[$day] as $openingHours) {
+            foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
                     $this->determineLocalTimezone($from)
@@ -396,6 +392,33 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return false;
+    }
+
+    private function getEffectiveOpeningHoursOnDay(\DateTimeInterface $date, array $from, array $regularOpeningHoursByDay): array
+    {
+        if ($this->isClosedDay($date, $from)) {
+            return [];
+        }
+
+        $dayOfWeek = strtolower($date->format('l'));
+        $adjustedDay = $this->findAdjustedDay($date, $from);
+
+        if ($adjustedDay !== null) {
+            return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek];
+        }
+
+        return $regularOpeningHoursByDay[$dayOfWeek];
+    }
+
+    private function findAdjustedDay(\DateTimeInterface $date, array $from): ?array
+    {
+        $dateString = $date->format('Y-m-d');
+        foreach ($from['openingHoursAdjustedDays'] ?? [] as $adjustedDay) {
+            if ($dateString >= $adjustedDay['startDate'] && $dateString <= $adjustedDay['endDate']) {
+                return $adjustedDay;
+            }
+        }
+        return null;
     }
 
     /**
