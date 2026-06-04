@@ -299,8 +299,6 @@ final class CalendarTransformer implements JsonTransformer
 
         /* @var DateTime $date */
         foreach ($period as $date) {
-            $day = strtolower($date->format('l'));
-
             foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
