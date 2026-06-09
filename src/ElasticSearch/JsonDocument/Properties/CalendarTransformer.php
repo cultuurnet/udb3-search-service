@@ -386,10 +386,29 @@ final class CalendarTransformer implements JsonTransformer
         return $openingHoursByDay;
     }
 
+    /**
+     * @param \DateTimeInterface $date
+     *   The date to check.
+     * @param array $from
+     *   JSON-LD of the event/place, as an associative array. May contain an "openingHoursClosedDays" key with a list
+     *   of closed-day ranges, each having "startDate" and "endDate" as plain Y-m-d strings.
+     * @return bool
+     *   True if the given date falls within any closed-day range, false otherwise.
+     */
     private function isClosedDay(\DateTimeInterface $date, array $from): bool
     {
         $dateString = $date->format('Y-m-d');
-        foreach ($from['openingHoursClosedDays'] ?? [] as $closedDay) {
+        foreach ($from['openingHoursClosedDays'] ?? [] as $index => $closedDay) {
+            if (!array_key_exists('startDate', $closedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].startDate");
+                continue;
+            }
+
+            if (!array_key_exists('endDate', $closedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].endDate");
+                continue;
+            }
+
             if ($dateString >= $closedDay['startDate'] && $dateString <= $closedDay['endDate']) {
                 return true;
             }
