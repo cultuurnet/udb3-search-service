@@ -420,7 +420,8 @@ final class CalendarTransformer implements JsonTransformer
         $dayOfWeek = strtolower($date->format('l'));
         $adjustedDay = $this->findAdjustedDay($date, $from);
 
-        if ($adjustedDay !== null) {
+        // Adjusted entries fully replace regular hours; days not listed in the entry's openingHours are treated as closed.
+        if ($adjustedDay !== null && isset($adjustedDay['openingHours'])) {
             return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek];
         }
 
