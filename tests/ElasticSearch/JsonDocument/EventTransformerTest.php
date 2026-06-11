@@ -240,6 +240,83 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_multiple_closed_ranges_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-multiple-closed-ranges.json',
+            __DIR__ . '/data/event/indexed-permanent-with-multiple-closed-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_adjusted_days(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-day.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-day.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_generates_sub_events_for_exceptionally_open_adjusted_days(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-day-exceptional-opening.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-day-exceptional-opening.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multi_day_adjusted_ranges(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-multi-day-range.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-multi-day-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_adjusted_days_when_overridden_by_a_closed_day(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-adjusted-day-overridden-by-closed-day.json',
+            __DIR__ . '/data/event/indexed-periodic-adjusted-day-overridden-by-closed-day.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multiple_adjusted_ranges(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multiple-adjusted-ranges.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multiple-adjusted-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-adjusted-day.json',
+            __DIR__ . '/data/event/indexed-permanent-with-adjusted-day.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_incorrect_opening_hours_and_does_not_transform_them(): void
     {
         $this->transformAndAssert(
