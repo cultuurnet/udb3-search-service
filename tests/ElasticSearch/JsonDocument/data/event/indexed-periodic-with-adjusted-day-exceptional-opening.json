@@ -1,0 +1,240 @@
+{
+    "@id": "http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942",
+    "@type": "Event",
+    "id": "23017cb7-e515-47b4-87c4-780735acc942",
+    "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
+    "name": {
+        "nl": "Punkfest"
+    },
+    "status": "Available",
+    "bookingAvailability": "Available",
+    "calendarType": "periodic",
+    "dateRange": [
+        {
+            "gte": "2017-02-06T09:00:00+01:00",
+            "lte": "2017-02-06T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-07T09:00:00+01:00",
+            "lte": "2017-02-07T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-08T09:00:00+01:00",
+            "lte": "2017-02-08T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-09T09:00:00+01:00",
+            "lte": "2017-02-09T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-10T09:00:00+01:00",
+            "lte": "2017-02-10T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-11T10:00:00+01:00",
+            "lte": "2017-02-11T14:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-13T09:00:00+01:00",
+            "lte": "2017-02-13T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-14T09:00:00+01:00",
+            "lte": "2017-02-14T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-15T09:00:00+01:00",
+            "lte": "2017-02-15T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-16T09:00:00+01:00",
+            "lte": "2017-02-16T17:00:00+01:00"
+        },
+        {
+            "gte": "2017-02-17T09:00:00+01:00",
+            "lte": "2017-02-17T17:00:00+01:00"
+        }
+    ],
+    "localTimeRange": [
+        {
+            "gte": "0900",
+            "lte": "1700"
+        },
+        {
+            "gte": "1000",
+            "lte": "1400"
+        }
+    ],
+    "subEvent": [
+        {
+            "dateRange": {
+                "gte": "2017-02-06T09:00:00+01:00",
+                "lte": "2017-02-06T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-07T09:00:00+01:00",
+                "lte": "2017-02-07T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-08T09:00:00+01:00",
+                "lte": "2017-02-08T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-09T09:00:00+01:00",
+                "lte": "2017-02-09T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-10T09:00:00+01:00",
+                "lte": "2017-02-10T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-11T10:00:00+01:00",
+                "lte": "2017-02-11T14:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "1000",
+                "lte": "1400"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-13T09:00:00+01:00",
+                "lte": "2017-02-13T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-14T09:00:00+01:00",
+                "lte": "2017-02-14T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-15T09:00:00+01:00",
+                "lte": "2017-02-15T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-16T09:00:00+01:00",
+                "lte": "2017-02-16T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-02-17T09:00:00+01:00",
+                "lte": "2017-02-17T17:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1700"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        }
+    ],
+    "availableTo": "2017-02-19T23:59:59+01:00",
+    "audienceType": "everyone",
+    "mediaObjectsCount": 0,
+    "videosCount": 0,
+    "creator": "Jane Doe",
+    "indexedAt": "2017-05-09T15:11:32+02:00",
+    "created": "2017-04-22T13:33:37+02:00",
+    "workflowStatus": "DRAFT",
+    "isDuplicate": false,
+    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
+    "originalEncodedJsonLd": "{\"@id\":\"http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"periodic\",\"startDate\":\"2017-02-06T00:00:00+01:00\",\"endDate\":\"2017-02-19T23:59:59+01:00\",\"openingHours\":[{\"dayOfWeek\":[\"monday\",\"tuesday\",\"wednesday\",\"thursday\",\"friday\"],\"opens\":\"09:00\",\"closes\":\"17:00\"}],\"openingHoursAdjustedDays\":[{\"startDate\":\"2017-02-11\",\"endDate\":\"2017-02-11\",\"openingHours\":[{\"dayOfWeek\":[\"saturday\"],\"opens\":\"10:00\",\"closes\":\"14:00\"}]}],\"location\":{\"@id\":\"http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\"}",
+    "attendanceMode": "offline",
+    "location": {
+        "@id": "http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "@type": "Place",
+        "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "mainId": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "name": {
+            "nl": "Hungaria"
+        }
+    },
+    "address": {
+        "nl": {
+            "addressCountry": "BE",
+            "addressLocality": "Leuven",
+            "postalCode": "3000",
+            "streetAddress": "Vaartkom 35"
+        }
+    },
+    "metadata": {
+        "popularity": 0
+    }
+}
