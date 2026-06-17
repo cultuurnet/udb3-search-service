@@ -1,0 +1,119 @@
+{
+    "@id": "http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "@type": "Place",
+    "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
+    "name": {
+        "nl": "Hungaria"
+    },
+    "status": "Available",
+    "bookingAvailability": "Available",
+    "calendarType": "periodic",
+    "dateRange": [
+        {
+            "gte": "2017-04-22T10:00:00+02:00",
+            "lte": "2017-04-22T12:00:00+02:00"
+        },
+        {
+            "gte": "2017-04-24T08:30:00+02:00",
+            "lte": "2017-04-24T09:17:00+02:00"
+        },
+        {
+            "gte": "2017-04-26T08:30:00+02:00",
+            "lte": "2017-04-26T09:17:00+02:00"
+        },
+        {
+            "gte": "2017-04-28T08:30:00+02:00",
+            "lte": "2017-04-28T09:17:00+02:00"
+        }
+    ],
+    "localTimeRange": [
+        {
+            "gte": "1000",
+            "lte": "1200"
+        },
+        {
+            "gte": "0830",
+            "lte": "0917"
+        }
+    ],
+    "subEvent": [
+        {
+            "dateRange": {
+                "gte": "2017-04-22T10:00:00+02:00",
+                "lte": "2017-04-22T12:00:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "1000",
+                "lte": "1200"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-04-24T08:30:00+02:00",
+                "lte": "2017-04-24T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-04-26T08:30:00+02:00",
+                "lte": "2017-04-26T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        },
+        {
+            "dateRange": {
+                "gte": "2017-04-28T08:30:00+02:00",
+                "lte": "2017-04-28T09:17:00+02:00"
+            },
+            "localTimeRange": {
+                "gte": "0830",
+                "lte": "0917"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        }
+    ],
+    "availableTo": "2017-04-28T23:59:59+02:00",
+    "audienceType": "everyone",
+    "mediaObjectsCount": 0,
+    "videosCount": 0,
+    "indexedAt": "2017-05-09T15:11:32+02:00",
+    "created": "2017-04-22T13:33:37+02:00",
+    "workflowStatus": "DRAFT",
+    "isDuplicate": false,
+    "productionCollapseValue": "single-offer-179c89c5-dba4-417b-ae96-62e7a12c2405",
+    "originalEncodedJsonLd": "{\"@type\":\"Place\",\"@id\":\"http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"calendarType\":\"periodic\",\"startDate\":\"2017-04-22T10:00:00+02:00\",\"endDate\":\"2017-04-28T23:59:59+02:00\",\"openingHours\":[{\"dayOfWeek\":[\"monday\",\"wednesday\",\"friday\"],\"opens\":\"08:30\",\"closes\":\"09:17\"}],\"openingHoursAdjustedDays\":[{\"startDate\":\"2017-04-22\",\"endDate\":\"2017-04-22\",\"openingHours\":[{\"dayOfWeek\":[\"saturday\"],\"opens\":\"10:00\",\"closes\":\"12:00\"}]}],\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\"}",
+    "address": {
+        "nl": {
+            "addressCountry": "BE",
+            "addressLocality": "Leuven",
+            "postalCode": "3000",
+            "streetAddress": "Vaartkom 35"
+        }
+    },
+    "global_address_identifier": "hungaria_vaartkom_35_3000_leuven_be",
+    "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be",
+    "metadata": {
+        "popularity": 0
+    }
+}

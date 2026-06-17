@@ -16,11 +16,11 @@ final class BirthdateRangeTransformer implements JsonTransformer
 
         $range = $from['birthdateRange'];
 
-        if (isset($range['from'])) {
+        if (!empty($range['from'])) {
             $draft['birthdateRange']['gte'] = $range['from'];
         }
 
-        if (isset($range['to'])) {
+        if (!empty($range['to'])) {
             $draft['birthdateRange']['lte'] = $range['to'];
         }
 
