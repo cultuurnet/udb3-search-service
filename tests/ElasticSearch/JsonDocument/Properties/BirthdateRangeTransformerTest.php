@@ -36,7 +36,7 @@ final class BirthdateRangeTransformerTest extends TestCase
 
         $this->assertEquals($expected, $this->transformer->transform($from, []));
     }
-    
+
     /**
      * @test
      */
