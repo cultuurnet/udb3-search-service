@@ -51,7 +51,7 @@ final class LuceneQueryStringFactoryTest extends TestCase
      */
     public function it_rewrites_date_range_shorthand_to_lucene_range_syntax(): void
     {
-        $actual = $this->factory->fromString('birthdateRange:2020-01-01..2020-12-31');
+        $actual = $this->factory->fromString('birthdateRange:2020-01-01 TO 2020-12-31');
         $expected = new LuceneQueryString('birthdateRange:[2020-01-01 TO 2020-12-31]');
         $this->assertEquals($expected, $actual);
     }
@@ -62,7 +62,7 @@ final class LuceneQueryStringFactoryTest extends TestCase
     public function it_rewrites_each_date_range_shorthand_inside_an_or_group(): void
     {
         $actual = $this->factory->fromString(
-            'birthdateRange:(2020-01-01..2020-12-31 OR 2022-06-30..2022-12-31)'
+            'birthdateRange:(2020-01-01 TO 2020-12-31 OR 2022-06-30 TO 2022-12-31)'
         );
         $expected = new LuceneQueryString(
             'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])'
@@ -73,10 +73,10 @@ final class LuceneQueryStringFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_leaves_non_date_double_dot_tokens_alone(): void
+    public function it_leaves_already_bracketed_date_ranges_untouched(): void
     {
-        $actual = $this->factory->fromString('name.nl:foo..bar');
-        $expected = new LuceneQueryString('name.nl:foo..bar');
+        $actual = $this->factory->fromString('birthdateRange:[2020-01-01 TO 2020-12-31]');
+        $expected = new LuceneQueryString('birthdateRange:[2020-01-01 TO 2020-12-31]');
         $this->assertEquals($expected, $actual);
     }
 
@@ -86,7 +86,7 @@ final class LuceneQueryStringFactoryTest extends TestCase
     public function it_combines_date_range_rewrite_with_type_rewrite(): void
     {
         $actual = $this->factory->fromString(
-            '_type:event AND birthdateRange:2020-01-01..2020-12-31'
+            '_type:event AND birthdateRange:2020-01-01 TO 2020-12-31'
         );
         $expected = new LuceneQueryString(
             '@type:event AND birthdateRange:[2020-01-01 TO 2020-12-31]'
