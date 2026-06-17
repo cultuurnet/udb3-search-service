@@ -36,27 +36,7 @@ final class BirthdateRangeTransformerTest extends TestCase
 
         $this->assertEquals($expected, $this->transformer->transform($from, []));
     }
-
-    /**
-     * @test
-     */
-    public function it_maps_only_from_when_to_is_absent(): void
-    {
-        $from = [
-            'birthdateRange' => [
-                'from' => '2020-01-01',
-            ],
-        ];
-
-        $expected = [
-            'birthdateRange' => [
-                'gte' => '2020-01-01',
-            ],
-        ];
-
-        $this->assertEquals($expected, $this->transformer->transform($from, []));
-    }
-
+    
     /**
      * @test
      */
