@@ -580,14 +580,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
 
-        $fieldSort->setNestedFilter(
-            new TermQuery(
-                'metadata.recommendationFor.event',
-                $recommendationFor
-            )
-        );
-
-        $fieldSort->setParameters(['nested_path' => 'metadata.recommendationFor']);
+        $fieldSort->setParameters([
+            'nested_path' => 'metadata.recommendationFor',
+            'nested_filter' => (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray(),
+        ]);
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);

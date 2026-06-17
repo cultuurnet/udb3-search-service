@@ -299,9 +299,7 @@ final class CalendarTransformer implements JsonTransformer
 
         /* @var DateTime $date */
         foreach ($period as $date) {
-            $day = strtolower($date->format('l'));
-
-            foreach ($openingHoursByDay[$day] as $openingHours) {
+            foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
                 $subEventStartDate = new DateTimeImmutable(
                     $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
                     $this->determineLocalTimezone($from)
@@ -380,6 +378,65 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $openingHoursByDay;
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     *   The date to check.
+     * @param array $from
+     *   JSON-LD of the event/place, as an associative array. May contain an "openingHoursClosedDays" key with a list
+     *   of closed-day ranges, each having "startDate" and "endDate" as plain Y-m-d strings.
+     * @return bool
+     *   True if the given date falls within any closed-day range, false otherwise.
+     */
+    private function isClosedDay(\DateTimeInterface $date, array $from): bool
+    {
+        $dateString = $date->format('Y-m-d');
+        foreach ($from['openingHoursClosedDays'] ?? [] as $index => $closedDay) {
+            if (!array_key_exists('startDate', $closedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].startDate");
+                continue;
+            }
+
+            if (!array_key_exists('endDate', $closedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].endDate");
+                continue;
+            }
+
+            if ($dateString >= $closedDay['startDate'] && $dateString <= $closedDay['endDate']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getEffectiveOpeningHoursOnDay(\DateTimeInterface $date, array $from, array $regularOpeningHoursByDay): array
+    {
+        if ($this->isClosedDay($date, $from)) {
+            return [];
+        }
+
+        $dayOfWeek = strtolower($date->format('l'));
+        $adjustedDay = $this->findAdjustedDay($date, $from);
+
+        // Adjusted entries fully replace regular hours; days not listed in the entry's openingHours are treated as closed.
+        if ($adjustedDay !== null && isset($adjustedDay['openingHours'])) {
+            return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek];
+        }
+
+        return $regularOpeningHoursByDay[$dayOfWeek];
+    }
+
+    private function findAdjustedDay(\DateTimeInterface $date, array $from): ?array
+    {
+        $dateString = $date->format('Y-m-d');
+        foreach ($from['openingHoursAdjustedDays'] ?? [] as $adjustedDay) {
+            if ($dateString >= $adjustedDay['startDate'] && $dateString <= $adjustedDay['endDate']) {
+                return $adjustedDay;
+            }
+        }
+        return null;
     }
 
     /**
