@@ -1341,6 +1341,28 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_allows_childrenOnly_false_filter_with_boa(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'false',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withChildrenOnlyFilter(false);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_disabled_audience_filter_with_boa(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(

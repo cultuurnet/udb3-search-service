@@ -40,6 +40,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\ExistsQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -342,7 +343,19 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withChildrenOnlyFilter(bool $childrenOnly): self
     {
-        return $this->withTermQuery('childrenOnly', $childrenOnly);
+        if ($childrenOnly) {
+            return $this->withTermQuery('childrenOnly', true);
+        }
+
+        $missingOrFalse = new BoolQuery();
+        $missingOrFalse->add(new TermQuery('childrenOnly', false), BoolQuery::SHOULD);
+        $existsBool = new BoolQuery();
+        $existsBool->add(new ExistsQuery('childrenOnly'), BoolQuery::MUST_NOT);
+        $missingOrFalse->add($existsBool, BoolQuery::SHOULD);
+
+        $c = $this->getClone();
+        $c->boolQuery->add($missingOrFalse, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
