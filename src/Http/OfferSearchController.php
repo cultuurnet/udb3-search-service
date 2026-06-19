@@ -181,6 +181,7 @@ final class OfferSearchController
         }
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
+        $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly');
 
         if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
             $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
@@ -190,6 +191,10 @@ final class OfferSearchController
 
         if ($audienceType instanceof AudienceType) {
             $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
+        }
+
+        if (!is_null($childrenOnly)) {
+            $queryBuilder = $queryBuilder->withChildrenOnlyFilter($childrenOnly);
         }
 
         $price = $request->getQueryParam('price');

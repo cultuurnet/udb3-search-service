@@ -1217,6 +1217,41 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_excludes_childrenOnly_events_not_created_by_client_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false),
+            true
+        );
+
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'true',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
+            ->withChildrenOnlyFilter(true);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
     public function it_excludes_childrenOnly_when_filter_disabled_without_boa(): void
     {
         $controller = new OfferSearchController(
@@ -1279,6 +1314,28 @@ final class OfferSearchControllerTest extends TestCase
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_childrenOnly_filter_with_boa(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'true',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withChildrenOnlyFilter(true);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**

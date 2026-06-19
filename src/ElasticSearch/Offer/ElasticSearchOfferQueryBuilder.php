@@ -340,6 +340,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
+    public function withChildrenOnlyFilter(bool $childrenOnly): self
+    {
+        return $this->withTermQuery('childrenOnly', $childrenOnly);
+    }
+
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
     {
         $childrenOnlyQuery = new TermQuery('childrenOnly', true);
