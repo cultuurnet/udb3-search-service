@@ -2076,10 +2076,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                             'bool' => [
                                 'must' => [
                                     [
-                                        'match' => [
-                                            'audienceType' => [
-                                                'query' => 'childrenOnly',
-                                            ],
+                                        'term' => [
+                                            'childrenOnly' => true,
                                         ],
                                     ],
                                 ],
