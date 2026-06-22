@@ -1403,8 +1403,10 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
+        // A specific (non-broadened) audienceType is not childrenOnly=true nor audienceType=*,
+        // so every children-only event is hidden, including the consumer's own (no creator exception).
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
+            ->withExcludeChildrenOnlyUnlessCreator()
             ->withAudienceTypeFilter(new AudienceType('education'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1478,6 +1480,144 @@ final class OfferSearchControllerTest extends TestCase
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_hides_all_childrenOnly_in_a_default_search_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false),
+            true
+        );
+
+        // A default search: no childrenOnly and no audienceType params, with the default filters
+        // enabled (so audienceType defaults to everyone). Children-only events now carry
+        // audienceType=everyone, so they are only kept out by the unconditional exclusion below.
+        // No creator exception is applied, so even the consumer's own children-only events are hidden.
+        $request = $this->getSearchRequestWithQueryParameters([]);
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
+            ->withAvailableRangeFilter(
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00'),
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00')
+            )
+            ->withAddressCountryFilter(new Country('BE'))
+            ->withExcludeChildrenOnlyUnlessCreator()
+            ->withAudienceTypeFilter(new AudienceType('everyone'))
+            ->withDuplicateFilter(false);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_surfaces_only_own_childrenOnly_when_requested_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false),
+            true
+        );
+
+        // childrenOnly=true explicitly requested: surface children-only events, but scoped to the
+        // consumer's own (the creator exception keeps mine and excludes everyone else's).
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'true',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
+            ->withChildrenOnlyFilter(true);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_own_childrenOnly_when_audience_is_broadened_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('id', '', false),
+            true
+        );
+
+        // audienceType=* broadens the audience filter (it is removed entirely). The creator
+        // exception keeps the consumer's own children-only events while hiding everyone else's.
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'audienceType' => '*',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_all_childrenOnly_when_requested_with_boa(): void
+    {
+        // A boa consumer is never subjected to the children-only exclusion, so childrenOnly=true
+        // returns every children-only event, regardless of creator.
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'true',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withChildrenOnlyFilter(true);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface

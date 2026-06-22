@@ -184,9 +184,19 @@ final class OfferSearchController
         $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly');
 
         if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
-            $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
-                $this->consumer->getCreator() ?? null
-            );
+            if ($childrenOnly === true || !($audienceType instanceof AudienceType)) {
+                // Children-only events were explicitly requested, or the audience filter was
+                // broadened (audienceType=*). In both cases surface only the consumer's own
+                // children-only events and hide everyone else's.
+                $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
+                    $this->consumer->getCreator() ?? null
+                );
+            } else {
+                // Default search: hide every children-only event, including the consumer's own.
+                // Children-only events carry audienceType=everyone, so the audience filter no
+                // longer hides them on its own.
+                $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(null);
+            }
         }
 
         if ($audienceType instanceof AudienceType) {
