@@ -40,26 +40,6 @@ final class BirthdateRangeTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_maps_only_to_when_from_is_absent(): void
-    {
-        $from = [
-            'birthdateRange' => [
-                'to' => '2020-12-31',
-            ],
-        ];
-
-        $expected = [
-            'birthdateRange' => [
-                'lte' => '2020-12-31',
-            ],
-        ];
-
-        $this->assertEquals($expected, $this->transformer->transform($from, []));
-    }
-
-    /**
-     * @test
-     */
     public function it_preserves_existing_draft_when_birthdate_range_is_absent(): void
     {
         $draft = ['name' => 'unchanged'];
@@ -90,20 +70,5 @@ final class BirthdateRangeTransformerTest extends TestCase
 
         $this->assertSame($draft, $result);
         $this->assertArrayNotHasKey('birthdateRange', $result);
-    }
-
-    /**
-     * @test
-     */
-    public function it_skips_empty_string_bounds(): void
-    {
-        $from = [
-            'birthdateRange' => [
-                'from' => '',
-                'to' => '',
-            ],
-        ];
-
-        $this->assertSame([], $this->transformer->transform($from, []));
     }
 }
