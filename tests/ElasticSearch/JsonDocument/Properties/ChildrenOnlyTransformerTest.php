@@ -28,21 +28,21 @@ final class ChildrenOnlyTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_omits_childrenOnly_when_source_has_false(): void
+    public function it_sets_childrenOnly_to_false_when_source_has_false(): void
     {
         $result = $this->transformer->transform(['childrenOnly' => false]);
 
-        $this->assertArrayNotHasKey('childrenOnly', $result);
+        $this->assertSame(['childrenOnly' => false], $result);
     }
 
     /**
      * @test
      */
-    public function it_omits_childrenOnly_when_source_field_is_missing(): void
+    public function it_defaults_childrenOnly_to_false_when_source_field_is_missing(): void
     {
         $result = $this->transformer->transform([]);
 
-        $this->assertArrayNotHasKey('childrenOnly', $result);
+        $this->assertSame(['childrenOnly' => false], $result);
     }
 
     /**

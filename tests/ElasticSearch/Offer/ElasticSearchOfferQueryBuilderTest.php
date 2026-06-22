@@ -2109,25 +2109,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     ],
                     'filter' => [
                         [
-                            'bool' => [
-                                'should' => [
-                                    [
-                                        'term' => [
-                                            'childrenOnly' => false,
-                                        ],
-                                    ],
-                                    [
-                                        'bool' => [
-                                            'must_not' => [
-                                                [
-                                                    'exists' => [
-                                                        'field' => 'childrenOnly',
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                ],
+                            'term' => [
+                                'childrenOnly' => false,
                             ],
                         ],
                     ],

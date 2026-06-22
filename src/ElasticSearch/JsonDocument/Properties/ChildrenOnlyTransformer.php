@@ -10,9 +10,7 @@ final class ChildrenOnlyTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        if (!empty($from['childrenOnly'])) {
-            $draft['childrenOnly'] = true;
-        }
+        $draft['childrenOnly'] = $from['childrenOnly'] ?? false;
         return $draft;
     }
 }
