@@ -1,4 +1,6 @@
-# Project guidelines
+# Project coding guidelines
+
+See the  docs/calendar-indexing.md for the information about the calendar indexing.
 
 ## Projections
 
