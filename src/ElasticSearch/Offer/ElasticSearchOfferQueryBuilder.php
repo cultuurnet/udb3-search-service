@@ -352,7 +352,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         if ($creator !== null) {
             $innerBool = new BoolQuery();
             $innerBool->add($childrenOnlyQuery, BoolQuery::MUST);
-            $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
+            // The creator field is indexed with a keyword tokenizer (single, exact token), so the
+            // comparison must be an exact term match. A MatchQuery analyzes the value and can both
+            // miss the consumer's own events and spuriously match others'.
+            $innerBool->add(new TermQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
             $childrenOnlyQuery = $innerBool;
         }
 
