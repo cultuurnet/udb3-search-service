@@ -23,10 +23,6 @@ final class ConsumerTest extends TestCase
             new Creator('pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients'),
             $consumer->getCreator()
         );
-        $this->assertSame(
-            'pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients',
-            $consumer->getCreator()->toString()
-        );
     }
 
     /**

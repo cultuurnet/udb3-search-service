@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\InMemoryApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
@@ -553,9 +554,9 @@ final class AuthenticateRequestTest extends TestCase
         $authenticateRequest->process($request, $requestHandler);
 
         $this->assertInstanceOf(Consumer::class, $registeredConsumer);
-        $this->assertSame(
-            'my_active_client_id@clients',
-            $registeredConsumer->getCreator()->toString()
+        $this->assertEquals(
+            new Creator('my_active_client_id@clients'),
+            $registeredConsumer->getCreator()
         );
     }
 
