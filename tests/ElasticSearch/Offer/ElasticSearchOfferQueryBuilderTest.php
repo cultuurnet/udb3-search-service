@@ -2155,8 +2155,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                 ],
                                 'must_not' => [
                                     [
-                                        'term' => [
-                                            'creator' => 'my-client@clients',
+                                        'match' => [
+                                            'creator' => [
+                                                'query' => 'my-client@clients',
+                                            ],
                                         ],
                                     ],
                                 ],

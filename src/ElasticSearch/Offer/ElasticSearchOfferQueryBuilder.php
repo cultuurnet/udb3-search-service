@@ -352,10 +352,12 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         if ($creator !== null) {
             $innerBool = new BoolQuery();
             $innerBool->add($childrenOnlyQuery, BoolQuery::MUST);
-            // The creator field is indexed with a keyword tokenizer (single, exact token), so the
-            // comparison must be an exact term match. A MatchQuery analyzes the value and can both
-            // miss the consumer's own events and spuriously match others'.
-            $innerBool->add(new TermQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
+            // The creator field is an analyzed string using lowercase_exact_match_analyzer
+            // (keyword tokenizer + lowercase filter): the indexed value is a single, lowercased
+            // token. A MatchQuery runs the search value through the same analyzer, giving an exact
+            // but case-insensitive match. A TermQuery would NOT lowercase and therefore fails to
+            // match creators that contain uppercase characters (e.g. mixed-case client ids).
+            $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
             $childrenOnlyQuery = $innerBool;
         }
 
