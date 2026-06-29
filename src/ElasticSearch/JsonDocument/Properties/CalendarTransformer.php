@@ -177,8 +177,6 @@ final class CalendarTransformer implements JsonTransformer
         $draft['subEvent'] = [];
 
         foreach ($from['subEvent'] as $subEvent) {
-            if (!$this->isValidDateRange($subEvent)) {
-                continue;
             // Skip inverted ranges; already logged when building dateRange.
             if (!$this->isValidDateRange($subEvent)) {
                 continue;
@@ -698,18 +696,6 @@ final class CalendarTransformer implements JsonTransformer
         return new DateTimeZone(self::DEFAULT_TIMEZONE);
     }
 
-    // @see https://jira.publiq.be/browse/III-7275
-    private function isValidDateRange(array $subEvent): bool
-    {
-        $start = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate'] ?? '');
-        $end = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate'] ?? '');
-
-        if ($start === false || $end === false) {
-            // Missing or unparseable dates are handled by existing checks elsewhere.
-            return true;
-        }
-
-        return $start <= $end;
     /**
      * Detects sub-events whose startDate is strictly after endDate, which produce inverted
      * ranges that ES8 rejects (e.g. a 20:00–02:00 opening hour stored on the same calendar day).

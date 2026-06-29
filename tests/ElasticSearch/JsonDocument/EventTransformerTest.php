@@ -410,6 +410,22 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_sub_events_where_start_date_equals_end_date(): void
+    {
+        // Equal timestamps (<=) must not be treated as inverted; all three sub-events here
+        // share the same start/end and must appear in the indexed output unchanged.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates.json',
+            [
+                ['warning', "Missing expected field 'creator'.", []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_optional_fields_if_present(): void
     {
         $this->transformAndAssert(
