@@ -16,34 +16,39 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $ranges = $request->getQueryParameterBag()->getExplodedStringFromParameter(
-            'birthdateRange',
-            null,
-            static function (string $range): BirthdateRange {
-                $parts = explode('..', $range);
-                if (count($parts) !== 2) {
-                    throw new UnsupportedParameterValue(
-                        "birthdateRange should be in the format YYYY-MM-DD..YYYY-MM-DD, got \"{$range}\""
-                    );
-                }
+        $parameterBagReader = $request->getQueryParameterBag();
 
-                $from = DateTimeImmutable::createFromFormat('!Y-m-d', $parts[0]);
-                $to = DateTimeImmutable::createFromFormat('!Y-m-d', $parts[1]);
+        $from = $parameterBagReader->getStringFromParameter('birthdateRangeFrom');
+        $to = $parameterBagReader->getStringFromParameter('birthdateRangeTo');
 
-                if (!$from || !$to) {
-                    throw new UnsupportedParameterValue(
-                        "birthdateRange should be in the format YYYY-MM-DD..YYYY-MM-DD, got \"{$range}\""
-                    );
-                }
-
-                return new BirthdateRange($from, $to);
-            }
-        );
-
-        if (empty($ranges)) {
+        if ($from === null && $to === null) {
             return $offerQueryBuilder;
         }
 
-        return $offerQueryBuilder->withBirthdateRangeFilter(...$ranges);
+        if ($from === null || $to === null) {
+            throw new UnsupportedParameterValue(
+                'birthdateRangeFrom and birthdateRangeTo should be used together'
+            );
+        }
+
+        return $offerQueryBuilder->withBirthdateRangeFilter(
+            new BirthdateRange(
+                $this->parseDate('birthdateRangeFrom', $from),
+                $this->parseDate('birthdateRangeTo', $to)
+            )
+        );
+    }
+
+    private function parseDate(string $parameterName, string $value): DateTimeImmutable
+    {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+
+        if (!$date) {
+            throw new UnsupportedParameterValue(
+                "{$parameterName} should be in the format YYYY-MM-DD, got \"{$value}\""
+            );
+        }
+
+        return $date;
     }
 }

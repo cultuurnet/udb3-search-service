@@ -31,7 +31,7 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_does_nothing_when_the_parameter_is_absent(): void
+    public function it_does_nothing_when_the_parameters_are_absent(): void
     {
         $request = $this->request([]);
 
@@ -43,9 +43,12 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_single_birthdate_range_filter(): void
+    public function it_adds_a_birthdate_range_filter(): void
     {
-        $request = $this->request(['birthdateRange' => '2020-01-01..2020-12-31']);
+        $request = $this->request([
+            'birthdateRangeFrom' => '2020-01-01',
+            'birthdateRangeTo' => '2020-12-31',
+        ]);
 
         $expected = new BirthdateRange(
             new DateTimeImmutable('2020-01-01'),
@@ -63,25 +66,11 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_multiple_birthdate_range_filters_split_on_comma(): void
+    public function it_throws_when_only_the_from_is_given(): void
     {
-        $request = $this->request(
-            ['birthdateRange' => '2020-01-01..2020-12-31,2022-06-30..2022-12-31']
-        );
+        $request = $this->request(['birthdateRangeFrom' => '2020-01-01']);
 
-        $first = new BirthdateRange(
-            new DateTimeImmutable('2020-01-01'),
-            new DateTimeImmutable('2020-12-31')
-        );
-        $second = new BirthdateRange(
-            new DateTimeImmutable('2022-06-30'),
-            new DateTimeImmutable('2022-12-31')
-        );
-
-        $this->queryBuilder->expects($this->once())
-            ->method('withBirthdateRangeFilter')
-            ->with($this->equalTo($first), $this->equalTo($second))
-            ->willReturn($this->queryBuilder);
+        $this->expectException(UnsupportedParameterValue::class);
 
         $this->parser->parse($request, $this->queryBuilder);
     }
@@ -89,9 +78,9 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_a_range_is_missing_the_separator(): void
+    public function it_throws_when_only_the_to_is_given(): void
     {
-        $request = $this->request(['birthdateRange' => '2020-01-01']);
+        $request = $this->request(['birthdateRangeTo' => '2020-12-31']);
 
         $this->expectException(UnsupportedParameterValue::class);
 
@@ -103,7 +92,10 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
      */
     public function it_throws_when_a_range_bound_is_not_a_valid_date(): void
     {
-        $request = $this->request(['birthdateRange' => '2020-01-01..not-a-date']);
+        $request = $this->request([
+            'birthdateRangeFrom' => '2020-01-01',
+            'birthdateRangeTo' => 'not-a-date',
+        ]);
 
         $this->expectException(UnsupportedParameterValue::class);
 
