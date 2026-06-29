@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
-use InvalidArgumentException;
 
 final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -17,39 +16,39 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $now = DateTimeImmutable::createFromFormat('U', (string) $request->getServerParam('REQUEST_TIME', 0));
-        if (!$now) {
-            throw new InvalidArgumentException('Invalid timestamp provided');
-        }
+        $parameterBagReader = $request->getQueryParameterBag();
 
-        $ranges = $request->getQueryParameterBag()->getExplodedStringFromParameter(
-            'birthdateRange',
-            null,
-            function (string $range) use ($now): BirthdateRange {
-                $parts = explode('..', $range);
-                if (count($parts) !== 2) {
-                    throw new UnsupportedParameterValue(
-                        "birthdateRange should be in the format YYYY-MM-DD..YYYY-MM-DD, got \"{$range}\""
-                    );
-                }
+        $from = $parameterBagReader->getStringFromParameter('birthdateRangeFrom');
+        $to = $parameterBagReader->getStringFromParameter('birthdateRangeTo');
 
-                $from = DateTimeImmutable::createFromFormat('!Y-m-d', $parts[0]);
-                $to = DateTimeImmutable::createFromFormat('!Y-m-d', $parts[1]);
-
-                if (!$from || !$to) {
-                    throw new UnsupportedParameterValue(
-                        "birthdateRange should be in the format YYYY-MM-DD..YYYY-MM-DD, got \"{$range}\""
-                    );
-                }
-
-                return new BirthdateRange($from, $to, $now);
-            }
-        );
-
-        if (empty($ranges)) {
+        if ($from === null && $to === null) {
             return $offerQueryBuilder;
         }
 
-        return $offerQueryBuilder->withBirthdateRangeFilter(...$ranges);
+        if ($from === null || $to === null) {
+            throw new UnsupportedParameterValue(
+                'birthdateRangeFrom and birthdateRangeTo should be used together'
+            );
+        }
+
+        return $offerQueryBuilder->withBirthdateRangeFilter(
+            new BirthdateRange(
+                $this->parseDate('birthdateRangeFrom', $from),
+                $this->parseDate('birthdateRangeTo', $to)
+            )
+        );
+    }
+
+    private function parseDate(string $parameterName, string $value): DateTimeImmutable
+    {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+
+        if (!$date) {
+            throw new UnsupportedParameterValue(
+                "{$parameterName} should be in the format YYYY-MM-DD, got \"{$value}\""
+            );
+        }
+
+        return $date;
     }
 }
