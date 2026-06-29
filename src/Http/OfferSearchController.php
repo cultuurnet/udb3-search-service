@@ -183,25 +183,12 @@ final class OfferSearchController
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
         $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly');
 
-        // An explicit audienceType=* wildcard must be distinguished from an absent audienceType:
-        // both make getAudienceTypeFromQuery() return null, but only the explicit wildcard should
-        // broaden the children-only visibility. Read the raw query parameter to tell them apart.
-        $audienceTypeIsWildcard = $request->getQueryParam('audienceType') === '*';
-
+        // Without BOA access a consumer may only see their own children-only offers, never
+        // anyone else's. Pass the creator to keep the caller's own; pass null to hide all.
         if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
-            if ($childrenOnly === true || $audienceTypeIsWildcard) {
-                // Children-only events were explicitly requested (childrenOnly=true), or the
-                // audience filter was explicitly broadened (audienceType=*). In both cases
-                // surface only the consumer's own children-only events and hide everyone else's.
-                $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
-                    $this->consumer->getCreator()
-                );
-            } else {
-                // Default or audience-restricted search: hide every children-only event,
-                // including the consumer's own. Children-only events carry audienceType=everyone,
-                // so the audience filter no longer hides them on its own.
-                $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(null);
-            }
+            $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
+                $childrenOnly === true ? $this->consumer->getCreator() : null
+            );
         }
 
         if ($audienceType instanceof AudienceType) {
