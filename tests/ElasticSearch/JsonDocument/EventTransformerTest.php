@@ -80,6 +80,23 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_derives_a_birthdate_range_from_the_typical_age_range(): void
+    {
+        // "now" is fixed to 2017-05-09 in setUp, so someone aged 5-6 was born between 2010-05-10 and 2012-05-09.
+        $actual = $this->transformer->transform(['typicalAgeRange' => '5-6'], []);
+
+        $this->assertSame(
+            [
+                'lte' => '2012-05-09',
+                'gte' => '2010-05-10',
+            ],
+            $actual['birthdateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_missing_required_fields(): void
     {
         $original = [];

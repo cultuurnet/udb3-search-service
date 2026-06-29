@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
@@ -34,7 +35,8 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         return $offerQueryBuilder->withBirthdateRangeFilter(
             new BirthdateRange(
                 $this->parseDate('birthdateRangeFrom', $from),
-                $this->parseDate('birthdateRangeTo', $to)
+                $this->parseDate('birthdateRangeTo', $to),
+                new Chronos()
             )
         );
     }

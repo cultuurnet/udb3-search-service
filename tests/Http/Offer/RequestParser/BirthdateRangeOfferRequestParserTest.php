@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -24,8 +26,15 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
 
     protected function setUp(): void
     {
+        Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2026-06-29T12:00:00+02:00'));
+
         $this->parser = new BirthdateRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow(null);
     }
 
     /**
@@ -52,7 +61,8 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
 
         $expected = new BirthdateRange(
             new DateTimeImmutable('2020-01-01'),
-            new DateTimeImmutable('2020-12-31')
+            new DateTimeImmutable('2020-12-31'),
+            new Chronos()
         );
 
         $this->queryBuilder->expects($this->once())
