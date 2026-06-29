@@ -390,6 +390,21 @@ final class EventTransformerTest extends TestCase
                 ['warning', "Missing expected field 'subEvent[1].endDate'.", []],
             ]
         );
+        }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates-and-invalid-subevent-date-range.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates-and-invalid-subevent-date-range.json',
+            [
+                ['warning', "subEvent[1] skipped: start date is after end date.", []],
+                ['warning', "Missing expected field 'creator'.", []],
+            ]
+        );
     }
 
     /**

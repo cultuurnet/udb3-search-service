@@ -177,6 +177,10 @@ final class CalendarTransformer implements JsonTransformer
         $draft['subEvent'] = [];
 
         foreach ($from['subEvent'] as $subEvent) {
+            if (!$this->isValidDateRange($subEvent)) {
+                continue;
+            }
+
             $localTimeRange = $this->convertSubEventToLocalTimeRanges($subEvent, $this->determineLocalTimezone($from));
             if (count($localTimeRange) === 1) {
                 $localTimeRange = $localTimeRange[0];
@@ -460,6 +464,11 @@ final class CalendarTransformer implements JsonTransformer
                 continue;
             }
 
+            if (!$this->isValidDateRange($subEvent)) {
+                $this->logger->logWarning("subEvent[{$index}] skipped: start date is after end date.");
+                continue;
+            }
+
             $dateRanges[] = $this->convertSubEventToDateRange($subEvent);
         }
 
@@ -496,6 +505,11 @@ final class CalendarTransformer implements JsonTransformer
             }
 
             if (!array_key_exists('endDate', $subEvent)) {
+                // Logged already when creating dateRange
+                continue;
+            }
+
+            if (!$this->isValidDateRange($subEvent)) {
                 // Logged already when creating dateRange
                 continue;
             }
@@ -679,5 +693,19 @@ final class CalendarTransformer implements JsonTransformer
             return new DateTimeZone(self::TIMEZONES[$country] ?? self::DEFAULT_TIMEZONE);
         }
         return new DateTimeZone(self::DEFAULT_TIMEZONE);
+    }
+
+    // @see https://jira.publiq.be/browse/III-7275
+    private function isValidDateRange(array $subEvent): bool
+    {
+        $start = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate'] ?? '');
+        $end = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate'] ?? '');
+
+        if ($start === false || $end === false) {
+            // Missing or unparseable dates are handled by existing checks elsewhere.
+            return true;
+        }
+
+        return $start <= $end;
     }
 }
