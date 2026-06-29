@@ -390,7 +390,7 @@ final class EventTransformerTest extends TestCase
                 ['warning', "Missing expected field 'subEvent[1].endDate'.", []],
             ]
         );
-        }
+    }
 
     /**
      * @test
@@ -401,7 +401,7 @@ final class EventTransformerTest extends TestCase
             __DIR__ . '/data/event/original-with-multiple-dates-and-invalid-subevent-date-range.json',
             __DIR__ . '/data/event/indexed-with-multiple-dates-and-invalid-subevent-date-range.json',
             [
-                ['warning', "subEvent[1] skipped: start date is after end date.", []],
+                ['warning', 'subEvent[1] skipped: start date is after end date.', []],
                 ['warning', "Missing expected field 'creator'.", []],
             ]
         );
