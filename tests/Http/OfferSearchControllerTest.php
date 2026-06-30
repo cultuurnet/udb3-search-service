@@ -116,7 +116,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', true),
-            true
         );
     }
 
@@ -1183,7 +1182,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1231,7 +1229,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1266,7 +1263,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
-            true
         );
 
         // A default search (no childrenOnly) hides every children-only event, including the
@@ -1365,7 +1361,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', false),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1402,7 +1397,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer(null, '', false),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1435,7 +1429,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', false),
-            true
         );
 
         // A default search: no childrenOnly and no audienceType params, with the default filters
