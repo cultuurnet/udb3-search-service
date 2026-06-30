@@ -17,15 +17,26 @@ services:
       - ./facet_mapping_regions.php:/var/www/html/facet_mapping_regions.php:ro
       - ../geojson-data:/var/www/geojson-data:ro
     networks:
-      uitdatabank-search:
-        aliases:
-          - search.uitdatabank.local
+      - uitdatabank-search
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 9000 || exit 1"]
       start_period: 10s
       interval: 5s
       timeout: 5s
       retries: 10
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    volumes:
+      - ./docker/nginx.acc-test.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      uitdatabank-search:
+        aliases:
+          - search.uitdatabank.local
+    depends_on:
+      search:
+        condition: service_healthy
 
   search-consume-udb3-api:
     <<: *search-service
