@@ -1,0 +1,45 @@
+x-search-service: &search-service
+  image: ${SEARCH_IMAGE:-757200591793.dkr.ecr.eu-west-1.amazonaws.com/uitdatabank/search-api:latest}
+  restart: unless-stopped
+  volumes:
+    - ./config.php:/var/www/html/config.php:ro
+  networks:
+    - uitdatabank-search
+
+services:
+  search:
+    <<: *search-service
+    volumes:
+      - ./config.php:/var/www/html/config.php:ro
+      - ./public-keycloak.pem:/var/www/html/public-keycloak.pem:ro
+      - ./api_keys_matched_to_client_ids.php:/var/www/html/api_keys_matched_to_client_ids.php:ro
+      - ./default_queries.php:/var/www/html/default_queries.php:ro
+      - ./facet_mapping_regions.php:/var/www/html/facet_mapping_regions.php:ro
+      - ../geojson-data:/var/www/geojson-data:ro
+    networks:
+      uitdatabank-search:
+        aliases:
+          - search.uitdatabank.local
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 9000 || exit 1"]
+      start_period: 10s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  search-consume-udb3-api:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-api"]
+
+  search-consume-udb3-cli:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-cli"]
+
+  search-consume-udb3-related:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-related"]
+
+networks:
+  uitdatabank-search:
+    name: uitdatabank
+    external: true
