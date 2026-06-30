@@ -47,7 +47,10 @@ final class LoggerFactory
     private static function getStreamHandler(string $name): StreamHandler
     {
         if (!isset(self::$streamHandlers[$name])) {
-            self::$streamHandlers[$name] = new StreamHandler(__DIR__ . '/../../log/' . $name . '.log', Logger::DEBUG);
+            $stream = getenv('LOG_TO_STDOUT')
+                ? 'php://stderr'
+                : __DIR__ . '/../../log/' . $name . '.log';
+            self::$streamHandlers[$name] = new StreamHandler($stream, Logger::DEBUG);
             self::$streamHandlers[$name]->pushProcessor(new ContextExceptionConverterProcessor());
         }
 
