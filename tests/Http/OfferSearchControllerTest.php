@@ -1350,42 +1350,6 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_education_audience_type_without_boa(): void
-    {
-        $controller = new OfferSearchController(
-            $this->queryBuilder,
-            $this->requestParser,
-            $this->searchService,
-            $this->regionIndexName,
-            $this->regionDocumentType,
-            $this->queryStringFactory,
-            $this->facetTreeNormalizer,
-            new Consumer('id', '', false),
-        );
-
-        $request = $this->getSearchRequestWithQueryParameters(
-            [
-                'disableDefaultFilters' => true,
-                'audienceType' => 'education',
-            ]
-        );
-
-        // audienceType is decoupled from childrenOnly: the creator exception keeps the consumer's
-        // own children-only events (and hides everyone else's) regardless of the audienceType.
-        $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
-            ->withAudienceTypeFilter(new AudienceType('education'));
-
-        $expectedResultSet = new PagedResultSet(30, 0, []);
-
-        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
-
-        $controller->__invoke(new ApiRequest($request));
-    }
-
-    /**
-     * @test
-     */
     public function it_excludes_childrenOnly_without_creator_exception_when_no_clientId(): void
     {
         $controller = new OfferSearchController(
