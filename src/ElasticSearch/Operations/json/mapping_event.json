@@ -343,6 +343,10 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "childrenOnly": {
+            "type": "boolean"
+        },
+
         "mediaObjectsCount": {
             "type": "integer"
         },

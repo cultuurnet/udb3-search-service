@@ -116,7 +116,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', true),
-            true
         );
     }
 
@@ -1183,7 +1182,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1219,6 +1217,9 @@ final class OfferSearchControllerTest extends TestCase
      */
     public function it_excludes_childrenOnly_events_not_created_by_client_without_boa(): void
     {
+        // The consumer id is the OAuth client (azp claim) "test_client". udb3-backend stamps the
+        // creator of client-created events as "{azp}@clients", so the creator exception must use
+        // exactly that form to keep the consumer's own children-only events and exclude others'.
         $controller = new OfferSearchController(
             $this->queryBuilder,
             $this->requestParser,
@@ -1227,20 +1228,19 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false),
-            true
+            new Consumer('test_client', '', false),
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'disableDefaultFilters' => true,
-                'audienceType' => 'childrenOnly',
+                'childrenOnly' => 'true',
             ]
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
-            ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('test_client@clients'))
+            ->withChildrenOnlyFilter(true);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1252,7 +1252,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_childrenOnly_when_filter_disabled_without_boa(): void
+    public function it_excludes_all_childrenOnly_in_a_default_search_even_with_a_clientId_without_boa(): void
     {
         $controller = new OfferSearchController(
             $this->queryBuilder,
@@ -1262,19 +1262,20 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', false),
-            true
+            new Consumer('test_client', '', false),
         );
 
+        // A default search (no childrenOnly) hides every children-only event, including the
+        // consumer's own: the creator exception is NOT applied even though a clientId is present.
+        // Only an explicit childrenOnly=true opts into seeing them.
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'disableDefaultFilters' => true,
-                'audienceType' => '*',
             ]
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
+            ->withExcludeChildrenOnlyUnlessCreator();
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1286,50 +1287,39 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_childrenOnly_when_defaults_disabled_without_boa(): void
+    public function it_allows_childrenOnly_filter_with_boa(): void
     {
-        $controller = new OfferSearchController(
-            $this->queryBuilder,
-            $this->requestParser,
-            $this->searchService,
-            $this->regionIndexName,
-            $this->regionDocumentType,
-            $this->queryStringFactory,
-            $this->facetTreeNormalizer,
-            new Consumer('id', '', false),
-            true
-        );
-
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'disableDefaultFilters' => true,
+                'childrenOnly' => 'true',
             ]
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'));
+            ->withChildrenOnlyFilter(true);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
-        $controller->__invoke(new ApiRequest($request));
+        $this->controller->__invoke(new ApiRequest($request));
     }
 
     /**
      * @test
      */
-    public function it_allows_childrenOnly_audience_type_with_boa(): void
+    public function it_allows_childrenOnly_false_filter_with_boa(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
             [
                 'disableDefaultFilters' => true,
-                'audienceType' => 'childrenOnly',
+                'childrenOnly' => 'false',
             ]
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withAudienceTypeFilter(new AudienceType('childrenOnly'));
+            ->withChildrenOnlyFilter(false);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -1371,7 +1361,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', false),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1381,8 +1370,10 @@ final class OfferSearchControllerTest extends TestCase
             ]
         );
 
+        // audienceType is decoupled from childrenOnly: without childrenOnly=true every children-only
+        // event is hidden, including the consumer's own (no creator exception).
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
+            ->withExcludeChildrenOnlyUnlessCreator()
             ->withAudienceTypeFilter(new AudienceType('education'));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
@@ -1406,7 +1397,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer(null, '', false),
-            true
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1428,7 +1418,7 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_childrenOnly_with_creator_exception_when_clientId_present(): void
+    public function it_hides_all_childrenOnly_in_a_default_search_without_boa(): void
     {
         $controller = new OfferSearchController(
             $this->queryBuilder,
@@ -1438,18 +1428,25 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('my-client', '', false),
-            true
+            new Consumer('id', '', false),
         );
 
-        $request = $this->getSearchRequestWithQueryParameters(
-            [
-                'disableDefaultFilters' => true,
-            ]
-        );
+        // A default search: no childrenOnly and no audienceType params, with the default filters
+        // enabled (so audienceType defaults to everyone). Children-only events now carry
+        // audienceType=everyone, so they are only kept out by the unconditional exclusion below.
+        // No creator exception is applied, so even the consumer's own children-only events are hidden.
+        $request = $this->getSearchRequestWithQueryParameters([]);
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
+            ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
+            ->withAvailableRangeFilter(
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00'),
+                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00')
+            )
+            ->withAddressCountryFilter(new Country('BE'))
+            ->withExcludeChildrenOnlyUnlessCreator()
+            ->withAudienceTypeFilter(new AudienceType('everyone'))
+            ->withDuplicateFilter(false);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

@@ -78,6 +78,7 @@ final class EventTransformerTest extends TestCase
             'isDuplicate' => false,
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
+            'childrenOnly' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,
             'metadata' => [
