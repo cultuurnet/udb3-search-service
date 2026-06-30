@@ -128,34 +128,29 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             return $this;
         }
 
-        $shouldQuery = new BoolQuery();
+        $rangeQueries = [];
         foreach ($ranges as $range) {
             $this->guardDateRange('birthdate', $range->getFrom(), $range->getTo());
-
-            $shouldQuery->add(
-                new RangeQuery(
-                    'birthdateRange',
-                    [
-                        RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
-                        RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
-                    ]
-                ),
-                BoolQuery::SHOULD
-            );
-
-            $shouldQuery->add(
-                new RangeQuery(
-                    'typicalAgeRange',
-                    [
-                        RangeQuery::GTE => $range->getMinAge(),
-                        RangeQuery::LTE => $range->getMaxAge(),
-                    ]
-                ),
-                BoolQuery::SHOULD
+            $rangeQueries[] = new RangeQuery(
+                'birthdateRange',
+                [
+                    RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
+                    RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
+                ]
             );
         }
 
         $c = $this->getClone();
+
+        if (count($rangeQueries) === 1) {
+            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
+            return $c;
+        }
+
+        $shouldQuery = new BoolQuery();
+        foreach ($rangeQueries as $rangeQuery) {
+            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+        }
         $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
         return $c;
     }
