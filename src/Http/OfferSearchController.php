@@ -55,8 +55,6 @@ final class OfferSearchController
 
     private Consumer $consumer;
 
-    private bool $enableBoaPermission;
-
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
@@ -66,7 +64,6 @@ final class OfferSearchController
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer,
-        bool $enableBoaPermission
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
@@ -77,7 +74,6 @@ final class OfferSearchController
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
         $this->consumer = $consumer;
-        $this->enableBoaPermission = $enableBoaPermission;
     }
 
     public function __invoke(ApiRequest $request): ResponseInterface
@@ -185,18 +181,18 @@ final class OfferSearchController
 
         // Without BOA access a consumer may only see their own children-only offers, never
         // anyone else's. Pass the creator to keep the caller's own; pass null to hide all.
-        if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
+        if (!$this->consumer->hasBoaAccess()) {
             $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
                 $childrenOnly === true ? $this->consumer->getCreator() : null
             );
         }
 
-        if ($audienceType instanceof AudienceType) {
-            $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
-        }
-
         if (!is_null($childrenOnly)) {
             $queryBuilder = $queryBuilder->withChildrenOnlyFilter($childrenOnly);
+        }
+
+        if ($audienceType instanceof AudienceType) {
+            $queryBuilder = $queryBuilder->withAudienceTypeFilter($audienceType);
         }
 
         $price = $request->getQueryParam('price');
