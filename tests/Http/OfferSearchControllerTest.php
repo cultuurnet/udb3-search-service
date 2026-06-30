@@ -1287,6 +1287,43 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_the_creator_exception_for_childrenOnly_false_without_boa(): void
+    {
+        $controller = new OfferSearchController(
+            $this->queryBuilder,
+            $this->requestParser,
+            $this->searchService,
+            $this->regionIndexName,
+            $this->regionDocumentType,
+            $this->queryStringFactory,
+            $this->facetTreeNormalizer,
+            new Consumer('test_client', '', false),
+        );
+
+        // childrenOnly=false without BOA: the creator exception is still applied (hiding everyone
+        // else's children-only events) and the childrenOnly=false filter restricts the results to
+        // non children-only events.
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'childrenOnly' => 'false',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withExcludeChildrenOnlyUnlessCreator(new Creator('test_client@clients'))
+            ->withChildrenOnlyFilter(false);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_childrenOnly_filter_with_boa(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1324,6 +1361,27 @@ final class OfferSearchControllerTest extends TestCase
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_exclude_any_childrenOnly_in_a_default_search_with_boa(): void
+    {
+        // A BOA consumer's default search (no childrenOnly param) applies neither the creator
+        // exception nor a childrenOnly filter, so every children-only event stays visible,
+        // including events created by other clients.
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($this->queryBuilder, $expectedResultSet);
 
         $this->controller->__invoke(new ApiRequest($request));
     }
