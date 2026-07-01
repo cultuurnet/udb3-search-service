@@ -76,5 +76,6 @@
     "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
     "metadata": {
         "popularity": 0
-    }
+    },
+    "childrenOnly": false
 }
