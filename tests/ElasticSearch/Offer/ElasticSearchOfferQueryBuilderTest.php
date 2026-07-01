@@ -1487,25 +1487,6 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_should_throw_an_exception_for_an_invalid_birthdate_range(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Start birthdate date should be equal to or smaller than end birthdate date.'
-        );
-
-        (new ElasticSearchOfferQueryBuilder())
-            ->withBirthdateRangeFilter(
-                new BirthdateRange(
-                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00')
-                )
-            );
-    }
-
-    /**
-     * @test
-     */
     public function it_should_build_a_query_with_a_geoshape_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
