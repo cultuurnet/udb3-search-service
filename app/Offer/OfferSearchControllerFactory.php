@@ -44,22 +44,18 @@ final class OfferSearchControllerFactory
 
     private Consumer $consumer;
 
-    private bool $enableBoaPermission;
-
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
         Consumer $consumer,
-        bool $enableBoaPermission
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
-        $this->enableBoaPermission = $enableBoaPermission;
     }
 
     public function createFor(
@@ -103,7 +99,6 @@ final class OfferSearchControllerFactory
             $luceneFactory,
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer,
-            $this->enableBoaPermission
         );
     }
 }

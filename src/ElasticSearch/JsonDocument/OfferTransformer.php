@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AudienceTypeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ChildrenOnlyTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CompletenessTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ContributorsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
@@ -57,6 +58,7 @@ final class OfferTransformer implements JsonTransformer
             new TypicalAgeRangeTransformer(),
             new PriceInfoTransformer(),
             new AudienceTypeTransformer(),
+            new ChildrenOnlyTransformer(),
             new MediaObjectsTransformer(),
             new VideosTransformer(),
             new RelatedOrganizerTransformer(
