@@ -340,19 +340,29 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
+    public function withChildrenOnlyFilter(bool $childrenOnly): self
+    {
+        return $this->withTermQuery('childrenOnly', $childrenOnly);
+    }
+
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
     {
-        $matchQuery = new MatchQuery('audienceType', 'childrenOnly');
+        $childrenOnlyQuery = new TermQuery('childrenOnly', true);
 
         if ($creator !== null) {
             $innerBool = new BoolQuery();
-            $innerBool->add($matchQuery, BoolQuery::MUST);
+            $innerBool->add($childrenOnlyQuery, BoolQuery::MUST);
+            // The creator field is an analyzed string using lowercase_exact_match_analyzer
+            // (keyword tokenizer + lowercase filter): the indexed value is a single, lowercased
+            // token. A MatchQuery runs the search value through the same analyzer, giving an exact
+            // but case-insensitive match. A TermQuery would NOT lowercase and therefore fails to
+            // match creators that contain uppercase characters (e.g. mixed-case client ids).
             $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
-            $matchQuery = $innerBool;
+            $childrenOnlyQuery = $innerBool;
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($matchQuery, BoolQuery::MUST_NOT);
+        $c->boolQuery->add($childrenOnlyQuery, BoolQuery::MUST_NOT);
         return $c;
     }
 
