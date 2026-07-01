@@ -3707,6 +3707,7 @@
     ],
     "availableTo": "2100-01-01T00:00:00+00:00",
     "audienceType": "everyone",
+    "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "indexedAt": "2017-05-09T15:11:32+02:00",

@@ -55,8 +55,6 @@ final class OfferSearchController
 
     private Consumer $consumer;
 
-    private bool $enableBoaPermission;
-
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
@@ -66,7 +64,6 @@ final class OfferSearchController
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer,
-        bool $enableBoaPermission
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
@@ -77,7 +74,6 @@ final class OfferSearchController
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
         $this->consumer = $consumer;
-        $this->enableBoaPermission = $enableBoaPermission;
     }
 
     public function __invoke(ApiRequest $request): ResponseInterface
@@ -181,11 +177,20 @@ final class OfferSearchController
         }
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
+        $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly');
 
-        if ($this->enableBoaPermission && !$this->consumer->hasBoaAccess()) {
+        // Without BOA access a consumer may only see their own children-only offers, never
+        // anyone else's. Always pass the creator so the caller keeps their own children-only
+        // offers (in every search, with or without the childrenOnly param) while everyone
+        // else's stay hidden. A consumer without a clientId has no creator, so all are hidden.
+        if (!$this->consumer->hasBoaAccess()) {
             $queryBuilder = $queryBuilder->withExcludeChildrenOnlyUnlessCreator(
-                $this->consumer->getCreator() ?? null
+                $this->consumer->getCreator()
             );
+        }
+
+        if (!is_null($childrenOnly)) {
+            $queryBuilder = $queryBuilder->withChildrenOnlyFilter($childrenOnly);
         }
 
         if ($audienceType instanceof AudienceType) {
