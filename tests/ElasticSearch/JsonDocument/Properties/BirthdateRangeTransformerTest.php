@@ -17,98 +17,83 @@ final class BirthdateRangeTransformerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider birthdateRangeProvider
      */
-    public function it_maps_from_and_to_onto_gte_and_lte(): void
+    public function it_maps_from_and_to_onto_gte_and_lte(array $from, array $expected): void
     {
-        $from = [
-            'birthdateRange' => [
-                'from' => '2020-01-01',
-                'to' => '2020-12-31',
-            ],
-        ];
-
-        $expected = [
-            'birthdateRange' => [
-                'gte' => '2020-01-01',
-                'lte' => '2020-12-31',
-            ],
-        ];
-
         $this->assertEquals($expected, $this->transformer->transform($from, []));
     }
 
-    /**
-     * @test
-     */
-    public function it_maps_only_from_onto_gte(): void
+    public function birthdateRangeProvider(): array
     {
-        $from = [
-            'birthdateRange' => [
-                'from' => '2020-01-01',
+        return [
+            'from and to' => [
+                'from' => [
+                    'birthdateRange' => [
+                        'from' => '2020-01-01',
+                        'to' => '2020-12-31',
+                    ],
+                ],
+                'expected' => [
+                    'birthdateRange' => [
+                        'gte' => '2020-01-01',
+                        'lte' => '2020-12-31',
+                    ],
+                ],
+            ],
+            'only from' => [
+                'from' => [
+                    'birthdateRange' => [
+                        'from' => '2020-01-01',
+                    ],
+                ],
+                'expected' => [
+                    'birthdateRange' => [
+                        'gte' => '2020-01-01',
+                    ],
+                ],
+            ],
+            'only to' => [
+                'from' => [
+                    'birthdateRange' => [
+                        'to' => '2020-12-31',
+                    ],
+                ],
+                'expected' => [
+                    'birthdateRange' => [
+                        'lte' => '2020-12-31',
+                    ],
+                ],
             ],
         ];
-
-        $expected = [
-            'birthdateRange' => [
-                'gte' => '2020-01-01',
-            ],
-        ];
-
-        $this->assertEquals($expected, $this->transformer->transform($from, []));
     }
 
     /**
      * @test
+     * @dataProvider preservedDraftProvider
      */
-    public function it_maps_only_to_onto_lte(): void
+    public function it_preserves_existing_draft_when_there_is_no_usable_birthdate_range(array $from): void
     {
-        $from = [
-            'birthdateRange' => [
-                'to' => '2020-12-31',
-            ],
-        ];
-
-        $expected = [
-            'birthdateRange' => [
-                'lte' => '2020-12-31',
-            ],
-        ];
-
-        $this->assertEquals($expected, $this->transformer->transform($from, []));
-    }
-
-    /**
-     * @test
-     */
-    public function it_preserves_existing_draft_when_birthdate_range_is_absent(): void
-    {
-        $draft = ['name' => 'unchanged'];
-
-        $this->assertSame($draft, $this->transformer->transform([], $draft));
-    }
-
-    /**
-     * @test
-     */
-    public function it_preserves_existing_draft_when_birthdate_range_is_not_an_array(): void
-    {
-        $from = ['birthdateRange' => '2020-01-01 TO 2020-12-31'];
-        $draft = ['name' => 'unchanged'];
-
-        $this->assertSame($draft, $this->transformer->transform($from, $draft));
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_add_an_empty_birthdate_range_key_when_the_range_is_empty(): void
-    {
-        $from = ['birthdateRange' => []];
         $draft = ['name' => 'unchanged'];
 
         $result = $this->transformer->transform($from, $draft);
 
         $this->assertSame($draft, $result);
         $this->assertArrayNotHasKey('birthdateRange', $result);
+    }
+
+    public function preservedDraftProvider(): array
+    {
+        return [
+            'absent' => [
+                'from' => [],
+            ],
+            'not an array' => [
+                'from' => ['birthdateRange' => '2020-01-01 TO 2020-12-31'],
+            ],
+            'empty array' => [
+                'from' => ['birthdateRange' => []],
+            ],
+        ];
     }
 }
