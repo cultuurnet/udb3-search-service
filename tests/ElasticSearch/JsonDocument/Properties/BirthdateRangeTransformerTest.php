@@ -40,6 +40,46 @@ final class BirthdateRangeTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_maps_only_from_onto_gte(): void
+    {
+        $from = [
+            'birthdateRange' => [
+                'from' => '2020-01-01',
+            ],
+        ];
+
+        $expected = [
+            'birthdateRange' => [
+                'gte' => '2020-01-01',
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->transformer->transform($from, []));
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_only_to_onto_lte(): void
+    {
+        $from = [
+            'birthdateRange' => [
+                'to' => '2020-12-31',
+            ],
+        ];
+
+        $expected = [
+            'birthdateRange' => [
+                'lte' => '2020-12-31',
+            ],
+        ];
+
+        $this->assertEquals($expected, $this->transformer->transform($from, []));
+    }
+
+    /**
+     * @test
+     */
     public function it_preserves_existing_draft_when_birthdate_range_is_absent(): void
     {
         $draft = ['name' => 'unchanged'];
@@ -52,7 +92,7 @@ final class BirthdateRangeTransformerTest extends TestCase
      */
     public function it_preserves_existing_draft_when_birthdate_range_is_not_an_array(): void
     {
-        $from = ['birthdateRange' => '2020-01-01..2020-12-31'];
+        $from = ['birthdateRange' => '2020-01-01 TO 2020-12-31'];
         $draft = ['name' => 'unchanged'];
 
         $this->assertSame($draft, $this->transformer->transform($from, $draft));
