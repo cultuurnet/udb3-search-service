@@ -1,0 +1,76 @@
+{
+    "@id": "http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942",
+    "@type": "Event",
+    "id": "23017cb7-e515-47b4-87c4-780735acc942",
+    "mainLanguage": "nl",
+    "languages": [
+        "nl"
+    ],
+    "completedLanguages": [
+        "nl"
+    ],
+    "name": {
+        "nl": "Punkfest"
+    },
+    "status": "Available",
+    "bookingAvailability": "Available",
+    "calendarType": "periodic",
+    "dateRange": [
+        {
+            "gte": "2017-01-02T09:00:00+01:00",
+            "lte": "2017-01-02T12:00:00+01:00"
+        }
+    ],
+    "localTimeRange": [
+        {
+            "gte": "0900",
+            "lte": "1200"
+        }
+    ],
+    "subEvent": [
+        {
+            "dateRange": {
+                "gte": "2017-01-02T09:00:00+01:00",
+                "lte": "2017-01-02T12:00:00+01:00"
+            },
+            "localTimeRange": {
+                "gte": "0900",
+                "lte": "1200"
+            },
+            "status": "Available",
+            "bookingAvailability": "Available"
+        }
+    ],
+    "availableTo": "2017-01-03T23:00:00+01:00",
+    "audienceType": "everyone",
+    "mediaObjectsCount": 0,
+    "videosCount": 0,
+    "creator": "Jane Doe",
+    "indexedAt": "2017-05-09T15:11:32+02:00",
+    "created": "2017-04-22T13:33:37+02:00",
+    "workflowStatus": "DRAFT",
+    "isDuplicate": false,
+    "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
+    "originalEncodedJsonLd": "{\"@id\":\"http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"periodic\",\"startDate\":\"2017-01-02T00:00:00+01:00\",\"endDate\":\"2017-01-04T00:00:00+01:00\",\"availableTo\":\"2017-01-03T23:00:00+01:00\",\"openingHours\":[{\"dayOfWeek\":[\"monday\"],\"opens\":\"09:00\",\"closes\":\"12:00\"},{\"dayOfWeek\":[\"tuesday\"],\"opens\":\"20:00\",\"closes\":\"02:00\"}],\"location\":{\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\"}",
+    "attendanceMode": "offline",
+    "location": {
+        "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "@type": "Place",
+        "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "mainId": "179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "name": {
+            "nl": "Hungaria"
+        }
+    },
+    "address": {
+        "nl": {
+            "addressCountry": "BE",
+            "addressLocality": "Leuven",
+            "postalCode": "3000",
+            "streetAddress": "Vaartkom 35"
+        }
+    },
+    "metadata": {
+        "popularity": 0
+    }
+}
