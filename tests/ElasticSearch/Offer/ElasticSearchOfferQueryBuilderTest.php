@@ -1412,10 +1412,24 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     ],
                     'filter' => [
                         [
-                            'range' => [
-                                'birthdateRange' => [
-                                    'gte' => '2020-01-01',
-                                    'lte' => '2020-12-31',
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'birthdateRange' => [
+                                                'gte' => '2020-01-01',
+                                                'lte' => '2020-12-31',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 5,
+                                                'lte' => 6,
+                                            ],
+                                        ],
+                                    ],
                                 ],
                             ],
                         ],
@@ -1474,9 +1488,25 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                     ],
                                     [
                                         'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 5,
+                                                'lte' => 6,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
                                             'birthdateRange' => [
                                                 'gte' => '2022-06-30',
                                                 'lte' => '2022-12-31',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'typicalAgeRange' => [
+                                                'gte' => 3,
+                                                'lte' => 3,
                                             ],
                                         ],
                                     ],

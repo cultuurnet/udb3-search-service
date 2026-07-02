@@ -128,28 +128,35 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             return $this;
         }
 
-        $rangeQueries = [];
+        // A birthdate range matches an event either through its explicit birthdateRange
+        // (an absolute date range) or through its typicalAgeRange. The latter is a fixed
+        // age range, so the birthdate <-> age conversion has to happen here at query time
+        // (relative to "now") rather than at index time, where it would drift as time passes.
+        $shouldQuery = new BoolQuery();
         foreach ($ranges as $range) {
-            $rangeQueries[] = new RangeQuery(
-                'birthdateRange',
-                [
-                    RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
-                    RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
-                ]
+            $shouldQuery->add(
+                new RangeQuery(
+                    'birthdateRange',
+                    [
+                        RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
+                        RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
+                    ]
+                ),
+                BoolQuery::SHOULD
+            );
+            $shouldQuery->add(
+                new RangeQuery(
+                    'typicalAgeRange',
+                    [
+                        RangeQuery::GTE => $range->getMinAge(),
+                        RangeQuery::LTE => $range->getMaxAge(),
+                    ]
+                ),
+                BoolQuery::SHOULD
             );
         }
 
         $c = $this->getClone();
-
-        if (count($rangeQueries) === 1) {
-            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
-            return $c;
-        }
-
-        $shouldQuery = new BoolQuery();
-        foreach ($rangeQueries as $rangeQuery) {
-            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
-        }
         $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
         return $c;
     }
