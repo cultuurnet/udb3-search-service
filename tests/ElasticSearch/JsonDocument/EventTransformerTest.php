@@ -69,6 +69,17 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_the_birthdate_range_into_a_gte_lte_range(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-birthdate-range.json',
+            __DIR__ . '/data/event/indexed-with-birthdate-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_missing_required_fields(): void
     {
         $original = [];
