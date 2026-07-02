@@ -32,7 +32,7 @@ final class TypicalAgeRangeBirthdateRangeTransformer implements JsonTransformer
         }
 
         $regexMatches = [];
-        preg_match('/(\d*)-(\d*)/', $from['typicalAgeRange'], $regexMatches);
+        preg_match('/^(\d*)-(\d*)$/', $from['typicalAgeRange'], $regexMatches);
 
         if (count($regexMatches) !== 3) {
             return $draft;
