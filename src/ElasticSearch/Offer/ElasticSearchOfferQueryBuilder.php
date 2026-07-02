@@ -132,6 +132,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         // (an absolute date range) or through its typicalAgeRange. The latter is a fixed
         // age range, so the birthdate <-> age conversion has to happen here at query time
         // (relative to "now") rather than at index time, where it would drift as time passes.
+        // "All ages" events are deliberately excluded from the typicalAgeRange match: their
+        // range is unbounded and would otherwise match every birthdate query.
         $shouldQuery = new BoolQuery();
         foreach ($ranges as $range) {
             $shouldQuery->add(
@@ -144,7 +146,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                 ),
                 BoolQuery::SHOULD
             );
-            $shouldQuery->add(
+
+            $ageRangeQuery = new BoolQuery();
+            $ageRangeQuery->add(
                 new RangeQuery(
                     'typicalAgeRange',
                     [
@@ -152,8 +156,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                         RangeQuery::LTE => $range->getMaxAge(),
                     ]
                 ),
-                BoolQuery::SHOULD
+                BoolQuery::MUST
             );
+            $ageRangeQuery->add(new TermQuery('allAges', true), BoolQuery::MUST_NOT);
+            $shouldQuery->add($ageRangeQuery, BoolQuery::SHOULD);
         }
 
         $c = $this->getClone();

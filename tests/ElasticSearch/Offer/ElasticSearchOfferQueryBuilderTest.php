@@ -1423,10 +1423,23 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         ],
                                     ],
                                     [
-                                        'range' => [
-                                            'typicalAgeRange' => [
-                                                'gte' => 5,
-                                                'lte' => 6,
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'range' => [
+                                                        'typicalAgeRange' => [
+                                                            'gte' => 5,
+                                                            'lte' => 6,
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                            'must_not' => [
+                                                [
+                                                    'term' => [
+                                                        'allAges' => true,
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -1487,10 +1500,23 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         ],
                                     ],
                                     [
-                                        'range' => [
-                                            'typicalAgeRange' => [
-                                                'gte' => 5,
-                                                'lte' => 6,
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'range' => [
+                                                        'typicalAgeRange' => [
+                                                            'gte' => 5,
+                                                            'lte' => 6,
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                            'must_not' => [
+                                                [
+                                                    'term' => [
+                                                        'allAges' => true,
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -1503,10 +1529,23 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         ],
                                     ],
                                     [
-                                        'range' => [
-                                            'typicalAgeRange' => [
-                                                'gte' => 3,
-                                                'lte' => 3,
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'range' => [
+                                                        'typicalAgeRange' => [
+                                                            'gte' => 3,
+                                                            'lte' => 3,
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                            'must_not' => [
+                                                [
+                                                    'term' => [
+                                                        'allAges' => true,
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
