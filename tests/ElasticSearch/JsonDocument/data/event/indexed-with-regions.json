@@ -106,10 +106,6 @@
         "gte": 0,
         "lte": 4
     },
-    "birthdateRange": {
-        "gte": "2012-05-10",
-        "lte": "2017-05-09"
-    },
     "allAges": false,
     "price": 19.99,
     "audienceType": "members",

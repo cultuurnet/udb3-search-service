@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransfo
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PerformersTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedLocationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedProductionTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeBirthdateRangeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -47,7 +46,6 @@ final class EventTransformer implements JsonTransformer
             new PerformersTransformer(),
             new DeparturePlacesTransformer($idUrlParser),
             new BirthdateRangeTransformer(),
-            new TypicalAgeRangeBirthdateRangeTransformer(),
             new MetadataTransformer()
         );
 
