@@ -41,30 +41,6 @@ final class BirthdateRangeTransformerTest extends TestCase
                     ],
                 ],
             ],
-            'only from' => [
-                'from' => [
-                    'birthdateRange' => [
-                        'from' => '2020-01-01',
-                    ],
-                ],
-                'expected' => [
-                    'birthdateRange' => [
-                        'gte' => '2020-01-01',
-                    ],
-                ],
-            ],
-            'only to' => [
-                'from' => [
-                    'birthdateRange' => [
-                        'to' => '2020-12-31',
-                    ],
-                ],
-                'expected' => [
-                    'birthdateRange' => [
-                        'lte' => '2020-12-31',
-                    ],
-                ],
-            ],
         ];
     }
 
@@ -93,6 +69,12 @@ final class BirthdateRangeTransformerTest extends TestCase
             ],
             'empty array' => [
                 'from' => ['birthdateRange' => []],
+            ],
+            'only from' => [
+                'from' => ['birthdateRange' => ['from' => '2020-01-01']],
+            ],
+            'only to' => [
+                'from' => ['birthdateRange' => ['to' => '2020-12-31']],
             ],
         ];
     }

@@ -130,7 +130,6 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         $rangeQueries = [];
         foreach ($ranges as $range) {
-            $this->guardDateRange('birthdate', $range->getFrom(), $range->getTo());
             $rangeQueries[] = new RangeQuery(
                 'birthdateRange',
                 [

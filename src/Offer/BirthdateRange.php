@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
 
 final class BirthdateRange
@@ -18,6 +19,12 @@ final class BirthdateRange
 
     public function __construct(DateTimeImmutable $from, DateTimeImmutable $to, DateTimeImmutable $now)
     {
+        if ($from > $to) {
+            throw new UnsupportedParameterValue(
+                'Start birthdate date should be equal to or smaller than end birthdate date.'
+            );
+        }
+
         $this->from = $from;
         $this->to = $to;
         $this->maxAge = self::ageInYears($from, $now);

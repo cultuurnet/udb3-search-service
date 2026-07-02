@@ -44,8 +44,13 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
     private function parseDate(string $parameterName, string $value): DateTimeImmutable
     {
         $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+        $errors = DateTimeImmutable::getLastErrors();
 
-        if (!$date) {
+        if (
+            !preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)
+            || !$date
+            || (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
+        ) {
             throw new UnsupportedParameterValue(
                 "{$parameterName} should be in the format YYYY-MM-DD, got \"{$value}\""
             );

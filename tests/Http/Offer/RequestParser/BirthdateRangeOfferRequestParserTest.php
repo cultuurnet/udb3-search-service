@@ -99,17 +99,34 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
 
     /**
      * @test
+     * @dataProvider invalidDateProvider
      */
-    public function it_throws_when_a_range_bound_is_not_a_valid_date(): void
+    public function it_throws_when_a_range_bound_is_not_a_valid_date(string $invalidDate): void
     {
         $request = $this->request([
             'birthdateRangeFrom' => '2020-01-01',
-            'birthdateRangeTo' => 'not-a-date',
+            'birthdateRangeTo' => $invalidDate,
         ]);
 
         $this->expectException(UnsupportedParameterValue::class);
 
         $this->parser->parse($request, $this->queryBuilder);
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public function invalidDateProvider(): array
+    {
+        return [
+            'not a date' => ['not-a-date'],
+            'trailing garbage' => ['2020-12-31abc'],
+            'trailing garbage after valid date' => ['2020-01-01garbage'],
+            'month and day overflow' => ['2020-13-45'],
+            'day overflow' => ['2020-02-30'],
+            'month not zero-padded' => ['2020-1-01'],
+            'day not zero-padded' => ['2020-01-1'],
+        ];
     }
 
     private function request(array $params): ApiRequest
