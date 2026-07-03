@@ -407,6 +407,111 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_skips_sub_events_with_start_date_after_end_date(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates-and-invalid-subevent-date-range.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates-and-invalid-subevent-date-range.json',
+            [
+                ['warning', 'subEvent[1] skipped: start date is after end date.', []],
+                ['warning', "Missing expected field 'creator'.", []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_single_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-single-with-invalid-date-range.json',
+            __DIR__ . '/data/event/indexed-single-with-invalid-date-range.json',
+            [
+                ['warning', 'subEvent[0] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_periodic_events(): void
+    {
+        // Opening hours spanning midnight (opens 20:00, closes 02:00) produce an inverted sub-event
+        // since both times are applied to the same calendar day. Only the invalid Tuesday occurrence
+        // should be dropped; the valid Monday occurrence must still be indexed.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-midnight-crossing-opening-hours.json',
+            __DIR__ . '/data/event/indexed-periodic-with-midnight-crossing-opening-hours.json',
+            [
+                ['warning', 'subEvent[1] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_permanent_events(): void
+    {
+        // Same midnight-crossing scenario as periodic events, but for a permanent event with a normal weekly
+        // opening hours schedule spanning its full rolling date window. The Saturday evening slot (22:00-02:00)
+        // is invalid on every occurrence, so it logs one warning per week while every other valid sub-event
+        // (weekdays, Saturday/Sunday daytime) is still indexed.
+        $original = Json::decodeAssociatively(
+            FileReader::read(__DIR__ . '/data/event/original-permanent-with-midnight-crossing-opening-hours.json')
+        );
+        $expected = Json::decode(
+            FileReader::read(__DIR__ . '/data/event/indexed-permanent-with-midnight-crossing-opening-hours.json')
+        );
+        $actual = Json::decode(Json::encode($this->transformer->transform($original, [])));
+
+        $this->assertEquals($expected, $actual);
+
+        $logs = $this->simpleArrayLogger->getLogs();
+        $this->assertCount(78, $logs);
+        $this->assertEquals(
+            ['warning', 'subEvent[7] skipped: start date is after end date.', []],
+            $logs[0]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_permanent_events_with_adjusted_opening_hours(): void
+    {
+        // Adjusted opening hours go through the same code path as regular opening hours when generating
+        // sub-events, so a midnight-crossing adjusted day must be dropped the same way.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-midnight-crossing-adjusted-opening-hours.json',
+            __DIR__ . '/data/event/indexed-permanent-with-midnight-crossing-adjusted-opening-hours.json',
+            [
+                ['warning', 'subEvent[0] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_sub_events_where_start_date_equals_end_date(): void
+    {
+        // Equal timestamps (<=) must not be treated as inverted; all three sub-events here
+        // share the same start/end and must appear in the indexed output unchanged.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates.json',
+            [
+                ['warning', "Missing expected field 'creator'.", []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_optional_fields_if_present(): void
     {
         $this->transformAndAssert(
