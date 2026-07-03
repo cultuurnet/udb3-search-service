@@ -52,9 +52,10 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
         } catch (ElasticsearchException $e) {
             throw new ElasticSearchDocumentCouldNotBeIndexed(
                 sprintf(
-                    'ElasticSearch index request failed (index: %s, body size: %d bytes).',
+                    'ElasticSearch index request failed (id: %s, index: %s, body size: %d bytes).',
+                    $id,
                     $indexName,
-                    strlen(json_encode($params['body']) ?: '')
+                    strlen($jsonDocument->getRawBody())
                 ),
                 0,
                 $e
