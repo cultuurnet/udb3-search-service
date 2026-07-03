@@ -57,8 +57,10 @@ final class TransformingJsonDocumentIndexService implements
                 'Could not index document in repository.',
                 [
                     'id' => $documentId,
-                    'exception_code' => $exception->getCode(),
                     'exception_message' => $exception->getMessage(),
+                    'previous_exception_message' => $exception->getPrevious() !== null
+                        ? $exception->getPrevious()->getMessage()
+                        : null,
                 ]
             );
             throw new ElasticSearchDocumentCouldNotBeIndexed(
