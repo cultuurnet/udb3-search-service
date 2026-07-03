@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\JsonDocument;
 
 use CultuurNet\UDB3\Search\LoggerAwareTrait;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
@@ -49,7 +50,23 @@ final class TransformingJsonDocumentIndexService implements
 
         $this->logger->debug("Transformation of {$documentType} {$documentId} finished.");
 
-        $this->searchRepository->save($jsonDocument);
+        try {
+            $this->searchRepository->save($jsonDocument);
+        } catch (ElasticSearchDocumentCouldNotBeIndexed $exception) {
+            $this->logger->error(
+                'Could not index document in repository.',
+                [
+                    'id' => $documentId,
+                    'exception_code' => $exception->getCode(),
+                    'exception_message' => $exception->getMessage(),
+                ]
+            );
+            throw new ElasticSearchDocumentCouldNotBeIndexed(
+                "Could not index document {$documentId}.",
+                0,
+                $exception
+            );
+        }
     }
 
     public function remove(string $documentId): void

@@ -6,7 +6,9 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use Elasticsearch\Client;
+use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Psr\Log\LoggerInterface;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
@@ -45,7 +47,19 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
             $params['type'] = $documentType;
         }
 
-        $this->elasticSearchClient->index($params);
+        try {
+            $this->elasticSearchClient->index($params);
+        } catch (ElasticsearchException $e) {
+            throw new ElasticSearchDocumentCouldNotBeIndexed(
+                sprintf(
+                    'ElasticSearch index request failed (index: %s, body size: %d bytes).',
+                    $indexName,
+                    strlen(json_encode($params['body']) ?: '')
+                ),
+                0,
+                $e
+            );
+        }
     }
 
     public function finish(): void
