@@ -8,8 +8,6 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use DateTimeImmutable;
 
 final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -19,20 +17,20 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
     ): OfferQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        $from = $parameterBagReader->getStringFromParameter('birthdateRangeFrom');
-        $to = $parameterBagReader->getStringFromParameter('birthdateRangeTo');
+        $from = $parameterBagReader->getDateFromParameter('birthdateRangeFrom');
+        $to = $parameterBagReader->getDateFromParameter('birthdateRangeTo');
 
         if ($from === null && $to === null) {
             return $offerQueryBuilder;
         }
 
-        if ($to !== null && $from === null) {
+        if ($from === null) {
             throw new MissingParameter(
                 'Required "birthdateRangeFrom" parameter missing when searching by "birthdateRangeTo".'
             );
         }
 
-        if ($from !== null && $to === null) {
+        if ($to === null) {
             throw new MissingParameter(
                 'Required "birthdateRangeTo" parameter missing when searching by "birthdateRangeFrom".'
             );
@@ -40,27 +38,9 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
 
         return $offerQueryBuilder->withBirthdateRangeFilter(
             new BirthdateRange(
-                $this->parseDate('birthdateRangeFrom', $from),
-                $this->parseDate('birthdateRangeTo', $to)
+                $from,
+                $to
             )
         );
-    }
-
-    private function parseDate(string $parameterName, string $value): DateTimeImmutable
-    {
-        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
-        $errors = DateTimeImmutable::getLastErrors();
-
-        if (
-            !preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)
-            || !$date
-            || (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
-        ) {
-            throw new UnsupportedParameterValue(
-                "{$parameterName} should be in the format YYYY-MM-DD, got \"{$value}\""
-            );
-        }
-
-        return $date;
     }
 }
