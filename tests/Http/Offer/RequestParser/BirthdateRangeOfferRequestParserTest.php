@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
+use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -80,7 +81,7 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     {
         $request = $this->request(['birthdateRangeFrom' => '2020-01-01']);
 
-        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectException(MissingParameter::class);
 
         $this->parser->parse($request, $this->queryBuilder);
     }
@@ -92,7 +93,7 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     {
         $request = $this->request(['birthdateRangeTo' => '2020-12-31']);
 
-        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectException(MissingParameter::class);
 
         $this->parser->parse($request, $this->queryBuilder);
     }

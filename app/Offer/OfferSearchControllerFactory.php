@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
+use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeToTypicalAgeRangeQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
@@ -86,6 +87,7 @@ final class OfferSearchControllerFactory
         if ($this->usesCompatibilityMode()) {
             $luceneFactory->enableElasticSearch5CompatibilityMode();
         }
+        $queryStringFactory = new BirthdateRangeToTypicalAgeRangeQueryStringFactory($luceneFactory);
 
         return new OfferSearchController(
             new ElasticSearchOfferQueryBuilder($this->aggregationSize),
@@ -96,7 +98,7 @@ final class OfferSearchControllerFactory
             ),
             $this->regionIndex,
             $this->documentType,
-            $luceneFactory,
+            $queryStringFactory,
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer,
         );
