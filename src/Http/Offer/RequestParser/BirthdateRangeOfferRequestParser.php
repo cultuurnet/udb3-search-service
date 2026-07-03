@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
+use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
@@ -25,9 +26,15 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
             return $offerQueryBuilder;
         }
 
-        if ($from === null || $to === null) {
-            throw new UnsupportedParameterValue(
-                'birthdateRangeFrom and birthdateRangeTo should be used together'
+        if ($to !== null && $from === null) {
+            throw new MissingParameter(
+                'Required "birthdateRangeFrom" parameter missing when searching by "birthdateRangeTo".'
+            );
+        }
+
+        if ($from !== null && $to === null) {
+            throw new MissingParameter(
+                'Required "birthdateRangeTo" parameter missing when searching by "birthdateRangeFrom".'
             );
         }
 
