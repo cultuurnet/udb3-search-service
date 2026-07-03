@@ -41,7 +41,6 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -128,28 +127,29 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             return $this;
         }
 
-        $rangeQueries = [];
-        foreach ($ranges as $range) {
-            $rangeQueries[] = new RangeQuery(
+        // A single range is a plain range filter, so reuse the shared helper.
+        if (count($ranges) === 1) {
+            return $this->withRangeQuery(
                 'birthdateRange',
-                [
-                    RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
-                    RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
-                ]
+                $ranges[0]->getFrom()->format('Y-m-d'),
+                $ranges[0]->getTo()->format('Y-m-d')
             );
         }
 
-        $c = $this->getClone();
-
-        if (count($rangeQueries) === 1) {
-            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
-            return $c;
-        }
-
+        // Multiple ranges are combined with OR (SHOULD) inside a single filter.
         $shouldQuery = new BoolQuery();
-        foreach ($rangeQueries as $rangeQuery) {
-            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+        foreach ($ranges as $range) {
+            $rangeQuery = $this->createRangeQuery(
+                'birthdateRange',
+                $range->getFrom()->format('Y-m-d'),
+                $range->getTo()->format('Y-m-d')
+            );
+            if ($rangeQuery !== null) {
+                $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+            }
         }
+
+        $c = $this->getClone();
         $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
         return $c;
     }
