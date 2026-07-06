@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AttendanceModeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\BirthdateRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
@@ -64,6 +65,7 @@ final class OfferSearchControllerFactory
         $requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())
+            ->withParser(new BirthdateRangeOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new AttendanceModeOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(
