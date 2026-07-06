@@ -3576,10 +3576,12 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 [
                     'metadata.recommendationFor.score' => [
                         'order' => 'asc',
-                        'nested_path' => 'metadata.recommendationFor',
-                        'nested_filter' => [
-                            'term' => [
-                                'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                        'nested' => [
+                            'path' => 'metadata.recommendationFor',
+                            'filter' => [
+                                'term' => [
+                                    'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                                ],
                             ],
                         ],
                     ],
@@ -3590,6 +3592,32 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_sort_by_recommendation_score_using_legacy_nested_sort_syntax_in_elastic_search_5_compatibility_mode(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->enableElasticSearch5CompatibilityMode()
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
+
+        $expectedSort = [
+            [
+                'metadata.recommendationFor.score' => [
+                    'order' => 'asc',
+                    'nested_path' => 'metadata.recommendationFor',
+                    'nested_filter' => [
+                        'term' => [
+                            'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedSort, $builder->build()['sort']);
     }
 
     /**
