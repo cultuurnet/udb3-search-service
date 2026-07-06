@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -18,6 +19,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
+use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -46,6 +48,8 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
+    use ElasticSearch5Compatibility;
+
     private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
@@ -118,6 +122,39 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
+    }
+
+    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): self
+    {
+        if (empty($ranges)) {
+            return $this;
+        }
+
+        // A single range is a plain range filter, so reuse the shared helper.
+        if (count($ranges) === 1) {
+            return $this->withRangeQuery(
+                'birthdateRange',
+                $ranges[0]->getFrom()->format('Y-m-d'),
+                $ranges[0]->getTo()->format('Y-m-d')
+            );
+        }
+
+        // Multiple ranges are combined with OR (SHOULD) inside a single filter.
+        $shouldQuery = new BoolQuery();
+        foreach ($ranges as $range) {
+            $rangeQuery = $this->createRangeQuery(
+                'birthdateRange',
+                $range->getFrom()->format('Y-m-d'),
+                $range->getTo()->format('Y-m-d')
+            );
+            if ($rangeQuery !== null) {
+                $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+            }
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self
@@ -555,10 +592,23 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
 
-        $fieldSort->setParameters([
-            'nested_path' => 'metadata.recommendationFor',
-            'nested_filter' => (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray(),
-        ]);
+        $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
+
+        // ES6.1 deprecated the top-level nested_path/nested_filter sort parameters in favour of a
+        // nested object, and ES7 removed them. ES5 only understands the old syntax.
+        if ($this->usesLegacyNestedSortSyntax()) {
+            $fieldSort->setParameters([
+                'nested_path' => 'metadata.recommendationFor',
+                'nested_filter' => $nestedFilter,
+            ]);
+        } else {
+            $fieldSort->setParameters([
+                'nested' => [
+                    'path' => 'metadata.recommendationFor',
+                    'filter' => $nestedFilter,
+                ],
+            ]);
+        }
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);
