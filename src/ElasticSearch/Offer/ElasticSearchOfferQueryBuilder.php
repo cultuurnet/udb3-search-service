@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
+use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -118,6 +119,39 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
+    }
+
+    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): self
+    {
+        if (empty($ranges)) {
+            return $this;
+        }
+
+        // A single range is a plain range filter, so reuse the shared helper.
+        if (count($ranges) === 1) {
+            return $this->withRangeQuery(
+                'birthdateRange',
+                $ranges[0]->getFrom()->format('Y-m-d'),
+                $ranges[0]->getTo()->format('Y-m-d')
+            );
+        }
+
+        // Multiple ranges are combined with OR (SHOULD) inside a single filter.
+        $shouldQuery = new BoolQuery();
+        foreach ($ranges as $range) {
+            $rangeQuery = $this->createRangeQuery(
+                'birthdateRange',
+                $range->getFrom()->format('Y-m-d'),
+                $range->getTo()->format('Y-m-d')
+            );
+            if ($rangeQuery !== null) {
+                $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+            }
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self

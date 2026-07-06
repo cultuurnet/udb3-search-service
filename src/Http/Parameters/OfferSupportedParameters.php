@@ -18,6 +18,8 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'organizerId',
             'availableFrom',
             'availableTo',
+            'birthdateRangeFrom',
+            'birthdateRangeTo',
             'workflowStatus',
             'regions',
             'coordinates',
