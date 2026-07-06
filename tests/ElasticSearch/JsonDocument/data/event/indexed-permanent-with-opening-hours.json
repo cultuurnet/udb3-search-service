@@ -16265,6 +16265,7 @@
         "nl"
     ],
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,

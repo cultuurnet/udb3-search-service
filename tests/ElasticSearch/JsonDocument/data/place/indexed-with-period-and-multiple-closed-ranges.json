@@ -91,6 +91,7 @@
     ],
     "availableTo": "2017-05-09T23:00:00+02:00",
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,

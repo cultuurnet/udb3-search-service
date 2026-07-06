@@ -16071,6 +16071,7 @@
     ],
     "availableTo": "2100-01-01T00:00:00+02:00",
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,

@@ -455,6 +455,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
     }
 
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        return $this->withTermQuery('hasChildcare', $hasChildcare);
+    }
+
     public function withTermIdFilter(TermId $termId): self
     {
         return $this->withMatchQuery('terms.id', $termId->toString());

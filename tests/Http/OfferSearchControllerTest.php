@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\HasChildcareOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
@@ -92,6 +93,7 @@ final class OfferSearchControllerTest extends TestCase
             ))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GroupByOfferRequestParser())
+            ->withParser(new HasChildcareOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
@@ -150,6 +152,7 @@ final class OfferSearchControllerTest extends TestCase
                 'audienceType' => 'members',
                 'hasMediaObjects' => 'true',
                 'hasVideos' => 'true',
+                'hasChildcare' => 'true',
                 'labels' => ['foo', 'bar'],
                 'locationLabels' => ['lorem'],
                 'organizerLabels' => ['ipsum'],
@@ -267,6 +270,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
             ->withMediaObjectsFilter(true)
             ->withVideosFilter(true)
+            ->withHasChildcareFilter(true)
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(
@@ -724,6 +728,58 @@ final class OfferSearchControllerTest extends TestCase
             $expectedQueryBuilder = $expectedQueryBuilder
                 ->withUiTPASFilter($booleanValue);
         }
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     * @param bool|string|int $stringValue
+     * @dataProvider booleanStringDataProvider
+     */
+    public function it_converts_the_has_childcare_toggle_parameter_to_a_correct_boolean(
+        $stringValue,
+        ?bool $booleanValue
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'hasChildcare' => $stringValue,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder;
+
+        if (!is_null($booleanValue)) {
+            $expectedQueryBuilder = $expectedQueryBuilder
+                ->withHasChildcareFilter($booleanValue);
+        }
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_filter_on_childcare_when_the_parameter_is_omitted(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        // No withHasChildcareFilter call is expected: omitting the parameter preserves behaviour.
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStartAndLimit(new Start(0), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

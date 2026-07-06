@@ -95,6 +95,7 @@
     ],
     "availableTo": "2017-04-28T23:59:59+02:00",
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
