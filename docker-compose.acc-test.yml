@@ -1,5 +1,5 @@
 x-search-service: &search-service
-  image: ${SEARCH_IMAGE:-757200591793.dkr.ecr.eu-west-1.amazonaws.com/uitdatabank/search-api:latest}
+  image: ${SEARCH_IMAGE:-757200591793.dkr.ecr.eu-west-1.amazonaws.com/uitdatabank/search-api:acceptance}
   restart: unless-stopped
   volumes:
     - ./config.php:/var/www/html/config.php:ro
