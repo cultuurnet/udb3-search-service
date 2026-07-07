@@ -84,13 +84,15 @@ final class OfferSearchControllerFactory
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         $luceneFactory = new LuceneQueryStringFactory();
+        $queryBuilder = new ElasticSearchOfferQueryBuilder($this->aggregationSize);
         if ($this->usesCompatibilityMode()) {
             $luceneFactory->enableElasticSearch5CompatibilityMode();
+            $queryBuilder->enableElasticSearch5CompatibilityMode();
         }
         $queryStringFactory = new BirthdateRangeToTypicalAgeRangeQueryStringFactory($luceneFactory);
 
         return new OfferSearchController(
-            new ElasticSearchOfferQueryBuilder($this->aggregationSize),
+            $queryBuilder,
             $requestParser,
             $this->offerSearchServiceFactory->createFor(
                 $readIndex,
