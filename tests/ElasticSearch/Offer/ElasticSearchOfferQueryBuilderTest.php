@@ -1492,58 +1492,70 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                             'bool' => [
                                 'should' => [
                                     [
-                                        'range' => [
-                                            'birthdateRange' => [
-                                                'gte' => '2020-01-01',
-                                                'lte' => '2020-12-31',
+                                        'bool' => [
+                                            'should' => [
+                                                [
+                                                    'range' => [
+                                                        'birthdateRange' => [
+                                                            'gte' => '2020-01-01',
+                                                            'lte' => '2020-12-31',
+                                                        ],
+                                                    ],
+                                                ],
+                                                [
+                                                    'bool' => [
+                                                        'must' => [
+                                                            [
+                                                                'range' => [
+                                                                    'typicalAgeRange' => [
+                                                                        'gte' => 5,
+                                                                        'lte' => 6,
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                        'must_not' => [
+                                                            [
+                                                                'term' => [
+                                                                    'allAges' => true,
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
                                     [
                                         'bool' => [
-                                            'must' => [
+                                            'should' => [
                                                 [
                                                     'range' => [
-                                                        'typicalAgeRange' => [
-                                                            'gte' => 5,
-                                                            'lte' => 6,
+                                                        'birthdateRange' => [
+                                                            'gte' => '2022-06-30',
+                                                            'lte' => '2022-12-31',
                                                         ],
                                                     ],
                                                 ],
-                                            ],
-                                            'must_not' => [
                                                 [
-                                                    'term' => [
-                                                        'allAges' => true,
-                                                    ],
-                                                ],
-                                            ],
-                                        ],
-                                    ],
-                                    [
-                                        'range' => [
-                                            'birthdateRange' => [
-                                                'gte' => '2022-06-30',
-                                                'lte' => '2022-12-31',
-                                            ],
-                                        ],
-                                    ],
-                                    [
-                                        'bool' => [
-                                            'must' => [
-                                                [
-                                                    'range' => [
-                                                        'typicalAgeRange' => [
-                                                            'gte' => 3,
-                                                            'lte' => 3,
+                                                    'bool' => [
+                                                        'must' => [
+                                                            [
+                                                                'range' => [
+                                                                    'typicalAgeRange' => [
+                                                                        'gte' => 3,
+                                                                        'lte' => 3,
+                                                                    ],
+                                                                ],
+                                                            ],
                                                         ],
-                                                    ],
-                                                ],
-                                            ],
-                                            'must_not' => [
-                                                [
-                                                    'term' => [
-                                                        'allAges' => true,
+                                                        'must_not' => [
+                                                            [
+                                                                'term' => [
+                                                                    'allAges' => true,
+                                                                ],
+                                                            ],
+                                                        ],
                                                     ],
                                                 ],
                                             ],

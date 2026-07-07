@@ -41,7 +41,6 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -128,43 +127,56 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             return $this;
         }
 
-        // A birthdate range matches an event either through its explicit birthdateRange
-        // (an absolute date range) or through its typicalAgeRange. The latter is a fixed
-        // age range, so the birthdate <-> age conversion has to happen here at query time
-        // (relative to "now") rather than at index time, where it would drift as time passes.
-        // "All ages" events are deliberately excluded from the typicalAgeRange match: their
-        // range is unbounded and would otherwise match every birthdate query.
-        $shouldQuery = new BoolQuery();
-        foreach ($ranges as $range) {
-            $shouldQuery->add(
-                new RangeQuery(
-                    'birthdateRange',
-                    [
-                        RangeQuery::GTE => $range->getFrom()->format('Y-m-d'),
-                        RangeQuery::LTE => $range->getTo()->format('Y-m-d'),
-                    ]
-                ),
-                BoolQuery::SHOULD
-            );
-
-            $ageRangeQuery = new BoolQuery();
-            $ageRangeQuery->add(
-                new RangeQuery(
-                    'typicalAgeRange',
-                    [
-                        RangeQuery::GTE => $range->getMinAge(),
-                        RangeQuery::LTE => $range->getMaxAge(),
-                    ]
-                ),
-                BoolQuery::MUST
-            );
-            $ageRangeQuery->add(new TermQuery('allAges', true), BoolQuery::MUST_NOT);
-            $shouldQuery->add($ageRangeQuery, BoolQuery::SHOULD);
-        }
+        $rangeQueries = array_map(
+            fn (BirthdateRange $range): BoolQuery => $this->createBirthdateRangeQuery($range),
+            $ranges
+        );
 
         $c = $this->getClone();
+
+        // A single range is added directly; multiple ranges are combined with OR (SHOULD).
+        if (count($rangeQueries) === 1) {
+            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
+            return $c;
+        }
+
+        $shouldQuery = new BoolQuery();
+        foreach ($rangeQueries as $rangeQuery) {
+            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+        }
         $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
         return $c;
+    }
+
+    /**
+     * A birthdate range matches an event either through its explicit birthdateRange (an
+     * absolute date range) or through its typicalAgeRange. The birthdate <-> age conversion
+     * happens here at query time (relative to "now") rather than at index time, where it
+     * would drift as time passes. "All ages" events are deliberately excluded from the
+     * typicalAgeRange match: their range is unbounded and would otherwise match every query.
+     */
+    private function createBirthdateRangeQuery(BirthdateRange $range): BoolQuery
+    {
+        $query = new BoolQuery();
+
+        $birthdateRangeQuery = $this->createRangeQuery(
+            'birthdateRange',
+            $range->getFrom()->format('Y-m-d'),
+            $range->getTo()->format('Y-m-d')
+        );
+        if ($birthdateRangeQuery !== null) {
+            $query->add($birthdateRangeQuery, BoolQuery::SHOULD);
+        }
+
+        $ageRangeQuery = $this->createRangeQuery('typicalAgeRange', $range->getMinAge(), $range->getMaxAge());
+        if ($ageRangeQuery !== null) {
+            $ageQuery = new BoolQuery();
+            $ageQuery->add($ageRangeQuery);
+            $ageQuery->add(new TermQuery('allAges', true), BoolQuery::MUST_NOT);
+            $query->add($ageQuery, BoolQuery::SHOULD);
+        }
+
+        return $query;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self
