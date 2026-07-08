@@ -46,3 +46,29 @@ How to apply:
 - Add the field to the ES mapping JSONs under `src/ElasticSearch/Operations/json/`.
 
 See `ChildrenOnlyTransformer` for a minimal reference implementation.
+
+## Comments
+
+### Only comment the *why*, never the *what*
+
+A comment must explain **why** the code is written the way it is — a rationale a
+reader cannot recover from the code itself. Do not add comments that merely
+restate what the code does.
+
+Why:
+- The code already states what it does. A "what" comment is redundant noise that
+  drifts out of date the moment the code changes, and it trains readers to stop
+  trusting comments.
+- The non-obvious part is almost always the reason: an ordering constraint, a
+  domain rule, a workaround, a deliberate default. That is what future readers
+  (and reviewers) actually need.
+
+How to apply:
+- Before keeping a comment, ask: "Does this tell the reader something the code
+  cannot?" If not, delete it.
+- Prefer comments that capture intent or constraints ("derive X before Y so it
+  reflects the author's input, not generated data") over narration ("set X to
+  false", "loop over the sub-events").
+- This applies to inline comments and to prose in docblocks alike. Boilerplate
+  `@param`/`@return` docblocks that match the surrounding file's idiom are fine;
+  prose inside them should still be *why*.

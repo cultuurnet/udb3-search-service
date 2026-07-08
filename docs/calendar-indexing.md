@@ -88,8 +88,8 @@ Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read 
 
 | Role | Fields | Stored in ES? |
 |---|---|---|
-| Source only | `calendarType`, `startDate`, `endDate`, `openingHours` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange` | Yes, queryable |
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `overnight` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasOvernight` | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
@@ -253,6 +253,59 @@ GET /offers?localTimeFrom=14:00&localTimeTo=18:00&bookingAvailability=Available
 
 ---
 
+## Overnight
+
+Sub-events of `single` and `multiple` calendars may carry an optional `overnight` flag in the
+source JSON-LD. It marks a slot that involves an overnight stay (e.g. a multi-day trip with a
+sleepover). It is serialised only when `true`:
+
+```json
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2024-06-01T20:00:00+00:00",
+      "endDate": "2024-06-02T08:00:00+00:00",
+      "overnight": true
+    }
+  ]
+}
+```
+
+Overnight is **event-only** and lives on sub-events only. Opening hours (`periodic`, `permanent`)
+never carry it, and places never have it.
+
+### Indexing
+
+The indexer sets a single top-level boolean, `hasOvernight`:
+
+```json
+{ "hasOvernight": true }
+```
+
+It couples on **event level**: `hasOvernight` is `true` when at least one source sub-event has
+`overnight: true`, and `false` otherwise. A partial overnight event (some sub-events overnight, some
+not) is therefore flagged `true`. Like `status` and `bookingAvailability`, the field is always
+present on every document (defaulting to `false`), so a `term` filter is reliable. It is derived
+from the source sub-events before they are poly-filled from opening hours, so it never influences
+`dateRange`, `localTimeRange`, or the generated `subEvent[]`.
+
+### Search parameter
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `hasOvernight=true` | `hasOvernight` | Only offers with at least one overnight sub-event. |
+| `hasOvernight=false` | `hasOvernight` | Only offers without any overnight sub-event. |
+| _(omitted)_ | — | No overnight filtering; behaviour unchanged. |
+
+```
+GET /offers?hasOvernight=true
+```
+→ runs a `term` query on the top-level `hasOvernight` field. It is independent of `dateRange` and
+the other calendar filters.
+
+---
+
 ## Closed days and adjusted days
 
 Two fields that the backend model supports but are **not yet handled by the indexer**.
@@ -380,7 +433,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 ### Indexing
 
-- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, `polyFillJsonLdSubEvents()`.
+- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`.
 
 ### Elasticsearch mappings
 
@@ -391,7 +444,8 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Query building
 
 - `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
-- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`.
+- `HasOvernightOfferRequestParser`: parses the `hasOvernight` boolean parameter.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasOvernightFilter()`.
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
 
 ### Backend calendar model (udb3-backend)
