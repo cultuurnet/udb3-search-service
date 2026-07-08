@@ -455,6 +455,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
     }
 
+    public function withHasOvernightFilter(bool $hasOvernight): self
+    {
+        return $this->withTermQuery('hasOvernight', $hasOvernight);
+    }
+
     public function withTermIdFilter(TermId $termId): self
     {
         return $this->withMatchQuery('terms.id', $termId->toString());
