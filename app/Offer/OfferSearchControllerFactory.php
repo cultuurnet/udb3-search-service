@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\HasOvernightOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
@@ -76,6 +77,7 @@ final class OfferSearchControllerFactory
                 new GeoBoundsParametersFactory()
             ))
             ->withParser(new GroupByOfferRequestParser())
+            ->withParser(new HasOvernightOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
