@@ -326,6 +326,10 @@
             "type": "boolean"
         },
 
+        "hasOvernight": {
+            "type": "boolean"
+        },
+
         "mediaObjectsCount": {
             "type": "integer"
         },

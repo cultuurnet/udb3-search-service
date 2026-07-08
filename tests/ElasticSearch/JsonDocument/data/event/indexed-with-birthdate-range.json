@@ -77,5 +77,6 @@
     "metadata": {
         "popularity": 0
     },
-    "childrenOnly": false
+    "childrenOnly": false,
+    "hasOvernight": false
 }
