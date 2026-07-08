@@ -38,7 +38,7 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactoryTest extends TestCa
     /**
      * @test
      */
-    public function it_expands_every_birthdate_range_in_a_compound_query(): void
+    public function it_expands_a_birthdate_range_in_a_compound_query(): void
     {
         $actual = $this->factory->fromString(
             'birthdateRange:[2020-01-01 TO 2020-12-31] AND name.nl:foo'
