@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService\Place;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\PlaceTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\SubEventCapTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
@@ -35,7 +36,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
                         ),
                         new PathEndIdUrlParser(),
                         $this->get(GeoShapeQueryRegionService::class),
-                        (int) ($this->parameter('elasticsearch.sub_event_cap') ?? 9900)
+                        (int) ($this->parameter('elasticsearch.sub_event_cap') ?? SubEventCapTransformer::DEFAULT_CAP)
                     )
                 );
 

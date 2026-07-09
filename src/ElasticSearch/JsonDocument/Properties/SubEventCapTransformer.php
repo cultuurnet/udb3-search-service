@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 
 final class SubEventCapTransformer implements JsonTransformer
 {
+    public const DEFAULT_CAP = 9900;
+
     private JsonTransformerLogger $logger;
 
     private int $maxSubEvents;
