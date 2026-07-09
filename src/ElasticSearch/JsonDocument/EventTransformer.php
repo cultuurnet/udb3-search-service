@@ -28,13 +28,15 @@ final class EventTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        RegionServiceInterface $regionService
+        RegionServiceInterface $regionService,
+        int $subEventCap
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::event()
+                FallbackType::event(),
+                $subEventCap
             ),
             new AttendanceModeTransformer(),
             new RelatedLocationTransformer(

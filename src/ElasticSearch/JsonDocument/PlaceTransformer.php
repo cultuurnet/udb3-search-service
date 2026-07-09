@@ -22,13 +22,15 @@ final class PlaceTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        RegionServiceInterface $regionService
+        RegionServiceInterface $regionService,
+        int $subEventCap
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::place()
+                FallbackType::place(),
+                $subEventCap
             ),
             new AddressTransformer($logger, true),
             new UniqueAddressTransformer(),

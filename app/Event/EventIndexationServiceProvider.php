@@ -34,7 +34,8 @@ final class EventIndexationServiceProvider extends BaseServiceProvider
                             $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
-                        $this->get(GeoShapeQueryRegionService::class)
+                        $this->get(GeoShapeQueryRegionService::class),
+                        (int) ($this->parameter('elasticsearch.sub_event_cap') ?? 9900)
                     )
                 );
 
