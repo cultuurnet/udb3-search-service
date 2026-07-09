@@ -31,8 +31,10 @@ final class SubEventCapTransformer implements JsonTransformer
             return $draft;
         }
 
-        $id = $from['@id'] ?? 'unknown';
-        $draft['subEvent'] = $this->truncate($draft['subEvent'], $id);
+        $draft['subEvent'] = $this->truncate(
+            $draft['subEvent'],
+            $from['@id'] ?? 'unknown'
+        );
 
         return $draft;
     }
