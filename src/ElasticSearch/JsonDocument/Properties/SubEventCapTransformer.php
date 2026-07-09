@@ -46,8 +46,6 @@ final class SubEventCapTransformer implements JsonTransformer
      * the tail end of the range. That's accepted: the scenario is rare, and losing a few years off an
      * already multi-decade range is a small relative loss compared to the complexity of a smarter
      * selection strategy.
-     *
-     * @param array[] $subEvents
      */
     private function truncate(array $subEvents, string $id): array
     {
