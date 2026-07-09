@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\SearchService\Event;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentRepository;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\EventTransformer;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\SubEventCapTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\PathEndIdUrlParser;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
 use CultuurNet\UDB3\Search\Event\EventSearchProjector;
@@ -35,8 +34,7 @@ final class EventIndexationServiceProvider extends BaseServiceProvider
                             $this->get('logger.amqp.udb3')
                         ),
                         new PathEndIdUrlParser(),
-                        $this->get(GeoShapeQueryRegionService::class),
-                        (int) ($this->parameter('elasticsearch.sub_event_cap') ?? SubEventCapTransformer::DEFAULT_CAP)
+                        $this->get(GeoShapeQueryRegionService::class)
                     )
                 );
 

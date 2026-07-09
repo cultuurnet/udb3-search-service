@@ -42,7 +42,7 @@ final class OfferTransformer implements JsonTransformer
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
         FallbackType $fallbackType,
-        int $subEventCap
+        int $subEventCap = SubEventCapTransformer::DEFAULT_CAP
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new IdentifierTransformer(

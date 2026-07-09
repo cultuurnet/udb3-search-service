@@ -130,9 +130,9 @@ Every offer also gets a `subEvent[]` array. Each entry represents one time slot.
 combined). Calendars with a large or unbounded `openingHours`-driven expansion (e.g. `periodic` with a very
 long `startDate`–`endDate` range) can generate more sub-events than that. To stay safely under the limit,
 `SubEventCapTransformer` truncates `subEvent` to the first N entries encountered and logs a warning when
-truncation happens. The cap (`elasticsearch.sub_event_cap` in `config.php`, defaulting to 9,900) is a
-deployment-level config value, not a code constant, since it exists to track the Elasticsearch index
-setting rather than any calendar domain logic. Only the `subEvent[]` array is capped, `dateRange` and
+truncation happens. The cap is `SubEventCapTransformer::DEFAULT_CAP` (9,900) — the same for every
+environment, so it's a code constant rather than a deployment-level config value; change it there if the
+Elasticsearch index setting ever changes. Only the `subEvent[]` array is capped, `dateRange` and
 `localTimeRange` are still built from the full, uncapped list.
 
 **Expanding rules:**
@@ -391,7 +391,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Indexing
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, `polyFillJsonLdSubEvents()`.
-- `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `elasticsearch.sub_event_cap` entries to stay under Elasticsearch's nested-object limit.
+- `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 
 ### Elasticsearch mappings
 

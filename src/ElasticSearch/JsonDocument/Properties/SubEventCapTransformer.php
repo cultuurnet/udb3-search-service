@@ -15,7 +15,7 @@ final class SubEventCapTransformer implements JsonTransformer
 
     private int $subEventCap;
 
-    public function __construct(JsonTransformerLogger $logger, int $subEventCap)
+    public function __construct(JsonTransformerLogger $logger, int $subEventCap = self::DEFAULT_CAP)
     {
         $this->logger = $logger;
         $this->subEventCap = $subEventCap;
