@@ -13,12 +13,12 @@ final class SubEventCapTransformer implements JsonTransformer
 
     private JsonTransformerLogger $logger;
 
-    private int $maxSubEvents;
+    private int $subEventCap;
 
-    public function __construct(JsonTransformerLogger $logger, int $maxSubEvents)
+    public function __construct(JsonTransformerLogger $logger, int $subEventCap)
     {
         $this->logger = $logger;
-        $this->maxSubEvents = $maxSubEvents;
+        $this->subEventCap = $subEventCap;
     }
 
     public function transform(array $from, array $draft = []): array
@@ -27,7 +27,7 @@ final class SubEventCapTransformer implements JsonTransformer
             return $draft;
         }
 
-        if (count($draft['subEvent']) <= $this->maxSubEvents) {
+        if (count($draft['subEvent']) <= $this->subEventCap) {
             return $draft;
         }
 
@@ -38,7 +38,7 @@ final class SubEventCapTransformer implements JsonTransformer
     }
 
     /**
-     * Keeps the first $this->maxSubEvents entries and drops the rest.
+     * Keeps the first $this->subEventCap entries and drops the rest.
      *
      * This is a naive, non-negotiated cut-off: no attempt is made to pick which entries matter most (e.g.
      * biasing towards future-relevant slots, or sampling across the full range). For a periodic calendar
@@ -54,9 +54,9 @@ final class SubEventCapTransformer implements JsonTransformer
         $originalCount = count($subEvents);
 
         $this->logger->logWarning(
-            "subEvent truncated from {$originalCount} to {$this->maxSubEvents} entries for {$id}."
+            "subEvent truncated from {$originalCount} to {$this->subEventCap} entries for {$id}."
         );
 
-        return array_slice($subEvents, 0, $this->maxSubEvents);
+        return array_slice($subEvents, 0, $this->subEventCap);
     }
 }
