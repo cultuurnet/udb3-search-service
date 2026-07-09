@@ -13,7 +13,11 @@ final class BirthdateRange
 
     private DateTimeImmutable $to;
 
-    public function __construct(DateTimeImmutable $from, DateTimeImmutable $to)
+    private int $minAge;
+
+    private int $maxAge;
+
+    public function __construct(DateTimeImmutable $from, DateTimeImmutable $to, DateTimeImmutable $now)
     {
         if ($from > $to) {
             throw new UnsupportedParameterValue(
@@ -23,6 +27,8 @@ final class BirthdateRange
 
         $this->from = $from;
         $this->to = $to;
+        $this->maxAge = self::ageInYears($from, $now);
+        $this->minAge = self::ageInYears($to, $now);
     }
 
     public function getFrom(): DateTimeImmutable
@@ -33,5 +39,24 @@ final class BirthdateRange
     public function getTo(): DateTimeImmutable
     {
         return $this->to;
+    }
+
+    public function getMinAge(): int
+    {
+        return $this->minAge;
+    }
+
+    public function getMaxAge(): int
+    {
+        return $this->maxAge;
+    }
+
+    private static function ageInYears(DateTimeImmutable $birthdate, DateTimeImmutable $now): int
+    {
+        $diff = $birthdate->diff($now);
+        if ($diff->invert === 1) {
+            return 0;
+        }
+        return $diff->y;
     }
 }
