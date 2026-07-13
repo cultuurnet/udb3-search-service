@@ -47,7 +47,7 @@ final class Url
 
     public function getDomain(): string
     {
-        $host = $this->urlParts['host'];
+        $host = strtolower($this->urlParts['host']);
 
         if (strpos($host, 'www.') === 0) {
             return substr($host, strlen('www.'));
