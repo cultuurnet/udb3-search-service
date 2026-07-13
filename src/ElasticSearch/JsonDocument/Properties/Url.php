@@ -16,8 +16,6 @@ final class Url
     {
         $urlParts = parse_url($url);
 
-        // Scheme-less URLs like www.example.be/foo are parsed as a path without a host.
-        // Reparse with a network-path prefix so the host is recognized.
         if (is_array($urlParts) && !isset($urlParts['host']) && !isset($urlParts['scheme'])) {
             $urlParts = parse_url('//' . $url);
         }
