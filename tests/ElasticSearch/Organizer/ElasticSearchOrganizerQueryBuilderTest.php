@@ -284,7 +284,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     public function it_does_not_throw_for_an_invalid_url_as_website(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withWebsiteFilter('foobar');
+            ->withWebsiteFilter('/foo:80');
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -301,7 +301,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         [
                             'match' => [
                                 'url' => [
-                                    'query' => 'foobar',
+                                    'query' => '/foo:80',
                                 ],
                             ],
                         ],
