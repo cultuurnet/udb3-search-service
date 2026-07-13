@@ -222,11 +222,14 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
 
     /**
      * @test
+     * @dataProvider websiteFilterProvider
      */
-    public function it_should_build_a_query_with_a_website_filter_and_normalize_it_if_it_is_a_valid_url(): void
-    {
+    public function it_should_build_a_query_with_a_website_filter_and_normalize_it_if_it_is_a_valid_url(
+        string $website,
+        string $expectedQuery
+    ): void {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
-            ->withWebsiteFilter('http://foo.bar');
+            ->withWebsiteFilter($website);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
@@ -243,7 +246,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                         [
                             'match' => [
                                 'url' => [
-                                    'query' => 'foo.bar',
+                                    'query' => $expectedQuery,
                                 ],
                             ],
                         ],
@@ -255,6 +258,24 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    public function websiteFilterProvider(): array
+    {
+        return [
+            'with scheme' => ['http://foo.bar', 'foo.bar'],
+            'without scheme' => ['www.kvvrauw.be', 'kvvrauw.be'],
+            'with scheme and trailing slash' => ['https://www.kvvrauw.be/', 'kvvrauw.be'],
+            'with uppercase host' => ['https://WWW.kvvrauw.be', 'kvvrauw.be'],
+            'without scheme with path' => [
+                'www.gemeentemol.be/adviesraad-mondiaal-beleid',
+                'gemeentemol.be/adviesraad-mondiaal-beleid',
+            ],
+            'with scheme and path' => [
+                'https://www.gemeentemol.be/adviesraad-mondiaal-beleid',
+                'gemeentemol.be/adviesraad-mondiaal-beleid',
+            ],
+        ];
     }
 
     /**
