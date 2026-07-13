@@ -77,6 +77,8 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withDomainFilter(string $domain): ElasticSearchOrganizerQueryBuilder
     {
+        // The domain field is a case-sensitive keyword field, indexed lowercase.
+        $domain = strtolower($domain);
         if (strpos($domain, 'www.') === 0) {
             $domain = substr($domain, strlen('www.'));
         }
