@@ -82,8 +82,8 @@ final class CalendarTransformerTest extends TestCase
 
     /**
      * Childcare hours relate to a service before/after the activity and must not influence the
-     * effective time. The generated dateRange/localTimeRange/subEvent output must therefore be
-     * identical whether or not childcare is configured.
+     * effective time. The generated dateRange/localTimeRange and the time-range fields of each
+     * subEvent must therefore be identical whether or not childcare is configured.
      *
      * @test
      * @dataProvider calendarProvider
@@ -98,7 +98,24 @@ final class CalendarTransformerTest extends TestCase
 
         $this->assertEquals($withoutChildcare['dateRange'], $withChildcare['dateRange']);
         $this->assertEquals($withoutChildcare['localTimeRange'], $withChildcare['localTimeRange']);
-        $this->assertEquals($withoutChildcare['subEvent'], $withChildcare['subEvent']);
+
+        // Compare only the time-range fields per subEvent; hasChildcare differs by design.
+        $timeFields = fn (array $se) => array_diff_key($se, ['hasChildcare' => true]);
+        $this->assertEquals(
+            array_map($timeFields, $withoutChildcare['subEvent']),
+            array_map($timeFields, $withChildcare['subEvent'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_childcare_per_sub_event(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendar(true));
+
+        $this->assertFalse($result['subEvent'][0]['hasChildcare']);
+        $this->assertTrue($result['subEvent'][1]['hasChildcare']);
     }
 
     /**

@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\HasChildcareOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
@@ -93,7 +92,6 @@ final class OfferSearchControllerTest extends TestCase
             ))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GroupByOfferRequestParser())
-            ->withParser(new HasChildcareOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
@@ -270,7 +268,6 @@ final class OfferSearchControllerTest extends TestCase
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
             ->withMediaObjectsFilter(true)
             ->withVideosFilter(true)
-            ->withHasChildcareFilter(true)
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(
@@ -289,6 +286,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
+                    ->withHasChildcare(true)
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))

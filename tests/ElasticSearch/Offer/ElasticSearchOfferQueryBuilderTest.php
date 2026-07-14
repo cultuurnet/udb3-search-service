@@ -916,6 +916,64 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_can_build_a_query_with_a_has_childcare_filter_on_sub_event(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
+                    ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
+                    ->withHasChildcare(true)
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2026-01-01T00:00:00+00:00',
+                                                        'lte' => '2026-01-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'term' => [
+                                                    'subEvent.hasChildcare' => true,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())

@@ -42,7 +42,8 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         },
         {
             "dateRange": {
@@ -54,7 +55,8 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         }
     ],
     "availableTo": "2017-04-28T23:59:59+02:00",

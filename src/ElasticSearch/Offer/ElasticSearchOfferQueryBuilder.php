@@ -245,6 +245,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $this->guardNaturalIntegerRange('localTime', new Time($localTimeFrom), new Time($localTimeTo));
         }
 
+        $hasChildcare = $subEventQueryParameters->getHasChildcare();
+
         $queries = [];
 
         if ($from || $to) {
@@ -275,6 +277,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         if ($bookingAvailability !== null) {
             $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
+        }
+
+        if ($hasChildcare !== null) {
+            $queries[] = new TermQuery('subEvent.hasChildcare', $hasChildcare);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(
