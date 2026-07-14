@@ -54,8 +54,6 @@ final class CalendarTransformer implements JsonTransformer
         $draft['status'] = self::STATUS_AVAILABLE;
         $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
-        // Always index hasChildcare so filters can rely on the field being present on every
-        // document. Defaults to false when there is no calendar (or no childcare configured).
         $draft['hasChildcare'] = false;
 
         if (!isset($from['calendarType'])) {
@@ -67,11 +65,8 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformStatus($from, $draft);
         $draft = $this->transformBookingAvailability($from, $draft);
 
-        // Determine childcare from the *source* subEvents and openingHours, before poly-filling
-        // subEvents from openingHours (which discards childcare). Childcare must never influence the
-        // effective time of the activity, so it is only reflected in this standalone boolean and is
-        // deliberately kept out of dateRange, localTimeRange and subEvent generation.
-        $draft = $this->transformHasChildcare($from, $draft);
+        // Read before polyFillJsonLdSubEvents() strips childcare from generated subEvents.
+        $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $from = $this->polyFillJsonLdSubEvents($from);
         if (!isset($from['subEvent'])) {
@@ -174,32 +169,6 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
-    /**
-     * @param array $from
-     *   JSON-LD of an event or place, as an associative array
-     * @param array $draft
-     *   JSON to index in Elasticsearch so far, as an associative array
-     * @return array
-     *   Updated JSON to index in Elasticsearch, as an associative array
-     */
-    private function transformHasChildcare(array $from, array $draft): array
-    {
-        $draft['hasChildcare'] = $this->determineHasChildcare($from);
-        return $draft;
-    }
-
-    /**
-     * Childcare hours describe a "service" before/after the activity and must not influence the
-     * activity's effective time. We therefore only report whether any childcare is configured,
-     * without letting it affect dateRange/localTimeRange/subEvent generation.
-     *
-     * @param array $from
-     *   JSON-LD of an event or place, as an associative array. Read before subEvents are poly-filled
-     *   from openingHours, so both source subEvents (single/multiple) and openingHours
-     *   (periodic/permanent) still carry their optional "childcare" range here.
-     * @return bool
-     *   True if at least one source subEvent or opening hour has a childcare range configured.
-     */
     private function determineHasChildcare(array $from): bool
     {
         foreach ($from['subEvent'] ?? [] as $subEvent) {
