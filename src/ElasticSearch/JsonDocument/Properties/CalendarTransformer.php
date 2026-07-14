@@ -214,6 +214,7 @@ final class CalendarTransformer implements JsonTransformer
                 'localTimeRange' => $localTimeRange,
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
+                'hasChildcare' => isset($subEvent['childcare']),
             ];
         }
 
@@ -289,6 +290,10 @@ final class CalendarTransformer implements JsonTransformer
      */
     private function polyFillJsonLdSubEventsFromStartAndEndDate(array $from): array
     {
+        if (isset($from['subEvent'])) {
+            return $from;
+        }
+
         $from['subEvent'] = [
             [
                 '@type' => 'Event',
