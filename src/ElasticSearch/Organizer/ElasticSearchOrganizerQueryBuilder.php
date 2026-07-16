@@ -77,11 +77,12 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withDomainFilter(string $domain): ElasticSearchOrganizerQueryBuilder
     {
-        $domain = strtolower($domain);
-        if (strpos($domain, 'www.') === 0) {
-            $domain = substr($domain, strlen('www.'));
-        }
-        return $this->withTermQuery('domain', $domain);
+        // The domain field is analyzed using lowercase_exact_match_no_www_analyzer
+        // (keyword tokenizer + lowercase filter + www.-stripping pattern_replace filter):
+        // the indexed value is a single, lowercased, www-stripped token. A MatchQuery runs
+        // the search value through the same analyzer, giving an exact but case- and
+        // www.-insensitive match. A TermQuery would NOT normalize the input.
+        return $this->withMatchQuery('domain', $domain);
     }
 
     public function withPostalCodeFilter(PostalCode $postalCode): ElasticSearchOrganizerQueryBuilder

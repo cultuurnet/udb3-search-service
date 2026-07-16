@@ -336,8 +336,10 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                     ],
                     'filter' => [
                         [
-                            'term' => [
-                                'domain' => 'publiq.be',
+                            'match' => [
+                                'domain' => [
+                                    'query' => 'publiq.be',
+                                ],
                             ],
                         ],
                     ],
@@ -353,7 +355,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
-    public function it_removes_www_prefix_from_domain_names(): void
+    public function it_passes_a_www_prefixed_domain_name_through_unchanged_for_the_analyzer_to_strip(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withDomainFilter('www.publiq.be');
@@ -371,8 +373,10 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                     ],
                     'filter' => [
                         [
-                            'term' => [
-                                'domain' => 'publiq.be',
+                            'match' => [
+                                'domain' => [
+                                    'query' => 'www.publiq.be',
+                                ],
                             ],
                         ],
                     ],
@@ -388,7 +392,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
     /**
      * @test
      */
-    public function it_lowercases_domain_names(): void
+    public function it_passes_a_mixed_case_domain_name_through_unchanged_for_the_analyzer_to_lowercase(): void
     {
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withDomainFilter('WWW.Publiq.BE');
@@ -406,8 +410,10 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                     ],
                     'filter' => [
                         [
-                            'term' => [
-                                'domain' => 'publiq.be',
+                            'match' => [
+                                'domain' => [
+                                    'query' => 'WWW.Publiq.BE',
+                                ],
                             ],
                         ],
                     ],
