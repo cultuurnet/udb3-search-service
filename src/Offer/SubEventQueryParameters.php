@@ -23,6 +23,8 @@ final class SubEventQueryParameters
 
     private ?string $bookingAvailability = null;
 
+    private ?bool $hasChildcare = null;
+
     public function getDateFrom(): ?DateTimeImmutable
     {
         return $this->dateFrom;
@@ -92,6 +94,18 @@ final class SubEventQueryParameters
     {
         $c = clone $this;
         $c->bookingAvailability = $bookingAvailability;
+        return $c;
+    }
+
+    public function getHasChildcare(): ?bool
+    {
+        return $this->hasChildcare;
+    }
+
+    public function withHasChildcare(?bool $hasChildcare): SubEventQueryParameters
+    {
+        $c = clone $this;
+        $c->hasChildcare = $hasChildcare;
         return $c;
     }
 }

@@ -50,7 +50,8 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         },
         {
             "dateRange": {
@@ -62,7 +63,8 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         },
         {
             "dateRange": {
@@ -74,7 +76,8 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         },
         {
             "dateRange": {
@@ -86,11 +89,13 @@
                 "lte": "0917"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         }
     ],
     "availableTo": "2017-05-09T23:00:00+02:00",
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "hasOvernight": false,
     "mediaObjectsCount": 0,

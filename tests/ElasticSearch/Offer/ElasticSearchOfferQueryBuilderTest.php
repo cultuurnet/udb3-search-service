@@ -916,6 +916,64 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_can_build_a_query_with_a_has_childcare_filter_on_sub_event(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
+                    ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
+                    ->withHasChildcare(true)
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2026-01-01T00:00:00+00:00',
+                                                        'lte' => '2026-01-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'term' => [
+                                                    'subEvent.hasChildcare' => true,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1387,58 +1445,15 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
      */
     public function it_should_build_a_query_with_a_single_birthdate_range_filter(): void
     {
+        $now = DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00');
+
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withBirthdateRangeFilter(
                 new BirthdateRange(
                     DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
-                )
-            );
-
-        $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
-            'from' => 30,
-            'size' => 10,
-            'query' => [
-                'bool' => [
-                    'must' => [
-                        [
-                            'match_all' => (object)[],
-                        ],
-                    ],
-                    'filter' => [
-                        [
-                            'range' => [
-                                'birthdateRange' => [
-                                    'gte' => '2020-01-01',
-                                    'lte' => '2020-12-31',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $this->assertEquals($expectedQueryArray, $builder->build());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_build_a_query_with_multiple_birthdate_ranges_using_or_semantics(): void
-    {
-        $builder = (new ElasticSearchOfferQueryBuilder())
-            ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withBirthdateRangeFilter(
-                new BirthdateRange(
-                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
-                ),
-                new BirthdateRange(
-                    DateTimeFactory::fromAtom('2022-06-30T00:00:00+00:00'),
-                    DateTimeFactory::fromAtom('2022-12-31T00:00:00+00:00')
+                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
+                    $now
                 )
             );
 
@@ -1466,10 +1481,23 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                         ],
                                     ],
                                     [
-                                        'range' => [
-                                            'birthdateRange' => [
-                                                'gte' => '2022-06-30',
-                                                'lte' => '2022-12-31',
+                                        'bool' => [
+                                            'must' => [
+                                                [
+                                                    'range' => [
+                                                        'typicalAgeRange' => [
+                                                            'gte' => 5,
+                                                            'lte' => 6,
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                            'must_not' => [
+                                                [
+                                                    'term' => [
+                                                        'allAges' => true,
+                                                    ],
+                                                ],
                                             ],
                                         ],
                                     ],
@@ -1482,6 +1510,144 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         ];
 
         $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_multiple_birthdate_ranges_using_or_semantics(): void
+    {
+        $now = DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00');
+
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
+                    $now
+                ),
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2022-06-30T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2022-12-31T00:00:00+00:00'),
+                    $now
+                )
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'bool' => [
+                                            'should' => [
+                                                [
+                                                    'range' => [
+                                                        'birthdateRange' => [
+                                                            'gte' => '2020-01-01',
+                                                            'lte' => '2020-12-31',
+                                                        ],
+                                                    ],
+                                                ],
+                                                [
+                                                    'bool' => [
+                                                        'must' => [
+                                                            [
+                                                                'range' => [
+                                                                    'typicalAgeRange' => [
+                                                                        'gte' => 5,
+                                                                        'lte' => 6,
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                        'must_not' => [
+                                                            [
+                                                                'term' => [
+                                                                    'allAges' => true,
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'bool' => [
+                                            'should' => [
+                                                [
+                                                    'range' => [
+                                                        'birthdateRange' => [
+                                                            'gte' => '2022-06-30',
+                                                            'lte' => '2022-12-31',
+                                                        ],
+                                                    ],
+                                                ],
+                                                [
+                                                    'bool' => [
+                                                        'must' => [
+                                                            [
+                                                                'range' => [
+                                                                    'typicalAgeRange' => [
+                                                                        'gte' => 3,
+                                                                        'lte' => 3,
+                                                                    ],
+                                                                ],
+                                                            ],
+                                                        ],
+                                                        'must_not' => [
+                                                            [
+                                                                'term' => [
+                                                                    'allAges' => true,
+                                                                ],
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_for_an_invalid_birthdate_range(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Start birthdate date should be equal to or smaller than end birthdate date.'
+        );
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withBirthdateRangeFilter(
+                new BirthdateRange(
+                    DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                    DateTimeFactory::fromAtom('2026-06-01T00:00:00+00:00')
+                )
+            );
     }
 
     /**
@@ -2214,6 +2380,78 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                         [
                             'term' => [
                                 'childrenOnly' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => false,
                             ],
                         ],
                     ],

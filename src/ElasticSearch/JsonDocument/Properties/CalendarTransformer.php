@@ -54,9 +54,8 @@ final class CalendarTransformer implements JsonTransformer
         $draft['status'] = self::STATUS_AVAILABLE;
         $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
-        // Always index hasOvernight so filters can rely on the field being present on every
-        // document, even when there is no calendar to derive it from.
         $draft['hasOvernight'] = false;
+        $draft['hasChildcare'] = false;
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
@@ -66,10 +65,10 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformCalendarType($from, $draft);
         $draft = $this->transformStatus($from, $draft);
         $draft = $this->transformBookingAvailability($from, $draft);
-
-        // Derive overnight before poly-filling subEvents from openingHours, so it reflects the
-        // author's explicit sub-events and is never inferred from generated ones.
         $draft = $this->transformHasOvernight($from, $draft);
+
+        // Read before polyFillJsonLdSubEvents() strips childcare from generated subEvents.
+        $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $from = $this->polyFillJsonLdSubEvents($from);
         if (!isset($from['subEvent'])) {
@@ -209,6 +208,23 @@ final class CalendarTransformer implements JsonTransformer
         return $draft;
     }
 
+    private function determineHasChildcare(array $from): bool
+    {
+        foreach ($from['subEvent'] ?? [] as $subEvent) {
+            if (isset($subEvent['childcare'])) {
+                return true;
+            }
+        }
+
+        foreach ($from['openingHours'] ?? [] as $openingHour) {
+            if (isset($openingHour['childcare'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param array $from
      *   JSON-LD of an event or place, as an associative array
@@ -237,6 +253,7 @@ final class CalendarTransformer implements JsonTransformer
                 'localTimeRange' => $localTimeRange,
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
+                'hasChildcare' => isset($subEvent['childcare']),
             ];
         }
 
@@ -312,6 +329,10 @@ final class CalendarTransformer implements JsonTransformer
      */
     private function polyFillJsonLdSubEventsFromStartAndEndDate(array $from): array
     {
+        if (isset($from['subEvent'])) {
+            return $from;
+        }
+
         $from['subEvent'] = [
             [
                 '@type' => 'Event',

@@ -1,5 +1,5 @@
 {
-    "@id": "http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942",
+    "@id": "http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942",
     "@type": "Event",
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "multiple",
@@ -17,7 +17,8 @@
                 "lte": "0000"
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         },
         {
             "dateRange": {
@@ -29,7 +30,8 @@
                 "lte": null
             },
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         }
     ],
     "workflowStatus": "DRAFT",
@@ -45,6 +47,7 @@
         "nl"
     ],
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "hasOvernight": false,
     "mediaObjectsCount": 0,
@@ -58,7 +61,7 @@
         }
     },
     "location": {
-        "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "@id": "http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405",
         "@type": "Place",
         "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
         "mainId": "179c89c5-dba4-417b-ae96-62e7a12c2405",
@@ -69,7 +72,7 @@
     "created": "2017-04-22T13:33:37+02:00",
     "indexedAt": "2017-05-09T15:11:32+02:00",
     "creator": "Jane Doe",
-    "originalEncodedJsonLd": "{\"@id\":\"http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"multiple\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\",\"availableTo\":\"2017-05-07T00:00:00+02:00\",\"subEvent\":[{\"@type\":\"Event\",\"endDate\":\"2017-05-01T00:00:00+02:00\"},{\"@type\":\"Event\",\"startDate\":\"2017-05-07T00:00:00+02:00\"}],\"location\":{\"@id\":\"http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\"}",
+    "originalEncodedJsonLd": "{\"@id\":\"http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942\",\"mainLanguage\":\"nl\",\"languages\":[\"nl\"],\"completedLanguages\":[\"nl\"],\"name\":{\"nl\":\"Punkfest\"},\"calendarType\":\"multiple\",\"startDate\":\"2017-04-30T00:00:00+02:00\",\"endDate\":\"2017-05-07T00:00:00+02:00\",\"availableTo\":\"2017-05-07T00:00:00+02:00\",\"subEvent\":[{\"@type\":\"Event\",\"endDate\":\"2017-05-01T00:00:00+02:00\"},{\"@type\":\"Event\",\"startDate\":\"2017-05-07T00:00:00+02:00\"}],\"location\":{\"@id\":\"http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405\",\"name\":{\"nl\":\"Hungaria\"},\"address\":{\"nl\":{\"addressCountry\":\"BE\",\"addressLocality\":\"Leuven\",\"postalCode\":\"3000\",\"streetAddress\":\"Vaartkom 35\"}}},\"workflowStatus\":\"DRAFT\",\"created\":\"2017-04-22T13:33:37+02:00\",\"creator\":\"Jane Doe\"}",
     "isDuplicate": false,
     "productionCollapseValue": "single-offer-23017cb7-e515-47b4-87c4-780735acc942",
     "metadata": {

@@ -355,6 +355,10 @@
             "type": "boolean"
         },
 
+        "hasChildcare": {
+            "type": "boolean"
+        },
+
         "mediaObjectsCount": {
             "type": "integer"
         },

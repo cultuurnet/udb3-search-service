@@ -19,6 +19,7 @@
         "nl"
     ],
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "hasOvernight": false,
     "mediaObjectsCount": 0,

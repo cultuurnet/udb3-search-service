@@ -36,6 +36,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'audienceType',
             'childrenOnly',
             'hasOvernight',
+            'hasChildcare',
             'hasMediaObjects',
             'hasVideos',
             'labels',
