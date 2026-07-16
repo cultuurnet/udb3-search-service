@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use DateTimeInterface;
@@ -19,8 +20,10 @@ final class CalendarTransformerTest extends TestCase
         // Fixed "now" so permanent calendars generate a deterministic rolling window.
         Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2024-06-01T12:00:00+02:00'));
 
+        $logger = new JsonTransformerPsrLogger(new SimpleArrayLogger());
         $this->transformer = new CalendarTransformer(
-            new JsonTransformerPsrLogger(new SimpleArrayLogger())
+            $logger,
+            new EffectiveOpeningHoursResolver($logger)
         );
     }
 
