@@ -109,6 +109,7 @@
     "allAges": false,
     "price": 19.99,
     "audienceType": "members",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 2,
     "videosCount": 2,

@@ -46,3 +46,21 @@ How to apply:
 - Add the field to the ES mapping JSONs under `src/ElasticSearch/Operations/json/`.
 
 See `ChildrenOnlyTransformer` for a minimal reference implementation.
+
+### Bump the schema version when you change a mapping JSON
+
+Whenever you change any of the Elasticsearch mapping JSONs under
+`src/ElasticSearch/Operations/json/` (e.g. `mapping_udb3_core.json`,
+`mapping_event.json`, `mapping_place.json`), you **must** bump the matching
+constant in `src/ElasticSearch/Operations/SchemaVersions.php`.
+
+Why:
+- The constant is used as the index name suffix. A new value points the aliases
+  at a fresh index built from the updated mapping and triggers a reindex; without
+  a bump the mapping change is never applied to a live index.
+
+How to apply:
+- The event and place mappings are part of the core index, so a change to any of
+  the three mapping JSONs means bumping `SchemaVersions::UDB3_CORE`
+  (bump `GEOSHAPES` for geoshape mapping changes).
+- Use a fresh, strictly increasing `YYYYMMDDHHMMSS` timestamp as the value.

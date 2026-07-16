@@ -263,6 +263,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $localTimeTo = $subEventQueryParameters->getLocalTimeTo();
         $statuses = $subEventQueryParameters->getStatuses();
         $bookingAvailability = $subEventQueryParameters->getBookingAvailability();
+        $hasChildcare = $subEventQueryParameters->getHasChildcare();
 
         $this->guardDateRange('date', $from, $to);
 
@@ -275,8 +276,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         if ($from || $to) {
             $queries[] = $this->createRangeQuery(
                 'subEvent.dateRange',
-                $from ? $from->format(DATE_ATOM) : null,
-                $to ? $to->format(DATE_ATOM) : null
+                $from?->format(DATE_ATOM),
+                $to?->format(DATE_ATOM)
             );
         }
 
@@ -300,6 +301,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         if ($bookingAvailability !== null) {
             $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
+        }
+
+        if ($hasChildcare !== null) {
+            $queries[] = new TermQuery('subEvent.hasChildcare', $hasChildcare);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(
@@ -478,6 +483,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         }
 
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
+    }
+
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        return $this->withTermQuery('hasChildcare', $hasChildcare);
     }
 
     public function withTermIdFilter(TermId $termId): self

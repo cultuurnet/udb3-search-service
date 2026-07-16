@@ -150,6 +150,7 @@ final class OfferSearchControllerTest extends TestCase
                 'audienceType' => 'members',
                 'hasMediaObjects' => 'true',
                 'hasVideos' => 'true',
+                'hasChildcare' => 'true',
                 'labels' => ['foo', 'bar'],
                 'locationLabels' => ['lorem'],
                 'organizerLabels' => ['ipsum'],
@@ -285,6 +286,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
+                    ->withHasChildcare(true)
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))
@@ -724,6 +726,58 @@ final class OfferSearchControllerTest extends TestCase
             $expectedQueryBuilder = $expectedQueryBuilder
                 ->withUiTPASFilter($booleanValue);
         }
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     * @param bool|string|int $stringValue
+     * @dataProvider booleanStringDataProvider
+     */
+    public function it_converts_the_has_childcare_toggle_parameter_to_a_correct_boolean(
+        $stringValue,
+        ?bool $booleanValue
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'hasChildcare' => $stringValue,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder;
+
+        if (!is_null($booleanValue)) {
+            $expectedQueryBuilder = $expectedQueryBuilder
+                ->withHasChildcareFilter($booleanValue);
+        }
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_filter_on_childcare_when_the_parameter_is_omitted(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        // No withHasChildcareFilter call is expected: omitting the parameter preserves behaviour.
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStartAndLimit(new Start(0), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

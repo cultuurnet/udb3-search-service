@@ -1,5 +1,5 @@
 {
-    "@id": "http:\/\/udb-silex.dev\/event\/23017cb7-e515-47b4-87c4-780735acc942",
+    "@id": "http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942",
     "@type": "Event",
     "id": "23017cb7-e515-47b4-87c4-780735acc942",
     "calendarType": "single",
@@ -39,7 +39,8 @@
                 }
             ],
             "status": "Available",
-            "bookingAvailability": "Available"
+            "bookingAvailability": "Available",
+            "hasChildcare": false
         }
     ],
     "workflowStatus": "DRAFT",
@@ -55,6 +56,7 @@
         "nl"
     ],
     "audienceType": "everyone",
+    "hasChildcare": false,
     "childrenOnly": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
@@ -67,7 +69,7 @@
         }
     },
     "location": {
-        "@id": "http:\/\/udb-silex.dev\/place\/179c89c5-dba4-417b-ae96-62e7a12c2405",
+        "@id": "http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405",
         "@type": "Place",
         "id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
         "mainId": "179c89c5-dba4-417b-ae96-62e7a12c2405",
