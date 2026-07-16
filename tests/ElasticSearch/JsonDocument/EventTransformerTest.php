@@ -40,7 +40,8 @@ final class EventTransformerTest extends TestCase
                 $this->simpleArrayLogger
             ),
             new PathEndIdUrlParser(),
-            $this->regionService
+            $this->regionService,
+            9900
         );
     }
 
@@ -782,6 +783,56 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-completeness.json',
             __DIR__ . '/data/event/indexed-with-completeness.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_caps_sub_event_count_to_stay_under_the_elasticsearch_nested_object_limit(): void
+    {
+        // Guards the ordering dependency: if SubEventCapTransformer is ever moved to run before
+        // CalendarTransformer in OfferTransformer, this assertion fails because draft['subEvent']
+        // won't have been written yet.
+        $transformer = new EventTransformer(
+            new JsonTransformerPsrLogger($this->simpleArrayLogger),
+            new PathEndIdUrlParser(),
+            $this->regionService,
+            5
+        );
+
+        $original = [
+            '@id' => 'http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942',
+            'mainLanguage' => 'nl',
+            'languages' => ['nl'],
+            'completedLanguages' => ['nl'],
+            'name' => ['nl' => 'Punkfest'],
+            'calendarType' => 'multiple',
+            'startDate' => '2017-04-30T00:00:00+02:00',
+            'endDate' => '2017-05-05T00:00:00+02:00',
+            'subEvent' => [
+                ['@type' => 'Event', 'startDate' => '2017-04-30T00:00:00+02:00', 'endDate' => '2017-04-30T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-01T00:00:00+02:00', 'endDate' => '2017-05-01T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-02T00:00:00+02:00', 'endDate' => '2017-05-02T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-03T00:00:00+02:00', 'endDate' => '2017-05-03T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-04T00:00:00+02:00', 'endDate' => '2017-05-04T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-05T00:00:00+02:00', 'endDate' => '2017-05-05T00:00:00+02:00'],
+            ],
+            'workflowStatus' => 'DRAFT',
+            'created' => '2017-04-22T13:33:37+02:00',
+        ];
+
+        $actual = $transformer->transform($original, []);
+
+        $this->assertCount(5, $actual['subEvent']);
+        $this->assertContains(
+            [
+                'warning',
+                'subEvent truncated from 6 to 5 entries for '
+                    . 'http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942.',
+                [],
+            ],
+            $this->simpleArrayLogger->getLogs()
         );
     }
 
