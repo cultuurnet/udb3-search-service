@@ -97,8 +97,8 @@
         },
         "domain" : {
             "type": "string",
-            "analyzer": "lowercase_exact_match_no_www_analyzer",
-            "search_analyzer": "lowercase_exact_match_no_www_analyzer"
+            "analyzer": "url_domain_analyzer",
+            "search_analyzer": "url_domain_analyzer"
         },
 
         "address": {

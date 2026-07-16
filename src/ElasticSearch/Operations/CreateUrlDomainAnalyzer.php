@@ -7,19 +7,19 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 
-final class CreateLowerCaseExactMatchNoWwwAnalyzer extends AbstractElasticSearchOperation
+final class CreateUrlDomainAnalyzer extends AbstractElasticSearchOperation
 {
     public function run(): void
     {
         $this->client->indices()->putTemplate(
             [
-                'name' => 'lowercase_exact_match_no_www_analyzer',
+                'name' => 'url_domain_analyzer',
                 'body' => Json::decodeAssociatively(
-                    FileReader::read(__DIR__ . '/json/analyzer_lowercase_exact_match_no_www.json')
+                    FileReader::read(__DIR__ . '/json/analyzer_url_domain.json')
                 ),
             ]
         );
 
-        $this->logger->info('Lowercase exact match (no www) analyzer created.');
+        $this->logger->info('Url domain analyzer created.');
     }
 }

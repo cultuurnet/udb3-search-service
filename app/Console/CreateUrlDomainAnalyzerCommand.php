@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateLowerCaseExactMatchNoWwwAnalyzer;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateUrlDomainAnalyzer;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class CreateLowerCaseExactMatchNoWwwAnalyzerCommand extends AbstractElasticSearchCommand
+final class CreateUrlDomainAnalyzerCommand extends AbstractElasticSearchCommand
 {
     /**
      * @inheritdoc
@@ -16,8 +16,8 @@ final class CreateLowerCaseExactMatchNoWwwAnalyzerCommand extends AbstractElasti
     protected function configure(): void
     {
         $this
-            ->setName('lowercase-exact-match-no-www-analyzer:create')
-            ->setDescription('Creates or updates the template for a lowercase, www-stripping & exact match analyzer.');
+            ->setName('url-domain-analyzer:create')
+            ->setDescription('Creates or updates the template for an exact url-domain match analyzer.');
     }
 
     /**
@@ -25,7 +25,7 @@ final class CreateLowerCaseExactMatchNoWwwAnalyzerCommand extends AbstractElasti
      */
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        $operation = new CreateLowerCaseExactMatchNoWwwAnalyzer(
+        $operation = new CreateUrlDomainAnalyzer(
             $this->getElasticSearchClient(),
             $this->getLogger($output)
         );

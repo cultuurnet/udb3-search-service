@@ -3,16 +3,16 @@
     "settings": {
         "analysis": {
             "filter": {
-                "remove_www_prefix_filter": {
+                "www_filter": {
                     "type": "pattern_replace",
                     "pattern": "^www\\.",
                     "replacement": ""
                 }
             },
             "analyzer": {
-                "lowercase_exact_match_no_www_analyzer": {
+                "url_domain_analyzer": {
                     "tokenizer": "keyword",
-                    "filter": ["lowercase", "remove_www_prefix_filter"]
+                    "filter": ["lowercase", "www_filter"]
                 }
             }
         }
