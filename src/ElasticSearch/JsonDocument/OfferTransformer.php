@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncoded
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PriceInfoTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ProductionCollapseValueTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganizerTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\SubEventCapTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\VideosTransformer;
@@ -40,7 +41,8 @@ final class OfferTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        FallbackType $fallbackType
+        FallbackType $fallbackType,
+        int $subEventCap = SubEventCapTransformer::DEFAULT_CAP
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new IdentifierTransformer(
@@ -53,6 +55,8 @@ final class OfferTransformer implements JsonTransformer
             new NameTransformer($logger),
             new DescriptionTransformer(),
             new CalendarTransformer($logger),
+            // Must run after CalendarTransformer — caps draft['subEvent'] which CalendarTransformer writes.
+            new SubEventCapTransformer($logger, $subEventCap),
             new AvailabilityTransformer($logger),
             new TermsTransformer(true, true),
             new TypicalAgeRangeTransformer(),
