@@ -366,6 +366,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        $c = clone $this;
+        $c->mockQuery['hasChildcare'] = $hasChildcare;
+        return $c;
+    }
+
     public function withTermIdFilter(TermId $termId): self
     {
         $c = clone $this;

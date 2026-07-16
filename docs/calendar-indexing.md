@@ -88,8 +88,8 @@ Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read 
 
 | Role | Fields | Stored in ES? |
 |---|---|---|
-| Source only | `calendarType`, `startDate`, `endDate`, `openingHours` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange` | Yes, queryable |
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasChildcare` | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
@@ -263,6 +263,72 @@ GET /offers?localTimeFrom=14:00&localTimeTo=18:00&bookingAvailability=Available
 
 ---
 
+## Childcare
+
+Sub-events (`single`, `multiple`) and opening hours (`periodic`, `permanent`) may carry an
+optional `childcare` range in the source JSON-LD. It describes childcare offered before/after the
+activity:
+
+```json
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2024-06-01T10:00:00+00:00",
+      "endDate": "2024-06-01T12:00:00+00:00",
+      "childcare": { "start": "09:00", "end": "13:00" }
+    }
+  ]
+}
+```
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-01T00:00:00+00:00",
+  "endDate": "2024-08-31T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday"], "opens": "08:30", "closes": "17:00", "childcare": { "start": "08:00", "end": "18:00" } }
+  ]
+}
+```
+
+### Childcare must not influence the effective time
+
+Childcare hours relate to a service around the activity, not to the activity itself. They must
+**not** extend or shift `dateRange`, `localTimeRange`, or the generated `subEvent[]`. The `childcare`
+range is therefore a source-only field: it is never expanded into sub-events and never widens any
+range.
+
+### Indexing
+
+Instead, the indexer sets a single top-level boolean, `hasChildcare`:
+
+```json
+{ "hasChildcare": true }
+```
+
+It is `true` when at least one source sub-event or opening hour has a `childcare` range configured,
+and `false` otherwise. Like `status` and `bookingAvailability`, it is always present on every
+document (defaulting to `false`), so a `term` filter is reliable. Childcare is event-only today;
+place documents always index `hasChildcare: false`.
+
+### Search parameter
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `hasChildcare=true` | `hasChildcare` | Only offers that have childcare on at least one sub-event or opening hour. |
+| `hasChildcare=false` | `hasChildcare` | Only offers without any childcare configured. |
+| _(omitted)_ | — | No childcare filtering; behaviour unchanged. |
+
+```
+GET /offers?hasChildcare=true
+```
+→ runs a `term` query on the top-level `hasChildcare` field. It is independent of `dateRange` and
+the other calendar filters.
+
+---
+
 ## Closed days and adjusted days
 
 Two fields that the backend model supports but are **not yet handled by the indexer**.
@@ -390,7 +456,8 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 ### Indexing
 
-- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, `polyFillJsonLdSubEvents()`.
+- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
+- `transformHasChildcare()`, `polyFillJsonLdSubEvents()`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 
 ### Elasticsearch mappings
@@ -402,11 +469,11 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Query building
 
 - `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
-- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`.
+- `HasChildcareOfferRequestParser`: parses the `hasChildcare` boolean parameter.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasChildcareFilter()`.
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
 
 ### Backend calendar model (udb3-backend)
 
 - `ClosedDay`: holds `startDate`, `endDate`, and an optional description.
 - `AdjustedDay`: holds `startDate`, `endDate`, its own `openingHours`, and an optional description.
-
