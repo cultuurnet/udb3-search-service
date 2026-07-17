@@ -67,13 +67,57 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactoryTest extends TestCa
     /**
      * @test
      */
-    public function it_leaves_a_grouped_birthdate_range_unchanged(): void
+    public function it_expands_a_grouped_birthdate_range_to_also_match_the_equivalent_typical_age_ranges(): void
     {
-        $queryString = 'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])';
+        $actual = $this->factory->fromString(
+            'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])'
+        );
 
-        $actual = $this->factory->fromString($queryString);
+        $expected = new LuceneQueryString(
+            '(birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])'
+            . ' OR (typicalAgeRange:[5 TO 6] AND NOT allAges:true)'
+            . ' OR (typicalAgeRange:[3 TO 4] AND NOT allAges:true))'
+        );
 
-        $this->assertEquals(new LuceneQueryString($queryString), $actual);
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_expands_a_grouped_birthdate_range_in_a_compound_query(): void
+    {
+        $actual = $this->factory->fromString(
+            'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31]) AND name.nl:foo'
+        );
+
+        $expected = new LuceneQueryString(
+            '(birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31])'
+            . ' OR (typicalAgeRange:[5 TO 6] AND NOT allAges:true)'
+            . ' OR (typicalAgeRange:[3 TO 4] AND NOT allAges:true))'
+            . ' AND name.nl:foo'
+        );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_an_invalid_range_inside_a_grouped_birthdate_range(): void
+    {
+        $actual = $this->factory->fromString(
+            'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-12-31 TO 2022-06-30])'
+        );
+
+        // Only the valid range gets an age fallback; the invalid one (from > to) is skipped
+        // while the original group is preserved verbatim for ElasticSearch to reject.
+        $expected = new LuceneQueryString(
+            '(birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-12-31 TO 2022-06-30])'
+            . ' OR (typicalAgeRange:[5 TO 6] AND NOT allAges:true))'
+        );
+
+        $this->assertEquals($expected, $actual);
     }
 
     /**
