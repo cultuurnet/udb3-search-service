@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
+use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
 use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeToTypicalAgeRangeQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
@@ -26,6 +27,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParse
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\MatchingBirthdateRangesResolver;
 use CultuurNet\UDB3\Search\Http\OfferSearchController;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoBoundsParametersFactory;
 use CultuurNet\UDB3\Search\Http\Parameters\GeoDistanceParametersFactory;
@@ -103,6 +105,7 @@ final class OfferSearchControllerFactory
             $queryStringFactory,
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer,
+            new MatchingBirthdateRangesResolver(new BirthdateRangeQueryStringParser()),
         );
     }
 }
