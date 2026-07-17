@@ -167,4 +167,16 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactoryTest extends TestCa
 
         $this->assertEquals(new LuceneQueryString($queryString), $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_leaves_a_grouped_birthdate_range_without_any_valid_range_unchanged(): void
+    {
+        $queryString = 'birthdateRange:([2020-12-31 TO 2020-01-01] OR [2022-12-31 TO 2022-06-30])';
+
+        $actual = $this->factory->fromString($queryString);
+
+        $this->assertEquals(new LuceneQueryString($queryString), $actual);
+    }
 }
