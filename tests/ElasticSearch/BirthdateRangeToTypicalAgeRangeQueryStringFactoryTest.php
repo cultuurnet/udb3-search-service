@@ -67,6 +67,24 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactoryTest extends TestCa
     /**
      * @test
      */
+    public function it_expands_multiple_separate_birthdate_range_clauses_independently(): void
+    {
+        $actual = $this->factory->fromString(
+            'birthdateRange:[2020-01-01 TO 2020-12-31] OR birthdateRange:[2022-06-30 TO 2022-12-31]'
+        );
+
+        $expected = new LuceneQueryString(
+            '(birthdateRange:[2020-01-01 TO 2020-12-31] OR (typicalAgeRange:[5 TO 6] AND NOT allAges:true))'
+            . ' OR '
+            . '(birthdateRange:[2022-06-30 TO 2022-12-31] OR (typicalAgeRange:[3 TO 4] AND NOT allAges:true))'
+        );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_expands_a_grouped_birthdate_range_to_also_match_the_equivalent_typical_age_ranges(): void
     {
         $actual = $this->factory->fromString(
