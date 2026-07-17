@@ -62,6 +62,22 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_multiple_days_of_week_using_the_array_syntax(): void
+    {
+        $request = ServerRequestFactory::createFromGlobals()
+            ->withQueryParams(['dayOfWeek' => ['friday', 'saturday', 'sunday']]);
+
+        $this->queryBuilder->expects($this->once())
+            ->method('withDayOfWeekFilter')
+            ->with(new DayOfWeek('friday'), new DayOfWeek('saturday'), new DayOfWeek('sunday'))
+            ->willReturn($this->queryBuilder);
+
+        $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
+    }
+
+    /**
+     * @test
+     */
     public function it_accepts_mixed_case_values(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
