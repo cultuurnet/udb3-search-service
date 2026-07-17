@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
@@ -196,6 +197,20 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c->mockQuery['attendanceMode'] = array_map(
             static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
             $attendanceModes
+        );
+        return $c;
+    }
+
+    public function withDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    {
+        if (empty($dayOfWeeks)) {
+            return $this;
+        }
+
+        $c = clone $this;
+        $c->mockQuery['dayOfWeek'] = array_map(
+            static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->toString(),
+            $dayOfWeeks
         );
         return $c;
     }

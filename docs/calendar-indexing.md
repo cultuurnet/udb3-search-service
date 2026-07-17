@@ -89,7 +89,7 @@ Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read 
 | Role | Fields | Stored in ES? |
 |---|---|---|
 | Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasChildcare` | Yes, queryable |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasChildcare`, `dayOfWeekHits` | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
@@ -329,6 +329,87 @@ the other calendar filters.
 
 ---
 
+## Day of week
+
+`periodic` and `permanent` offers with opening hours recur on fixed weekdays. To support "find offers
+that occur on a given weekday" queries, the indexer stores how often each weekday actually occurs.
+
+### Indexing
+
+The indexer sets a single top-level object, `dayOfWeekHits`, holding an **occurrence count per weekday**:
+
+```json
+{
+  "dayOfWeekHits": {
+    "monday": 26,
+    "tuesday": 26,
+    "wednesday": 26,
+    "thursday": 26,
+    "friday": 26,
+    "saturday": 25,
+    "sunday": 0
+  }
+}
+```
+
+It is a plain `object`, so Elasticsearch flattens it into independent integer fields
+(`dayOfWeekHits.monday`, …) that are queried and cached independently, with no nested-query join cost.
+
+Like `hasChildcare`, every document always carries all seven sub-fields (defaulting to `0`), so a
+range filter on any weekday is reliable. Calendar types that do not derive occurrences from opening
+hours (`single`, `multiple`, `periodic`/`permanent` without opening hours) index all-zero counts.
+
+**Computation:**
+
+| Calendar type | Opening hours | `dayOfWeekHits` |
+|---|---|---|
+| `single` | n/a | all zero |
+| `multiple` | n/a | all zero (a separate follow-up covers `multiple`) |
+| `periodic` | No | all zero |
+| `periodic` | Yes | occurrences per weekday within `startDate`–`endDate` |
+| `permanent` | No | all zero |
+| `permanent` | Yes | occurrences per weekday within the −6/+12 month rolling window |
+
+The count comes from `EffectiveOpeningHours::dayCounts()`, the same single calendar walk that builds
+`subEvent[]` (via `EffectiveOpeningHoursResolver::resolve()`), so the counts are consistent with the
+generated sub-events by construction. A count is **days, not slots**: a weekday with two opening-hour
+slots on the same date counts once.
+
+Because the count is derived from the effective (closures-applied) opening hours, it becomes stale the
+same way `subEvent[]` does for `permanent` offers, and is refreshed by the same
+`udb3-core:reindex-permanent` console command.
+
+### The count respects closed and adjusted days
+
+`dayOfWeekHits` counts only days the offer is **actually open**, with closed and adjusted days applied:
+
+- A weekday occurrence that falls inside `openingHoursClosedDays` does **not** count.
+- An adjusted day counts only if the adjusted opening hours still leave that weekday open.
+
+So `dayOfWeekHits.wednesday >= 4` means "this offer has real, bookable occurrences on at least four
+Wednesdays," not merely "Wednesday is in the recurring pattern."
+
+### Search parameter
+
+The threshold ("how many occurrences count as recurring") is **not** baked into the index. It is a
+constructor parameter of `ElasticSearchOfferQueryBuilder` (default `4`) applied as a range filter
+**at query time**, so it can change without a reindex.
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `dayOfWeek=wednesday` | `dayOfWeekHits.wednesday` | Only offers open on ≥ `N` Wednesdays. |
+| `dayOfWeek=friday,saturday,sunday` | `dayOfWeekHits.{friday,saturday,sunday}` | OR-combined: open on ≥ `N` of **any** of those weekdays. |
+| _(omitted)_ | — | No day-of-week filtering. |
+
+```
+GET /offers?dayOfWeek=friday,saturday
+```
+→ runs a `bool`/`should` of `range` queries (`gte: N`), one per requested weekday, as a top-level
+filter. Values are comma-separated (consistent with `attendanceMode`, `workflowStatus`) and
+case-insensitive (`Wednesday` is accepted). An unknown weekday is rejected with a validation error.
+
+---
+
 ## Closed days and adjusted days
 
 Two fields that the backend model supports but are **not yet handled by the indexer**.
@@ -457,7 +538,8 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Indexing
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
-- `transformHasChildcare()`, `polyFillJsonLdSubEvents()`.
+- `transformHasChildcare()`, `polyFillJsonLdSubEvents()`. It also writes `dayOfWeekHits` from the same `EffectiveOpeningHoursResolver::resolve()` call it uses to build `subEvent[]`.
+- `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` feeds `dayOfWeekHits`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 
 ### Elasticsearch mappings
@@ -470,7 +552,8 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 - `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
 - `HasChildcareOfferRequestParser`: parses the `hasChildcare` boolean parameter.
-- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasChildcareFilter()`.
+- `DayOfWeekOfferRequestParser` / `DayOfWeek`: parses the comma-separated, case-insensitive `dayOfWeek` parameter into `DayOfWeek` value objects.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasChildcareFilter()`, `withDayOfWeekFilter()`. The `dayOfWeek` threshold is a constructor parameter (default `4`).
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
 
 ### Backend calendar model (udb3-backend)
