@@ -18,30 +18,63 @@ final class EffectiveOpeningHoursResolver
     }
 
     /**
+     * Resolves the effective (closures/adjustments applied) opening hours of an event or place over
+     * its window. Always returns an {@see EffectiveOpeningHours}: when there are no usable opening
+     * hours — no regular or adjusted hours to open a day, or a periodic calendar without a start/end
+     * date to bound the window — it returns {@see EffectiveOpeningHours::empty()}, which is a truthful
+     * "no effective opening hours" result, not an error condition.
+     *
      * @param array $from
-     *   JSON-LD of an event or place with an openingHours property, as an associative array
+     *   JSON-LD of an event or place, as an associative array. Expected to have a calendarType; may
+     *   have an openingHours property, openingHoursAdjustedDays and (for periodic) startDate/endDate.
      */
     public function resolve(array $from): EffectiveOpeningHours
     {
-        $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours']);
+        $openingHours = $from['openingHours'] ?? [];
 
-        if ($from['calendarType'] === 'permanent') {
+        // Only regular opening hours and adjusted days can open a day; closed days merely remove.
+        // With neither there is nothing to resolve, so skip walking the (possibly long) window.
+        if ($openingHours === [] && ($from['openingHoursAdjustedDays'] ?? []) === []) {
+            return EffectiveOpeningHours::empty();
+        }
+
+        $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($openingHours);
+
+        if (($from['calendarType'] ?? null) === 'permanent') {
             $now = new Chronos();
             $startDate = $now->modify('-6 months');
             $endDate = $now->modify('+12 months');
-        } else {
+        } elseif (isset($from['startDate'], $from['endDate'])) {
             $startDate = Chronos::createFromFormat(DateTime::ATOM, $from['startDate']);
             $endDate = Chronos::createFromFormat(DateTime::ATOM, $from['endDate']);
+        } else {
+            return EffectiveOpeningHours::empty();
         }
 
         $interval = new DateInterval('P1D');
         $period = new DatePeriod($startDate, $interval, $endDate);
 
         $slots = [];
+        $dayCounts = [
+            'monday' => 0,
+            'tuesday' => 0,
+            'wednesday' => 0,
+            'thursday' => 0,
+            'friday' => 0,
+            'saturday' => 0,
+            'sunday' => 0,
+        ];
 
         /* @var DateTime $date */
         foreach ($period as $date) {
-            foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
+            $effectiveOpeningHoursOnDay = $this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay);
+
+            // Count days (not slots): a weekday with multiple opening-hour slots on the same date counts once.
+            if (!empty($effectiveOpeningHoursOnDay)) {
+                $dayCounts[strtolower($date->format('l'))]++;
+            }
+
+            foreach ($effectiveOpeningHoursOnDay as $openingHours) {
                 $slots[] = [
                     'date' => $date,
                     'opens' => $openingHours['opens'],
@@ -50,7 +83,15 @@ final class EffectiveOpeningHoursResolver
             }
         }
 
-        return new EffectiveOpeningHours($slots);
+        return new EffectiveOpeningHours($slots, [
+            'monday' => $dayCounts['monday'],
+            'tuesday' => $dayCounts['tuesday'],
+            'wednesday' => $dayCounts['wednesday'],
+            'thursday' => $dayCounts['thursday'],
+            'friday' => $dayCounts['friday'],
+            'saturday' => $dayCounts['saturday'],
+            'sunday' => $dayCounts['sunday'],
+        ]);
     }
 
     /**

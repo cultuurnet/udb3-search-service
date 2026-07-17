@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
@@ -119,6 +120,109 @@ final class CalendarTransformerTest extends TestCase
 
         $this->assertFalse($result['subEvent'][0]['hasChildcare']);
         $this->assertTrue($result['subEvent'][1]['hasChildcare']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_day_of_week_hits_to_zero_without_a_calendar_type(): void
+    {
+        $result = $this->transformer->transform([]);
+
+        $this->assertSame(EffectiveOpeningHours::empty()->dayCounts(), $result['dayOfWeekHits']);
+    }
+
+    /**
+     * @test
+     * @dataProvider calendarProvider
+     */
+    public function it_always_emits_all_seven_day_of_week_hits(string $calendarType): void
+    {
+        $method = $calendarType . 'Calendar';
+        $result = $this->transformer->transform($this->{$method}(false));
+
+        $this->assertSame(
+            ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+            array_keys($result['dayOfWeekHits'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_zero_day_of_week_hits_for_single_calendars(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendar(false));
+
+        $this->assertSame(EffectiveOpeningHours::empty()->dayCounts(), $result['dayOfWeekHits']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_zero_day_of_week_hits_for_multiple_calendars(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendar(false));
+
+        $this->assertSame(EffectiveOpeningHours::empty()->dayCounts(), $result['dayOfWeekHits']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_zero_day_of_week_hits_for_periodic_calendars_without_opening_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-07T23:59:59+02:00',
+        ]);
+
+        $this->assertSame(EffectiveOpeningHours::empty()->dayCounts(), $result['dayOfWeekHits']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_day_of_week_hits_for_periodic_opening_hours(): void
+    {
+        $result = $this->transformer->transform($this->periodicCalendar(false));
+
+        // Range Mon 2024-06-03 to Fri 2024-06-07, opening hours on Monday and Wednesday.
+        $this->assertSame(
+            [
+                'monday' => 1,
+                'tuesday' => 0,
+                'wednesday' => 1,
+                'thursday' => 0,
+                'friday' => 0,
+                'saturday' => 0,
+                'sunday' => 0,
+            ],
+            $result['dayOfWeekHits']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_day_of_week_hits_for_permanent_opening_hours_using_the_rolling_window(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(false));
+
+        // Rolling window -6/+12 months from the fixed now (2024-06-01): 78 Mondays, no other weekday.
+        $this->assertSame(
+            [
+                'monday' => 78,
+                'tuesday' => 0,
+                'wednesday' => 0,
+                'thursday' => 0,
+                'friday' => 0,
+                'saturday' => 0,
+                'sunday' => 0,
+            ],
+            $result['dayOfWeekHits']
+        );
     }
 
     /**

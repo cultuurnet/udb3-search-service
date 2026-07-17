@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\DateTimeFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
@@ -61,6 +62,8 @@ final class CalendarTransformer implements JsonTransformer
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
+            // Always emit dayOfWeekHits, even on this error path, so a range filter stays reliable.
+            $draft['dayOfWeekHits'] = EffectiveOpeningHours::empty()->dayCounts();
             return $draft;
         }
 
@@ -71,7 +74,10 @@ final class CalendarTransformer implements JsonTransformer
         // Read before polyFillJsonLdSubEvents() strips childcare from generated subEvents.
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
-        $from = $this->polyFillJsonLdSubEvents($from);
+        $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
+        $draft['dayOfWeekHits'] = $effectiveOpeningHours->dayCounts();
+
+        $from = $this->polyFillJsonLdSubEvents($from, $effectiveOpeningHours);
         if (!isset($from['subEvent'])) {
             $this->logger->logMissingExpectedField('subEvent');
             return $draft;
@@ -81,6 +87,19 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
         return $draft;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     */
+    private function resolveEffectiveOpeningHours(array $from): EffectiveOpeningHours
+    {
+        if ($from['calendarType'] === 'periodic' || $from['calendarType'] === 'permanent') {
+            return $this->effectiveOpeningHoursResolver->resolve($from);
+        }
+
+        return EffectiveOpeningHours::empty();
     }
 
     /**
@@ -237,7 +256,7 @@ final class CalendarTransformer implements JsonTransformer
      *     - calendar type permanent: add subEvents based on opening hours, or a single subEvent with an unlimited range
      *         if there are no opening hours
      */
-    private function polyFillJsonLdSubEvents(array $from): array
+    private function polyFillJsonLdSubEvents(array $from, EffectiveOpeningHours $effectiveOpeningHours): array
     {
         if ($from['calendarType'] === 'single' || $from['calendarType'] === 'periodic') {
             if (!isset($from['startDate'])) {
@@ -260,13 +279,13 @@ final class CalendarTransformer implements JsonTransformer
 
             case 'periodic':
                 if (isset($from['openingHours'])) {
-                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
+                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from, $effectiveOpeningHours);
                 }
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
 
             case 'permanent':
                 if (isset($from['openingHours'])) {
-                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
+                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from, $effectiveOpeningHours);
                 }
                 $from['subEvent'] = [
                     [
@@ -314,10 +333,10 @@ final class CalendarTransformer implements JsonTransformer
      * @return array
      *   Given JSON-LD poly-filled with a subEvent property based on the openingHours property
      */
-    private function polyFillJsonLdSubEventsFromOpeningHours(array $from): array
-    {
-        $effectiveOpeningHours = $this->effectiveOpeningHoursResolver->resolve($from);
-
+    private function polyFillJsonLdSubEventsFromOpeningHours(
+        array $from,
+        EffectiveOpeningHours $effectiveOpeningHours
+    ): array {
         $subEvent = [];
 
         foreach ($effectiveOpeningHours->slots() as $slot) {

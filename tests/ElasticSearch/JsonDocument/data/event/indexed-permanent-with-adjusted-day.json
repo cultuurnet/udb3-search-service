@@ -17295,5 +17295,14 @@
     },
     "metadata": {
         "popularity": 0
+    },
+    "dayOfWeekHits": {
+        "monday": 78,
+        "tuesday": 78,
+        "wednesday": 78,
+        "thursday": 78,
+        "friday": 78,
+        "saturday": 78,
+        "sunday": 78
     }
 }
