@@ -465,6 +465,38 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_add_matching_birthdate_ranges_when_no_birthdate_range_is_queried(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters([
+            'q' => 'name.nl:foo',
+        ]);
+
+        $this->searchService->method('search')->willReturn(
+            new PagedResultSet(
+                1,
+                30,
+                [
+                    new JsonDocument(
+                        'd9a71b53-1756-4126-9926-a83f5dd84f45',
+                        Json::encode([
+                            '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                            '@type' => 'Event',
+                        ])
+                    ),
+                ]
+            )
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $this->assertArrayNotHasKey('matchingBirthdateRanges', $response);
+    }
+
+    /**
+     * @test
+     */
     public function it_uses_the_default_limit_of_30_if_a_limit_of_0_is_given(): void
     {
         $request = $this->getSearchRequestWithQueryParameters(
