@@ -75,7 +75,11 @@ final class CalendarTransformer implements JsonTransformer
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
-        $draft['dayOfWeekHits'] = $effectiveOpeningHours->dayCounts();
+        // Multiple calendars have no opening hours to resolve; their occurrences are the explicit
+        // source sub-events, so their dayOfWeekHits are derived from those instead.
+        $draft['dayOfWeekHits'] = $from['calendarType'] === 'multiple'
+            ? $this->countDayOfWeekHitsForMultiple($from)
+            : $effectiveOpeningHours->dayCounts();
 
         $from = $this->polyFillJsonLdSubEvents($from, $effectiveOpeningHours);
         if (!isset($from['subEvent'])) {
@@ -100,6 +104,50 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return EffectiveOpeningHours::empty();
+    }
+
+    /**
+     * Counts, per weekday, the number of distinct days a "multiple" calendar occurs on, derived from
+     * its explicit source sub-events. Consistent with the openingHours-based count, this counts days
+     * and not slots — two occurrences on the same date count once — and the weekday is determined in
+     * the offer's local timezone (the same one used for localTimeRange).
+     *
+     * @param array $from
+     *   JSON-LD of an event, as an associative array
+     * @return array<string, int>
+     *   Number of occurrence days per weekday.
+     */
+    private function countDayOfWeekHitsForMultiple(array $from): array
+    {
+        $dayCounts = EffectiveOpeningHours::empty()->dayCounts();
+
+        $timezone = $this->determineLocalTimezone($from);
+        $countedDates = [];
+
+        foreach ($from['subEvent'] ?? [] as $subEvent) {
+            if (!isset($subEvent['startDate'])) {
+                // Missing startDates are logged when building dateRange.
+                continue;
+            }
+
+            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
+            if ($startDate === false) {
+                continue;
+            }
+
+            $startDate = $startDate->setTimezone($timezone);
+            $date = $startDate->format('Y-m-d');
+
+            // Days, not slots: count each calendar date once.
+            if (isset($countedDates[$date])) {
+                continue;
+            }
+            $countedDates[$date] = true;
+
+            $dayCounts[strtolower($startDate->format('l'))]++;
+        }
+
+        return $dayCounts;
     }
 
     /**

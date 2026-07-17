@@ -160,11 +160,50 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_counts_zero_day_of_week_hits_for_multiple_calendars(): void
+    public function it_counts_day_of_week_hits_from_the_sub_events_of_multiple_calendars(): void
     {
+        // Sub-events on Saturday 2024-06-01 and Sunday 2024-06-02.
         $result = $this->transformer->transform($this->multipleCalendar(false));
 
-        $this->assertSame(EffectiveOpeningHours::empty()->dayCounts(), $result['dayOfWeekHits']);
+        $this->assertSame(
+            [
+                'monday' => 0,
+                'tuesday' => 0,
+                'wednesday' => 0,
+                'thursday' => 0,
+                'friday' => 0,
+                'saturday' => 1,
+                'sunday' => 1,
+            ],
+            $result['dayOfWeekHits']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_a_multiple_calendar_date_once_even_with_several_sub_events(): void
+    {
+        // Two sub-events on the same date (Saturday 2024-06-01) must count as a single day.
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-06-01T20:00:00+02:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2024-06-01T10:00:00+02:00',
+                    'endDate' => '2024-06-01T12:00:00+02:00',
+                ],
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2024-06-01T18:00:00+02:00',
+                    'endDate' => '2024-06-01T20:00:00+02:00',
+                ],
+            ],
+        ]);
+
+        $this->assertSame(1, $result['dayOfWeekHits']['saturday']);
     }
 
     /**

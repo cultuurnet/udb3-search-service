@@ -356,24 +356,28 @@ It is a plain `object`, so Elasticsearch flattens it into independent integer fi
 (`dayOfWeekHits.monday`, …) that are queried and cached independently, with no nested-query join cost.
 
 Like `hasChildcare`, every document always carries all seven sub-fields (defaulting to `0`), so a
-range filter on any weekday is reliable. Calendar types that do not derive occurrences from opening
-hours (`single`, `multiple`, `periodic`/`permanent` without opening hours) index all-zero counts.
+range filter on any weekday is reliable. Calendar types that have no occurrences to count (`single`,
+`periodic`/`permanent` without opening hours) index all-zero counts.
 
 **Computation:**
 
 | Calendar type | Opening hours | `dayOfWeekHits` |
 |---|---|---|
 | `single` | n/a | all zero |
-| `multiple` | n/a | all zero (a separate follow-up covers `multiple`) |
+| `multiple` | n/a | occurrence days per weekday, from the explicit `subEvent[]` |
 | `periodic` | No | all zero |
 | `periodic` | Yes | occurrences per weekday within `startDate`–`endDate` |
 | `permanent` | No | all zero |
 | `permanent` | Yes | occurrences per weekday within the −6/+12 month rolling window |
 
-The count comes from `EffectiveOpeningHours::dayCounts()`, the same single calendar walk that builds
-`subEvent[]` (via `EffectiveOpeningHoursResolver::resolve()`), so the counts are consistent with the
-generated sub-events by construction. A count is **days, not slots**: a weekday with two opening-hour
-slots on the same date counts once.
+For `periodic`/`permanent`, the count comes from `EffectiveOpeningHours::dayCounts()`, the same single
+calendar walk that builds `subEvent[]` (via `EffectiveOpeningHoursResolver::resolve()`), so the counts
+are consistent with the generated sub-events by construction. For `multiple`, the count is derived
+directly from the explicit source `subEvent[]` (there are no opening hours to resolve), taking each
+sub-event's start date in the offer's local timezone.
+
+A count is always **days, not slots**: a weekday with two opening-hour slots — or two `multiple`
+sub-events — on the same date counts once.
 
 Because the count is derived from the effective (closures-applied) opening hours, it becomes stale the
 same way `subEvent[]` does for `permanent` offers, and is refreshed by the same
