@@ -103,6 +103,24 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactoryTest extends TestCa
     /**
      * @test
      */
+    public function it_deduplicates_age_clauses_when_ranges_map_to_the_same_age(): void
+    {
+        // Both ranges resolve to age [5 TO 6] at the fixed "now", so only one age clause is emitted.
+        $actual = $this->factory->fromString(
+            'birthdateRange:([2020-01-01 TO 2020-12-31] OR [2020-03-01 TO 2020-09-30])'
+        );
+
+        $expected = new LuceneQueryString(
+            '(birthdateRange:([2020-01-01 TO 2020-12-31] OR [2020-03-01 TO 2020-09-30])'
+            . ' OR (typicalAgeRange:[5 TO 6] AND NOT allAges:true))'
+        );
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
     public function it_expands_a_grouped_birthdate_range_in_a_compound_query(): void
     {
         $actual = $this->factory->fromString(

@@ -92,6 +92,10 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactory implements QuerySt
                     return $original;
                 }
 
+                // Distinct birthdate ranges can map to the same age range (the conversion is
+                // coarse — whole years), so collapse duplicate clauses to keep the query lean.
+                $ageClauses = array_unique($ageClauses);
+
                 return sprintf('(%s OR %s)', $original, implode(' OR ', $ageClauses));
             },
             $queryString
