@@ -24,12 +24,17 @@ use DateTimeImmutable;
  * "All ages" events are deliberately excluded from the typicalAgeRange match: their range
  * is unbounded and would otherwise match every birthdate query.
  *
- * Only the flat `birthdateRange:[from TO to]` form is expanded; grouped forms such as
- * `birthdateRange:([a TO b] OR [c TO d])` are passed through unchanged.
+ * Both the flat `birthdateRange:[from TO to]` form and grouped forms such as
+ * `birthdateRange:([a TO b] OR [c TO d])` are expanded; every date range inside the clause
+ * gets its own equivalent typicalAgeRange fallback.
  */
 final class BirthdateRangeToTypicalAgeRangeQueryStringFactory implements QueryStringFactory
 {
-    private const BIRTHDATE_RANGE_PATTERN = '/birthdateRange:\[(\d{4}-\d{2}-\d{2}) TO (\d{4}-\d{2}-\d{2})\]/';
+    // A birthdateRange clause: flat "[...]" or grouped "(...)".
+    private const BIRTHDATE_RANGE_CLAUSE_PATTERN = '/birthdateRange:(?:\[[^\]]*\]|\([^)]*\))/';
+
+    // A single "[YYYY-MM-DD TO YYYY-MM-DD]" range inside a clause.
+    private const DATE_RANGE_PATTERN = '/\[(\d{4}-\d{2}-\d{2}) TO (\d{4}-\d{2}-\d{2})\]/';
 
     private QueryStringFactory $decoratedFactory;
 
@@ -52,30 +57,46 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactory implements QuerySt
     private function expandBirthdateRanges(string $queryString): string
     {
         $expanded = preg_replace_callback(
-            self::BIRTHDATE_RANGE_PATTERN,
+            self::BIRTHDATE_RANGE_CLAUSE_PATTERN,
             function (array $matches): string {
-                [$original, $fromString, $toString] = $matches;
+                $original = $matches[0];
 
-                $from = DateTimeImmutable::createFromFormat('!Y-m-d', $fromString);
-                $to = DateTimeImmutable::createFromFormat('!Y-m-d', $toString);
+                preg_match_all(self::DATE_RANGE_PATTERN, $original, $rangeMatches, PREG_SET_ORDER);
 
-                if (!$from instanceof DateTimeImmutable || !$to instanceof DateTimeImmutable) {
+                $ageClauses = [];
+                foreach ($rangeMatches as $rangeMatch) {
+                    [, $fromString, $toString] = $rangeMatch;
+
+                    $from = DateTimeImmutable::createFromFormat('!Y-m-d', $fromString);
+                    $to = DateTimeImmutable::createFromFormat('!Y-m-d', $toString);
+
+                    if (!$from instanceof DateTimeImmutable || !$to instanceof DateTimeImmutable) {
+                        continue;
+                    }
+
+                    try {
+                        $range = new BirthdateRange($from, $to, $this->now);
+                    } catch (UnsupportedParameterValue $e) {
+                        // Skip an invalid range (from > to); ElasticSearch will reject it.
+                        continue;
+                    }
+
+                    $ageClauses[] = sprintf(
+                        '(typicalAgeRange:[%d TO %d] AND NOT allAges:true)',
+                        $range->getMinAge(),
+                        $range->getMaxAge()
+                    );
+                }
+
+                if ($ageClauses === []) {
                     return $original;
                 }
 
-                try {
-                    $range = new BirthdateRange($from, $to, $this->now);
-                } catch (UnsupportedParameterValue $e) {
-                    // Leave an invalid range (from > to) untouched; ElasticSearch will reject it.
-                    return $original;
-                }
+                // Distinct birthdate ranges can map to the same age range (the conversion is
+                // coarse — whole years), so collapse duplicate clauses to keep the query lean.
+                $ageClauses = array_unique($ageClauses);
 
-                return sprintf(
-                    '(%s OR (typicalAgeRange:[%d TO %d] AND NOT allAges:true))',
-                    $original,
-                    $range->getMinAge(),
-                    $range->getMaxAge()
-                );
+                return sprintf('(%s OR %s)', $original, implode(' OR ', $ageClauses));
             },
             $queryString
         );
