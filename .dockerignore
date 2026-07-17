@@ -1,0 +1,39 @@
+# Dev tooling
+docker/
+docker-compose.yml
+docker-compose.prod.yml
+docker.md
+Makefile
+Rakefile
+Gemfile
+Gemfile.lock
+Jenkinsfile
+lib/
+contrib/
+.bundle/
+.php-cs-fixer.php
+
+# Tests and analysis
+# tests/ TODO: uncomment
+# phpunit.xml.dist TODO: uncomment
+phpcs.xml.dist
+phpstan.neon
+rector.php
+
+# Docs
+docs/
+readme.md
+
+# Local config/secrets (mounted at runtime from host)
+config.php
+facet_mapping_regions.php
+api_keys_matched_to_client_ids.php
+public-keycloak.pem
+public.pem
+
+# Dependencies — built inside image
+vendor/
+
+# Git
+.git/
+.gitignore
