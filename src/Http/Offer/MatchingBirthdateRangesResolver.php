@@ -148,7 +148,6 @@ final class MatchingBirthdateRangesResolver
             return false;
         }
 
-        // Intersection with [range->from, range->to]; a missing bound is unbounded.
         if ($from !== null && $from > $range->getTo()) {
             return false;
         }
@@ -177,7 +176,6 @@ final class MatchingBirthdateRangesResolver
             return false;
         }
 
-        // Intersection with [range->minAge, range->maxAge]; a missing bound is unbounded.
         if ($min !== null && $min > $range->getMaxAge()) {
             return false;
         }
