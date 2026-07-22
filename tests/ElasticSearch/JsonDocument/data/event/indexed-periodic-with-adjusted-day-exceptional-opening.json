@@ -249,5 +249,14 @@
     },
     "metadata": {
         "popularity": 0
+    },
+    "dayOfWeekHits": {
+        "monday": 2,
+        "tuesday": 2,
+        "wednesday": 2,
+        "thursday": 2,
+        "friday": 2,
+        "saturday": 1,
+        "sunday": 0
     }
 }

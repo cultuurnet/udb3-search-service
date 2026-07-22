@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AudienceTypeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ChildrenOnlyTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CompletenessTransformer;
@@ -54,7 +55,7 @@ final class OfferTransformer implements JsonTransformer
             new LanguagesTransformer($logger, true),
             new NameTransformer($logger),
             new DescriptionTransformer(),
-            new CalendarTransformer($logger),
+            new CalendarTransformer($logger, new EffectiveOpeningHoursResolver($logger)),
             // Must run after CalendarTransformer — caps draft['subEvent'] which CalendarTransformer writes.
             new SubEventCapTransformer($logger, $subEventCap),
             new AvailabilityTransformer($logger),

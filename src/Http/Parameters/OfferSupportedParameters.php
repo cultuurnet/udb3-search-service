@@ -52,6 +52,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'localTimeTo',
             'status',
             'attendanceMode',
+            'dayOfWeek',
             'bookingAvailability',
             'termIds',
             'termLabels',
