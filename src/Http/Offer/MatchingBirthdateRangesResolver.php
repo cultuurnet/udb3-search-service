@@ -14,20 +14,13 @@ use DateTimeImmutable;
 use stdClass;
 
 /**
- * Resolves the `matchingBirthdateRanges` response field.
+ * Resolves which queried birthdate ranges match each returned event.
  *
- * A request "queries" one or more birthdate ranges, either through the advanced query
- * (`q=birthdateRange:[from TO to]`, possibly grouped or repeated) or through the structured
- * `birthdateRangeFrom`/`birthdateRangeTo` parameters. For every queried range this resolver reports
- * which of the returned events qualify for it, so a consumer can show per-child "geschikt voor"
- * hints when multiple children are searched in one query.
- *
- * The match test mirrors ElasticSearchOfferQueryBuilder::createBirthdateRangeQuery(): an event
- * qualifies when its indexed `birthdateRange` intersects the queried date range, or when its
- * `typicalAgeRange` intersects the equivalent age range (excluding "all ages" events). The
- * birthdate <-> age conversion is relative to "now", matching the query-time behaviour everywhere
- * else in the codebase.
- */
+ * Supports both q=birthdateRangeFrom:[from TO to] and
+ * birthdateRangeFrom/birthdateRangeTo parameters. An event matches if its
+ * birthdateRange or (non-"all ages") typicalAgeRange intersects the
+ * queried range, using the same "now"-relative logic as the search query.
+*/
 final class MatchingBirthdateRangesResolver
 {
     private BirthdateRangeQueryStringParser $queryStringParser;
@@ -148,7 +141,6 @@ final class MatchingBirthdateRangesResolver
             return false;
         }
 
-        // Intersection with [range->from, range->to]; a missing bound is unbounded.
         if ($from !== null && $from > $range->getTo()) {
             return false;
         }
@@ -177,7 +169,6 @@ final class MatchingBirthdateRangesResolver
             return false;
         }
 
-        // Intersection with [range->minAge, range->maxAge]; a missing bound is unbounded.
         if ($min !== null && $min > $range->getMaxAge()) {
             return false;
         }
