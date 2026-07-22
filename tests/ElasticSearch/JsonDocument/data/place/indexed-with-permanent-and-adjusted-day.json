@@ -4011,6 +4011,7 @@
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
+    "hasOvernight": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "indexedAt": "2017-05-09T15:11:32+02:00",

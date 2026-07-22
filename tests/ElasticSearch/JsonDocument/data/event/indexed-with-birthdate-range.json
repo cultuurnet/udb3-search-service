@@ -78,6 +78,7 @@
     "metadata": {
         "popularity": 0
     },
-    "hasChildcare": false,
-    "childrenOnly": false
+    "childrenOnly": false,
+    "hasOvernight": false,
+    "hasChildcare": false
 }

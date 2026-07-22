@@ -2554,6 +2554,78 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_with_a_has_overnight_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasOvernightFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasOvernight' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_overnight_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasOvernightFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasOvernight' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_inclusive_media_objects_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())

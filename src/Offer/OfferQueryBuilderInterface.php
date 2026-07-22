@@ -128,6 +128,12 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     public function withUiTPASFilter(bool $include): OfferQueryBuilderInterface;
 
     /**
+     *   When set to true only offers that have at least one sub-event with an overnight stay will be
+     *   included. When set to false only offers without any overnight sub-event will be included.
+     */
+    public function withHasOvernightFilter(bool $hasOvernight): OfferQueryBuilderInterface;
+
+    /**
      *   When set to true only offers that have childcare configured on at least one sub-event or
      *   opening hour will be included. When set to false only offers without any childcare will be
      *   included.

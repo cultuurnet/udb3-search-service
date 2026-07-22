@@ -41,7 +41,7 @@ final class PlaceTransformerTest extends TestCase
             ),
             new PathEndIdUrlParser(),
             $this->regionService,
-            9900
+            9900,
         );
     }
 
@@ -69,6 +69,7 @@ final class PlaceTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
+            'hasOvernight' => false,
             'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,

@@ -91,6 +91,7 @@ final class EventTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
+            'hasOvernight' => false,
             'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,

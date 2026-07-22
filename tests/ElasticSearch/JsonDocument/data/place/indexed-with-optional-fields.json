@@ -129,6 +129,7 @@
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
+    "hasOvernight": false,
     "mediaObjectsCount": 2,
     "videosCount": 2,
     "address": {

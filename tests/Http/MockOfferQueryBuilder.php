@@ -366,6 +366,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withHasOvernightFilter(bool $hasOvernight): self
+    {
+        $c = clone $this;
+        $c->mockQuery['hasOvernight'] = $hasOvernight;
+        return $c;
+    }
+
     public function withHasChildcareFilter(bool $hasChildcare): self
     {
         $c = clone $this;
