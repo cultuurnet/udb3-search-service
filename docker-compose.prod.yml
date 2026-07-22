@@ -1,0 +1,35 @@
+# For reference and local development only; superseded by Puppet-generated compose
+x-search-service: &search-service
+  image: 757200591793.dkr.ecr.eu-west-1.amazonaws.com/uitdatabank/search-api:latest
+  network_mode: host # simplifies configuration
+  restart: unless-stopped
+  environment:
+    LOG_TO_STDOUT: "true"
+  volumes:
+    - /etc/uitdatabank-search-api/config.php:/var/www/html/config.php:ro
+    - /etc/uitdatabank-search-api/public-keycloak.pem:/var/www/html/public-keycloak.pem:ro
+    - /etc/uitdatabank-search-api/api_keys_matched_to_client_ids.php:/var/www/html/api_keys_matched_to_client_ids.php:ro
+    - /etc/uitdatabank-search-api/default_queries.php:/var/www/html/default_queries.php:ro
+    - /var/www/geojson-data:/var/www/geojson-data:ro
+
+services:
+  search-api:
+    <<: *search-service
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 9000 || exit 1"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  search-consume-udb3-api:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-api"]
+
+  search-consume-udb3-cli:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-cli"]
+
+  search-consume-udb3-related:
+    <<: *search-service
+    command: ["php", "bin/app.php", "consume-udb3-related"]
