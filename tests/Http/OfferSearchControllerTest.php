@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\DateTimeFactory;
+use DateTimeImmutable;
 use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
+use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
+use CultuurNet\UDB3\Search\Http\Offer\MatchingBirthdateRangesResolver;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
@@ -77,6 +80,8 @@ final class OfferSearchControllerTest extends TestCase
 
     private NodeAwareFacetTreeNormalizer $facetTreeNormalizer;
 
+    private MatchingBirthdateRangesResolver $matchingBirthdateRangesResolver;
+
     private OfferSearchController $controller;
 
     protected function setUp(): void
@@ -107,6 +112,12 @@ final class OfferSearchControllerTest extends TestCase
 
         $this->facetTreeNormalizer = new NodeAwareFacetTreeNormalizer();
 
+        // A fixed "now" keeps the birthdate -> age conversion in matchingBirthdateRanges deterministic.
+        $this->matchingBirthdateRangesResolver = new MatchingBirthdateRangesResolver(
+            new BirthdateRangeQueryStringParser(),
+            new DateTimeImmutable('2026-07-03')
+        );
+
         $this->controller = new OfferSearchController(
             $this->queryBuilder,
             $this->requestParser,
@@ -116,6 +127,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', true),
+            $this->matchingBirthdateRangesResolver,
         );
     }
 
@@ -378,6 +390,108 @@ final class OfferSearchControllerTest extends TestCase
         $actualJsonResponse = $this->controller->__invoke(new ApiRequest($request))
             ->getBody();
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_matching_birthdate_ranges_when_a_birthdate_range_is_queried(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters([
+            'q' => 'birthdateRange:[2020-01-01 TO 2022-12-31]',
+        ]);
+
+        $expectedResultSet = new PagedResultSet(
+            2,
+            30,
+            [
+                new JsonDocument(
+                    'd9a71b53-1756-4126-9926-a83f5dd84f45',
+                    Json::encode([
+                        '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                        '@type' => 'Event',
+                        'birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
+                    ])
+                ),
+                new JsonDocument(
+                    '557d0ddc-efc9-42b3-934b-9f88b0945ab1',
+                    Json::encode([
+                        '@id' => 'https://io.uitdatabank.be/events/557d0ddc-efc9-42b3-934b-9f88b0945ab1',
+                        '@type' => 'Event',
+                        // Matches the same queried range via its equivalent age range instead.
+                        'typicalAgeRange' => ['gte' => 4, 'lte' => 5],
+                        'allAges' => false,
+                    ])
+                ),
+            ]
+        );
+
+        // The exact query builder is covered elsewhere; here we only assert the response shape,
+        // so accept any query builder and return the fixed result set.
+        $this->searchService->method('search')->willReturn($expectedResultSet);
+
+        $expectedJsonResponse = Json::encode([
+            '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+            '@type' => 'PagedCollection',
+            'itemsPerPage' => 30,
+            'totalItems' => 2,
+            'member' => [
+                [
+                    '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                    '@type' => 'Event',
+                ],
+                [
+                    '@id' => 'https://io.uitdatabank.be/events/557d0ddc-efc9-42b3-934b-9f88b0945ab1',
+                    '@type' => 'Event',
+                ],
+            ],
+            'matchingBirthdateRanges' => [
+                [
+                    'from' => '2020-01-01',
+                    'to' => '2022-12-31',
+                    'matches' => [
+                        'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                        'https://io.uitdatabank.be/events/557d0ddc-efc9-42b3-934b-9f88b0945ab1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $actualJsonResponse = $this->controller->__invoke(new ApiRequest($request))
+            ->getBody();
+        $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_matching_birthdate_ranges_when_no_birthdate_range_is_queried(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters([
+            'q' => 'name.nl:foo',
+        ]);
+
+        $this->searchService->method('search')->willReturn(
+            new PagedResultSet(
+                1,
+                30,
+                [
+                    new JsonDocument(
+                        'd9a71b53-1756-4126-9926-a83f5dd84f45',
+                        Json::encode([
+                            '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                            '@type' => 'Event',
+                        ])
+                    ),
+                ]
+            )
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $this->assertArrayNotHasKey('matchingBirthdateRanges', $response);
     }
 
     /**
@@ -1236,6 +1350,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
+            $this->matchingBirthdateRangesResolver,
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1283,6 +1398,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
+            $this->matchingBirthdateRangesResolver,
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1317,6 +1433,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
+            $this->matchingBirthdateRangesResolver,
         );
 
         // A default search (no childrenOnly) keeps the consumer's own children-only events and
@@ -1352,6 +1469,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
+            $this->matchingBirthdateRangesResolver,
         );
 
         // childrenOnly=false without BOA: the creator exception is still applied (hiding everyone
@@ -1473,6 +1591,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer(null, '', false),
+            $this->matchingBirthdateRangesResolver,
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
@@ -1505,6 +1624,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', false),
+            $this->matchingBirthdateRangesResolver,
         );
 
         // A default search: no childrenOnly and no audienceType params, with the default filters
