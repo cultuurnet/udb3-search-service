@@ -162,6 +162,39 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_extracts_multiple_structured_birthdate_ranges_from_comma_separated_values(): void
+    {
+        $ranges = $this->resolver->queriedRanges(
+            $this->requestWithQueryParams([
+                'birthdateRangeFrom' => '2018-01-01,2020-01-01',
+                'birthdateRangeTo' => '2018-12-31,2020-12-31',
+            ])
+        );
+
+        $this->assertSame(
+            [['2018-01-01', '2018-12-31'], ['2020-01-01', '2020-12-31']],
+            $this->fromToPairs($ranges)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_structured_ranges_when_the_from_and_to_counts_do_not_match(): void
+    {
+        $ranges = $this->resolver->queriedRanges(
+            $this->requestWithQueryParams([
+                'birthdateRangeFrom' => '2018-01-01,2020-01-01',
+                'birthdateRangeTo' => '2018-12-31',
+            ])
+        );
+
+        $this->assertSame([], $ranges);
+    }
+
+    /**
+     * @test
+     */
     public function it_deduplicates_identical_ranges_from_both_paths(): void
     {
         $ranges = $this->resolver->queriedRanges(

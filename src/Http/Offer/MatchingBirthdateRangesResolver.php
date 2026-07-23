@@ -46,10 +46,7 @@ final class MatchingBirthdateRangesResolver
             $ranges = $this->queryStringParser->parse((string) $request->getQueryParam('q'), $this->now);
         }
 
-        $structured = $this->structuredRange($request);
-        if ($structured !== null) {
-            $ranges[] = $structured;
-        }
+        $ranges = array_merge($ranges, $this->structuredRanges($request));
 
         return $this->deduplicate($ranges);
     }
@@ -82,21 +79,29 @@ final class MatchingBirthdateRangesResolver
         );
     }
 
-    private function structuredRange(ApiRequestInterface $request): ?BirthdateRange
+    /**
+     * @return BirthdateRange[]
+     */
+    private function structuredRanges(ApiRequestInterface $request): array
     {
         $parameterBag = $request->getQueryParameterBag();
-        $from = $parameterBag->getDateFromParameter('birthdateRangeFrom');
-        $to = $parameterBag->getDateFromParameter('birthdateRangeTo');
+        $fromDates = $parameterBag->getExplodedDateFromParameter('birthdateRangeFrom');
+        $toDates = $parameterBag->getExplodedDateFromParameter('birthdateRangeTo');
 
-        if ($from === null || $to === null) {
-            return null;
+        if (empty($fromDates) || empty($toDates) || count($fromDates) !== count($toDates)) {
+            return [];
         }
 
-        try {
-            return new BirthdateRange($from, $to, $this->now);
-        } catch (UnsupportedParameterValue $e) {
-            return null;
+        $ranges = [];
+        foreach ($fromDates as $i => $from) {
+            try {
+                $ranges[] = new BirthdateRange($from, $toDates[$i], $this->now);
+            } catch (UnsupportedParameterValue $e) {
+                continue;
+            }
         }
+
+        return $ranges;
     }
 
     /**

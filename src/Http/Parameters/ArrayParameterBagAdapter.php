@@ -171,6 +171,29 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
     }
 
     /**
+     * @return DateTimeImmutable[]
+     */
+    public function getExplodedDateFromParameter(
+        string $parameterName,
+        ?string $defaultValueAsString = null,
+        string $delimiter = ','
+    ): array {
+        $callback = function ($asString) use ($parameterName): DateTimeImmutable {
+            $date = $this->parseDate((string) $asString);
+
+            if ($date === null) {
+                throw new UnsupportedParameterValue(
+                    "{$parameterName} should be in the format YYYY-MM-DD, for example 2017-04-26"
+                );
+            }
+
+            return $date;
+        };
+
+        return $this->getExplodedStringFromParameter($parameterName, $defaultValueAsString, $callback, $delimiter);
+    }
+
+    /**
      * @return mixed|null
      */
     private function get(string $queryParameter)
