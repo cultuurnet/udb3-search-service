@@ -40,7 +40,8 @@ final class PlaceTransformerTest extends TestCase
                 $this->logger
             ),
             new PathEndIdUrlParser(),
-            $this->regionService
+            $this->regionService,
+            9900
         );
     }
 
@@ -68,6 +69,7 @@ final class PlaceTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
+            'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,
             'metadata' => [
@@ -452,6 +454,55 @@ final class PlaceTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/place/original-with-contributors.json',
             __DIR__ . '/data/place/indexed-with-contributors.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_caps_sub_event_count_to_stay_under_the_elasticsearch_nested_object_limit(): void
+    {
+        // Guards the ordering dependency: if SubEventCapTransformer is ever moved to run before
+        // CalendarTransformer in OfferTransformer, this assertion fails because draft['subEvent']
+        // won't have been written yet.
+        $transformer = new PlaceTransformer(
+            new JsonTransformerPsrLogger($this->logger),
+            new PathEndIdUrlParser(),
+            $this->regionService,
+            5
+        );
+
+        $original = [
+            '@id' => 'http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405',
+            'mainLanguage' => 'nl',
+            'languages' => ['nl'],
+            'completedLanguages' => ['nl'],
+            'name' => ['nl' => 'Hungaria'],
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+01:00',
+            'endDate' => '2024-01-07T00:00:00+01:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                ],
+            ],
+            'workflowStatus' => 'DRAFT',
+            'created' => '2017-04-22T13:33:37+02:00',
+        ];
+
+        $actual = $transformer->transform($original, []);
+
+        $this->assertCount(5, $actual['subEvent']);
+        $this->assertContains(
+            [
+                'warning',
+                'subEvent truncated from 6 to 5 entries for '
+                    . 'http://udb-silex.dev/place/179c89c5-dba4-417b-ae96-62e7a12c2405.',
+                [],
+            ],
+            $this->logger->getLogs()
         );
     }
 

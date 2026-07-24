@@ -263,6 +263,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $localTimeTo = $subEventQueryParameters->getLocalTimeTo();
         $statuses = $subEventQueryParameters->getStatuses();
         $bookingAvailability = $subEventQueryParameters->getBookingAvailability();
+        $hasChildcare = $subEventQueryParameters->getHasChildcare();
 
         $this->guardDateRange('date', $from, $to);
 
@@ -275,8 +276,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         if ($from || $to) {
             $queries[] = $this->createRangeQuery(
                 'subEvent.dateRange',
-                $from ? $from->format(DATE_ATOM) : null,
-                $to ? $to->format(DATE_ATOM) : null
+                $from?->format(DATE_ATOM),
+                $to?->format(DATE_ATOM)
             );
         }
 
@@ -300,6 +301,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         if ($bookingAvailability !== null) {
             $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
+        }
+
+        if ($hasChildcare !== null) {
+            $queries[] = new TermQuery('subEvent.hasChildcare', $hasChildcare);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(
@@ -480,6 +485,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
     }
 
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        return $this->withTermQuery('hasChildcare', $hasChildcare);
+    }
+
     public function withTermIdFilter(TermId $termId): self
     {
         return $this->withMatchQuery('terms.id', $termId->toString());
@@ -637,6 +647,22 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);
+
+        return $c;
+    }
+
+    /**
+     * Adds the birthdate/age fields to the returned _source so the matchingBirthdateRanges response
+     * field can be computed per event. Only applied when the request actually queries a birthdate
+     * range, to avoid enlarging the _source of every search.
+     */
+    public function withBirthdateRangeMatchFields(): self
+    {
+        $c = clone $this;
+        $c->extraQueryParameters['_source'] = array_values(array_unique(array_merge(
+            $c->extraQueryParameters['_source'],
+            ['birthdateRange', 'typicalAgeRange', 'allAges']
+        )));
 
         return $c;
     }

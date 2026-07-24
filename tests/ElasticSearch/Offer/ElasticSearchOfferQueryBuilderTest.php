@@ -79,6 +79,27 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_add_birthdate_and_age_fields_to_the_source_for_matching_birthdate_ranges(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeMatchFields();
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'birthdateRange', 'typicalAgeRange', 'allAges'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object)[],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -911,6 +932,64 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_build_a_query_with_a_has_childcare_filter_on_sub_event(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
+                    ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
+                    ->withHasChildcare(true)
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2026-01-01T00:00:00+00:00',
+                                                        'lte' => '2026-01-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'term' => [
+                                                    'subEvent.hasChildcare' => true,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 
     /**
@@ -2322,6 +2401,78 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                         [
                             'term' => [
                                 'childrenOnly' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => false,
                             ],
                         ],
                     ],
