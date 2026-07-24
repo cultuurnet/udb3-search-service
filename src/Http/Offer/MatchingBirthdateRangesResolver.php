@@ -84,13 +84,18 @@ final class MatchingBirthdateRangesResolver
      */
     private function structuredRanges(ApiRequestInterface $request): array
     {
-        $parameterBag = $request->getQueryParameterBag();
-        $fromDates = $parameterBag->getExplodedDateFromParameter('birthdateRangeFrom');
-        $toDates = $parameterBag->getExplodedDateFromParameter('birthdateRangeTo');
+        $parameters = new BirthdateRangeDateParameters($request->getQueryParameterBag());
 
-        if (empty($fromDates) || empty($toDates) || count($fromDates) !== count($toDates)) {
+        // Unlike BirthdateRangeOfferRequestParser::parse(), which throws when the
+        // "birthdateRangeFrom"/"birthdateRangeTo" counts don't match, this method only
+        // resolves matches for reporting and degrades leniently instead: the controller
+        // always runs the strict parser first, so a real mismatch never reaches here.
+        if (!$parameters->hasMatchingCounts()) {
             return [];
         }
+
+        $fromDates = $parameters->getFromDates();
+        $toDates = $parameters->getToDates();
 
         $ranges = [];
         foreach ($fromDates as $i => $from) {

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
+use CultuurNet\UDB3\Search\Http\Offer\BirthdateRangeDateParameters;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
@@ -18,10 +19,9 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $parameterBagReader = $request->getQueryParameterBag();
-
-        $fromDates = $parameterBagReader->getExplodedDateFromParameter('birthdateRangeFrom');
-        $toDates = $parameterBagReader->getExplodedDateFromParameter('birthdateRangeTo');
+        $parameters = new BirthdateRangeDateParameters($request->getQueryParameterBag());
+        $fromDates = $parameters->getFromDates();
+        $toDates = $parameters->getToDates();
 
         if (empty($fromDates) && empty($toDates)) {
             return $offerQueryBuilder;
@@ -39,7 +39,7 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
             );
         }
 
-        if (count($fromDates) !== count($toDates)) {
+        if (!$parameters->hasMatchingCounts()) {
             throw new UnsupportedParameterValue(
                 'The number of "birthdateRangeFrom" values should match the number of "birthdateRangeTo" values.'
             );
