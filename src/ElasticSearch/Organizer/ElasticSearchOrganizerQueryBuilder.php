@@ -77,10 +77,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withDomainFilter(string $domain): ElasticSearchOrganizerQueryBuilder
     {
-        if (strpos($domain, 'www.') === 0) {
-            $domain = substr($domain, strlen('www.'));
-        }
-        return $this->withTermQuery('domain', $domain);
+        return $this->withMatchQuery('domain', $domain);
     }
 
     public function withPostalCodeFilter(PostalCode $postalCode): ElasticSearchOrganizerQueryBuilder

@@ -16,6 +16,10 @@ final class Url
     {
         $urlParts = parse_url($url);
 
+        if (is_array($urlParts) && !isset($urlParts['host']) && !isset($urlParts['scheme'])) {
+            $urlParts = parse_url('//' . $url);
+        }
+
         if (!is_array($urlParts) || !isset($urlParts['host'])) {
             throw new InvalidArgumentException('Url ' . $url . ' is not supported');
         }
@@ -47,7 +51,7 @@ final class Url
 
     public function getDomain(): string
     {
-        $host = $this->urlParts['host'];
+        $host = strtolower($this->urlParts['host']);
 
         if (strpos($host, 'www.') === 0) {
             return substr($host, strlen('www.'));

@@ -1,0 +1,20 @@
+{
+    "template": "*",
+    "settings": {
+        "analysis": {
+            "filter": {
+                "www_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "^www\\.",
+                    "replacement": ""
+                }
+            },
+            "analyzer": {
+                "url_domain_analyzer": {
+                    "tokenizer": "keyword",
+                    "filter": ["lowercase", "www_filter"]
+                }
+            }
+        }
+    }
+}
