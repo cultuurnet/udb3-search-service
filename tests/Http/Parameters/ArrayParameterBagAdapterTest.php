@@ -583,6 +583,50 @@ final class ArrayParameterBagAdapterTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function it_should_parse_multiple_comma_separated_dates_from_a_parameter(): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => '2020-01-01,2022-06-15']);
+
+        $actual = $parameterBag->getExplodedDateFromParameter('birthdateRangeFrom');
+
+        $this->assertCount(2, $actual);
+        $this->assertSame('2020-01-01', $actual[0]->format('Y-m-d'));
+        $this->assertSame('2022-06-15', $actual[1]->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_tolerate_whitespace_around_comma_separated_dates(): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => '2020-01-01, 2022-06-15']);
+
+        $actual = $parameterBag->getExplodedDateFromParameter('birthdateRangeFrom');
+
+        $this->assertCount(2, $actual);
+        $this->assertSame('2020-01-01', $actual[0]->format('Y-m-d'));
+        $this->assertSame('2022-06-15', $actual[1]->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidDateProvider
+     */
+    public function it_should_throw_an_exception_if_an_exploded_date_parameter_can_not_be_parsed(string $invalidDate): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => $invalidDate]);
+
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage(
+            'birthdateRangeFrom should be in the format YYYY-MM-DD, for example 2017-04-26'
+        );
+
+        $parameterBag->getExplodedDateFromParameter('birthdateRangeFrom');
+    }
+
 
     private function assertArrayContentsAreEqual(array $expected, array $actual): void
     {

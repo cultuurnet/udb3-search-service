@@ -46,10 +46,7 @@ final class MatchingBirthdateRangesResolver
             $ranges = $this->queryStringParser->parse((string) $request->getQueryParam('q'), $this->now);
         }
 
-        $structured = $this->structuredRange($request);
-        if ($structured !== null) {
-            $ranges[] = $structured;
-        }
+        $ranges = array_merge($ranges, $this->structuredRanges($request));
 
         return $this->deduplicate($ranges);
     }
@@ -82,21 +79,34 @@ final class MatchingBirthdateRangesResolver
         );
     }
 
-    private function structuredRange(ApiRequestInterface $request): ?BirthdateRange
+    /**
+     * @return BirthdateRange[]
+     */
+    private function structuredRanges(ApiRequestInterface $request): array
     {
-        $parameterBag = $request->getQueryParameterBag();
-        $from = $parameterBag->getDateFromParameter('birthdateRangeFrom');
-        $to = $parameterBag->getDateFromParameter('birthdateRangeTo');
+        $parameters = new BirthdateRangeDateParameters($request->getQueryParameterBag());
 
-        if ($from === null || $to === null) {
-            return null;
+        // Unlike BirthdateRangeOfferRequestParser::parse(), which throws when the
+        // "birthdateRangeFrom"/"birthdateRangeTo" counts don't match, this method only
+        // resolves matches for reporting and degrades leniently instead: the controller
+        // always runs the strict parser first, so a real mismatch never reaches here.
+        if (!$parameters->hasMatchingCounts()) {
+            return [];
         }
 
-        try {
-            return new BirthdateRange($from, $to, $this->now);
-        } catch (UnsupportedParameterValue $e) {
-            return null;
+        $fromDates = $parameters->getFromDates();
+        $toDates = $parameters->getToDates();
+
+        $ranges = [];
+        foreach ($fromDates as $i => $from) {
+            try {
+                $ranges[] = new BirthdateRange($from, $toDates[$i], $this->now);
+            } catch (UnsupportedParameterValue $e) {
+                continue;
+            }
         }
+
+        return $ranges;
     }
 
     /**

@@ -155,19 +155,22 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
     public function getDateFromParameter(string $queryParameter, ?string $defaultValueAsString = null): ?DateTimeImmutable
     {
-        $callback = function ($asString) use ($queryParameter): DateTimeImmutable {
-            $date = $this->parseDate((string) $asString);
-
-            if ($date === null) {
-                throw new UnsupportedParameterValue(
-                    "{$queryParameter} should be in the format YYYY-MM-DD, for example 2017-04-26"
-                );
-            }
-
-            return $date;
-        };
+        $callback = fn ($asString): DateTimeImmutable => $this->parseDateOrFail((string) $asString, $queryParameter);
 
         return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
+    }
+
+    /**
+     * @return DateTimeImmutable[]
+     */
+    public function getExplodedDateFromParameter(
+        string $parameterName,
+        ?string $defaultValueAsString = null,
+        string $delimiter = ','
+    ): array {
+        $callback = fn ($asString): DateTimeImmutable => $this->parseDateOrFail((string) $asString, $parameterName);
+
+        return $this->getExplodedStringFromParameter($parameterName, $defaultValueAsString, $callback, $delimiter);
     }
 
     /**
@@ -205,23 +208,28 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $passThroughCallback;
     }
 
-    private function parseDate(string $value): ?DateTimeImmutable
+    private function parseDateOrFail(string $value, string $parameterName): DateTimeImmutable
     {
+        $message = "{$parameterName} should be in the format YYYY-MM-DD, for example 2017-04-26";
+
+        // Trim so comma-separated values with spaces, e.g. "2020-01-01, 2022-06-15", parse as expected.
+        $value = trim($value);
+
         // createFromFormat is lenient, so enforce the exact YYYY-MM-DD shape first: this
         // rejects non-zero-padded parts (2020-1-1) and trailing garbage (2020-01-01abc).
         if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
-            return null;
+            throw new UnsupportedParameterValue($message);
         }
 
         $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
         if (!$date instanceof DateTimeImmutable) {
-            return null;
+            throw new UnsupportedParameterValue($message);
         }
 
         // Reject dates that only parsed by rolling over, e.g. 2020-02-30 -> 2020-03-01.
         $errors = DateTimeImmutable::getLastErrors();
         if (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) {
-            return null;
+            throw new UnsupportedParameterValue($message);
         }
 
         return $date;
