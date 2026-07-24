@@ -86,7 +86,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withBirthdateRangeMatchFields();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'birthdateRange', 'typicalAgeRange', 'allAges'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', '_birthdateRange', 'typicalAgeRange', 'allAges'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1495,7 +1495,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                 'should' => [
                                     [
                                         'range' => [
-                                            'birthdateRange' => [
+                                            '_birthdateRange' => [
                                                 'gte' => '2020-01-01',
                                                 'lte' => '2020-12-31',
                                             ],
@@ -1575,7 +1575,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                             'should' => [
                                                 [
                                                     'range' => [
-                                                        'birthdateRange' => [
+                                                        '_birthdateRange' => [
                                                             'gte' => '2020-01-01',
                                                             'lte' => '2020-12-31',
                                                         ],
@@ -1610,7 +1610,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                             'should' => [
                                                 [
                                                     'range' => [
-                                                        'birthdateRange' => [
+                                                        '_birthdateRange' => [
                                                             'gte' => '2022-06-30',
                                                             'lte' => '2022-12-31',
                                                         ],

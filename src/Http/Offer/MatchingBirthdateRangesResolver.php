@@ -126,7 +126,7 @@ final class MatchingBirthdateRangesResolver
 
     private function birthdateRangeMatches(stdClass $document, BirthdateRange $range): bool
     {
-        $birthdateRange = $document->birthdateRange ?? null;
+        $birthdateRange = $document->_birthdateRange ?? null;
         if (!$birthdateRange instanceof stdClass) {
             return false;
         }
