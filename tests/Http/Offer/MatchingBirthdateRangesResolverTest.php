@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Offer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
@@ -23,10 +22,7 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
     {
         // A fixed "now": born 2020-01-01 is 6, born 2022-12-31 is 3 (age used for typicalAgeRange).
         $this->now = new DateTimeImmutable('2026-07-03');
-        $this->resolver = new MatchingBirthdateRangesResolver(
-            new BirthdateRangeQueryStringParser(),
-            $this->now
-        );
+        $this->resolver = new MatchingBirthdateRangesResolver($this->now);
     }
 
     /**
@@ -130,7 +126,7 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_extracts_ranges_from_a_grouped_advanced_query(): void
+    public function it_ignores_birthdate_range_expressed_via_the_q_parameter(): void
     {
         $ranges = $this->resolver->queriedRanges(
             $this->requestWithQueryParams([
@@ -138,10 +134,7 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
             ])
         );
 
-        $this->assertSame(
-            [['2020-01-01', '2020-12-31'], ['2016-01-01', '2018-12-31']],
-            $this->fromToPairs($ranges)
-        );
+        $this->assertSame([], $ranges);
     }
 
     /**
@@ -195,13 +188,12 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_deduplicates_identical_ranges_from_both_paths(): void
+    public function it_deduplicates_identical_structured_ranges(): void
     {
         $ranges = $this->resolver->queriedRanges(
             $this->requestWithQueryParams([
-                'q' => 'birthdateRange:[2018-01-01 TO 2018-12-31]',
-                'birthdateRangeFrom' => '2018-01-01',
-                'birthdateRangeTo' => '2018-12-31',
+                'birthdateRangeFrom' => '2018-01-01,2018-01-01',
+                'birthdateRangeTo' => '2018-12-31,2018-12-31',
             ])
         );
 

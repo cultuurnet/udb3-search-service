@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Offer;
 
 use Cake\Chronos\Chronos;
-use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
@@ -16,20 +15,18 @@ use stdClass;
 /**
  * Resolves which queried birthdate ranges match each returned event.
  *
- * Supports both q=birthdateRangeFrom:[from TO to] and
- * birthdateRangeFrom/birthdateRangeTo parameters. An event matches if its
- * birthdateRange or (non-"all ages") typicalAgeRange intersects the
- * queried range, using the same "now"-relative logic as the search query.
+ * Only the birthdateRangeFrom/birthdateRangeTo parameters are supported;
+ * birthdateRange expressed via the free-text "q" parameter is not
+ * recognized. An event matches if its birthdateRange or (non-"all ages")
+ * typicalAgeRange intersects the queried range, using the same
+ * "now"-relative logic as the search query.
 */
 final class MatchingBirthdateRangesResolver
 {
-    private BirthdateRangeQueryStringParser $queryStringParser;
-
     private DateTimeImmutable $now;
 
-    public function __construct(BirthdateRangeQueryStringParser $queryStringParser, ?DateTimeImmutable $now = null)
+    public function __construct(?DateTimeImmutable $now = null)
     {
-        $this->queryStringParser = $queryStringParser;
         $this->now = $now ?? new Chronos();
     }
 
@@ -40,15 +37,7 @@ final class MatchingBirthdateRangesResolver
      */
     public function queriedRanges(ApiRequestInterface $request): array
     {
-        $ranges = [];
-
-        if ($request->hasQueryParam('q')) {
-            $ranges = $this->queryStringParser->parse((string) $request->getQueryParam('q'), $this->now);
-        }
-
-        $ranges = array_merge($ranges, $this->structuredRanges($request));
-
-        return $this->deduplicate($ranges);
+        return $this->deduplicate($this->structuredRanges($request));
     }
 
     /**
