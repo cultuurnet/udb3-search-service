@@ -22,7 +22,7 @@ final class BirthdateRangeTransformer implements JsonTransformer
             return $draft;
         }
 
-        $draft['birthdateRange'] = [
+        $draft['_birthdateRange'] = [
             'gte' => $range['from'],
             'lte' => $range['to'],
         ];

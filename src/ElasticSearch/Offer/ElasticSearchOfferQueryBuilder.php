@@ -163,7 +163,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $query = new BoolQuery();
 
         $birthdateRangeQuery = $this->createRangeQuery(
-            'birthdateRange',
+            '_birthdateRange',
             $range->getFrom()->format('Y-m-d'),
             $range->getTo()->format('Y-m-d')
         );
@@ -661,7 +661,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $c = clone $this;
         $c->extraQueryParameters['_source'] = array_values(array_unique(array_merge(
             $c->extraQueryParameters['_source'],
-            ['birthdateRange', 'typicalAgeRange', 'allAges']
+            ['_birthdateRange', 'typicalAgeRange', 'allAges']
         )));
 
         return $c;

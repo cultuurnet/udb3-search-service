@@ -32,7 +32,7 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
     {
         $result = $this->resolver->match(
             [$this->range('2020-01-01', '2022-12-31')],
-            [$this->document('event/1', ['birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30']])]
+            [$this->document('event/1', ['_birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30']])]
         );
 
         $this->assertSame(
@@ -76,7 +76,7 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
         $result = $this->resolver->match(
             [$this->range('2020-01-01', '2022-12-31')],
             [
-                $this->document('event/1', ['birthdateRange' => ['gte' => '2010-01-01', 'lte' => '2010-12-31']]),
+                $this->document('event/1', ['_birthdateRange' => ['gte' => '2010-01-01', 'lte' => '2010-12-31']]),
                 $this->document('event/2', ['typicalAgeRange' => ['gte' => 20, 'lte' => 30], 'allAges' => false]),
             ]
         );
@@ -95,8 +95,8 @@ final class MatchingBirthdateRangesResolverTest extends TestCase
                 $this->range('2016-01-01', '2018-12-31'),
             ],
             [
-                $this->document('event/young', ['birthdateRange' => ['gte' => '2020-06-01', 'lte' => '2020-06-30']]),
-                $this->document('event/old', ['birthdateRange' => ['gte' => '2017-01-01', 'lte' => '2017-12-31']]),
+                $this->document('event/young', ['_birthdateRange' => ['gte' => '2020-06-01', 'lte' => '2020-06-30']]),
+                $this->document('event/old', ['_birthdateRange' => ['gte' => '2017-01-01', 'lte' => '2017-12-31']]),
             ]
         );
 

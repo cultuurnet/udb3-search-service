@@ -55,27 +55,27 @@ final class BirthdateRangeMatchingConsistencyTest extends TestCase
         return [
             'birthdate range touches the upper boundary exactly' => [
                 true,
-                ['birthdateRange' => ['gte' => '2022-12-31', 'lte' => '2023-06-30']],
+                ['_birthdateRange' => ['gte' => '2022-12-31', 'lte' => '2023-06-30']],
             ],
             'birthdate range starts one day after the upper boundary' => [
                 false,
-                ['birthdateRange' => ['gte' => '2023-01-01', 'lte' => '2023-06-30']],
+                ['_birthdateRange' => ['gte' => '2023-01-01', 'lte' => '2023-06-30']],
             ],
             'birthdate range touches the lower boundary exactly' => [
                 true,
-                ['birthdateRange' => ['gte' => '2019-06-01', 'lte' => '2020-01-01']],
+                ['_birthdateRange' => ['gte' => '2019-06-01', 'lte' => '2020-01-01']],
             ],
             'birthdate range ends one day before the lower boundary' => [
                 false,
-                ['birthdateRange' => ['gte' => '2019-06-01', 'lte' => '2019-12-31']],
+                ['_birthdateRange' => ['gte' => '2019-06-01', 'lte' => '2019-12-31']],
             ],
             'open-ended birthdate range starting before the upper boundary' => [
                 true,
-                ['birthdateRange' => ['gte' => '2021-01-01']],
+                ['_birthdateRange' => ['gte' => '2021-01-01']],
             ],
             'open-ended birthdate range starting after the upper boundary' => [
                 false,
-                ['birthdateRange' => ['gte' => '2023-01-01']],
+                ['_birthdateRange' => ['gte' => '2023-01-01']],
             ],
             'typical age range touches the upper age boundary exactly (age 6)' => [
                 true,
@@ -111,10 +111,10 @@ final class BirthdateRangeMatchingConsistencyTest extends TestCase
             ->build();
         $rangeQuery = $builtQuery['query']['bool']['filter'][0]['bool'];
 
-        $birthdateBounds = $rangeQuery['should'][0]['range']['birthdateRange'];
+        $birthdateBounds = $rangeQuery['should'][0]['range']['_birthdateRange'];
         $birthdateMatches = $this->rangeFieldIntersectsQueryBounds(
-            $document->birthdateRange->gte ?? null,
-            $document->birthdateRange->lte ?? null,
+            $document->_birthdateRange->gte ?? null,
+            $document->_birthdateRange->lte ?? null,
             $birthdateBounds['gte'] ?? null,
             $birthdateBounds['lte'] ?? null
         );

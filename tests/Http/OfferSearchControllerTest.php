@@ -409,7 +409,7 @@ final class OfferSearchControllerTest extends TestCase
                     Json::encode([
                         '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
                         '@type' => 'Event',
-                        'birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
+                        '_birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
                     ])
                 ),
                 new JsonDocument(
@@ -480,7 +480,7 @@ final class OfferSearchControllerTest extends TestCase
                         Json::encode([
                             '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
                             '@type' => 'Event',
-                            'birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
+                            '_birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
                         ])
                     ),
                 ]
@@ -513,7 +513,7 @@ final class OfferSearchControllerTest extends TestCase
                     Json::encode([
                         '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
                         '@type' => 'Event',
-                        'birthdateRange' => ['gte' => '2020-06-01', 'lte' => '2020-06-30'],
+                        '_birthdateRange' => ['gte' => '2020-06-01', 'lte' => '2020-06-30'],
                     ])
                 ),
                 new JsonDocument(
@@ -521,7 +521,7 @@ final class OfferSearchControllerTest extends TestCase
                     Json::encode([
                         '@id' => 'https://io.uitdatabank.be/events/557d0ddc-efc9-42b3-934b-9f88b0945ab1',
                         '@type' => 'Event',
-                        'birthdateRange' => ['gte' => '2017-01-01', 'lte' => '2017-12-31'],
+                        '_birthdateRange' => ['gte' => '2017-01-01', 'lte' => '2017-12-31'],
                     ])
                 ),
             ]

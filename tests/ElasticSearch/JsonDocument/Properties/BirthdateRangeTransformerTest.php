@@ -35,7 +35,7 @@ final class BirthdateRangeTransformerTest extends TestCase
                     ],
                 ],
                 'expected' => [
-                    'birthdateRange' => [
+                    '_birthdateRange' => [
                         'gte' => '2020-01-01',
                         'lte' => '2020-12-31',
                     ],
@@ -55,7 +55,7 @@ final class BirthdateRangeTransformerTest extends TestCase
         $result = $this->transformer->transform($from, $draft);
 
         $this->assertSame($draft, $result);
-        $this->assertArrayNotHasKey('birthdateRange', $result);
+        $this->assertArrayNotHasKey('_birthdateRange', $result);
     }
 
     public function preservedDraftProvider(): array
