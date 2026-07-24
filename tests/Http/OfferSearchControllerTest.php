@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\DateTimeFactory;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Address\PostalCode;
-use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
 use CultuurNet\UDB3\Search\Http\Offer\MatchingBirthdateRangesResolver;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
@@ -114,7 +113,6 @@ final class OfferSearchControllerTest extends TestCase
 
         // A fixed "now" keeps the birthdate -> age conversion in matchingBirthdateRanges deterministic.
         $this->matchingBirthdateRangesResolver = new MatchingBirthdateRangesResolver(
-            new BirthdateRangeQueryStringParser(),
             new DateTimeImmutable('2026-07-03')
         );
 
@@ -395,10 +393,11 @@ final class OfferSearchControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_matching_birthdate_ranges_when_a_birthdate_range_is_queried(): void
+    public function it_adds_matching_birthdate_ranges_when_a_single_structured_range_is_queried(): void
     {
         $request = $this->getSearchRequestWithQueryParameters([
-            'q' => 'birthdateRange:[2020-01-01 TO 2022-12-31]',
+            'birthdateRangeFrom' => '2020-01-01',
+            'birthdateRangeTo' => '2022-12-31',
         ]);
 
         $expectedResultSet = new PagedResultSet(
@@ -460,6 +459,39 @@ final class OfferSearchControllerTest extends TestCase
         $actualJsonResponse = $this->controller->__invoke(new ApiRequest($request))
             ->getBody();
         $this->assertEquals($expectedJsonResponse, $actualJsonResponse);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_matching_birthdate_ranges_when_a_birthdate_range_is_only_expressed_via_q(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters([
+            'q' => 'birthdateRange:[2020-01-01 TO 2022-12-31]',
+        ]);
+
+        $this->searchService->method('search')->willReturn(
+            new PagedResultSet(
+                1,
+                30,
+                [
+                    new JsonDocument(
+                        'd9a71b53-1756-4126-9926-a83f5dd84f45',
+                        Json::encode([
+                            '@id' => 'https://io.uitdatabank.be/events/d9a71b53-1756-4126-9926-a83f5dd84f45',
+                            '@type' => 'Event',
+                            'birthdateRange' => ['gte' => '2021-01-01', 'lte' => '2021-06-30'],
+                        ])
+                    ),
+                ]
+            )
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $this->assertArrayNotHasKey('matchingBirthdateRanges', $response);
     }
 
     /**

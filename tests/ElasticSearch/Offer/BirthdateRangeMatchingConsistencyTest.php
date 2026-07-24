@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\BirthdateRangeQueryStringParser;
 use CultuurNet\UDB3\Search\Http\Offer\MatchingBirthdateRangesResolver;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
@@ -154,7 +153,7 @@ final class BirthdateRangeMatchingConsistencyTest extends TestCase
 
     private function resolverMatches(stdClass $document): bool
     {
-        $resolver = new MatchingBirthdateRangesResolver(new BirthdateRangeQueryStringParser(), $this->now);
+        $resolver = new MatchingBirthdateRangesResolver($this->now);
         $result = $resolver->match([$this->queriedRange], [new JsonDocument('event/1', Json::encode($document))]);
 
         return in_array('event/1', $result[0]['matches'], true);
