@@ -155,17 +155,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
 
     public function getDateFromParameter(string $queryParameter, ?string $defaultValueAsString = null): ?DateTimeImmutable
     {
-        $callback = function ($asString) use ($queryParameter): DateTimeImmutable {
-            $date = $this->parseDate((string) $asString);
-
-            if ($date === null) {
-                throw new UnsupportedParameterValue(
-                    "{$queryParameter} should be in the format YYYY-MM-DD, for example 2017-04-26"
-                );
-            }
-
-            return $date;
-        };
+        $callback = fn ($asString): DateTimeImmutable => $this->parseDateOrFail((string) $asString, $queryParameter);
 
         return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
     }
@@ -178,17 +168,7 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         ?string $defaultValueAsString = null,
         string $delimiter = ','
     ): array {
-        $callback = function ($asString) use ($parameterName): DateTimeImmutable {
-            $date = $this->parseDate((string) $asString);
-
-            if ($date === null) {
-                throw new UnsupportedParameterValue(
-                    "{$parameterName} should be in the format YYYY-MM-DD, for example 2017-04-26"
-                );
-            }
-
-            return $date;
-        };
+        $callback = fn ($asString): DateTimeImmutable => $this->parseDateOrFail((string) $asString, $parameterName);
 
         return $this->getExplodedStringFromParameter($parameterName, $defaultValueAsString, $callback, $delimiter);
     }
@@ -226,6 +206,20 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         $passThroughCallback = static fn ($value) => $value;
 
         return $passThroughCallback;
+    }
+
+    private function parseDateOrFail(string $value, string $parameterName): DateTimeImmutable
+    {
+        // Trim so comma-separated values with spaces, e.g. "2020-01-01, 2022-06-15", parse as expected.
+        $date = $this->parseDate(trim($value));
+
+        if ($date === null) {
+            throw new UnsupportedParameterValue(
+                "{$parameterName} should be in the format YYYY-MM-DD, for example 2017-04-26"
+            );
+        }
+
+        return $date;
     }
 
     private function parseDate(string $value): ?DateTimeImmutable
