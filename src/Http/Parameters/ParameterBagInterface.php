@@ -52,4 +52,13 @@ interface ParameterBagInterface
         string $queryParameter,
         ?string $defaultValueAsString = null
     ): ?DateTimeImmutable;
+
+    /**
+     * @return DateTimeImmutable[]
+     */
+    public function getExplodedDateFromParameter(
+        string $parameterName,
+        ?string $defaultValueAsString = null,
+        string $delimiter = ','
+    ): array;
 }

@@ -651,6 +651,22 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $c;
     }
 
+    /**
+     * Adds the birthdate/age fields to the returned _source so the matchingBirthdateRanges response
+     * field can be computed per event. Only applied when the request actually queries a birthdate
+     * range, to avoid enlarging the _source of every search.
+     */
+    public function withBirthdateRangeMatchFields(): self
+    {
+        $c = clone $this;
+        $c->extraQueryParameters['_source'] = array_values(array_unique(array_merge(
+            $c->extraQueryParameters['_source'],
+            ['birthdateRange', 'typicalAgeRange', 'allAges']
+        )));
+
+        return $c;
+    }
+
     public function withGroupByProductionId(): self
     {
         $c = clone $this;

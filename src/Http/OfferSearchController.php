@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
 use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
+use CultuurNet\UDB3\Search\Http\Offer\MatchingBirthdateRangesResolver;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\OfferRequestParserInterface;
 use CultuurNet\UDB3\Search\Http\Parameters\OfferSupportedParameters;
 use CultuurNet\UDB3\Search\Http\Parameters\ParameterBagInterface;
@@ -55,6 +56,8 @@ final class OfferSearchController
 
     private Consumer $consumer;
 
+    private MatchingBirthdateRangesResolver $matchingBirthdateRangesResolver;
+
     public function __construct(
         OfferQueryBuilderInterface $queryBuilder,
         OfferRequestParserInterface $offerRequestParser,
@@ -64,6 +67,7 @@ final class OfferSearchController
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer,
+        MatchingBirthdateRangesResolver $matchingBirthdateRangesResolver,
     ) {
         $this->queryBuilder = $queryBuilder;
         $this->requestParser = $offerRequestParser;
@@ -74,6 +78,7 @@ final class OfferSearchController
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
         $this->consumer = $consumer;
+        $this->matchingBirthdateRangesResolver = $matchingBirthdateRangesResolver;
     }
 
     public function __invoke(ApiRequest $request): ResponseInterface
@@ -92,6 +97,11 @@ final class OfferSearchController
         }
 
         $queryBuilder = $this->requestParser->parse($request, $queryBuilder);
+
+        $queriedBirthdateRanges = $this->matchingBirthdateRangesResolver->queriedRanges($request);
+        if ($queriedBirthdateRanges !== [] && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
+            $queryBuilder = $queryBuilder->withBirthdateRangeMatchFields();
+        }
 
         $parameterBag = $request->getQueryParameterBag();
 
@@ -309,6 +319,13 @@ final class OfferSearchController
             // Singular "facet" to be consistent with "member" in Hydra
             // PagedCollection.
             $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
+        }
+
+        if ($queriedBirthdateRanges !== []) {
+            $jsonArray['matchingBirthdateRanges'] = $this->matchingBirthdateRangesResolver->match(
+                $queriedBirthdateRanges,
+                $resultSet->getResults()
+            );
         }
 
         return ResponseFactory::jsonLd($jsonArray);
