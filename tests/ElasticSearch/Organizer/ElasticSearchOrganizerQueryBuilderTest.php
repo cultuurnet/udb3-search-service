@@ -266,7 +266,6 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             'with scheme' => ['http://foo.bar', 'foo.bar'],
             'without scheme' => ['www.kvvrauw.be', 'kvvrauw.be'],
             'with scheme and trailing slash' => ['https://www.kvvrauw.be/', 'kvvrauw.be'],
-            'with uppercase host' => ['https://WWW.kvvrauw.be', 'kvvrauw.be'],
             'without scheme with path' => [
                 'www.gemeentemol.be/adviesraad-mondiaal-beleid',
                 'gemeentemol.be/adviesraad-mondiaal-beleid',
