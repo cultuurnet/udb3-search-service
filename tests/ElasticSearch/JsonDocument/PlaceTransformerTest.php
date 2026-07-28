@@ -78,6 +78,15 @@ final class PlaceTransformerTest extends TestCase
             'status' => 'Available',
             'bookingAvailability' => 'Available',
             'indexedAt' => '2017-05-09T15:11:32+02:00',
+            'dayOfWeekHits' => [
+                'monday' => 0,
+                'tuesday' => 0,
+                'wednesday' => 0,
+                'thursday' => 0,
+                'friday' => 0,
+                'saturday' => 0,
+                'sunday' => 0,
+            ],
         ];
 
         $expectedLogs = [

@@ -78,5 +78,14 @@
     "productionCollapseValue": "production-fee0d853-0620-44d9-980d-35201e5a6026",
     "metadata": {
         "popularity": 0
+    },
+    "dayOfWeekHits": {
+        "monday": 0,
+        "tuesday": 0,
+        "wednesday": 0,
+        "thursday": 0,
+        "friday": 0,
+        "saturday": 0,
+        "sunday": 0
     }
 }

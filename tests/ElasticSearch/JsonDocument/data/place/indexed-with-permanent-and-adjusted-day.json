@@ -4031,5 +4031,14 @@
     "unique_address_identifier": "hungaria_vaartkom_35_3000_leuven_be",
     "metadata": {
         "popularity": 0
+    },
+    "dayOfWeekHits": {
+        "monday": 78,
+        "tuesday": 0,
+        "wednesday": 78,
+        "thursday": 0,
+        "friday": 78,
+        "saturday": 0,
+        "sunday": 0
     }
 }

@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\BirthdateRangeOfferRequestPa
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DayOfWeekOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
@@ -71,6 +72,7 @@ final class OfferSearchControllerFactory
             ->withParser(new BirthdateRangeOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new AttendanceModeOfferRequestParser())
+            ->withParser(new DayOfWeekOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(
                 new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
             ))

@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
@@ -42,6 +43,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -59,12 +61,20 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      */
     private ?int $aggregationSize;
 
-    public function __construct(int $aggregationSize = null)
+    /**
+     * Minimum number of weekday occurrences (dayOfWeekHits.<day>) for an offer to be considered
+     * recurring on that weekday. Applied as a range threshold at query time rather than baked into
+     * the indexed document, so it can be changed without a reindex.
+     */
+    private int $dayOfWeekMinimumHits;
+
+    public function __construct(int $aggregationSize = null, int $dayOfWeekMinimumHits = 4)
     {
         parent::__construct();
 
         $this->predefinedQueryStringFields = new OfferPredefinedQueryStringFields();
         $this->aggregationSize = $aggregationSize;
+        $this->dayOfWeekMinimumHits = $dayOfWeekMinimumHits;
 
         $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
     }
@@ -248,6 +258,37 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                 $attendanceModes
             )
         );
+    }
+
+    public function withDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    {
+        if (empty($dayOfWeeks)) {
+            return $this;
+        }
+
+        // One range clause per requested weekday, matching offers with at least the configured
+        // number of occurrences on that weekday. Multiple weekdays are OR-combined (SHOULD).
+        $rangeQueries = array_map(
+            fn (DayOfWeek $dayOfWeek): RangeQuery => new RangeQuery(
+                'dayOfWeekHits.' . $dayOfWeek->toString(),
+                [RangeQuery::GTE => $this->dayOfWeekMinimumHits]
+            ),
+            $dayOfWeeks
+        );
+
+        $c = $this->getClone();
+
+        if (count($rangeQueries) === 1) {
+            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
+            return $c;
+        }
+
+        $shouldQuery = new BoolQuery();
+        foreach ($rangeQueries as $rangeQuery) {
+            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
+        }
+        $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withBookingAvailabilityFilter(string $bookingAvailability): self
