@@ -35,6 +35,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         );
         $bookingAvailability = $parameterBagReader->getStringFromParameter('bookingAvailability') ?: null;
         $hasChildcare = $parameterBagReader->getBooleanFromParameter('hasChildcare');
+        $hasOvernight = $parameterBagReader->getBooleanFromParameter('hasOvernight');
         $dateFrom = $parameterBagReader->getDateTimeFromParameter('dateFrom');
         $dateTo = $parameterBagReader->getDateTimeFromParameter('dateTo');
         $localTimeFrom = $parameterBagReader->getIntegerFromParameter('localTimeFrom');
@@ -43,10 +44,11 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         $hasStatuses = !empty($statuses);
         $hasBookingAvailability = !is_null($bookingAvailability);
         $hasChildcareFilter = !is_null($hasChildcare);
+        $hasOvernightFilter = !is_null($hasOvernight);
         $hasDates = !is_null($dateFrom) || !is_null($dateTo);
         $hasLocalTimes =  !is_null($localTimeFrom) || !is_null($localTimeTo);
 
-        $requiresSubEventQueryParameters = ($hasStatuses || $hasBookingAvailability || $hasChildcareFilter) && ($hasDates || $hasLocalTimes);
+        $requiresSubEventQueryParameters = ($hasStatuses || $hasBookingAvailability || $hasChildcareFilter || $hasOvernightFilter) && ($hasDates || $hasLocalTimes);
 
         // If the URL has parameters to filter on date AND status, filter by subEvent because otherwise we can get false
         // positives (for example an event with a subEvent that has the right date but the wrong status and also a
@@ -66,6 +68,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
                         ->withStatuses($statuses)
                         ->withBookingAvailability($bookingAvailability)
                         ->withHasChildcare($hasChildcare)
+                        ->withHasOvernight($hasOvernight)
                 );
 
             case $hasDates:
@@ -82,6 +85,9 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
 
             case $hasChildcareFilter:
                 return $offerQueryBuilder->withHasChildcareFilter($hasChildcare);
+
+            case $hasOvernightFilter:
+                return $offerQueryBuilder->withHasOvernightFilter($hasOvernight);
         }
 
         return $offerQueryBuilder;

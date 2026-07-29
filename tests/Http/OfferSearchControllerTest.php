@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\HasOvernightOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
@@ -93,7 +92,6 @@ final class OfferSearchControllerTest extends TestCase
             ))
             ->withParser(new DocumentLanguageOfferRequestParser())
             ->withParser(new GroupByOfferRequestParser())
-            ->withParser(new HasOvernightOfferRequestParser())
             ->withParser(new IsDuplicateOfferRequestParser())
             ->withParser(new SortByOfferRequestParser())
             ->withParser(new RelatedProductionRequestParser())
@@ -271,7 +269,6 @@ final class OfferSearchControllerTest extends TestCase
             ->withPriceRangeFilter(Price::fromFloat(1.55), Price::fromFloat(1.55))
             ->withMediaObjectsFilter(true)
             ->withVideosFilter(true)
-            ->withHasOvernightFilter(true)
             ->withUiTPASFilter(true)
             ->withCreatorFilter(new Creator('Jane Doe'))
             ->withCreatedRangeFilter(
@@ -291,6 +288,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
                     ->withHasChildcare(true)
+                    ->withHasOvernight(true)
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))
@@ -833,6 +831,38 @@ final class OfferSearchControllerTest extends TestCase
 
         // Omitting the parameter must preserve behaviour, so no withHasOvernightFilter call is expected.
         $expectedQueryBuilder = $this->queryBuilder
+            ->withStartAndLimit(new Start(0), new Limit(30));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_scopes_has_overnight_to_sub_event_when_combined_with_dates(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'hasOvernight' => 'true',
+                'dateFrom' => '2017-05-01T00:00:00+01:00',
+                'dateTo' => '2017-05-01T23:59:59+01:00',
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        // hasOvernight combined with dateFrom/dateTo must be scoped to the sub-events within that
+        // range via withSubEventFilter(), not the flat withHasOvernightFilter().
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00'))
+                    ->withHasOvernight(true)
+            )
             ->withStartAndLimit(new Start(0), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
