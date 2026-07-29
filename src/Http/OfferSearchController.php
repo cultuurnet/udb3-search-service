@@ -187,7 +187,7 @@ final class OfferSearchController
         }
 
         $audienceType = $this->getAudienceTypeFromQuery($parameterBag);
-        $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly');
+        $childrenOnly = $parameterBag->getBooleanFromParameter('childrenOnly', 'false');
 
         // Without BOA access a consumer may only see their own children-only offers, never
         // anyone else's. Always pass the creator so the caller keeps their own children-only
