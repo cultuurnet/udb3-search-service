@@ -48,7 +48,8 @@
             ],
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         }
     ],
     "workflowStatus": "DRAFT",

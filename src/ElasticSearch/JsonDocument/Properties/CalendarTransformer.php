@@ -254,6 +254,7 @@ final class CalendarTransformer implements JsonTransformer
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
                 'hasChildcare' => isset($subEvent['childcare']),
+                'hasOvernight' => ($subEvent['overnight'] ?? false) === true,
             ];
         }
 

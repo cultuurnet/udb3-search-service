@@ -128,7 +128,24 @@ final class CalendarTransformerTest extends TestCase
 
         $this->assertEquals($withoutOvernight['dateRange'], $withOvernight['dateRange']);
         $this->assertEquals($withoutOvernight['localTimeRange'], $withOvernight['localTimeRange']);
-        $this->assertEquals($withoutOvernight['subEvent'], $withOvernight['subEvent']);
+
+        // Compare only the time-range fields per subEvent; hasOvernight differs by design.
+        $timeFields = fn (array $se) => array_diff_key($se, ['hasOvernight' => true]);
+        $this->assertEquals(
+            array_map($timeFields, $withoutOvernight['subEvent']),
+            array_map($timeFields, $withOvernight['subEvent'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_per_sub_event(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendar(withOvernight: true));
+
+        $this->assertTrue($result['subEvent'][0]['hasOvernight']);
+        $this->assertFalse($result['subEvent'][1]['hasOvernight']);
     }
 
     /**

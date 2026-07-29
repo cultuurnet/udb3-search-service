@@ -55,7 +55,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -68,7 +69,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -81,7 +83,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -94,7 +97,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         }
     ],
     "availableTo": "2017-04-28T23:59:59+02:00",
