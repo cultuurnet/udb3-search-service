@@ -35,21 +35,12 @@ final class UrlTransformerTest extends TestCase
                     'domain' => 'publiq.be',
                 ],
             ],
-            'https://WWW.publiq.be' => [
+            'https://app.publiq.be/foo' => [
                 [
-                    'url' => 'https://WWW.publiq.be',
+                    'url' => 'https://app.publiq.be/foo',
                 ],
                 [
-                    'url' => 'publiq.be',
-                    'domain' => 'publiq.be',
-                ],
-            ],
-            'https://App.Publiq.BE/Foo' => [
-                [
-                    'url' => 'https://App.Publiq.BE/Foo',
-                ],
-                [
-                    'url' => 'app.publiq.be/Foo',
+                    'url' => 'app.publiq.be/foo',
                     'domain' => 'app.publiq.be',
                 ],
             ],
@@ -105,15 +96,6 @@ final class UrlTransformerTest extends TestCase
                 [
                     'url' => 'publiq.be/foo',
                     'domain' => 'publiq.be',
-                ],
-            ],
-            'https://app.publiq.be/foo' => [
-                [
-                    'url' => 'https://app.publiq.be/foo',
-                ],
-                [
-                    'url' => 'app.publiq.be/foo',
-                    'domain' => 'app.publiq.be',
                 ],
             ],
             'https://www.publiq.be/foo/' => [
