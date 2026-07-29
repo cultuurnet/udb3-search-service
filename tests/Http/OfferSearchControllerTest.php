@@ -156,6 +156,7 @@ final class OfferSearchControllerTest extends TestCase
                 'minAge' => 3,
                 'maxAge' => 7,
                 'allAges' => true,
+                'childrenOnly' => true,
                 'price' => 1.55,
                 'minPrice' => 0.99,
                 'maxPrice' => 1.99,
@@ -220,6 +221,7 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withAgeRangeFilter(new Age(3), new Age(7))
             ->withAllAgesFilter(true)
+            ->withChildrenOnlyFilter(true)
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
@@ -675,7 +677,8 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withAddressCountryFilter(new Country('BE'))
             ->withAudienceTypeFilter(new AudienceType('everyone'))
-            ->withDuplicateFilter(false);
+            ->withDuplicateFilter(false)
+            ->withChildrenOnlyFilter(false);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -708,6 +711,7 @@ final class OfferSearchControllerTest extends TestCase
                 'workflowStatus' => '*',
                 'audienceType' => '*',
                 'isDuplicate' => '*',
+                'childrenOnly' => '*',
             ]
         );
 
