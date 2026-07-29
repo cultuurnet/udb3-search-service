@@ -11,6 +11,7 @@ use CultuurNet\UDB3\SearchService\Console\ConsumeCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateAutocompleteAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
+use CultuurNet\UDB3\SearchService\Console\CreateUrlDomainAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
@@ -44,6 +45,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $commandMap = [
                     'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
                     'lowercase-exact-match-analyzer:create' => CreateLowerCaseExactMatchAnalyzerCommand::class,
+                    'url-domain-analyzer:create' => CreateUrlDomainAnalyzerCommand::class,
                     'lowercase-standard-analyzer:create' => CreateLowerCaseStandardAnalyzerCommand::class,
                     'autocomplete-analyzer:create' => CreateAutocompleteAnalyzerCommand::class,
                     'index:exists' => CheckIndexExistsCommand::class,

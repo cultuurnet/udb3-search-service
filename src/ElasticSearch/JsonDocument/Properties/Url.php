@@ -16,6 +16,10 @@ final class Url
     {
         $urlParts = parse_url($url);
 
+        if (is_array($urlParts) && !isset($urlParts['host']) && !isset($urlParts['scheme'])) {
+            $urlParts = parse_url('//' . $url);
+        }
+
         if (!is_array($urlParts) || !isset($urlParts['host'])) {
             throw new InvalidArgumentException('Url ' . $url . ' is not supported');
         }

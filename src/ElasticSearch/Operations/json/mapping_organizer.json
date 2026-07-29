@@ -92,11 +92,13 @@
 
         "url" : {
             "type": "string",
-            "analyzer": "lowercase_exact_match_analyzer"
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
         },
-
         "domain" : {
-            "type": "keyword"
+            "type": "string",
+            "analyzer": "url_domain_analyzer",
+            "search_analyzer": "url_domain_analyzer"
         },
 
         "address": {
