@@ -79,6 +79,27 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_add_birthdate_and_age_fields_to_the_source_for_matching_birthdate_ranges(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeMatchFields();
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'birthdateRange', 'typicalAgeRange', 'allAges'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'match_all' => (object)[],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_advanced_query(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())

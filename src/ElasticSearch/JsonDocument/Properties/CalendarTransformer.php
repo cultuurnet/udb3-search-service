@@ -67,7 +67,10 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformBookingAvailability($from, $draft);
         $draft = $this->transformHasOvernight($from, $draft);
 
-        // Read before polyFillJsonLdSubEvents() strips childcare from generated subEvents.
+        /*
+        Read top-level hasChildcare before polyFillJsonLdSubEvents(), as the generated subEvents no longer contain a childcare key.
+        Per-subEvent hasChildcare is computed later in transformSubEvents() from each subEvent's own childcare key.
+        */
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $from = $this->polyFillJsonLdSubEvents($from);

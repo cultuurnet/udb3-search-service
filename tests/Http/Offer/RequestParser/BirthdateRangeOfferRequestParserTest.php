@@ -77,6 +77,50 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_multiple_birthdate_range_filters_from_comma_separated_values(): void
+    {
+        $request = $this->request([
+            'birthdateRangeFrom' => '2020-01-01,2022-06-15',
+            'birthdateRangeTo' => '2020-12-31,2022-12-31',
+        ]);
+
+        $expectedFirst = new BirthdateRange(
+            new DateTimeImmutable('2020-01-01'),
+            new DateTimeImmutable('2020-12-31'),
+            new Chronos()
+        );
+        $expectedSecond = new BirthdateRange(
+            new DateTimeImmutable('2022-06-15'),
+            new DateTimeImmutable('2022-12-31'),
+            new Chronos()
+        );
+
+        $this->queryBuilder->expects($this->once())
+            ->method('withBirthdateRangeFilter')
+            ->with($this->equalTo($expectedFirst), $this->equalTo($expectedSecond))
+            ->willReturn($this->queryBuilder);
+
+        $this->parser->parse($request, $this->queryBuilder);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_number_of_from_and_to_values_does_not_match(): void
+    {
+        $request = $this->request([
+            'birthdateRangeFrom' => '2020-01-01,2022-06-15',
+            'birthdateRangeTo' => '2020-12-31',
+        ]);
+
+        $this->expectException(UnsupportedParameterValue::class);
+
+        $this->parser->parse($request, $this->queryBuilder);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_only_the_from_is_given(): void
     {
         $request = $this->request(['birthdateRangeFrom' => '2020-01-01']);
