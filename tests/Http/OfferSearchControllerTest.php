@@ -162,6 +162,7 @@ final class OfferSearchControllerTest extends TestCase
                 'audienceType' => 'members',
                 'hasMediaObjects' => 'true',
                 'hasVideos' => 'true',
+                'hasOvernight' => 'true',
                 'hasChildcare' => 'true',
                 'labels' => ['foo', 'bar'],
                 'locationLabels' => ['lorem'],
@@ -299,6 +300,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withLocalTimeTo(1600)
                     ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
                     ->withHasChildcare(true)
+                    ->withHasOvernight(true)
             )
             ->withTermIdFilter(new TermId('1.45.678.95'))
             ->withTermIdFilter(new TermId('azYBznHY'))
@@ -960,6 +962,90 @@ final class OfferSearchControllerTest extends TestCase
 
         // No withHasChildcareFilter call is expected: omitting the parameter preserves behaviour.
         $expectedQueryBuilder = $this->queryBuilder
+            ->withStartAndLimit(new Start(0), new Limit(30));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     * @param bool|string|int $stringValue
+     * @dataProvider booleanStringDataProvider
+     */
+    public function it_converts_the_has_overnight_toggle_parameter_to_a_correct_boolean(
+        $stringValue,
+        ?bool $booleanValue
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'hasOvernight' => $stringValue,
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder;
+
+        if (!is_null($booleanValue)) {
+            $expectedQueryBuilder = $expectedQueryBuilder
+                ->withHasOvernightFilter($booleanValue);
+        }
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_filter_on_overnight_when_the_parameter_is_omitted(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        // Omitting the parameter must preserve behaviour, so no withHasOvernightFilter call is expected.
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStartAndLimit(new Start(0), new Limit(30));
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_scopes_has_overnight_to_sub_event_when_combined_with_dates(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'hasOvernight' => 'true',
+                'dateFrom' => '2017-05-01T00:00:00+01:00',
+                'dateTo' => '2017-05-01T23:59:59+01:00',
+                'disableDefaultFilters' => true,
+            ]
+        );
+
+        // hasOvernight combined with dateFrom/dateTo must be scoped to the sub-events within that
+        // range via withSubEventFilter(), not the flat withHasOvernightFilter().
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00'))
+                    ->withHasOvernight(true)
+            )
             ->withStartAndLimit(new Start(0), new Limit(30));
 
         $expectedResultSet = new PagedResultSet(30, 0, []);

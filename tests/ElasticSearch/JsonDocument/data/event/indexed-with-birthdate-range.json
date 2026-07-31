@@ -30,7 +30,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         }
     ],
     "workflowStatus": "DRAFT",
@@ -78,6 +79,7 @@
     "metadata": {
         "popularity": 0
     },
-    "hasChildcare": false,
-    "childrenOnly": false
+    "childrenOnly": false,
+    "hasOvernight": false,
+    "hasChildcare": false
 }

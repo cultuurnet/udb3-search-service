@@ -972,7 +972,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -985,7 +986,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -998,7 +1000,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1011,7 +1014,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1024,7 +1028,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1037,7 +1042,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1050,7 +1056,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1063,7 +1070,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1076,7 +1084,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1089,7 +1098,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1102,7 +1112,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1115,7 +1126,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1128,7 +1140,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1141,7 +1154,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1154,7 +1168,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1167,7 +1182,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1180,7 +1196,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1193,7 +1210,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1206,7 +1224,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1219,7 +1238,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1232,7 +1252,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1245,7 +1266,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1258,7 +1280,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1271,7 +1294,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1284,7 +1308,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1297,7 +1322,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1310,7 +1336,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1323,7 +1350,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1336,7 +1364,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1349,7 +1378,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1362,7 +1392,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1375,7 +1406,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1388,7 +1420,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1401,7 +1434,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1414,7 +1448,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1427,7 +1462,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1440,7 +1476,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1453,7 +1490,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1466,7 +1504,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1479,7 +1518,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1492,7 +1532,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1505,7 +1546,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1518,7 +1560,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1531,7 +1574,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1544,7 +1588,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1557,7 +1602,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1570,7 +1616,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1583,7 +1630,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1596,7 +1644,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1609,7 +1658,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1622,7 +1672,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1635,7 +1686,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1648,7 +1700,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1661,7 +1714,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1674,7 +1728,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1687,7 +1742,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1700,7 +1756,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1713,7 +1770,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1726,7 +1784,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1739,7 +1798,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1752,7 +1812,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1765,7 +1826,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1778,7 +1840,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1791,7 +1854,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1804,7 +1868,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1817,7 +1882,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1830,7 +1896,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1843,7 +1910,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1856,7 +1924,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1869,7 +1938,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1882,7 +1952,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1895,7 +1966,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1908,7 +1980,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1921,7 +1994,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1934,7 +2008,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1947,7 +2022,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1960,7 +2036,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1973,7 +2050,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1986,7 +2064,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -1999,7 +2078,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2012,7 +2092,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2025,7 +2106,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2038,7 +2120,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2051,7 +2134,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2064,7 +2148,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2077,7 +2162,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2090,7 +2176,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2103,7 +2190,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2116,7 +2204,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2129,7 +2218,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2142,7 +2232,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2155,7 +2246,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2168,7 +2260,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2181,7 +2274,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2194,7 +2288,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2207,7 +2302,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2220,7 +2316,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2233,7 +2330,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2246,7 +2344,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2259,7 +2358,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2272,7 +2372,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2285,7 +2386,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2298,7 +2400,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2311,7 +2414,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2324,7 +2428,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2337,7 +2442,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2350,7 +2456,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2363,7 +2470,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2376,7 +2484,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2389,7 +2498,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2402,7 +2512,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2415,7 +2526,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2428,7 +2540,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2441,7 +2554,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2454,7 +2568,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2467,7 +2582,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2480,7 +2596,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2493,7 +2610,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2506,7 +2624,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2519,7 +2638,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2532,7 +2652,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2545,7 +2666,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2558,7 +2680,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2571,7 +2694,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2584,7 +2708,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2597,7 +2722,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2610,7 +2736,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2623,7 +2750,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2636,7 +2764,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2649,7 +2778,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2662,7 +2792,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2675,7 +2806,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2688,7 +2820,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2701,7 +2834,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2714,7 +2848,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2727,7 +2862,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2740,7 +2876,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2753,7 +2890,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2766,7 +2904,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2779,7 +2918,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2792,7 +2932,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2805,7 +2946,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2818,7 +2960,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2831,7 +2974,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2844,7 +2988,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2857,7 +3002,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2870,7 +3016,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2883,7 +3030,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2896,7 +3044,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2909,7 +3058,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2922,7 +3072,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2935,7 +3086,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2948,7 +3100,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2961,7 +3114,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2974,7 +3128,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -2987,7 +3142,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3000,7 +3156,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3013,7 +3170,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3026,7 +3184,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3039,7 +3198,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3052,7 +3212,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3065,7 +3226,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3078,7 +3240,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3091,7 +3254,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3104,7 +3268,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3117,7 +3282,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3130,7 +3296,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3143,7 +3310,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3156,7 +3324,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3169,7 +3338,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3182,7 +3352,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3195,7 +3366,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3208,7 +3380,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3221,7 +3394,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3234,7 +3408,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3247,7 +3422,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3260,7 +3436,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3273,7 +3450,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3286,7 +3464,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3299,7 +3478,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3312,7 +3492,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3325,7 +3506,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3338,7 +3520,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3351,7 +3534,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3364,7 +3548,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3377,7 +3562,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3390,7 +3576,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3403,7 +3590,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3416,7 +3604,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3429,7 +3618,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3442,7 +3632,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3455,7 +3646,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3468,7 +3660,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3481,7 +3674,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3494,7 +3688,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3507,7 +3702,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3520,7 +3716,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3533,7 +3730,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3546,7 +3744,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3559,7 +3758,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3572,7 +3772,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3585,7 +3786,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3598,7 +3800,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3611,7 +3814,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3624,7 +3828,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3637,7 +3842,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3650,7 +3856,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3663,7 +3870,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3676,7 +3884,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3689,7 +3898,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3702,7 +3912,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3715,7 +3926,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3728,7 +3940,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3741,7 +3954,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3754,7 +3968,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3767,7 +3982,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3780,7 +3996,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3793,7 +4010,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3806,7 +4024,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3819,7 +4038,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3832,7 +4052,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3845,7 +4066,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3858,7 +4080,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3871,7 +4094,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3884,7 +4108,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3897,7 +4122,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3910,7 +4136,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3923,7 +4150,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3936,7 +4164,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3949,7 +4178,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3962,7 +4192,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3975,7 +4206,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -3988,7 +4220,8 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         },
         {
             "dateRange": {
@@ -4001,12 +4234,14 @@
             },
             "status": "Available",
             "bookingAvailability": "Available",
-            "hasChildcare": false
+            "hasChildcare": false,
+            "hasOvernight": false
         }
     ],
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
+    "hasOvernight": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "address": {

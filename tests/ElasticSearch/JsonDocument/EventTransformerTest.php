@@ -91,6 +91,7 @@ final class EventTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
+            'hasOvernight' => false,
             'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,
@@ -140,6 +141,20 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-multiple-dates.json',
             __DIR__ . '/data/event/indexed-with-multiple-dates.json',
+            [
+                ['warning', 'Missing expected field \'creator\'.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_true_when_a_sub_event_is_overnight(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-overnight.json',
+            __DIR__ . '/data/event/indexed-with-overnight.json',
             [
                 ['warning', 'Missing expected field \'creator\'.', []],
             ]

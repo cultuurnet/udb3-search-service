@@ -86,10 +86,10 @@ The JSON-LD shape is the same as for events.
 
 Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read at index time and then discarded**. Others are **stored and queryable**.
 
-| Role | Fields | Stored in ES? |
-|---|---|---|
-| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasChildcare` | Yes, queryable |
+| Role | Fields                                                                           | Stored in ES? |
+|---|----------------------------------------------------------------------------------|---|
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `overnight`, `childcare` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasOvernight`, `childcare    | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
@@ -260,6 +260,59 @@ GET /offers?dateFrom=2024-06-01T00:00:00+00:00&dateTo=2024-06-01T23:59:59+00:00&
 GET /offers?localTimeFrom=14:00&localTimeTo=18:00&bookingAvailability=Available
 ```
 → combines `localTime*` and `bookingAvailability`, so again a nested query.
+
+---
+
+## Overnight
+
+Sub-events of `single` and `multiple` calendars may carry an optional `overnight` flag in the
+source JSON-LD. It marks a slot that involves an overnight stay (e.g. a multi-day trip with a
+sleepover). It is serialised only when `true`:
+
+```json
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2024-06-01T20:00:00+00:00",
+      "endDate": "2024-06-02T08:00:00+00:00",
+      "overnight": true
+    }
+  ]
+}
+```
+
+Overnight is **event-only** and lives on sub-events only. Opening hours (`periodic`, `permanent`)
+never carry it, and places never have it.
+
+### Indexing
+
+The indexer sets a single top-level boolean, `hasOvernight`:
+
+```json
+{ "hasOvernight": true }
+```
+
+It couples on **event level**: `hasOvernight` is `true` when at least one source sub-event has
+`overnight: true`, and `false` otherwise. A partial overnight event (some sub-events overnight, some
+not) is therefore flagged `true`. Like `status` and `bookingAvailability`, the field is always
+present on every document (defaulting to `false`), so a `term` filter is reliable. It is derived
+from the source sub-events before they are poly-filled from opening hours, so it never influences
+`dateRange`, `localTimeRange`, or the generated `subEvent[]`.
+
+### Search parameter
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `hasOvernight=true` | `hasOvernight` | Only offers with at least one overnight sub-event. |
+| `hasOvernight=false` | `hasOvernight` | Only offers without any overnight sub-event. |
+| _(omitted)_ | — | No overnight filtering; behaviour unchanged. |
+
+```
+GET /offers?hasOvernight=true
+```
+→ runs a `term` query on the top-level `hasOvernight` field. It is independent of `dateRange` and
+the other calendar filters.
 
 ---
 
@@ -457,7 +510,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Indexing
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
-- `transformHasChildcare()`, `polyFillJsonLdSubEvents()`.
+- `transformHasChildcare()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 
 ### Elasticsearch mappings
@@ -469,8 +522,9 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Query building
 
 - `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
+- `HasOvernightOfferRequestParser`: parses the `hasOvernight` boolean parameter.
 - `HasChildcareOfferRequestParser`: parses the `hasChildcare` boolean parameter.
-- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasChildcareFilter()`.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasOvernightFilter()`., `withHasChildcareFilter()`.
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
 
 ### Backend calendar model (udb3-backend)
