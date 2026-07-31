@@ -150,6 +150,20 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_indexes_has_overnight_true_when_a_sub_event_is_overnight(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-overnight.json',
+            __DIR__ . '/data/event/indexed-with-overnight.json',
+            [
+                ['warning', 'Missing expected field \'creator\'.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_transforms_permanent_events_to_an_infinite_date_range(): void
     {
         $this->transformAndAssert(
