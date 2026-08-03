@@ -70,9 +70,26 @@ pipeline {
             environment {
                 APPLICATION_ENVIRONMENT = 'acceptance'
             }
-            steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
-                triggerDeployment nodeName: 'uitdatabank-search-acc01'
+            stages {
+                stage {
+                    steps {
+                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                    }
+                }
+                stage('Deploy') {
+                    parallel {
+                        stage('Deploy to ElasticSearch 5 node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-acc01'
+                            }
+                        }
+                        stage('Deploy to ElasticSearch 8 node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-acc02'
+                            }
+                        }
+                    }
+                }
             }
             post {
                 always {
@@ -97,14 +114,19 @@ pipeline {
                 }
                 stage('Deploy') {
                     parallel {
-                        stage('Deploy to first node') {
+                        stage('Deploy to first ElasticSearch 5 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-test01'
                             }
                         }
-                        stage('Deploy to second node') {
+                        stage('Deploy to second ElasticSearch 5 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-test02'
+                            }
+                        }
+                        stage('Deploy to ElasticSearch 8 node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-test03'
                             }
                         }
                     }
@@ -133,14 +155,24 @@ pipeline {
                 }
                 stage('Deploy') {
                     parallel {
-                        stage('Deploy to first node') {
+                        stage('Deploy to first ElasticSearch 5 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-prod01'
                             }
                         }
-                        stage('Deploy to second node') {
+                        stage('Deploy to second ElasticSearch 5 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-prod02'
+                            }
+                        }
+                        stage('Deploy to first ElasticSearch 8 node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-prod03'
+                            }
+                        }
+                        stage('Deploy to second ElasticSearch 8 node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-prod04'
                             }
                         }
                     }
