@@ -30,6 +30,12 @@ use DateTimeImmutable;
  */
 final class BirthdateRangeToTypicalAgeRangeQueryStringFactory implements QueryStringFactory
 {
+    // A birthdateRange clause: flat "[...]" or grouped "(...)".
+    private const BIRTHDATE_RANGE_CLAUSE_PATTERN = '/birthdateRange:(?:\[[^\]]*\]|\([^)]*\))/';
+
+    // A single "[YYYY-MM-DD TO YYYY-MM-DD]" range inside a clause.
+    private const DATE_RANGE_PATTERN = '/\[(\d{4}-\d{2}-\d{2}) TO (\d{4}-\d{2}-\d{2})\]/';
+
     private QueryStringFactory $decoratedFactory;
 
     private DateTimeImmutable $now;
@@ -51,11 +57,11 @@ final class BirthdateRangeToTypicalAgeRangeQueryStringFactory implements QuerySt
     private function expandBirthdateRanges(string $queryString): string
     {
         $expanded = preg_replace_callback(
-            BirthdateRangeQueryStringParser::CLAUSE_PATTERN,
+            self::BIRTHDATE_RANGE_CLAUSE_PATTERN,
             function (array $matches): string {
                 $original = $matches[0];
 
-                preg_match_all(BirthdateRangeQueryStringParser::DATE_RANGE_PATTERN, $original, $rangeMatches, PREG_SET_ORDER);
+                preg_match_all(self::DATE_RANGE_PATTERN, $original, $rangeMatches, PREG_SET_ORDER);
 
                 $ageClauses = [];
                 foreach ($rangeMatches as $rangeMatch) {
