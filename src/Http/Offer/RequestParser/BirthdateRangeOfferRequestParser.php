@@ -6,12 +6,9 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
-use CultuurNet\UDB3\Search\Http\Offer\BirthdateRangeDateParameters;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use DateTimeImmutable;
 
 final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -19,39 +16,33 @@ final class BirthdateRangeOfferRequestParser implements OfferRequestParserInterf
         ApiRequestInterface $request,
         OfferQueryBuilderInterface $offerQueryBuilder
     ): OfferQueryBuilderInterface {
-        $parameters = new BirthdateRangeDateParameters($request->getQueryParameterBag());
-        $fromDates = $parameters->getFromDates();
-        $toDates = $parameters->getToDates();
+        $parameterBagReader = $request->getQueryParameterBag();
 
-        if (empty($fromDates) && empty($toDates)) {
+        $from = $parameterBagReader->getDateFromParameter('birthdateRangeFrom');
+        $to = $parameterBagReader->getDateFromParameter('birthdateRangeTo');
+
+        if ($from === null && $to === null) {
             return $offerQueryBuilder;
         }
 
-        if (empty($fromDates)) {
+        if ($from === null) {
             throw new MissingParameter(
                 'Required "birthdateRangeFrom" parameter missing when searching by "birthdateRangeTo".'
             );
         }
 
-        if (empty($toDates)) {
+        if ($to === null) {
             throw new MissingParameter(
                 'Required "birthdateRangeTo" parameter missing when searching by "birthdateRangeFrom".'
             );
         }
 
-        if (!$parameters->hasMatchingCounts()) {
-            throw new UnsupportedParameterValue(
-                'The number of "birthdateRangeFrom" values should match the number of "birthdateRangeTo" values.'
-            );
-        }
-
-        $now = new Chronos();
-        $ranges = array_map(
-            static fn (DateTimeImmutable $from, DateTimeImmutable $to): BirthdateRange => new BirthdateRange($from, $to, $now),
-            $fromDates,
-            $toDates
+        return $offerQueryBuilder->withBirthdateRangeFilter(
+            new BirthdateRange(
+                $from,
+                $to,
+                new Chronos()
+            )
         );
-
-        return $offerQueryBuilder->withBirthdateRangeFilter(...$ranges);
     }
 }

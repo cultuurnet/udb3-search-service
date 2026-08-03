@@ -46,7 +46,10 @@ final class MatchingBirthdateRangesResolver
             $ranges = $this->queryStringParser->parse((string) $request->getQueryParam('q'), $this->now);
         }
 
-        $ranges = array_merge($ranges, $this->structuredRanges($request));
+        $structured = $this->structuredRange($request);
+        if ($structured !== null) {
+            $ranges[] = $structured;
+        }
 
         return $this->deduplicate($ranges);
     }
@@ -79,34 +82,21 @@ final class MatchingBirthdateRangesResolver
         );
     }
 
-    /**
-     * @return BirthdateRange[]
-     */
-    private function structuredRanges(ApiRequestInterface $request): array
+    private function structuredRange(ApiRequestInterface $request): ?BirthdateRange
     {
-        $parameters = new BirthdateRangeDateParameters($request->getQueryParameterBag());
+        $parameterBag = $request->getQueryParameterBag();
+        $from = $parameterBag->getDateFromParameter('birthdateRangeFrom');
+        $to = $parameterBag->getDateFromParameter('birthdateRangeTo');
 
-        // Unlike BirthdateRangeOfferRequestParser::parse(), which throws when the
-        // "birthdateRangeFrom"/"birthdateRangeTo" counts don't match, this method only
-        // resolves matches for reporting and degrades leniently instead: the controller
-        // always runs the strict parser first, so a real mismatch never reaches here.
-        if (!$parameters->hasMatchingCounts()) {
-            return [];
+        if ($from === null || $to === null) {
+            return null;
         }
 
-        $fromDates = $parameters->getFromDates();
-        $toDates = $parameters->getToDates();
-
-        $ranges = [];
-        foreach ($fromDates as $i => $from) {
-            try {
-                $ranges[] = new BirthdateRange($from, $toDates[$i], $this->now);
-            } catch (UnsupportedParameterValue $e) {
-                continue;
-            }
+        try {
+            return new BirthdateRange($from, $to, $this->now);
+        } catch (UnsupportedParameterValue $e) {
+            return null;
         }
-
-        return $ranges;
     }
 
     /**
