@@ -156,6 +156,7 @@ final class OfferSearchControllerTest extends TestCase
                 'minAge' => 3,
                 'maxAge' => 7,
                 'allAges' => true,
+                'childrenOnly' => true,
                 'price' => 1.55,
                 'minPrice' => 0.99,
                 'maxPrice' => 1.99,
@@ -221,6 +222,7 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withAgeRangeFilter(new Age(3), new Age(7))
             ->withAllAgesFilter(true)
+            ->withChildrenOnlyFilter(true)
             ->withGeoDistanceFilter(
                 new GeoDistanceParameters(
                     new Coordinates(
@@ -608,7 +610,8 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withAddressCountryFilter(new Country('BE'))
             ->withAudienceTypeFilter(new AudienceType('everyone'))
-            ->withDuplicateFilter(false);
+            ->withDuplicateFilter(false)
+            ->withChildrenOnlyFilter(false);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
@@ -641,6 +644,7 @@ final class OfferSearchControllerTest extends TestCase
                 'workflowStatus' => '*',
                 'audienceType' => '*',
                 'isDuplicate' => '*',
+                'childrenOnly' => '*',
             ]
         );
 
@@ -1688,47 +1692,6 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedQueryBuilder = $this->queryBuilder
             ->withExcludeChildrenOnlyUnlessCreator();
-
-        $expectedResultSet = new PagedResultSet(30, 0, []);
-
-        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
-
-        $controller->__invoke(new ApiRequest($request));
-    }
-
-    /**
-     * @test
-     */
-    public function it_keeps_own_childrenOnly_in_a_default_search_with_default_filters_without_boa(): void
-    {
-        $controller = new OfferSearchController(
-            $this->queryBuilder,
-            $this->requestParser,
-            $this->searchService,
-            $this->regionIndexName,
-            $this->regionDocumentType,
-            $this->queryStringFactory,
-            $this->facetTreeNormalizer,
-            new Consumer('id', '', false),
-            $this->matchingBirthdateRangesResolver,
-        );
-
-        // A default search: no childrenOnly and no audienceType params, with the default filters
-        // enabled (so audienceType defaults to everyone). Children-only events now carry
-        // audienceType=everyone, so they are only kept out by the exclusion below. The creator
-        // exception keeps the consumer's own children-only events and hides everyone else's.
-        $request = $this->getSearchRequestWithQueryParameters([]);
-
-        $expectedQueryBuilder = $this->queryBuilder
-            ->withWorkflowStatusFilter(new WorkflowStatus('APPROVED'), new WorkflowStatus('READY_FOR_VALIDATION'))
-            ->withAvailableRangeFilter(
-                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00'),
-                DateTimeFactory::fromAtom('2017-04-26T08:34:21+00:00')
-            )
-            ->withAddressCountryFilter(new Country('BE'))
-            ->withExcludeChildrenOnlyUnlessCreator(new Creator('id@clients'))
-            ->withAudienceTypeFilter(new AudienceType('everyone'))
-            ->withDuplicateFilter(false);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 
