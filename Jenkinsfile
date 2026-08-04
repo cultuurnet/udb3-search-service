@@ -71,7 +71,7 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'acceptance'
             }
             stages {
-                stage {
+                stage('Publish snapshot') {
                     steps {
                         publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                     }
