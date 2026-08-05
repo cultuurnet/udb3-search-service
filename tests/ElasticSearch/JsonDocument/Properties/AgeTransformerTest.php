@@ -220,7 +220,7 @@ final class AgeTransformerTest extends TestCase
             ]
         );
 
-        $this->assertEquals(['lte' => '2018-06-01'], $result['birthdateRange']);
+        $this->assertEquals(['gte' => null, 'lte' => '2018-06-01'], $result['birthdateRange']);
     }
 
     /**

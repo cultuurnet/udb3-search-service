@@ -119,19 +119,22 @@ final class AgeTransformer implements JsonTransformer
             return $draft;
         }
 
-        $birthdateRange = [];
-
-        // Someone born exactly maxAge + 1 years ago already had that birthday, so the oldest
-        // birthdate is a day later. Without a maximum age there is no oldest birthdate at all.
+        // No maximum age means no oldest birthdate, indexed as null so the range stays open.
+        $oldestBirthdate = null;
         if ($maxAge !== null) {
-            $birthdateRange['gte'] = self::subtractYears($referenceDate, $maxAge + 1)
+            // Someone born exactly maxAge + 1 years ago already had that birthday, so the oldest
+            // birthdate is a day later.
+            $oldestBirthdate = self::subtractYears($referenceDate, $maxAge + 1)
                 ->add(new DateInterval('P1D'))
                 ->format('Y-m-d');
         }
 
-        $birthdateRange['lte'] = self::subtractYears($referenceDate, $minAge)->format('Y-m-d');
+        $youngestBirthdate = self::subtractYears($referenceDate, $minAge)->format('Y-m-d');
 
-        $draft['birthdateRange'] = $birthdateRange;
+        $draft['birthdateRange'] = [
+            'gte' => $oldestBirthdate,
+            'lte' => $youngestBirthdate,
+        ];
 
         return $draft;
     }
