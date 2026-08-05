@@ -104,8 +104,11 @@ final class AgeTransformer implements JsonTransformer
 
     private function addBirthdateRange(array $draft, DateTimeImmutable $referenceDate): array
     {
-        // An "all ages" range covers every birthdate, so converting it would match every query.
+        // An "all ages" event suits every birthdate. Index an unbounded range so it matches every
+        // birthdate query, the same way its typicalAgeRange already matches every age query. An
+        // integrator that does not want these events excludes them with allAges=false.
         if (($draft['allAges'] ?? false) === true) {
+            $draft['birthdateRange'] = ['gte' => null, 'lte' => null];
             return $draft;
         }
 

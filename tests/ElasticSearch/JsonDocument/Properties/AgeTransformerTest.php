@@ -53,6 +53,35 @@ final class AgeTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_derives_an_unbounded_birthdate_range_for_an_all_ages_event(): void
+    {
+        $from = [
+            'calendarType' => 'single',
+            'startDate' => '2017-04-22T10:00:00+00:00',
+        ];
+
+        $draft = [
+            'typicalAgeRange' => ['gte' => 0],
+            'allAges' => true,
+        ];
+
+        // An all ages event covers every birthdate, so it matches every birthdate query.
+        $this->assertEquals(
+            [
+                'typicalAgeRange' => ['gte' => 0],
+                'allAges' => true,
+                'birthdateRange' => [
+                    'gte' => null,
+                    'lte' => null,
+                ],
+            ],
+            $this->transformer->transform($from, $draft)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_derives_the_birthdate_range_from_the_age_range(): void
     {
         $from = [
@@ -389,13 +418,6 @@ final class AgeTransformerTest extends TestCase
             'both ranges present' => [
                 'from' => $singleEvent,
                 'draft' => $ageRange + $birthdateRange,
-            ],
-            'all ages' => [
-                'from' => $singleEvent,
-                'draft' => [
-                    'typicalAgeRange' => ['gte' => 0],
-                    'allAges' => true,
-                ],
             ],
             'open ended birthdate range' => [
                 'from' => $singleEvent,

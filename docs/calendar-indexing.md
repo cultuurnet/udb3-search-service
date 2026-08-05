@@ -413,8 +413,10 @@ date.
 
 ### Details worth knowing
 
-- An "all ages" range (`typicalAgeRange: "-"`, indexed as `allAges: true`) is never converted. It
-  covers every birthdate ever, so the derived `birthdateRange` would match every birthdate query.
+- An "all ages" range (`typicalAgeRange: "-"`, indexed as `allAges: true`) is converted to an
+  unbounded `birthdateRange` (`gte` and `lte` both `null`). It covers every birthdate ever, so it
+  matches every birthdate query, the same way its `typicalAgeRange` already matches every age query.
+  An integrator that does not want these events excludes them with `allAges=false`.
 - The conversion is whole years, so a derived range is a little wider than the one it came from.
   Birthdates 1 March 2020 to 31 March 2020 become ages 6 to 6 on an event in June 2026, and
   converting those ages back covers all of June 2019 to June 2020.
