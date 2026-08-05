@@ -382,6 +382,49 @@ the other calendar filters.
 
 ---
 
+## Ages and birthdates
+
+An event describes its audience either with a `typicalAgeRange` ("6-12") or with a `birthdateRange`
+(two dates). Both are indexed as ranges, and whichever one is absent is derived from the other at
+index time. Every event therefore carries both fields, so `q=typicalAgeRange:[...]` and
+`q=birthdateRange:[...]` return the same events no matter which of the two was filled in, and the
+`q` never has to be rewritten at search time to compensate.
+
+### Reference date
+
+Converting between an age and a birthdate needs a date to count from, and that is the `startDate`
+of the event. The result is calculated once at index time and stays correct, because an event's
+start date never changes.
+
+| Calendar type | Reference date |
+|---|---|
+| `single` | `startDate` |
+| `multiple` | `startDate`, which is the earliest sub-event |
+| `periodic` | `startDate`, the first day of the run |
+| `permanent` | the indexing time, as there is no `startDate` |
+
+Only `permanent` events go stale: their derived range ages along with the calendar until
+`udb3-core:reindex-permanent` runs again, the same command their rolling sub-event window already
+depends on.
+
+An event of any other calendar type that has no `startDate` is missing data (already logged while
+building `dateRange`) and gets no derived range at all, rather than one counted from an arbitrary
+date.
+
+### Details worth knowing
+
+- An "all ages" range (`typicalAgeRange: "-"`, indexed as `allAges: true`) is never converted. It
+  covers every birthdate ever, so the derived `birthdateRange` would match every birthdate query.
+- The conversion is whole years, so a derived range is a little wider than the one it came from.
+  Birthdates 1 March 2020 to 31 March 2020 become ages 6 to 6 on an event in June 2026, and
+  converting those ages back covers all of June 2019 to June 2020.
+- A long-running `periodic` or `multiple` event is converted against its first day only. Someone who
+  ages into the range halfway through the run does not match it.
+- Only the index holds the derived range. The search response still returns the JSON-LD as it was
+  entered.
+
+---
+
 ## Closed days and adjusted days
 
 Two fields that the backend model supports but are **not yet handled by the indexer**.
@@ -512,6 +555,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
 - `transformHasChildcare()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
+- `AgeTransformer`: derives the missing one of `typicalAgeRange` / `birthdateRange` from the other, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
 
 ### Elasticsearch mappings
 
