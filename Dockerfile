@@ -26,7 +26,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && docker-php-ext-enable redis \
     && rm -rf /tmp/pear /var/lib/apt/lists/*
 
-RUN echo "memory_limit=256M" > $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "memory_limit=2048M" > $PHP_INI_DIR/conf.d/memory-limit.ini
+RUN echo "max_execution_time=90" > $PHP_INI_DIR/conf.d/max-execution-time.ini
 
 EXPOSE 9000
 
