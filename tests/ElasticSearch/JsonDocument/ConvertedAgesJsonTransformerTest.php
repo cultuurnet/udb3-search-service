@@ -18,7 +18,7 @@ final class ConvertedAgesJsonTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_a_converted_age_range_when_the_original_only_has_a_birthdate_range(): void
+    public function it_adds_a_converted_age_range_for_an_event_entered_with_a_birthdate_range(): void
     {
         $from = [
             'typicalAgeRange' => ['gte' => 6, 'lte' => 7],
@@ -26,6 +26,7 @@ final class ConvertedAgesJsonTransformerTest extends TestCase
         ];
 
         $draft = [
+            'typicalAgeRange' => '-',
             'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
         ];
 
@@ -58,15 +59,15 @@ final class ConvertedAgesJsonTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_nothing_when_both_ranges_were_entered(): void
+    public function it_adds_nothing_when_a_real_age_range_was_entered_next_to_a_birthdate_range(): void
     {
         $from = [
-            'typicalAgeRange' => ['gte' => 6, 'lte' => 7],
+            'typicalAgeRange' => ['gte' => 8, 'lte' => 10],
             'birthdateRange' => ['gte' => '2010-01-01', 'lte' => '2010-12-31'],
         ];
 
         $draft = [
-            'typicalAgeRange' => '6-7',
+            'typicalAgeRange' => '8-10',
             'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
         ];
 
