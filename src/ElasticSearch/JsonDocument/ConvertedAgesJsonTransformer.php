@@ -7,15 +7,15 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 
 /**
- * Adds typicalAgeRangeConverted and birthdateRangeConverted to a search result. A range that is
- * missing from the original JSON-LD but present on the indexed document was derived at index time,
- * so it is exposed under a "Converted" name to keep it apart from a value the editor entered.
+ * Exposes the range that was derived at index time under a "Converted" name, so it can be told apart
+ * from an entered one. See the table under "Ages and birthdates" in docs/calendar-indexing.md.
  */
 final class ConvertedAgesJsonTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        if (!isset($draft['typicalAgeRange']) && isset($from['typicalAgeRange'])) {
+        $ageIsDefault = ($draft['typicalAgeRange'] ?? null) === '-';
+        if ($ageIsDefault && isset($draft['birthdateRange']) && isset($from['typicalAgeRange'])) {
             $draft['typicalAgeRangeConverted'] = self::formatAgeRange($from['typicalAgeRange']);
         }
 
@@ -39,8 +39,7 @@ final class ConvertedAgesJsonTransformer implements JsonTransformer
         $from = $range['gte'] ?? null;
         $to = $range['lte'] ?? null;
 
-        // An unbounded range has no from/to pair to expose. The typicalAgeRange still conveys it to
-        // the consumer, so the converted birthdate range is left out.
+        // An unbounded range has no from/to pair to expose.
         if ($from === null || $to === null) {
             return null;
         }

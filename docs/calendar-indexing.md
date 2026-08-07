@@ -385,10 +385,25 @@ the other calendar filters.
 ## Ages and birthdates
 
 An event describes its audience either with a `typicalAgeRange` ("6-12") or with a `birthdateRange`
-(two dates). Both are indexed as ranges, and whichever one is absent is derived from the other at
-index time. Every event therefore carries both fields, so `q=typicalAgeRange:[...]` and
-`q=birthdateRange:[...]` return the same events no matter which of the two was filled in, and the
-`q` never has to be rewritten at search time to compensate.
+(two dates). Both are indexed as ranges, so `q=typicalAgeRange:[...]` and `q=birthdateRange:[...]`
+return the same events no matter which of the two was filled in, and the `q` never has to be
+rewritten at search time to compensate.
+
+Every event carries a `typicalAgeRange`, defaulting to all ages ("-"); a `birthdateRange` is only
+there when the editor entered one. The rule is short: a `birthdateRange` overrides the default `-`
+age, so the age is derived from the birthdate. A real entered age is left alone, and an event with
+no birthdate range instead gets one derived from its age. The derived value is exposed in the search
+result under a "Converted" name so it can be told apart from an entered one.
+
+| Event has | `typicalAgeRange` | `typicalAgeRangeConverted` | `birthdateRange` | `birthdateRangeConverted` |
+|---|---|---|---|---|
+| An age range | entered | — | — | derived |
+| A birthdate range | `-` | derived | entered | — |
+| An age range and a birthdate range | entered | — | entered | — |
+| Neither (all ages) | `-` | — | — | — |
+
+A derived range with an open bound is left out of the `Converted` field: an all ages event and an
+open-ended age like `6-` have no `from`/`to` pair to show.
 
 ### Reference date
 
@@ -425,8 +440,6 @@ date.
   converting those ages back covers all of June 2019 to June 2020.
 - A long-running `periodic` or `multiple` event is converted against its first day only. Someone who
   ages into the range halfway through the run does not match it.
-- Only the index holds the derived range. The search response still returns the JSON-LD as it was
-  entered.
 
 ---
 
@@ -560,7 +573,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
 - `transformHasChildcare()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
-- `AgeTransformer`: derives the missing one of `typicalAgeRange` / `birthdateRange` from the other, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
+- `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
 
 ### Elasticsearch mappings
 
