@@ -90,7 +90,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                 [
                     'index' => $this->indexName,
                     'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
                         'from' => 0,
                         'size' => 2,
                         'query' => [
@@ -171,7 +171,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
                 [
                     'index' => $this->indexName,
                     'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
                         'from' => 0,
                         'size' => 1,
                         'query' => [

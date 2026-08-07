@@ -66,7 +66,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $this->predefinedQueryStringFields = new OfferPredefinedQueryStringFields();
         $this->aggregationSize = $aggregationSize;
 
-        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
+        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'];
     }
 
     /**

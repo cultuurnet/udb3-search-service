@@ -13,10 +13,8 @@ use DateTime;
 use DateTimeImmutable;
 
 /**
- * Indexes an equivalent typicalAgeRange for events that only have a birthdateRange, and an
- * equivalent birthdateRange for events that only have a typicalAgeRange.
- *
- * @see docs/calendar-indexing.md
+ * Derives the missing one of typicalAgeRange / birthdateRange at index time. See the table under
+ * "Ages and birthdates" in docs/calendar-indexing.md for what each event ends up with.
  */
 final class AgeTransformer implements JsonTransformer
 {
@@ -29,21 +27,18 @@ final class AgeTransformer implements JsonTransformer
 
     public function transform(array $from, array $draft = []): array
     {
-        $hasAgeRange = isset($draft['typicalAgeRange']);
-        $hasBirthdateRange = isset($draft['birthdateRange']);
-
-        if ($hasAgeRange === $hasBirthdateRange) {
-            return $draft;
-        }
-
         $referenceDate = $this->determineReferenceDate($from);
         if ($referenceDate === null) {
             return $draft;
         }
 
-        return $hasBirthdateRange
-            ? $this->addTypicalAgeRange($draft, $referenceDate)
-            : $this->addBirthdateRange($draft, $referenceDate);
+        // A birthdate range overrides the default all-ages age ("-"); a real entered age is kept.
+        if (isset($draft['birthdateRange'])) {
+            $ageIsDefault = ($from['typicalAgeRange'] ?? '-') === '-';
+            return $ageIsDefault ? $this->addTypicalAgeRange($draft, $referenceDate) : $draft;
+        }
+
+        return $this->addBirthdateRange($draft, $referenceDate);
     }
 
     /**
