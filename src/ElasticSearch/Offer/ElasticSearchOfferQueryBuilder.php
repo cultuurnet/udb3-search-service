@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
-use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
 use CultuurNet\UDB3\Search\Offer\FacetName;
@@ -124,62 +123,21 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withDateRangeQuery('availableRange', $from, $to);
     }
 
-    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): self
+    public function withBirthdateRangeFilter(?DateTimeImmutable $from, ?DateTimeImmutable $to): self
     {
-        if (empty($ranges)) {
+        $rangeQuery = $this->createRangeQuery(
+            'birthdateRange',
+            $from === null ? null : $from->format('Y-m-d'),
+            $to === null ? null : $to->format('Y-m-d')
+        );
+
+        if ($rangeQuery === null) {
             return $this;
         }
 
-        $rangeQueries = array_map(
-            fn (BirthdateRange $range): BoolQuery => $this->createBirthdateRangeQuery($range),
-            $ranges
-        );
-
         $c = $this->getClone();
-
-        // A single range is added directly; multiple ranges are combined with OR (SHOULD).
-        if (count($rangeQueries) === 1) {
-            $c->boolQuery->add($rangeQueries[0], BoolQuery::FILTER);
-            return $c;
-        }
-
-        $shouldQuery = new BoolQuery();
-        foreach ($rangeQueries as $rangeQuery) {
-            $shouldQuery->add($rangeQuery, BoolQuery::SHOULD);
-        }
-        $c->boolQuery->add($shouldQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
         return $c;
-    }
-
-    /**
-     * A birthdate range matches an event either through its explicit birthdateRange (an
-     * absolute date range) or through its typicalAgeRange. The birthdate <-> age conversion
-     * happens here at query time (relative to "now") rather than at index time, where it
-     * would drift as time passes. "All ages" events are deliberately excluded from the
-     * typicalAgeRange match: their range is unbounded and would otherwise match every query.
-     */
-    private function createBirthdateRangeQuery(BirthdateRange $range): BoolQuery
-    {
-        $query = new BoolQuery();
-
-        $birthdateRangeQuery = $this->createRangeQuery(
-            'birthdateRange',
-            $range->getFrom()->format('Y-m-d'),
-            $range->getTo()->format('Y-m-d')
-        );
-        if ($birthdateRangeQuery !== null) {
-            $query->add($birthdateRangeQuery, BoolQuery::SHOULD);
-        }
-
-        $ageRangeQuery = $this->createRangeQuery('typicalAgeRange', $range->getMinAge(), $range->getMaxAge());
-        if ($ageRangeQuery !== null) {
-            $ageQuery = new BoolQuery();
-            $ageQuery->add($ageRangeQuery);
-            $ageQuery->add(new TermQuery('allAges', true), BoolQuery::MUST_NOT);
-            $query->add($ageQuery, BoolQuery::SHOULD);
-        }
-
-        return $query;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self
