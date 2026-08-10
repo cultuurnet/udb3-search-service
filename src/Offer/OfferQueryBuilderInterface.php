@@ -43,7 +43,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
         DateTimeImmutable $to = null
     ): OfferQueryBuilderInterface;
 
-    public function withBirthdateRangeFilter(BirthdateRange ...$ranges): OfferQueryBuilderInterface;
+    public function withBirthdateRangeFilter(?DateTimeImmutable $from, ?DateTimeImmutable $to): OfferQueryBuilderInterface;
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OfferQueryBuilderInterface;
 

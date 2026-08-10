@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 
-use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
-use CultuurNet\UDB3\Search\MissingParameter;
-use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
-use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
@@ -27,15 +23,8 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
 
     protected function setUp(): void
     {
-        Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2026-06-29T12:00:00+02:00'));
-
         $this->parser = new BirthdateRangeOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
-    }
-
-    protected function tearDown(): void
-    {
-        Chronos::setTestNow(null);
     }
 
     /**
@@ -60,15 +49,12 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
             'birthdateRangeTo' => '2020-12-31',
         ]);
 
-        $expected = new BirthdateRange(
-            new DateTimeImmutable('2020-01-01'),
-            new DateTimeImmutable('2020-12-31'),
-            new Chronos()
-        );
-
         $this->queryBuilder->expects($this->once())
             ->method('withBirthdateRangeFilter')
-            ->with($this->equalTo($expected))
+            ->with(
+                $this->equalTo(new DateTimeImmutable('2020-01-01')),
+                $this->equalTo(new DateTimeImmutable('2020-12-31'))
+            )
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
@@ -77,11 +63,14 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_only_the_from_is_given(): void
+    public function it_adds_a_filter_with_only_the_from(): void
     {
         $request = $this->request(['birthdateRangeFrom' => '2020-01-01']);
 
-        $this->expectException(MissingParameter::class);
+        $this->queryBuilder->expects($this->once())
+            ->method('withBirthdateRangeFilter')
+            ->with($this->equalTo(new DateTimeImmutable('2020-01-01')), $this->isNull())
+            ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
     }
@@ -89,11 +78,14 @@ final class BirthdateRangeOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_only_the_to_is_given(): void
+    public function it_adds_a_filter_with_only_the_to(): void
     {
         $request = $this->request(['birthdateRangeTo' => '2020-12-31']);
 
-        $this->expectException(MissingParameter::class);
+        $this->queryBuilder->expects($this->once())
+            ->method('withBirthdateRangeFilter')
+            ->with($this->isNull(), $this->equalTo(new DateTimeImmutable('2020-12-31')))
+            ->willReturn($this->queryBuilder);
 
         $this->parser->parse($request, $this->queryBuilder);
     }

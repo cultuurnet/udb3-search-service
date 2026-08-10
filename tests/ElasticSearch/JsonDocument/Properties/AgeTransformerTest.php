@@ -387,6 +387,39 @@ final class AgeTransformerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_replaces_the_default_all_ages_range_with_the_birthdate_derived_age(): void
+    {
+        $from = [
+            'calendarType' => 'single',
+            'startDate' => '2017-04-22T10:00:00+00:00',
+            'typicalAgeRange' => '-',
+        ];
+
+        $draft = [
+            'typicalAgeRange' => ['gte' => 0],
+            'allAges' => true,
+            'birthdateRange' => [
+                'gte' => '2010-01-01',
+                'lte' => '2010-12-31',
+            ],
+        ];
+
+        $this->assertEquals(
+            [
+                'typicalAgeRange' => ['gte' => 6, 'lte' => 7],
+                'allAges' => false,
+                'birthdateRange' => [
+                    'gte' => '2010-01-01',
+                    'lte' => '2010-12-31',
+                ],
+            ],
+            $this->transformer->transform($from, $draft)
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider untouchedDraftProvider
      */
     public function it_leaves_the_draft_untouched(array $from, array $draft): void
@@ -415,8 +448,8 @@ final class AgeTransformerTest extends TestCase
                 'from' => $singleEvent,
                 'draft' => [],
             ],
-            'both ranges present' => [
-                'from' => $singleEvent,
+            'a real age range next to a birthdate range' => [
+                'from' => $singleEvent + ['typicalAgeRange' => '6-7'],
                 'draft' => $ageRange + $birthdateRange,
             ],
             'open ended birthdate range' => [
