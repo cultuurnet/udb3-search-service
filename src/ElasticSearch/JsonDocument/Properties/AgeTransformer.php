@@ -9,7 +9,6 @@ use Cake\Chronos\ChronosDate;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Throwable;
@@ -119,17 +118,17 @@ final class AgeTransformer implements JsonTransformer
             return $draft;
         }
 
+        $reference = new ChronosDate($referenceDate);
+
         // No maximum age means no oldest birthdate, indexed as null so the range stays open.
         $oldestBirthdate = null;
         if ($maxAge !== null) {
             // Someone born exactly maxAge + 1 years ago already had that birthday, so the oldest
             // birthdate is a day later.
-            $oldestBirthdate = self::subtractYears($referenceDate, $maxAge + 1)
-                ->add(new DateInterval('P1D'))
-                ->format('Y-m-d');
+            $oldestBirthdate = $reference->subYears($maxAge + 1)->addDays(1)->format('Y-m-d');
         }
 
-        $youngestBirthdate = self::subtractYears($referenceDate, $minAge)->format('Y-m-d');
+        $youngestBirthdate = $reference->subYears($minAge)->format('Y-m-d');
 
         $draft['birthdateRange'] = [
             'gte' => $oldestBirthdate,
@@ -137,20 +136,6 @@ final class AgeTransformer implements JsonTransformer
         ];
 
         return $draft;
-    }
-
-    /**
-     * Subtracting years from 29 February lands on 1 March, which shifts both ends of the derived
-     * range a day away from the age BirthdateRange would calculate. Only February can overflow, so
-     * stepping back a day is enough to land on its last day.
-     */
-    private static function subtractYears(DateTimeImmutable $date, int $years): DateTimeImmutable
-    {
-        $result = $date->sub(new DateInterval('P' . $years . 'Y'));
-
-        return $result->format('d') === $date->format('d')
-            ? $result
-            : $result->sub(new DateInterval('P1D'));
     }
 
     /**
