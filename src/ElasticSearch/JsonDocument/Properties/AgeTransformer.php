@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use Cake\Chronos\Chronos;
+use Cake\Chronos\ChronosDate;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\BirthdateRange;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateInterval;
-use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
+use Throwable;
 
 /**
  * Indexes an equivalent typicalAgeRange for events that only have a birthdateRange, and an
@@ -57,13 +59,11 @@ final class AgeTransformer implements JsonTransformer
         $startDate = $from['startDate'] ?? null;
 
         if (is_string($startDate)) {
-            $parsed = DateTimeImmutable::createFromFormat(DateTime::ATOM, $startDate);
-
-            return $parsed === false ? null : self::fromDateString($parsed->format('Y-m-d'));
+            return self::toPlainDate($startDate);
         }
 
         if (($from['calendarType'] ?? null) === 'permanent') {
-            return self::fromDateString($this->now->format('Y-m-d'));
+            return self::toPlainDate($this->now);
         }
 
         return null;
@@ -78,8 +78,8 @@ final class AgeTransformer implements JsonTransformer
             return $draft;
         }
 
-        $oldestBirthdate = self::fromDateString($gte);
-        $youngestBirthdate = self::fromDateString($lte);
+        $oldestBirthdate = self::toPlainDate($gte);
+        $youngestBirthdate = self::toPlainDate($lte);
 
         if ($oldestBirthdate === null || $youngestBirthdate === null) {
             return $draft;
@@ -153,10 +153,17 @@ final class AgeTransformer implements JsonTransformer
             : $result->sub(new DateInterval('P1D'));
     }
 
-    private static function fromDateString(string $date): ?DateTimeImmutable
+    /**
+     * A ChronosDate holds no time and no offset, so a start date at 00:30+01:00 counts as that day
+     * instead of the day before in UTC. It throws on a date it cannot read, which is caught here so a
+     * single malformed date only skips the conversion instead of failing the whole document.
+     */
+    private static function toPlainDate(string|DateTimeInterface $date): ?DateTimeImmutable
     {
-        $parsed = DateTimeImmutable::createFromFormat('!Y-m-d', $date);
-
-        return $parsed === false ? null : $parsed;
+        try {
+            return (new ChronosDate($date))->toNative();
+        } catch (Throwable) {
+            return null;
+        }
     }
 }
