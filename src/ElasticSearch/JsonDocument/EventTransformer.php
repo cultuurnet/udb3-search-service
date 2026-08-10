@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AttendanceModeTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AgeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\BirthdateRangeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\DeparturePlacesTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
@@ -49,6 +50,8 @@ final class EventTransformer implements JsonTransformer
             new PerformersTransformer(),
             new DeparturePlacesTransformer($idUrlParser),
             new BirthdateRangeTransformer(),
+            // Must run after TypicalAgeRangeTransformer and BirthdateRangeTransformer.
+            new AgeTransformer(),
             new MetadataTransformer()
         );
 

@@ -98,7 +98,7 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase implements Elas
                     'index' => $this->indexName,
                     'type' => $this->documentType,
                     'body' => [
-                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+                        '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
                         'from' => 0,
                         'size' => 2,
                         'query' => [

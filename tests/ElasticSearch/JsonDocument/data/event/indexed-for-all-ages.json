@@ -56,6 +56,10 @@
         "gte": 0
     },
     "allAges": true,
+    "birthdateRange": {
+        "gte": null,
+        "lte": null
+    },
     "address": {
         "nl": {
             "addressCountry": "BE",
