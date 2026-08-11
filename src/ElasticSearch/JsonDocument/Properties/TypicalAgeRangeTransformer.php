@@ -32,7 +32,7 @@ final class TypicalAgeRangeTransformer implements JsonTransformer
 
         $draft['typicalAgeRange']['gte'] = $minAge;
 
-        if ($maxAge) {
+        if ($maxAge !== null) {
             $draft['typicalAgeRange']['lte'] = $maxAge;
         }
 
