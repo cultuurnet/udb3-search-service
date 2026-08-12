@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Search\Offer;
+
+use DateTimeImmutable;
+use Iterator;
+use PHPUnit\Framework\TestCase;
+
+final class DayOfWeekTest extends TestCase
+{
+    /**
+     * @test
+     * @dataProvider weekdayValueProvider
+     */
+    public function it_maps_cases_to_lowercase_english_values(DayOfWeek $day, string $expectedValue): void
+    {
+        $this->assertSame($expectedValue, $day->value);
+    }
+
+    /**
+     * @return Iterator<string, array{0: DayOfWeek, 1: string}>
+     */
+    public function weekdayValueProvider(): Iterator
+    {
+        yield 'monday' => [DayOfWeek::Monday, 'monday'];
+        yield 'tuesday' => [DayOfWeek::Tuesday, 'tuesday'];
+        yield 'wednesday' => [DayOfWeek::Wednesday, 'wednesday'];
+        yield 'thursday' => [DayOfWeek::Thursday, 'thursday'];
+        yield 'friday' => [DayOfWeek::Friday, 'friday'];
+        yield 'saturday' => [DayOfWeek::Saturday, 'saturday'];
+        yield 'sunday' => [DayOfWeek::Sunday, 'sunday'];
+    }
+
+    /**
+     * @test
+     */
+    public function it_derives_the_weekday_from_a_date(): void
+    {
+        // 2024-06-05 is a Wednesday.
+        $this->assertSame(DayOfWeek::Wednesday, DayOfWeek::fromDate(new DateTimeImmutable('2024-06-05')));
+    }
+}

@@ -4981,5 +4981,13 @@
     },
     "metadata": {
         "popularity": 0
-    }
+    },
+    "dayOfWeek": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+    ]
 }

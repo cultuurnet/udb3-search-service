@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar;
 
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -18,14 +19,25 @@ final class EffectiveOpeningHoursResolver
     }
 
     /**
+     * Resolves the effective (closures/adjustments applied) opening hours of an event or place over
+     * its window. Always returns an {@see EffectiveOpeningHours}: when there are no usable opening
+     * hours — no regular or adjusted hours to open a day, or a periodic calendar without a start/end
+     * date to bound the window — it returns {@see EffectiveOpeningHours::empty()}, which is a truthful
+     * "no effective opening hours" result, not an error condition.
+     *
      * @param array $from
-     *   JSON-LD of an event or place with an openingHours property, as an associative array
+     *   JSON-LD of an event or place, as an associative array. Expected to have a calendarType; may
+     *   have an openingHours property, openingHoursAdjustedDays and (for periodic) startDate/endDate.
      */
     public function resolve(array $from): EffectiveOpeningHours
     {
-        $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours']);
+        if (!$this->canResolve($from)) {
+            return EffectiveOpeningHours::empty();
+        }
 
-        if ($from['calendarType'] === 'permanent') {
+        $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours'] ?? []);
+
+        if (($from['calendarType'] ?? null) === 'permanent') {
             $now = new Chronos();
             $startDate = $now->modify('-6 months');
             $endDate = $now->modify('+12 months');
@@ -38,10 +50,18 @@ final class EffectiveOpeningHoursResolver
         $period = new DatePeriod($startDate, $interval, $endDate);
 
         $slots = [];
+        $dayCounts = new DayOfWeekCounts();
 
         /* @var DateTime $date */
         foreach ($period as $date) {
-            foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
+            $effectiveOpeningHoursOnDay = $this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay);
+
+            // Count days (not slots): a weekday with multiple opening-hour slots on the same date counts once.
+            if (!empty($effectiveOpeningHoursOnDay)) {
+                $dayCounts->increment(DayOfWeek::fromDate($date));
+            }
+
+            foreach ($effectiveOpeningHoursOnDay as $openingHours) {
                 $slots[] = [
                     'date' => $date,
                     'opens' => $openingHours['opens'],
@@ -50,7 +70,26 @@ final class EffectiveOpeningHoursResolver
             }
         }
 
-        return new EffectiveOpeningHours($slots);
+        return new EffectiveOpeningHours($slots, $dayCounts);
+    }
+
+    /**
+     * Whether there is enough data to walk the calendar and resolve effective opening hours.
+     *
+     * Two things are required. First, something that can actually open a day: regular opening hours
+     * or adjusted days — closed days only ever remove open days, so on their own there is nothing to
+     * resolve. Second, a window to walk: permanent calendars use an implicit rolling window, every
+     * other calendar needs an explicit start and end date.
+     *
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     */
+    private function canResolve(array $from): bool
+    {
+        $canOpenDays = ($from['openingHours'] ?? []) !== [] || ($from['openingHoursAdjustedDays'] ?? []) !== [];
+        $hasWindow = ($from['calendarType'] ?? null) === 'permanent' || isset($from['startDate'], $from['endDate']);
+
+        return $canOpenDays && $hasWindow;
     }
 
     /**
@@ -62,15 +101,10 @@ final class EffectiveOpeningHoursResolver
      */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
-        $openingHoursByDay = [
-            'monday' => [],
-            'tuesday' => [],
-            'wednesday' => [],
-            'thursday' => [],
-            'friday' => [],
-            'saturday' => [],
-            'sunday' => [],
-        ];
+        $openingHoursByDay = [];
+        foreach (DayOfWeek::cases() as $day) {
+            $openingHoursByDay[$day->value] = [];
+        }
 
         foreach ($openingHours as $index => $openingHoursEntry) {
             if (!isset($openingHoursEntry['dayOfWeek'])) {
@@ -89,12 +123,13 @@ final class EffectiveOpeningHoursResolver
             }
 
             foreach ($openingHoursEntry['dayOfWeek'] as $day) {
-                if (!array_key_exists($day, $openingHoursByDay)) {
+                $weekday = is_string($day) ? DayOfWeek::tryFrom($day) : null;
+                if ($weekday === null) {
                     $this->logger->logWarning("Unknown day '{$day}' in opening hours.");
                     continue;
                 }
 
-                $openingHoursByDay[$day][] = [
+                $openingHoursByDay[$weekday->value][] = [
                     'opens' => $openingHoursEntry['opens'],
                     'closes' => $openingHoursEntry['closes'],
                 ];
@@ -145,15 +180,15 @@ final class EffectiveOpeningHoursResolver
             return [];
         }
 
-        $dayOfWeek = strtolower($date->format('l'));
+        $dayOfWeek = DayOfWeek::fromDate($date);
         $adjustedDay = $this->findAdjustedDay($date, $from);
 
         // Adjusted entries fully replace regular hours; days not listed in the entry's openingHours are treated as closed.
         if ($adjustedDay !== null && isset($adjustedDay['openingHours'])) {
-            return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek];
+            return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek->value];
         }
 
-        return $regularOpeningHoursByDay[$dayOfWeek];
+        return $regularOpeningHoursByDay[$dayOfWeek->value];
     }
 
     private function findAdjustedDay(DateTimeInterface $date, array $from): ?array

@@ -252,6 +252,189 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_returns_only_defaults_without_a_calendar_type(): void
+    {
+        $result = $this->transformer->transform([]);
+
+        $this->assertEquals(
+            [
+                'status' => 'Available',
+                'bookingAvailability' => 'Available',
+                'hasOvernight' => false,
+                'hasChildcare' => false,
+                'dayOfWeek' => [],
+            ],
+            $result
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider calendarProvider
+     */
+    public function it_always_emits_day_of_week(string $calendarType): void
+    {
+        $method = $calendarType . 'Calendar';
+        $result = $this->transformer->transform($this->{$method}(false));
+
+        $this->assertArrayHasKey('dayOfWeek', $result);
+        $this->assertIsArray($result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_day_of_week_for_single_calendars(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendar(false));
+
+        $this->assertSame([], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_day_of_week_for_multiple_calendars(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendar(false));
+
+        $this->assertSame([], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_day_of_week_for_periodic_calendars_without_opening_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-07T23:59:59+02:00',
+        ]);
+
+        $this->assertSame([], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_weekdays_below_the_threshold_for_periodic_opening_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-07T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ]);
+
+        // Monday and Wednesday each occur only once in this short range, below the threshold of 4.
+        $this->assertSame([], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_indexes_weekdays_that_meet_the_threshold(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-25T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ]);
+
+        // Four Mondays (03, 10, 17, 24) meet the threshold; only three Wednesdays (05, 12, 19) do not.
+        $this->assertSame(['monday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_a_weekday_pushed_below_the_threshold_by_a_closed_day(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-26T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+            'openingHoursClosedDays' => [
+                ['startDate' => '2024-06-12', 'endDate' => '2024-06-12'],
+            ],
+        ]);
+
+        // Both weekdays occur four times in the range; closing Wednesday 12 drops Wednesday to three,
+        // so only Monday — the untouched control — survives the threshold.
+        $this->assertSame(['monday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_a_weekday_pushed_below_the_threshold_by_an_adjusted_day(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-26T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+            'openingHoursAdjustedDays' => [
+                [
+                    'startDate' => '2024-06-12',
+                    'endDate' => '2024-06-12',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['saturday'],
+                            'opens' => '10:00',
+                            'closes' => '14:00',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        // The adjusted entry on Wednesday 12 only opens on Saturday, closing that Wednesday and dropping
+        // Wednesday to three; Monday is untouched, so only Monday survives the threshold.
+        $this->assertSame(['monday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_day_of_week_for_permanent_opening_hours_using_the_rolling_window(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(false));
+
+        // The rolling window yields far more than four Mondays and no other open weekday.
+        $this->assertSame(['monday'], $result['dayOfWeek']);
+    }
+
+    /**
      * @return array<string, array{0: string}>
      */
     public function calendarProvider(): array

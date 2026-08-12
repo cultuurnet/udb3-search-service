@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar;
 use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -214,6 +215,264 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                 [],
             ],
         ];
+    }
+
+    /**
+     * @test
+     * @dataProvider dayCountsProvider
+     * @param array<string, mixed> $from
+     * @param array{monday: int, tuesday: int, wednesday: int, thursday: int, friday: int, saturday: int, sunday: int} $expectedDayCounts
+     */
+    public function it_counts_effective_open_days_per_weekday(array $from, array $expectedDayCounts): void
+    {
+        $dayCounts = $this->resolver->resolve($from)->dayCounts();
+
+        foreach ($expectedDayCounts as $weekday => $expectedCount) {
+            $this->assertSame($expectedCount, $dayCounts->forDay(DayOfWeek::from($weekday)), $weekday);
+        }
+    }
+
+    /**
+     * @return array<string, array{0: array<string, mixed>, 1: array<string, int>}>
+     */
+    public function dayCountsProvider(): array
+    {
+        return [
+            'periodic within a single week' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-09T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday', 'wednesday', 'friday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                ],
+                [
+                    'monday' => 1,
+                    'tuesday' => 0,
+                    'wednesday' => 1,
+                    'thursday' => 0,
+                    'friday' => 1,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+            'periodic spanning multiple weeks' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-16T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday', 'wednesday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                ],
+                // Two Mondays (03, 10) and two Wednesdays (05, 12) within the fortnight.
+                [
+                    'monday' => 2,
+                    'tuesday' => 0,
+                    'wednesday' => 2,
+                    'thursday' => 0,
+                    'friday' => 0,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+            'multiple slots on the same weekday count the day once' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-03T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday'],
+                            'opens' => '08:30',
+                            'closes' => '12:00',
+                        ],
+                        [
+                            'dayOfWeek' => ['monday'],
+                            'opens' => '13:00',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                ],
+                [
+                    'monday' => 1,
+                    'tuesday' => 0,
+                    'wednesday' => 0,
+                    'thursday' => 0,
+                    'friday' => 0,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+            'closed days are not counted' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-16T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['wednesday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        ['startDate' => '2024-06-05', 'endDate' => '2024-06-05'],
+                    ],
+                ],
+                // Wednesday 05 is closed, only Wednesday 12 remains open.
+                [
+                    'monday' => 0,
+                    'tuesday' => 0,
+                    'wednesday' => 1,
+                    'thursday' => 0,
+                    'friday' => 0,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+            'adjusted day that keeps the day open still counts' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-05T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday', 'wednesday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                    'openingHoursAdjustedDays' => [
+                        [
+                            'startDate' => '2024-06-03',
+                            'endDate' => '2024-06-03',
+                            'openingHours' => [
+                                [
+                                    'dayOfWeek' => ['monday'],
+                                    'opens' => '10:00',
+                                    'closes' => '14:00',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                [
+                    'monday' => 1,
+                    'tuesday' => 0,
+                    'wednesday' => 1,
+                    'thursday' => 0,
+                    'friday' => 0,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+            'adjusted day that closes the weekday is not counted' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-03T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                    'openingHoursAdjustedDays' => [
+                        [
+                            'startDate' => '2024-06-03',
+                            'endDate' => '2024-06-03',
+                            'openingHours' => [
+                                [
+                                    'dayOfWeek' => ['tuesday'],
+                                    'opens' => '10:00',
+                                    'closes' => '14:00',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                // Monday 03 is adjusted, but the adjusted entry only lists Tuesday, so the Monday is closed.
+                [
+                    'monday' => 0,
+                    'tuesday' => 0,
+                    'wednesday' => 0,
+                    'thursday' => 0,
+                    'friday' => 0,
+                    'saturday' => 0,
+                    'sunday' => 0,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_result_when_there_are_no_opening_hours(): void
+    {
+        $effectiveOpeningHours = $this->resolver->resolve([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-09T23:59:59+02:00',
+        ]);
+
+        $this->assertSame([], $effectiveOpeningHours->slots());
+        $this->assertEquals(new DayOfWeekCounts(), $effectiveOpeningHours->dayCounts());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_result_for_a_periodic_calendar_without_a_window(): void
+    {
+        $effectiveOpeningHours = $this->resolver->resolve([
+            'calendarType' => 'periodic',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ]);
+
+        $this->assertSame([], $effectiveOpeningHours->slots());
+        $this->assertEquals(new DayOfWeekCounts(), $effectiveOpeningHours->dayCounts());
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_days_across_the_permanent_rolling_window(): void
+    {
+        $from = [
+            'calendarType' => 'permanent',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday'],
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                ],
+            ],
+        ];
+
+        $dayCounts = $this->resolver->resolve($from)->dayCounts();
+
+        // Window is now -6 months (2023-12-01) up to now +12 months (2025-06-01): 78 Mondays, no other weekdays.
+        $this->assertSame(78, $dayCounts->forDay(DayOfWeek::Monday));
+        $this->assertSame(0, $dayCounts->forDay(DayOfWeek::Tuesday));
+        $this->assertSame(0, $dayCounts->forDay(DayOfWeek::Sunday));
     }
 
     /**
