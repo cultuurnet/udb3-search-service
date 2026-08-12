@@ -59,6 +59,26 @@ final class ConvertedAgesJsonTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_a_converted_age_range_for_an_event_without_a_typical_age_range(): void
+    {
+        $from = [
+            'typicalAgeRange' => ['gte' => 6, 'lte' => 7],
+            'birthdateRange' => ['gte' => '2010-01-01', 'lte' => '2010-12-31'],
+        ];
+
+        $draft = [
+            'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+        ];
+
+        $result = $this->transformer->transform($from, $draft);
+
+        $this->assertSame('6-7', $result['typicalAgeRangeConverted']);
+        $this->assertArrayNotHasKey('birthdateRangeConverted', $result);
+    }
+
+    /**
+     * @test
+     */
     public function it_adds_nothing_when_a_real_age_range_was_entered_next_to_a_birthdate_range(): void
     {
         $from = [
