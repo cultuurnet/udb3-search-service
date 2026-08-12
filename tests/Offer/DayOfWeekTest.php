@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
 use Iterator;
 use PHPUnit\Framework\TestCase;
@@ -40,5 +41,32 @@ final class DayOfWeekTest extends TestCase
     {
         // 2024-06-05 is a Wednesday.
         $this->assertSame(DayOfWeek::Wednesday, DayOfWeek::fromDate(new DateTimeImmutable('2024-06-05')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_a_weekday_from_a_string(): void
+    {
+        $this->assertSame(DayOfWeek::Wednesday, DayOfWeek::fromString('wednesday'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_parses_a_weekday_case_insensitively(): void
+    {
+        $this->assertSame(DayOfWeek::Friday, DayOfWeek::fromString('FrIdAY'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_an_unknown_weekday(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('Unknown day of week value "someday"');
+
+        DayOfWeek::fromString('someday');
     }
 }

@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
@@ -1176,6 +1177,91 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_query_with_a_single_day_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withDayOfWeekFilter(DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'dayOfWeek' => [
+                                    'query' => 'wednesday',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_query_with_multiple_days_of_week_using_or_semantics(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withDayOfWeekFilter(DayOfWeek::Friday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'dayOfWeek' => [
+                                                'query' => 'friday',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'dayOfWeek' => [
+                                                'query' => 'saturday',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 
     /**
