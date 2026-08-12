@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\DateTimeFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\DayOfWeekCounts;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -86,7 +87,13 @@ final class CalendarTransformer implements JsonTransformer
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
-        $draft['dayOfWeek'] = $this->determineDayOfWeek($effectiveOpeningHours);
+
+        // Multiple calendars have no opening hours to resolve; their occurrences are the explicit
+        // source sub-events, so their weekday counts are derived from those instead.
+        $dayOfWeekCounts = $from['calendarType'] === 'multiple'
+            ? $this->countDayOfWeekForMultiple($from)
+            : $effectiveOpeningHours->dayCounts();
+        $draft['dayOfWeek'] = $this->determineDayOfWeek($dayOfWeekCounts);
 
         $from = $this->polyFillJsonLdSubEvents($from, $effectiveOpeningHours);
         if (!isset($from['subEvent'])) {
@@ -115,15 +122,67 @@ final class CalendarTransformer implements JsonTransformer
 
     /**
      * @return list<string>
-     *   The weekdays (monday..sunday) the offer is effectively open on at least DAY_OF_WEEK_THRESHOLD days,
-     *   in canonical week order. A weekday below the threshold is dropped rather than indexed.
+     *   The weekdays (monday..sunday) the offer occurs on at least DAY_OF_WEEK_THRESHOLD days, in
+     *   canonical week order. A weekday below the threshold is dropped rather than indexed.
      */
-    private function determineDayOfWeek(EffectiveOpeningHours $effectiveOpeningHours): array
+    private function determineDayOfWeek(DayOfWeekCounts $dayOfWeekCounts): array
     {
         return array_map(
             static fn (DayOfWeek $day): string => $day->value,
-            $effectiveOpeningHours->dayCounts()->weekdaysReaching(self::DAY_OF_WEEK_THRESHOLD)
+            $dayOfWeekCounts->weekdaysReaching(self::DAY_OF_WEEK_THRESHOLD)
         );
+    }
+
+    /**
+     * Counts, per weekday, the number of distinct days a "multiple" calendar occurs on, derived from
+     * its explicit source sub-events. Each sub-event contributes every calendar day it spans (a Friday
+     * to Sunday sub-event counts Friday, Saturday and Sunday), evaluated in the offer's local timezone
+     * (the same one used for localTimeRange). It counts days, not slots: a date covered by more than
+     * one sub-event counts once.
+     *
+     * @param array $from
+     *   JSON-LD of an event, as an associative array
+     */
+    private function countDayOfWeekForMultiple(array $from): DayOfWeekCounts
+    {
+        $dayOfWeekCounts = new DayOfWeekCounts();
+
+        $timezone = $this->determineLocalTimezone($from);
+        $countedDates = [];
+
+        foreach ($from['subEvent'] ?? [] as $subEvent) {
+            if (!isset($subEvent['startDate'])) {
+                // Missing startDates are logged when building dateRange.
+                continue;
+            }
+
+            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
+            if ($startDate === false) {
+                continue;
+            }
+            $startDate = $startDate->setTimezone($timezone)->setTime(0, 0);
+
+            // Fall back to a single day when the end date is missing, unparseable, or before the start.
+            $endDate = isset($subEvent['endDate'])
+                ? DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate'])
+                : false;
+            $endDate = $endDate === false ? $startDate : $endDate->setTimezone($timezone)->setTime(0, 0);
+            if ($endDate < $startDate) {
+                $endDate = $startDate;
+            }
+
+            for ($date = $startDate; $date <= $endDate; $date = $date->modify('+1 day')) {
+                $dateString = $date->format('Y-m-d');
+                if (isset($countedDates[$dateString])) {
+                    continue;
+                }
+                $countedDates[$dateString] = true;
+
+                $dayOfWeekCounts->increment(DayOfWeek::fromDate($date));
+            }
+        }
+
+        return $dayOfWeekCounts;
     }
 
     /**

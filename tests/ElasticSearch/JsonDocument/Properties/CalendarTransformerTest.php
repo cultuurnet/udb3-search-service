@@ -296,8 +296,9 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_empty_day_of_week_for_multiple_calendars(): void
+    public function it_indexes_empty_day_of_week_for_a_multiple_calendar_below_the_threshold(): void
     {
+        // One Saturday and one Sunday sub-event, both far below the threshold of 4.
         $result = $this->transformer->transform($this->multipleCalendar(false));
 
         $this->assertSame([], $result['dayOfWeek']);
@@ -432,6 +433,98 @@ final class CalendarTransformerTest extends TestCase
 
         // The rolling window yields far more than four Mondays and no other open weekday.
         $this->assertSame(['monday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_day_of_week_from_the_sub_events_of_a_recurring_multiple_calendar(): void
+    {
+        // Four Wednesdays (05, 12, 19, 26 June 2024) — a weekly recurring event that reaches the threshold.
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+            '2024-06-26',
+        ]));
+
+        $this->assertSame(['wednesday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_expands_a_multi_day_sub_event_across_every_weekday_it_spans(): void
+    {
+        // Four weekend-long sub-events (Friday to Sunday), so each of Friday, Saturday and Sunday
+        // is covered four times and reaches the threshold.
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-07T18:00:00+02:00',
+            'endDate' => '2024-06-30T23:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-07T18:00:00+02:00', '2024-06-09T23:00:00+02:00'),
+                $this->subEvent('2024-06-14T18:00:00+02:00', '2024-06-16T23:00:00+02:00'),
+                $this->subEvent('2024-06-21T18:00:00+02:00', '2024-06-23T23:00:00+02:00'),
+                $this->subEvent('2024-06-28T18:00:00+02:00', '2024-06-30T23:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame(['friday', 'saturday', 'sunday'], $result['dayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_a_multiple_calendar_date_once_even_with_several_sub_events(): void
+    {
+        // Three distinct Saturdays, one of them holding two sub-events (two slots). Counting days and
+        // not slots leaves three Saturdays — below the threshold — so the duplicate cannot inflate it.
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-06-15T20:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-01T10:00:00+02:00', '2024-06-01T12:00:00+02:00'),
+                $this->subEvent('2024-06-01T18:00:00+02:00', '2024-06-01T20:00:00+02:00'),
+                $this->subEvent('2024-06-08T10:00:00+02:00', '2024-06-08T12:00:00+02:00'),
+                $this->subEvent('2024-06-15T10:00:00+02:00', '2024-06-15T12:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame([], $result['dayOfWeek']);
+    }
+
+    /**
+     * @param list<string> $dates
+     *   A list of Y-m-d dates, each turned into a single-day sub-event at a fixed time of day.
+     * @return array<string, mixed>
+     */
+    private function multipleCalendarOn(array $dates): array
+    {
+        $subEvents = array_map(
+            fn (string $date): array => $this->subEvent($date . 'T10:00:00+02:00', $date . 'T12:00:00+02:00'),
+            $dates
+        );
+
+        return [
+            'calendarType' => 'multiple',
+            'startDate' => $subEvents[0]['startDate'],
+            'endDate' => $subEvents[count($subEvents) - 1]['endDate'],
+            'subEvent' => $subEvents,
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function subEvent(string $startDate, string $endDate): array
+    {
+        return [
+            '@type' => 'Event',
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ];
     }
 
     /**
