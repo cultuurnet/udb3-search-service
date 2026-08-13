@@ -23,6 +23,15 @@ object instead of calling a method on a `?Type` result).
 
 ## Projections
 
+### Naming indexed fields
+
+An indexed field and its query parameter use the same name as the source
+property in the event/place/organizer JSON. A derived boolean is computed
+rather than copied, so it has no source name to follow. Give it a descriptive
+name with an `is` or `has` prefix instead, like `hasChildcare` or
+`isDuplicate`. The full rules live in apidocs `REVIEW.md` (Search API) and the
+API design guidelines.
+
 ### Always emit optional fields in projections
 
 When a property transformer reads an optional field from the source JSON, it
