@@ -56,7 +56,7 @@ final class EffectiveOpeningHoursResolver
         foreach ($period as $date) {
             $effectiveOpeningHoursOnDay = $this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay);
 
-            // Count days (not slots): a weekday with multiple opening-hour slots on the same date counts once.
+            // Count days (not slots): a day of week with multiple opening-hour slots on the same date counts once.
             if (!empty($effectiveOpeningHoursOnDay)) {
                 $dayCounts = $dayCounts->withIncremented(DayOfWeek::fromDate($date));
             }
@@ -96,8 +96,8 @@ final class EffectiveOpeningHoursResolver
      * @param array $openingHours
      *   JSON-LD of the openingHours property of an event/place, as an associative array
      * @return array<string, array<int<0, max>, array<string, mixed>>>
-     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
-     *   enclosing array
+     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per day of week in
+     *   an enclosing array
      */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
@@ -123,13 +123,13 @@ final class EffectiveOpeningHoursResolver
             }
 
             foreach ($openingHoursEntry['dayOfWeek'] as $day) {
-                $weekday = is_string($day) ? DayOfWeek::tryFrom($day) : null;
-                if ($weekday === null) {
+                $dayOfWeek = is_string($day) ? DayOfWeek::tryFrom($day) : null;
+                if ($dayOfWeek === null) {
                     $this->logger->logWarning("Unknown day '{$day}' in opening hours.");
                     continue;
                 }
 
-                $openingHoursByDay[$weekday->value][] = [
+                $openingHoursByDay[$dayOfWeek->value][] = [
                     'opens' => $openingHoursEntry['opens'],
                     'closes' => $openingHoursEntry['closes'],
                 ];

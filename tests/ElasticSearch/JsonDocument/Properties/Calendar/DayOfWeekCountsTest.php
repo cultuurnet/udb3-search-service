@@ -12,7 +12,7 @@ final class DayOfWeekCountsTest extends TestCase
     /**
      * @test
      */
-    public function it_starts_every_weekday_at_zero(): void
+    public function it_starts_every_day_of_week_at_zero(): void
     {
         $counts = new DayOfWeekCounts();
 
@@ -24,7 +24,7 @@ final class DayOfWeekCountsTest extends TestCase
     /**
      * @test
      */
-    public function it_increments_only_the_given_weekday(): void
+    public function it_increments_only_the_given_day_of_week(): void
     {
         $counts = (new DayOfWeekCounts())
             ->withIncremented(DayOfWeek::Wednesday)
@@ -49,27 +49,27 @@ final class DayOfWeekCountsTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_no_weekdays_when_none_reach_the_threshold(): void
+    public function it_reports_no_days_of_week_when_none_reach_the_threshold(): void
     {
         $counts = $this->incrementTimes(new DayOfWeekCounts(), DayOfWeek::Monday, 3);
 
-        $this->assertSame([], $counts->weekdaysReaching(4));
+        $this->assertSame([], $counts->daysOfWeekReaching(4));
     }
 
     /**
      * @test
      */
-    public function it_includes_a_weekday_that_exactly_reaches_the_threshold(): void
+    public function it_includes_a_day_of_week_that_exactly_reaches_the_threshold(): void
     {
         $counts = $this->incrementTimes(new DayOfWeekCounts(), DayOfWeek::Monday, 4);
 
-        $this->assertSame([DayOfWeek::Monday], $counts->weekdaysReaching(4));
+        $this->assertSame([DayOfWeek::Monday], $counts->daysOfWeekReaching(4));
     }
 
     /**
      * @test
      */
-    public function it_returns_reaching_weekdays_in_canonical_week_order(): void
+    public function it_returns_reaching_days_of_week_in_canonical_week_order(): void
     {
         $counts = new DayOfWeekCounts();
         // Increment out of week order to prove the result is ordered by the enum, not by insertion.
@@ -81,7 +81,7 @@ final class DayOfWeekCountsTest extends TestCase
 
         $this->assertSame(
             [DayOfWeek::Monday, DayOfWeek::Wednesday, DayOfWeek::Friday],
-            $counts->weekdaysReaching(4)
+            $counts->daysOfWeekReaching(4)
         );
     }
 

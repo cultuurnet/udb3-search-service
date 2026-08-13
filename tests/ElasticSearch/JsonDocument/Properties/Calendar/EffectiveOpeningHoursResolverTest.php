@@ -57,7 +57,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
     public function periodicCalendarProvider(): array
     {
         return [
-            'grouped per weekday' => [
+            'grouped per day of week' => [
                 [
                     'calendarType' => 'periodic',
                     'startDate' => '2024-06-03T00:00:00+02:00',
@@ -76,7 +76,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                     ['2024-06-05', '08:30', '17:00'],
                 ],
             ],
-            'multiple slots on the same weekday sorted by opens' => [
+            'multiple slots on the same day of week sorted by opens' => [
                 [
                     'calendarType' => 'periodic',
                     'startDate' => '2024-06-03T00:00:00+02:00',
@@ -185,7 +185,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                 ],
                 [],
             ],
-            'adjusted day without matching weekday hours treated as closed' => [
+            'adjusted day without matching day of week hours treated as closed' => [
                 [
                     'calendarType' => 'periodic',
                     'startDate' => '2024-06-03T00:00:00+02:00',
@@ -254,12 +254,12 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
      * @param array<string, mixed> $from
      * @param array{monday: int, tuesday: int, wednesday: int, thursday: int, friday: int, saturday: int, sunday: int} $expectedDayCounts
      */
-    public function it_counts_effective_open_days_per_weekday(array $from, array $expectedDayCounts): void
+    public function it_counts_effective_open_days_per_day_of_week(array $from, array $expectedDayCounts): void
     {
         $dayCounts = $this->resolver->resolve($from)->dayCounts();
 
-        foreach ($expectedDayCounts as $weekday => $expectedCount) {
-            $this->assertSame($expectedCount, $dayCounts->forDay(DayOfWeek::from($weekday)), $weekday);
+        foreach ($expectedDayCounts as $dayOfWeek => $expectedCount) {
+            $this->assertSame($expectedCount, $dayCounts->forDay(DayOfWeek::from($dayOfWeek)), $dayOfWeek);
         }
     }
 
@@ -316,7 +316,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                     'sunday' => 0,
                 ],
             ],
-            'multiple slots on the same weekday count the day once' => [
+            'multiple slots on the same day of week count the day once' => [
                 [
                     'calendarType' => 'periodic',
                     'startDate' => '2024-06-03T00:00:00+02:00',
@@ -407,7 +407,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                     'sunday' => 0,
                 ],
             ],
-            'adjusted day that closes the weekday is not counted' => [
+            'adjusted day that closes the day of week is not counted' => [
                 [
                     'calendarType' => 'periodic',
                     'startDate' => '2024-06-03T00:00:00+02:00',
@@ -500,7 +500,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
 
         $dayCounts = $this->resolver->resolve($from)->dayCounts();
 
-        // Window is now -6 months (2023-12-01) up to now +12 months (2025-06-01): 78 Mondays, no other weekdays.
+        // Window is now -6 months (2023-12-01) up to now +12 months (2025-06-01): 78 Mondays, no other days of week.
         $this->assertSame(78, $dayCounts->forDay(DayOfWeek::Monday));
         $this->assertSame(0, $dayCounts->forDay(DayOfWeek::Tuesday));
         $this->assertSame(0, $dayCounts->forDay(DayOfWeek::Sunday));

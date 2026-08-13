@@ -34,7 +34,7 @@ final class CalendarTransformer implements JsonTransformer
     private const BOOKING_AVAILABLE = 'Available';
 
     /**
-     * Minimum number of effectively-open days a weekday must reach before it is indexed in
+     * Minimum number of effectively-open days a day of week must reach before it is indexed in
      * recurringOnDayOfWeek. At 4 an offer that runs less than a month never qualifies, keeping the
      * field to recurring offers.
      */
@@ -90,7 +90,7 @@ final class CalendarTransformer implements JsonTransformer
         $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
 
         // Multiple calendars have no opening hours to resolve; their occurrences are the explicit
-        // source sub-events, so their weekday counts are derived from those instead.
+        // source sub-events, so their day of week counts are derived from those instead.
         $dayOfWeekCounts = $from['calendarType'] === 'multiple'
             ? $this->countDayOfWeekForMultiple($from)
             : $effectiveOpeningHours->dayCounts();
@@ -123,20 +123,20 @@ final class CalendarTransformer implements JsonTransformer
 
     /**
      * @return list<string>
-     *   The weekdays (monday..sunday) the offer occurs on at least
-     *   RECURRING_ON_DAY_OF_WEEK_THRESHOLD days, in canonical week order. A weekday below the
+     *   The days of week (monday..sunday) the offer occurs on at least
+     *   RECURRING_ON_DAY_OF_WEEK_THRESHOLD days, in canonical week order. A day of week below the
      *   threshold is dropped rather than indexed.
      */
     private function determineRecurringOnDayOfWeek(DayOfWeekCounts $dayOfWeekCounts): array
     {
         return array_map(
             static fn (DayOfWeek $day): string => $day->value,
-            $dayOfWeekCounts->weekdaysReaching(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
+            $dayOfWeekCounts->daysOfWeekReaching(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
         );
     }
 
     /**
-     * Counts, per weekday, the number of distinct days a "multiple" calendar occurs on, derived from
+     * Counts, per day of week, the number of distinct days a "multiple" calendar occurs on, derived from
      * its explicit source sub-events. Each sub-event contributes every calendar day it spans (a Friday
      * to Sunday sub-event counts Friday, Saturday and Sunday), evaluated in the offer's local timezone
      * (the same one used for localTimeRange). It counts days, not slots: a date covered by more than

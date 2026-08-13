@@ -13,7 +13,7 @@ final class DayOfWeekTest extends TestCase
 {
     /**
      * @test
-     * @dataProvider weekdayValueProvider
+     * @dataProvider dayOfWeekValueProvider
      */
     public function it_maps_cases_to_lowercase_english_values(DayOfWeek $day, string $expectedValue): void
     {
@@ -23,7 +23,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @return Iterator<string, array{0: DayOfWeek, 1: string}>
      */
-    public function weekdayValueProvider(): Iterator
+    public function dayOfWeekValueProvider(): Iterator
     {
         yield 'monday' => [DayOfWeek::Monday, 'monday'];
         yield 'tuesday' => [DayOfWeek::Tuesday, 'tuesday'];
@@ -37,7 +37,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_the_weekday_from_a_date(): void
+    public function it_derives_the_day_of_week_from_a_date(): void
     {
         // 2024-06-05 is a Wednesday.
         $this->assertSame(DayOfWeek::Wednesday, DayOfWeek::fromDate(new DateTimeImmutable('2024-06-05')));
@@ -46,7 +46,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_a_weekday_from_a_string(): void
+    public function it_parses_a_day_of_week_from_a_string(): void
     {
         $this->assertSame(DayOfWeek::Wednesday, DayOfWeek::fromString('wednesday'));
     }
@@ -54,7 +54,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_a_weekday_case_insensitively(): void
+    public function it_parses_a_day_of_week_case_insensitively(): void
     {
         $this->assertSame(DayOfWeek::Friday, DayOfWeek::fromString('FrIdAY'));
     }
@@ -62,7 +62,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_parses_a_weekday_surrounded_by_whitespace(): void
+    public function it_parses_a_day_of_week_surrounded_by_whitespace(): void
     {
         $this->assertSame(DayOfWeek::Saturday, DayOfWeek::fromString(' saturday '));
     }
@@ -70,7 +70,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_the_trimmed_value_for_an_unknown_weekday(): void
+    public function it_reports_the_trimmed_value_for_an_unknown_day_of_week(): void
     {
         $this->expectException(UnsupportedParameterValue::class);
         $this->expectExceptionMessage('Unknown day of week value "someday"');
@@ -81,7 +81,7 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
-    public function it_rejects_an_unknown_weekday(): void
+    public function it_rejects_an_unknown_day_of_week(): void
     {
         $this->expectException(UnsupportedParameterValue::class);
         $this->expectExceptionMessage('Unknown day of week value "someday"');

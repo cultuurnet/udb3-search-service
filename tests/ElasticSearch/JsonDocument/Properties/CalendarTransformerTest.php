@@ -321,7 +321,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_omits_weekdays_below_the_threshold_for_periodic_opening_hours(): void
+    public function it_omits_days_of_week_below_the_threshold_for_periodic_opening_hours(): void
     {
         $result = $this->transformer->transform([
             'calendarType' => 'periodic',
@@ -343,7 +343,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_only_indexes_weekdays_that_meet_the_threshold(): void
+    public function it_only_indexes_days_of_week_that_meet_the_threshold(): void
     {
         $result = $this->transformer->transform([
             'calendarType' => 'periodic',
@@ -365,7 +365,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_a_weekday_pushed_below_the_threshold_by_a_closed_day(): void
+    public function it_excludes_a_day_of_week_pushed_below_the_threshold_by_a_closed_day(): void
     {
         $result = $this->transformer->transform([
             'calendarType' => 'periodic',
@@ -383,7 +383,7 @@ final class CalendarTransformerTest extends TestCase
             ],
         ]);
 
-        // Both weekdays occur four times in the range; closing Wednesday 12 drops Wednesday to three,
+        // Both days of week occur four times in the range; closing Wednesday 12 drops Wednesday to three,
         // so only Monday — the untouched control — survives the threshold.
         $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
     }
@@ -391,7 +391,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_excludes_a_weekday_pushed_below_the_threshold_by_an_adjusted_day(): void
+    public function it_excludes_a_day_of_week_pushed_below_the_threshold_by_an_adjusted_day(): void
     {
         $result = $this->transformer->transform([
             'calendarType' => 'periodic',
@@ -431,7 +431,7 @@ final class CalendarTransformerTest extends TestCase
     {
         $result = $this->transformer->transform($this->permanentCalendar(false));
 
-        // The rolling window yields far more than four Mondays and no other open weekday.
+        // The rolling window yields far more than four Mondays and no other open day of week.
         $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
     }
 
@@ -454,7 +454,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_expands_a_multi_day_sub_event_across_every_weekday_it_spans(): void
+    public function it_expands_a_multi_day_sub_event_across_every_day_of_week_it_spans(): void
     {
         // Four weekend-long sub-events (Friday to Sunday), so each of Friday, Saturday and Sunday
         // is covered four times and reaches the threshold.

@@ -36,9 +36,9 @@ final class DayOfWeekCounts
 
     /**
      * @return list<DayOfWeek>
-     *   The weekdays, in canonical week order, reached on at least $threshold days.
+     *   The days of week, in canonical week order, reached on at least $threshold days.
      */
-    public function weekdaysReaching(int $threshold): array
+    public function daysOfWeekReaching(int $threshold): array
     {
         return array_values(array_filter(
             DayOfWeek::cases(),

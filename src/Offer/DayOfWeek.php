@@ -19,12 +19,12 @@ enum DayOfWeek: string
 
     public static function fromDate(DateTimeInterface $date): self
     {
-        // format('l') is always the English weekday name, independent of locale, so this never fails.
+        // format('l') is always the English day name, independent of locale, so this never fails.
         return self::from(strtolower($date->format('l')));
     }
 
     /**
-     * Parses a user-supplied value case-insensitively, rejecting anything that is not a weekday.
+     * Parses a user-supplied value case-insensitively, rejecting anything that is not a day of week.
      */
     public static function fromString(string $value): self
     {
@@ -33,8 +33,8 @@ enum DayOfWeek: string
         // normalisation instead of at every call site.
         $normalized = trim($value);
 
-        $weekday = self::tryFrom(strtolower($normalized));
-        if ($weekday === null) {
+        $dayOfWeek = self::tryFrom(strtolower($normalized));
+        if ($dayOfWeek === null) {
             throw new UnsupportedParameterValue(
                 'Unknown day of week value "' . $normalized . '". Should be one of ' . implode(', ', array_map(
                     static fn (self $day): string => $day->value,
@@ -43,6 +43,6 @@ enum DayOfWeek: string
             );
         }
 
-        return $weekday;
+        return $dayOfWeek;
     }
 }
