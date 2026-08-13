@@ -156,17 +156,14 @@ final class CalendarTransformer implements JsonTransformer
                 continue;
             }
 
-            $startDate = DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['startDate']);
-            if ($startDate === false) {
-                continue;
-            }
-            $startDate = $startDate->setTimezone($timezone)->setTime(0, 0);
+            $startDate = DateTimeFactory::fromAtom($subEvent['startDate'])
+                ->setTimezone($timezone)
+                ->setTime(0, 0);
 
-            // Fall back to a single day when the end date is missing, unparseable, or before the start.
+            // Fall back to a single day when the end date is missing or before the start.
             $endDate = isset($subEvent['endDate'])
-                ? DateTimeImmutable::createFromFormat(DateTime::ATOM, $subEvent['endDate'])
-                : false;
-            $endDate = $endDate === false ? $startDate : $endDate->setTimezone($timezone)->setTime(0, 0);
+                ? DateTimeFactory::fromAtom($subEvent['endDate'])->setTimezone($timezone)->setTime(0, 0)
+                : $startDate;
             if ($endDate < $startDate) {
                 $endDate = $startDate;
             }
