@@ -62,6 +62,25 @@ final class DayOfWeekTest extends TestCase
     /**
      * @test
      */
+    public function it_parses_a_weekday_surrounded_by_whitespace(): void
+    {
+        $this->assertSame(DayOfWeek::Saturday, DayOfWeek::fromString(' saturday '));
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_the_trimmed_value_for_an_unknown_weekday(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('Unknown day of week value "someday"');
+
+        DayOfWeek::fromString(' someday ');
+    }
+
+    /**
+     * @test
+     */
     public function it_rejects_an_unknown_weekday(): void
     {
         $this->expectException(UnsupportedParameterValue::class);

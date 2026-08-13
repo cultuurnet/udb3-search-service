@@ -28,10 +28,14 @@ enum DayOfWeek: string
      */
     public static function fromString(string $value): self
     {
-        $weekday = self::tryFrom(strtolower($value));
+        // Surrounding whitespace survives exploding a comma-separated parameter (dayOfWeek=friday, saturday),
+        // so normalise it here next to the case normalisation instead of at every call site.
+        $normalized = trim($value);
+
+        $weekday = self::tryFrom(strtolower($normalized));
         if ($weekday === null) {
             throw new UnsupportedParameterValue(
-                'Unknown day of week value "' . $value . '". Should be one of ' . implode(', ', array_map(
+                'Unknown day of week value "' . $normalized . '". Should be one of ' . implode(', ', array_map(
                     static fn (self $day): string => $day->value,
                     self::cases()
                 ))

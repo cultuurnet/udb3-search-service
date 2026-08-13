@@ -95,6 +95,22 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     /**
      * @test
      */
+    public function it_accepts_a_comma_separated_list_with_spaces(): void
+    {
+        $request = ServerRequestFactory::createFromGlobals()
+            ->withQueryParams(['dayOfWeek' => 'friday, saturday']);
+
+        $this->queryBuilder->expects($this->once())
+            ->method('withDayOfWeekFilter')
+            ->with(DayOfWeek::Friday, DayOfWeek::Saturday)
+            ->willReturn($this->queryBuilder);
+
+        $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_add_a_filter_when_the_parameter_is_absent(): void
     {
         $request = ServerRequestFactory::createFromGlobals();
