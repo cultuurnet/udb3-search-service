@@ -21,9 +21,12 @@ final class DayOfWeekCounts
         }
     }
 
-    public function increment(DayOfWeek $day): void
+    public function withIncremented(DayOfWeek $day): self
     {
-        $this->counts[$day->value]++;
+        $incremented = clone $this;
+        $incremented->counts[$day->value]++;
+
+        return $incremented;
     }
 
     public function forDay(DayOfWeek $day): int

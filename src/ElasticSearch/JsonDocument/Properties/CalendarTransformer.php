@@ -175,7 +175,7 @@ final class CalendarTransformer implements JsonTransformer
                 }
                 $countedDates[$dateString] = true;
 
-                $dayOfWeekCounts->increment(DayOfWeek::fromDate($date));
+                $dayOfWeekCounts = $dayOfWeekCounts->withIncremented(DayOfWeek::fromDate($date));
             }
         }
 

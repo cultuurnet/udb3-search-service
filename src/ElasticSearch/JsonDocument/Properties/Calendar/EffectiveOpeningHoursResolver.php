@@ -58,7 +58,7 @@ final class EffectiveOpeningHoursResolver
 
             // Count days (not slots): a weekday with multiple opening-hour slots on the same date counts once.
             if (!empty($effectiveOpeningHoursOnDay)) {
-                $dayCounts->increment(DayOfWeek::fromDate($date));
+                $dayCounts = $dayCounts->withIncremented(DayOfWeek::fromDate($date));
             }
 
             foreach ($effectiveOpeningHoursOnDay as $openingHours) {
