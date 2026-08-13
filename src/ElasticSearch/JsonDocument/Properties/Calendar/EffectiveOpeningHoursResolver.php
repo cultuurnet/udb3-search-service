@@ -194,7 +194,17 @@ final class EffectiveOpeningHoursResolver
     private function findAdjustedDay(DateTimeInterface $date, array $from): ?array
     {
         $dateString = $date->format('Y-m-d');
-        foreach ($from['openingHoursAdjustedDays'] ?? [] as $adjustedDay) {
+        foreach ($from['openingHoursAdjustedDays'] ?? [] as $index => $adjustedDay) {
+            if (!array_key_exists('startDate', $adjustedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursAdjustedDays[{$index}].startDate");
+                continue;
+            }
+
+            if (!array_key_exists('endDate', $adjustedDay)) {
+                $this->logger->logMissingExpectedField("openingHoursAdjustedDays[{$index}].endDate");
+                continue;
+            }
+
             if ($dateString >= $adjustedDay['startDate'] && $dateString <= $adjustedDay['endDate']) {
                 return $adjustedDay;
             }

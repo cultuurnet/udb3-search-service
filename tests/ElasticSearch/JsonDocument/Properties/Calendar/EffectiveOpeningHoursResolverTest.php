@@ -214,6 +214,37 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
                 // Monday 2024-06-03 is adjusted, but the adjusted entry only lists Tuesday, so the Monday is closed.
                 [],
             ],
+            'adjusted day without a start date is skipped' => [
+                [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-06-03T00:00:00+02:00',
+                    'endDate' => '2024-06-03T23:59:59+02:00',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['monday'],
+                            'opens' => '08:30',
+                            'closes' => '17:00',
+                        ],
+                    ],
+                    'openingHoursAdjustedDays' => [
+                        [
+                            'endDate' => '2024-06-03',
+                            'openingHours' => [
+                                [
+                                    'dayOfWeek' => ['tuesday'],
+                                    'opens' => '10:00',
+                                    'closes' => '14:00',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                // Without a start date the range would otherwise reach back indefinitely and substitute its
+                // hours on every day up to the end date, so the regular Monday hours must survive.
+                [
+                    ['2024-06-03', '08:30', '17:00'],
+                ],
+            ],
         ];
     }
 
