@@ -4209,7 +4209,7 @@
     "metadata": {
         "popularity": 0
     },
-    "dayOfWeek": [
+    "recurringOnDayOfWeek": [
         "monday",
         "wednesday",
         "friday"

@@ -17,12 +17,12 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\BirthdateRangeOfferRequestPa
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
-use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DayOfWeekOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DistanceOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RecurringOnDayOfWeekOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
@@ -69,7 +69,7 @@ final class OfferSearchControllerFactory
             ->withParser(new BirthdateRangeOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new AttendanceModeOfferRequestParser())
-            ->withParser(new DayOfWeekOfferRequestParser())
+            ->withParser(new RecurringOnDayOfWeekOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(
                 new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
             ))

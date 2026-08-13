@@ -79,5 +79,5 @@
         "popularity": 0
     },
     "completeness": 60,
-    "dayOfWeek": []
+    "recurringOnDayOfWeek": []
 }

@@ -18108,7 +18108,7 @@
     "metadata": {
         "popularity": 0
     },
-    "dayOfWeek": [
+    "recurringOnDayOfWeek": [
         "monday",
         "tuesday",
         "wednesday",

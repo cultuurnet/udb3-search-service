@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 
-final class DayOfWeekOfferRequestParser implements OfferRequestParserInterface
+final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParserInterface
 {
     public function parse(
         ApiRequestInterface $request,
@@ -16,17 +16,18 @@ final class DayOfWeekOfferRequestParser implements OfferRequestParserInterface
     ): OfferQueryBuilderInterface {
         $parameterBagReader = $request->getQueryParameterBag();
 
-        // Comma-separated only (dayOfWeek=friday,saturday), consistent with attendanceMode. The array
-        // syntax (dayOfWeek[]=friday) is intentionally not supported: getExplodedStringFromParameter
-        // rejects a multi-valued parameter with a clear "can only have a single value" error.
+        // Comma-separated only (recurringOnDayOfWeek=friday,saturday), consistent with attendanceMode.
+        // The array syntax (recurringOnDayOfWeek[]=friday) is intentionally not supported:
+        // getExplodedStringFromParameter rejects a multi-valued parameter with a clear "can only have
+        // a single value" error.
         $dayOfWeeks = $parameterBagReader->getExplodedStringFromParameter(
-            'dayOfWeek',
+            'recurringOnDayOfWeek',
             null,
             static fn (string $dayOfWeek): DayOfWeek => DayOfWeek::fromString($dayOfWeek)
         );
 
         if (!empty($dayOfWeeks)) {
-            $offerQueryBuilder = $offerQueryBuilder->withDayOfWeekFilter(...$dayOfWeeks);
+            $offerQueryBuilder = $offerQueryBuilder->withRecurringOnDayOfWeekFilter(...$dayOfWeeks);
         }
 
         return $offerQueryBuilder;

@@ -87,5 +87,5 @@
     "childrenOnly": false,
     "hasOvernight": false,
     "hasChildcare": false,
-    "dayOfWeek": []
+    "recurringOnDayOfWeek": []
 }

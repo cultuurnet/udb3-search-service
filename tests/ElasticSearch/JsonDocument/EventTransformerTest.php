@@ -113,7 +113,7 @@ final class EventTransformerTest extends TestCase
             'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
             'indexedAt' => '2017-05-09T15:11:32+02:00',
-            'dayOfWeek' => [],
+            'recurringOnDayOfWeek' => [],
         ];
 
         $expectedLogs = [

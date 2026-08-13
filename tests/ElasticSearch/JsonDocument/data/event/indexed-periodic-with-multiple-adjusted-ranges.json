@@ -248,5 +248,5 @@
     "metadata": {
         "popularity": 0
     },
-    "dayOfWeek": []
+    "recurringOnDayOfWeek": []
 }

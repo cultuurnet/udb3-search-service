@@ -28,8 +28,9 @@ enum DayOfWeek: string
      */
     public static function fromString(string $value): self
     {
-        // Surrounding whitespace survives exploding a comma-separated parameter (dayOfWeek=friday, saturday),
-        // so normalise it here next to the case normalisation instead of at every call site.
+        // Surrounding whitespace survives exploding a comma-separated parameter
+        // (recurringOnDayOfWeek=friday, saturday), so normalise it here next to the case
+        // normalisation instead of at every call site.
         $normalized = trim($value);
 
         $weekday = self::tryFrom(strtolower($normalized));

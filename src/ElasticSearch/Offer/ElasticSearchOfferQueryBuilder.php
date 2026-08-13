@@ -209,10 +209,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         );
     }
 
-    public function withDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
     {
         return $this->withMultiValueMatchQuery(
-            'dayOfWeek',
+            'recurringOnDayOfWeek',
             array_map(
                 static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
                 $dayOfWeeks

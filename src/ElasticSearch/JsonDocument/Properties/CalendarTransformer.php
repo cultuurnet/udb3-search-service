@@ -34,10 +34,11 @@ final class CalendarTransformer implements JsonTransformer
     private const BOOKING_AVAILABLE = 'Available';
 
     /**
-     * Minimum number of effectively-open days a weekday must reach before it is indexed in dayOfWeek.
-     * At 4 an offer that runs less than a month never qualifies, keeping the field to recurring offers.
+     * Minimum number of effectively-open days a weekday must reach before it is indexed in
+     * recurringOnDayOfWeek. At 4 an offer that runs less than a month never qualifies, keeping the
+     * field to recurring offers.
      */
-    private const DAY_OF_WEEK_THRESHOLD = 4;
+    private const RECURRING_ON_DAY_OF_WEEK_THRESHOLD = 4;
 
     private JsonTransformerLogger $logger;
 
@@ -68,7 +69,7 @@ final class CalendarTransformer implements JsonTransformer
 
         $draft['hasOvernight'] = false;
         $draft['hasChildcare'] = false;
-        $draft['dayOfWeek'] = [];
+        $draft['recurringOnDayOfWeek'] = [];
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
@@ -93,7 +94,7 @@ final class CalendarTransformer implements JsonTransformer
         $dayOfWeekCounts = $from['calendarType'] === 'multiple'
             ? $this->countDayOfWeekForMultiple($from)
             : $effectiveOpeningHours->dayCounts();
-        $draft['dayOfWeek'] = $this->determineDayOfWeek($dayOfWeekCounts);
+        $draft['recurringOnDayOfWeek'] = $this->determineRecurringOnDayOfWeek($dayOfWeekCounts);
 
         $from = $this->polyFillJsonLdSubEvents($from, $effectiveOpeningHours);
         if (!isset($from['subEvent'])) {
@@ -122,14 +123,15 @@ final class CalendarTransformer implements JsonTransformer
 
     /**
      * @return list<string>
-     *   The weekdays (monday..sunday) the offer occurs on at least DAY_OF_WEEK_THRESHOLD days, in
-     *   canonical week order. A weekday below the threshold is dropped rather than indexed.
+     *   The weekdays (monday..sunday) the offer occurs on at least
+     *   RECURRING_ON_DAY_OF_WEEK_THRESHOLD days, in canonical week order. A weekday below the
+     *   threshold is dropped rather than indexed.
      */
-    private function determineDayOfWeek(DayOfWeekCounts $dayOfWeekCounts): array
+    private function determineRecurringOnDayOfWeek(DayOfWeekCounts $dayOfWeekCounts): array
     {
         return array_map(
             static fn (DayOfWeek $day): string => $day->value,
-            $dayOfWeekCounts->weekdaysReaching(self::DAY_OF_WEEK_THRESHOLD)
+            $dayOfWeekCounts->weekdaysReaching(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
         );
     }
 

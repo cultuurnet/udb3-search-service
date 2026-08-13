@@ -193,14 +193,14 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
     {
         if (empty($dayOfWeeks)) {
             return $this;
         }
 
         $c = clone $this;
-        $c->mockQuery['dayOfWeek'] = array_map(
+        $c->mockQuery['recurringOnDayOfWeek'] = array_map(
             static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
             $dayOfWeeks
         );

@@ -73,7 +73,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withAttendanceModeFilter(AttendanceMode ...$attendanceModes): OfferQueryBuilderInterface;
 
-    public function withDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): OfferQueryBuilderInterface;
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): OfferQueryBuilderInterface;
 
     public function withBookingAvailabilityFilter(string $bookingAvailability): OfferQueryBuilderInterface;
 

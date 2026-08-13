@@ -12,9 +12,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-final class DayOfWeekOfferRequestParserTest extends TestCase
+final class RecurringOnDayOfWeekOfferRequestParserTest extends TestCase
 {
-    private DayOfWeekOfferRequestParser $parser;
+    private RecurringOnDayOfWeekOfferRequestParser $parser;
 
     /**
      * @var OfferQueryBuilderInterface&MockObject
@@ -23,7 +23,7 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->parser = new DayOfWeekOfferRequestParser();
+        $this->parser = new RecurringOnDayOfWeekOfferRequestParser();
         $this->queryBuilder = $this->createMock(OfferQueryBuilderInterface::class);
     }
 
@@ -33,10 +33,10 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_adds_a_single_day_of_week(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => 'wednesday']);
+            ->withQueryParams(['recurringOnDayOfWeek' => 'wednesday']);
 
         $this->queryBuilder->expects($this->once())
-            ->method('withDayOfWeekFilter')
+            ->method('withRecurringOnDayOfWeekFilter')
             ->with(DayOfWeek::Wednesday)
             ->willReturn($this->queryBuilder);
 
@@ -49,10 +49,10 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_adds_multiple_days_of_week(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => 'friday,saturday,sunday']);
+            ->withQueryParams(['recurringOnDayOfWeek' => 'friday,saturday,sunday']);
 
         $this->queryBuilder->expects($this->once())
-            ->method('withDayOfWeekFilter')
+            ->method('withRecurringOnDayOfWeekFilter')
             ->with(DayOfWeek::Friday, DayOfWeek::Saturday, DayOfWeek::Sunday)
             ->willReturn($this->queryBuilder);
 
@@ -65,13 +65,13 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_rejects_the_array_syntax(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => ['friday', 'saturday']]);
+            ->withQueryParams(['recurringOnDayOfWeek' => ['friday', 'saturday']]);
 
         $this->queryBuilder->expects($this->never())
-            ->method('withDayOfWeekFilter');
+            ->method('withRecurringOnDayOfWeekFilter');
 
         $this->expectException(UnsupportedParameterValue::class);
-        $this->expectExceptionMessage('The parameter "dayOfWeek" can only have a single value.');
+        $this->expectExceptionMessage('The parameter "recurringOnDayOfWeek" can only have a single value.');
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }
@@ -82,10 +82,10 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_accepts_mixed_case_values(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => 'Friday,SATURDAY']);
+            ->withQueryParams(['recurringOnDayOfWeek' => 'Friday,SATURDAY']);
 
         $this->queryBuilder->expects($this->once())
-            ->method('withDayOfWeekFilter')
+            ->method('withRecurringOnDayOfWeekFilter')
             ->with(DayOfWeek::Friday, DayOfWeek::Saturday)
             ->willReturn($this->queryBuilder);
 
@@ -98,10 +98,10 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_accepts_a_comma_separated_list_with_spaces(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => 'friday, saturday']);
+            ->withQueryParams(['recurringOnDayOfWeek' => 'friday, saturday']);
 
         $this->queryBuilder->expects($this->once())
-            ->method('withDayOfWeekFilter')
+            ->method('withRecurringOnDayOfWeekFilter')
             ->with(DayOfWeek::Friday, DayOfWeek::Saturday)
             ->willReturn($this->queryBuilder);
 
@@ -116,7 +116,7 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
         $request = ServerRequestFactory::createFromGlobals();
 
         $this->queryBuilder->expects($this->never())
-            ->method('withDayOfWeekFilter');
+            ->method('withRecurringOnDayOfWeekFilter');
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }
@@ -127,7 +127,7 @@ final class DayOfWeekOfferRequestParserTest extends TestCase
     public function it_throws_for_an_invalid_day_of_week(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
-            ->withQueryParams(['dayOfWeek' => 'someday']);
+            ->withQueryParams(['recurringOnDayOfWeek' => 'someday']);
 
         $this->expectException(UnsupportedParameterValue::class);
         $this->expectExceptionMessage('Unknown day of week value "someday"');

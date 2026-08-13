@@ -1182,11 +1182,11 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_builds_a_query_with_a_single_day_of_week(): void
+    public function it_builds_a_query_with_a_single_recurring_on_day_of_week(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withDayOfWeekFilter(DayOfWeek::Wednesday);
+            ->withRecurringOnDayOfWeekFilter(DayOfWeek::Wednesday);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -1202,7 +1202,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'filter' => [
                         [
                             'match' => [
-                                'dayOfWeek' => [
+                                'recurringOnDayOfWeek' => [
                                     'query' => 'wednesday',
                                 ],
                             ],
@@ -1222,7 +1222,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withDayOfWeekFilter(DayOfWeek::Friday, DayOfWeek::Saturday);
+            ->withRecurringOnDayOfWeekFilter(DayOfWeek::Friday, DayOfWeek::Saturday);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -1241,14 +1241,14 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                 'should' => [
                                     [
                                         'match' => [
-                                            'dayOfWeek' => [
+                                            'recurringOnDayOfWeek' => [
                                                 'query' => 'friday',
                                             ],
                                         ],
                                     ],
                                     [
                                         'match' => [
-                                            'dayOfWeek' => [
+                                            'recurringOnDayOfWeek' => [
                                                 'query' => 'saturday',
                                             ],
                                         ],

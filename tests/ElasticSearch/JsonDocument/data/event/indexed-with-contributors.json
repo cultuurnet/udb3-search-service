@@ -82,5 +82,5 @@
         "amy@example.com",
         "john@example.com"
     ],
-    "dayOfWeek": []
+    "recurringOnDayOfWeek": []
 }
