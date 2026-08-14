@@ -131,7 +131,7 @@ final class CalendarTransformer implements JsonTransformer
     {
         return array_map(
             static fn (DayOfWeek $day): string => $day->value,
-            $dayOfWeekCounts->daysOfWeekReaching(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
+            $dayOfWeekCounts->daysWithMinimumCount(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
         );
     }
 

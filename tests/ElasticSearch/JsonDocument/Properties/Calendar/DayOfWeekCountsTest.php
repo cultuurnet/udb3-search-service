@@ -53,7 +53,7 @@ final class DayOfWeekCountsTest extends TestCase
     {
         $counts = $this->incrementTimes(new DayOfWeekCounts(), DayOfWeek::Monday, 3);
 
-        $this->assertSame([], $counts->daysOfWeekReaching(4));
+        $this->assertSame([], $counts->daysWithMinimumCount(4));
     }
 
     /**
@@ -63,7 +63,7 @@ final class DayOfWeekCountsTest extends TestCase
     {
         $counts = $this->incrementTimes(new DayOfWeekCounts(), DayOfWeek::Monday, 4);
 
-        $this->assertSame([DayOfWeek::Monday], $counts->daysOfWeekReaching(4));
+        $this->assertSame([DayOfWeek::Monday], $counts->daysWithMinimumCount(4));
     }
 
     /**
@@ -81,7 +81,7 @@ final class DayOfWeekCountsTest extends TestCase
 
         $this->assertSame(
             [DayOfWeek::Monday, DayOfWeek::Wednesday, DayOfWeek::Friday],
-            $counts->daysOfWeekReaching(4)
+            $counts->daysWithMinimumCount(4)
         );
     }
 

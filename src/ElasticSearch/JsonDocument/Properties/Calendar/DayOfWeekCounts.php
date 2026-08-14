@@ -36,13 +36,13 @@ final class DayOfWeekCounts
 
     /**
      * @return list<DayOfWeek>
-     *   The days of week, in canonical week order, reached on at least $threshold days.
+     *   The days of week, in canonical week order, counted at least $minimum times.
      */
-    public function daysOfWeekReaching(int $threshold): array
+    public function daysWithMinimumCount(int $minimum): array
     {
         return array_values(array_filter(
             DayOfWeek::cases(),
-            fn (DayOfWeek $day): bool => $this->counts[$day->value] >= $threshold
+            fn (DayOfWeek $day): bool => $this->counts[$day->value] >= $minimum
         ));
     }
 }
