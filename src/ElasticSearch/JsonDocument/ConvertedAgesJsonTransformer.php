@@ -14,7 +14,7 @@ final class ConvertedAgesJsonTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        $ageIsDefault = ($draft['typicalAgeRange'] ?? null) === '-';
+        $ageIsDefault = !isset($draft['typicalAgeRange']) || $draft['typicalAgeRange'] === '-';
         if ($ageIsDefault && isset($draft['birthdateRange']) && isset($from['typicalAgeRange'])) {
             $draft['typicalAgeRangeConverted'] = self::formatAgeRange($from['typicalAgeRange']);
         }

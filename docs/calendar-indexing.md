@@ -389,18 +389,21 @@ An event describes its audience either with a `typicalAgeRange` ("6-12") or with
 return the same events no matter which of the two was filled in, and the `q` never has to be
 rewritten at search time to compensate.
 
-Every event carries a `typicalAgeRange`, defaulting to all ages ("-"); a `birthdateRange` is only
-there when the editor entered one. The rule is short: a `birthdateRange` overrides the default `-`
-age, so the age is derived from the birthdate. A real entered age is left alone, and an event with
-no birthdate range instead gets one derived from its age. The derived value is exposed in the search
-result under a "Converted" name so it can be told apart from an entered one.
+Only one of the two is ever entered, and an event with neither falls back to all ages ("-"). The
+missing one is derived from the other at index time and exposed under a "Converted" name, so a
+derived value can be told apart from an entered one.
 
 | Event has | `typicalAgeRange` | `typicalAgeRangeConverted` | `birthdateRange` | `birthdateRangeConverted` |
 |---|---|---|---|---|
 | An age range | entered | — | — | derived |
-| A birthdate range | `-` | derived | entered | — |
+| A birthdate range | — | derived | entered | — |
 | An age range and a birthdate range | entered | — | entered | — |
 | Neither (all ages) | `-` | — | — | — |
+
+Row three is a leftover from before the two became mutually exclusive, and disappears once Entry API
+rejects both fields in one request. Until old events are replayed, a `typicalAgeRange` of `-` can
+also still turn up next to a `birthdateRange`. It counts as the default, so those events get a
+derived age all the same.
 
 A derived range with an open bound is left out of the `Converted` field: an all ages event and an
 open-ended age like `6-` have no `from`/`to` pair to show.
