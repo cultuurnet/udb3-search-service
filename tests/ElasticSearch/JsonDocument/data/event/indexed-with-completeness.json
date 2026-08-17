@@ -78,5 +78,6 @@
     "metadata": {
         "popularity": 0
     },
-    "completeness": 60
+    "completeness": 60,
+    "recurringOnDayOfWeek": []
 }

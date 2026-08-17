@@ -243,5 +243,6 @@
     },
     "metadata": {
         "popularity": 0
-    }
+    },
+    "recurringOnDayOfWeek": []
 }

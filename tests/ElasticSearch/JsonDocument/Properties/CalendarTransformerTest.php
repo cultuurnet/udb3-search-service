@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use Cake\Chronos\Chronos;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\ElasticSearch\SimpleArrayLogger;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use DateTimeInterface;
@@ -19,8 +20,10 @@ final class CalendarTransformerTest extends TestCase
         // Fixed "now" so permanent calendars generate a deterministic rolling window.
         Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2024-06-01T12:00:00+02:00'));
 
+        $logger = new JsonTransformerPsrLogger(new SimpleArrayLogger());
         $this->transformer = new CalendarTransformer(
-            new JsonTransformerPsrLogger(new SimpleArrayLogger())
+            $logger,
+            new EffectiveOpeningHoursResolver($logger)
         );
     }
 
@@ -246,6 +249,282 @@ final class CalendarTransformerTest extends TestCase
 
         $this->assertFalse($result['subEvent'][0]['hasChildcare']);
         $this->assertTrue($result['subEvent'][1]['hasChildcare']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_only_defaults_without_a_calendar_type(): void
+    {
+        $result = $this->transformer->transform([]);
+
+        $this->assertEquals(
+            [
+                'status' => 'Available',
+                'bookingAvailability' => 'Available',
+                'hasOvernight' => false,
+                'hasChildcare' => false,
+                'recurringOnDayOfWeek' => [],
+            ],
+            $result
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider calendarProvider
+     */
+    public function it_always_emits_recurring_on_day_of_week(string $calendarType): void
+    {
+        $method = $calendarType . 'Calendar';
+        $result = $this->transformer->transform($this->{$method}(false));
+
+        $this->assertArrayHasKey('recurringOnDayOfWeek', $result);
+        $this->assertIsArray($result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_recurring_on_day_of_week_for_single_calendars(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendar(false));
+
+        $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_recurring_on_day_of_week_for_a_multiple_calendar_below_the_threshold(): void
+    {
+        // One Saturday and one Sunday sub-event, both far below the threshold of 4.
+        $result = $this->transformer->transform($this->multipleCalendar(false));
+
+        $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_empty_recurring_on_day_of_week_for_periodic_calendars_without_opening_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-07T23:59:59+02:00',
+        ]);
+
+        $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_days_of_week_below_the_threshold_for_periodic_opening_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-07T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ]);
+
+        // Monday and Wednesday each occur only once in this short range, below the threshold of 4.
+        $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_indexes_days_of_week_that_meet_the_threshold(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-25T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ]);
+
+        // Four Mondays (03, 10, 17, 24) meet the threshold; only three Wednesdays (05, 12, 19) do not.
+        $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_a_day_of_week_pushed_below_the_threshold_by_a_closed_day(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-26T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+            'openingHoursClosedDays' => [
+                ['startDate' => '2024-06-12', 'endDate' => '2024-06-12'],
+            ],
+        ]);
+
+        // Both days of week occur four times in the range; closing Wednesday 12 drops Wednesday to three,
+        // so only Monday — the untouched control — survives the threshold.
+        $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_excludes_a_day_of_week_pushed_below_the_threshold_by_an_adjusted_day(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-26T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday', 'wednesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+            'openingHoursAdjustedDays' => [
+                [
+                    'startDate' => '2024-06-12',
+                    'endDate' => '2024-06-12',
+                    'openingHours' => [
+                        [
+                            'dayOfWeek' => ['saturday'],
+                            'opens' => '10:00',
+                            'closes' => '14:00',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        // The adjusted entry on Wednesday 12 only opens on Saturday, closing that Wednesday and dropping
+        // Wednesday to three; Monday is untouched, so only Monday survives the threshold.
+        $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_recurring_on_day_of_week_for_permanent_opening_hours_using_the_rolling_window(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(false));
+
+        // The rolling window yields far more than four Mondays and no other open day of week.
+        $this->assertSame(['monday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_recurring_on_day_of_week_from_the_sub_events_of_a_recurring_multiple_calendar(): void
+    {
+        // Four Wednesdays (05, 12, 19, 26 June 2024) — a weekly recurring event that reaches the threshold.
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+            '2024-06-26',
+        ]));
+
+        $this->assertSame(['wednesday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_expands_a_multi_day_sub_event_across_every_day_of_week_it_spans(): void
+    {
+        // Four weekend-long sub-events (Friday to Sunday), so each of Friday, Saturday and Sunday
+        // is covered four times and reaches the threshold.
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-07T18:00:00+02:00',
+            'endDate' => '2024-06-30T23:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-07T18:00:00+02:00', '2024-06-09T23:00:00+02:00'),
+                $this->subEvent('2024-06-14T18:00:00+02:00', '2024-06-16T23:00:00+02:00'),
+                $this->subEvent('2024-06-21T18:00:00+02:00', '2024-06-23T23:00:00+02:00'),
+                $this->subEvent('2024-06-28T18:00:00+02:00', '2024-06-30T23:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame(['friday', 'saturday', 'sunday'], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_a_multiple_calendar_date_once_even_with_several_sub_events(): void
+    {
+        // Three distinct Saturdays, one of them holding two sub-events (two slots). Counting days and
+        // not slots leaves three Saturdays — below the threshold — so the duplicate cannot inflate it.
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-06-15T20:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-01T10:00:00+02:00', '2024-06-01T12:00:00+02:00'),
+                $this->subEvent('2024-06-01T18:00:00+02:00', '2024-06-01T20:00:00+02:00'),
+                $this->subEvent('2024-06-08T10:00:00+02:00', '2024-06-08T12:00:00+02:00'),
+                $this->subEvent('2024-06-15T10:00:00+02:00', '2024-06-15T12:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @param list<string> $dates
+     *   A list of Y-m-d dates, each turned into a single-day sub-event at a fixed time of day.
+     * @return array<string, mixed>
+     */
+    private function multipleCalendarOn(array $dates): array
+    {
+        $subEvents = array_map(
+            fn (string $date): array => $this->subEvent($date . 'T10:00:00+02:00', $date . 'T12:00:00+02:00'),
+            $dates
+        );
+
+        return [
+            'calendarType' => 'multiple',
+            'startDate' => $subEvents[0]['startDate'],
+            'endDate' => $subEvents[count($subEvents) - 1]['endDate'],
+            'subEvent' => $subEvents,
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function subEvent(string $startDate, string $endDate): array
+    {
+        return [
+            '@type' => 'Event',
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+        ];
     }
 
     /**

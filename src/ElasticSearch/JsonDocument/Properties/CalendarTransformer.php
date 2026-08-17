@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
-use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\DateTimeFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\DayOfWeekCounts;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
-use DateInterval;
-use DatePeriod;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -32,11 +33,23 @@ final class CalendarTransformer implements JsonTransformer
 
     private const BOOKING_AVAILABLE = 'Available';
 
+    /**
+     * Minimum number of effectively-open days a day of week must reach before it is indexed in
+     * recurringOnDayOfWeek. At 4 an offer that runs less than a month never qualifies, keeping the
+     * field to recurring offers.
+     */
+    private const RECURRING_ON_DAY_OF_WEEK_THRESHOLD = 4;
+
     private JsonTransformerLogger $logger;
 
-    public function __construct(JsonTransformerLogger $logger)
-    {
+    private EffectiveOpeningHoursResolver $effectiveOpeningHoursResolver;
+
+    public function __construct(
+        JsonTransformerLogger $logger,
+        EffectiveOpeningHoursResolver $effectiveOpeningHoursResolver
+    ) {
         $this->logger = $logger;
+        $this->effectiveOpeningHoursResolver = $effectiveOpeningHoursResolver;
     }
 
     /**
@@ -56,6 +69,7 @@ final class CalendarTransformer implements JsonTransformer
 
         $draft['hasOvernight'] = false;
         $draft['hasChildcare'] = false;
+        $draft['recurringOnDayOfWeek'] = [];
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
@@ -73,7 +87,16 @@ final class CalendarTransformer implements JsonTransformer
         */
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
-        $from = $this->polyFillJsonLdSubEvents($from);
+        $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
+
+        // Multiple calendars have no opening hours to resolve; their occurrences are the explicit
+        // source sub-events, so their day of week counts are derived from those instead.
+        $dayOfWeekCounts = $from['calendarType'] === 'multiple'
+            ? $this->countDayOfWeekForMultiple($from)
+            : $effectiveOpeningHours->dayCounts();
+        $draft['recurringOnDayOfWeek'] = $this->determineRecurringOnDayOfWeek($dayOfWeekCounts);
+
+        $from = $this->polyFillJsonLdSubEvents($from, $effectiveOpeningHours);
         if (!isset($from['subEvent'])) {
             $this->logger->logMissingExpectedField('subEvent');
             return $draft;
@@ -83,6 +106,82 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
         return $draft;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array
+     */
+    private function resolveEffectiveOpeningHours(array $from): EffectiveOpeningHours
+    {
+        if ($from['calendarType'] === 'periodic' || $from['calendarType'] === 'permanent') {
+            return $this->effectiveOpeningHoursResolver->resolve($from);
+        }
+
+        return EffectiveOpeningHours::empty();
+    }
+
+    /**
+     * @return list<string>
+     *   The days of week (monday..sunday) the offer occurs on at least
+     *   RECURRING_ON_DAY_OF_WEEK_THRESHOLD days, in canonical week order. A day of week below the
+     *   threshold is dropped rather than indexed.
+     */
+    private function determineRecurringOnDayOfWeek(DayOfWeekCounts $dayOfWeekCounts): array
+    {
+        return array_map(
+            static fn (DayOfWeek $day): string => $day->value,
+            $dayOfWeekCounts->daysWithMinimumCount(self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD)
+        );
+    }
+
+    /**
+     * Counts, per day of week, the number of distinct days a "multiple" calendar occurs on, derived from
+     * its explicit source sub-events. Each sub-event contributes every calendar day it spans (a Friday
+     * to Sunday sub-event counts Friday, Saturday and Sunday), evaluated in the offer's local timezone
+     * (the same one used for localTimeRange). It counts days, not slots: a date covered by more than
+     * one sub-event counts once.
+     *
+     * @param array $from
+     *   JSON-LD of an event, as an associative array
+     */
+    private function countDayOfWeekForMultiple(array $from): DayOfWeekCounts
+    {
+        $dayOfWeekCounts = new DayOfWeekCounts();
+
+        $timezone = $this->determineLocalTimezone($from);
+        $countedDates = [];
+
+        foreach ($from['subEvent'] ?? [] as $subEvent) {
+            if (!isset($subEvent['startDate'])) {
+                // Missing startDates are logged when building dateRange.
+                continue;
+            }
+
+            $startDate = DateTimeFactory::fromAtom($subEvent['startDate'])
+                ->setTimezone($timezone)
+                ->setTime(0, 0);
+
+            // Fall back to a single day when the end date is missing or before the start.
+            $endDate = isset($subEvent['endDate'])
+                ? DateTimeFactory::fromAtom($subEvent['endDate'])->setTimezone($timezone)->setTime(0, 0)
+                : $startDate;
+            if ($endDate < $startDate) {
+                $endDate = $startDate;
+            }
+
+            for ($date = $startDate; $date <= $endDate; $date = $date->modify('+1 day')) {
+                $dateString = $date->format('Y-m-d');
+                if (isset($countedDates[$dateString])) {
+                    continue;
+                }
+                $countedDates[$dateString] = true;
+
+                $dayOfWeekCounts = $dayOfWeekCounts->withIncremented(DayOfWeek::fromDate($date));
+            }
+        }
+
+        return $dayOfWeekCounts;
     }
 
     /**
@@ -277,7 +376,7 @@ final class CalendarTransformer implements JsonTransformer
      *     - calendar type permanent: add subEvents based on opening hours, or a single subEvent with an unlimited range
      *         if there are no opening hours
      */
-    private function polyFillJsonLdSubEvents(array $from): array
+    private function polyFillJsonLdSubEvents(array $from, EffectiveOpeningHours $effectiveOpeningHours): array
     {
         if ($from['calendarType'] === 'single' || $from['calendarType'] === 'periodic') {
             if (!isset($from['startDate'])) {
@@ -300,13 +399,13 @@ final class CalendarTransformer implements JsonTransformer
 
             case 'periodic':
                 if (isset($from['openingHours'])) {
-                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
+                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from, $effectiveOpeningHours);
                 }
                 return $this->polyFillJsonLdSubEventsFromStartAndEndDate($from);
 
             case 'permanent':
                 if (isset($from['openingHours'])) {
-                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from);
+                    return $this->polyFillJsonLdSubEventsFromOpeningHours($from, $effectiveOpeningHours);
                 }
                 $from['subEvent'] = [
                     [
@@ -354,43 +453,28 @@ final class CalendarTransformer implements JsonTransformer
      * @return array
      *   Given JSON-LD poly-filled with a subEvent property based on the openingHours property
      */
-    private function polyFillJsonLdSubEventsFromOpeningHours(array $from): array
-    {
-        $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours']);
-
-        if ($from['calendarType'] === 'permanent') {
-            $now = new Chronos();
-            $startDate = $now->modify('-6 months');
-            $endDate = $now->modify('+12 months');
-        } else {
-            $startDate = Chronos::createFromFormat(DateTime::ATOM, $from['startDate']);
-            $endDate = Chronos::createFromFormat(DateTime::ATOM, $from['endDate']);
-        }
-
-        $interval = new DateInterval('P1D');
-        $period = new DatePeriod($startDate, $interval, $endDate);
-
+    private function polyFillJsonLdSubEventsFromOpeningHours(
+        array $from,
+        EffectiveOpeningHours $effectiveOpeningHours
+    ): array {
         $subEvent = [];
 
-        /* @var DateTime $date */
-        foreach ($period as $date) {
-            foreach ($this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay) as $openingHours) {
-                $subEventStartDate = new DateTimeImmutable(
-                    $date->format('Y-m-d') . 'T' . $openingHours['opens'] . ':00',
-                    $this->determineLocalTimezone($from)
-                );
+        foreach ($effectiveOpeningHours->slots() as $slot) {
+            $subEventStartDate = new DateTimeImmutable(
+                $slot['date']->format('Y-m-d') . 'T' . $slot['opens'] . ':00',
+                $this->determineLocalTimezone($from)
+            );
 
-                $subEventEndDate = new DateTimeImmutable(
-                    $date->format('Y-m-d') . 'T' . $openingHours['closes'] . ':00',
-                    $this->determineLocalTimezone($from)
-                );
+            $subEventEndDate = new DateTimeImmutable(
+                $slot['date']->format('Y-m-d') . 'T' . $slot['closes'] . ':00',
+                $this->determineLocalTimezone($from)
+            );
 
-                $subEvent[] = [
-                    '@type' => 'Event',
-                    'startDate' => $subEventStartDate->format(DateTime::ATOM),
-                    'endDate' => $subEventEndDate->format(DateTime::ATOM),
-                ];
-            }
+            $subEvent[] = [
+                '@type' => 'Event',
+                'startDate' => $subEventStartDate->format(DateTime::ATOM),
+                'endDate' => $subEventEndDate->format(DateTime::ATOM),
+            ];
         }
 
         if (!empty($subEvent)) {
@@ -398,120 +482,6 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $from;
-    }
-
-    /**
-     * @param array $openingHours
-     *   JSON-LD of the openingHours property of an event/place, as an associative array
-     * @return array<string, array<int<0, max>, array<string, mixed>>>
-     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per weekday in an
-     *   enclosing array
-     */
-    private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
-    {
-        $openingHoursByDay = [
-            'monday' => [],
-            'tuesday' => [],
-            'wednesday' => [],
-            'thursday' => [],
-            'friday' => [],
-            'saturday' => [],
-            'sunday' => [],
-        ];
-
-        foreach ($openingHours as $index => $openingHoursEntry) {
-            if (!isset($openingHoursEntry['dayOfWeek'])) {
-                $this->logger->logMissingExpectedField("openingHours[{$index}].dayOfWeek");
-                continue;
-            }
-
-            if (!isset($openingHoursEntry['opens'])) {
-                $this->logger->logMissingExpectedField("openingHours[{$index}].opens");
-                continue;
-            }
-
-            if (!isset($openingHoursEntry['closes'])) {
-                $this->logger->logMissingExpectedField("openingHours[{$index}].closes");
-                continue;
-            }
-
-            foreach ($openingHoursEntry['dayOfWeek'] as $day) {
-                if (!array_key_exists($day, $openingHoursByDay)) {
-                    $this->logger->logWarning("Unknown day '{$day}' in opening hours.");
-                    continue;
-                }
-
-                $openingHoursByDay[$day][] = [
-                    'opens' => $openingHoursEntry['opens'],
-                    'closes' => $openingHoursEntry['closes'],
-                ];
-            }
-        }
-
-        foreach ($openingHoursByDay as &$openingHoursForSpecificDay) {
-            sort($openingHoursForSpecificDay);
-        }
-
-        return $openingHoursByDay;
-    }
-
-    /**
-     * @param \DateTimeInterface $date
-     *   The date to check.
-     * @param array $from
-     *   JSON-LD of the event/place, as an associative array. May contain an "openingHoursClosedDays" key with a list
-     *   of closed-day ranges, each having "startDate" and "endDate" as plain Y-m-d strings.
-     * @return bool
-     *   True if the given date falls within any closed-day range, false otherwise.
-     */
-    private function isClosedDay(\DateTimeInterface $date, array $from): bool
-    {
-        $dateString = $date->format('Y-m-d');
-        foreach ($from['openingHoursClosedDays'] ?? [] as $index => $closedDay) {
-            if (!array_key_exists('startDate', $closedDay)) {
-                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].startDate");
-                continue;
-            }
-
-            if (!array_key_exists('endDate', $closedDay)) {
-                $this->logger->logMissingExpectedField("openingHoursClosedDays[{$index}].endDate");
-                continue;
-            }
-
-            if ($dateString >= $closedDay['startDate'] && $dateString <= $closedDay['endDate']) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function getEffectiveOpeningHoursOnDay(\DateTimeInterface $date, array $from, array $regularOpeningHoursByDay): array
-    {
-        if ($this->isClosedDay($date, $from)) {
-            return [];
-        }
-
-        $dayOfWeek = strtolower($date->format('l'));
-        $adjustedDay = $this->findAdjustedDay($date, $from);
-
-        // Adjusted entries fully replace regular hours; days not listed in the entry's openingHours are treated as closed.
-        if ($adjustedDay !== null && isset($adjustedDay['openingHours'])) {
-            return $this->convertOpeningHoursToListGroupedByDay($adjustedDay['openingHours'])[$dayOfWeek];
-        }
-
-        return $regularOpeningHoursByDay[$dayOfWeek];
-    }
-
-    private function findAdjustedDay(\DateTimeInterface $date, array $from): ?array
-    {
-        $dateString = $date->format('Y-m-d');
-        foreach ($from['openingHoursAdjustedDays'] ?? [] as $adjustedDay) {
-            if ($dateString >= $adjustedDay['startDate'] && $dateString <= $adjustedDay['endDate']) {
-                return $adjustedDay;
-            }
-        }
-        return null;
     }
 
     /**

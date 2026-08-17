@@ -16915,5 +16915,14 @@
     },
     "metadata": {
         "popularity": 0
-    }
+    },
+    "recurringOnDayOfWeek": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+    ]
 }

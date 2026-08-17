@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
@@ -204,6 +205,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             array_map(
                 static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
                 $attendanceModes
+            )
+        );
+    }
+
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    {
+        return $this->withMultiValueMatchQuery(
+            'recurringOnDayOfWeek',
+            array_map(
+                static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+                $dayOfWeeks
             )
         );
     }
