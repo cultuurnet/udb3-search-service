@@ -88,8 +88,8 @@ Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read 
 
 | Role | Fields                                                                           | Stored in ES? |
 |---|----------------------------------------------------------------------------------|---|
-| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `overnight`, `childcare` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasOvernight`, `childcare`, `recurringOnDayOfWeek` | Yes, queryable |
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `overnight`, `childcare`, `recurringOnDayOfWeek` | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
@@ -287,13 +287,13 @@ never carry it, and places never have it.
 
 ### Indexing
 
-The indexer sets a single top-level boolean, `hasOvernight`:
+The indexer sets a single top-level boolean, `overnight`:
 
 ```json
-{ "hasOvernight": true }
+{ "overnight": true }
 ```
 
-It couples on **event level**: `hasOvernight` is `true` when at least one source sub-event has
+It couples on **event level**: `overnight` is `true` when at least one source sub-event has
 `overnight: true`, and `false` otherwise. A partial overnight event (some sub-events overnight, some
 not) is therefore flagged `true`. Like `status` and `bookingAvailability`, the field is always
 present on every document (defaulting to `false`), so a `term` filter is reliable. It is derived
@@ -304,14 +304,14 @@ from the source sub-events before they are poly-filled from opening hours, so it
 
 | Parameter | ES field | Behaviour |
 |---|---|---|
-| `hasOvernight=true` | `hasOvernight` | Only offers with at least one overnight sub-event. |
-| `hasOvernight=false` | `hasOvernight` | Only offers without any overnight sub-event. |
+| `overnight=true` | `overnight` | Only offers with at least one overnight sub-event. |
+| `overnight=false` | `overnight` | Only offers without any overnight sub-event. |
 | _(omitted)_ | — | No overnight filtering; behaviour unchanged. |
 
 ```
-GET /offers?hasOvernight=true
+GET /offers?overnight=true
 ```
-→ runs a `term` query on the top-level `hasOvernight` field. It is independent of `dateRange` and
+→ runs a `term` query on the top-level `overnight` field. It is independent of `dateRange` and
 the other calendar filters.
 
 ---
@@ -657,7 +657,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Indexing
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
-- `transformHasChildcare()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
+- `transformHasChildcare()`, `transformOvernight()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
 - `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours` / `DayOfWeekCounts`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` returns a `DayOfWeekCounts` whose `daysWithMinimumCount()` feeds `recurringOnDayOfWeek`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 - `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
@@ -671,10 +671,8 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 ### Query building
 
 - `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
-- `HasOvernightOfferRequestParser`: parses the `hasOvernight` boolean parameter.
-- `HasChildcareOfferRequestParser`: parses the `hasChildcare` boolean parameter.
 - `RecurringOnDayOfWeekOfferRequestParser` / `DayOfWeek`: parses the comma-separated, case-insensitive `recurringOnDayOfWeek` parameter into `DayOfWeek` enum cases.
-- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasOvernightFilter()`., `withHasChildcareFilter()`, `withRecurringOnDayOfWeekFilter()`.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withOvernightFilter()`., `withHasChildcareFilter()`, `withRecurringOnDayOfWeekFilter()`.
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
 
 ### Backend calendar model (udb3-backend)

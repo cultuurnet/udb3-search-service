@@ -84,7 +84,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -98,7 +98,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -112,7 +112,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -126,7 +126,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -140,7 +140,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -154,7 +154,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -168,7 +168,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -182,7 +182,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -196,7 +196,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -210,7 +210,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -224,14 +224,14 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         }
     ],
     "availableTo": "2017-02-19T23:59:59+01:00",
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernight": false,
+    "overnight": false,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "creator": "Jane Doe",

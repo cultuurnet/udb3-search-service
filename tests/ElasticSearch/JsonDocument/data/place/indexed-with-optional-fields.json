@@ -30,7 +30,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         }
     ],
     "workflowStatus": "DRAFT",
@@ -130,7 +130,7 @@
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernight": false,
+    "overnight": false,
     "mediaObjectsCount": 2,
     "videosCount": 2,
     "address": {

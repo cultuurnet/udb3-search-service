@@ -39,7 +39,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -53,7 +53,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "overnight": false
         },
         {
             "dateRange": {
@@ -67,7 +67,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": true
+            "overnight": true
         }
     ],
     "workflowStatus": "DRAFT",
@@ -85,7 +85,7 @@
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernight": true,
+    "overnight": true,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "address": {

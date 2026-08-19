@@ -277,7 +277,7 @@
                 "hasChildcare": {
                     "type": "boolean"
                 },
-                "hasOvernight": {
+                "overnight": {
                     "type": "boolean"
                 }
             }
@@ -382,7 +382,7 @@
             "type": "boolean"
         },
 
-        "hasOvernight": {
+        "overnight": {
             "type": "boolean"
         },
 

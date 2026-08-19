@@ -67,7 +67,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft['status'] = self::STATUS_AVAILABLE;
         $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
-        $draft['hasOvernight'] = false;
+        $draft['overnight'] = false;
         $draft['hasChildcare'] = false;
         $draft['recurringOnDayOfWeek'] = [];
 
@@ -79,7 +79,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformCalendarType($from, $draft);
         $draft = $this->transformStatus($from, $draft);
         $draft = $this->transformBookingAvailability($from, $draft);
-        $draft = $this->transformHasOvernight($from, $draft);
+        $draft = $this->transformOvernight($from, $draft);
 
         /*
         Read top-level hasChildcare before polyFillJsonLdSubEvents(), as the generated subEvents no longer contain a childcare key.
@@ -206,9 +206,9 @@ final class CalendarTransformer implements JsonTransformer
      * @return array
      *   Updated JSON to index in Elasticsearch, as an associative array
      */
-    private function transformHasOvernight(array $from, array $draft): array
+    private function transformOvernight(array $from, array $draft): array
     {
-        $draft['hasOvernight'] = $this->determineHasOvernight($from);
+        $draft['overnight'] = $this->determineOvernight($from);
         return $draft;
     }
 
@@ -224,7 +224,7 @@ final class CalendarTransformer implements JsonTransformer
      * @return bool
      *   True if at least one source subEvent is flagged as overnight.
      */
-    private function determineHasOvernight(array $from): bool
+    private function determineOvernight(array $from): bool
     {
         foreach ($from['subEvent'] ?? [] as $subEvent) {
             if (($subEvent['overnight'] ?? false) === true) {
@@ -356,7 +356,7 @@ final class CalendarTransformer implements JsonTransformer
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
                 'hasChildcare' => isset($subEvent['childcare']),
-                'hasOvernight' => ($subEvent['overnight'] ?? false) === true,
+                'overnight' => ($subEvent['overnight'] ?? false) === true,
             ];
         }
 
