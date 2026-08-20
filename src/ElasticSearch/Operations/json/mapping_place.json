@@ -326,7 +326,7 @@
             "type": "boolean"
         },
 
-        "hasOvernight": {
+        "overnight": {
             "type": "boolean"
         },
 
