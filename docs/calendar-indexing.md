@@ -89,7 +89,7 @@ Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read 
 | Role | Fields                                                                           | Stored in ES? |
 |---|----------------------------------------------------------------------------------|---|
 | Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
-| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `overnight`, `childcare`, `recurringOnDayOfWeek` | Yes, queryable |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `overnight`, `hasChildcare`, `recurringOnDayOfWeek` | Yes, queryable |
 
 `openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
 
