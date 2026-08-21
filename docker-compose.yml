@@ -40,6 +40,7 @@ services:
       uitdatabank-search:
         aliases:
           - elasticsearch.uitdatabank.local
+          - elasticsearch
     healthcheck:
       #test: 'curl --fail http://127.0.0.1:9200/_cluster/health?wait_for_status=green&timeout=1s'
       test: 'wget -o /dev/null -T 3 http://127.0.0.1:9200/_cluster/health'
@@ -64,6 +65,7 @@ services:
       uitdatabank-search:
         aliases:
           - elasticsearch8.uitdatabank.local
+          - elasticsearch8
     healthcheck:
       test: 'curl -f http://127.0.0.1:9200/_cluster/health'
       start_period: 30s
