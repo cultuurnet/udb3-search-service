@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2d23296f315cda7f3c56baf183dfb6d",
+    "content-hash": "9437f51c8430064a2e95dfe10afe6fa8",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -471,16 +471,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.0.8",
+            "version": "v4.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "ce1c52c9b2311d6d0ec5144c226513adb21a5bf6"
+                "reference": "7fb409a0abd0104d2afcfa235c5d46e92f4e4314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/ce1c52c9b2311d6d0ec5144c226513adb21a5bf6",
-                "reference": "ce1c52c9b2311d6d0ec5144c226513adb21a5bf6",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/7fb409a0abd0104d2afcfa235c5d46e92f4e4314",
+                "reference": "7fb409a0abd0104d2afcfa235c5d46e92f4e4314",
                 "shasum": ""
             },
             "require": {
@@ -490,7 +490,7 @@
                 "php": "^7.4 || ^8.0"
             },
             "require-dev": {
-                "phpstan/phpstan": "^1.8",
+                "phpstan/phpstan": "^1.8 || ^2.0",
                 "phpunit/phpunit": "^9.5",
                 "publiq/php-cs-fixer-config": "^2.0"
             },
@@ -515,9 +515,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.0.8"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.1.1"
             },
-            "time": "2024-06-25T09:36:12+00:00"
+            "time": "2026-08-20T05:56:39+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -8312,7 +8312,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
@@ -8321,6 +8321,6 @@
         "ext-pcntl": "*",
         "ext-simplexml": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
