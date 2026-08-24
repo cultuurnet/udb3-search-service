@@ -31,7 +31,7 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernight": false
+            "hasOvernightStay": false
         }
     ],
     "workflowStatus": "DRAFT",
@@ -85,7 +85,7 @@
         "popularity": 0
     },
     "childrenOnly": false,
-    "hasOvernight": false,
+    "hasOvernightStay": false,
     "hasChildcare": false,
     "recurringOnDayOfWeek": []
 }

@@ -974,7 +974,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_can_build_a_query_with_a_has_overnight_filter_on_sub_event(): void
+    public function it_can_build_a_query_with_a_has_overnight_stay_filter_on_sub_event(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(0), new Limit(30))
@@ -982,7 +982,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 (new SubEventQueryParameters())
                     ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
                     ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
-                    ->withHasOvernight(true)
+                    ->withHasOvernightStay(true)
             );
 
         $expectedQueryArray = [
@@ -1013,7 +1013,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                             ],
                                             [
                                                 'term' => [
-                                                    'subEvent.hasOvernight' => true,
+                                                    'subEvent.hasOvernightStay' => true,
                                                 ],
                                             ],
                                         ],
@@ -2605,11 +2605,11 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_has_overnight_filter(): void
+    public function it_should_build_a_query_with_a_has_overnight_stay_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withHasOvernightFilter(true);
+            ->withHasOvernightStayFilter(true);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -2625,7 +2625,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'filter' => [
                         [
                             'term' => [
-                                'hasOvernight' => true,
+                                'hasOvernightStay' => true,
                             ],
                         ],
                     ],
@@ -2641,11 +2641,11 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
-    public function it_should_build_a_query_with_a_has_overnight_false_filter(): void
+    public function it_should_build_a_query_with_a_has_overnight_stay_false_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withHasOvernightFilter(false);
+            ->withHasOvernightStayFilter(false);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -2661,7 +2661,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     'filter' => [
                         [
                             'term' => [
-                                'hasOvernight' => false,
+                                'hasOvernightStay' => false,
                             ],
                         ],
                     ],

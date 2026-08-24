@@ -102,7 +102,7 @@ final class EventTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
-            'hasOvernight' => false,
+            'hasOvernightStay' => false,
             'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,
@@ -162,7 +162,7 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_has_overnight_true_when_a_sub_event_is_overnight(): void
+    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_overnight(): void
     {
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-overnight.json',
