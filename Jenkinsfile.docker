@@ -32,11 +32,6 @@ pipeline {
                     env.GIT_SHORT_COMMIT_GLOBAL = util.shortCommitRef()
                 }
 
-                sh label: 'Login to ECR', script: """
-                    aws ecr get-login-password --region ${env.AWS_REGION} | \\
-                    docker login --username AWS --password-stdin ${env.ECR_REGISTRY}
-                """
-
                 sh label: 'Build image', script: """
                     docker build \\
                         --tag ${env.IMAGE_URI} \\
