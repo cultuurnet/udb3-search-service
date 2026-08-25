@@ -22,7 +22,7 @@ final class MetadataClientIdResolver implements ClientIdResolver
     public function __construct(
         ManagementTokenProvider $managementTokenProvider,
         MetadataGenerator $metadataGenerator,
-        bool $allowAllBoaAccess = false
+        bool $allowAllBoaAccess
     ) {
         $this->managementTokenProvider = $managementTokenProvider;
         $this->metadataGenerator = $metadataGenerator;
