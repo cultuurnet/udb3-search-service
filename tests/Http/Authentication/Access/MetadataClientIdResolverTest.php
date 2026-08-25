@@ -204,6 +204,34 @@ final class MetadataClientIdResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_allows_boa_access_when_the_toggle_is_enabled_even_if_the_permission_is_absent(): void
+    {
+        $mockHandler = new MockHandler([
+            new Response(200, [], Json::encode([
+                0 => [
+                    'defaultClientScopes' => [
+                        'publiq-api-sapi-scope',
+                    ],
+                ],
+            ])),
+        ]);
+
+        $metadataClientIdResolver = new MetadataClientIdResolver(
+            $this->managementTokenProvider,
+            new KeycloakMetadataGenerator(
+                new Client(['handler' => $mockHandler]),
+                'domain',
+                'realm'
+            ),
+            true
+        );
+
+        $this->assertTrue($metadataClientIdResolver->hasBoaAccess('my_active_client_id'));
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_allow_sapi_access_when_the_boa_toggle_is_enabled(): void
     {
         $mockHandler = new MockHandler([
