@@ -670,9 +670,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 ### Query building
 
-- `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined.
-- `HasOvernightStayOfferRequestParser`: parses the `hasOvernightStay` boolean parameter.
-- `HasChildcareOfferRequestParser`: parses the `hasChildcare` boolean parameter.
+- `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined. Also parses the `hasOvernightStay` and `hasChildcare` boolean parameters.
 - `RecurringOnDayOfWeekOfferRequestParser` / `DayOfWeek`: parses the comma-separated, case-insensitive `recurringOnDayOfWeek` parameter into `DayOfWeek` enum cases.
 - `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasOvernightStayFilter()`., `withHasChildcareFilter()`, `withRecurringOnDayOfWeekFilter()`.
 - `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
