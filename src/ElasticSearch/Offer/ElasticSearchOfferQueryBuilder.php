@@ -28,7 +28,7 @@ use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
-use CultuurNet\UDB3\Search\Offer\Time;
+use CultuurNet\UDB3\Search\Offer\LocalTime;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -183,7 +183,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withLocalTimeRangeFilter(int $localTimeFrom, int $localTimeTo): self
     {
-        $this->guardNaturalIntegerRange('localTime', new Time($localTimeFrom), new Time($localTimeTo));
+        $this->guardNaturalIntegerRange('localTime', new LocalTime($localTimeFrom), new LocalTime($localTimeTo));
         return $this->withRangeQuery('localTimeRange', $localTimeFrom, $localTimeTo);
     }
 
@@ -239,7 +239,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $this->guardDateRange('date', $from, $to);
 
         if ($localTimeFrom && $localTimeTo) {
-            $this->guardNaturalIntegerRange('localTime', new Time($localTimeFrom), new Time($localTimeTo));
+            $this->guardNaturalIntegerRange('localTime', new LocalTime($localTimeFrom), new LocalTime($localTimeTo));
         }
 
         $queries = [];
