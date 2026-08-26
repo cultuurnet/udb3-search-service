@@ -346,16 +346,19 @@ activity:
 }
 ```
 
-### Childcare must not influence the effective time
+### Childcare widens the sub-event period
 
-Childcare hours relate to a service around the activity, not to the activity itself. They must
-**not** extend or shift `dateRange`, `localTimeRange`, or the generated `subEvent[]`. The `childcare`
-range is therefore a source-only field: it is never expanded into sub-events and never widens any
-range.
+A child is present for the childcare hours too, so a sub-event runs from the start of its childcare
+until the end of it. `dateRange`, `localTimeRange` and `subEvent[]` all follow that widened period,
+so the sub-event above is indexed as 09:00 to 13:00 rather than 10:00 to 12:00.
 
-### Indexing
+Childcare has an optional start and an optional end, and only the one that is filled in moves the
+sub-event. Widening never crosses a day boundary. `openingHours` drop the `childcare` range when
+they expand into sub-events, so only `single` and `multiple` are widened today.
 
-Instead, the indexer sets a single top-level boolean, `hasChildcare`:
+### Indexing the flag
+
+The indexer also sets a top-level boolean, `hasChildcare`:
 
 ```json
 { "hasChildcare": true }
