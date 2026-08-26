@@ -83,10 +83,8 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformBookingAvailability($from, $draft);
         $draft = $this->transformHasOvernight($from, $draft);
 
-        /*
-        Read top-level hasChildcare before polyFillJsonLdSubEvents(), as the generated subEvents no longer contain a childcare key.
-        Per-subEvent hasChildcare is computed later in transformSubEvents() from each subEvent's own childcare key.
-        */
+        // Read from the source openingHours, which polyFillJsonLdSubEvents() discards. Per-subEvent
+        // hasChildcare is computed later in transformSubEvents() from each subEvent's own childcare key.
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
@@ -474,11 +472,17 @@ final class CalendarTransformer implements JsonTransformer
                 $this->determineLocalTimezone($from)
             );
 
-            $subEvent[] = [
+            $generated = [
                 '@type' => 'Event',
                 'startDate' => $subEventStartDate->format(DateTime::ATOM),
                 'endDate' => $subEventEndDate->format(DateTime::ATOM),
             ];
+
+            if ($slot['childcare'] !== null) {
+                $generated['childcare'] = $slot['childcare'];
+            }
+
+            $subEvent[] = $generated;
         }
 
         if (!empty($subEvent)) {
@@ -493,8 +497,8 @@ final class CalendarTransformer implements JsonTransformer
      * childcare until the end of it. Widening it here, before dateRange, localTimeRange and
      * subEvent[] are built from it, is what makes a slot that only overlaps childcare match.
      *
-     * Sub-events generated from opening hours drop the childcare range, so periodic and permanent
-     * calendars pass through unchanged.
+     * Sub-events generated from opening hours carry the childcare range of the opening hour they
+     * came from, so every calendar type is widened the same way.
      */
     private function extendSubEventsWithChildcare(array $from): array
     {

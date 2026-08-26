@@ -373,23 +373,49 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
-     * Opening hours drop the childcare range when they expand into sub-events, so it cannot widen
-     * them.
-     *
      * @test
      * @dataProvider openingHoursCalendarProvider
      */
-    public function it_does_not_widen_opening_hours_with_childcare(string $type): void
+    public function it_widens_opening_hours_slots_with_childcare(string $type): void
     {
-        $withChildcare = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
-        $withoutChildcare = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: false));
+        $result = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
 
-        $this->assertTrue($withChildcare['hasChildcare']);
-        $this->assertFalse($withoutChildcare['hasChildcare']);
+        $this->assertEquals(
+            [
+                (object) [
+                    'gte' => '0800',
+                    'lte' => '1800',
+                ],
+            ],
+            $result['localTimeRange']
+        );
+    }
 
-        $this->assertEquals($withoutChildcare['dateRange'], $withChildcare['dateRange']);
-        $this->assertEquals($withoutChildcare['localTimeRange'], $withChildcare['localTimeRange']);
-        $this->assertEquals($withoutChildcare['subEvent'], $withChildcare['subEvent']);
+    /**
+     * @test
+     */
+    public function it_widens_the_dates_of_an_opening_hours_slot_with_childcare(): void
+    {
+        $result = $this->transformer->transform($this->periodicCalendar(withChildcare: true));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-03T08:00:00+02:00',
+                'lte' => '2024-06-03T18:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider openingHoursCalendarProvider
+     */
+    public function it_indexes_has_childcare_per_sub_event_for_opening_hours(string $type): void
+    {
+        $result = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
+
+        $this->assertTrue($result['subEvent'][0]['hasChildcare']);
     }
 
     /**
