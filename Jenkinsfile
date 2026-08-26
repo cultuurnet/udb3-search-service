@@ -8,6 +8,9 @@ pipeline {
     environment {
         PIPELINE_VERSION = util.pipelineVersion()
         REPOSITORY_NAME  = 'uitdatabank-search-api'
+        ECR_REGISTRY     = '757200591793.dkr.ecr.eu-west-1.amazonaws.com'
+        ECR_REPOSITORY   = 'uitdatabank/search-api'
+        AWS_REGION       = 'eu-west-1'
     }
 
     stages {
@@ -18,22 +21,59 @@ pipeline {
             }
         }
 
-        stage('Setup and build') {
-            agent { label 'ubuntu && 20.04 && php8.1' }
-            environment {
-                GIT_SHORT_COMMIT = util.shortCommitRef()
-                ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
-            }
-                        steps {
-                sh label: 'Install rubygems', script: 'bundle install --deployment'
-                sh label: 'Build binaries', script: 'bundle exec rake build'
-                sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
-                archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
-            }
+        stage('Build') {
+            parallel {
+                stage('Build deb package') {
+                    agent { label 'ubuntu && 20.04 && php8.1' }
+                    environment {
+                        GIT_SHORT_COMMIT = util.shortCommitRef()
+                        ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
+                    }
+                    steps {
+                        sh label: 'Install rubygems', script: 'bundle install --deployment'
+                        sh label: 'Build binaries', script: 'bundle exec rake build'
+                        sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
+                        archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                    }
+                    post {
+                        cleanup {
+                            cleanWs()
+                        }
+                    }
+                }
 
-            post {
-                cleanup {
-                    cleanWs()
+                stage('Build & push docker image') {
+                    agent { label 'docker && nodejs22 && php8.1' } // node & php version specified to ensure run in agent with increased volume size for docker build
+                    environment {
+                        GIT_SHORT_COMMIT = util.shortCommitRef()
+                        IMAGE_TAG        = "${env.PIPELINE_VERSION}"
+                        IMAGE_URI        = "${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
+                    }
+                    steps {
+                        sh label: 'Build image', script: """
+                            docker build \\
+                                --tag ${env.IMAGE_URI} \\
+                                --tag ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest \\
+                                --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\
+                                --label org.opencontainers.image.version=${env.PIPELINE_VERSION} \\
+                                --label org.opencontainers.image.source=https://github.com/cultuurnet/udb3-search-service \\
+                                .
+                        """
+
+                        sh label: 'Push image', script: """
+                            docker push ${env.IMAGE_URI}
+                            docker push ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest
+                        """
+
+                        echo "Pushed: ${env.IMAGE_URI}"
+                    }
+                    post {
+                        cleanup {
+                            sh "docker rmi ${env.IMAGE_URI} || true"
+                            sh "docker rmi ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest || true"
+                            cleanWs()
+                        }
+                    }
                 }
             }
         }
@@ -65,7 +105,7 @@ pipeline {
         }
 
         stage('Deploy to acceptance') {
-            agent { label 'ubuntu && 20.04' }
+            agent any
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'acceptance'
@@ -76,6 +116,11 @@ pipeline {
                         publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                     }
                 }
+                stage('Promote docker image') {
+                    steps {
+                        promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
+                    }
+                }
                 stage('Deploy') {
                     parallel {
                         stage('Deploy to ElasticSearch 5 node') {
@@ -83,9 +128,14 @@ pipeline {
                                 triggerDeployment nodeName: 'uitdatabank-search-acc01'
                             }
                         }
-                        stage('Deploy to ElasticSearch 8 node') {
+                        stage('Deploy to ElasticSearch 8 node (instance)') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-acc02'
+                            }
+                        }
+                        stage('Deploy to ElasticSearch 8 node (docker)') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
                             }
                         }
                     }
