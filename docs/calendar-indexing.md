@@ -353,8 +353,8 @@ until the end of it. `dateRange`, `localTimeRange` and `subEvent[]` all follow t
 so the sub-event above is indexed as 09:00 to 13:00 rather than 10:00 to 12:00.
 
 Childcare has an optional start and an optional end, and only the one that is filled in moves the
-sub-event. Widening never crosses a day boundary. `openingHours` drop the `childcare` range when
-they expand into sub-events, so only `single` and `multiple` are widened today.
+sub-event. Widening never crosses a day boundary. Opening hours carry their `childcare` range onto
+every sub-event they expand into, so `periodic` and `permanent` are widened the same way.
 
 ### Indexing the flag
 
