@@ -9,7 +9,7 @@ use DateTimeInterface;
 final class EffectiveOpeningHours
 {
     /**
-     * @param list<array{date: DateTimeInterface, opens: string, closes: string}> $slots
+     * @param list<array{date: DateTimeInterface, opens: string, closes: string, childcare: array{start?: string, end?: string}|null}> $slots
      */
     public function __construct(
         private readonly array $slots,
@@ -23,7 +23,7 @@ final class EffectiveOpeningHours
     }
 
     /**
-     * @return list<array{date: DateTimeInterface, opens: string, closes: string}>
+     * @return list<array{date: DateTimeInterface, opens: string, closes: string, childcare: array{start?: string, end?: string}|null}>
      */
     public function slots(): array
     {
