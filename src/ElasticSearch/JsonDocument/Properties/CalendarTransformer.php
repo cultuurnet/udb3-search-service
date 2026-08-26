@@ -519,7 +519,8 @@ final class CalendarTransformer implements JsonTransformer
         $childcareStart = $this->atTimeOfDay($startDate, $subEvent['childcare']['start'] ?? null);
         $childcareEnd = $this->atTimeOfDay($endDate, $subEvent['childcare']['end'] ?? null);
 
-        // Entry API requires childcare to widen the period, but older data would invert the range.
+        // Entry API already guarantees this. Guarded anyway because an inverted range is dropped by
+        // isValidDateRange(), which would lose the sub-event without any sign of it.
         if ($childcareStart !== null && $childcareStart < $startDate) {
             $subEvent['startDate'] = $childcareStart->format(DateTime::ATOM);
         }
