@@ -11,9 +11,11 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\Effect
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
+use CultuurNet\UDB3\Search\Offer\TimeOfDay;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
+use InvalidArgumentException;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
@@ -101,6 +103,8 @@ final class CalendarTransformer implements JsonTransformer
             $this->logger->logMissingExpectedField('subEvent');
             return $draft;
         }
+
+        $from = $this->extendSubEventsWithChildcare($from);
 
         $draft = $this->transformDateRange($from, $draft);
         $draft = $this->transformLocalTimeRange($from, $draft);
@@ -482,6 +486,78 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $from;
+    }
+
+    /**
+     * A child is present for the childcare hours as well, so a sub-event lasts from the start of its
+     * childcare until the end of it. Widening it here, before dateRange, localTimeRange and
+     * subEvent[] are built from it, is what makes a slot that only overlaps childcare match.
+     *
+     * Sub-events generated from opening hours drop the childcare range, so periodic and permanent
+     * calendars pass through unchanged.
+     */
+    private function extendSubEventsWithChildcare(array $from): array
+    {
+        $timezone = $this->determineLocalTimezone($from);
+
+        foreach ($from['subEvent'] as $index => $subEvent) {
+            if (!isset($subEvent['childcare'])) {
+                continue;
+            }
+
+            $from['subEvent'][$index] = $this->extendSubEventWithChildcare($subEvent, $timezone);
+        }
+
+        return $from;
+    }
+
+    private function extendSubEventWithChildcare(array $subEvent, DateTimeZone $timezone): array
+    {
+        $startDate = $this->parseSubEventDate($subEvent['startDate'] ?? null, $timezone);
+        $endDate = $this->parseSubEventDate($subEvent['endDate'] ?? null, $timezone);
+
+        $childcareStart = $this->atTimeOfDay($startDate, $subEvent['childcare']['start'] ?? null);
+        $childcareEnd = $this->atTimeOfDay($endDate, $subEvent['childcare']['end'] ?? null);
+
+        // Entry API requires childcare to widen the period, but older data would invert the range.
+        if ($childcareStart !== null && $childcareStart < $startDate) {
+            $subEvent['startDate'] = $childcareStart->format(DateTime::ATOM);
+        }
+
+        if ($childcareEnd !== null && $childcareEnd > $endDate) {
+            $subEvent['endDate'] = $childcareEnd->format(DateTime::ATOM);
+        }
+
+        return $subEvent;
+    }
+
+    private function parseSubEventDate(?string $date, DateTimeZone $timezone): ?DateTimeImmutable
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        try {
+            return DateTimeFactory::fromAtom($date)->setTimezone($timezone);
+        } catch (InvalidArgumentException $exception) {
+            // Already reported when building dateRange.
+            return null;
+        }
+    }
+
+    private function atTimeOfDay(?DateTimeImmutable $date, ?string $timeOfDay): ?DateTimeImmutable
+    {
+        if ($date === null || $timeOfDay === null) {
+            return null;
+        }
+
+        $parsed = TimeOfDay::tryFromString($timeOfDay);
+        if ($parsed === null) {
+            $this->logger->logWarning("Unknown childcare time '{$timeOfDay}'.");
+            return null;
+        }
+
+        return $parsed->on($date);
     }
 
     /**
