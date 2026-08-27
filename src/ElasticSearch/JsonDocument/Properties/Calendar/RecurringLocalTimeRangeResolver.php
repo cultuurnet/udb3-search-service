@@ -15,18 +15,16 @@ use InvalidArgumentException;
  *
  * 1. Cut every sub-event into calendar days. Saturday 20:00 to Sunday 02:00 becomes Saturday
  *    20:00-24:00 and Sunday 00:00-02:00.
- * 2. Mark the quarters of an hour each piece occupies, rounded outward, per date. 10:05-11:50
- *    occupies 10:00 to 12:00. Per date, so two overlapping sub-events on one Wednesday count once.
- * 3. Count on how many dates each quarter was occupied. Four Wednesdays of 10:00-12:00 gives those
- *    quarters a count of four.
- * 4. Keep the quarters reaching the minimum and join the runs into ranges. Half open, so an
- *    activity ending at 12:00 does not answer a search starting at 12:00.
+ * 2. Merge what overlaps on the same date. 10:00-12:00 and 11:00-13:00 on one Wednesday is one
+ *    Wednesday of 10:00-13:00, not two.
+ * 3. Count how many dates cover each minute. Only the minutes where a piece begins or ends can
+ *    change that count, so those are the only ones visited.
+ * 4. Keep the minutes reaching the minimum and join them into ranges. Half open, so an activity
+ *    ending at 12:00 does not answer a search starting at 12:00.
  */
 final class RecurringLocalTimeRangeResolver
 {
     private const MINUTES_PER_DAY = 1440;
-    private const MINUTES_PER_QUARTER = 15;
-    private const QUARTERS_PER_DAY = self::MINUTES_PER_DAY / self::MINUTES_PER_QUARTER;
 
     public function __construct(private readonly int $minimumOccurrences)
     {
@@ -45,8 +43,8 @@ final class RecurringLocalTimeRangeResolver
     public function resolve(array $subEvents, DateTimeZone $timezone): array
     {
         $pieces = $this->cutIntoCalendarDays($subEvents, $timezone);
-        $occupied = $this->markOccupiedQuarters($pieces);
-        $counts = $this->countDatesPerQuarter($occupied);
+        $intervals = $this->mergeOverlappingPerDate($pieces);
+        $counts = $this->countDatesPerMinute($intervals);
 
         $ranges = [];
         foreach (DayOfWeek::cases() as $dayOfWeek) {
@@ -101,68 +99,98 @@ final class RecurringLocalTimeRangeResolver
 
     /**
      * @param list<array{string, string, int, int}> $pieces
-     * @return array<string, array<string, array<int, true>>>
+     * @return array<string, array<string, list<array{int, int}>>>
      */
-    private function markOccupiedQuarters(array $pieces): array
+    private function mergeOverlappingPerDate(array $pieces): array
     {
-        $occupied = [];
-
+        $perDate = [];
         foreach ($pieces as [$dayOfWeek, $date, $from, $until]) {
-            $firstQuarter = intdiv($from, self::MINUTES_PER_QUARTER);
-            $quarterAfterLast = (int) ceil($until / self::MINUTES_PER_QUARTER);
+            $perDate[$dayOfWeek][$date][] = [$from, $until];
+        }
 
-            for ($quarter = $firstQuarter; $quarter < $quarterAfterLast; $quarter++) {
-                $occupied[$dayOfWeek][$date][$quarter] = true;
+        foreach ($perDate as $dayOfWeek => $dates) {
+            foreach ($dates as $date => $intervals) {
+                $perDate[$dayOfWeek][$date] = $this->withoutOverlap($intervals);
             }
         }
 
-        return $occupied;
+        return $perDate;
     }
 
     /**
-     * @param array<string, array<string, array<int, true>>> $occupied
+     * @param array<string, array<string, list<array{int, int}>>> $intervals
      * @return array<string, array<int, int>>
+     *   Per minute where the number of covering dates changes, by how much it changes.
      */
-    private function countDatesPerQuarter(array $occupied): array
+    private function countDatesPerMinute(array $intervals): array
     {
         $counts = [];
 
-        foreach ($occupied as $dayOfWeek => $quartersPerDate) {
-            foreach ($quartersPerDate as $quarters) {
-                foreach (array_keys($quarters) as $quarter) {
-                    $counts[$dayOfWeek][$quarter] = ($counts[$dayOfWeek][$quarter] ?? 0) + 1;
+        foreach ($intervals as $dayOfWeek => $intervalsPerDate) {
+            foreach ($intervalsPerDate as $onDate) {
+                foreach ($onDate as [$from, $until]) {
+                    $counts[$dayOfWeek][$from] = ($counts[$dayOfWeek][$from] ?? 0) + 1;
+                    $counts[$dayOfWeek][$until] = ($counts[$dayOfWeek][$until] ?? 0) - 1;
                 }
             }
+
+            ksort($counts[$dayOfWeek]);
         }
 
         return $counts;
     }
 
     /**
-     * @param array<int, int> $countsPerQuarter
+     * @param array<int, int> $countsPerMinute
      * @return list<array{gte: int, lt: int}>
      */
-    private function joinIntoRanges(array $countsPerQuarter): array
+    private function joinIntoRanges(array $countsPerMinute): array
     {
         $ranges = [];
         $runStart = null;
+        $covering = 0;
 
-        for ($quarter = 0; $quarter <= self::QUARTERS_PER_DAY; $quarter++) {
-            if (($countsPerQuarter[$quarter] ?? 0) >= $this->minimumOccurrences) {
-                $runStart ??= $quarter;
+        foreach ($countsPerMinute as $minute => $change) {
+            $covering += $change;
+
+            if ($covering >= $this->minimumOccurrences) {
+                $runStart ??= $minute;
                 continue;
             }
 
             if ($runStart !== null) {
                 $ranges[] = [
-                    'gte' => $this->toLocalTime($runStart * self::MINUTES_PER_QUARTER),
-                    'lt' => $this->toLocalTime($quarter * self::MINUTES_PER_QUARTER),
+                    'gte' => $this->toLocalTime($runStart),
+                    'lt' => $this->toLocalTime($minute),
                 ];
                 $runStart = null;
             }
         }
 
         return $ranges;
+    }
+
+    /**
+     * @param list<array{int, int}> $intervals
+     * @return list<array{int, int}>
+     */
+    private function withoutOverlap(array $intervals): array
+    {
+        sort($intervals);
+
+        $merged = [];
+        foreach ($intervals as [$from, $until]) {
+            $last = count($merged) - 1;
+
+            if ($last >= 0 && $from <= $merged[$last][1]) {
+                $merged[$last][1] = max($merged[$last][1], $until);
+                continue;
+            }
+
+            $merged[] = [$from, $until];
+        }
+
+        return $merged;
     }
 
     /**

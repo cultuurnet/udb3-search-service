@@ -186,12 +186,12 @@ final class RecurringLocalTimeRangeResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_rounds_the_hours_outward_to_the_quarter(): void
+    public function it_keeps_the_exact_minutes(): void
     {
         $subEvents = $this->weekly('2026-08-05', '10:05', '11:50', 4);
 
         $this->assertSame(
-            ['wednesday' => [['gte' => 1000, 'lt' => 1200]]],
+            ['wednesday' => [['gte' => 1005, 'lt' => 1150]]],
             $this->resolver->resolve($subEvents, $this->timezone)
         );
     }
