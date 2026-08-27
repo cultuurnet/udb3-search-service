@@ -443,6 +443,7 @@ final class CalendarTransformerTest extends TestCase
                 'hasOvernight' => false,
                 'hasChildcare' => false,
                 'recurringOnDayOfWeek' => [],
+                'recurringOnLocalTimeRange' => (object) [],
             ],
             $result
         );
@@ -671,6 +672,103 @@ final class CalendarTransformerTest extends TestCase
         ]);
 
         $this->assertSame([], $result['recurringOnDayOfWeek']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_no_recurring_local_time_range_without_a_calendar_type(): void
+    {
+        $result = $this->transformer->transform([]);
+
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_the_recurring_local_time_range_of_a_multiple_calendar(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+            '2024-06-26',
+        ]));
+
+        $this->assertEquals(
+            (object) ['wednesday' => [['gte' => 1000, 'lt' => 1200]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_no_recurring_local_time_range_below_the_threshold(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+        ]));
+
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_the_recurring_local_time_range_of_permanent_opening_hours(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(false));
+
+        $this->assertEquals(
+            (object) ['monday' => [['gte' => 900, 'lt' => 1700]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * A child is present for the childcare hours too, so the recurring hours have to cover them.
+     * They come along on their own because the sub-events are widened before they are resolved.
+     *
+     * @test
+     */
+    public function it_widens_the_recurring_local_time_range_with_childcare(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(withChildcare: true));
+
+        $this->assertEquals(
+            (object) ['monday' => [['gte' => 800, 'lt' => 1800]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * A day of week can recur without having hours that recur with it. Three Saturday mornings and
+     * three Saturday evenings make six Saturdays, but neither slot is a dependable fixture.
+     *
+     * @test
+     */
+    public function it_indexes_a_recurring_day_of_week_without_recurring_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-07-06T20:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-01T10:00:00+02:00', '2024-06-01T12:00:00+02:00'),
+                $this->subEvent('2024-06-08T10:00:00+02:00', '2024-06-08T12:00:00+02:00'),
+                $this->subEvent('2024-06-15T10:00:00+02:00', '2024-06-15T12:00:00+02:00'),
+                $this->subEvent('2024-06-22T18:00:00+02:00', '2024-06-22T20:00:00+02:00'),
+                $this->subEvent('2024-06-29T18:00:00+02:00', '2024-06-29T20:00:00+02:00'),
+                $this->subEvent('2024-07-06T18:00:00+02:00', '2024-07-06T20:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame(['saturday'], $result['recurringOnDayOfWeek']);
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
     }
 
     /**
