@@ -392,6 +392,32 @@
             "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
+        "recurringOnLocalTimeRange": {
+            "properties": {
+                "monday": {
+                    "type": "integer_range"
+                },
+                "tuesday": {
+                    "type": "integer_range"
+                },
+                "wednesday": {
+                    "type": "integer_range"
+                },
+                "thursday": {
+                    "type": "integer_range"
+                },
+                "friday": {
+                    "type": "integer_range"
+                },
+                "saturday": {
+                    "type": "integer_range"
+                },
+                "sunday": {
+                    "type": "integer_range"
+                }
+            }
+        },
+
         "mediaObjectsCount": {
             "type": "integer"
         },
