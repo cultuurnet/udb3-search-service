@@ -237,5 +237,13 @@
     },
     "recurringOnDayOfWeek": [
         "monday"
-    ]
+    ],
+    "recurringOnLocalTimeRange": {
+        "monday": [
+            {
+                "gte": 830,
+                "lt": 917
+            }
+        ]
+    }
 }

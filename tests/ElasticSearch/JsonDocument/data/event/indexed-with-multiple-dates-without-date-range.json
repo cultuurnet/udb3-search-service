@@ -80,5 +80,6 @@
     "metadata": {
         "popularity": 0
     },
-    "recurringOnDayOfWeek": []
+    "recurringOnDayOfWeek": [],
+    "recurringOnLocalTimeRange": {}
 }
