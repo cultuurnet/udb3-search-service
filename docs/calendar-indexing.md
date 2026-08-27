@@ -512,6 +512,45 @@ For `periodic` and `permanent`, the open-day count behind the threshold counts o
 So a day of week with four nominal occurrences drops out of `recurringOnDayOfWeek` when closures or
 adjustments leave fewer than four days actually open.
 
+### Recurring hours per day of week
+
+`recurringOnDayOfWeek` says which days an offer recurs on, not at what hours. Combining it with
+`localTimeFrom` and `localTimeTo` does not fill that gap, because `localTimeRange` is a union over
+every day of week: a workshop running Wednesday 09:00 to 12:00 and Saturday 14:00 to 18:00 would
+answer a search for Wednesday 14:00 to 18:00. So the hours are indexed per day of week as well.
+
+```json
+{
+  "recurringOnDayOfWeek": ["wednesday", "saturday"],
+  "recurringOnLocalTimeRange": {
+    "wednesday": [{ "gte": 1100, "lt": 1200 }, { "gte": 1400, "lt": 1800 }],
+    "saturday": [{ "gte": 1400, "lt": 1800 }]
+  }
+}
+```
+
+`RecurringLocalTimeRangeResolver` counts, per day of week, on how many dates each quarter of an hour
+is occupied, and keeps the quarters reaching the same threshold of 4. Consecutive surviving quarters
+become one range. Counting quarters rather than whole sub-events keeps hours that shift between
+occurrences usable: the part they have in common still qualifies. Two slots on the same day stay two
+ranges, so a search does not match the gap between them.
+
+Like `recurringOnDayOfWeek`, it counts dates and not slots. Two sub-events overlapping on one date
+are one occurrence of the hours they share, otherwise two weeks of overlapping slots would reach a
+threshold of four.
+
+It resolves from the sub-events after they are poly-filled from `openingHours` and widened with
+childcare, so all four calendar types work the same way, closed and adjusted days are already applied,
+and the childcare hours are covered too. A `single` calendar never reaches the threshold.
+
+The ranges are half open. An activity ending at 12:00 does not occupy 12:00, so a search starting at
+12:00 must not match it, and inclusive bounds would make it match on that one minute. This is the only
+range field spelled with `lt`, every other one keeps `gte` and `lte`.
+
+A day of week can recur without recurring hours, when it occurs often enough but at hours that never
+settle. That day is then absent from `recurringOnLocalTimeRange` while staying in
+`recurringOnDayOfWeek`. Every document always carries the field, defaulting to `{}`.
+
 ### Search parameter
 
 | Parameter | Behaviour |
@@ -661,6 +700,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
 - `transformHasChildcare()`, `transformHasOvernight()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
+- `RecurringLocalTimeRangeResolver`: counts, per day of week, on how many dates each quarter of an hour is occupied, and turns the quarters reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
 - `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours` / `DayOfWeekCounts`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` returns a `DayOfWeekCounts` whose `daysWithMinimumCount()` feeds `recurringOnDayOfWeek`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 - `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
