@@ -568,6 +568,50 @@ are comma-separated (consistent with `attendanceMode`, `workflowStatus`); the ar
 `search_analyzer`, so a `match` query resolves each value to an exact, case-insensitive day of week
 (`Wednesday` is accepted). An unknown day of week is rejected with a validation error.
 
+### Search parameters for the hours
+
+| Parameter(s) | Behaviour |
+|---|---|
+| `recurringOnLocalTimeFrom`, `recurringOnLocalTimeTo` | The hours, as `HHMM` integers, on the requested days of week. |
+
+```
+GET /offers?recurringOnDayOfWeek=wednesday,saturday&recurringOnLocalTimeFrom=1300&recurringOnLocalTimeTo=1600
+```
+→ runs a `bool`/`should` of range queries, one per requested day of week, on
+`recurringOnLocalTimeRange.<day>`, as a top-level filter. One time frame applies to all the selected
+days and the days stay OR-combined, so the query above returns an offer recurring on a Wednesday
+afternoon even when its Saturdays are mornings.
+
+No `recurringOnDayOfWeek` term query is added on top: a hit on the day key already proves the offer
+recurs on that day.
+
+The query range is half open too, `gte` on the lower bound and `lt` on the upper one. It takes both
+sides to keep a 10:00 to 11:00 activity out of a search from 11:00: against a document range ending on
+`lt: 1100`, an inclusive query bound would still share the single minute 1100 with it, and against a
+query ending on `lt: 1100` an inclusive document bound would do the same.
+
+Rejections, all validation errors:
+
+| Request | Why |
+|---|---|
+| hours without `recurringOnDayOfWeek` | The hours live under a key per day of week, so there is no field to range over. Falling back to the union over all days is the very thing these parameters exist to avoid. |
+| only one of the two hours | An open-ended range matches every hour on one side, which reads as a narrower search than it is. |
+| `recurringOnLocalTimeFrom` after `recurringOnLocalTimeTo` | An inverted range matches nothing. |
+| an unknown day of week | Same as for `recurringOnDayOfWeek` on its own. |
+
+### Or by hand in the advanced query syntax
+
+Because `q` is handed to Elasticsearch `query_string` untouched, the object shape gives the field per
+day of week for free, including the AND logic the url parameters cannot express:
+
+```
+GET /offers?q=recurringOnLocalTimeRange.wednesday:[1400 TO 1600] AND recurringOnLocalTimeRange.saturday:[1400 TO 1600]
+```
+
+Watch the bounds there. Lucene range syntax is inclusive on both ends, so `[1000 TO 1100]` written by
+hand does match an activity whose indexed range ends at `lt: 1100`, where
+`recurringOnLocalTimeTo=1100` would not.
+
 ---
 
 ## Closed days and adjusted days
