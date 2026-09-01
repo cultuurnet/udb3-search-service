@@ -67,7 +67,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft['status'] = self::STATUS_AVAILABLE;
         $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
-        $draft['hasOvernight'] = false;
+        $draft['hasOvernightStay'] = false;
         $draft['hasChildcare'] = false;
         $draft['recurringOnDayOfWeek'] = [];
 
@@ -79,7 +79,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformCalendarType($from, $draft);
         $draft = $this->transformStatus($from, $draft);
         $draft = $this->transformBookingAvailability($from, $draft);
-        $draft = $this->transformHasOvernight($from, $draft);
+        $draft = $this->transformHasOvernightStay($from, $draft);
 
         /*
         Read top-level hasChildcare before polyFillJsonLdSubEvents(), as the generated subEvents no longer contain a childcare key.
@@ -206,28 +206,28 @@ final class CalendarTransformer implements JsonTransformer
      * @return array
      *   Updated JSON to index in Elasticsearch, as an associative array
      */
-    private function transformHasOvernight(array $from, array $draft): array
+    private function transformHasOvernightStay(array $from, array $draft): array
     {
-        $draft['hasOvernight'] = $this->determineHasOvernight($from);
+        $draft['hasOvernightStay'] = $this->determineHasOvernightStay($from);
         return $draft;
     }
 
     /**
-     * The search couples on event level: if at least one sub-event has overnight === true, the whole
+     * The search couples on event level: if at least one sub-event has hasOvernightStay === true, the whole
      * offer is considered to have an overnight stay. A partial overnight event (some sub-events true,
-     * some false) therefore counts as having overnight.
+     * some false) therefore counts as having an overnight stay.
      *
      * @param array $from
      *   JSON-LD of an event or place, as an associative array. Read before subEvents are poly-filled
-     *   from openingHours; overnight only ever lives on the explicit source subEvents of single and
+     *   from openingHours; hasOvernightStay only ever lives on the explicit source subEvents of single and
      *   multiple calendars.
      * @return bool
-     *   True if at least one source subEvent is flagged as overnight.
+     *   True if at least one source subEvent is flagged as having an overnight stay.
      */
-    private function determineHasOvernight(array $from): bool
+    private function determineHasOvernightStay(array $from): bool
     {
         foreach ($from['subEvent'] ?? [] as $subEvent) {
-            if (($subEvent['overnight'] ?? false) === true) {
+            if (($subEvent['hasOvernightStay'] ?? false) === true) {
                 return true;
             }
         }
@@ -356,7 +356,7 @@ final class CalendarTransformer implements JsonTransformer
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
                 'hasChildcare' => isset($subEvent['childcare']),
-                'hasOvernight' => ($subEvent['overnight'] ?? false) === true,
+                'hasOvernightStay' => ($subEvent['hasOvernightStay'] ?? false) === true,
             ];
         }
 

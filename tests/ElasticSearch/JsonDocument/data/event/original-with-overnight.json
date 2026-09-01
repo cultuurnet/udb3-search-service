@@ -29,7 +29,7 @@
             "@type": "Event",
             "startDate": "2017-05-07T00:00:00+02:00",
             "endDate": "2017-05-07T00:00:00+02:00",
-            "overnight": true
+            "hasOvernightStay": true
         }
     ],
     "location": {
