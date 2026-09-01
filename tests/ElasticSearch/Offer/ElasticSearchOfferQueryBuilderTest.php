@@ -1267,6 +1267,135 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_builds_a_half_open_hours_range_on_a_single_day_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 1600, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'recurringOnLocalTimeRange.wednesday' => [
+                                    'gte' => 1300,
+                                    'lt' => 1600,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_or_combines_the_hours_range_over_the_requested_days_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 1600, DayOfWeek::Wednesday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.wednesday' => [
+                                                'gte' => 1300,
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.saturday' => [
+                                                'gte' => 1300,
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_an_inverted_hours_range(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage(
+            'Minimum recurringOnLocalTime should be smaller or equal to maximum recurringOnLocalTime.'
+        );
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1600, 1300, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_hours_outside_the_clock(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('The time value 2400 is not a time of day between 0000 and 2359');
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 2400, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_hours_with_minutes_that_are_not_on_the_clock(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('The time value 1099 is not a time of day between 0000 and 2359');
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1000, 1099, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_build_a_query_with_a_booking_availability_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())

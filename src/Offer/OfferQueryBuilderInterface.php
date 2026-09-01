@@ -75,6 +75,12 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): OfferQueryBuilderInterface;
 
+    public function withRecurringOnLocalTimeRangeFilter(
+        int $localTimeFrom,
+        int $localTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): OfferQueryBuilderInterface;
+
     public function withBookingAvailabilityFilter(string $bookingAvailability): OfferQueryBuilderInterface;
 
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): OfferQueryBuilderInterface;

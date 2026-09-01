@@ -42,6 +42,7 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
@@ -215,6 +216,34 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             'recurringOnDayOfWeek',
             array_map(
                 static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+                $dayOfWeeks
+            )
+        );
+    }
+
+    /**
+     * The hours are indexed per day of week, so the requested day of week is the field to range
+     * over rather than a separate filter. No recurringOnDayOfWeek term query is added on top: a hit
+     * on the day key already proves the offer recurs on that day.
+     */
+    public function withRecurringOnLocalTimeRangeFilter(
+        int $localTimeFrom,
+        int $localTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): self {
+        $this->guardNaturalIntegerRange(
+            'recurringOnLocalTime',
+            new LocalTime($localTimeFrom),
+            new LocalTime($localTimeTo)
+        );
+
+        return $this->withAnyOfQueries(
+            ...array_map(
+                fn (DayOfWeek $dayOfWeek): RangeQuery => $this->createHalfOpenRangeQuery(
+                    'recurringOnLocalTimeRange.' . $dayOfWeek->value,
+                    $localTimeFrom,
+                    $localTimeTo
+                ),
                 $dayOfWeeks
             )
         );

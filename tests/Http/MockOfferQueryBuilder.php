@@ -207,6 +207,23 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withRecurringOnLocalTimeRangeFilter(
+        int $localTimeFrom,
+        int $localTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): self {
+        $c = clone $this;
+        $c->mockQuery['recurringOnLocalTimeRange'] = [
+            'dayOfWeek' => array_map(
+                static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+                $dayOfWeeks
+            ),
+            'localTimeFrom' => $localTimeFrom,
+            'localTimeTo' => $localTimeTo,
+        ];
+        return $c;
+    }
+
     public function withBookingAvailabilityFilter(string $bookingAvailability): self
     {
         $c = clone $this;
