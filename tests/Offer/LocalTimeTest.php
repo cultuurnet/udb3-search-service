@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTimeImmutable;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class LocalTimeTest extends TestCase
@@ -35,7 +35,7 @@ final class LocalTimeTest extends TestCase
      */
     public function it_throws_on_invalid_values(int $invalidValue): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(UnsupportedParameterValue::class);
         new LocalTime($invalidValue);
     }
 
@@ -44,6 +44,9 @@ final class LocalTimeTest extends TestCase
         return [
             '-1' => [-1],
             '2360' => [2360],
+            '2400' => [2400],
+            'minutes out of range' => [1099],
+            'minutes rolling into the next hour' => [1160],
         ];
     }
 

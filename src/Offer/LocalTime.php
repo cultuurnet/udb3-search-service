@@ -18,8 +18,12 @@ final class LocalTime extends Natural
 
     public function __construct(int $value)
     {
-        if ($value < 0 || $value > 2359) {
-            throw new UnsupportedParameterValue('The time value ' . $value . ' is not between 0 and 2359');
+        // Not a plain 0 to 2359 range check, because 1099 and 1160 pass that without being on any
+        // clock, and they reach Elasticsearch as a range bound over minutes that do not exist.
+        if ($value < 0 || intdiv($value, 100) > 23 || $value % 100 > 59) {
+            throw new UnsupportedParameterValue(
+                'The time value ' . $value . ' is not a time of day between 0000 and 2359'
+            );
         }
 
         parent::__construct($value);
