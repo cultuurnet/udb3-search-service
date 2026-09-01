@@ -87,5 +87,6 @@
     "childrenOnly": false,
     "hasOvernightStay": false,
     "hasChildcare": false,
-    "recurringOnDayOfWeek": []
+    "recurringOnDayOfWeek": [],
+    "recurringOnLocalTimeRange": {}
 }

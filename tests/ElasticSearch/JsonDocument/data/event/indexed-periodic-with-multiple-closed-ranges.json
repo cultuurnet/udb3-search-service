@@ -4989,5 +4989,63 @@
         "thursday",
         "friday",
         "saturday"
-    ]
+    ],
+    "recurringOnLocalTimeRange": {
+        "monday": [
+            {
+                "gte": 900,
+                "lt": 1200
+            },
+            {
+                "gte": 1300,
+                "lt": 1800
+            }
+        ],
+        "tuesday": [
+            {
+                "gte": 900,
+                "lt": 1200
+            },
+            {
+                "gte": 1300,
+                "lt": 1800
+            }
+        ],
+        "wednesday": [
+            {
+                "gte": 900,
+                "lt": 1200
+            },
+            {
+                "gte": 1300,
+                "lt": 1800
+            }
+        ],
+        "thursday": [
+            {
+                "gte": 900,
+                "lt": 1200
+            },
+            {
+                "gte": 1300,
+                "lt": 1800
+            }
+        ],
+        "friday": [
+            {
+                "gte": 900,
+                "lt": 1200
+            },
+            {
+                "gte": 1300,
+                "lt": 1800
+            }
+        ],
+        "saturday": [
+            {
+                "gte": 1000,
+                "lt": 1400
+            }
+        ]
+    }
 }

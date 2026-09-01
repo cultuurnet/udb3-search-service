@@ -4249,5 +4249,25 @@
         "monday",
         "wednesday",
         "friday"
-    ]
+    ],
+    "recurringOnLocalTimeRange": {
+        "monday": [
+            {
+                "gte": 830,
+                "lt": 917
+            }
+        ],
+        "wednesday": [
+            {
+                "gte": 830,
+                "lt": 917
+            }
+        ],
+        "friday": [
+            {
+                "gte": 830,
+                "lt": 917
+            }
+        ]
+    }
 }

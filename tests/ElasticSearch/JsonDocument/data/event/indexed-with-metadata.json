@@ -88,5 +88,6 @@
             }
         ]
     },
-    "recurringOnDayOfWeek": []
+    "recurringOnDayOfWeek": [],
+    "recurringOnLocalTimeRange": {}
 }

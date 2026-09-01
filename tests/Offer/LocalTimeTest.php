@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Offer;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class TimeTest extends TestCase
+final class LocalTimeTest extends TestCase
 {
     /**
      * @test
@@ -15,7 +15,7 @@ final class TimeTest extends TestCase
      */
     public function it_only_accepts_valid_values(int $value): void
     {
-        new Time($value);
+        new LocalTime($value);
         $this->addToAssertionCount(1);
     }
 
@@ -35,7 +35,7 @@ final class TimeTest extends TestCase
     public function it_throws_on_invalid_values(int $invalidValue): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Time($invalidValue);
+        new LocalTime($invalidValue);
     }
 
     public function inValidValues(): array

@@ -80,6 +80,7 @@ final class PlaceTransformerTest extends TestCase
             'bookingAvailability' => 'Available',
             'indexedAt' => '2017-05-09T15:11:32+02:00',
             'recurringOnDayOfWeek' => [],
+            'recurringOnLocalTimeRange' => (object) [],
         ];
 
         $expectedLogs = [

@@ -52,6 +52,34 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_carries_the_childcare_range_onto_each_slot(): void
+    {
+        $slots = $this->resolver->resolve([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-06-03T00:00:00+02:00',
+            'endDate' => '2024-06-04T23:59:59+02:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                    'childcare' => ['start' => '08:00', 'end' => '18:00'],
+                ],
+                [
+                    'dayOfWeek' => ['tuesday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ])->slots();
+
+        $this->assertSame(['start' => '08:00', 'end' => '18:00'], $slots[0]['childcare']);
+        $this->assertNull($slots[1]['childcare']);
+    }
+
+    /**
      * @return array<string, array{0: array<string, mixed>, 1: list<array{0: string, 1: string, 2: string}>}>
      */
     public function periodicCalendarProvider(): array

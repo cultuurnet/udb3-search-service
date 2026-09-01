@@ -8,12 +8,15 @@ use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\DayOfWeekCounts;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\RecurringLocalTimeRangeResolver;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
+use CultuurNet\UDB3\Search\Offer\TimeOfDay;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
+use InvalidArgumentException;
 use stdClass;
 
 final class CalendarTransformer implements JsonTransformer
@@ -44,12 +47,18 @@ final class CalendarTransformer implements JsonTransformer
 
     private EffectiveOpeningHoursResolver $effectiveOpeningHoursResolver;
 
+    private RecurringLocalTimeRangeResolver $recurringLocalTimeRangeResolver;
+
     public function __construct(
         JsonTransformerLogger $logger,
         EffectiveOpeningHoursResolver $effectiveOpeningHoursResolver
     ) {
         $this->logger = $logger;
         $this->effectiveOpeningHoursResolver = $effectiveOpeningHoursResolver;
+        // Built here so the threshold stays next to the recurringOnDayOfWeek it has to agree with.
+        $this->recurringLocalTimeRangeResolver = new RecurringLocalTimeRangeResolver(
+            self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD
+        );
     }
 
     /**
@@ -70,6 +79,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft['hasOvernightStay'] = false;
         $draft['hasChildcare'] = false;
         $draft['recurringOnDayOfWeek'] = [];
+        $draft['recurringOnLocalTimeRange'] = (object) [];
 
         if (!isset($from['calendarType'])) {
             $this->logger->logMissingExpectedField('calendarType');
@@ -81,10 +91,8 @@ final class CalendarTransformer implements JsonTransformer
         $draft = $this->transformBookingAvailability($from, $draft);
         $draft = $this->transformHasOvernightStay($from, $draft);
 
-        /*
-        Read top-level hasChildcare before polyFillJsonLdSubEvents(), as the generated subEvents no longer contain a childcare key.
-        Per-subEvent hasChildcare is computed later in transformSubEvents() from each subEvent's own childcare key.
-        */
+        // Read from the source openingHours, which polyFillJsonLdSubEvents() discards. Per-subEvent
+        // hasChildcare is computed later in transformSubEvents() from each subEvent's own childcare key.
         $draft['hasChildcare'] = $this->determineHasChildcare($from);
 
         $effectiveOpeningHours = $this->resolveEffectiveOpeningHours($from);
@@ -102,6 +110,9 @@ final class CalendarTransformer implements JsonTransformer
             return $draft;
         }
 
+        $from = $this->extendSubEventsWithChildcare($from);
+
+        $draft = $this->transformRecurringLocalTimeRange($from, $draft);
         $draft = $this->transformDateRange($from, $draft);
         $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
@@ -182,6 +193,29 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $dayOfWeekCounts;
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place, as an associative array. Its subEvents are poly-filled and
+     *   widened already, so every calendar type resolves the same way.
+     * @param array $draft
+     *   JSON to index in Elasticsearch so far, as an associative array
+     * @return array
+     *   Updated JSON to index in Elasticsearch, as an associative array
+     */
+    private function transformRecurringLocalTimeRange(array $from, array $draft): array
+    {
+        $recurringLocalTimeRange = $this->recurringLocalTimeRangeResolver->resolve(
+            $from['subEvent'],
+            $this->determineLocalTimezone($from)
+        );
+
+        // Cast so an offer without recurring hours indexes an empty object instead of an empty list,
+        // which the object mapping rejects.
+        $draft['recurringOnLocalTimeRange'] = (object) $recurringLocalTimeRange;
+
+        return $draft;
     }
 
     /**
@@ -470,11 +504,17 @@ final class CalendarTransformer implements JsonTransformer
                 $this->determineLocalTimezone($from)
             );
 
-            $subEvent[] = [
+            $generated = [
                 '@type' => 'Event',
                 'startDate' => $subEventStartDate->format(DateTime::ATOM),
                 'endDate' => $subEventEndDate->format(DateTime::ATOM),
             ];
+
+            if ($slot['childcare'] !== null) {
+                $generated['childcare'] = $slot['childcare'];
+            }
+
+            $subEvent[] = $generated;
         }
 
         if (!empty($subEvent)) {
@@ -482,6 +522,79 @@ final class CalendarTransformer implements JsonTransformer
         }
 
         return $from;
+    }
+
+    /**
+     * A child is present for the childcare hours as well, so a sub-event lasts from the start of its
+     * childcare until the end of it. Widening it here, before dateRange, localTimeRange and
+     * subEvent[] are built from it, is what makes a slot that only overlaps childcare match.
+     *
+     * Sub-events generated from opening hours carry the childcare range of the opening hour they
+     * came from, so every calendar type is widened the same way.
+     */
+    private function extendSubEventsWithChildcare(array $from): array
+    {
+        $timezone = $this->determineLocalTimezone($from);
+
+        foreach ($from['subEvent'] as $index => $subEvent) {
+            if (!isset($subEvent['childcare'])) {
+                continue;
+            }
+
+            $from['subEvent'][$index] = $this->extendSubEventWithChildcare($subEvent, $timezone);
+        }
+
+        return $from;
+    }
+
+    private function extendSubEventWithChildcare(array $subEvent, DateTimeZone $timezone): array
+    {
+        $startDate = $this->parseSubEventDate($subEvent['startDate'] ?? null, $timezone);
+        $endDate = $this->parseSubEventDate($subEvent['endDate'] ?? null, $timezone);
+
+        $childcareStart = $this->atTimeOfDay($startDate, $subEvent['childcare']['start'] ?? null);
+        $childcareEnd = $this->atTimeOfDay($endDate, $subEvent['childcare']['end'] ?? null);
+
+        // Entry API already guarantees this. Guarded anyway because an inverted range is dropped by
+        // isValidDateRange(), which would lose the sub-event without any sign of it.
+        if ($childcareStart !== null && $childcareStart < $startDate) {
+            $subEvent['startDate'] = $childcareStart->format(DateTime::ATOM);
+        }
+
+        if ($childcareEnd !== null && $childcareEnd > $endDate) {
+            $subEvent['endDate'] = $childcareEnd->format(DateTime::ATOM);
+        }
+
+        return $subEvent;
+    }
+
+    private function parseSubEventDate(?string $date, DateTimeZone $timezone): ?DateTimeImmutable
+    {
+        if ($date === null) {
+            return null;
+        }
+
+        try {
+            return DateTimeFactory::fromAtom($date)->setTimezone($timezone);
+        } catch (InvalidArgumentException $exception) {
+            // Already reported when building dateRange.
+            return null;
+        }
+    }
+
+    private function atTimeOfDay(?DateTimeImmutable $date, ?string $timeOfDay): ?DateTimeImmutable
+    {
+        if ($date === null || $timeOfDay === null) {
+            return null;
+        }
+
+        $parsed = TimeOfDay::tryFromString($timeOfDay);
+        if ($parsed === null) {
+            $this->logger->logWarning("Unknown childcare time '{$timeOfDay}'.");
+            return null;
+        }
+
+        return $parsed->on($date);
     }
 
     /**

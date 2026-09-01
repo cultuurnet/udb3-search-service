@@ -214,30 +214,208 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
-     * Childcare hours relate to a service before/after the activity and must not influence the
-     * effective time. The generated dateRange/localTimeRange and the time-range fields of each
-     * subEvent must therefore be identical whether or not childcare is configured.
-     *
      * @test
-     * @dataProvider calendarProvider
      */
-    public function it_does_not_let_childcare_affect_the_effective_time(string $type): void
+    public function it_widens_the_sub_event_period_with_childcare(): void
     {
-        $withChildcare = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
-        $withoutChildcare = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: false));
+        $result = $this->transformer->transform($this->singleCalendar(withChildcare: true));
 
-        $this->assertTrue($withChildcare['hasChildcare']);
-        $this->assertFalse($withoutChildcare['hasChildcare']);
-
-        $this->assertEquals($withoutChildcare['dateRange'], $withChildcare['dateRange']);
-        $this->assertEquals($withoutChildcare['localTimeRange'], $withChildcare['localTimeRange']);
-
-        // Compare only the time-range fields per subEvent; hasChildcare differs by design.
-        $timeFields = fn (array $se) => array_diff_key($se, ['hasChildcare' => true]);
         $this->assertEquals(
-            array_map($timeFields, $withoutChildcare['subEvent']),
-            array_map($timeFields, $withChildcare['subEvent'])
+            (object) [
+                'gte' => '2024-06-01T19:30:00+02:00',
+                'lte' => '2024-06-02T08:30:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_the_top_level_date_range_and_local_time_range_with_childcare(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendarWithChildcare('08:00', '19:00'));
+
+        $this->assertEquals(
+            [
+                (object) [
+                    'gte' => '2024-06-01T08:00:00+02:00',
+                    'lte' => '2024-06-01T19:00:00+02:00',
+                ],
+            ],
+            $result['dateRange']
+        );
+        $this->assertEquals(
+            [
+                (object) [
+                    'gte' => '0800',
+                    'lte' => '1900',
+                ],
+            ],
+            $result['localTimeRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_only_the_sub_events_that_have_childcare(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendar(withChildcare: true));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T20:00:00+02:00',
+                'lte' => '2024-06-02T08:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-03T09:00:00+02:00',
+                'lte' => '2024-06-03T13:00:00+02:00',
+            ],
+            $result['subEvent'][1]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_only_the_start_when_childcare_has_no_end(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendarWithChildcare('08:00', null));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T08:00:00+02:00',
+                'lte' => '2024-06-01T18:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_only_the_end_when_childcare_has_no_start(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendarWithChildcare(null, '19:00'));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T10:00:00+02:00',
+                'lte' => '2024-06-01T19:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_reads_childcare_times_in_the_local_timezone_of_the_offer(): void
+    {
+        // 08:00 UTC is 10:00 in Brussels, so childcare at 08:00 local widens the start by two hours.
+        $result = $this->transformer->transform([
+            'calendarType' => 'single',
+            'startDate' => '2024-06-01T08:00:00+00:00',
+            'endDate' => '2024-06-01T16:00:00+00:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2024-06-01T08:00:00+00:00',
+                    'endDate' => '2024-06-01T16:00:00+00:00',
+                    'childcare' => ['start' => '08:00', 'end' => '19:00'],
+                ],
+            ],
+        ]);
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T08:00:00+02:00',
+                'lte' => '2024-06-01T19:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_childcare_that_does_not_widen_the_sub_event_period(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendarWithChildcare('11:00', '17:00'));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T10:00:00+02:00',
+                'lte' => '2024-06-01T18:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_a_childcare_time_that_is_not_a_local_time(): void
+    {
+        $result = $this->transformer->transform($this->singleCalendarWithChildcare('noon', '19:00'));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-01T10:00:00+02:00',
+                'lte' => '2024-06-01T19:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider openingHoursCalendarProvider
+     */
+    public function it_widens_opening_hours_slots_with_childcare(string $type): void
+    {
+        $result = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
+
+        $this->assertEquals(
+            [
+                (object) [
+                    'gte' => '0800',
+                    'lte' => '1800',
+                ],
+            ],
+            $result['localTimeRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_the_dates_of_an_opening_hours_slot_with_childcare(): void
+    {
+        $result = $this->transformer->transform($this->periodicCalendar(withChildcare: true));
+
+        $this->assertEquals(
+            (object) [
+                'gte' => '2024-06-03T08:00:00+02:00',
+                'lte' => '2024-06-03T18:00:00+02:00',
+            ],
+            $result['subEvent'][0]['dateRange']
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider openingHoursCalendarProvider
+     */
+    public function it_indexes_has_childcare_per_sub_event_for_opening_hours(string $type): void
+    {
+        $result = $this->transformer->transform($this->{$type . 'Calendar'}(withChildcare: true));
+
+        $this->assertTrue($result['subEvent'][0]['hasChildcare']);
     }
 
     /**
@@ -265,6 +443,7 @@ final class CalendarTransformerTest extends TestCase
                 'hasOvernightStay' => false,
                 'hasChildcare' => false,
                 'recurringOnDayOfWeek' => [],
+                'recurringOnLocalTimeRange' => (object) [],
             ],
             $result
         );
@@ -496,6 +675,103 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_indexes_no_recurring_local_time_range_without_a_calendar_type(): void
+    {
+        $result = $this->transformer->transform([]);
+
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_the_recurring_local_time_range_of_a_multiple_calendar(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+            '2024-06-26',
+        ]));
+
+        $this->assertEquals(
+            (object) ['wednesday' => [['gte' => 1000, 'lt' => 1200]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_no_recurring_local_time_range_below_the_threshold(): void
+    {
+        $result = $this->transformer->transform($this->multipleCalendarOn([
+            '2024-06-05',
+            '2024-06-12',
+            '2024-06-19',
+        ]));
+
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_the_recurring_local_time_range_of_permanent_opening_hours(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(false));
+
+        $this->assertEquals(
+            (object) ['monday' => [['gte' => 900, 'lt' => 1700]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * A child is present for the childcare hours too, so the recurring hours have to cover them.
+     * They come along on their own because the sub-events are widened before they are resolved.
+     *
+     * @test
+     */
+    public function it_widens_the_recurring_local_time_range_with_childcare(): void
+    {
+        $result = $this->transformer->transform($this->permanentCalendar(withChildcare: true));
+
+        $this->assertEquals(
+            (object) ['monday' => [['gte' => 800, 'lt' => 1800]]],
+            $result['recurringOnLocalTimeRange']
+        );
+    }
+
+    /**
+     * A day of week can recur without having hours that recur with it. Three Saturday mornings and
+     * three Saturday evenings make six Saturdays, but neither slot is a dependable fixture.
+     *
+     * @test
+     */
+    public function it_indexes_a_recurring_day_of_week_without_recurring_hours(): void
+    {
+        $result = $this->transformer->transform([
+            'calendarType' => 'multiple',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-07-06T20:00:00+02:00',
+            'subEvent' => [
+                $this->subEvent('2024-06-01T10:00:00+02:00', '2024-06-01T12:00:00+02:00'),
+                $this->subEvent('2024-06-08T10:00:00+02:00', '2024-06-08T12:00:00+02:00'),
+                $this->subEvent('2024-06-15T10:00:00+02:00', '2024-06-15T12:00:00+02:00'),
+                $this->subEvent('2024-06-22T18:00:00+02:00', '2024-06-22T20:00:00+02:00'),
+                $this->subEvent('2024-06-29T18:00:00+02:00', '2024-06-29T20:00:00+02:00'),
+                $this->subEvent('2024-07-06T18:00:00+02:00', '2024-07-06T20:00:00+02:00'),
+            ],
+        ]);
+
+        $this->assertSame(['saturday'], $result['recurringOnDayOfWeek']);
+        $this->assertEquals((object) [], $result['recurringOnLocalTimeRange']);
+    }
+
+    /**
      * @param list<string> $dates
      *   A list of Y-m-d dates, each turned into a single-day sub-event at a fixed time of day.
      * @return array<string, mixed>
@@ -562,6 +838,33 @@ final class CalendarTransformerTest extends TestCase
             'startDate' => '2024-06-01T20:00:00+02:00',
             'endDate' => '2024-06-02T08:00:00+02:00',
             'subEvent' => [$subEvent],
+        ];
+    }
+
+    /**
+     * A single calendar running 10:00 to 18:00 local time, with the given childcare bounds.
+     *
+     * @return array<string, mixed>
+     */
+    private function singleCalendarWithChildcare(?string $start, ?string $end): array
+    {
+        $childcare = array_filter(
+            ['start' => $start, 'end' => $end],
+            static fn (?string $time): bool => $time !== null
+        );
+
+        return [
+            'calendarType' => 'single',
+            'startDate' => '2024-06-01T10:00:00+02:00',
+            'endDate' => '2024-06-01T18:00:00+02:00',
+            'subEvent' => [
+                [
+                    '@type' => 'Event',
+                    'startDate' => '2024-06-01T10:00:00+02:00',
+                    'endDate' => '2024-06-01T18:00:00+02:00',
+                    'childcare' => $childcare,
+                ],
+            ],
         ];
     }
 
