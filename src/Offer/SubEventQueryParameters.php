@@ -25,7 +25,7 @@ final class SubEventQueryParameters
 
     private ?bool $hasChildcare = null;
 
-    private ?bool $hasOvernight = null;
+    private ?bool $hasOvernightStay = null;
 
     public function getDateFrom(): ?DateTimeImmutable
     {
@@ -111,15 +111,15 @@ final class SubEventQueryParameters
         return $c;
     }
 
-    public function getHasOvernight(): ?bool
+    public function getHasOvernightStay(): ?bool
     {
-        return $this->hasOvernight;
+        return $this->hasOvernightStay;
     }
 
-    public function withHasOvernight(?bool $hasOvernight): SubEventQueryParameters
+    public function withHasOvernightStay(?bool $hasOvernightStay): SubEventQueryParameters
     {
         $c = clone $this;
-        $c->hasOvernight = $hasOvernight;
+        $c->hasOvernightStay = $hasOvernightStay;
         return $c;
     }
 }

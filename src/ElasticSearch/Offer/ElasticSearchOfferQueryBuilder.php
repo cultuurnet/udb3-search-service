@@ -234,7 +234,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $statuses = $subEventQueryParameters->getStatuses();
         $bookingAvailability = $subEventQueryParameters->getBookingAvailability();
         $hasChildcare = $subEventQueryParameters->getHasChildcare();
-        $hasOvernight = $subEventQueryParameters->getHasOvernight();
+        $hasOvernightStay = $subEventQueryParameters->getHasOvernightStay();
 
         $this->guardDateRange('date', $from, $to);
 
@@ -278,8 +278,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $queries[] = new TermQuery('subEvent.hasChildcare', $hasChildcare);
         }
 
-        if ($hasOvernight !== null) {
-            $queries[] = new TermQuery('subEvent.hasOvernight', $hasOvernight);
+        if ($hasOvernightStay !== null) {
+            $queries[] = new TermQuery('subEvent.hasOvernightStay', $hasOvernightStay);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(
@@ -460,9 +460,9 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
     }
 
-    public function withHasOvernightFilter(bool $hasOvernight): self
+    public function withHasOvernightStayFilter(bool $hasOvernightStay): self
     {
-        return $this->withTermQuery('hasOvernight', $hasOvernight);
+        return $this->withTermQuery('hasOvernightStay', $hasOvernightStay);
     }
 
     public function withHasChildcareFilter(bool $hasChildcare): self

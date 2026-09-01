@@ -17,12 +17,16 @@ final class MetadataClientIdResolver implements ClientIdResolver
 
     private MetadataGenerator $metadataGenerator;
 
+    private bool $allowAllBoaAccess;
+
     public function __construct(
         ManagementTokenProvider $managementTokenProvider,
-        MetadataGenerator $metadataGenerator
+        MetadataGenerator $metadataGenerator,
+        bool $allowAllBoaAccess
     ) {
         $this->managementTokenProvider = $managementTokenProvider;
         $this->metadataGenerator = $metadataGenerator;
+        $this->allowAllBoaAccess = $allowAllBoaAccess;
         $this->setLogger(new NullLogger());
     }
 
@@ -33,7 +37,7 @@ final class MetadataClientIdResolver implements ClientIdResolver
 
     public function hasBoaAccess(string $clientId): bool
     {
-        return $this->hasApiAccess($clientId, 'boa');
+        return $this->allowAllBoaAccess || $this->hasApiAccess($clientId, 'boa');
     }
 
     /**

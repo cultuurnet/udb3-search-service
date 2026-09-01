@@ -35,7 +35,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
             'maxPrice',
             'audienceType',
             'childrenOnly',
-            'hasOvernight',
+            'hasOvernightStay',
             'hasChildcare',
             'hasMediaObjects',
             'hasVideos',
