@@ -66,6 +66,7 @@ final class EffectiveOpeningHoursResolver
                     'date' => $date,
                     'opens' => $openingHours['opens'],
                     'closes' => $openingHours['closes'],
+                    'childcare' => $openingHours['childcare'],
                 ];
             }
         }
@@ -96,8 +97,8 @@ final class EffectiveOpeningHoursResolver
      * @param array $openingHours
      *   JSON-LD of the openingHours property of an event/place, as an associative array
      * @return array<string, array<int<0, max>, array<string, mixed>>>
-     *   Associative arrays with "opens" and "closes" keys with string values each, grouped in lists per day of week in
-     *   an enclosing array
+     *   Associative arrays with "opens" and "closes" string values and a "childcare" range or null each, grouped in
+     *   lists per day of week in an enclosing array
      */
     private function convertOpeningHoursToListGroupedByDay(array $openingHours): array
     {
@@ -132,6 +133,8 @@ final class EffectiveOpeningHoursResolver
                 $openingHoursByDay[$dayOfWeek->value][] = [
                     'opens' => $openingHoursEntry['opens'],
                     'closes' => $openingHoursEntry['closes'],
+                    // Always set, so sorting the list below keeps comparing opens and closes first.
+                    'childcare' => $openingHoursEntry['childcare'] ?? null,
                 ];
             }
         }

@@ -6,6 +6,6 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 final class SchemaVersions
 {
-    public const UDB3_CORE = 20260826120000;
+    public const UDB3_CORE = 20260827100000;
     public const GEOSHAPES = 20250101000000;
 }
