@@ -298,6 +298,52 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
+     * Half open on both ends, so an activity ending at 12:00 does not answer a search starting at
+     * 12:00. It takes both ends to get that: against a document range ending on lt, an inclusive
+     * query bound would still share the single minute 1200 with it, and the other way around.
+     *
+     * Only recurringOnLocalTimeRange is indexed this way. Everything else keeps createRangeQuery.
+     */
+    protected function createHalfOpenRangeQuery(string $fieldName, int $from, int $to): RangeQuery
+    {
+        return new RangeQuery(
+            $fieldName,
+            [
+                RangeQuery::GTE => $from,
+                RangeQuery::LT => $to,
+            ]
+        );
+    }
+
+    /**
+     * Filters on at least one of the given queries matching, the OR counterpart of adding them all
+     * as separate filters.
+     *
+     * @return static
+     */
+    protected function withAnyOfQueries(BuilderInterface ...$queries)
+    {
+        if (empty($queries)) {
+            return $this;
+        }
+
+        if (count($queries) === 1) {
+            $c = $this->getClone();
+            $c->boolQuery->add($queries[0], BoolQuery::FILTER);
+            return $c;
+        }
+
+        $boolQuery = new BoolQuery();
+        foreach ($queries as $query) {
+            $boolQuery->add($query, BoolQuery::SHOULD);
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($boolQuery, BoolQuery::FILTER);
+        return $c;
+    }
+
+    /**
      * @return static
      */
     protected function withDateRangeQuery(string $fieldName, DateTimeImmutable $from = null, DateTimeImmutable $to = null)
