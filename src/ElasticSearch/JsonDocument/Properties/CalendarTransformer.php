@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\Recurr
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
-use CultuurNet\UDB3\Search\Offer\TimeOfDay;
+use CultuurNet\UDB3\Search\Offer\LocalTime;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -588,7 +588,7 @@ final class CalendarTransformer implements JsonTransformer
             return null;
         }
 
-        $parsed = TimeOfDay::tryFromString($timeOfDay);
+        $parsed = LocalTime::tryFromString($timeOfDay);
         if ($parsed === null) {
             $this->logger->logWarning("Unknown childcare time '{$timeOfDay}'.");
             return null;
