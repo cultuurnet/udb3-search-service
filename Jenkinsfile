@@ -123,11 +123,6 @@ pipeline {
                 }
                 stage('Deploy') {
                     parallel {
-                        stage('Deploy to ElasticSearch 5 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-acc01'
-                            }
-                        }
                         stage('Deploy to ElasticSearch 8 node (instance)') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-acc02'
