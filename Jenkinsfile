@@ -157,6 +157,11 @@ pipeline {
                         publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                     }
                 }
+                stage('Promote docker image') {
+                    steps {
+                        promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                    }
+                }
                 stage('Deploy') {
                     parallel {
                         stage('Deploy to first ElasticSearch 5 node') {
@@ -172,6 +177,11 @@ pipeline {
                         stage('Deploy to ElasticSearch 8 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-test03'
+                            }
+                        }
+                        stage('Deploy to ElasticSearch 8 docker node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-docker-test01'
                             }
                         }
                     }
