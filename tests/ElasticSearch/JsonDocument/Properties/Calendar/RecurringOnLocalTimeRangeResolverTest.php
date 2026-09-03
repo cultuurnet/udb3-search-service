@@ -9,17 +9,17 @@ use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
-final class RecurringLocalTimeRangeResolverTest extends TestCase
+final class RecurringOnLocalTimeRangeResolverTest extends TestCase
 {
     private const MINIMUM_OCCURRENCES = 4;
 
-    private RecurringLocalTimeRangeResolver $resolver;
+    private RecurringOnLocalTimeRangeResolver $resolver;
 
     private DateTimeZone $timezone;
 
     protected function setUp(): void
     {
-        $this->resolver = new RecurringLocalTimeRangeResolver(self::MINIMUM_OCCURRENCES);
+        $this->resolver = new RecurringOnLocalTimeRangeResolver(self::MINIMUM_OCCURRENCES);
         $this->timezone = new DateTimeZone('Europe/Brussels');
     }
 

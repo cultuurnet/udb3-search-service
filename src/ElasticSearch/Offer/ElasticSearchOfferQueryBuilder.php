@@ -227,22 +227,22 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      * on the day key already proves the offer recurs on that day.
      */
     public function withRecurringOnLocalTimeRangeFilter(
-        int $localTimeFrom,
-        int $localTimeTo,
+        int $recurringOnLocalTimeFrom,
+        int $recurringOnLocalTimeTo,
         DayOfWeek ...$dayOfWeeks
     ): self {
         $this->guardNaturalIntegerRange(
             'recurringOnLocalTime',
-            new LocalTime($localTimeFrom),
-            new LocalTime($localTimeTo)
+            new LocalTime($recurringOnLocalTimeFrom),
+            new LocalTime($recurringOnLocalTimeTo)
         );
 
         return $this->withAnyOfQueries(
             ...array_map(
                 fn (DayOfWeek $dayOfWeek): RangeQuery => $this->createHalfOpenRangeQuery(
                     'recurringOnLocalTimeRange.' . $dayOfWeek->value,
-                    $localTimeFrom,
-                    $localTimeTo
+                    $recurringOnLocalTimeFrom,
+                    $recurringOnLocalTimeTo
                 ),
                 $dayOfWeeks
             )

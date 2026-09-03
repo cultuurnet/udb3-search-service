@@ -529,7 +529,7 @@ answer a search for Wednesday 14:00 to 18:00. So the hours are indexed per day o
 }
 ```
 
-`RecurringLocalTimeRangeResolver` counts, per day of week, on how many dates each minute is covered,
+`RecurringOnLocalTimeRangeResolver` counts, per day of week, on how many dates each minute is covered,
 and keeps the minutes reaching the same threshold of 4. Counting minutes rather than whole sub-events
 keeps hours that shift between occurrences usable: the part they have in common still qualifies. Two
 slots on the same day stay two ranges, so a search does not match the gap between them.
@@ -743,7 +743,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
 - `transformHasChildcare()`, `transformHasOvernightStay()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
-- `RecurringLocalTimeRangeResolver`: counts, per day of week, on how many dates each minute is covered, and turns the minutes reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
+- `RecurringOnLocalTimeRangeResolver`: counts, per day of week, on how many dates each minute is covered, and turns the minutes reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
 - `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours` / `DayOfWeekCounts`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` returns a `DayOfWeekCounts` whose `daysWithMinimumCount()` feeds `recurringOnDayOfWeek`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 - `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.

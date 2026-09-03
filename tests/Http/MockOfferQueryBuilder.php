@@ -208,8 +208,8 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     }
 
     public function withRecurringOnLocalTimeRangeFilter(
-        int $localTimeFrom,
-        int $localTimeTo,
+        int $recurringOnLocalTimeFrom,
+        int $recurringOnLocalTimeTo,
         DayOfWeek ...$dayOfWeeks
     ): self {
         $c = clone $this;
@@ -218,8 +218,8 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
                 static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
                 $dayOfWeeks
             ),
-            'localTimeFrom' => $localTimeFrom,
-            'localTimeTo' => $localTimeTo,
+            'recurringOnLocalTimeFrom' => $recurringOnLocalTimeFrom,
+            'recurringOnLocalTimeTo' => $recurringOnLocalTimeTo,
         ];
         return $c;
     }

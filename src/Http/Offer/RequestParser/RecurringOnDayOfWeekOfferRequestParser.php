@@ -27,10 +27,10 @@ final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParser
             static fn (string $dayOfWeek): DayOfWeek => DayOfWeek::fromString($dayOfWeek)
         );
 
-        $localTimeFrom = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeFrom');
-        $localTimeTo = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeTo');
+        $recurringOnLocalTimeFrom = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeFrom');
+        $RecurringOnDayOfWeekOfferRequestParser = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeTo');
 
-        if ($localTimeFrom === null && $localTimeTo === null) {
+        if ($recurringOnLocalTimeFrom === null && $RecurringOnDayOfWeekOfferRequestParser === null) {
             if (empty($dayOfWeeks)) {
                 return $offerQueryBuilder;
             }
@@ -50,7 +50,7 @@ final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParser
 
         // An open-ended range would match every hour on one side, which reads as a narrower search
         // than it is. Both bounds are cheap to supply, so require them.
-        if ($localTimeFrom === null || $localTimeTo === null) {
+        if ($recurringOnLocalTimeFrom === null || $RecurringOnDayOfWeekOfferRequestParser === null) {
             throw new UnsupportedParameterValue(
                 'The "recurringOnLocalTimeFrom" and "recurringOnLocalTimeTo" parameters have to be'
                 . ' used together.'
@@ -58,8 +58,8 @@ final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParser
         }
 
         return $offerQueryBuilder->withRecurringOnLocalTimeRangeFilter(
-            $localTimeFrom,
-            $localTimeTo,
+            $recurringOnLocalTimeFrom,
+            $RecurringOnDayOfWeekOfferRequestParser,
             ...$dayOfWeeks
         );
     }
