@@ -48,15 +48,6 @@ final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParser
             );
         }
 
-        // An open-ended range would match every hour on one side, which reads as a narrower search
-        // than it is. Both bounds are cheap to supply, so require them.
-        if ($recurringOnLocalTimeFrom === null || $recurringOnLocalTimeTo === null) {
-            throw new UnsupportedParameterValue(
-                'The "recurringOnLocalTimeFrom" and "recurringOnLocalTimeTo" parameters have to be'
-                . ' used together.'
-            );
-        }
-
         return $offerQueryBuilder->withRecurringOnLocalTimeRangeFilter(
             $recurringOnLocalTimeFrom,
             $recurringOnLocalTimeTo,

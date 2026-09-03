@@ -572,7 +572,7 @@ are comma-separated (consistent with `attendanceMode`, `workflowStatus`); the ar
 
 | Parameter(s) | Behaviour |
 |---|---|
-| `recurringOnLocalTimeFrom`, `recurringOnLocalTimeTo` | The hours, as `HHMM` integers, on the requested days of week. |
+| `recurringOnLocalTimeFrom`, `recurringOnLocalTimeTo` | The hours, as `HHMM` integers, on the requested days of week. Either one on its own leaves the other side open. |
 
 ```
 GET /offers?recurringOnDayOfWeek=wednesday,saturday&recurringOnLocalTimeFrom=1300&recurringOnLocalTimeTo=1600
@@ -590,12 +590,17 @@ sides to keep a 10:00 to 11:00 activity out of a search from 11:00: against a do
 `lt: 1100`, an inclusive query bound would still share the single minute 1100 with it, and against a
 query ending on `lt: 1100` an inclusive document bound would do the same.
 
+A missing bound is left out of the range query instead of clamped to midnight, so
+`recurringOnDayOfWeek=wednesday&recurringOnLocalTimeFrom=1300` asks for a Wednesday with hours from
+13:00 on, and `recurringOnLocalTimeTo=1600` on its own for a Wednesday with hours before 16:00. The
+end bound has no `2400` to clamp to anyway: `LocalTime` only accepts times on the clock, up to
+`2359`.
+
 Rejections, all validation errors:
 
 | Request | Why |
 |---|---|
 | hours without `recurringOnDayOfWeek` | The hours live under a key per day of week, so there is no field to range over. Falling back to the union over all days is the very thing these parameters exist to avoid. |
-| only one of the two hours | An open-ended range matches every hour on one side, which reads as a narrower search than it is. |
 | `recurringOnLocalTimeFrom` after `recurringOnLocalTimeTo` | An inverted range matches nothing. |
 | an unknown day of week | Same as for `recurringOnDayOfWeek` on its own. |
 

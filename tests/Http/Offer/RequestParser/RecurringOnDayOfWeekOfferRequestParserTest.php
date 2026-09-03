@@ -222,7 +222,7 @@ final class RecurringOnDayOfWeekOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_only_the_start_of_the_hours_is_given(): void
+    public function it_leaves_the_end_open_when_only_the_start_of_the_hours_is_given(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
             ->withQueryParams([
@@ -231,10 +231,12 @@ final class RecurringOnDayOfWeekOfferRequestParserTest extends TestCase
             ]);
 
         $this->queryBuilder->expects($this->never())
-            ->method('withRecurringOnLocalTimeRangeFilter');
+            ->method('withRecurringOnDayOfWeekFilter');
 
-        $this->expectException(UnsupportedParameterValue::class);
-        $this->expectExceptionMessage('"recurringOnLocalTimeTo"');
+        $this->queryBuilder->expects($this->once())
+            ->method('withRecurringOnLocalTimeRangeFilter')
+            ->with(1300, null, DayOfWeek::Wednesday)
+            ->willReturn($this->queryBuilder);
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }
@@ -242,7 +244,7 @@ final class RecurringOnDayOfWeekOfferRequestParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_only_the_end_of_the_hours_is_given(): void
+    public function it_leaves_the_start_open_when_only_the_end_of_the_hours_is_given(): void
     {
         $request = ServerRequestFactory::createFromGlobals()
             ->withQueryParams([
@@ -251,10 +253,29 @@ final class RecurringOnDayOfWeekOfferRequestParserTest extends TestCase
             ]);
 
         $this->queryBuilder->expects($this->never())
+            ->method('withRecurringOnDayOfWeekFilter');
+
+        $this->queryBuilder->expects($this->once())
+            ->method('withRecurringOnLocalTimeRangeFilter')
+            ->with(null, 1600, DayOfWeek::Wednesday)
+            ->willReturn($this->queryBuilder);
+
+        $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_only_the_start_of_the_hours_is_given_without_a_day_of_week(): void
+    {
+        $request = ServerRequestFactory::createFromGlobals()
+            ->withQueryParams(['recurringOnLocalTimeFrom' => '1300']);
+
+        $this->queryBuilder->expects($this->never())
             ->method('withRecurringOnLocalTimeRangeFilter');
 
         $this->expectException(UnsupportedParameterValue::class);
-        $this->expectExceptionMessage('"recurringOnLocalTimeFrom"');
+        $this->expectExceptionMessage('require "recurringOnDayOfWeek"');
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
     }

@@ -1355,6 +1355,127 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_leaves_the_hours_range_open_ended_without_an_end(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, null, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'recurringOnLocalTimeRange.wednesday' => [
+                                    'gte' => 1300,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_hours_range_open_at_the_start_without_a_start(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(null, 1600, DayOfWeek::Wednesday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.wednesday' => [
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.saturday' => [
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_falls_back_to_the_day_of_week_filter_without_any_hours(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(null, null, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'recurringOnDayOfWeek' => [
+                                    'query' => 'wednesday',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_rejects_an_inverted_hours_range(): void
     {
         $this->expectException(UnsupportedParameterValue::class);

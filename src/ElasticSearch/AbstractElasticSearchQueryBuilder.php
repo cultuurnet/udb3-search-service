@@ -302,17 +302,26 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
      * 12:00. It takes both ends to get that: against a document range ending on lt, an inclusive
      * query bound would still share the single minute 1200 with it, and the other way around.
      *
+     * A bound that is not given is left out of the query, so that side is unbounded. Clamping it to
+     * midnight instead would need a 2400 that LocalTime does not accept.
+     *
      * Only recurringOnLocalTimeRange is indexed this way. Everything else keeps createRangeQuery.
      */
-    protected function createHalfOpenRangeQuery(string $fieldName, int $from, int $to): RangeQuery
+    protected function createHalfOpenRangeQuery(string $fieldName, ?int $from, ?int $to): ?RangeQuery
     {
-        return new RangeQuery(
-            $fieldName,
+        $parameters = array_filter(
             [
                 RangeQuery::GTE => $from,
                 RangeQuery::LT => $to,
-            ]
+            ],
+            fn ($value): bool => !is_null($value)
         );
+
+        if (empty($parameters)) {
+            return null;
+        }
+
+        return new RangeQuery($fieldName, $parameters);
     }
 
     /**

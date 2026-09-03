@@ -208,8 +208,8 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     }
 
     public function withRecurringOnLocalTimeRangeFilter(
-        int $recurringOnLocalTimeFrom,
-        int $recurringOnLocalTimeTo,
+        ?int $recurringOnLocalTimeFrom,
+        ?int $recurringOnLocalTimeTo,
         DayOfWeek ...$dayOfWeeks
     ): self {
         $c = clone $this;
