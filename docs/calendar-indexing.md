@@ -529,7 +529,7 @@ answer a search for Wednesday 14:00 to 18:00. So the hours are indexed per day o
 }
 ```
 
-`RecurringLocalTimeRangeResolver` counts, per day of week, on how many dates each minute is covered,
+`RecurringOnLocalTimeRangeResolver` counts, per day of week, on how many dates each minute is covered,
 and keeps the minutes reaching the same threshold of 4. Counting minutes rather than whole sub-events
 keeps hours that shift between occurrences usable: the part they have in common still qualifies. Two
 slots on the same day stay two ranges, so a search does not match the gap between them.
@@ -567,6 +567,55 @@ are comma-separated (consistent with `attendanceMode`, `workflowStatus`); the ar
 `recurringOnDayOfWeek` field uses `lowercase_exact_match_analyzer` as both `analyzer` and
 `search_analyzer`, so a `match` query resolves each value to an exact, case-insensitive day of week
 (`Wednesday` is accepted). An unknown day of week is rejected with a validation error.
+
+### Search parameters for the hours
+
+| Parameter(s) | Behaviour |
+|---|---|
+| `recurringOnLocalTimeFrom`, `recurringOnLocalTimeTo` | The hours, as `HHMM` integers, on the requested days of week. Either one on its own leaves the other side open. |
+
+```
+GET /offers?recurringOnDayOfWeek=wednesday,saturday&recurringOnLocalTimeFrom=1300&recurringOnLocalTimeTo=1600
+```
+→ runs a `bool`/`should` of range queries, one per requested day of week, on
+`recurringOnLocalTimeRange.<day>`, as a top-level filter. One time frame applies to all the selected
+days and the days stay OR-combined, so the query above returns an offer recurring on a Wednesday
+afternoon even when its Saturdays are mornings.
+
+No `recurringOnDayOfWeek` term query is added on top: a hit on the day key already proves the offer
+recurs on that day.
+
+The query range is half open too, `gte` on the lower bound and `lt` on the upper one. It takes both
+sides to keep a 10:00 to 11:00 activity out of a search from 11:00: against a document range ending on
+`lt: 1100`, an inclusive query bound would still share the single minute 1100 with it, and against a
+query ending on `lt: 1100` an inclusive document bound would do the same.
+
+A missing bound is left out of the range query instead of clamped to midnight, so
+`recurringOnDayOfWeek=wednesday&recurringOnLocalTimeFrom=1300` asks for a Wednesday with hours from
+13:00 on, and `recurringOnLocalTimeTo=1600` on its own for a Wednesday with hours before 16:00. The
+end bound has no `2400` to clamp to anyway: `LocalTime` only accepts times on the clock, up to
+`2359`.
+
+Rejections, all validation errors:
+
+| Request | Why |
+|---|---|
+| hours without `recurringOnDayOfWeek` | The hours live under a key per day of week, so there is no field to range over. Falling back to the union over all days is the very thing these parameters exist to avoid. |
+| `recurringOnLocalTimeFrom` after `recurringOnLocalTimeTo` | An inverted range matches nothing. |
+| an unknown day of week | Same as for `recurringOnDayOfWeek` on its own. |
+
+### Or by hand in the advanced query syntax
+
+Because `q` is handed to Elasticsearch `query_string` untouched, the object shape gives the field per
+day of week for free, including the AND logic the url parameters cannot express:
+
+```
+GET /offers?q=recurringOnLocalTimeRange.wednesday:[1400 TO 1600] AND recurringOnLocalTimeRange.saturday:[1400 TO 1600]
+```
+
+Watch the bounds there. Lucene range syntax is inclusive on both ends, so `[1000 TO 1100]` written by
+hand does match an activity whose indexed range ends at `lt: 1100`, where
+`recurringOnLocalTimeTo=1100` would not.
 
 ---
 
@@ -699,7 +748,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 - `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
 - `transformHasChildcare()`, `transformHasOvernightStay()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
-- `RecurringLocalTimeRangeResolver`: counts, per day of week, on how many dates each minute is covered, and turns the minutes reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
+- `RecurringOnLocalTimeRangeResolver`: counts, per day of week, on how many dates each minute is covered, and turns the minutes reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
 - `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours` / `DayOfWeekCounts`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` returns a `DayOfWeekCounts` whose `daysWithMinimumCount()` feeds `recurringOnDayOfWeek`.
 - `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
 - `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.

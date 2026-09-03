@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\DayOfWeekCounts;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
-use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\RecurringLocalTimeRangeResolver;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\RecurringOnLocalTimeRangeResolver;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerLogger;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
@@ -47,7 +47,7 @@ final class CalendarTransformer implements JsonTransformer
 
     private EffectiveOpeningHoursResolver $effectiveOpeningHoursResolver;
 
-    private RecurringLocalTimeRangeResolver $recurringLocalTimeRangeResolver;
+    private RecurringOnLocalTimeRangeResolver $recurringOnLocalTimeRangeResolver;
 
     public function __construct(
         JsonTransformerLogger $logger,
@@ -56,7 +56,7 @@ final class CalendarTransformer implements JsonTransformer
         $this->logger = $logger;
         $this->effectiveOpeningHoursResolver = $effectiveOpeningHoursResolver;
         // Built here so the threshold stays next to the recurringOnDayOfWeek it has to agree with.
-        $this->recurringLocalTimeRangeResolver = new RecurringLocalTimeRangeResolver(
+        $this->recurringOnLocalTimeRangeResolver = new RecurringOnLocalTimeRangeResolver(
             self::RECURRING_ON_DAY_OF_WEEK_THRESHOLD
         );
     }
@@ -112,7 +112,7 @@ final class CalendarTransformer implements JsonTransformer
 
         $from = $this->extendSubEventsWithChildcare($from);
 
-        $draft = $this->transformRecurringLocalTimeRange($from, $draft);
+        $draft = $this->transformRecurringOnLocalTimeRange($from, $draft);
         $draft = $this->transformDateRange($from, $draft);
         $draft = $this->transformLocalTimeRange($from, $draft);
         $draft = $this->transformSubEvents($from, $draft);
@@ -204,16 +204,16 @@ final class CalendarTransformer implements JsonTransformer
      * @return array
      *   Updated JSON to index in Elasticsearch, as an associative array
      */
-    private function transformRecurringLocalTimeRange(array $from, array $draft): array
+    private function transformRecurringOnLocalTimeRange(array $from, array $draft): array
     {
-        $recurringLocalTimeRange = $this->recurringLocalTimeRangeResolver->resolve(
+        $recurringOnLocalTimeRange = $this->recurringOnLocalTimeRangeResolver->resolve(
             $from['subEvent'],
             $this->determineLocalTimezone($from)
         );
 
         // Cast so an offer without recurring hours indexes an empty object instead of an empty list,
         // which the object mapping rejects.
-        $draft['recurringOnLocalTimeRange'] = (object) $recurringLocalTimeRange;
+        $draft['recurringOnLocalTimeRange'] = (object) $recurringOnLocalTimeRange;
 
         return $draft;
     }

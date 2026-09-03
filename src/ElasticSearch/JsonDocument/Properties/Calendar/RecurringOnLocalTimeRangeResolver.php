@@ -22,7 +22,7 @@ use InvalidArgumentException;
  * 4. Keep the minutes reaching the minimum and join them into ranges. Half open, so an activity
  *    ending at 12:00 does not answer a search starting at 12:00.
  */
-final class RecurringLocalTimeRangeResolver
+final class RecurringOnLocalTimeRangeResolver
 {
     private const MINUTES_PER_DAY = 1440;
 

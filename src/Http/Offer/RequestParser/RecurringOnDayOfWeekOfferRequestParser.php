@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParserInterface
 {
@@ -26,10 +27,31 @@ final class RecurringOnDayOfWeekOfferRequestParser implements OfferRequestParser
             static fn (string $dayOfWeek): DayOfWeek => DayOfWeek::fromString($dayOfWeek)
         );
 
-        if (!empty($dayOfWeeks)) {
-            $offerQueryBuilder = $offerQueryBuilder->withRecurringOnDayOfWeekFilter(...$dayOfWeeks);
+        $recurringOnLocalTimeFrom = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeFrom');
+        $recurringOnLocalTimeTo = $parameterBagReader->getIntegerFromParameter('recurringOnLocalTimeTo');
+
+        if ($recurringOnLocalTimeFrom === null && $recurringOnLocalTimeTo === null) {
+            if (empty($dayOfWeeks)) {
+                return $offerQueryBuilder;
+            }
+
+            return $offerQueryBuilder->withRecurringOnDayOfWeekFilter(...$dayOfWeeks);
         }
 
-        return $offerQueryBuilder;
+        // The hours live under a key per day of week, so without a day of week there is no field to
+        // range over. Falling back to the union over all days would be the very thing these
+        // parameters exist to avoid.
+        if (empty($dayOfWeeks)) {
+            throw new UnsupportedParameterValue(
+                'The "recurringOnLocalTimeFrom" and "recurringOnLocalTimeTo" parameters require'
+                . ' "recurringOnDayOfWeek".'
+            );
+        }
+
+        return $offerQueryBuilder->withRecurringOnLocalTimeRangeFilter(
+            $recurringOnLocalTimeFrom,
+            $recurringOnLocalTimeTo,
+            ...$dayOfWeeks
+        );
     }
 }
