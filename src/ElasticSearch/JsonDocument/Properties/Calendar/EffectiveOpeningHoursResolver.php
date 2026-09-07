@@ -37,27 +37,34 @@ final class EffectiveOpeningHoursResolver
 
         $openingHoursByDay = $this->convertOpeningHoursToListGroupedByDay($from['openingHours'] ?? []);
 
-        if (($from['calendarType'] ?? null) === 'permanent') {
-            $now = new Chronos();
-            $startDate = $now->modify('-6 months');
-            $endDate = $now->modify('+12 months');
-        } else {
-            $startDate = Chronos::createFromFormat(DateTime::ATOM, $from['startDate']);
-            $endDate = Chronos::createFromFormat(DateTime::ATOM, $from['endDate']);
-        }
+        $window = ($from['calendarType'] ?? null) === 'permanent'
+            ? CalendarWindow::permanent()
+            : $this->indexedWindow($from);
 
         $interval = new DateInterval('P1D');
-        $period = new DatePeriod($startDate, $interval, $endDate);
+        $period = new DatePeriod($window->start(), $interval, $window->end());
 
         $slots = [];
         $dayCounts = new DayOfWeekCounts();
 
+        $recurring = CalendarWindow::recurring();
+        $daysWalked = 0;
+
         /* @var DateTime $date */
         foreach ($period as $date) {
+            if (++$daysWalked > CalendarWindow::MAX_DAYS) {
+                $this->logger->logWarning(
+                    'Opening hours resolved over the first ' . CalendarWindow::MAX_DAYS . ' days of the window only.'
+                );
+                break;
+            }
+
             $effectiveOpeningHoursOnDay = $this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay);
 
             // Count days (not slots): a day of week with multiple opening-hour slots on the same date counts once.
-            if (!empty($effectiveOpeningHoursOnDay)) {
+            // Only over the recurring window, so the counts agree with the recurring hours. The slots keep the
+            // walked window because they become the sub-events the date searches run on.
+            if (!empty($effectiveOpeningHoursOnDay) && $recurring->covers($date)) {
                 $dayCounts = $dayCounts->withIncremented(DayOfWeek::fromDate($date));
             }
 
@@ -72,6 +79,25 @@ final class EffectiveOpeningHoursResolver
         }
 
         return new EffectiveOpeningHours($slots, $dayCounts);
+    }
+
+    /**
+     * @param array $from
+     *   JSON-LD of an event or place with startDate and endDate properties, as an associative array
+     */
+    private function indexedWindow(array $from): CalendarWindow
+    {
+        $endDate = Chronos::createFromFormat(DateTime::ATOM, $from['endDate']);
+        $window = CalendarWindow::indexed(Chronos::createFromFormat(DateTime::ATOM, $from['startDate']), $endDate);
+
+        if ($window->end() < $endDate) {
+            $this->logger->logWarning(
+                'Opening hours resolved up to ' . $window->end()->format('Y-m-d')
+                    . " only, not {$endDate->format('Y-m-d')}."
+            );
+        }
+
+        return $window;
     }
 
     /**

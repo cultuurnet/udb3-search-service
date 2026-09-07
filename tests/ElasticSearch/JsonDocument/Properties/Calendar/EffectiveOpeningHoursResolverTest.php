@@ -80,6 +80,65 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
     }
 
     /**
+     * A faulty end date, like the year 5020, used to walk a million days and exhaust memory.
+     *
+     * @test
+     */
+    public function it_stops_five_years_after_today_for_a_calendar_running_for_millennia(): void
+    {
+        $slots = $this->resolver->resolve([
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+01:00',
+            'endDate' => '5020-01-01T00:00:00+01:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ])->slots();
+
+        $dates = array_map(
+            static fn (array $slot): string => $slot['date']->format('Y-m-d'),
+            $slots
+        );
+
+        $this->assertSame('2024-01-01', $dates[0]);
+        $this->assertSame('2029-05-28', $dates[count($dates) - 1]);
+    }
+
+    /**
+     * A calendar that has not started yet gets its five years from its own start date, so it is not
+     * dropped for beginning out of reach.
+     *
+     * @test
+     */
+    public function it_counts_the_five_years_from_a_start_date_in_the_future(): void
+    {
+        $slots = $this->resolver->resolve([
+            'calendarType' => 'periodic',
+            'startDate' => '2035-01-01T00:00:00+01:00',
+            'endDate' => '5020-01-01T00:00:00+01:00',
+            'openingHours' => [
+                [
+                    'dayOfWeek' => ['monday'],
+                    'opens' => '08:30',
+                    'closes' => '17:00',
+                ],
+            ],
+        ])->slots();
+
+        $dates = array_map(
+            static fn (array $slot): string => $slot['date']->format('Y-m-d'),
+            $slots
+        );
+
+        $this->assertSame('2035-01-01', $dates[0]);
+        $this->assertSame('2039-12-26', $dates[count($dates) - 1]);
+    }
+
+    /**
      * @return array<string, array{0: array<string, mixed>, 1: list<array{0: string, 1: string, 2: string}>}>
      */
     public function periodicCalendarProvider(): array
