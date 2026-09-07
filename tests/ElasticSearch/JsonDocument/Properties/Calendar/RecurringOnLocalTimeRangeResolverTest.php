@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar;
 
+use Cake\Chronos\Chronos;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
@@ -19,8 +21,16 @@ final class RecurringOnLocalTimeRangeResolverTest extends TestCase
 
     protected function setUp(): void
     {
+        // Fixed "now" so the sub-events below stay inside the window the resolver reads the pattern from.
+        Chronos::setTestNow(Chronos::createFromFormat(DateTimeInterface::ATOM, '2026-08-01T12:00:00+02:00'));
+
         $this->resolver = new RecurringOnLocalTimeRangeResolver(self::MINIMUM_OCCURRENCES);
         $this->timezone = new DateTimeZone('Europe/Brussels');
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     /**
@@ -283,6 +293,86 @@ final class RecurringOnLocalTimeRangeResolverTest extends TestCase
                 ['startDate' => '2026-08-05T12:00:00+02:00', 'endDate' => '2026-08-05T10:00:00+02:00'],
             ]
         );
+
+        $this->assertSame(
+            ['wednesday' => [['gte' => 1000, 'lt' => 1200]]],
+            $this->resolver->resolve($subEvents, $this->timezone)
+        );
+    }
+
+    /**
+     * A faulty end date, like the year 5020, used to walk a million calendar days and exhaust memory.
+     *
+     * @test
+     */
+    public function it_stops_at_the_window_for_a_sub_event_running_for_millennia(): void
+    {
+        $subEvents = [
+            [
+                'startDate' => '2026-08-01T10:00:00+02:00',
+                'endDate' => '5020-01-01T12:00:00+02:00',
+            ],
+        ];
+
+        $resolved = $this->resolver->resolve($subEvents, $this->timezone);
+
+        $this->assertSame(
+            [
+                'monday' => [['gte' => 0, 'lt' => 2400]],
+                'tuesday' => [['gte' => 0, 'lt' => 2400]],
+                'wednesday' => [['gte' => 0, 'lt' => 2400]],
+                'thursday' => [['gte' => 0, 'lt' => 2400]],
+                'friday' => [['gte' => 0, 'lt' => 2400]],
+                'saturday' => [['gte' => 0, 'lt' => 2400]],
+                'sunday' => [['gte' => 0, 'lt' => 2400]],
+            ],
+            $resolved
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_resolves_nothing_for_occurrences_beyond_the_window(): void
+    {
+        $subEvents = $this->weekly('2028-08-02', '10:00', '12:00', 4);
+
+        $this->assertSame([], $this->resolver->resolve($subEvents, $this->timezone));
+    }
+
+    /**
+     * Hours an offer kept until last year say nothing about the hours it keeps now.
+     *
+     * @test
+     */
+    public function it_resolves_nothing_for_occurrences_the_window_has_left_behind(): void
+    {
+        $subEvents = $this->weekly('2025-01-01', '10:00', '12:00', 4);
+
+        $this->assertSame([], $this->resolver->resolve($subEvents, $this->timezone));
+    }
+
+    /**
+     * Twelve Wednesdays running into the window, of which only three fall inside it. Counting the nine
+     * the window has left behind would clear the minimum on occurrences that are over.
+     *
+     * @test
+     */
+    public function it_counts_only_the_occurrences_inside_a_run_that_starts_before_the_window(): void
+    {
+        $subEvents = $this->weekly('2025-12-03', '10:00', '12:00', 12);
+
+        $this->assertSame([], $this->resolver->resolve($subEvents, $this->timezone));
+    }
+
+    /**
+     * The same run, one Wednesday longer, so four fall inside the window and the hours do hold up.
+     *
+     * @test
+     */
+    public function it_resolves_the_hours_once_enough_occurrences_fall_inside_the_window(): void
+    {
+        $subEvents = $this->weekly('2025-12-03', '10:00', '12:00', 13);
 
         $this->assertSame(
             ['wednesday' => [['gte' => 1000, 'lt' => 1200]]],

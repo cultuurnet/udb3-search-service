@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties;
 
 use CultuurNet\UDB3\Search\DateTimeFactory;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\CalendarWindow;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\DayOfWeekCounts;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHours;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
@@ -161,6 +162,9 @@ final class CalendarTransformer implements JsonTransformer
         $dayOfWeekCounts = new DayOfWeekCounts();
 
         $timezone = $this->determineLocalTimezone($from);
+        $window = CalendarWindow::recurring();
+        $windowStart = $window->start()->setTimezone($timezone)->setTime(0, 0);
+        $windowEnd = $window->end();
         $countedDates = [];
 
         foreach ($from['subEvent'] ?? [] as $subEvent) {
@@ -181,7 +185,10 @@ final class CalendarTransformer implements JsonTransformer
                 $endDate = $startDate;
             }
 
-            for ($date = $startDate; $date <= $endDate; $date = $date->modify('+1 day')) {
+            $firstDate = $startDate > $windowStart ? $startDate : $windowStart;
+            $lastDate = $endDate < $windowEnd ? $endDate : $windowEnd;
+
+            for ($date = $firstDate; $date <= $lastDate; $date = $date->modify('+1 day')) {
                 $dateString = $date->format('Y-m-d');
                 if (isset($countedDates[$dateString])) {
                     continue;

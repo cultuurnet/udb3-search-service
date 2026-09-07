@@ -65,6 +65,9 @@ final class RecurringOnLocalTimeRangeResolver
     private function cutIntoCalendarDays(array $subEvents, DateTimeZone $timezone): array
     {
         $pieces = [];
+        $window = CalendarWindow::recurring();
+        $windowStart = $window->start()->setTimezone($timezone);
+        $windowEnd = $window->end();
 
         foreach ($subEvents as $subEvent) {
             $startDate = $this->parseDate($subEvent['startDate'] ?? null, $timezone);
@@ -75,7 +78,10 @@ final class RecurringOnLocalTimeRangeResolver
                 continue;
             }
 
-            for ($day = $startDate->setTime(0, 0); $day <= $endDate; $day = $day->modify('+1 day')) {
+            $firstDay = ($startDate > $windowStart ? $startDate : $windowStart)->setTime(0, 0);
+            $lastDay = $endDate < $windowEnd ? $endDate : $windowEnd;
+
+            for ($day = $firstDay; $day <= $lastDay; $day = $day->modify('+1 day')) {
                 $dayAfter = $day->modify('+1 day');
 
                 $from = $startDate > $day ? $startDate : $day;
