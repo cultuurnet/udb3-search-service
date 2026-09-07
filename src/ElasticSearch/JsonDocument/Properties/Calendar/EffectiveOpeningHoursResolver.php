@@ -62,8 +62,7 @@ final class EffectiveOpeningHoursResolver
             $effectiveOpeningHoursOnDay = $this->getEffectiveOpeningHoursOnDay($date, $from, $openingHoursByDay);
 
             // Count days (not slots): a day of week with multiple opening-hour slots on the same date counts once.
-            // Only over the recurring window, so the counts agree with the recurring hours. The slots keep the
-            // walked window because they become the sub-events the date searches run on.
+            // Only over the recurring window, so the counts agree with the recurring hours.
             if (!empty($effectiveOpeningHoursOnDay) && $recurring->covers($date)) {
                 $dayCounts = $dayCounts->withIncremented(DayOfWeek::fromDate($date));
             }

@@ -353,8 +353,8 @@ final class RecurringOnLocalTimeRangeResolverTest extends TestCase
     }
 
     /**
-     * Twelve Wednesdays running into the window, of which only three fall inside it. Counting the nine
-     * the window has left behind would clear the minimum on occurrences that are over.
+     * Twelve Wednesdays running into the window, three of them inside it. Counting the nine that are over
+     * would clear the minimum on occurrences nobody can attend.
      *
      * @test
      */
@@ -366,7 +366,7 @@ final class RecurringOnLocalTimeRangeResolverTest extends TestCase
     }
 
     /**
-     * The same run, one Wednesday longer, so four fall inside the window and the hours do hold up.
+     * The same run, one Wednesday longer, so four fall inside and the hours hold up.
      *
      * @test
      */

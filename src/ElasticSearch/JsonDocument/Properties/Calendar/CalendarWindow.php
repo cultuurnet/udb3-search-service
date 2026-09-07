@@ -8,16 +8,14 @@ use Cake\Chronos\Chronos;
 use DateTimeInterface;
 
 /**
- * The stretches of calendar the indexer walks, together so they can be read against each other.
- *
- * Every walk steps a day at a time, so every walk needs an end. Without one a faulty end date, like the
- * year 5020 an editor can type, walks a million days and exhausts memory.
+ * The stretches of calendar the indexer walks, together so they can be read against each other. Every
+ * walk steps a day at a time, so a faulty end date like the year 5020 exhausts memory without one.
  */
 final class CalendarWindow
 {
     /**
-     * Backstop for a start date in the far past, which {@see indexed()} leaves alone because the days
-     * behind us are the ones already searched on. About thirty years, so it only fires on broken data.
+     * Backstop for a start date in the far past, which {@see indexed()} leaves alone. About thirty years,
+     * so it only fires on broken data.
      */
     public const MAX_DAYS = 11000;
 
@@ -38,11 +36,9 @@ final class CalendarWindow
     }
 
     /**
-     * What the weekly pattern is read from. A pattern repeats, so a year of it says everything the
-     * remaining years would, and looking no further either way keeps a schedule the offer has since
-     * changed out of the answer. Shared by recurringOnDayOfWeek and recurringOnLocalTimeRange so the two
-     * never disagree on which occurrences count. It lands on the same stretch as {@see permanent()},
-     * which answers the same question about how far back is still current.
+     * What the weekly pattern is read from. A pattern repeats, so looking further adds nothing but a
+     * schedule the offer has since changed. Shared by recurringOnDayOfWeek and recurringOnLocalTimeRange
+     * so the two cannot disagree.
      */
     public static function recurring(): self
     {
@@ -55,10 +51,9 @@ final class CalendarWindow
     }
 
     /**
-     * What sub-events are built over, which decides how far ahead a date search still finds the offer.
-     * Counted from today, so a calendar running since years back keeps reaching five years ahead, or from
-     * the start date when it has not begun yet, so one starting in 2035 is not dropped for beginning out
-     * of reach.
+     * What sub-events are built over, so it decides how far ahead a date search finds the offer. Counted
+     * from the start date when the calendar has not begun yet, otherwise from today, so a long running
+     * one keeps reaching ahead and a future one is not dropped for starting out of reach.
      */
     public static function indexed(Chronos $startDate, Chronos $endDate): self
     {
@@ -69,8 +64,7 @@ final class CalendarWindow
     }
 
     /**
-     * What a permanent calendar is read over. It carries no dates of its own, so the window rolls along
-     * with today.
+     * What a permanent calendar is read over. It carries no dates of its own, so this rolls with today.
      */
     public static function permanent(): self
     {

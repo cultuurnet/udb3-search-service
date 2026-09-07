@@ -109,8 +109,7 @@ final class EffectiveOpeningHoursResolverTest extends TestCase
     }
 
     /**
-     * A calendar that has not started yet gets its five years from its own start date, so it is not
-     * dropped for beginning out of reach.
+     * A calendar that has not started yet counts its five years from its own start date.
      *
      * @test
      */
