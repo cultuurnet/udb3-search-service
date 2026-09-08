@@ -32,6 +32,21 @@ RUN echo "max_execution_time=90" > $PHP_INI_DIR/conf.d/max-execution-time.ini
 EXPOSE 9000
 
 # --------------------------------------------------
+# Dev stage: what docker-compose.override.yml runs locally. Same runtime as production, plus the dependency tooling: composer and git.
+# Nothing after this stage depends on it, so a plain `docker build` skips it.
+# --------------------------------------------------
+FROM runtime AS dev
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        git \
+        unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2.6.6 /usr/bin/composer /usr/local/bin/composer
+
+WORKDIR /var/www/html
+
+# --------------------------------------------------
 # Build stage: install deps and build app
 # --------------------------------------------------
 FROM runtime AS build

@@ -1,0 +1,30 @@
+# Local development only. Compose loads this file automatically on top of
+# docker-compose.yml, so `docker compose up` / `make up` is the dev stack while the
+# acceptance-test pipeline runs the base file on its own with `-f`.
+#
+# Where the base file pulls the published ECR artifact, development builds the
+# image from this repo's Dockerfile instead. It builds natively for whatever architecture the host is
+
+x-dev-app: &dev-app
+  image: uitdatabank/search-api:dev
+  # The `dev` target is the production image's own runtime stage plus composer
+  build:
+    context: .
+    target: dev
+  user: root
+  volumes:
+    - .:/var/www/html:cached
+    - ../geojson-data:/var/www/geojson-data:cached
+
+services:
+  search:
+    <<: *dev-app
+
+  search-consume-udb3-api:
+    <<: *dev-app
+
+  search-consume-udb3-cli:
+    <<: *dev-app
+
+  search-consume-udb3-related:
+    <<: *dev-app
