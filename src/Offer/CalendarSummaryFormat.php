@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 final class CalendarSummaryFormat
 {
     private const ALLOWED_TYPES = ['text', 'html'];
-    private const ALLOWED_FORMATS = ['xs', 'sm', 'md', 'lg'];
+    private const ALLOWED_FORMATS = ['xs', 'sm', 'md', 'lg', 'xl'];
 
     private string $type;
 
