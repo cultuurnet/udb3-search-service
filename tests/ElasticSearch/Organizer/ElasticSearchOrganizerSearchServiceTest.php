@@ -117,6 +117,7 @@ final class ElasticSearchOrganizerSearchServiceTest extends TestCase
                                 ],
                             ],
                         ],
+                        'track_total_hits' => true,
                     ],
                 ]
             )

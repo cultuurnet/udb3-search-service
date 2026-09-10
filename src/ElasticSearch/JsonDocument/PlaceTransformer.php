@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\UniqueAddressTr
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\FallbackType;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\GeoInformationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\MetadataTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\SubEventCapTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\RegionServiceInterface;
 use CultuurNet\UDB3\Search\JsonDocument\CompositeJsonTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
@@ -22,13 +23,15 @@ final class PlaceTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        RegionServiceInterface $regionService
+        RegionServiceInterface $regionService,
+        int $subEventCap = SubEventCapTransformer::DEFAULT_CAP
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new OfferTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::place()
+                FallbackType::place(),
+                $subEventCap
             ),
             new AddressTransformer($logger, true),
             new UniqueAddressTransformer(),

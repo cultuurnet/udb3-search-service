@@ -1,0 +1,101 @@
+# Project coding guidelines
+
+See the  docs/calendar-indexing.md for the information about the calendar indexing.
+
+## Running tests and tooling
+
+Always run tests, PHPStan and code style **inside the `search` Docker container** via
+the `Makefile` targets — do not run `vendor/bin/*` directly on the host (the host PHP
+version differs and PHPStan/PHPUnit can fail or behave differently there).
+
+- `make test` — run the full PHPUnit suite (`composer test`).
+- `make test-filter filter=<pattern>` — run a subset, e.g. `make test-filter filter=OfferSearchControllerTest`.
+- `make stan` — run PHPStan (`composer phpstan`).
+- `make cs` / `make cs-fix` — check / autofix code style.
+- `make ci` — run the full CI pipeline (PHPStan + code style + tests); run this before pushing.
+
+Each target shells into the container (`docker compose exec -it search ...`). Use
+`docker compose exec -T search composer <script>` when invoking non-interactively.
+Note: this project does not install the `phpstan-phpunit` extension, so PHPUnit
+assertions (`assertNotNull`, `assertInstanceOf`, ...) do **not** narrow types for
+PHPStan — avoid dereferencing a nullable return in tests (e.g. assert against a value
+object instead of calling a method on a `?Type` result).
+
+## Projections
+
+### Naming indexed fields
+
+An indexed field and its query parameter use the same name as the source
+property in the event/place/organizer JSON. A derived boolean is computed
+rather than copied, so it has no source name to follow. Give it a descriptive
+name with an `is` or `has` prefix instead, like `hasChildcare` or
+`isDuplicate`. The full rules live in apidocs `REVIEW.md` (Search API) and the
+API design guidelines.
+
+### Always emit optional fields in projections
+
+When a property transformer reads an optional field from the source JSON, it
+must still write the field to the indexed document — using a sensible default
+when the source value is absent. Do not omit the field "because it isn't there
+yet" or "because it equals the default".
+
+Why:
+- Filters and queries rely on the field being present on every document.
+  A `term` filter on `false` does not match documents where the field is
+  missing, so omission silently produces wrong (usually empty) result sets.
+- The indexed document is the contract: consumers should not have to guess
+  whether absence means `false`, `null`, or "unknown".
+
+How to apply:
+- In `Properties\*Transformer::transform`, always set `$draft[<field>] = ...`.
+  Use `?? <default>` for the missing case rather than wrapping the assignment
+  in an `if`.
+- Mirror this in the test fixtures: every `tests/.../data/**/indexed*.json`
+  carries the field even when its value is the default.
+- Add the field to the ES mapping JSONs under `src/ElasticSearch/Operations/json/`.
+
+See `ChildrenOnlyTransformer` for a minimal reference implementation.
+
+### Bump the schema version when you change a mapping JSON
+
+Whenever you change any of the Elasticsearch mapping JSONs under
+`src/ElasticSearch/Operations/json/` (e.g. `mapping_udb3_core.json`,
+`mapping_event.json`, `mapping_place.json`), you **must** bump the matching
+constant in `src/ElasticSearch/Operations/SchemaVersions.php`.
+
+Why:
+- The constant is used as the index name suffix. A new value points the aliases
+  at a fresh index built from the updated mapping and triggers a reindex; without
+  a bump the mapping change is never applied to a live index.
+
+How to apply:
+- The event and place mappings are part of the core index, so a change to any of
+  the three mapping JSONs means bumping `SchemaVersions::UDB3_CORE`
+  (bump `GEOSHAPES` for geoshape mapping changes).
+- Use a fresh, strictly increasing `YYYYMMDDHHMMSS` timestamp as the value.
+
+## Comments
+
+### Only comment the *why*, never the *what*
+
+A comment must explain **why** the code is written the way it is — a rationale a
+reader cannot recover from the code itself. Do not add comments that merely
+restate what the code does.
+
+Why:
+- The code already states what it does. A "what" comment is redundant noise that
+  drifts out of date the moment the code changes, and it trains readers to stop
+  trusting comments.
+- The non-obvious part is almost always the reason: an ordering constraint, a
+  domain rule, a workaround, a deliberate default. That is what future readers
+  (and reviewers) actually need.
+
+How to apply:
+- Before keeping a comment, ask: "Does this tell the reader something the code
+  cannot?" If not, delete it.
+- Prefer comments that capture intent or constraints ("derive X before Y so it
+  reflects the author's input, not generated data") over narration ("set X to
+  false", "loop over the sub-events").
+- This applies to inline comments and to prose in docblocks alike. Boilerplate
+  `@param`/`@return` docblocks that match the surrounding file's idiom are fine;
+  prose inside them should still be *why*.

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\CalendarSummaryEmbeddingJsonTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\ConvertedAgesJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdEmbeddingJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\JsonLdPolyfillJsonTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\MinimalRequiredInfoJsonTransformer;
@@ -25,6 +26,7 @@ final class ResultTransformerFactory
 
         if ($embedded) {
             $transformerStack = $transformerStack->addTransformer(new JsonLdEmbeddingJsonTransformer());
+            $transformerStack = $transformerStack->addTransformer(new ConvertedAgesJsonTransformer());
             $transformerStack = $transformerStack->addTransformer(new JsonLdPolyfillJsonTransformer());
             $transformerStack = $transformerStack->addTransformer(new RegionEmbeddingJsonTransformer());
             if (!$embedUiTPASPrices) {

@@ -47,4 +47,9 @@ interface ParameterBagInterface
         string $queryParameter,
         ?string $defaultValueAsString = null
     ): ?DateTimeImmutable;
+
+    public function getDateFromParameter(
+        string $queryParameter,
+        ?string $defaultValueAsString = null
+    ): ?DateTimeImmutable;
 }

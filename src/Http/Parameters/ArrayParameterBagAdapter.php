@@ -153,6 +153,23 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
     }
 
+    public function getDateFromParameter(string $queryParameter, ?string $defaultValueAsString = null): ?DateTimeImmutable
+    {
+        $callback = function ($asString) use ($queryParameter): DateTimeImmutable {
+            $date = $this->parseDate((string) $asString);
+
+            if ($date === null) {
+                throw new UnsupportedParameterValue(
+                    "{$queryParameter} should be in the format YYYY-MM-DD, for example 2017-04-26"
+                );
+            }
+
+            return $date;
+        };
+
+        return $this->getStringFromParameter($queryParameter, $defaultValueAsString, $callback);
+    }
+
     /**
      * @return mixed|null
      */
@@ -186,5 +203,27 @@ final class ArrayParameterBagAdapter implements ParameterBagInterface
         $passThroughCallback = static fn ($value) => $value;
 
         return $passThroughCallback;
+    }
+
+    private function parseDate(string $value): ?DateTimeImmutable
+    {
+        // createFromFormat is lenient, so enforce the exact YYYY-MM-DD shape first: this
+        // rejects non-zero-padded parts (2020-1-1) and trailing garbage (2020-01-01abc).
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+            return null;
+        }
+
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value);
+        if (!$date instanceof DateTimeImmutable) {
+            return null;
+        }
+
+        // Reject dates that only parsed by rolling over, e.g. 2020-02-30 -> 2020-03-01.
+        $errors = DateTimeImmutable::getLastErrors();
+        if (is_array($errors) && ($errors['warning_count'] > 0 || $errors['error_count'] > 0)) {
+            return null;
+        }
+
+        return $date;
     }
 }

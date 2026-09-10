@@ -226,6 +226,10 @@
             "type": "date",
             "format": "strict_date_time_no_millis"
         },
+        "birthdateRange": {
+            "type": "date_range",
+            "format": "yyyy-MM-dd"
+        },
 
         "dateRange": {
             "type": "date_range",
@@ -269,6 +273,12 @@
                     "type": "text",
                     "analyzer": "lowercase_exact_match_analyzer",
                     "search_analyzer": "lowercase_exact_match_analyzer"
+                },
+                "hasChildcare": {
+                    "type": "boolean"
+                },
+                "hasOvernightStay": {
+                    "type": "boolean"
                 }
             }
         },
@@ -362,6 +372,50 @@
             "type": "text",
             "analyzer": "lowercase_exact_match_analyzer",
             "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "childrenOnly": {
+            "type": "boolean"
+        },
+
+        "hasChildcare": {
+            "type": "boolean"
+        },
+
+        "hasOvernightStay": {
+            "type": "boolean"
+        },
+
+        "recurringOnDayOfWeek": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
+        },
+
+        "recurringOnLocalTimeRange": {
+            "properties": {
+                "monday": {
+                    "type": "integer_range"
+                },
+                "tuesday": {
+                    "type": "integer_range"
+                },
+                "wednesday": {
+                    "type": "integer_range"
+                },
+                "thursday": {
+                    "type": "integer_range"
+                },
+                "friday": {
+                    "type": "integer_range"
+                },
+                "saturday": {
+                    "type": "integer_range"
+                },
+                "sunday": {
+                    "type": "integer_range"
+                }
+            }
         },
 
         "mediaObjectsCount": {
@@ -487,6 +541,12 @@
                     "search_analyzer": "lowercase_exact_match_analyzer"
                 }
             }
+        },
+
+        "departurePlaces": {
+            "type": "text",
+            "analyzer": "lowercase_exact_match_analyzer",
+            "search_analyzer": "lowercase_exact_match_analyzer"
         },
 
         "performer_free_text": {

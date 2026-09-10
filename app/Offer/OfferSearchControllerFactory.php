@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\Http\NodeAwareFacetTreeNormalizer;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AgeRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AttendanceModeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\AvailabilityOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\BirthdateRangeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CalendarOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\CompositeOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\ContributorsRequestParser;
@@ -21,6 +22,7 @@ use CultuurNet\UDB3\Search\Http\Offer\RequestParser\DocumentLanguageOfferRequest
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GeoBoundsOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\GroupByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\IsDuplicateOfferRequestParser;
+use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RecurringOnDayOfWeekOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\RelatedProductionRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\SortByOfferRequestParser;
 use CultuurNet\UDB3\Search\Http\Offer\RequestParser\WorkflowStatusOfferRequestParser;
@@ -43,22 +45,18 @@ final class OfferSearchControllerFactory
 
     private Consumer $consumer;
 
-    private bool $enableBoaPermission;
-
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
         string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
         Consumer $consumer,
-        bool $enableBoaPermission
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
         $this->documentType = $documentType;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
-        $this->enableBoaPermission = $enableBoaPermission;
     }
 
     public function createFor(
@@ -68,8 +66,10 @@ final class OfferSearchControllerFactory
         $requestParser = (new CompositeOfferRequestParser())
             ->withParser(new AgeRangeOfferRequestParser())
             ->withParser(new AvailabilityOfferRequestParser())
+            ->withParser(new BirthdateRangeOfferRequestParser())
             ->withParser(new CalendarOfferRequestParser())
             ->withParser(new AttendanceModeOfferRequestParser())
+            ->withParser(new RecurringOnDayOfWeekOfferRequestParser())
             ->withParser(new DistanceOfferRequestParser(
                 new GeoDistanceParametersFactory(new ElasticSearchDistanceFactory())
             ))
@@ -85,12 +85,14 @@ final class OfferSearchControllerFactory
             ->withParser(new WorkflowStatusOfferRequestParser());
 
         $luceneFactory = new LuceneQueryStringFactory();
+        $queryBuilder = new ElasticSearchOfferQueryBuilder($this->aggregationSize);
         if ($this->usesCompatibilityMode()) {
             $luceneFactory->enableElasticSearch5CompatibilityMode();
+            $queryBuilder->enableElasticSearch5CompatibilityMode();
         }
 
         return new OfferSearchController(
-            new ElasticSearchOfferQueryBuilder($this->aggregationSize),
+            $queryBuilder,
             $requestParser,
             $this->offerSearchServiceFactory->createFor(
                 $readIndex,
@@ -101,7 +103,6 @@ final class OfferSearchControllerFactory
             $luceneFactory,
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer,
-            $this->enableBoaPermission
         );
     }
 }

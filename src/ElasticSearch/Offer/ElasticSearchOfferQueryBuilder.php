@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -20,13 +21,14 @@ use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
 use CultuurNet\UDB3\Search\Offer\TermId;
 use CultuurNet\UDB3\Search\Offer\TermLabel;
-use CultuurNet\UDB3\Search\Offer\Time;
+use CultuurNet\UDB3\Search\Offer\LocalTime;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
 use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\Region\RegionId;
@@ -40,12 +42,15 @@ use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
+    use ElasticSearch5Compatibility;
+
     private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
@@ -62,7 +67,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $this->predefinedQueryStringFields = new OfferPredefinedQueryStringFields();
         $this->aggregationSize = $aggregationSize;
 
-        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions'];
+        $this->extraQueryParameters['_source'] = ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'];
     }
 
     /**
@@ -81,6 +86,15 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     public function withLocationCdbIdFilter(Cdbid $locationCdbid): self
     {
         return $this->withMatchQuery('location.id', $locationCdbid->toString());
+    }
+
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): self
+    {
+        $c = $this;
+        foreach ($departurePlaceCdbIds as $id) {
+            $c = $c->withMatchQuery('departurePlaces', $id->toString());
+        }
+        return $c;
     }
 
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
@@ -109,6 +123,23 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     ): self {
         $this->guardDateRange('available', $from, $to);
         return $this->withDateRangeQuery('availableRange', $from, $to);
+    }
+
+    public function withBirthdateRangeFilter(?DateTimeImmutable $from, ?DateTimeImmutable $to): self
+    {
+        $rangeQuery = $this->createRangeQuery(
+            'birthdateRange',
+            $from === null ? null : $from->format('Y-m-d'),
+            $to === null ? null : $to->format('Y-m-d')
+        );
+
+        if ($rangeQuery === null) {
+            return $this;
+        }
+
+        $c = $this->getClone();
+        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
+        return $c;
     }
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): self
@@ -153,7 +184,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withLocalTimeRangeFilter(int $localTimeFrom, int $localTimeTo): self
     {
-        $this->guardNaturalIntegerRange('localTime', new Time($localTimeFrom), new Time($localTimeTo));
+        $this->guardNaturalIntegerRange('localTime', new LocalTime($localTimeFrom), new LocalTime($localTimeTo));
         return $this->withRangeQuery('localTimeRange', $localTimeFrom, $localTimeTo);
     }
 
@@ -179,6 +210,51 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         );
     }
 
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    {
+        return $this->withMultiValueMatchQuery(
+            'recurringOnDayOfWeek',
+            array_map(
+                static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+                $dayOfWeeks
+            )
+        );
+    }
+
+    /**
+     * The hours are indexed per day of week, so the requested day of week is the field to range
+     * over rather than a separate filter. No recurringOnDayOfWeek term query is added on top: a hit
+     * on the day key already proves the offer recurs on that day.
+     */
+    public function withRecurringOnLocalTimeRangeFilter(
+        ?int $recurringOnLocalTimeFrom,
+        ?int $recurringOnLocalTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): self {
+        if ($recurringOnLocalTimeFrom === null && $recurringOnLocalTimeTo === null) {
+            return $this->withRecurringOnDayOfWeekFilter(...$dayOfWeeks);
+        }
+
+        $this->guardNaturalIntegerRange(
+            'recurringOnLocalTime',
+            $recurringOnLocalTimeFrom === null ? null : new LocalTime($recurringOnLocalTimeFrom),
+            $recurringOnLocalTimeTo === null ? null : new LocalTime($recurringOnLocalTimeTo)
+        );
+
+        return $this->withAnyOfQueries(
+            ...array_filter(
+                array_map(
+                    fn (DayOfWeek $dayOfWeek): ?RangeQuery => $this->createHalfOpenRangeQuery(
+                        'recurringOnLocalTimeRange.' . $dayOfWeek->value,
+                        $recurringOnLocalTimeFrom,
+                        $recurringOnLocalTimeTo
+                    ),
+                    $dayOfWeeks
+                )
+            )
+        );
+    }
+
     public function withBookingAvailabilityFilter(string $bookingAvailability): self
     {
         return $this->withMatchQuery('bookingAvailability', $bookingAvailability);
@@ -192,11 +268,13 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $localTimeTo = $subEventQueryParameters->getLocalTimeTo();
         $statuses = $subEventQueryParameters->getStatuses();
         $bookingAvailability = $subEventQueryParameters->getBookingAvailability();
+        $hasChildcare = $subEventQueryParameters->getHasChildcare();
+        $hasOvernightStay = $subEventQueryParameters->getHasOvernightStay();
 
         $this->guardDateRange('date', $from, $to);
 
         if ($localTimeFrom && $localTimeTo) {
-            $this->guardNaturalIntegerRange('localTime', new Time($localTimeFrom), new Time($localTimeTo));
+            $this->guardNaturalIntegerRange('localTime', new LocalTime($localTimeFrom), new LocalTime($localTimeTo));
         }
 
         $queries = [];
@@ -204,8 +282,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         if ($from || $to) {
             $queries[] = $this->createRangeQuery(
                 'subEvent.dateRange',
-                $from ? $from->format(DATE_ATOM) : null,
-                $to ? $to->format(DATE_ATOM) : null
+                $from?->format(DATE_ATOM),
+                $to?->format(DATE_ATOM)
             );
         }
 
@@ -229,6 +307,14 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         if ($bookingAvailability !== null) {
             $queries[] = new MatchQuery('subEvent.bookingAvailability', $bookingAvailability);
+        }
+
+        if ($hasChildcare !== null) {
+            $queries[] = new TermQuery('subEvent.hasChildcare', $hasChildcare);
+        }
+
+        if ($hasOvernightStay !== null) {
+            $queries[] = new TermQuery('subEvent.hasOvernightStay', $hasOvernightStay);
         }
 
         return $this->withBooleanFilterQueryOnNestedObject(
@@ -331,19 +417,29 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMatchQuery('audienceType', $audienceType->toString());
     }
 
+    public function withChildrenOnlyFilter(bool $childrenOnly): self
+    {
+        return $this->withTermQuery('childrenOnly', $childrenOnly);
+    }
+
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
     {
-        $matchQuery = new MatchQuery('audienceType', 'childrenOnly');
+        $childrenOnlyQuery = new TermQuery('childrenOnly', true);
 
         if ($creator !== null) {
             $innerBool = new BoolQuery();
-            $innerBool->add($matchQuery, BoolQuery::MUST);
+            $innerBool->add($childrenOnlyQuery, BoolQuery::MUST);
+            // The creator field is an analyzed string using lowercase_exact_match_analyzer
+            // (keyword tokenizer + lowercase filter): the indexed value is a single, lowercased
+            // token. A MatchQuery runs the search value through the same analyzer, giving an exact
+            // but case-insensitive match. A TermQuery would NOT lowercase and therefore fails to
+            // match creators that contain uppercase characters (e.g. mixed-case client ids).
             $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
-            $matchQuery = $innerBool;
+            $childrenOnlyQuery = $innerBool;
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($matchQuery, BoolQuery::MUST_NOT);
+        $c->boolQuery->add($childrenOnlyQuery, BoolQuery::MUST_NOT);
         return $c;
     }
 
@@ -397,6 +493,16 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         }
 
         return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
+    }
+
+    public function withHasOvernightStayFilter(bool $hasOvernightStay): self
+    {
+        return $this->withTermQuery('hasOvernightStay', $hasOvernightStay);
+    }
+
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        return $this->withTermQuery('hasChildcare', $hasChildcare);
     }
 
     public function withTermIdFilter(TermId $termId): self
@@ -536,14 +642,23 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
 
-        $fieldSort->setNestedFilter(
-            new TermQuery(
-                'metadata.recommendationFor.event',
-                $recommendationFor
-            )
-        );
+        $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
 
-        $fieldSort->setParameters(['nested_path' => 'metadata.recommendationFor']);
+        // ES6.1 deprecated the top-level nested_path/nested_filter sort parameters in favour of a
+        // nested object, and ES7 removed them. ES5 only understands the old syntax.
+        if ($this->usesLegacyNestedSortSyntax()) {
+            $fieldSort->setParameters([
+                'nested_path' => 'metadata.recommendationFor',
+                'nested_filter' => $nestedFilter,
+            ]);
+        } else {
+            $fieldSort->setParameters([
+                'nested' => [
+                    'path' => 'metadata.recommendationFor',
+                    'filter' => $nestedFilter,
+                ],
+            ]);
+        }
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);

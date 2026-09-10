@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
@@ -62,7 +63,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -87,7 +88,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -122,7 +123,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withTextQuery('(foo OR baz) AND bar AND labels:test');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -165,7 +166,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -205,7 +206,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -245,7 +246,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -285,7 +286,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -323,7 +324,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCalendarTypeFilter();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -346,7 +347,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCalendarTypeFilter(new CalendarType('single'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -387,7 +388,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -440,7 +441,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -481,7 +482,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -522,7 +523,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -568,7 +569,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -652,7 +653,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -715,7 +716,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -790,7 +791,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -865,7 +866,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -915,6 +916,122 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_can_build_a_query_with_a_has_childcare_filter_on_sub_event(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
+                    ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
+                    ->withHasChildcare(true)
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2026-01-01T00:00:00+00:00',
+                                                        'lte' => '2026-01-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'term' => [
+                                                    'subEvent.hasChildcare' => true,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_build_a_query_with_a_has_overnight_stay_filter_on_sub_event(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(0), new Limit(30))
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(new \DateTimeImmutable('2026-01-01T00:00:00+00:00'))
+                    ->withDateTo(new \DateTimeImmutable('2026-01-01T23:59:59+00:00'))
+                    ->withHasOvernightStay(true)
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 0,
+            'size' => 30,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'nested' => [
+                                'path' => 'subEvent',
+                                'query' => [
+                                    'bool' => [
+                                        'filter' => [
+                                            [
+                                                'range' => [
+                                                    'subEvent.dateRange' => [
+                                                        'gte' => '2026-01-01T00:00:00+00:00',
+                                                        'lte' => '2026-01-01T23:59:59+00:00',
+                                                    ],
+                                                ],
+                                            ],
+                                            [
+                                                'term' => [
+                                                    'subEvent.hasOvernightStay' => true,
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_query_with_a_status_filter_with_multiple_values(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -925,7 +1042,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -978,7 +1095,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1019,7 +1136,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1065,6 +1182,341 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_builds_a_query_with_a_single_recurring_on_day_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnDayOfWeekFilter(DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'recurringOnDayOfWeek' => [
+                                    'query' => 'wednesday',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_query_with_multiple_days_of_week_using_or_semantics(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnDayOfWeekFilter(DayOfWeek::Friday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'recurringOnDayOfWeek' => [
+                                                'query' => 'friday',
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'recurringOnDayOfWeek' => [
+                                                'query' => 'saturday',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_a_half_open_hours_range_on_a_single_day_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 1600, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'recurringOnLocalTimeRange.wednesday' => [
+                                    'gte' => 1300,
+                                    'lt' => 1600,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_or_combines_the_hours_range_over_the_requested_days_of_week(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 1600, DayOfWeek::Wednesday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.wednesday' => [
+                                                'gte' => 1300,
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.saturday' => [
+                                                'gte' => 1300,
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_hours_range_open_ended_without_an_end(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, null, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'recurringOnLocalTimeRange.wednesday' => [
+                                    'gte' => 1300,
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_hours_range_open_at_the_start_without_a_start(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(null, 1600, DayOfWeek::Wednesday, DayOfWeek::Saturday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.wednesday' => [
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                    [
+                                        'range' => [
+                                            'recurringOnLocalTimeRange.saturday' => [
+                                                'lt' => 1600,
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_falls_back_to_the_day_of_week_filter_without_any_hours(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(null, null, DayOfWeek::Wednesday);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'match' => [
+                                'recurringOnDayOfWeek' => [
+                                    'query' => 'wednesday',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_an_inverted_hours_range(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage(
+            'Minimum recurringOnLocalTime should be smaller or equal to maximum recurringOnLocalTime.'
+        );
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1600, 1300, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_hours_outside_the_clock(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('The time value 2400 is not a time of day between 0000 and 2359');
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1300, 2400, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_hours_with_minutes_that_are_not_on_the_clock(): void
+    {
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('The time value 1099 is not a time of day between 0000 and 2359');
+
+        (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withRecurringOnLocalTimeRangeFilter(1000, 1099, DayOfWeek::Wednesday);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_build_a_query_with_a_booking_availability_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -1072,7 +1524,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withBookingAvailabilityFilter('Unavailable');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1110,7 +1562,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withWorkflowStatusFilter();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1133,7 +1585,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withWorkflowStatusFilter(new WorkflowStatus('DRAFT'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1174,7 +1626,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1227,7 +1679,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1268,7 +1720,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1309,7 +1761,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1368,7 +1820,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1379,6 +1831,124 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $actualQueryArray = $builder->build();
 
         $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_birthdate_range_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'birthdateRange' => [
+                                    'gte' => '2020-01-01',
+                                    'lte' => '2020-12-31',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_birthdate_range_filter_without_an_upper_bound(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                DateTimeFactory::fromAtom('2020-01-01T00:00:00+00:00'),
+                null
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'birthdateRange' => [
+                                    'gte' => '2020-01-01',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_birthdate_range_filter_without_a_lower_bound(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withBirthdateRangeFilter(
+                null,
+                DateTimeFactory::fromAtom('2020-12-31T00:00:00+00:00')
+            );
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'birthdateRange' => [
+                                    'lte' => '2020-12-31',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
     }
 
     /**
@@ -1400,7 +1970,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1465,7 +2035,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1516,7 +2086,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1561,7 +2131,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPostalCodeFilter(new PostalCode('3000'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1626,7 +2196,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAddressCountryFilter(new Country('BE'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1691,7 +2261,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(new Age(18), null);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1729,7 +2299,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(null, new Age(18));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1767,7 +2337,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAgeRangeFilter(new Age(6), new Age(12));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1807,7 +2377,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAllAgesFilter(true);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1851,7 +2421,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAllAgesFilter(false);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1894,7 +2464,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(Price::fromFloat(9.99), null);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1932,7 +2502,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(null, Price::fromFloat(19.99));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -1970,7 +2540,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withPriceRangeFilter(Price::fromFloat(9.99), Price::fromFloat(19.99));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2023,7 +2593,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withAudienceTypeFilter(new AudienceType('members'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2054,6 +2624,150 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_with_a_children_only_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withChildrenOnlyFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'childrenOnly' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_children_only_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withChildrenOnlyFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'childrenOnly' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_childcare_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasChildcareFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasChildcare' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_excluding_audience_type_except_creator(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2061,7 +2775,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withExcludeChildrenOnlyUnlessCreator(new Creator('my-client@clients'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2076,10 +2790,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                             'bool' => [
                                 'must' => [
                                     [
-                                        'match' => [
-                                            'audienceType' => [
-                                                'query' => 'childrenOnly',
-                                            ],
+                                        'term' => [
+                                            'childrenOnly' => true,
                                         ],
                                     ],
                                 ],
@@ -2107,6 +2819,114 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_excluding_all_children_only_without_creator(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withExcludeChildrenOnlyUnlessCreator();
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'must_not' => [
+                        [
+                            'term' => [
+                                'childrenOnly' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_overnight_stay_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasOvernightStayFilter(true);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasOvernightStay' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_with_a_has_overnight_stay_false_filter(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withHasOvernightStayFilter(false);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'term' => [
+                                'hasOvernightStay' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $actualQueryArray = $builder->build();
+
+        $this->assertEquals($expectedQueryArray, $actualQueryArray);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_an_inclusive_media_objects_filter(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -2114,7 +2934,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMediaObjectsFilter(true);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2152,7 +2972,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMediaObjectsFilter(false);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2190,7 +3010,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withVideosFilter(true);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2228,7 +3048,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withVideosFilter(false);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2266,7 +3086,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withUiTPASFilter(true);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2302,7 +3122,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withUiTPASFilter(false);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2343,7 +3163,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2393,7 +3213,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2443,7 +3263,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2493,7 +3313,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2543,7 +3363,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2593,7 +3413,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2643,7 +3463,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2688,7 +3508,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withMainLanguageFilter(new Language('nl'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2728,7 +3548,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2771,7 +3591,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2821,7 +3641,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2866,7 +3686,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withCreatorFilter(new Creator('Jane Doe'));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2906,7 +3726,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2947,7 +3767,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -2988,7 +3808,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3030,7 +3850,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3071,7 +3891,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3112,7 +3932,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3153,7 +3973,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3188,7 +4008,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3234,7 +4054,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3284,7 +4104,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3331,7 +4151,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3367,10 +4187,12 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 [
                     'metadata.recommendationFor.score' => [
                         'order' => 'asc',
-                        'nested_path' => 'metadata.recommendationFor',
                         'nested' => [
-                            'term' => [
-                                'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                            'path' => 'metadata.recommendationFor',
+                            'filter' => [
+                                'term' => [
+                                    'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                                ],
                             ],
                         ],
                     ],
@@ -3386,6 +4208,32 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     /**
      * @test
      */
+    public function it_should_build_a_query_with_sort_by_recommendation_score_using_legacy_nested_sort_syntax_in_elastic_search_5_compatibility_mode(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->enableElasticSearch5CompatibilityMode()
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
+
+        $expectedSort = [
+            [
+                'metadata.recommendationFor.score' => [
+                    'order' => 'asc',
+                    'nested_path' => 'metadata.recommendationFor',
+                    'nested_filter' => [
+                        'term' => [
+                            'metadata.recommendationFor.event' => '6f11ca64-0b8b-45e8-8a99-9673f06935cc',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedSort, $builder->build()['sort']);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_build_a_query_with_sort_by_created(): void
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
@@ -3393,7 +4241,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByCreated(SortOrder::asc());
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3423,7 +4271,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withSortByModified(SortOrder::asc());
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3453,7 +4301,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withContributorsFilter('info@example.com');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3491,7 +4339,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withDuplicateFilter(true);
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3529,7 +4377,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             );
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3567,7 +4415,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withGroupByProductionId();
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3600,7 +4448,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withRecommendationForFilter('652ab95e-fdff-41ce-8894-1b29dce0d230');
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 30,
             'size' => 10,
             'query' => [
@@ -3646,7 +4494,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
             ->withStartAndLimit(new Start(9980), new Limit(10));
 
         $expectedQueryArray = [
-            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions'],
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
             'from' => 9980,
             'size' => 10,
             'query' => [

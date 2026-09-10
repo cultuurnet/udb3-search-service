@@ -33,4 +33,9 @@ trait ElasticSearch5Compatibility
     {
         return $this->compatibilityMode;
     }
+
+    protected function usesLegacyNestedSortSyntax(): bool
+    {
+        return $this->compatibilityMode;
+    }
 }

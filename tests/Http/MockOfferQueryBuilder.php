@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
@@ -58,6 +59,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): self
+    {
+        $c = clone $this;
+        $c->mockQuery['departurePlaceCdbIds'] = array_map(fn (Cdbid $id): string => $id->toString(), $departurePlaceCdbIds);
+        return $c;
+    }
+
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): self
     {
         $c = clone $this;
@@ -91,6 +99,16 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['availableRange']['from'] = $from ? $from->format(DATE_ATOM) : null;
         $c->mockQuery['availableRange']['to'] = $to ? $to->format(DATE_ATOM) : null;
+        return $c;
+    }
+
+    public function withBirthdateRangeFilter(?DateTimeImmutable $from, ?DateTimeImmutable $to): self
+    {
+        $c = clone $this;
+        $c->mockQuery['birthdateRange'] = [
+            'from' => $from === null ? null : $from->format('Y-m-d'),
+            'to' => $to === null ? null : $to->format('Y-m-d'),
+        ];
         return $c;
     }
 
@@ -172,6 +190,37 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
             $attendanceModes
         );
+        return $c;
+    }
+
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): self
+    {
+        if (empty($dayOfWeeks)) {
+            return $this;
+        }
+
+        $c = clone $this;
+        $c->mockQuery['recurringOnDayOfWeek'] = array_map(
+            static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+            $dayOfWeeks
+        );
+        return $c;
+    }
+
+    public function withRecurringOnLocalTimeRangeFilter(
+        ?int $recurringOnLocalTimeFrom,
+        ?int $recurringOnLocalTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): self {
+        $c = clone $this;
+        $c->mockQuery['recurringOnLocalTimeRange'] = [
+            'dayOfWeek' => array_map(
+                static fn (DayOfWeek $dayOfWeek): string => $dayOfWeek->value,
+                $dayOfWeeks
+            ),
+            'recurringOnLocalTimeFrom' => $recurringOnLocalTimeFrom,
+            'recurringOnLocalTimeTo' => $recurringOnLocalTimeTo,
+        ];
         return $c;
     }
 
@@ -280,12 +329,19 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withChildrenOnlyFilter(bool $childrenOnly): self
+    {
+        $c = clone $this;
+        $c->mockQuery['childrenOnly'] = $childrenOnly;
+        return $c;
+    }
+
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
     {
         $c = clone $this;
-        $c->mockQuery['excludeAudienceType'] = 'childrenOnly';
+        $c->mockQuery['excludeChildrenOnly'] = true;
         if ($creator !== null) {
-            $c->mockQuery['excludeAudienceTypeExceptCreator'] = $creator->toString();
+            $c->mockQuery['excludeChildrenOnlyExceptCreator'] = $creator->toString();
         }
         return $c;
     }
@@ -331,6 +387,20 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     {
         $c = clone $this;
         $c->mockQuery['uitpas'] = $include;
+        return $c;
+    }
+
+    public function withHasOvernightStayFilter(bool $hasOvernightStay): self
+    {
+        $c = clone $this;
+        $c->mockQuery['hasOvernightStay'] = $hasOvernightStay;
+        return $c;
+    }
+
+    public function withHasChildcareFilter(bool $hasChildcare): self
+    {
+        $c = clone $this;
+        $c->mockQuery['hasChildcare'] = $hasChildcare;
         return $c;
     }
 

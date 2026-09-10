@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\ElasticSearch\IdUrlParserInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AudienceTypeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\AvailabilityTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Calendar\EffectiveOpeningHoursResolver;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CalendarTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ChildrenOnlyTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CompletenessTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ContributorsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\CreatedAndModifiedTransformer;
@@ -24,6 +26,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\OriginalEncoded
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\PriceInfoTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\ProductionCollapseValueTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\RelatedOrganizerTransformer;
+use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\SubEventCapTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TermsTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\TypicalAgeRangeTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\VideosTransformer;
@@ -39,7 +42,8 @@ final class OfferTransformer implements JsonTransformer
     public function __construct(
         JsonTransformerLogger $logger,
         IdUrlParserInterface $idUrlParser,
-        FallbackType $fallbackType
+        FallbackType $fallbackType,
+        int $subEventCap = SubEventCapTransformer::DEFAULT_CAP
     ) {
         $this->compositeTransformer = new CompositeJsonTransformer(
             new IdentifierTransformer(
@@ -51,12 +55,15 @@ final class OfferTransformer implements JsonTransformer
             new LanguagesTransformer($logger, true),
             new NameTransformer($logger),
             new DescriptionTransformer(),
-            new CalendarTransformer($logger),
+            new CalendarTransformer($logger, new EffectiveOpeningHoursResolver($logger)),
+            // Must run after CalendarTransformer — caps draft['subEvent'] which CalendarTransformer writes.
+            new SubEventCapTransformer($logger, $subEventCap),
             new AvailabilityTransformer($logger),
             new TermsTransformer(true, true),
             new TypicalAgeRangeTransformer(),
             new PriceInfoTransformer(),
             new AudienceTypeTransformer(),
+            new ChildrenOnlyTransformer(),
             new MediaObjectsTransformer(),
             new VideosTransformer(),
             new RelatedOrganizerTransformer(

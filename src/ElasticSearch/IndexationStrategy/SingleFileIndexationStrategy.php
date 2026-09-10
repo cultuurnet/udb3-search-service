@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
@@ -45,7 +47,13 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
             $params['type'] = $documentType;
         }
 
-        $this->elasticSearchClient->index($params);
+        try {
+            $this->elasticSearchClient->index($params);
+        } catch (Throwable $e) {
+            // The ElasticSearch exception message doesn't always contain the document id, so we rethrow
+            // with the id baked in. Log context is dropped before Sentry, so the id must live in the message.
+            throw ElasticSearchDocumentCouldNotBeIndexed::forDocument($id, $e);
+        }
     }
 
     public function finish(): void

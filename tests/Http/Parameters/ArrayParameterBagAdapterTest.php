@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\Parameters;
 use CultuurNet\UDB3\Search\DateTimeFactory;
 use CultuurNet\UDB3\Search\Label\LabelName;
 use CultuurNet\UDB3\Search\Offer\WorkflowStatus;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use DateTime;
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -501,6 +502,85 @@ final class ArrayParameterBagAdapterTest extends TestCase
         );
 
         $parameterBag->getDateTimeFromParameter('availableFrom');
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_parse_a_date_from_a_parameter(): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => '2020-01-01']);
+
+        $actual = $parameterBag->getDateFromParameter('birthdateRangeFrom');
+
+        $this->assertNotNull($actual);
+        $this->assertSame('2020-01-01T00:00:00', $actual->format('Y-m-d\TH:i:s'));
+    }
+
+    /**
+     * @test
+     * @codingStandardsIgnoreStart
+     */
+    public function it_should_return_a_default_for_a_date_parameter_if_it_is_empty_and_a_default_is_available_and_defaults_are_enabled(): void
+    {
+        // @codingStandardsIgnoreEnd
+
+        $parameterBag = new ArrayParameterBagAdapter([]);
+
+        $actual = $parameterBag->getDateFromParameter('birthdateRangeFrom', '2020-01-01');
+
+        $this->assertNotNull($actual);
+        $this->assertSame('2020-01-01', $actual->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_null_for_a_date_parameter_if_the_parameter_value_is_a_wildcard(): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => '*']);
+        $actual = $parameterBag->getDateFromParameter('birthdateRangeFrom');
+        $this->assertNull($actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_return_null_for_a_date_parameter_if_it_is_empty_and_no_default_is_available(): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter([]);
+        $actual = $parameterBag->getDateFromParameter('birthdateRangeFrom');
+        $this->assertNull($actual);
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidDateProvider
+     */
+    public function it_should_throw_an_exception_if_a_date_parameter_can_not_be_parsed(string $invalidDate): void
+    {
+        $parameterBag = new ArrayParameterBagAdapter(['birthdateRangeFrom' => $invalidDate]);
+
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage(
+            'birthdateRangeFrom should be in the format YYYY-MM-DD, for example 2017-04-26'
+        );
+
+        $parameterBag->getDateFromParameter('birthdateRangeFrom');
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function invalidDateProvider(): array
+    {
+        return [
+            'not a date' => ['not-a-date'],
+            'trailing garbage' => ['2020-01-01abc'],
+            'non-zero-padded month and day' => ['2020-1-1'],
+            'month and day overflow' => ['2020-13-45'],
+            'day overflow (rollover)' => ['2020-02-30'],
+        ];
     }
 
 

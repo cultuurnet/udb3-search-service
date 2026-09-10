@@ -28,6 +28,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withLocationCdbIdFilter(Cdbid $locationCdbid): OfferQueryBuilderInterface;
 
+    public function withDeparturePlaceCdbIdFilter(Cdbid ...$departurePlaceCdbIds): OfferQueryBuilderInterface;
+
     public function withOrganizerCdbIdFilter(Cdbid $organizerCdbId): OfferQueryBuilderInterface;
 
     public function withMainLanguageFilter(Language $mainLanguage): OfferQueryBuilderInterface;
@@ -40,6 +42,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
         DateTimeImmutable $from = null,
         DateTimeImmutable $to = null
     ): OfferQueryBuilderInterface;
+
+    public function withBirthdateRangeFilter(?DateTimeImmutable $from, ?DateTimeImmutable $to): OfferQueryBuilderInterface;
 
     public function withWorkflowStatusFilter(WorkflowStatus ...$workflowStatuses): OfferQueryBuilderInterface;
 
@@ -69,6 +73,14 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withAttendanceModeFilter(AttendanceMode ...$attendanceModes): OfferQueryBuilderInterface;
 
+    public function withRecurringOnDayOfWeekFilter(DayOfWeek ...$dayOfWeeks): OfferQueryBuilderInterface;
+
+    public function withRecurringOnLocalTimeRangeFilter(
+        ?int $recurringOnLocalTimeFrom,
+        ?int $recurringOnLocalTimeTo,
+        DayOfWeek ...$dayOfWeeks
+    ): OfferQueryBuilderInterface;
+
     public function withBookingAvailabilityFilter(string $bookingAvailability): OfferQueryBuilderInterface;
 
     public function withSubEventFilter(SubEventQueryParameters $subEventQueryParameters): OfferQueryBuilderInterface;
@@ -90,6 +102,8 @@ interface OfferQueryBuilderInterface extends QueryBuilder
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): OfferQueryBuilderInterface;
 
     public function withAudienceTypeFilter(AudienceType $audienceType): OfferQueryBuilderInterface;
+
+    public function withChildrenOnlyFilter(bool $childrenOnly): OfferQueryBuilderInterface;
 
     public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): OfferQueryBuilderInterface;
 
@@ -120,6 +134,19 @@ interface OfferQueryBuilderInterface extends QueryBuilder
      *   false UiTPAS offers will be excluded.
      */
     public function withUiTPASFilter(bool $include): OfferQueryBuilderInterface;
+
+    /**
+     *   When set to true only offers that have at least one sub-event with an overnight stay will be
+     *   included. When set to false only offers without any overnight sub-event will be included.
+     */
+    public function withHasOvernightStayFilter(bool $hasOvernightStay): OfferQueryBuilderInterface;
+
+    /**
+     *   When set to true only offers that have childcare configured on at least one sub-event or
+     *   opening hour will be included. When set to false only offers without any childcare will be
+     *   included.
+     */
+    public function withHasChildcareFilter(bool $hasChildcare): OfferQueryBuilderInterface;
 
     public function withTermIdFilter(TermId $termId): OfferQueryBuilderInterface;
 

@@ -1,0 +1,772 @@
+# Offer Availability Indexing
+
+This document describes the calendar in JSON-LD format and how its fields are indexed in Elasticsearch before being exposed through search parameters.
+
+---
+
+## Calendar types
+
+Every offer has a `calendarType`. The type determines what date information is stored in JSON-LD and how it gets indexed.
+
+### Events
+
+Events support four types.
+
+| Type | What it means                                                                    |
+|---|----------------------------------------------------------------------------------|
+| `single` | Happens once, on a fixed single period with a start datetime and an end datetime |
+| `multiple` | Happens on several fixed periods, each with their own start and end datetime     |
+| `periodic` | Runs across a date range, with optional opening hours |
+| `permanent` | No fixed period, with optional opening hours |
+
+**single**
+
+```json
+{
+  "calendarType": "single",
+  "startDate": "2024-06-01T10:00:00+00:00",
+  "endDate": "2024-06-01T18:00:00+00:00"
+}
+```
+
+**multiple**
+
+```json
+{
+  "calendarType": "multiple",
+  "startDate": "2024-04-30T00:00:00+00:00",
+  "endDate": "2024-05-07T00:00:00+00:00",
+  "subEvent": [
+    { "startDate": "2024-04-30T10:00:00+00:00", "endDate": "2024-04-30T12:00:00+00:00" },
+    { "startDate": "2024-05-01T10:00:00+00:00", "endDate": "2024-05-01T12:00:00+00:00" },
+    { "startDate": "2024-05-07T10:00:00+00:00", "endDate": "2024-05-07T12:00:00+00:00" }
+  ]
+}
+```
+
+**periodic**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-01T00:00:00+00:00",
+  "endDate": "2024-08-31T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "wednesday", "friday"], "opens": "08:30", "closes": "17:00" }
+  ]
+}
+```
+
+**permanent**
+
+```json
+{
+  "calendarType": "permanent",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" },
+    { "dayOfWeek": ["saturday"], "opens": "10:00", "closes": "14:00" }
+  ]
+}
+```
+
+### Places
+
+Places only support `periodic` and `permanent`. They are physical locations, not one-time occurrences, so `single` and `multiple` do not apply.
+
+| Type | What it means |
+|---|---|
+| `periodic` | Open during a date range, with optional opening hours |
+| `permanent` | Always open (no fixed end date), with optional opening hours |
+
+The JSON-LD shape is the same as for events.
+
+---
+
+## Source fields vs. indexed fields
+
+Not every field in the JSON-LD ends up in Elasticsearch. Some fields are **read at index time and then discarded**. Others are **stored and queryable**.
+
+| Role | Fields                                                                           | Stored in ES? |
+|---|----------------------------------------------------------------------------------|---|
+| Source only | `calendarType`, `startDate`, `endDate`, `openingHours`, `childcare` | No, consumed to build the indexed fields below |
+| Indexed | `dateRange`, `localTimeRange`, `subEvent[]`, `availableRange`, `hasOvernightStay`, `childcare`, `recurringOnDayOfWeek` | Yes, queryable |
+
+`openingHours` is a good example of a source field: it is never stored and never queryable directly. The indexer reads it, expands it into `subEvent[]` entries, and those entries become the queryable surface.
+
+`startDate` and `endDate` work the same way. They are read to build the top-level `dateRange` field and then discarded.
+
+---
+
+## Indexing
+
+### Top-level date range
+
+Every offer gets a top-level `dateRange` field. It spans from the earliest start datetime to the latest end datetime across all sub-events. This makes simple datetime queries fast. No need to look inside nested sub-events.
+
+A `localTimeRange` is also stored. It holds only the time-of-day part (no date), which enables queries like "open between 14:00 and 18:00."
+
+Both fields sit directly on the document, not inside the `subEvent[]` array:
+
+```json
+{
+  "dateRange": {
+    "gte": "2024-06-01T10:00:00+00:00",
+    "lte": "2024-08-31T17:00:00+00:00"
+  },
+  "localTimeRange": {
+    "gte": "08:30",
+    "lte": "17:00"
+  },
+  "subEvent": [ ... ]
+}
+```
+
+### Sub-event indexing
+
+Every offer also gets a `subEvent[]` array. Each entry represents one time slot. The indexer expands the source calendar into this array.
+
+`subEvent` is mapped as a `nested` field, and Elasticsearch rejects an entire document once it exceeds
+`index.mapping.nested_objects.limit` (default 10,000 nested objects per document, across all nested fields
+combined). Calendars with a large or unbounded `openingHours`-driven expansion (e.g. `periodic` with a very
+long `startDate`–`endDate` range) can generate more sub-events than that. To stay safely under the limit,
+`SubEventCapTransformer` truncates `subEvent` to the first N entries encountered and logs a warning when
+truncation happens. The cap is `SubEventCapTransformer::DEFAULT_CAP` (9,900) — the same for every
+environment, so it's a code constant rather than a deployment-level config value; change it there if the
+Elasticsearch index setting ever changes. Only the `subEvent[]` array is capped, `dateRange` and
+`localTimeRange` are still built from the full, uncapped list.
+
+**Expanding rules:**
+
+| Calendar type | Opening hours | Result |
+|---|---|---|
+| `single` | n/a | 1 sub-event (start → end) |
+| `multiple` | n/a | One sub-event per explicit entry |
+| `periodic` | No | 1 sub-event covering the whole range |
+| `periodic` | Yes | One sub-event per day-of-week × time slot within the range |
+| `permanent` | No | 1 open-ended sub-event |
+| `permanent` | Yes | One sub-event per day-of-week × time slot, from −6 months to +12 months |
+
+Each sub-event in Elasticsearch looks like this:
+
+```json
+{
+  "dateRange": {
+    "gte": "2024-06-03T08:30:00+00:00",
+    "lte": "2024-06-03T17:00:00+00:00"
+  },
+  "localTimeRange": {
+    "gte": "08:30",
+    "lte": "17:00"
+  },
+  "status": "Available",
+  "bookingAvailability": "Available"
+}
+```
+
+**Example: periodic with opening hours**
+
+JSON-LD Input:
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-03T00:00:00+00:00",
+  "endDate": "2024-06-07T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "wednesday"], "opens": "08:30", "closes": "09:17" }
+  ]
+}
+```
+
+The range covers Monday 3 June to Friday 7 June. The opening hours apply on Monday and Wednesday, so the indexer produces two sub-events:
+
+```json
+{
+  "subEvent": [
+    {
+      "dateRange": { "gte": "2024-06-03T08:30:00+00:00", "lte": "2024-06-03T09:17:00+00:00" },
+      "localTimeRange": { "gte": "08:30", "lte": "09:17" },
+      "status": "Available",
+      "bookingAvailability": "Available"
+    },
+    {
+      "dateRange": { "gte": "2024-06-05T08:30:00+00:00", "lte": "2024-06-05T09:17:00+00:00" },
+      "localTimeRange": { "gte": "08:30", "lte": "09:17" },
+      "status": "Available",
+      "bookingAvailability": "Available"
+    }
+  ]
+}
+```
+
+### Permanent offers and the rolling window
+
+Permanent offers with opening hours are indexed with a rolling window of **−6 months to +12 months** from the moment of indexing. The indexer calculates this window relative to the current date and generates one sub-event per day-of-week × time slot within that range.
+
+This means the indexed sub-events become stale over time. To keep the window current, the `udb3-core:reindex-permanent` console command re-indexes all permanent offers. It scrolls through all permanent offers in Elasticsearch and re-runs the full indexing pipeline for each one, recalculating the window based on the current date.
+
+There is no built-in schedule. Running this command periodically (e.g. via a cron job) is the responsibility of the infrastructure.
+
+---
+
+## Search parameters
+
+### Top-level queries
+
+When you filter on datetime, local time, status, or booking availability **on their own**, the query hits the top-level fields.
+
+| Parameter(s) | ES field |
+|---|---|
+| `dateFrom`, `dateTo` | `dateRange` |
+| `localTimeFrom`, `localTimeTo` | `localTimeRange` |
+| `status` | `status` |
+| `bookingAvailability` | `bookingAvailability` |
+| `availableFrom`, `availableTo` | `availableRange` |
+
+`availableRange` is always a top-level filter. It controls the publication window: when the offer is publicly visible. It is separate from when the offer actually takes place.
+
+**Example: events happening on a specific day:**
+```
+GET /offers?dateFrom=2024-06-01T00:00:00+00:00&dateTo=2024-06-01T23:59:59+00:00
+```
+→ runs a range query on the top-level `dateRange` field.
+
+**Example: events with status "Unavailable":**
+```
+GET /offers?status=Unavailable
+```
+→ runs a term query on the top-level `status` field.
+
+### Nested queries (sub-event level)
+
+As soon as you combine **two or more** of `date*`, `localTime*`, `status`, or `bookingAvailability`, the query switches to a nested query against `subEvent[]`.
+
+**Why?** A top-level query could match by accident. Imagine an event with two sub-events: sub-event A is on 1 June but cancelled, sub-event B is available but on 8 June. A top-level query for "1 June AND available" would match this event, even though no single sub-event actually meets both conditions. A nested query fixes this by requiring all conditions to apply to the **same** sub-event.
+
+| Parameter(s) in the combination | Nested ES field |
+|---|---|
+| `dateFrom`, `dateTo` | `subEvent.dateRange` |
+| `localTimeFrom`, `localTimeTo` | `subEvent.localTimeRange` |
+| `status` | `subEvent.status` |
+| `bookingAvailability` | `subEvent.bookingAvailability` |
+
+**Example: available events on a specific day:**
+```
+GET /offers?dateFrom=2024-06-01T00:00:00+00:00&dateTo=2024-06-01T23:59:59+00:00&status=Available
+```
+→ combines `date*` and `status`, so the query runs as a nested query on `subEvent[]`. Both conditions must hold on the same sub-event.
+
+**Example: events bookable on a specific afternoon:**
+```
+GET /offers?localTimeFrom=14:00&localTimeTo=18:00&bookingAvailability=Available
+```
+→ combines `localTime*` and `bookingAvailability`, so again a nested query.
+
+---
+
+## Overnight stay
+
+Sub-events of `single` and `multiple` calendars may carry an optional `hasOvernightStay` flag in the
+source JSON-LD. It marks a slot that involves an overnight stay (e.g. a multi-day trip with a
+sleepover). It is serialised only when `true`:
+
+```json
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2024-06-01T20:00:00+00:00",
+      "endDate": "2024-06-02T08:00:00+00:00",
+      "hasOvernightStay": true
+    }
+  ]
+}
+```
+
+Overnight stay is **event-only** and lives on sub-events only. Opening hours (`periodic`, `permanent`)
+never carry it, and places never have it.
+
+### Indexing
+
+The indexer sets a single top-level boolean, `hasOvernightStay`:
+
+```json
+{ "hasOvernightStay": true }
+```
+
+It couples on **event level**: `hasOvernightStay` is `true` when at least one source sub-event has
+`hasOvernightStay: true`, and `false` otherwise. A partial overnight event (some sub-events overnight, some
+not) is therefore flagged `true`. Like `status` and `bookingAvailability`, the field is always
+present on every document (defaulting to `false`), so a `term` filter is reliable. It is derived
+from the source sub-events before they are poly-filled from opening hours, so it never influences
+`dateRange`, `localTimeRange`, or the generated `subEvent[]`.
+
+### Search parameter
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `hasOvernightStay=true` | `hasOvernightStay` | Only offers with at least one overnight sub-event. |
+| `hasOvernightStay=false` | `hasOvernightStay` | Only offers without any overnight sub-event. |
+| _(omitted)_ | — | No overnight filtering; behaviour unchanged. |
+
+```
+GET /offers?hasOvernightStay=true
+```
+→ runs a `term` query on the top-level `hasOvernightStay` field. It is independent of `dateRange` and
+the other calendar filters.
+
+---
+
+## Childcare
+
+Sub-events (`single`, `multiple`) and opening hours (`periodic`, `permanent`) may carry an
+optional `childcare` range in the source JSON-LD. It describes childcare offered before/after the
+activity:
+
+```json
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2024-06-01T10:00:00+00:00",
+      "endDate": "2024-06-01T12:00:00+00:00",
+      "childcare": { "start": "09:00", "end": "13:00" }
+    }
+  ]
+}
+```
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2024-06-01T00:00:00+00:00",
+  "endDate": "2024-08-31T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday"], "opens": "08:30", "closes": "17:00", "childcare": { "start": "08:00", "end": "18:00" } }
+  ]
+}
+```
+
+### Childcare widens the sub-event period
+
+A child is present for the childcare hours too, so a sub-event runs from the start of its childcare
+until the end of it. `dateRange`, `localTimeRange` and `subEvent[]` all follow that widened period,
+so the sub-event above is indexed as 09:00 to 13:00 rather than 10:00 to 12:00.
+
+Childcare has an optional start and an optional end, and only the one that is filled in moves the
+sub-event. Widening never crosses a day boundary. Opening hours carry their `childcare` range onto
+every sub-event they expand into, so `periodic` and `permanent` are widened the same way.
+
+### Indexing the flag
+
+The indexer also sets a top-level boolean, `hasChildcare`:
+
+```json
+{ "hasChildcare": true }
+```
+
+It is `true` when at least one source sub-event or opening hour has a `childcare` range configured,
+and `false` otherwise. Like `status` and `bookingAvailability`, it is always present on every
+document (defaulting to `false`), so a `term` filter is reliable. Childcare is event-only today;
+place documents always index `hasChildcare: false`.
+
+### Search parameter
+
+| Parameter | ES field | Behaviour |
+|---|---|---|
+| `hasChildcare=true` | `hasChildcare` | Only offers that have childcare on at least one sub-event or opening hour. |
+| `hasChildcare=false` | `hasChildcare` | Only offers without any childcare configured. |
+| _(omitted)_ | — | No childcare filtering; behaviour unchanged. |
+
+```
+GET /offers?hasChildcare=true
+```
+→ runs a `term` query on the top-level `hasChildcare` field. It is independent of `dateRange` and
+the other calendar filters.
+
+---
+
+## Ages and birthdates
+
+An event describes its audience either with a `typicalAgeRange` ("6-12") or with a `birthdateRange`
+(two dates). Both are indexed as ranges, so `q=typicalAgeRange:[...]` and `q=birthdateRange:[...]`
+return the same events no matter which of the two was filled in, and the `q` never has to be
+rewritten at search time to compensate.
+
+Only one of the two is ever entered, and an event with neither falls back to all ages ("-"). The
+missing one is derived from the other at index time and exposed under a "Converted" name, so a
+derived value can be told apart from an entered one.
+
+| Event has | `typicalAgeRange` | `typicalAgeRangeConverted` | `birthdateRange` | `birthdateRangeConverted` |
+|---|---|---|---|---|
+| An age range | entered | — | — | derived |
+| A birthdate range | — | derived | entered | — |
+| An age range and a birthdate range | entered | — | entered | — |
+| Neither (all ages) | `-` | — | — | — |
+
+Row three is a leftover from before the two became mutually exclusive, and disappears once Entry API
+rejects both fields in one request. Until old events are replayed, a `typicalAgeRange` of `-` can
+also still turn up next to a `birthdateRange`. It counts as the default, so those events get a
+derived age all the same.
+
+A derived range with an open bound is left out of the `Converted` field: an all ages event and an
+open-ended age like `6-` have no `from`/`to` pair to show.
+
+### Reference date
+
+Converting between an age and a birthdate needs a date to count from, and that is the `startDate`
+of the event. The result is calculated once at index time and stays correct, because an event's
+start date never changes.
+
+| Calendar type | Reference date |
+|---|---|
+| `single` | `startDate` |
+| `multiple` | `startDate`, which is the earliest sub-event |
+| `periodic` | `startDate`, the first day of the run |
+| `permanent` | the indexing time, as there is no `startDate` |
+
+Only `permanent` events go stale: their derived range ages along with the calendar until
+`udb3-core:reindex-permanent` runs again, the same command their rolling sub-event window already
+depends on.
+
+An event of any other calendar type that has no `startDate` is missing data (already logged while
+building `dateRange`) and gets no derived range at all, rather than one counted from an arbitrary
+date.
+
+### Details worth knowing
+
+- An "all ages" range (`typicalAgeRange: "-"`, indexed as `allAges: true`) is converted to an
+  unbounded `birthdateRange` (`gte` and `lte` both `null`). It covers every birthdate ever, so it
+  matches every birthdate query, the same way its `typicalAgeRange` already matches every age query.
+  An integrator that does not want these events excludes them with `allAges=false`.
+- An open-ended age like `6-` has no maximum, so its derived `birthdateRange` has no oldest bound:
+  `gte` is `null` and `lte` is a real date. Conversion the other way is always bounded, because a
+  source `birthdateRange` always carries both dates.
+- The conversion is whole years, so a derived range is a little wider than the one it came from.
+  Birthdates 1 March 2020 to 31 March 2020 become ages 6 to 6 on an event in June 2026, and
+  converting those ages back covers all of June 2019 to June 2020.
+- A long-running `periodic` or `multiple` event is converted against its first day only. Someone who
+  ages into the range halfway through the run does not match it.
+
+---
+
+## Recurring on day of week
+
+Some offers recur on fixed days of the week — a museum open every Wednesday, a weekly children's
+workshop on Saturday mornings. The `recurringOnDayOfWeek` field captures those days so users can search
+for them, e.g. a parent looking for a regular Wednesday-afternoon activity for their child.
+
+> **`recurringOnDayOfWeek` means "recurring days of week", not "any day the offer ever touches".** A
+> day of week is only indexed once the offer occurs on it often enough to be a dependable, regular
+> fixture (see the threshold below). An offer happening on a single Friday is *not* a "Friday offer" for
+> this purpose.
+
+### The recurrence threshold
+
+A day of week is indexed only if the offer occurs on it on at least
+**`RECURRING_ON_DAY_OF_WEEK_THRESHOLD` (4)** distinct days. The threshold is a `CalendarTransformer`
+constant; at 4, an offer running less than about a month never qualifies, which is what keeps the field
+to genuinely recurring offers. Because the filtering happens at index time, the search side only ever
+matches a plain list of days of week.
+
+`recurringOnDayOfWeek` is a list of lowercase English day names (`monday`–`sunday`):
+
+```json
+{
+  "recurringOnDayOfWeek": ["monday", "wednesday", "friday"]
+}
+```
+
+Every document always carries the field (defaulting to `[]`), so a filter on it is reliable.
+
+### How the days of week are derived
+
+| Calendar type | Source | `recurringOnDayOfWeek` |
+|---|---|---|
+| `single` | — | always `[]` (out of scope: a single occurrence never recurs) |
+| `multiple` | explicit `subEvent[]` | days of week occurring on ≥ 4 days across the sub-events |
+| `periodic` | `openingHours` over `startDate`–`endDate` | days of week open on ≥ 4 days within the range |
+| `permanent` | `openingHours` over the −6/+12 month rolling window | days of week open on ≥ 4 days within the window |
+
+**periodic / permanent** reuse the same single calendar walk that builds `subEvent[]`
+(`EffectiveOpeningHoursResolver::resolve()`), counting the effective open days per day of week. The
+count is **days, not slots**: a day of week with two opening-hour slots on the same date counts once.
+
+**multiple** calendars have no opening hours; their occurrences are the explicit source sub-events.
+`CalendarTransformer::countDayOfWeekForMultiple()` counts them in the offer's local timezone. Each
+sub-event contributes **every calendar day it spans** — a Friday-to-Sunday sub-event counts Friday,
+Saturday and Sunday — and, again, counts days not slots: a date covered by more than one sub-event
+counts once.
+
+Because permanent counts are derived from a rolling window relative to "now", `recurringOnDayOfWeek`
+becomes stale the same way `subEvent[]` does for permanent offers, and is refreshed by the same
+`udb3-core:reindex-permanent` console command.
+
+### The count respects closed and adjusted days
+
+For `periodic` and `permanent`, the open-day count behind the threshold counts only days the offer is
+**actually open**, with closed and adjusted days applied:
+
+- An occurrence that falls inside `openingHoursClosedDays` does **not** count.
+- An adjusted day counts only if the adjusted opening hours still leave that day of week open.
+
+So a day of week with four nominal occurrences drops out of `recurringOnDayOfWeek` when closures or
+adjustments leave fewer than four days actually open.
+
+### Recurring hours per day of week
+
+`recurringOnDayOfWeek` says which days an offer recurs on, not at what hours. Combining it with
+`localTimeFrom` and `localTimeTo` does not fill that gap, because `localTimeRange` is a union over
+every day of week: a workshop running Wednesday 09:00 to 12:00 and Saturday 14:00 to 18:00 would
+answer a search for Wednesday 14:00 to 18:00. So the hours are indexed per day of week as well.
+
+```json
+{
+  "recurringOnDayOfWeek": ["wednesday", "saturday"],
+  "recurringOnLocalTimeRange": {
+    "wednesday": [{ "gte": 1100, "lt": 1200 }, { "gte": 1400, "lt": 1800 }],
+    "saturday": [{ "gte": 1400, "lt": 1800 }]
+  }
+}
+```
+
+`RecurringOnLocalTimeRangeResolver` counts, per day of week, on how many dates each minute is covered,
+and keeps the minutes reaching the same threshold of 4. Counting minutes rather than whole sub-events
+keeps hours that shift between occurrences usable: the part they have in common still qualifies. Two
+slots on the same day stay two ranges, so a search does not match the gap between them.
+
+Like `recurringOnDayOfWeek`, it counts dates and not slots. Two sub-events overlapping on one date
+are one occurrence of the hours they share, otherwise two weeks of overlapping slots would reach a
+threshold of four.
+
+It resolves from the sub-events after they are poly-filled from `openingHours` and widened with
+childcare, so all four calendar types work the same way, closed and adjusted days are already applied,
+and the childcare hours are covered too. A `single` calendar never reaches the threshold.
+
+The ranges are half open. An activity ending at 12:00 does not occupy 12:00, so a search starting at
+12:00 must not match it, and inclusive bounds would make it match on that one minute. This is the only
+range field spelled with `lt`, every other one keeps `gte` and `lte`.
+
+A day of week can recur without recurring hours, when it occurs often enough but at hours that never
+settle. That day is then absent from `recurringOnLocalTimeRange` while staying in
+`recurringOnDayOfWeek`. Every document always carries the field, defaulting to `{}`.
+
+### Search parameter
+
+| Parameter | Behaviour |
+|---|---|
+| `recurringOnDayOfWeek=wednesday` | Offers recurring on Wednesday. |
+| `recurringOnDayOfWeek=friday,saturday,sunday` | OR-combined: recurring on **any** of those days. |
+| _(omitted)_ | No day-of-week filtering. |
+
+```
+GET /offers?recurringOnDayOfWeek=friday,saturday
+```
+→ runs a `bool`/`should` of `match` queries, one per requested day of week, as a top-level filter. Values
+are comma-separated (consistent with `attendanceMode`, `workflowStatus`); the array syntax
+`recurringOnDayOfWeek[]=friday` is rejected with a "can only have a single value" error. The
+`recurringOnDayOfWeek` field uses `lowercase_exact_match_analyzer` as both `analyzer` and
+`search_analyzer`, so a `match` query resolves each value to an exact, case-insensitive day of week
+(`Wednesday` is accepted). An unknown day of week is rejected with a validation error.
+
+### Search parameters for the hours
+
+| Parameter(s) | Behaviour |
+|---|---|
+| `recurringOnLocalTimeFrom`, `recurringOnLocalTimeTo` | The hours, as `HHMM` integers, on the requested days of week. Either one on its own leaves the other side open. |
+
+```
+GET /offers?recurringOnDayOfWeek=wednesday,saturday&recurringOnLocalTimeFrom=1300&recurringOnLocalTimeTo=1600
+```
+→ runs a `bool`/`should` of range queries, one per requested day of week, on
+`recurringOnLocalTimeRange.<day>`, as a top-level filter. One time frame applies to all the selected
+days and the days stay OR-combined, so the query above returns an offer recurring on a Wednesday
+afternoon even when its Saturdays are mornings.
+
+No `recurringOnDayOfWeek` term query is added on top: a hit on the day key already proves the offer
+recurs on that day.
+
+The query range is half open too, `gte` on the lower bound and `lt` on the upper one. It takes both
+sides to keep a 10:00 to 11:00 activity out of a search from 11:00: against a document range ending on
+`lt: 1100`, an inclusive query bound would still share the single minute 1100 with it, and against a
+query ending on `lt: 1100` an inclusive document bound would do the same.
+
+A missing bound is left out of the range query instead of clamped to midnight, so
+`recurringOnDayOfWeek=wednesday&recurringOnLocalTimeFrom=1300` asks for a Wednesday with hours from
+13:00 on, and `recurringOnLocalTimeTo=1600` on its own for a Wednesday with hours before 16:00. The
+end bound has no `2400` to clamp to anyway: `LocalTime` only accepts times on the clock, up to
+`2359`.
+
+Rejections, all validation errors:
+
+| Request | Why |
+|---|---|
+| hours without `recurringOnDayOfWeek` | The hours live under a key per day of week, so there is no field to range over. Falling back to the union over all days is the very thing these parameters exist to avoid. |
+| `recurringOnLocalTimeFrom` after `recurringOnLocalTimeTo` | An inverted range matches nothing. |
+| an unknown day of week | Same as for `recurringOnDayOfWeek` on its own. |
+
+### Or by hand in the advanced query syntax
+
+Because `q` is handed to Elasticsearch `query_string` untouched, the object shape gives the field per
+day of week for free, including the AND logic the url parameters cannot express:
+
+```
+GET /offers?q=recurringOnLocalTimeRange.wednesday:[1400 TO 1600] AND recurringOnLocalTimeRange.saturday:[1400 TO 1600]
+```
+
+Watch the bounds there. Lucene range syntax is inclusive on both ends, so `[1000 TO 1100]` written by
+hand does match an activity whose indexed range ends at `lt: 1100`, where
+`recurringOnLocalTimeTo=1100` would not.
+
+---
+
+## Closed days and adjusted days
+
+Two fields that the backend model supports but are **not yet handled by the indexer**.
+
+### Closed days
+
+A closed day is a date range where the offer is not available, even if it would normally be open on those days.
+
+```json
+{
+  "openingHoursClosedDays": [
+    {
+      "startDate": "2024-07-15T00:00:00+00:00",
+      "endDate": "2024-07-19T23:59:59+00:00",
+      "description": {
+        "nl": "Zomervakantie",
+        "en": "Summer break"
+      }
+    }
+  ]
+}
+```
+
+With the current indexer, the week of 15–19 July would still appear in `subEvent[]` as available. That is wrong.
+
+### Adjusted days
+
+An adjusted day is a date range where the offer uses different opening hours than usual.
+
+```json
+{
+  "openingHoursAdjustedDays": [
+    {
+      "startDate": "2024-12-24T00:00:00+00:00",
+      "endDate": "2024-12-24T23:59:59+00:00",
+      "openingHours": [
+        { "dayOfWeek": ["tuesday"], "opens": "09:00", "closes": "13:00" }
+      ],
+      "description": {
+        "nl": "Kerstavond — vroeger gesloten",
+        "en": "Christmas Eve — closes early"
+      }
+    }
+  ]
+}
+```
+
+With the current indexer, 24 December would use the regular opening hours. That is wrong.
+
+Both fields only apply to `periodic` and `permanent` calendars. `single` and `multiple` carry explicit sub-events and are not affected.
+
+---
+
+## How closed and adjusted days change sub-event generation
+
+Neither field gets indexed on its own. They are source-only, just like `openingHours`. The indexer reads them, uses them to decide which sub-events to generate, and then discards them. The indexed surface stays the same. No mapping changes and no re-index migration needed.
+
+### Closed days
+
+This is straightforward. When generating sub-events, skip any day that falls within a closed range.
+
+**Example: periodic with a closed day**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2026-05-04T00:00:00+00:00",
+  "endDate": "2026-05-08T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "openingHoursClosedDays": [
+    { "startDate": "2026-05-06", "endDate": "2026-05-06" }
+  ]
+}
+```
+
+Without closed days: 5 sub-events (Mon 4 to Fri 8 May, one per day).
+With closed days: 4 sub-events. Wednesday 6 May is skipped.
+
+A search for events on 6 May will not return this offer, because there is no sub-event for that date.
+
+### Adjusted days
+
+This is more involved. When a day falls within an adjusted range, it still gets a sub-event, but built from the adjusted opening hours instead of the regular ones.
+
+**Example: one day closes early**
+
+```json
+{
+  "calendarType": "periodic",
+  "startDate": "2026-05-04T00:00:00+00:00",
+  "endDate": "2026-05-08T23:59:59+00:00",
+  "openingHours": [
+    { "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "openingHoursAdjustedDays": [
+    {
+      "startDate": "2026-05-06",
+      "endDate": "2026-05-06",
+      "openingHours": [
+        { "dayOfWeek": ["wednesday"], "opens": "09:00", "closes": "12:00" }
+      ],
+      "description": { "nl": "Vroeg gesloten", "en": "Early closing" }
+    }
+  ]
+}
+```
+
+Wednesday 6 May gets a sub-event from 09:00 to 12:00 instead of 09:00 to 17:00. A search for events between 13:00 and 17:00 on 6 May will not return this offer.
+
+**Why this is complex:**
+
+The adjusted opening hours are still structured per `dayOfWeek`. The indexer has to match the actual day of week of each date against the adjusted hours, using the same expansion logic as regular opening hours but scoped to the adjusted range only.
+
+**API constraints (enforced by the backend validators, not JSON schema):**
+
+- Adjusted day entries must not overlap each other. The backend rejects overlapping ranges, so the indexer will never see two adjusted entries that cover the same date.
+- A date can still fall in both a closed range and an adjusted range. Closed days take precedence.
+- For `periodic` calendars, both closed days and adjusted days must fall within the calendar's `startDate`–`endDate` range.
+
+---
+
+## Code reference
+
+### Indexing
+
+- `CalendarTransformer`: transforms the source calendar into indexed fields. Key methods: `transformDateRange()`, `transformLocalTimeRange()`, `transformSubEvents()`, 
+- `transformHasChildcare()`, `transformHasOvernightStay()`, `polyFillJsonLdSubEvents()`. It also writes `recurringOnDayOfWeek` via `determineRecurringOnDayOfWeek()`, keeping the days of week that reach `RECURRING_ON_DAY_OF_WEEK_THRESHOLD` — counted from `EffectiveOpeningHoursResolver::resolve()` for periodic/permanent, or from `countDayOfWeekForMultiple()` for multiple.
+- `RecurringOnLocalTimeRangeResolver`: counts, per day of week, on how many dates each minute is covered, and turns the minutes reaching the threshold into `recurringOnLocalTimeRange`. Runs on the poly-filled and childcare-widened sub-events, so every calendar type resolves the same way.
+- `EffectiveOpeningHoursResolver` / `EffectiveOpeningHours` / `DayOfWeekCounts`: resolve the effective (closures/adjustments applied) opening hours once. `EffectiveOpeningHours::slots()` feeds `subEvent[]`; `EffectiveOpeningHours::dayCounts()` returns a `DayOfWeekCounts` whose `daysWithMinimumCount()` feeds `recurringOnDayOfWeek`.
+- `SubEventCapTransformer`: runs immediately after `CalendarTransformer` in `OfferTransformer` and caps `subEvent` to `SubEventCapTransformer::DEFAULT_CAP` entries to stay under Elasticsearch's nested-object limit.
+- `AgeTransformer`: derives a `typicalAgeRange` from the `birthdateRange` when a birthdate range sits next to the default all-ages age (replacing it), otherwise derives a `birthdateRange` from the `typicalAgeRange`, relative to the event's `startDate`. Runs after `TypicalAgeRangeTransformer` and `BirthdateRangeTransformer`, which index the values as they were entered.
+
+### Elasticsearch mappings
+
+- `mapping_udb3_core.json`: shared core mapping (ES8)
+- `mapping_event.json`: field mapping for events
+- `mapping_place.json`: field mapping for places
+
+### Query building
+
+- `CalendarOfferRequestParser`: decides whether to use a top-level or a nested query based on which parameters are combined. Also parses the `hasOvernightStay` and `hasChildcare` boolean parameters.
+- `RecurringOnDayOfWeekOfferRequestParser` / `DayOfWeek`: parses the comma-separated, case-insensitive `recurringOnDayOfWeek` parameter into `DayOfWeek` enum cases.
+- `ElasticSearchOfferQueryBuilder`: builds the actual Elasticsearch queries. Key methods: `withDateRangeFilter()`, `withLocalTimeRangeFilter()`, `withStatusFilter()`, `withBookingAvailabilityFilter()`, `withAvailableRangeFilter()`, `withSubEventFilter()`, `withHasOvernightStayFilter()`, `withHasChildcareFilter()`, `withRecurringOnDayOfWeekFilter()`.
+- `SubEventQueryParameters`: collects the combined sub-event filter parameters before passing them to the query builder.
+
+### Backend calendar model (udb3-backend)
+
+- `ClosedDay`: holds `startDate`, `endDate`, and an optional description.
+- `AdjustedDay`: holds `startDate`, `endDate`, its own `openingHours`, and an optional description.

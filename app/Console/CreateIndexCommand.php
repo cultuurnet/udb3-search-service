@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\CreateIndex as CreateIndexOperation;
+use Elasticsearch\Client;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,6 +13,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CreateIndexCommand extends AbstractElasticSearchCommand
 {
+    private ?int $numberOfShards;
+    private ?int $numberOfReplicas;
+
+    public function __construct(Client $client, ?int $numberOfShards = null, ?int $numberOfReplicas = null)
+    {
+        parent::__construct($client);
+        $this->numberOfShards = $numberOfShards;
+        $this->numberOfReplicas = $numberOfReplicas;
+    }
+
     /**
      * @inheritdoc
      */
@@ -46,7 +57,7 @@ final class CreateIndexCommand extends AbstractElasticSearchCommand
             $this->getLogger($output)
         );
 
-        $operation->run($name, $force);
+        $operation->run($name, $force, $this->numberOfShards, $this->numberOfReplicas);
 
         return 0;
     }

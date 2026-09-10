@@ -1,6 +1,6 @@
 #!/bin/sh
 
-UPDATE_HOSTS=${HAS_SUDO:-true}
+UPDATE_HOSTS=${UPDATE_HOSTS:-${HAS_SUDO:-true}}
 
 if [ "$UPDATE_HOSTS" = "true" ] && ! grep -q "search.uitdatabank.local" /etc/hosts; then
   echo "search.uitdatabank.local has to be in your hosts-file, to add you need sudo privileges"

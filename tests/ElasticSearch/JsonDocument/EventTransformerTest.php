@@ -40,7 +40,8 @@ final class EventTransformerTest extends TestCase
                 $this->simpleArrayLogger
             ),
             new PathEndIdUrlParser(),
-            $this->regionService
+            $this->regionService,
+            9900
         );
     }
 
@@ -69,6 +70,28 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
+    public function it_transforms_the_birthdate_range_into_a_gte_lte_range_and_derives_the_age_range(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-birthdate-range.json',
+            __DIR__ . '/data/event/indexed-with-birthdate-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_derives_the_birthdate_range_from_the_typical_age_range(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-typical-age-range.json',
+            __DIR__ . '/data/event/indexed-with-typical-age-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_logs_missing_required_fields(): void
     {
         $original = [];
@@ -78,6 +101,9 @@ final class EventTransformerTest extends TestCase
             'isDuplicate' => false,
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
+            'childrenOnly' => false,
+            'hasOvernightStay' => false,
+            'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,
             'metadata' => [
@@ -87,6 +113,8 @@ final class EventTransformerTest extends TestCase
             'attendanceMode' => 'offline',
             'bookingAvailability' => 'Available',
             'indexedAt' => '2017-05-09T15:11:32+02:00',
+            'recurringOnDayOfWeek' => [],
+            'recurringOnLocalTimeRange' => (object) [],
         ];
 
         $expectedLogs = [
@@ -126,6 +154,20 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-multiple-dates.json',
             __DIR__ . '/data/event/indexed-with-multiple-dates.json',
+            [
+                ['warning', 'Missing expected field \'creator\'.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_overnight(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-overnight.json',
+            __DIR__ . '/data/event/indexed-with-overnight.json',
             [
                 ['warning', 'Missing expected field \'creator\'.', []],
             ]
@@ -179,6 +221,138 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-permanent-with-opening-hours.json',
             __DIR__ . '/data/event/indexed-permanent-with-opening-hours.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_closed_days_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-closed-days.json',
+            __DIR__ . '/data/event/indexed-periodic-with-closed-days.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_closed_days_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-closed-days.json',
+            __DIR__ . '/data/event/indexed-permanent-with-closed-days.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multi-day-closed-range.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multi-day-closed-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multi_day_closed_ranges_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-multi-day-closed-range.json',
+            __DIR__ . '/data/event/indexed-permanent-with-multi-day-closed-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multiple_closed_ranges_for_periodic_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multiple-closed-ranges.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multiple-closed-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_multiple_closed_ranges_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-multiple-closed-ranges.json',
+            __DIR__ . '/data/event/indexed-permanent-with-multiple-closed-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_adjusted_days(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-day.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-day.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_generates_sub_events_for_exceptionally_open_adjusted_days(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-day-exceptional-opening.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-day-exceptional-opening.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multi_day_adjusted_ranges(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-adjusted-multi-day-range.json',
+            __DIR__ . '/data/event/indexed-periodic-with-adjusted-multi-day-range.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_adjusted_days_when_overridden_by_a_closed_day(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-adjusted-day-overridden-by-closed-day.json',
+            __DIR__ . '/data/event/indexed-periodic-adjusted-day-overridden-by-closed-day.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_multiple_adjusted_ranges(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-multiple-adjusted-ranges.json',
+            __DIR__ . '/data/event/indexed-periodic-with-multiple-adjusted-ranges.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_adjusted_opening_hours_for_permanent_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-adjusted-day.json',
+            __DIR__ . '/data/event/indexed-permanent-with-adjusted-day.json'
         );
     }
 
@@ -256,6 +430,111 @@ final class EventTransformerTest extends TestCase
             [
                 ['warning', "Missing expected field 'subEvent[0].startDate'.", []],
                 ['warning', "Missing expected field 'subEvent[1].endDate'.", []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates-and-invalid-subevent-date-range.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates-and-invalid-subevent-date-range.json',
+            [
+                ['warning', 'subEvent[1] skipped: start date is after end date.', []],
+                ['warning', "Missing expected field 'creator'.", []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_single_events(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-single-with-invalid-date-range.json',
+            __DIR__ . '/data/event/indexed-single-with-invalid-date-range.json',
+            [
+                ['warning', 'subEvent[0] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_periodic_events(): void
+    {
+        // Opening hours spanning midnight (opens 20:00, closes 02:00) produce an inverted sub-event
+        // since both times are applied to the same calendar day. Only the invalid Tuesday occurrence
+        // should be dropped; the valid Monday occurrence must still be indexed.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-periodic-with-midnight-crossing-opening-hours.json',
+            __DIR__ . '/data/event/indexed-periodic-with-midnight-crossing-opening-hours.json',
+            [
+                ['warning', 'subEvent[1] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_permanent_events(): void
+    {
+        // Same midnight-crossing scenario as periodic events, but for a permanent event with a normal weekly
+        // opening hours schedule spanning its full rolling date window. The Saturday evening slot (22:00-02:00)
+        // is invalid on every occurrence, so it logs one warning per week while every other valid sub-event
+        // (weekdays, Saturday/Sunday daytime) is still indexed.
+        $original = Json::decodeAssociatively(
+            FileReader::read(__DIR__ . '/data/event/original-permanent-with-midnight-crossing-opening-hours.json')
+        );
+        $expected = Json::decode(
+            FileReader::read(__DIR__ . '/data/event/indexed-permanent-with-midnight-crossing-opening-hours.json')
+        );
+        $actual = Json::decode(Json::encode($this->transformer->transform($original, [])));
+
+        $this->assertEquals($expected, $actual);
+
+        $logs = $this->simpleArrayLogger->getLogs();
+        $this->assertCount(78, $logs);
+        $this->assertEquals(
+            ['warning', 'subEvent[7] skipped: start date is after end date.', []],
+            $logs[0]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_sub_events_with_start_date_after_end_date_for_permanent_events_with_adjusted_opening_hours(): void
+    {
+        // Adjusted opening hours go through the same code path as regular opening hours when generating
+        // sub-events, so a midnight-crossing adjusted day must be dropped the same way.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-permanent-with-midnight-crossing-adjusted-opening-hours.json',
+            __DIR__ . '/data/event/indexed-permanent-with-midnight-crossing-adjusted-opening-hours.json',
+            [
+                ['warning', 'subEvent[0] skipped: start date is after end date.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_sub_events_where_start_date_equals_end_date(): void
+    {
+        // Equal timestamps (<=) must not be treated as inverted; all three sub-events here
+        // share the same start/end and must appear in the indexed output unchanged.
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-with-multiple-dates.json',
+            __DIR__ . '/data/event/indexed-with-multiple-dates.json',
+            [
+                ['warning', "Missing expected field 'creator'.", []],
             ]
         );
     }
@@ -533,6 +812,56 @@ final class EventTransformerTest extends TestCase
         $this->transformAndAssert(
             __DIR__ . '/data/event/original-with-completeness.json',
             __DIR__ . '/data/event/indexed-with-completeness.json'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_caps_sub_event_count_to_stay_under_the_elasticsearch_nested_object_limit(): void
+    {
+        // Guards the ordering dependency: if SubEventCapTransformer is ever moved to run before
+        // CalendarTransformer in OfferTransformer, this assertion fails because draft['subEvent']
+        // won't have been written yet.
+        $transformer = new EventTransformer(
+            new JsonTransformerPsrLogger($this->simpleArrayLogger),
+            new PathEndIdUrlParser(),
+            $this->regionService,
+            5
+        );
+
+        $original = [
+            '@id' => 'http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942',
+            'mainLanguage' => 'nl',
+            'languages' => ['nl'],
+            'completedLanguages' => ['nl'],
+            'name' => ['nl' => 'Punkfest'],
+            'calendarType' => 'multiple',
+            'startDate' => '2017-04-30T00:00:00+02:00',
+            'endDate' => '2017-05-05T00:00:00+02:00',
+            'subEvent' => [
+                ['@type' => 'Event', 'startDate' => '2017-04-30T00:00:00+02:00', 'endDate' => '2017-04-30T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-01T00:00:00+02:00', 'endDate' => '2017-05-01T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-02T00:00:00+02:00', 'endDate' => '2017-05-02T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-03T00:00:00+02:00', 'endDate' => '2017-05-03T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-04T00:00:00+02:00', 'endDate' => '2017-05-04T00:00:00+02:00'],
+                ['@type' => 'Event', 'startDate' => '2017-05-05T00:00:00+02:00', 'endDate' => '2017-05-05T00:00:00+02:00'],
+            ],
+            'workflowStatus' => 'DRAFT',
+            'created' => '2017-04-22T13:33:37+02:00',
+        ];
+
+        $actual = $transformer->transform($original, []);
+
+        $this->assertCount(5, $actual['subEvent']);
+        $this->assertContains(
+            [
+                'warning',
+                'subEvent truncated from 6 to 5 entries for '
+                    . 'http://udb-silex.dev/event/23017cb7-e515-47b4-87c4-780735acc942.',
+                [],
+            ],
+            $this->simpleArrayLogger->getLogs()
         );
     }
 
