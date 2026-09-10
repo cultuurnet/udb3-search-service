@@ -13,6 +13,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
+use CultuurNet\UDB3\SearchService\Console\ExposeAliasCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
@@ -50,6 +51,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
+                    'es:expose:alias' => ExposeAliasCommand::class,
                     'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
