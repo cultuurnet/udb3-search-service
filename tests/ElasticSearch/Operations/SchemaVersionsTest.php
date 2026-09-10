@@ -10,17 +10,18 @@ final class SchemaVersionsTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider provideSchemaVersionMethods
      */
-    public function it_derives_the_udb3_core_version_from_the_mapping_files(): void
+    public function it_derives_the_version_from_the_mapping_files(string $method): void
     {
-        $this->assertMatchesRegularExpression('/^[a-f0-9]{32}$/', SchemaVersions::udb3Core());
+        $this->assertMatchesRegularExpression('/^[a-f0-9]{32}$/', SchemaVersions::{$method}());
     }
 
-    /**
-     * @test
-     */
-    public function it_derives_the_geoshapes_version_from_the_mapping_files(): void
+    public function provideSchemaVersionMethods(): array
     {
-        $this->assertMatchesRegularExpression('/^[a-f0-9]{32}$/', SchemaVersions::geoshapes());
+        return [
+            'udb3Core' => ['udb3Core'],
+            'geoshapes' => ['geoshapes'],
+        ];
     }
 }
