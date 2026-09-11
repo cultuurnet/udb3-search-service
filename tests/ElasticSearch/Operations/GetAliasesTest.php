@@ -39,12 +39,103 @@ final class GetAliasesTest extends AbstractOperationTestCase
                 ]
             );
 
-        $this->assertEquals(
+        $this->assertSame(
             [
                 'geoshapes_read' => 'geoshapes_v20250101000000',
                 'geoshapes_write' => 'geoshapes_v20250101000000',
                 'udb3_core_read' => 'udb3_core_v20260714120000',
                 'udb3_core_write' => 'udb3_core_v20260714120000',
+            ],
+            $this->operation->run()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_skips_indices_without_aliases(): void
+    {
+        $this->indices->expects($this->once())
+            ->method('getAlias')
+            ->with([])
+            ->willReturn(
+                [
+                    'udb3_core_v20260714120000' => [
+                        'aliases' => [
+                            'udb3_core_read' => [],
+                        ],
+                    ],
+                    'udb3_core_v20250101000000' => [
+                        'aliases' => [],
+                    ],
+                ]
+            );
+
+        $this->assertSame(
+            [
+                'udb3_core_read' => 'udb3_core_v20260714120000',
+            ],
+            $this->operation->run()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_dot_prefixed_system_indices(): void
+    {
+        $this->indices->expects($this->once())
+            ->method('getAlias')
+            ->with([])
+            ->willReturn(
+                [
+                    'udb3_core_v20260714120000' => [
+                        'aliases' => [
+                            'udb3_core_read' => [],
+                        ],
+                    ],
+                    '.kibana_7.17.x_001' => [
+                        'aliases' => [
+                            '.kibana' => [],
+                        ],
+                    ],
+                ]
+            );
+
+        $this->assertSame(
+            [
+                'udb3_core_read' => 'udb3_core_v20260714120000',
+            ],
+            $this->operation->run()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_lets_the_last_index_in_iteration_order_win_when_an_alias_is_on_multiple_indices(): void
+    {
+        $this->indices->expects($this->once())
+            ->method('getAlias')
+            ->with([])
+            ->willReturn(
+                [
+                    'udb3_core_v20250101000000' => [
+                        'aliases' => [
+                            'udb3_core_read' => [],
+                        ],
+                    ],
+                    'udb3_core_v20260714120000' => [
+                        'aliases' => [
+                            'udb3_core_read' => [],
+                        ],
+                    ],
+                ]
+            );
+
+        $this->assertSame(
+            [
+                'udb3_core_read' => 'udb3_core_v20260714120000',
             ],
             $this->operation->run()
         );
@@ -60,6 +151,6 @@ final class GetAliasesTest extends AbstractOperationTestCase
             ->with([])
             ->willReturn([]);
 
-        $this->assertEquals([], $this->operation->run());
+        $this->assertSame([], $this->operation->run());
     }
 }
