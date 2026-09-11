@@ -56,23 +56,25 @@ How to apply:
 
 See `ChildrenOnlyTransformer` for a minimal reference implementation.
 
-### Bump the schema version when you change a mapping JSON
+### The schema version is derived automatically from the mapping JSONs
 
-Whenever you change any of the Elasticsearch mapping JSONs under
-`src/ElasticSearch/Operations/json/` (e.g. `mapping_udb3_core.json`,
-`mapping_event.json`, `mapping_place.json`), you **must** bump the matching
-constant in `src/ElasticSearch/Operations/SchemaVersions.php`.
+`src/ElasticSearch/Operations/SchemaVersions.php` computes the index name
+suffix as an MD5 hash of the relevant mapping JSONs under
+`src/ElasticSearch/Operations/json/`, via `SchemaVersions::udb3Core()` and
+`SchemaVersions::geoshapes()`. There is nothing to bump manually.
 
 Why:
-- The constant is used as the index name suffix. A new value points the aliases
-  at a fresh index built from the updated mapping and triggers a reindex; without
-  a bump the mapping change is never applied to a live index.
+- A hand-maintained version constant can be forgotten, which silently leaves a
+  changed mapping applied to no live index. Deriving the suffix from the file
+  contents makes a mapping change and a new index name/reindex inseparable.
 
 How to apply:
-- The event and place mappings are part of the core index, so a change to any of
-  the three mapping JSONs means bumping `SchemaVersions::UDB3_CORE`
-  (bump `GEOSHAPES` for geoshape mapping changes).
-- Use a fresh, strictly increasing `YYYYMMDDHHMMSS` timestamp as the value.
+- `udb3Core()` hashes `mapping_udb3_core.json`, `mapping_event.json`,
+  `mapping_place.json` and `mapping_organizer.json` together, since the event,
+  place and organizer mappings are part of the core index.
+- `geoshapes()` hashes `mapping_region.json`.
+- Changing any of those files automatically changes the corresponding index
+  name the next time it's read — no separate step required.
 
 ## Comments
 
