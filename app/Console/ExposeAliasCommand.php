@@ -26,7 +26,7 @@ final class ExposeAliasCommand extends AbstractElasticSearchCommand
             new NullLogger()
         );
 
-        $output->writeln((string) json_encode($operation->run(), JSON_THROW_ON_ERROR));
+        $output->writeln((string) json_encode($operation->run(), JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT));
 
         return 0;
     }
