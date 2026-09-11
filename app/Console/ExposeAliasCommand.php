@@ -14,7 +14,7 @@ final class ExposeAliasCommand extends AbstractElasticSearchCommand
     public function configure(): void
     {
         $this
-            ->setName('es:expose:alias')
+            ->setName('elasticsearch:aliases')
             ->setDescription('Outputs the current Elasticsearch aliases and the index each one points to, as JSON.');
     }
 

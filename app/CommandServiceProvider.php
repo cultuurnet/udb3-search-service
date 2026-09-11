@@ -44,6 +44,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): Application {
                 $commandMap = [
                     'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
+                    'elasticsearch:aliases' => ExposeAliasCommand::class,
                     'lowercase-exact-match-analyzer:create' => CreateLowerCaseExactMatchAnalyzerCommand::class,
                     'lowercase-standard-analyzer:create' => CreateLowerCaseStandardAnalyzerCommand::class,
                     'autocomplete-analyzer:create' => CreateAutocompleteAnalyzerCommand::class,
@@ -51,7 +52,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:create' => CreateIndexCommand::class,
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
-                    'es:expose:alias' => ExposeAliasCommand::class,
                     'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
                     'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
                     'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
