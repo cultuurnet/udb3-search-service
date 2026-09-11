@@ -45,6 +45,20 @@ After the new index is re-indexed, the migration script will move the `udb3_core
 
 With this approach the only side effect of migrating is that users might get some outdated search results while the new indexation is happening.
 
+### Exposing current aliases
+
+External tooling (e.g. to decide whether a migration is needed) can read the current alias-to-index mapping as a single JSON line on stdout:
+
+```bash
+./bin/app.php elasticsearch:aliases
+```
+
+```json
+{"geoshapes_read":"geoshapes_v20250101000000","geoshapes_write":"geoshapes_v20250101000000","udb3_core_read":"udb3_core_v20260714120000","udb3_core_write":"udb3_core_v20260714120000"}
+```
+
+This output is a contract other tooling parses, so treat its shape (a flat object of alias name to index name) as stable.
+
 ### JSON document structure
 
 The structure of the JSON documents in ElasticSearch for events, places and organizers is different from the JSON-LD structure in UDB3.
