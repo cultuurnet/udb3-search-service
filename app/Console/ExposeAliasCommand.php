@@ -20,7 +20,8 @@ final class ExposeAliasCommand extends AbstractElasticSearchCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
-        // A NullLogger keeps stdout to just the JSON line, since callers parse it directly.
+        // stdout must stay a single machine-readable JSON line for callers that parse it directly,
+        // so operation logging is deliberately discarded here rather than routed to a real logger.
         $operation = new GetAliases(
             $this->getElasticSearchClient(),
             new NullLogger()
