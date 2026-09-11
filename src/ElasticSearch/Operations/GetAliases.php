@@ -9,6 +9,9 @@ final class GetAliases extends AbstractElasticSearchOperation
     /**
      * @return array<string, string>
      *   Index name keyed by alias name, e.g. ['udb3_core_read' => 'udb3_core_v20260714120000'].
+     *   If an alias points to more than one index, the last one wins in iteration order
+     *   (not guaranteed to be stable), since a single alias is expected to resolve to a
+     *   single index in normal operation.
      */
     public function run(): array
     {
