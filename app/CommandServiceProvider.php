@@ -13,7 +13,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
-use CultuurNet\UDB3\SearchService\Console\ExposeAliasCommand;
+use CultuurNet\UDB3\SearchService\Console\GetAliasesCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
@@ -44,7 +44,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): Application {
                 $commandMap = [
                     'elasticsearch:migrate' => MigrateElasticSearchCommand::class,
-                    'elasticsearch:aliases' => ExposeAliasCommand::class,
+                    'elasticsearch:aliases' => GetAliasesCommand::class,
                     'lowercase-exact-match-analyzer:create' => CreateLowerCaseExactMatchAnalyzerCommand::class,
                     'lowercase-standard-analyzer:create' => CreateLowerCaseStandardAnalyzerCommand::class,
                     'autocomplete-analyzer:create' => CreateAutocompleteAnalyzerCommand::class,

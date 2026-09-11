@@ -9,7 +9,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class ExposeAliasCommand extends AbstractElasticSearchCommand
+final class GetAliasesCommand extends AbstractElasticSearchCommand
 {
     public function configure(): void
     {
