@@ -164,16 +164,6 @@ pipeline {
                 }
                 stage('Deploy') {
                     parallel {
-                        stage('Deploy to first ElasticSearch 5 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-test01'
-                            }
-                        }
-                        stage('Deploy to second ElasticSearch 5 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-test02'
-                            }
-                        }
                         stage('Deploy to ElasticSearch 8 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-test03'
