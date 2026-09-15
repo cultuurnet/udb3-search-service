@@ -52,6 +52,7 @@ pipeline {
                     steps {
                         sh label: 'Build image', script: """
                             docker build \\
+                                -f docker/Dockerfile \\
                                 --tag ${env.IMAGE_URI} \\
                                 --tag ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest \\
                                 --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\

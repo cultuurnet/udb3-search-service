@@ -66,7 +66,7 @@ destroy:
 
 # Builds the production target — no dev tooling, vendor/ baked in, no source mount from this checkout, so the tests exercise this branch's application code.
 acc-test-build:
-	docker build -t $(SEARCH_IMAGE) .
+	docker build -f docker/Dockerfile -t $(SEARCH_IMAGE) .
 
 acc-test-up:
 	$(ACC_TEST_COMPOSE) up -d --wait --wait-timeout 300
