@@ -52,6 +52,7 @@ pipeline {
                     steps {
                         sh label: 'Build image', script: """
                             docker build \\
+                                -f docker/Dockerfile \\
                                 --tag ${env.IMAGE_URI} \\
                                 --tag ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest \\
                                 --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\
@@ -111,14 +112,18 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'acceptance'
             }
             stages {
-                stage('Publish snapshot') {
-                    steps {
-                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
-                    }
-                }
-                stage('Promote docker image') {
-                    steps {
-                        promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
+                stage('Publish snapshot / promote docker image'){
+                    parallel {
+                        stage('Publish snapshot') {
+                            steps {
+                                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                            }
+                        }
+                        stage('Promote docker image') {
+                            steps {
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                            }
+                        }
                     }
                 }
                 stage('Deploy') {
