@@ -11,10 +11,7 @@ final class SchemaVersions
     public static function udb3Core(): string
     {
         return md5(
-            self::readMappingFile('mapping_udb3_core.json') .
-            self::readMappingFile('mapping_event.json') .
-            self::readMappingFile('mapping_place.json') .
-            self::readMappingFile('mapping_organizer.json')
+            self::readMappingFile('mapping_udb3_core.json')
         );
     }
 
