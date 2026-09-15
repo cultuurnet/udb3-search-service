@@ -121,7 +121,7 @@ pipeline {
                         }
                         stage('Promote docker image') {
                             steps {
-                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
                             }
                         }
                     }
@@ -157,14 +157,18 @@ pipeline {
             }
 
             stages {
-                stage('Publish snapshot') {
-                    steps {
-                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
-                    }
-                }
-                stage('Promote docker image') {
-                    steps {
-                        promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                stage('Publish snapshot / promote docker image'){
+                    parallel {
+                        stage('Publish snapshot') {
+                            steps {
+                                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                            }
+                        }
+                        stage('Promote docker image') {
+                            steps {
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                            }
+                        }
                     }
                 }
                 stage('Deploy') {
