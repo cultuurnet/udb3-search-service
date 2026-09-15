@@ -26,6 +26,8 @@ use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
+use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
+use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use Elasticsearch\Client;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
@@ -80,6 +82,14 @@ final class CommandServiceProvider extends BaseServiceProvider
 
                 return $application;
             }
+        );
+
+        $this->add(
+            GetAliasesCommand::class,
+            fn (): GetAliasesCommand => new GetAliasesCommand(
+                $this->get(Client::class),
+                LoggerFactory::create($this->getContainer(), LoggerName::forCli())
+            )
         );
 
         $this->add(
