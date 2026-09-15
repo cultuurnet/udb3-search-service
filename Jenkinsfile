@@ -121,7 +121,7 @@ pipeline {
                         }
                         stage('Promote docker image') {
                             steps {
-                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
                             }
                         }
                     }
