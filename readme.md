@@ -75,12 +75,6 @@ Add your new field mapping in those files as [per the ElasticSearch documentatio
 As noted above, you don't have to follow the JSON-LD structure or naming 100%, since it would make querying very hard in some situations.
 For example, because it's hard to do a range query on separate `availableFrom` and `availableTo` fields, we instead index them as a single `availableRange` field.
 
-After adding your field(s) to the mapping, update the `UDB3_CORE` version number in `src/ElasticSearch/Operations/SchemaVersions.php`
-
-An example of a valid version number is `20191008132400`. This is simply the current date time in the `YYYYMMDDHHIISS` format (year, month, day, hour, minute, second without anything in-between).
-
-This change would make the migration script see the new mapping and create a new index for it. However, we're still missing a way to convert the property from the JSON-LD document to the property on the ElasticSearch document.
-
 This conversion happens in the `JsonTransformer` implementations located in:
 
 - `src/ElasticSearch/JsonDocument/EventTransformer.php`

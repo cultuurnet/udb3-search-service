@@ -105,7 +105,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             UpdateUdb3CoreMappingCommand::class,
             fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
                 $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                 $this->parameter('elasticsearch.organizer.document_type')
             )
         );
@@ -115,7 +115,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdateOrganizerMappingCommand {
                 $command = new UpdateOrganizerMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.organizer.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
@@ -130,7 +130,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdateEventMappingCommand {
                 $command = new UpdateEventMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.event.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
@@ -145,7 +145,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdatePlaceMappingCommand {
                 $command = new UpdatePlaceMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.place.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
@@ -198,7 +198,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): InstallUDB3CoreCommand {
                 $command = new InstallUDB3CoreCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::UDB3_CORE,
+                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                     $this->parameter('elasticsearch.udb3_core_index.read_alias')
                 );
@@ -214,7 +214,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdateRegionMappingCommand {
                 $command = new UpdateRegionMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
                     $this->parameter('elasticsearch.region.document_type')
                 );
                 if ($this->usesElasticSearch5()) {
@@ -245,7 +245,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             InstallGeoShapesCommand::class,
             fn (): InstallGeoShapesCommand => new InstallGeoShapesCommand(
                 $this->get(Client::class),
-                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::GEOSHAPES,
+                $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
                 $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                 $this->parameter('elasticsearch.geoshapes_index.read_alias')
             )
