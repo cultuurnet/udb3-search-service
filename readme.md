@@ -47,7 +47,7 @@ With this approach the only side effect of migrating is that users might get som
 
 ### Exposing current aliases
 
-External tooling (e.g. to decide whether a migration is needed) can read the current alias-to-index mapping as a single JSON line on stdout:
+External tooling (e.g. to decide whether a migration is needed) can read the current index to alias mapping as a single JSON line on stdout:
 
 ```bash
 ./bin/app.php elasticsearch:aliases
