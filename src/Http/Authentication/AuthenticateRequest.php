@@ -167,7 +167,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
         string $apiKey,
-        ?UnmatchedApiKey $unmatchedApiKey = null
+        ?UnmatchedApiKey $unmatchedApiKey
     ): ResponseInterface {
         try {
             $status = $this->consumerResolver->getStatus($apiKey);
