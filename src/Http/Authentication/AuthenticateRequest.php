@@ -183,8 +183,6 @@ final class AuthenticateRequest implements MiddlewareInterface
             return (new RemovedApiKey($apiKey))->toResponse();
         }
 
-        // Log only once the key is known to belong to an active consumer, so that unknown
-        // and blocked keys don't drown out the consumers that still need a clientId mapping.
         if ($unmatchedApiKey !== null) {
             $this->logger->error($unmatchedApiKey->getMessage());
         }
