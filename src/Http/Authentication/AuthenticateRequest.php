@@ -72,11 +72,13 @@ final class AuthenticateRequest implements MiddlewareInterface
         $clientId = $this->getClientId($request);
         $apiKey = $this->getApiKey($request);
 
+        $unmatchedApiKey = null;
+
         if ($clientId === null && $apiKey !== null && $this->apiKeysMatchedToClientIds !== null) {
             try {
                 $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
-            } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->error($unmatchedApiKey->getMessage());
+            } catch (UnmatchedApiKey $exception) {
+                $unmatchedApiKey = $exception;
             }
         }
 
@@ -85,7 +87,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         }
 
         if ($apiKey !== null) {
-            return $this->handleApiKey($request, $handler, $apiKey);
+            return $this->handleApiKey($request, $handler, $apiKey, $unmatchedApiKey);
         }
 
         $accessToken = $this->getAccessToken($request);
@@ -164,7 +166,8 @@ final class AuthenticateRequest implements MiddlewareInterface
     private function handleApiKey(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
-        string $apiKey
+        string $apiKey,
+        ?UnmatchedApiKey $unmatchedApiKey = null
     ): ResponseInterface {
         try {
             $status = $this->consumerResolver->getStatus($apiKey);
@@ -178,6 +181,12 @@ final class AuthenticateRequest implements MiddlewareInterface
 
         if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
+        }
+
+        // Log only once the key is known to belong to an active consumer, so that unknown
+        // and blocked keys don't drown out the consumers that still need a clientId mapping.
+        if ($unmatchedApiKey !== null) {
+            $this->logger->error($unmatchedApiKey->getMessage());
         }
 
         $this->container
