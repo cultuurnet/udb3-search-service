@@ -1,7 +1,7 @@
 # --------------------------------------------------
 # Runtime base: PHP-FPM + extensions
 # --------------------------------------------------
-FROM php:8.1-fpm AS runtime
+FROM php:8.2-fpm AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         netcat-openbsd \
