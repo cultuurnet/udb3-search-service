@@ -24,13 +24,13 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
 
     public function supports(Aggregation $aggregation): bool
     {
-        return $aggregation->getName()->sameValueAs($this->facetName);
+        return $aggregation->getName() === $this->facetName;
     }
 
     public function toFacetTree(Aggregation $aggregation): FacetTreeInterface
     {
         if (!$this->supports($aggregation)) {
-            $name = $aggregation->getName()->toString();
+            $name = $aggregation->getName()->value;
             throw new LogicException("Aggregation $name not supported for transformation.");
         }
 
@@ -63,6 +63,6 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
             );
         }
 
-        return new FacetFilter($this->facetName->toString(), $nodes);
+        return new FacetFilter($this->facetName->value, $nodes);
     }
 }
