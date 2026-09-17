@@ -37,8 +37,8 @@
         "sentry/sentry": "^4.16",
         "slim/psr7": "^1.6",
         "symfony/cache": "^5.4",
-        "symfony/console": "^4.4",
-        "symfony/finder": "~4.4",
+        "symfony/console": "^5.4",
+        "symfony/finder": "^5.4",
         "symfony/string": "^6.4",
         "tuupola/cors-middleware": "^1.1"
     },
