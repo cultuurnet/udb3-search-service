@@ -39,9 +39,8 @@ final class ElasticSearchDistance extends AbstractDistance
     public function __construct(string $value)
     {
         $matches = [];
-        $regexResult = preg_match(self::DISTANCE_REGEX, $value, $matches);
 
-        if (!$regexResult || count($matches) !== 3) {
+        if (preg_match(self::DISTANCE_REGEX, $value, $matches) !== 1) {
             throw new UnsupportedParameterValue('Distance is not in a valid format.');
         }
 
