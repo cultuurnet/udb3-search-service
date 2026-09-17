@@ -3969,7 +3969,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             );
 
         $expectedQueryArray = [
@@ -4001,10 +4001,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [
@@ -4041,16 +4041,16 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::types()
+                FacetName::Types
             )
             ->withFacet(
-                FacetName::themes()
+                FacetName::Themes
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [
@@ -4097,10 +4097,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder(100))
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [

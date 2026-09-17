@@ -53,7 +53,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
 
                 $pagedResultSetFactory = new ElasticSearchPagedResultSetFactory(
                     new NodeMapAggregationTransformer(
-                        FacetName::regions(),
+                        FacetName::Regions,
                         $this->parameter('facet_mapping_regions')
                     )
                 );
