@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Deserializer;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class SimpleDeserializerLocatorTest extends TestCase
@@ -17,9 +18,9 @@ final class SimpleDeserializerLocatorTest extends TestCase
 
     public function testGivesBackDeserializerThatWasRegistered(): void
     {
-        /** @var DeserializerInterface $firstDeserializer */
+        /** @var DeserializerInterface&MockObject $firstDeserializer */
         $firstDeserializer = $this->createMock(DeserializerInterface::class);
-        /** @var DeserializerInterface $anotherDeserializer */
+        /** @var DeserializerInterface&MockObject $anotherDeserializer */
         $anotherDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->deserializerLocator->registerDeserializer(
