@@ -565,7 +565,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
-                    ->withStatuses([Status::temporarilyUnavailable(), Status::unavailable()])
+                    ->withStatuses([Status::TemporarilyUnavailable, Status::Unavailable])
             );
 
         $expectedQueryArray = [
@@ -712,7 +712,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 (new SubEventQueryParameters())
                     ->withDateFrom(DateTimeFactory::fromAtom('2017-04-25T00:00:00+00:00'))
                     ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+00:00'))
-                    ->withStatuses([Status::temporarilyUnavailable(), Status::unavailable()])
+                    ->withStatuses([Status::TemporarilyUnavailable, Status::Unavailable])
             );
 
         $expectedQueryArray = [
@@ -787,7 +787,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                 (new SubEventQueryParameters())
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
-                    ->withStatuses([Status::temporarilyUnavailable(), Status::unavailable()])
+                    ->withStatuses([Status::TemporarilyUnavailable, Status::Unavailable])
             );
 
         $expectedQueryArray = [
@@ -1037,8 +1037,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withStatusFilter(
-                Status::temporarilyUnavailable(),
-                Status::unavailable()
+                Status::TemporarilyUnavailable,
+                Status::Unavailable
             );
 
         $expectedQueryArray = [
@@ -1091,7 +1091,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAttendanceModeFilter(
-                AttendanceMode::mixed()
+                AttendanceMode::Mixed
             );
 
         $expectedQueryArray = [
@@ -1131,8 +1131,8 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withAttendanceModeFilter(
-                AttendanceMode::mixed(),
-                AttendanceMode::offline()
+                AttendanceMode::Mixed,
+                AttendanceMode::Offline
             );
 
         $expectedQueryArray = [

@@ -6,48 +6,19 @@ namespace CultuurNet\UDB3\Search\Offer;
 
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
-final class Status
+enum Status: string
 {
-    private const AVAILABLE = 'Available';
-    private const UNAVAILABLE = 'Unavailable';
-    private const TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
+    case Available = 'Available';
+    case Unavailable = 'Unavailable';
+    case TemporarilyUnavailable = 'TemporarilyUnavailable';
 
-    private const ALLOWED_VALUES = [
-        self::AVAILABLE,
-        self::UNAVAILABLE,
-        self::TEMPORARILY_UNAVAILABLE,
-    ];
-
-    private string $status;
-
-    public function __construct(string $status)
+    public static function fromString(string $value): self
     {
-        if (!in_array($status, self::ALLOWED_VALUES)) {
-            throw new UnsupportedParameterValue(
-                'Invalid Status: ' . $status . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
-            );
+        $status = self::tryFrom($value);
+        if ($status === null) {
+            throw new UnsupportedParameterValue('Unknown status value "' . $value . '"');
         }
 
-        $this->status = $status;
-    }
-
-    public static function available(): self
-    {
-        return new self(self::AVAILABLE);
-    }
-
-    public static function unavailable(): self
-    {
-        return new self(self::UNAVAILABLE);
-    }
-
-    public static function temporarilyUnavailable(): self
-    {
-        return new self(self::TEMPORARILY_UNAVAILABLE);
-    }
-
-    public function toString(): string
-    {
-        return $this->status;
+        return $status;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\Offer;
 
-use InvalidArgumentException;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use PHPUnit\Framework\TestCase;
 
 final class StatusTest extends TestCase
@@ -13,18 +13,17 @@ final class StatusTest extends TestCase
      * @test
      * @dataProvider validValues
      */
-    public function it_only_accepts_valid_values(string $value): void
+    public function it_only_accepts_valid_values(string $value, Status $expected): void
     {
-        new Status($value);
-        $this->addToAssertionCount(1);
+        $this->assertSame($expected, Status::fromString($value));
     }
 
     public function validValues(): array
     {
         return [
-            'Available' => ['Available'],
-            'Unavailable' => ['Unavailable'],
-            'TemporarilyUnavailable' => ['TemporarilyUnavailable'],
+            'Available' => ['Available', Status::Available],
+            'Unavailable' => ['Unavailable', Status::Unavailable],
+            'TemporarilyUnavailable' => ['TemporarilyUnavailable', Status::TemporarilyUnavailable],
         ];
     }
 
@@ -34,19 +33,17 @@ final class StatusTest extends TestCase
      */
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(
-            'Invalid Status: ' . $invalidValue . '. Should be one of Available, Unavailable, TemporarilyUnavailable'
-        );
-        new Status($invalidValue);
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage('Unknown status value "' . $invalidValue . '"');
+
+        Status::fromString($invalidValue);
     }
 
     public function inValidValues(): array
     {
         return [
-            'unknown' => ['unknown'],
-            'available' => ['available'],
-            'AVAILABLE' => ['AVAILABLE'],
+            'random' => ['random'],
+            'lowercase' => ['available'],
         ];
     }
 }

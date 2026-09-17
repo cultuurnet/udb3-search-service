@@ -38,7 +38,7 @@ final class IdentifierTransformer implements JsonTransformer
             $this->logger->logMissingExpectedField('@id');
         }
 
-        $draft['@type'] = $from['@type'] ?? $this->fallbackType->toString();
+        $draft['@type'] = $from['@type'] ?? $this->fallbackType->value;
 
         // Not included in the if statement above because it should be under
         // @type in the JSON. No else statement because we don't want to log a

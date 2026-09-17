@@ -173,7 +173,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['status'] = array_map(
-            static fn (Status $status): string => $status->toString(),
+            static fn (Status $status): string => $status->value,
             $statuses
         );
         return $c;
@@ -187,7 +187,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
 
         $c = clone $this;
         $c->mockQuery['attendanceMode'] = array_map(
-            static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
+            static fn (AttendanceMode $attendanceMode): string => $attendanceMode->value,
             $attendanceModes
         );
         return $c;
@@ -242,7 +242,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
             'dateFrom' => $dateFrom ? $dateFrom->format(DATE_ATOM) : null,
             'dateTo' => $dateTo ? $dateTo->format(DATE_ATOM) : null,
             'statuses' => array_map(
-                static fn (Status $status): string => $status->toString(),
+                static fn (Status $status): string => $status->value,
                 $subEventQueryParameters->getStatuses()
             ),
         ];
