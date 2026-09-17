@@ -41,7 +41,7 @@ final class AttendanceModeOfferRequestParserTest extends TestCase
 
         $this->queryBuilder->expects($this->once())
             ->method('withAttendanceModeFilter')
-            ->with(AttendanceMode::mixed())
+            ->with(AttendanceMode::Mixed)
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
@@ -61,7 +61,7 @@ final class AttendanceModeOfferRequestParserTest extends TestCase
 
         $this->queryBuilder->expects($this->once())
             ->method('withAttendanceModeFilter')
-            ->with(AttendanceMode::offline(), AttendanceMode::mixed())
+            ->with(AttendanceMode::Offline, AttendanceMode::Mixed)
             ->willReturn($this->queryBuilder);
 
         $this->parser->parse(new ApiRequest($request), $this->queryBuilder);
