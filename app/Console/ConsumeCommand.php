@@ -20,7 +20,7 @@ final class ConsumeCommand extends Command
         $this->consumer = $consumer;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->registerSignalHandlers($output);
 
