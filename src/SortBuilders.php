@@ -25,14 +25,8 @@ final class SortBuilders
                 throw new UnsupportedParameterValue("Invalid sort field '{$field}' given.");
             }
 
-            try {
-                $sortOrder = new SortOrder($order);
-            } catch (UnsupportedParameterValue $e) {
-                throw new UnsupportedParameterValue("Invalid sort order '{$order}' given.");
-            }
-
             $callback = $sortBuilders[$field];
-            $queryBuilder = $callback($queryBuilder, $sortOrder);
+            $queryBuilder = $callback($queryBuilder, SortOrder::fromString($order));
         }
 
         return $queryBuilder;

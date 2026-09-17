@@ -4,41 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-final class SortOrder
+enum SortOrder: string
 {
-    private const ASC = 'asc';
-    private const DESC = 'desc';
+    case Asc = 'asc';
+    case Desc = 'desc';
 
-    private const ALLOWED_VALUES = [
-        self::ASC,
-        self::DESC,
-    ];
-
-    private string $order;
-
-    public function __construct(string $order)
+    public static function fromString(string $value): self
     {
-        if (!in_array($order, self::ALLOWED_VALUES)) {
-            throw new UnsupportedParameterValue(
-                'Invalid SortOrder: ' . $order . '. Should be one of ' . implode(', ', self::ALLOWED_VALUES)
-            );
+        $sortOrder = self::tryFrom($value);
+        if ($sortOrder === null) {
+            throw new UnsupportedParameterValue("Invalid sort order '{$value}' given.");
         }
 
-        $this->order = $order;
-    }
-
-    public static function asc(): self
-    {
-        return new self(self::ASC);
-    }
-
-    public static function desc(): self
-    {
-        return new self(self::DESC);
-    }
-
-    public function toString(): string
-    {
-        return $this->order;
+        return $sortOrder;
     }
 }
