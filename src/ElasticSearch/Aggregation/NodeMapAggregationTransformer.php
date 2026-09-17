@@ -49,18 +49,18 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
 
     public function supports(Aggregation $aggregation): bool
     {
-        return $aggregation->getName()->sameValueAs($this->facetName);
+        return $aggregation->getName() === $this->facetName;
     }
 
     public function toFacetTree(Aggregation $aggregation): FacetFilter
     {
         if (!$this->supports($aggregation)) {
-            $name = $aggregation->getName()->toString();
+            $name = $aggregation->getName()->value;
             throw new LogicException("Aggregation $name not supported for transformation.");
         }
 
         $children = $this->transformNodeMapToFacetNodes($this->nodeMap, $aggregation->getBuckets());
-        return new FacetFilter($this->facetName->toString(), $children);
+        return new FacetFilter($this->facetName->value, $children);
     }
 
     /**

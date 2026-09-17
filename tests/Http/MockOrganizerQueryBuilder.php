@@ -163,7 +163,7 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withFacet(FacetName $facetName): self
     {
         $c = clone $this;
-        $c->mockQuery['facet'][] = $facetName->toString();
+        $c->mockQuery['facet'][] = $facetName->value;
         return $c;
     }
 

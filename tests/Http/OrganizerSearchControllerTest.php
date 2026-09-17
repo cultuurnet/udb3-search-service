@@ -155,7 +155,7 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('Uitpas'))
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))
-            ->withFacet(FacetName::regions())
+            ->withFacet(FacetName::Regions)
             ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedResultSet = new PagedResultSet(

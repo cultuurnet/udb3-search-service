@@ -727,7 +727,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $builder = (new ElasticSearchOrganizerQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             );
 
         $expectedQueryArray = [
@@ -759,7 +759,7 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
         $builder = (new ElasticSearchOrganizerQueryBuilder(100))
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             );
 
         $expectedQueryArray = [

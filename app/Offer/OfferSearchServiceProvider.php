@@ -63,31 +63,31 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
                     new NodeMapAggregationTransformer(
-                        FacetName::regions(),
+                        FacetName::Regions,
                         $this->parameter('facet_mapping_regions')
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
-                        FacetName::themes(),
+                        FacetName::Themes,
                         $taxonomyApiClient->getThemes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
-                        FacetName::types(),
+                        FacetName::Types,
                         $taxonomyApiClient->getTypes()
                     )
                 );
                 $transformer->register(
                     new NodeMapAggregationTransformer(
-                        FacetName::facilities(),
+                        FacetName::Facilities,
                         $taxonomyApiClient->getFacilities()
                     )
                 );
                 $transformer->register(
                     new LabelsAggregationTransformer(
-                        FacetName::labels()
+                        FacetName::Labels
                     )
                 );
 

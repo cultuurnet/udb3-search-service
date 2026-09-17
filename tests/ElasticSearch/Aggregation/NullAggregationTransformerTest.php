@@ -22,7 +22,7 @@ final class NullAggregationTransformerTest extends TestCase
      */
     public function it_does_not_support_any_aggregation(): void
     {
-        $aggregation = new Aggregation(FacetName::regions());
+        $aggregation = new Aggregation(FacetName::Regions);
         $this->assertFalse($this->transformer->supports($aggregation));
     }
 
@@ -31,7 +31,7 @@ final class NullAggregationTransformerTest extends TestCase
      */
     public function it_always_throws_a_logic_exception_when_trying_to_transform_an_aggregation(): void
     {
-        $aggregation = new Aggregation(FacetName::regions());
+        $aggregation = new Aggregation(FacetName::Regions);
         $this->expectException(LogicException::class);
         $this->transformer->toFacetTree($aggregation);
     }
