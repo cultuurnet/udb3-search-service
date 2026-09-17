@@ -20,9 +20,6 @@ final class Aggregation
      */
     private array $buckets;
 
-    /**
-     * @param Bucket ...$buckets
-     */
     public function __construct(FacetName $name, Bucket ...$buckets)
     {
         $this->name = $name;

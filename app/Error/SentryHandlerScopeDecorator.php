@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\Consumer;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Sentry\State\Scope;
+
 use function Sentry\withScope;
 
 /**
