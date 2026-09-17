@@ -69,7 +69,7 @@ final class OfferTransformer implements JsonTransformer
             new RelatedOrganizerTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::organizer()
+                FallbackType::Organizer
             ),
             new CreatorTransformer($logger),
             new CreatedAndModifiedTransformer($logger),

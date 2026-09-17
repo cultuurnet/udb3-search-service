@@ -286,7 +286,7 @@ final class OfferSearchControllerTest extends TestCase
                     ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00'))
                     ->withLocalTimeFrom(800)
                     ->withLocalTimeTo(1600)
-                    ->withStatuses([Status::unavailable(), Status::temporarilyUnavailable()])
+                    ->withStatuses([Status::Unavailable, Status::TemporarilyUnavailable])
                     ->withHasChildcare(true)
                     ->withHasOvernightStay(true)
             )
@@ -1204,7 +1204,7 @@ final class OfferSearchControllerTest extends TestCase
         );
 
         $expectedQueryBuilder = $this->queryBuilder
-            ->withStatusFilter(Status::available());
+            ->withStatusFilter(Status::Available);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

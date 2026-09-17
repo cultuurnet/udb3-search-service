@@ -193,7 +193,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'status',
             array_map(
-                static fn (Status $status): string => $status->toString(),
+                static fn (Status $status): string => $status->value,
                 $statuses
             )
         );
@@ -204,7 +204,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         return $this->withMultiValueMatchQuery(
             'attendanceMode',
             array_map(
-                static fn (AttendanceMode $attendanceMode): string => $attendanceMode->toString(),
+                static fn (AttendanceMode $attendanceMode): string => $attendanceMode->value,
                 $attendanceModes
             )
         );
@@ -299,7 +299,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $queries[] = $this->createMultiValueMatchQuery(
                 'subEvent.status',
                 array_map(
-                    static fn (Status $status): string => $status->toString(),
+                    static fn (Status $status): string => $status->value,
                     $statuses
                 )
             );
