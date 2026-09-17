@@ -17,7 +17,7 @@ final class ApiExceptionHandler extends Handler
         $this->emitter = $emitter;
     }
 
-    public function handle(): ?int
+    public function handle(): int
     {
         $exception = $this->getInspector()->getException();
         $problem = ApiProblemFactory::createFromThrowable($exception);

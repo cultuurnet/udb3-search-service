@@ -39,7 +39,7 @@ final class AggregationTest extends TestCase
     public function it_always_returns_an_array_of_buckets_even_if_its_empty(): void
     {
         $aggregation = new Aggregation(FacetName::regions());
-        $this->assertTrue(is_array($aggregation->getBuckets()));
+        $this->assertSame([], $aggregation->getBuckets());
     }
 
     /**

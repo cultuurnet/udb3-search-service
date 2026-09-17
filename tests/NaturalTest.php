@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class NaturalTest extends TestCase
@@ -26,7 +27,7 @@ final class NaturalTest extends TestCase
      */
     public function it_can_be_converted_to_a_string(): void
     {
-        /** @var Natural $natural */
+        /** @var Natural&MockObject $natural */
         $natural = $this->getMockForAbstractClass(
             Natural::class,
             [99]
@@ -40,7 +41,7 @@ final class NaturalTest extends TestCase
      */
     public function it_can_return_the_value(): void
     {
-        /** @var Natural $natural */
+        /** @var Natural&MockObject $natural */
         $natural = $this->getMockForAbstractClass(
             Natural::class,
             [99]
