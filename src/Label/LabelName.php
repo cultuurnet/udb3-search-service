@@ -15,7 +15,7 @@ final class LabelName extends StringLiteral
 
         parent::__construct($value);
 
-        if (false !== strpos($value, ';')) {
+        if (str_contains($value, ';')) {
             throw new UnsupportedParameterValue(
                 "Value for argument $value should not contain semicolons."
             );

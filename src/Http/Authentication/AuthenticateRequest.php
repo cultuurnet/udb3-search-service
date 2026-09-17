@@ -125,7 +125,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         RequestHandlerInterface $handler,
         string $accessToken
     ): ResponseInterface {
-        if (strpos($accessToken, self::BEARER) !== 0) {
+        if (!str_starts_with($accessToken, self::BEARER)) {
             return (
                 new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token')
             )->toResponse();
