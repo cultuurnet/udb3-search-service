@@ -197,16 +197,11 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withFacet(FacetName $facetName): self
     {
-        $facetFields = [
-            FacetName::regions()->toString() => 'regions.keyword',
-        ];
-
-        if (!isset($facetFields[$facetName->toString()])) {
+        if ($facetName !== FacetName::Regions) {
             return $this;
         }
 
-        $facetField = $facetFields[$facetName->toString()];
-        $aggregation = new TermsAggregation($facetName->toString(), $facetField);
+        $aggregation = new TermsAggregation($facetName->value, 'regions.keyword');
 
         if (null !== $this->aggregationSize) {
             $aggregation->addParameter('size', $this->aggregationSize);
