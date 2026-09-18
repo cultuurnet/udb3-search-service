@@ -397,6 +397,75 @@ final class AuthenticateRequestTest extends TestCase
         $this->assertEquals($response, $actualResponse);
     }
 
+    /**
+     * @dataProvider unusableApiKeyProvider
+     * @test
+     */
+    public function it_does_not_log_unmatched_api_keys_that_cannot_be_used(
+        string $apiKey,
+        string $status,
+        ApiProblem $expectedProblem
+    ): void {
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())
+            ->method('error');
+
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository([]),
+            new InMemoryApiKeysMatchedToClientIds([
+                'some_api_key' => 'some_client_id',
+            ]),
+            $this->pemFile,
+            $logger
+        );
+
+        $getStatus = $this->consumerResolver->expects($this->once())
+            ->method('getStatus')
+            ->with($apiKey);
+
+        if ($status === 'INVALID') {
+            $getStatus->willThrowException(new InvalidConsumer());
+        } else {
+            $getStatus->willReturn($status);
+        }
+
+        $this->container->expects($this->never())
+            ->method('extend');
+
+        $response = $authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('x-api-key', $apiKey),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport($expectedProblem, $response);
+    }
+
+    public function unusableApiKeyProvider(): array
+    {
+        return [
+            'invalid api key' => [
+                'my_invalid_api_key',
+                'INVALID',
+                new InvalidApiKey('my_invalid_api_key'),
+            ],
+            'blocked api key' => [
+                'my_blocked_api_key',
+                'BLOCKED',
+                new BlockedApiKey('my_blocked_api_key'),
+            ],
+            'removed api key' => [
+                'my_removed_api_key',
+                'REMOVED',
+                new RemovedApiKey('my_removed_api_key'),
+            ],
+        ];
+    }
+
     public function validApiKeyRequestsProvider(): array
     {
         return [
