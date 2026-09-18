@@ -15,14 +15,8 @@ final class TypicalAgeRangeTransformer implements JsonTransformer
         }
 
         $regexMatches = [];
-        preg_match('/(\d*)-(\d*)/', $from['typicalAgeRange'], $regexMatches);
 
-
-        if (count($regexMatches) !== 3) {
-            // The matches should always contain exactly 3 values:
-            // 0: The delimiter (-)
-            // 1: minAge as string (or empty string)
-            // 2: maxAge as string (or empty string)
+        if (preg_match('/(\d*)-(\d*)/', $from['typicalAgeRange'], $regexMatches) !== 1) {
             return $draft;
         }
 

@@ -17,7 +17,7 @@ down:
 
 # Rebuilds the dev image and recreates the containers on it. Only needed after a
 # change to the Dockerfile: application code and vendor/ are bind-mounted, so
-# nothing else requires a rebuild. Add --pull to also pick up a newer php:8.1-fpm.
+# nothing else requires a rebuild. Add --pull to also pick up a newer php:8.2-fpm.
 build:
 	docker compose up --build --detach
 
