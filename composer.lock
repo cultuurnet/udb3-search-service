@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d25c3ecce73671017e751604e3166c58",
+    "content-hash": "42ad24fa0d4b91c120dec2adb9cce3b0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -6791,21 +6791,21 @@
         },
         {
             "name": "publiq/php-cs-fixer-config",
-            "version": "v2.1",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-cs-fixer-config.git",
-                "reference": "13a065c444c8916205bbeed1aeb2936e24ab6eaf"
+                "reference": "c75281fc56187d768ab16b8a2bdf6e3220ea2166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/13a065c444c8916205bbeed1aeb2936e24ab6eaf",
-                "reference": "13a065c444c8916205bbeed1aeb2936e24ab6eaf",
+                "url": "https://api.github.com/repos/cultuurnet/php-cs-fixer-config/zipball/c75281fc56187d768ab16b8a2bdf6e3220ea2166",
+                "reference": "c75281fc56187d768ab16b8a2bdf6e3220ea2166",
                 "shasum": ""
             },
             "require": {
-                "friendsofphp/php-cs-fixer": "^3.0",
-                "php": "^7.1 || ^8.0"
+                "friendsofphp/php-cs-fixer": "^3.11",
+                "php": "^7.4 || ^8.0"
             },
             "type": "library",
             "autoload": {
@@ -6826,9 +6826,9 @@
             "description": "Configuration for PHP Coding Standards Fixer to be used on all PHP projects at Publiq",
             "support": {
                 "issues": "https://github.com/cultuurnet/php-cs-fixer-config/issues",
-                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v2.1"
+                "source": "https://github.com/cultuurnet/php-cs-fixer-config/tree/v2.2"
             },
-            "time": "2024-08-07T12:40:52+00:00"
+            "time": "2026-09-17T06:43:54+00:00"
         },
         {
             "name": "react/cache",
