@@ -75,8 +75,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         if ($clientId === null && $apiKey !== null && $this->apiKeysMatchedToClientIds !== null) {
             try {
                 $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
-            } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->error($unmatchedApiKey->getMessage());
+            } catch (UnmatchedApiKey) {
             }
         }
 
@@ -179,6 +178,8 @@ final class AuthenticateRequest implements MiddlewareInterface
         if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
         }
+
+        $this->logger->error($apiKey . ' could not be matched to a clientId.');
 
         $this->container
             ->extend(Consumer::class)
