@@ -49,7 +49,7 @@ final class Url
     {
         $host = $this->urlParts['host'];
 
-        if (strpos($host, 'www.') === 0) {
+        if (str_starts_with($host, 'www.')) {
             return substr($host, strlen('www.'));
         }
 
