@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
 final class OrganizerSearchController
@@ -211,13 +210,7 @@ final class OrganizerSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value) {
-                try {
-                    return new FacetName(strtolower($value));
-                } catch (UnsupportedParameterValue $e) {
-                    throw new UnsupportedParameterValue("Unknown facet name '$value'.");
-                }
-            }
+            FacetName::fromString(...)
         );
     }
 }

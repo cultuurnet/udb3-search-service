@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
 use CultuurNet\UDB3\Search\Facet\FacetFilter;
 use CultuurNet\UDB3\Search\Facet\FacetNode;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class PagedResultSetTest extends TestCase
@@ -92,7 +93,7 @@ final class PagedResultSetTest extends TestCase
 
         $facets = [
             new FacetFilter(
-                'regions',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'prv-vlaams-brabant',
@@ -149,7 +150,7 @@ final class PagedResultSetTest extends TestCase
                 ]
             ),
             new FacetFilter(
-                'terms',
+                FacetName::Types,
                 [
                     new FacetNode(
                         '0.11.6.5',

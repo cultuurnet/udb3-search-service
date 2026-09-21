@@ -27,7 +27,6 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -385,13 +384,7 @@ final class OfferSearchController
     {
         return $parameterBag->getArrayFromParameter(
             $queryParameter,
-            function ($value) {
-                try {
-                    return new FacetName(strtolower($value));
-                } catch (UnsupportedParameterValue $e) {
-                    throw new UnsupportedParameterValue("Unknown facet name '$value'.");
-                }
-            }
+            FacetName::fromString(...)
         );
     }
 }

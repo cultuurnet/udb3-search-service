@@ -305,7 +305,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withDuplicateFilter(false)
             ->withProductionIdFilter('5df0d426-84b3-4d2b-a7fc-e51270d84643')
             ->withRecommendationForFilter('be4f35c4-a093-4c85-8c9b-0afc16336381')
-            ->withFacet(FacetName::regions())
+            ->withFacet(FacetName::Regions)
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withGroupByProductionId();
 
@@ -320,7 +320,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedResultSet = $expectedResultSet->withFacets(
             new FacetFilter(
-                'regions',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',
@@ -959,7 +959,7 @@ final class OfferSearchControllerTest extends TestCase
             ->withLabelFilter(new LabelName('foo'))
             ->withLocationLabelFilter(new LabelName('baz'))
             ->withOrganizerLabelFilter(new LabelName('bar'))
-            ->withFacet(FacetName::regions());
+            ->withFacet(FacetName::Regions);
 
         $expectedResultSet = new PagedResultSet(30, 0, []);
 

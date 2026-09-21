@@ -68,6 +68,6 @@ final class Aggregation
             $aggregationData['buckets']
         );
 
-        return new Aggregation(new FacetName($name), ...$buckets);
+        return new Aggregation(FacetName::fromString($name), ...$buckets);
     }
 }
