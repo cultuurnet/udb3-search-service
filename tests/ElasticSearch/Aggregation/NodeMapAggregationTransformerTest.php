@@ -116,7 +116,7 @@ final class NodeMapAggregationTransformerTest extends TestCase
         );
 
         $expectedFacetTree = new FacetFilter(
-            $this->facetName->value,
+            $this->facetName,
             [
                 new FacetNode(
                     'prv-vlaams-brabant',

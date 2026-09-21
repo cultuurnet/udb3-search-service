@@ -320,7 +320,7 @@ final class OfferSearchControllerTest extends TestCase
 
         $expectedResultSet = $expectedResultSet->withFacets(
             new FacetFilter(
-                'regions',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',

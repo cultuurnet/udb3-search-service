@@ -63,6 +63,6 @@ final class LabelsAggregationTransformer implements AggregationTransformerInterf
             );
         }
 
-        return new FacetFilter($this->facetName->value, $nodes);
+        return new FacetFilter($this->facetName, $nodes);
     }
 }

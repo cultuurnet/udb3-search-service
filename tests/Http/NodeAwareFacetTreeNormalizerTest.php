@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 
 final class NodeAwareFacetTreeNormalizerTest extends TestCase
@@ -31,7 +32,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
 
         $facets = [
             new FacetFilter(
-                'region',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'prv-vlaams-brabant',
@@ -88,7 +89,7 @@ final class NodeAwareFacetTreeNormalizerTest extends TestCase
                 ]
             ),
             new FacetFilter(
-                'term',
+                FacetName::Types,
                 [
                     new FacetNode(
                         '0.11.6.5',
