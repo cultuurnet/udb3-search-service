@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-json": "*",
         "ext-pcntl": "*",
         "ext-simplexml": "*",
@@ -19,7 +19,7 @@
         "cakephp/chronos": "^3.3.1",
         "crell/api-problem": "^3.2",
         "cultuurnet/calendar-summary-v3": "^4.1.1",
-        "cultuurnet/culturefeed-php": "^2.1",
+        "cultuurnet/culturefeed-php": "^2.2",
         "filp/whoops": "^2.5",
         "guzzlehttp/guzzle": "^7.4",
         "guzzlehttp/psr7": "^2.4",
@@ -43,10 +43,10 @@
         "tuupola/cors-middleware": "^1.1"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan": "^2.2",
         "phpunit/phpunit": "^9.6",
         "publiq/php-cs-fixer-config": "^2.0",
-        "rector/rector": "^1.0"
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {

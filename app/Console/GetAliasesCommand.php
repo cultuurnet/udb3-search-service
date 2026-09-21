@@ -28,7 +28,7 @@ final class GetAliasesCommand extends AbstractElasticSearchCommand
             ->setDescription('Outputs the current Elasticsearch aliases and the index each one points to, as JSON.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // stdout must stay a single machine-readable JSON line for callers that parse it directly,
         // so operation logging goes to the cli log file instead of the console.

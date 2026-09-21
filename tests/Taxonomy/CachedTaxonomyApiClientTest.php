@@ -220,10 +220,12 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->expects($this->never())->method('sendRequest');
 
-        new CachedTaxonomyApiClient(
+        $cachedClient = new CachedTaxonomyApiClient(
             new ArrayAdapter(),
             new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger())
         );
+
+        $this->assertInstanceOf(TaxonomyApiClient::class, $cachedClient);
     }
 
     /**
