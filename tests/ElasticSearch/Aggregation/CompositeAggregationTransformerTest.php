@@ -88,7 +88,7 @@ final class CompositeAggregationTransformerTest extends TestCase
     public function it_delegates_to_the_first_transformer_that_supports_the_aggregation(): void
     {
         $aggregation = new Aggregation($this->aggregationNameSupportedByBoth);
-        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth->value);
+        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth);
 
         $this->transformer1->expects($this->once())
             ->method('toFacetTree')

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dedd20975c2498fcb5d2b5179d5022e5",
+    "content-hash": "42ad24fa0d4b91c120dec2adb9cce3b0",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -570,16 +570,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v2.1",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "7c3a70fb0c68b122cfdde084f16cfd14892f4e10"
+                "reference": "48105654e98f7d9be6ec63bf1fc730770d496255"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/7c3a70fb0c68b122cfdde084f16cfd14892f4e10",
-                "reference": "7c3a70fb0c68b122cfdde084f16cfd14892f4e10",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/48105654e98f7d9be6ec63bf1fc730770d496255",
+                "reference": "48105654e98f7d9be6ec63bf1fc730770d496255",
                 "shasum": ""
             },
             "require": {
@@ -611,9 +611,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.1"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.2"
             },
-            "time": "2025-11-05T08:16:45+00:00"
+            "time": "2026-09-21T09:39:01+00:00"
         },
         {
             "name": "elasticsearch/elasticsearch",
@@ -2647,16 +2647,16 @@
         },
         {
             "name": "predis/predis",
-            "version": "v3.6.0",
+            "version": "v3.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/predis/predis.git",
-                "reference": "2ff20c08bb63697245ffee3f198d1673086c302d"
+                "reference": "e2db96312ecf57a01a3477bf192d1ebc0ad7e9fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/predis/predis/zipball/2ff20c08bb63697245ffee3f198d1673086c302d",
-                "reference": "2ff20c08bb63697245ffee3f198d1673086c302d",
+                "url": "https://api.github.com/repos/predis/predis/zipball/e2db96312ecf57a01a3477bf192d1ebc0ad7e9fb",
+                "reference": "e2db96312ecf57a01a3477bf192d1ebc0ad7e9fb",
                 "shasum": ""
             },
             "require": {
@@ -2698,7 +2698,7 @@
             ],
             "support": {
                 "issues": "https://github.com/predis/predis/issues",
-                "source": "https://github.com/predis/predis/tree/v3.6.0"
+                "source": "https://github.com/predis/predis/tree/v3.6.1"
             },
             "funding": [
                 {
@@ -2706,7 +2706,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-14T23:07:56+00:00"
+            "time": "2026-09-17T20:41:00+00:00"
         },
         {
             "name": "psr/cache",

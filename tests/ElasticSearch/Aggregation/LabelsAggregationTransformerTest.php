@@ -65,7 +65,7 @@ final class LabelsAggregationTransformerTest extends TestCase
         $en = new Language('en');
 
         $expectedFacetTree = new FacetFilter(
-            $this->facetName->value,
+            $this->facetName,
             [
                 new FacetNode(
                     'hiddenLabel1',

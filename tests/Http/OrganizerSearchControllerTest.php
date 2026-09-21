@@ -169,7 +169,7 @@ final class OrganizerSearchControllerTest extends TestCase
 
         $expectedResultSet = $expectedResultSet->withFacets(
             new FacetFilter(
-                'regions',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',

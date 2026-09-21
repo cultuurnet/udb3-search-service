@@ -60,7 +60,7 @@ final class NodeMapAggregationTransformer implements AggregationTransformerInter
         }
 
         $children = $this->transformNodeMapToFacetNodes($this->nodeMap, $aggregation->getBuckets());
-        return new FacetFilter($this->facetName->value, $children);
+        return new FacetFilter($this->facetName, $children);
     }
 
     /**

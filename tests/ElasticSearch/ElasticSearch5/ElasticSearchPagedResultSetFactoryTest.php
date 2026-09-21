@@ -135,7 +135,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase implements E
         // because the injected transformer does not support it.
         $expected = $expected->withFacets(
             new FacetFilter(
-                FacetName::Regions->value,
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',
@@ -222,7 +222,7 @@ final class ElasticSearchPagedResultSetFactoryTest extends TestCase implements E
 
         $expected = $expected->withFacets(
             new FacetFilter(
-                FacetName::Regions->value,
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',
