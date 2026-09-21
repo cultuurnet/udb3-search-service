@@ -32,7 +32,7 @@ final class GeoDistanceParametersFactory
             throw new MissingParameter('Required "distance" parameter missing when searching by coordinates.');
         }
 
-        if ($distance && !$coordinates) {
+        if (!$coordinates) {
             throw new MissingParameter('Required "coordinates" parameter missing when searching by distance.');
         }
 

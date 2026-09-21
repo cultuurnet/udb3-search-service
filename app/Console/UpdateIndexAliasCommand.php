@@ -34,7 +34,7 @@ final class UpdateIndexAliasCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $aliasName = $input->getArgument('alias');
         $indexName = $input->getArgument('target');

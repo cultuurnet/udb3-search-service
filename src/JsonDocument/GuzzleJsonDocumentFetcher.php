@@ -112,14 +112,16 @@ final class GuzzleJsonDocumentFetcher implements JsonDocumentFetcher
 
     private function getHeader(): array
     {
-        if ($this->loginToken === null) {
-            return [];
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        if ($this->loginToken !== null) {
+            $headers['Authorization'] = 'Bearer ' . $this->loginToken->getToken();
         }
 
         return [
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->loginToken->getToken(),
-            ],
+            'headers' => $headers,
         ];
     }
 }

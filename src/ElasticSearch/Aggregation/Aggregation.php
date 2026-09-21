@@ -20,9 +20,6 @@ final class Aggregation
      */
     private array $buckets;
 
-    /**
-     * @param Bucket ...$buckets
-     */
     public function __construct(FacetName $name, Bucket ...$buckets)
     {
         $this->name = $name;
@@ -71,6 +68,6 @@ final class Aggregation
             $aggregationData['buckets']
         );
 
-        return new Aggregation(new FacetName($name), ...$buckets);
+        return new Aggregation(FacetName::fromString($name), ...$buckets);
     }
 }

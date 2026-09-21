@@ -29,7 +29,7 @@ final class DeleteIndexCommand extends AbstractElasticSearchCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $target = $input->getArgument('target');
 

@@ -484,42 +484,42 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
     public function withFacet(FacetName $facetName): self
     {
         $c = clone $this;
-        $c->mockQuery['facet'][] = $facetName->toString();
+        $c->mockQuery['facet'][] = $facetName->value;
         return $c;
     }
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['score'] = $sortOrder->toString();
+        $c->mockQuery['sort']['score'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['completeness'] = $sortOrder->toString();
+        $c->mockQuery['sort']['completeness'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['availableTo'] = $sortOrder->toString();
+        $c->mockQuery['sort']['availableTo'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['created'] = $sortOrder->toString();
+        $c->mockQuery['sort']['created'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['modified'] = $sortOrder->toString();
+        $c->mockQuery['sort']['modified'] = $sortOrder->value;
         return $c;
     }
 
@@ -528,21 +528,21 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         $c = clone $this;
         $c->mockQuery['sort']['distance']['lat'] = $coordinates->getLatitude()->toDouble();
         $c->mockQuery['sort']['distance']['lng'] = $coordinates->getLongitude()->toDouble();
-        $c->mockQuery['sort']['distance']['order'] = $sortOrder->toString();
+        $c->mockQuery['sort']['distance']['order'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['popularity'] = $sortOrder->toString();
+        $c->mockQuery['sort']['popularity'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
         $c = clone $this;
-        $c->mockQuery['sort']['recommendationScore'] = $sortOrder->toString();
+        $c->mockQuery['sort']['recommendationScore'] = $sortOrder->value;
         return $c;
     }
 

@@ -24,7 +24,7 @@ final class LabelsAggregationTransformerTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->facetName = FacetName::labels();
+        $this->facetName = FacetName::Labels;
 
         $this->transformer = new LabelsAggregationTransformer($this->facetName);
     }
@@ -35,7 +35,7 @@ final class LabelsAggregationTransformerTest extends TestCase
     public function it_only_supports_aggregations_named_after_the_injected_facet_name(): void
     {
         $supported = new Aggregation($this->facetName);
-        $unsupported = new Aggregation(FacetName::regions());
+        $unsupported = new Aggregation(FacetName::Regions);
 
         $this->assertTrue($this->transformer->supports($supported));
         $this->assertFalse($this->transformer->supports($unsupported));
@@ -65,7 +65,7 @@ final class LabelsAggregationTransformerTest extends TestCase
         $en = new Language('en');
 
         $expectedFacetTree = new FacetFilter(
-            $this->facetName->toString(),
+            $this->facetName,
             [
                 new FacetNode(
                     'hiddenLabel1',

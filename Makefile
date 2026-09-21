@@ -17,7 +17,7 @@ down:
 
 # Rebuilds the dev image and recreates the containers on it. Only needed after a
 # change to the Dockerfile: application code and vendor/ are bind-mounted, so
-# nothing else requires a rebuild. Add --pull to also pick up a newer php:8.1-fpm.
+# nothing else requires a rebuild. Add --pull to also pick up a newer php:8.3-fpm.
 build:
 	docker compose up --build --detach
 
@@ -66,7 +66,7 @@ destroy:
 
 # Builds the production target — no dev tooling, vendor/ baked in, no source mount from this checkout, so the tests exercise this branch's application code.
 acc-test-build:
-	docker build -t $(SEARCH_IMAGE) .
+	docker build -f docker/Dockerfile -t $(SEARCH_IMAGE) .
 
 acc-test-up:
 	$(ACC_TEST_COMPOSE) up -d --wait --wait-timeout 300

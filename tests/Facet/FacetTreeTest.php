@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Facet;
 
 use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Language\MultilingualString;
+use CultuurNet\UDB3\Search\Offer\FacetName;
 use PHPUnit\Framework\TestCase;
 
 final class FacetTreeTest extends TestCase
@@ -52,7 +53,7 @@ final class FacetTreeTest extends TestCase
             [$gemLeuven, $gemWilsele, $gemWijgmaal]
         );
 
-        $gemBerchem= new FacetNode(
+        $gemBerchem = new FacetNode(
             'gem-berchem',
             new MultilingualString(
                 new Language('nl'),
@@ -89,11 +90,11 @@ final class FacetTreeTest extends TestCase
             [$gemBerchem, $gemWesterlo, $gemAntwerpen]
         );
 
-        $filter = new FacetFilter('region', [$prvVlaamsBrabant, $prvAntwerpen]);
+        $filter = new FacetFilter(FacetName::Regions, [$prvVlaamsBrabant, $prvAntwerpen]);
 
         // Don't use assertEquals because we want to test that we can get all
         // required info by using the getters on the facet filter and nodes.
-        $this->assertFilterEquals('region', [$prvVlaamsBrabant, $prvAntwerpen], $filter);
+        $this->assertFilterEquals(FacetName::Regions->value, [$prvVlaamsBrabant, $prvAntwerpen], $filter);
     }
 
     private function assertFilterEquals(string $expectedKey, array $expectedChildren, FacetFilter $actual): void

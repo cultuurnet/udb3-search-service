@@ -10,6 +10,7 @@ x-dev-app: &dev-app
   # The `dev` target is the production image's own runtime stage plus composer
   build:
     context: .
+    dockerfile: docker/Dockerfile
     target: dev
   user: root
   volumes:

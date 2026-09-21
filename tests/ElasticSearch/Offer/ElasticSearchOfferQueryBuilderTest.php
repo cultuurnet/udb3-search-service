@@ -3969,7 +3969,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             );
 
         $expectedQueryArray = [
@@ -4001,10 +4001,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [
@@ -4041,16 +4041,16 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::types()
+                FacetName::Types
             )
             ->withFacet(
-                FacetName::themes()
+                FacetName::Themes
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [
@@ -4097,10 +4097,10 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         $builder = (new ElasticSearchOfferQueryBuilder(100))
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withFacet(
-                FacetName::regions()
+                FacetName::Regions
             )
             ->withFacet(
-                FacetName::facilities()
+                FacetName::Facilities
             );
 
         $expectedQueryArray = [
@@ -4143,12 +4143,12 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                     new Latitude(8.674),
                     new Longitude(50.23)
                 ),
-                SortOrder::asc()
+                SortOrder::Asc
             )
-            ->withSortByAvailableTo(SortOrder::asc())
-            ->withSortByScore(SortOrder::desc())
-            ->withSortByPopularity(SortOrder::desc())
-            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
+            ->withSortByAvailableTo(SortOrder::Asc)
+            ->withSortByScore(SortOrder::Desc)
+            ->withSortByPopularity(SortOrder::Desc)
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::Asc);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -4212,7 +4212,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->enableElasticSearch5CompatibilityMode()
-            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::asc());
+            ->withSortByRecommendationScore('6f11ca64-0b8b-45e8-8a99-9673f06935cc', SortOrder::Asc);
 
         $expectedSort = [
             [
@@ -4238,7 +4238,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withSortByCreated(SortOrder::asc());
+            ->withSortByCreated(SortOrder::Asc);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
@@ -4268,7 +4268,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
     {
         $builder = (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(30), new Limit(10))
-            ->withSortByModified(SortOrder::asc());
+            ->withSortByModified(SortOrder::Asc);
 
         $expectedQueryArray = [
             '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],

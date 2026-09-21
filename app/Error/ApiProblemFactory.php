@@ -44,10 +44,10 @@ final class ApiProblemFactory
             $errorData = Json::decodeAssociatively($throwable->getMessage());
             $message = $errorData['error']['root_cause'][0]['reason'];
 
-            if (strpos($message, 'Failed to parse query') !== false ||
-                strpos($message, 'failed to create query') !== false ||
-                strpos($message, 'unknown field [nested], parser not found') !== false
-             ) {
+            if (str_contains($message, 'Failed to parse query') ||
+                str_contains($message, 'failed to create query') ||
+                str_contains($message, 'unknown field [nested], parser not found')
+            ) {
                 $exception = new UnsupportedParameterValue(
                     'Could not parse query given "q" parameter as a valid Lucene query.'
                 );

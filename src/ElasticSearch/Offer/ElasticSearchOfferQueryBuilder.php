@@ -565,20 +565,15 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withFacet(FacetName $facetName): self
     {
-        $facetFields = [
-            FacetName::regions()->toString() => 'regions.keyword',
-            FacetName::types()->toString() => 'typeIds',
-            FacetName::themes()->toString() => 'themeIds',
-            FacetName::facilities()->toString() => 'facilityIds',
-            FacetName::labels()->toString() => 'labels.keyword',
-        ];
+        $facetField = match ($facetName) {
+            FacetName::Regions => 'regions.keyword',
+            FacetName::Types => 'typeIds',
+            FacetName::Themes => 'themeIds',
+            FacetName::Facilities => 'facilityIds',
+            FacetName::Labels => 'labels.keyword',
+        };
 
-        if (!isset($facetFields[$facetName->toString()])) {
-            return $this;
-        }
-
-        $facetField = $facetFields[$facetName->toString()];
-        $aggregation = new TermsAggregation($facetName->toString(), $facetField);
+        $aggregation = new TermsAggregation($facetName->value, $facetField);
 
         if (null !== $this->aggregationSize) {
             $aggregation->addParameter('size', $this->aggregationSize);
@@ -591,27 +586,27 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->toString());
+        return $this->withFieldSort('_score', $sortOrder->value);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('completeness', $sortOrder->toString());
+        return $this->withFieldSort('completeness', $sortOrder->value);
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->toString());
+        return $this->withFieldSort('availableTo', $sortOrder->value);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->toString());
+        return $this->withFieldSort('created', $sortOrder->value);
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->toString());
+        return $this->withFieldSort('modified', $sortOrder->value);
     }
 
     /**
@@ -621,7 +616,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         return $this->withFieldSort(
             '_geo_distance',
-            $sortOrder->toString(),
+            $sortOrder->value,
             [
                 'geo_point' => [
                     'lat' => $coordinates->getLatitude()->toDouble(),
@@ -635,12 +630,12 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
+        return $this->withFieldSort('metadata.popularity', $sortOrder->value);
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->value);
 
         $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
 

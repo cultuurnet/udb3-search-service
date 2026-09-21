@@ -75,8 +75,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         if ($clientId === null && $apiKey !== null && $this->apiKeysMatchedToClientIds !== null) {
             try {
                 $clientId = $this->apiKeysMatchedToClientIds->getClientId($apiKey);
-            } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->error($unmatchedApiKey->getMessage());
+            } catch (UnmatchedApiKey) {
             }
         }
 
@@ -125,7 +124,7 @@ final class AuthenticateRequest implements MiddlewareInterface
         RequestHandlerInterface $handler,
         string $accessToken
     ): ResponseInterface {
-        if (strpos($accessToken, self::BEARER) !== 0) {
+        if (!str_starts_with($accessToken, self::BEARER)) {
             return (
                 new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token')
             )->toResponse();
@@ -179,6 +178,8 @@ final class AuthenticateRequest implements MiddlewareInterface
         if ($status === 'REMOVED') {
             return (new RemovedApiKey($apiKey))->toResponse();
         }
+
+        $this->logger->error($apiKey . ' could not be matched to a clientId.');
 
         $this->container
             ->extend(Consumer::class)

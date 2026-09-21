@@ -42,23 +42,23 @@ final class CompositeAggregationTransformerTest extends TestCase
         $this->transformer1 = $this->createMock(AggregationTransformerInterface::class);
         $this->transformer2 = $this->createMock(AggregationTransformerInterface::class);
 
-        $this->aggregationNameSupportedByTransformer1 = FacetName::regions();
-        $this->aggregationNameSupportedByTransformer2 = FacetName::themes();
-        $this->aggregationNameSupportedByBoth = FacetName::types();
-        $this->unsupportedAggregationName = FacetName::facilities();
+        $this->aggregationNameSupportedByTransformer1 = FacetName::Regions;
+        $this->aggregationNameSupportedByTransformer2 = FacetName::Themes;
+        $this->aggregationNameSupportedByBoth = FacetName::Types;
+        $this->unsupportedAggregationName = FacetName::Facilities;
 
         $this->transformer1->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                fn (Aggregation $aggregation): bool => $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer1) ||
-                    $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth)
+                fn (Aggregation $aggregation): bool => $aggregation->getName() === $this->aggregationNameSupportedByTransformer1 ||
+                    $aggregation->getName() === $this->aggregationNameSupportedByBoth
             );
 
         $this->transformer2->expects($this->any())
             ->method('supports')
             ->willReturnCallback(
-                fn (Aggregation $aggregation): bool => $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByTransformer2) ||
-                    $aggregation->getName()->sameValueAs($this->aggregationNameSupportedByBoth)
+                fn (Aggregation $aggregation): bool => $aggregation->getName() === $this->aggregationNameSupportedByTransformer2 ||
+                    $aggregation->getName() === $this->aggregationNameSupportedByBoth
             );
 
         $this->compositeTransformer = new CompositeAggregationTransformer();
@@ -88,7 +88,7 @@ final class CompositeAggregationTransformerTest extends TestCase
     public function it_delegates_to_the_first_transformer_that_supports_the_aggregation(): void
     {
         $aggregation = new Aggregation($this->aggregationNameSupportedByBoth);
-        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth->toString());
+        $expectedFacetTree = new FacetFilter($this->aggregationNameSupportedByBoth);
 
         $this->transformer1->expects($this->once())
             ->method('toFacetTree')

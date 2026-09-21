@@ -147,15 +147,15 @@ final class OrganizerSearchControllerTest extends TestCase
                 )
             )
             ->withCreatorFilter(new Creator('Jan Janssens'))
-            ->withSortByScore(SortOrder::desc())
-            ->withSortByCompleteness(SortOrder::asc())
-            ->withSortByCreated(SortOrder::asc())
-            ->withSortByModified(SortOrder::desc())
+            ->withSortByScore(SortOrder::Desc)
+            ->withSortByCompleteness(SortOrder::Asc)
+            ->withSortByCreated(SortOrder::Asc)
+            ->withSortByModified(SortOrder::Desc)
             ->withImagesFilter(true)
             ->withLabelFilter(new LabelName('Uitpas'))
             ->withLabelFilter(new LabelName('foo'))
             ->withWorkflowStatusFilter(new WorkflowStatus('ACTIVE'), new WorkflowStatus('DELETED'))
-            ->withFacet(FacetName::regions())
+            ->withFacet(FacetName::Regions)
             ->withStartAndLimit(new Start(30), new Limit(10));
 
         $expectedResultSet = new PagedResultSet(
@@ -169,7 +169,7 @@ final class OrganizerSearchControllerTest extends TestCase
 
         $expectedResultSet = $expectedResultSet->withFacets(
             new FacetFilter(
-                'regions',
+                FacetName::Regions,
                 [
                     new FacetNode(
                         'gem-leuven',

@@ -23,7 +23,7 @@ final class ReindexUDB3CoreCommand extends AbstractReindexCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $operation = new ReindexUDB3Core(
             $this->getElasticSearchClient(),

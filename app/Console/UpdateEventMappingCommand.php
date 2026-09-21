@@ -23,7 +23,7 @@ final class UpdateEventMappingCommand extends AbstractMappingCommand
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->usesSeparateMappingFiles()) {
             throw new \RuntimeException(
