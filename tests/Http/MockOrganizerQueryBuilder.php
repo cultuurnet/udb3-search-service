@@ -209,28 +209,28 @@ final class MockOrganizerQueryBuilder implements OrganizerQueryBuilderInterface
     public function withSortByScore(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
         $c = clone $this;
-        $c->mockQuery['sort']['score'] = $sortOrder->toString();
+        $c->mockQuery['sort']['score'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
         $c = clone $this;
-        $c->mockQuery['sort']['completeness'] = $sortOrder->toString();
+        $c->mockQuery['sort']['completeness'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByCreated(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
         $c = clone $this;
-        $c->mockQuery['sort']['created'] = $sortOrder->toString();
+        $c->mockQuery['sort']['created'] = $sortOrder->value;
         return $c;
     }
 
     public function withSortByModified(SortOrder $sortOrder): OrganizerQueryBuilderInterface
     {
         $c = clone $this;
-        $c->mockQuery['sort']['modified'] = $sortOrder->toString();
+        $c->mockQuery['sort']['modified'] = $sortOrder->value;
         return $c;
     }
 

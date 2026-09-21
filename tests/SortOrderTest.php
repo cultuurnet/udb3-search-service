@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class SortOrderTest extends TestCase
@@ -13,17 +12,16 @@ final class SortOrderTest extends TestCase
      * @test
      * @dataProvider validValues
      */
-    public function it_only_accepts_valid_values(string $value): void
+    public function it_only_accepts_valid_values(string $value, SortOrder $expected): void
     {
-        new SortOrder($value);
-        $this->addToAssertionCount(1);
+        $this->assertSame($expected, SortOrder::fromString($value));
     }
 
     public function validValues(): array
     {
         return [
-            'asc' => ['asc'],
-            'desc' => ['desc'],
+            'asc' => ['asc', SortOrder::Asc],
+            'desc' => ['desc', SortOrder::Desc],
         ];
     }
 
@@ -33,9 +31,10 @@ final class SortOrderTest extends TestCase
      */
     public function it_throws_on_invalid_values(string $invalidValue): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid SortOrder: ' . $invalidValue . '. Should be one of asc, desc');
-        new SortOrder($invalidValue);
+        $this->expectException(UnsupportedParameterValue::class);
+        $this->expectExceptionMessage("Invalid sort order '{$invalidValue}' given.");
+
+        SortOrder::fromString($invalidValue);
     }
 
     public function inValidValues(): array
