@@ -17,7 +17,7 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
             ->setDescription('Creates or updates the region mapping on the latest geoshapes index.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $operation = new UpdateRegionMapping(
             $this->getElasticSearchClient(),

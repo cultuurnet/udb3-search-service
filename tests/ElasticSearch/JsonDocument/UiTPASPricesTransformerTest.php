@@ -139,7 +139,7 @@ final class UiTPASPricesTransformerTest extends TestCase
         $draft = [
             '@id' => 'https://io.uitdatabank.dev/event/fa3a2412-211c-4de1-b452-5a3ecea611f6',
             '@context' => '/contexts/event',
-            'mainLanguage'=> 'nl',
+            'mainLanguage' => 'nl',
             'name' => [
                 'nl' => 'Onbekende prijs',
             ],

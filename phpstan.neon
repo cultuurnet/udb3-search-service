@@ -2,11 +2,12 @@ parameters:
 	level: 8
 	parallel:
 		maximumNumberOfProcesses: 1
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
 	paths:
 		- app
 		- src
 		- tests
 	excludePaths:
 		- app/RoutingServiceProvider.php
+	ignoreErrors:
+		-
+			identifier: missingType.iterableValue

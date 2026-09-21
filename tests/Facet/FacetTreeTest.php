@@ -52,7 +52,7 @@ final class FacetTreeTest extends TestCase
             [$gemLeuven, $gemWilsele, $gemWijgmaal]
         );
 
-        $gemBerchem= new FacetNode(
+        $gemBerchem = new FacetNode(
             'gem-berchem',
             new MultilingualString(
                 new Language('nl'),

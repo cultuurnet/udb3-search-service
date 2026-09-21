@@ -687,7 +687,7 @@ final class CalendarTransformer implements JsonTransformer
             }
         }
 
-        return array_values($timeRanges);
+        return $timeRanges;
     }
 
     /**

@@ -11,13 +11,11 @@ interface QueryBuilder
     public const DEFAULT_LIMIT = 10;
 
     /**
-     * @param Language ...$textLanguages
      * @return static
      */
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages);
 
     /**
-     * @param Language ...$textLanguages
      * @return static
      */
     public function withTextQuery(string $text, Language ...$textLanguages);

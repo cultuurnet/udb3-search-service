@@ -17,7 +17,7 @@ final class UpdateUdb3CoreMappingCommand extends AbstractMappingCommand
             ->setDescription('Creates or updates the udb3 core mapping on the latest udb3_core index.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $operation = new UpdateUdb3CoreMapping(
             $this->getElasticSearchClient(),
