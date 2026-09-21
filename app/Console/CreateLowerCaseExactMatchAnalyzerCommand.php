@@ -23,7 +23,7 @@ final class CreateLowerCaseExactMatchAnalyzerCommand extends AbstractElasticSear
     /**
      * @inheritdoc
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $operation = new CreateLowerCaseExactMatchAnalyzer(
             $this->getElasticSearchClient(),

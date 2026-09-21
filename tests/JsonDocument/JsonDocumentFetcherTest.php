@@ -240,7 +240,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 'GET',
                 $documentUrl,
                 [
-                    'headers' =>[
+                    'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
                     ],
@@ -279,7 +279,7 @@ final class JsonDocumentFetcherTest extends TestCase
                 'GET',
                 $documentUrl,
                 [
-                    'headers' =>[
+                    'headers' => [
                         'Accept' => 'application/json',
                         'Authorization' => 'Bearer ' . self::DUMMY_TOKEN,
                     ],

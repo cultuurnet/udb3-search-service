@@ -10,7 +10,7 @@ why development builds its own. Both come from the same Dockerfile: development
 builds the `dev` target, which is the production image's own runtime stage plus
 composer, so the PHP build, extensions and ini settings match what runs when
 deployed. What development does not get is the published artifact itself, byte for
-byte — note that `php:8.1-fpm` is a moving base tag, so a fresh local build can
+byte — note that `php:8.3-fpm` is a moving base tag, so a fresh local build can
 carry newer upstream packages than an image built weeks ago. The acceptance tests
 do run the real artifact.
 
@@ -45,7 +45,7 @@ $ make down
 The service answers on http://localhost:8080, and on http://search.uitdatabank.local from other containers on the `uitdatabank` network.
 Elasticsearch is on http://localhost:9200.
 
-`make build` rebuilds the image and recreates the containers on it. It is only needed after a change to the Dockerfile, since the application code and `vendor/` are bind-mounted, so editing PHP needs nothing, and changing a dependency needs `make install`, not a rebuild. On a fresh clone you do not need it either: `make up` builds the image when it is missing. Add `--pull` to also pick up a newer `php:8.1-fpm` base.
+`make build` rebuilds the image and recreates the containers on it. It is only needed after a change to the Dockerfile, since the application code and `vendor/` are bind-mounted, so editing PHP needs nothing, and changing a dependency needs `make install`, not a rebuild. On a fresh clone you do not need it either: `make up` builds the image when it is missing. Add `--pull` to also pick up a newer `php:8.3-fpm` base.
 
 To run the published artifact locally instead of your own build (e.g. to reproduce
 something that only happens with a deployed image) skip the override file and give
@@ -68,7 +68,7 @@ $ make acc-test-down
 
 On main that build is equivalent to the image in ECR — same Dockerfile, same target,
 same commit, and `composer.lock` pins every PHP dependency — but not identical to
-it: `php:8.1-fpm` is a mutable tag and the `apt`/`pecl` installs are unpinned, so a
+it: `php:8.3-fpm` is a mutable tag and the `apt`/`pecl` installs are unpinned, so a
 later build can carry newer upstream packages.
 
 To run a published artifact instead, point `SEARCH_IMAGE` at an ECR tag and skip the
