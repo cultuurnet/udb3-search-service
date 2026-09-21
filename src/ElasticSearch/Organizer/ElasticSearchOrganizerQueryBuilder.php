@@ -77,7 +77,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withDomainFilter(string $domain): ElasticSearchOrganizerQueryBuilder
     {
-        if (strpos($domain, 'www.') === 0) {
+        if (str_starts_with($domain, 'www.')) {
             $domain = substr($domain, strlen('www.'));
         }
         return $this->withTermQuery('domain', $domain);
@@ -219,22 +219,22 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withSortByScore(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('_score', $sortOrder->toString());
+        return $this->withFieldSort('_score', $sortOrder->value);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('completeness', $sortOrder->toString());
+        return $this->withFieldSort('completeness', $sortOrder->value);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('created', $sortOrder->toString());
+        return $this->withFieldSort('created', $sortOrder->value);
     }
 
     public function withSortByModified(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('modified', $sortOrder->toString());
+        return $this->withFieldSort('modified', $sortOrder->value);
     }
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface

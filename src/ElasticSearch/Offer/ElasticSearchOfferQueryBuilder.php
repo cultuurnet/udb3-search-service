@@ -591,27 +591,27 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->toString());
+        return $this->withFieldSort('_score', $sortOrder->value);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('completeness', $sortOrder->toString());
+        return $this->withFieldSort('completeness', $sortOrder->value);
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->toString());
+        return $this->withFieldSort('availableTo', $sortOrder->value);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->toString());
+        return $this->withFieldSort('created', $sortOrder->value);
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->toString());
+        return $this->withFieldSort('modified', $sortOrder->value);
     }
 
     /**
@@ -621,7 +621,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         return $this->withFieldSort(
             '_geo_distance',
-            $sortOrder->toString(),
+            $sortOrder->value,
             [
                 'geo_point' => [
                     'lat' => $coordinates->getLatitude()->toDouble(),
@@ -635,12 +635,12 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->toString());
+        return $this->withFieldSort('metadata.popularity', $sortOrder->value);
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->toString());
+        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->value);
 
         $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
 
