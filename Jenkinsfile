@@ -43,7 +43,7 @@ pipeline {
                 }
 
                 stage('Build & push docker image') {
-                    agent { label 'docker && nodejs22 && php8.1' } // node & php version specified to ensure run in agent with increased volume size for docker build
+                    agent { label 'docker_build' }
                     environment {
                         GIT_SHORT_COMMIT = util.shortCommitRef()
                         IMAGE_TAG        = "${env.PIPELINE_VERSION}"
@@ -209,16 +209,6 @@ pipeline {
                 }
                 stage('Deploy') {
                     parallel {
-                        stage('Deploy to first ElasticSearch 5 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-prod01'
-                            }
-                        }
-                        stage('Deploy to second ElasticSearch 5 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-prod02'
-                            }
-                        }
                         stage('Deploy to first ElasticSearch 8 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-prod03'
