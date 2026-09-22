@@ -152,7 +152,7 @@ pipeline {
             when {
                 expression { params.RUN_ACCEPTANCE_TESTS }
             }
-            agent { 'ubuntu' && '20.04' && 'docker' }
+            agent { 'ubuntu && 20.04 && docker' }
             steps {
                 build job: 'uitdatabank-acceptance-tests', wait: true
             }
