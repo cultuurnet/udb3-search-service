@@ -11,7 +11,7 @@ final class AttendanceModeTransformer implements JsonTransformer
 {
     public function transform(array $from, array $draft = []): array
     {
-        $draft['attendanceMode'] = AttendanceMode::offline()->toString();
+        $draft['attendanceMode'] = AttendanceMode::Offline->value;
 
         if (isset($from['attendanceMode'])) {
             $draft['attendanceMode'] = $from['attendanceMode'];

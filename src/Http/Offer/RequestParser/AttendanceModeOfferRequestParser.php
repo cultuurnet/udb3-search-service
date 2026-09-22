@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Search\Http\Offer\RequestParser;
 use CultuurNet\UDB3\Search\Http\ApiRequestInterface;
 use CultuurNet\UDB3\Search\Offer\AttendanceMode;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class AttendanceModeOfferRequestParser implements OfferRequestParserInterface
 {
@@ -20,13 +19,7 @@ final class AttendanceModeOfferRequestParser implements OfferRequestParserInterf
         $attendanceModes = $parameterBagReader->getExplodedStringFromParameter(
             'attendanceMode',
             null,
-            function (string $attendanceMode) {
-                try {
-                    return new AttendanceMode($attendanceMode);
-                } catch (UnsupportedParameterValue $e) {
-                    throw new UnsupportedParameterValue('Unknown attendance mode value "' . $attendanceMode . '"');
-                }
-            }
+            AttendanceMode::fromString(...)
         );
 
         if (!empty($attendanceModes)) {

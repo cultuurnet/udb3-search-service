@@ -40,7 +40,7 @@ final class OrganizerTransformer implements JsonTransformer
             new IdentifierTransformer(
                 $logger,
                 $idUrlParser,
-                FallbackType::organizer(),
+                FallbackType::Organizer,
                 false
             ),
             new NameTransformer($logger),

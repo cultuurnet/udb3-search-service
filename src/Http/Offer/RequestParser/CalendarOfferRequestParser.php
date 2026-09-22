@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\Status;
 use CultuurNet\UDB3\Search\Offer\SubEventQueryParameters;
-use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarOfferRequestParser implements OfferRequestParserInterface
 {
@@ -25,13 +24,7 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         $statuses = $parameterBagReader->getExplodedStringFromParameter(
             'status',
             null,
-            function (string $status) {
-                try {
-                    return new Status($status);
-                } catch (UnsupportedParameterValue $e) {
-                    throw new UnsupportedParameterValue('Unknown status value "' . $status . '"');
-                }
-            }
+            Status::fromString(...)
         );
         $bookingAvailability = $parameterBagReader->getStringFromParameter('bookingAvailability') ?: null;
         $hasChildcare = $parameterBagReader->getBooleanFromParameter('hasChildcare');
