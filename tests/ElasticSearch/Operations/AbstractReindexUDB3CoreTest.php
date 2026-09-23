@@ -90,7 +90,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1-es8.json');
+        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1.json');
 
         $this->client->expects($this->once())
             ->method('search')
@@ -209,7 +209,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         ];
         // @codingStandardsIgnoreEnd
 
-        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1-es8.json');
+        $results = $this->getJsonDocumentAsElasticSearchResults(__DIR__ . '/data/udb3-core-scroll-1.json');
 
         $this->client->expects($this->once())
             ->method('search')
@@ -343,7 +343,7 @@ abstract class AbstractReindexUDB3CoreTest extends AbstractOperationTestCase
         // @codingStandardsIgnoreEnd
 
         $results = $this->getJsonDocumentAsElasticSearchResults(
-            __DIR__ . '/data/udb3-core-scroll-1-es8-with-skips.json'
+            __DIR__ . '/data/udb3-core-scroll-1-with-skips.json'
         );
 
         $this->client->expects($this->once())
