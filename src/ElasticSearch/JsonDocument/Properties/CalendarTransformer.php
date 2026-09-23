@@ -77,7 +77,7 @@ final class CalendarTransformer implements JsonTransformer
         $draft['status'] = self::STATUS_AVAILABLE;
         $draft['bookingAvailability'] = self::BOOKING_AVAILABLE;
 
-        $draft['hasOvernightStay'] = false;
+        $draft['hasOvernightStay'] = null;
         $draft['hasChildcare'] = false;
         $draft['recurringOnDayOfWeek'] = [];
         $draft['recurringOnLocalTimeRange'] = (object) [];
@@ -254,26 +254,40 @@ final class CalendarTransformer implements JsonTransformer
     }
 
     /**
-     * The search couples on event level: if at least one sub-event has hasOvernightStay === true, the whole
-     * offer is considered to have an overnight stay. A partial overnight event (some sub-events true,
-     * some false) therefore counts as having an overnight stay.
+     * The search couples on event level: one sub-event that is true makes the whole offer true, whatever
+     * the other sub-events are.
      *
      * @param array $from
      *   JSON-LD of an event or place, as an associative array. Read before subEvents are poly-filled
      *   from openingHours; hasOvernightStay only ever lives on the explicit source subEvents of single and
      *   multiple calendars.
-     * @return bool
-     *   True if at least one source subEvent is flagged as having an overnight stay.
+     * @return bool|null
+     *   Null when hasOvernightStay is absent on every subEvent.
      */
-    private function determineHasOvernightStay(array $from): bool
+    private function determineHasOvernightStay(array $from): ?bool
     {
+        $hasOvernightStay = null;
+
         foreach ($from['subEvent'] ?? [] as $subEvent) {
-            if (($subEvent['hasOvernightStay'] ?? false) === true) {
+            $subEventHasOvernightStay = $this->determineSubEventHasOvernightStay($subEvent);
+
+            if ($subEventHasOvernightStay === true) {
                 return true;
+            }
+
+            if ($subEventHasOvernightStay === false) {
+                $hasOvernightStay = false;
             }
         }
 
-        return false;
+        return $hasOvernightStay;
+    }
+
+    private function determineSubEventHasOvernightStay(array $subEvent): ?bool
+    {
+        $hasOvernightStay = $subEvent['hasOvernightStay'] ?? null;
+
+        return is_bool($hasOvernightStay) ? $hasOvernightStay : null;
     }
 
     /**
@@ -397,7 +411,7 @@ final class CalendarTransformer implements JsonTransformer
                 'status' => $this->determineStatus($subEvent, $from),
                 'bookingAvailability' => $this->determineBookingAvailability($subEvent, $from),
                 'hasChildcare' => isset($subEvent['childcare']),
-                'hasOvernightStay' => ($subEvent['hasOvernightStay'] ?? false) === true,
+                'hasOvernightStay' => $this->determineSubEventHasOvernightStay($subEvent),
             ];
         }
 

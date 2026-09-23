@@ -111,7 +111,7 @@
     "audienceType": "members",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernightStay": false,
+    "hasOvernightStay": null,
     "mediaObjectsCount": 2,
     "videosCount": 2,
     "address": {
