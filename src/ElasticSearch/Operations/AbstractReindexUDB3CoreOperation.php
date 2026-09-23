@@ -87,9 +87,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
 
     private function dispatchEventForHit(array $hit): void
     {
-        $type = $this->usesDocumentTypes()
-            ? ($hit['_type'] ?? '')
-            : strtolower($hit['_source']['@type'] ?? '');
+        $type = strtolower($hit['_source']['@type'] ?? '');
 
         if ($type === 'region_query') {
             // Skip region queries because they should be re-indexed using
@@ -106,8 +104,7 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
         $id = $hit['_id'];
 
         if (empty($type)) {
-            $typeField = $this->usesDocumentTypes() ? '_type' : '@type';
-            $this->logger->error("Skipping hit {$id} without {$typeField} property.");
+            $this->logger->error("Skipping hit {$id} without @type property.");
             return;
         }
 

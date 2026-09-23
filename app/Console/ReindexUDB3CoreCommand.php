@@ -33,10 +33,6 @@ final class ReindexUDB3CoreCommand extends AbstractReindexCommand
             $this->getScrollSize()
         );
 
-        if ($this->usesCompatibilityMode()) {
-            $operation->enableElasticSearch5CompatibilityMode();
-        }
-
         $this->runOperation($input, $output, $operation);
 
         return 0;

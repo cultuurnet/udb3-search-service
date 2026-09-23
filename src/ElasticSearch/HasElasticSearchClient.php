@@ -8,8 +8,6 @@ use Elasticsearch\Client;
 
 trait HasElasticSearchClient
 {
-    use ElasticSearch5Compatibility;
-
     private Client $elasticSearchClient;
 
     private string $indexName;
@@ -18,30 +16,20 @@ trait HasElasticSearchClient
 
     private function getDefaultParameters(): array
     {
-        $params = ['index' => $this->indexName];
-
-        if ($this->usesDocumentTypes()) {
-            $params['type'] = $this->documentType;
-        }
-
-        return $params;
+        return ['index' => $this->indexName];
     }
 
     private function executeQuery(array $body, array $parameters = []): array
     {
-        if (!$this->usesDocumentTypes()) {
-            if (!isset($body['query']['bool'])) {
-                $body['query'] = ['bool' => ['must' => [$body['query']]]];
-            }
-            $types = array_map('strtolower', explode(',', $this->documentType));
-            $body['query']['bool']['filter'][] = count($types) === 1
-                ? ['term' => ['@type' => $types[0]]]
-                : ['terms' => ['@type' => $types]];
+        if (!isset($body['query']['bool'])) {
+            $body['query'] = ['bool' => ['must' => [$body['query']]]];
         }
+        $types = array_map('strtolower', explode(',', $this->documentType));
+        $body['query']['bool']['filter'][] = count($types) === 1
+            ? ['term' => ['@type' => $types[0]]]
+            : ['terms' => ['@type' => $types]];
 
-        if (!$this->usesIntegerTotalHits()) {
-            $body['track_total_hits'] = true;
-        }
+        $body['track_total_hits'] = true;
         $parameters['body'] = $body;
 
         return $this->elasticSearchClient->search(

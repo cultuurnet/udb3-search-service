@@ -16,10 +16,6 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
             'body' => Json::decodeAssociatively(FileReader::read($mappingFilePath)),
         ];
 
-        if ($this->usesDocumentTypes()) {
-            $params['type'] = $documentType;
-        }
-
         $this->client->indices()->putMapping($params);
 
         $this->logger->info("Mapping for type {$documentType} updated.");
