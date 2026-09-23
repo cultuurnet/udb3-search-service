@@ -163,11 +163,39 @@ final class EventTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_overnight(): void
+    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_true(): void
     {
         $this->transformAndAssert(
-            __DIR__ . '/data/event/original-with-overnight.json',
-            __DIR__ . '/data/event/indexed-with-overnight.json',
+            __DIR__ . '/data/event/original-overnight-true.json',
+            __DIR__ . '/data/event/indexed-overnight-true.json',
+            [
+                ['warning', 'Missing expected field \'creator\'.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_stay_false_when_every_sub_event_is_false(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-overnight-false.json',
+            __DIR__ . '/data/event/indexed-overnight-false.json',
+            [
+                ['warning', 'Missing expected field \'creator\'.', []],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_stay_null_when_every_sub_event_is_absent(): void
+    {
+        $this->transformAndAssert(
+            __DIR__ . '/data/event/original-overnight-absent.json',
+            __DIR__ . '/data/event/indexed-overnight-absent.json',
             [
                 ['warning', 'Missing expected field \'creator\'.', []],
             ]
