@@ -20,11 +20,8 @@ use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexPermanentOffersCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -55,9 +52,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
                     'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
-                    'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
-                    'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
-                    'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
                     'udb3-core:reindex' => ReindexUDB3CoreCommand::class,
                     'udb3-core:reindex-permanent' => ReindexPermanentOffersCommand::class,
                     'udb3-core:install' => InstallUDB3CoreCommand::class,
@@ -108,42 +102,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                 $this->parameter('elasticsearch.organizer.document_type')
             )
-        );
-
-        $this->add(
-            UpdateOrganizerMappingCommand::class,
-            function (): UpdateOrganizerMappingCommand {
-                $command = new UpdateOrganizerMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.organizer.document_type')
-                );
-                return $command;
-            }
-        );
-
-        $this->add(
-            UpdateEventMappingCommand::class,
-            function (): UpdateEventMappingCommand {
-                $command = new UpdateEventMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.event.document_type')
-                );
-                return $command;
-            }
-        );
-
-        $this->add(
-            UpdatePlaceMappingCommand::class,
-            function (): UpdatePlaceMappingCommand {
-                $command = new UpdatePlaceMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.place.document_type')
-                );
-                return $command;
-            }
         );
 
         $this->add(
