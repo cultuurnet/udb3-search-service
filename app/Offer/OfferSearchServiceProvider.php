@@ -48,9 +48,6 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                     $this->get(OfferSearchServiceFactory::class),
                     $this->get(Consumer::class),
                 );
-                if ($this->usesElasticSearch5()) {
-                    $factory->enableElasticSearch5CompatibilityMode();
-                }
                 return $factory;
             }
         );
@@ -95,10 +92,6 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                     $this->get(Client::class),
                     $transformer
                 );
-
-                if ($this->usesElasticSearch5()) {
-                    $factory->enableElasticSearch5CompatibilityMode();
-                }
 
                 return $factory;
             }

@@ -45,10 +45,6 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                     $this->get('elasticsearch_indexation_strategy')
                 );
 
-                if ($this->usesElasticSearch5()) {
-                    $repository->enableElasticSearch5CompatibilityMode();
-                }
-
                 $service = new TransformingJsonDocumentIndexService(
                     $this->get(JsonDocumentFetcher::class)->withEmbedContributors(),
                     $transformer,

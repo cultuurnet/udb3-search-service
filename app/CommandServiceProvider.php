@@ -118,9 +118,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.organizer.document_type')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -133,9 +130,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.event.document_type')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -148,9 +142,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.place.document_type')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -167,9 +158,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -186,9 +174,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -202,9 +187,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                     $this->parameter('elasticsearch.udb3_core_index.read_alias')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -217,9 +199,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
                     $this->parameter('elasticsearch.region.document_type')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -234,9 +213,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
