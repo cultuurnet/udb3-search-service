@@ -108,10 +108,6 @@ abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOpe
             return;
         }
 
-        if (empty($hit['_source'])) {
-            $this->logger->error("Skipping hit {$id} without _source property.");
-            return;
-        }
         $source = $hit['_source'];
 
         if (empty($source['@id'])) {
