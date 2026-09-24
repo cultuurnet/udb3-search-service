@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\GeoDistanceSort;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
@@ -596,17 +597,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): self
     {
         return $this->withSort(
-            new FieldSort(
-                '_geo_distance',
-                $sortOrder->value,
-                [
-                    'geo_point' => [
-                        'lat' => $coordinates->getLatitude()->toDouble(),
-                        'lon' => $coordinates->getLongitude()->toDouble(),
-                    ],
-                    'unit' => 'km',
-                    'distance_type' => 'plane',
-                ]
+            new GeoDistanceSort(
+                field: 'geo_point',
+                location: $coordinates,
+                order: $sortOrder
             )
         );
     }
