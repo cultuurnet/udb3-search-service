@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch;
 
+use CultuurNet\UDB3\Search\MockDistance;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -106,5 +107,35 @@ final class ElasticSearchDistanceTest extends TestCase
             ['7 footsteps'],
             ['8 sheppey'],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_an_equal_distance_from_an_elasticsearch_distance(): void
+    {
+        $distance = new ElasticSearchDistance('30km');
+
+        $this->assertEquals($distance, ElasticSearchDistance::fromDistance($distance));
+    }
+
+    /**
+     * @test
+     */
+    public function it_converts_another_distance_to_an_elasticsearch_distance(): void
+    {
+        $distance = ElasticSearchDistance::fromDistance(new MockDistance(' 30 km '));
+
+        $this->assertEquals(new ElasticSearchDistance('30km'), $distance);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_exception_when_converting_an_invalid_distance(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Distance is not in a valid format.');
+        ElasticSearchDistance::fromDistance(new MockDistance('about 30km'));
     }
 }

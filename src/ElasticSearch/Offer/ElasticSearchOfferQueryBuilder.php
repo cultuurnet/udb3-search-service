@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -38,8 +39,8 @@ use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
@@ -375,11 +376,8 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toString(),
-            (object) [
-                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
-                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
-            ]
+            ElasticSearchDistance::fromDistance($geoDistanceParameters->getMaximumDistance()),
+            $geoDistanceParameters->getCoordinates()
         );
 
         $c = $this->getClone();
@@ -389,20 +387,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
     {
-        $northWest = $geoBoundsParameters->getNorthWestCoordinates();
-        $southEast = $geoBoundsParameters->getSouthEastCoordinates();
-
-        $topLeft = [
-            'lat' => $northWest->getLatitude()->toDouble(),
-            'lon' => $northWest->getLongitude()->toDouble(),
-        ];
-
-        $bottomRight = [
-            'lat' => $southEast->getLatitude()->toDouble(),
-            'lon' => $southEast->getLongitude()->toDouble(),
-        ];
-
-        $geoBoundingBoxQuery = new GeoBoundingBoxQuery('geo_point', [$topLeft, $bottomRight]);
+        $geoBoundingBoxQuery = new GeoBoundingBoxQuery(
+            'geo_point',
+            $geoBoundsParameters->getNorthWestCoordinates(),
+            $geoBoundsParameters->getSouthEastCoordinates()
+        );
 
         $c = $this->getClone();
         $c->boolQuery->add($geoBoundingBoxQuery, BoolQuery::FILTER);
