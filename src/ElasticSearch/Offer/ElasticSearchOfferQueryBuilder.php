@@ -43,7 +43,8 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\GeoDistanceSort;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\NestedFieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -567,27 +568,27 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->value);
+        return $this->withFieldSort('_score', $sortOrder);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('completeness', $sortOrder->value);
+        return $this->withFieldSort('completeness', $sortOrder);
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->value);
+        return $this->withFieldSort('availableTo', $sortOrder);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->value);
+        return $this->withFieldSort('created', $sortOrder);
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->value);
+        return $this->withFieldSort('modified', $sortOrder);
     }
 
     /**
@@ -595,42 +596,30 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      */
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): self
     {
-        return $this->withFieldSort(
-            '_geo_distance',
-            $sortOrder->value,
-            [
-                'geo_point' => [
-                    'lat' => $coordinates->getLatitude()->toDouble(),
-                    'lon' => $coordinates->getLongitude()->toDouble(),
-                ],
-                'unit' => 'km',
-                'distance_type' => 'plane',
-            ]
+        return $this->withSort(
+            new GeoDistanceSort(
+                field: 'geo_point',
+                location: $coordinates,
+                order: $sortOrder
+            )
         );
     }
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->value);
+        return $this->withFieldSort('metadata.popularity', $sortOrder);
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->value);
-
-        $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
-
-        $fieldSort->setParameters([
-            'nested' => [
-                'path' => 'metadata.recommendationFor',
-                'filter' => $nestedFilter,
-            ],
-        ]);
-
-        $c = $this->getClone();
-        $c->search->addSort($fieldSort);
-
-        return $c;
+        return $this->withSort(
+            new NestedFieldSort(
+                field: 'metadata.recommendationFor.score',
+                order: $sortOrder,
+                path: 'metadata.recommendationFor',
+                filter: new TermQuery('metadata.recommendationFor.event', $recommendationFor)
+            )
+        );
     }
 
     public function withGroupByProductionId(): self

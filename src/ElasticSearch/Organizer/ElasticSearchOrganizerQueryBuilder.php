@@ -198,22 +198,22 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withSortByScore(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('_score', $sortOrder->value);
+        return $this->withFieldSort('_score', $sortOrder);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('completeness', $sortOrder->value);
+        return $this->withFieldSort('completeness', $sortOrder);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('created', $sortOrder->value);
+        return $this->withFieldSort('created', $sortOrder);
     }
 
     public function withSortByModified(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('modified', $sortOrder->value);
+        return $this->withFieldSort('modified', $sortOrder);
     }
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
