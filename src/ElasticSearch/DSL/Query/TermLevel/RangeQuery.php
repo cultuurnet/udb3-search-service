@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
+use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class RangeQuery implements BuilderInterface
+final class RangeQuery implements BuilderInterface, OngrBuilderInterface
 {
     public const GT = 'gt';
     public const GTE = 'gte';
@@ -32,5 +33,11 @@ final class RangeQuery implements BuilderInterface
         }
 
         return ['range' => [$this->field => $parameters]];
+    }
+
+    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
+    public function getType(): string
+    {
+        return 'range';
     }
 }
