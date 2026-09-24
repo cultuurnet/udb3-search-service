@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Language\Language;
 use CultuurNet\UDB3\Search\Limit;
 use CultuurNet\UDB3\Search\Natural;
 use CultuurNet\UDB3\Search\QueryBuilder;
+use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use ONGR\ElasticsearchDSL\BuilderInterface;
@@ -22,8 +23,8 @@ use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\FieldSort;
 use ONGR\ElasticsearchDSL\Search;
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
@@ -413,10 +414,16 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     /**
      * @return static
      */
-    protected function withFieldSort(string $field, string $order, array $parameters = [])
+    protected function withFieldSort(string $field, SortOrder $order)
     {
-        $sort = new FieldSort($field, $order, $parameters);
+        return $this->withSort(new FieldSort(field: $field, order: $order));
+    }
 
+    /**
+     * @return static
+     */
+    protected function withSort(BuilderInterface $sort)
+    {
         $c = $this->getClone();
         $c->search->addSort($sort);
         return $c;

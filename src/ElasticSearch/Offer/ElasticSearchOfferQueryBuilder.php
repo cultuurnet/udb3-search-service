@@ -567,27 +567,27 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->value);
+        return $this->withFieldSort('_score', $sortOrder);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('completeness', $sortOrder->value);
+        return $this->withFieldSort('completeness', $sortOrder);
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->value);
+        return $this->withFieldSort('availableTo', $sortOrder);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->value);
+        return $this->withFieldSort('created', $sortOrder);
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->value);
+        return $this->withFieldSort('modified', $sortOrder);
     }
 
     /**
@@ -595,23 +595,25 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      */
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): self
     {
-        return $this->withFieldSort(
-            '_geo_distance',
-            $sortOrder->value,
-            [
-                'geo_point' => [
-                    'lat' => $coordinates->getLatitude()->toDouble(),
-                    'lon' => $coordinates->getLongitude()->toDouble(),
-                ],
-                'unit' => 'km',
-                'distance_type' => 'plane',
-            ]
+        return $this->withSort(
+            new FieldSort(
+                '_geo_distance',
+                $sortOrder->value,
+                [
+                    'geo_point' => [
+                        'lat' => $coordinates->getLatitude()->toDouble(),
+                        'lon' => $coordinates->getLongitude()->toDouble(),
+                    ],
+                    'unit' => 'km',
+                    'distance_type' => 'plane',
+                ]
+            )
         );
     }
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->value);
+        return $this->withFieldSort('metadata.popularity', $sortOrder);
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
