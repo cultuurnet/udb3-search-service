@@ -45,4 +45,42 @@ final class LuceneQueryStringFactoryTest extends TestCase
         $expected = new LuceneQueryString('organizer.id:abc AND @type:event');
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     * @dataProvider unchangedQueryProvider
+     */
+    public function it_does_not_rewrite_fields_that_merely_end_in_type(string $queryString): void
+    {
+        $actual = $this->factory->fromString($queryString);
+        $expected = new LuceneQueryString($queryString);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function unchangedQueryProvider(): array
+    {
+        return [
+            'field with a _type suffix' => ['media_type:image'],
+            'nested _type field' => ['foo._type:x'],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider rewrittenQueryProvider
+     */
+    public function it_rewrites_type_filters_preceded_by_query_syntax(string $queryString, string $expectedQueryString): void
+    {
+        $actual = $this->factory->fromString($queryString);
+        $expected = new LuceneQueryString($expectedQueryString);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function rewrittenQueryProvider(): array
+    {
+        return [
+            'negated' => ['-_type:event', '-@type:event'],
+            'grouped' => ['(_type:event OR _type:place)', '(@type:event OR @type:place)'],
+        ];
+    }
 }
