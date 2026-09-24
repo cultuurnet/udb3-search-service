@@ -1986,7 +1986,6 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                 'geo' => [
                                     'indexed_shape' => [
                                         'index' => 'geoshapes',
-                                        'type' => 'regions',
                                         'id' => 'gem-leuven',
                                         'path' => 'location',
                                     ],
@@ -1999,7 +1998,6 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                                 'geo' => [
                                     'indexed_shape' => [
                                         'index' => 'geoshapes',
-                                        'type' => 'regions',
                                         'id' => 'prv-limburg',
                                         'path' => 'location',
                                     ],
