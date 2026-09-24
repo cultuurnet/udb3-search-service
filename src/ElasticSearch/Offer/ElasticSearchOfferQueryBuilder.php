@@ -39,7 +39,7 @@ use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
@@ -376,10 +376,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
             $geoDistanceParameters->getMaximumDistance()->toString(),
-            (object) [
-                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
-                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
-            ]
+            $geoDistanceParameters->getCoordinates()
         );
 
         $c = $this->getClone();

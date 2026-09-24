@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
@@ -128,10 +128,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
             $geoDistanceParameters->getMaximumDistance()->toString(),
-            (object) [
-                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
-                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
-            ]
+            $geoDistanceParameters->getCoordinates()
         );
 
         $c = $this->getClone();
