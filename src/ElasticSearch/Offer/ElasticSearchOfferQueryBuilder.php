@@ -38,7 +38,7 @@ use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
@@ -389,20 +389,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
     {
-        $northWest = $geoBoundsParameters->getNorthWestCoordinates();
-        $southEast = $geoBoundsParameters->getSouthEastCoordinates();
-
-        $topLeft = [
-            'lat' => $northWest->getLatitude()->toDouble(),
-            'lon' => $northWest->getLongitude()->toDouble(),
-        ];
-
-        $bottomRight = [
-            'lat' => $southEast->getLatitude()->toDouble(),
-            'lon' => $southEast->getLongitude()->toDouble(),
-        ];
-
-        $geoBoundingBoxQuery = new GeoBoundingBoxQuery('geo_point', [$topLeft, $bottomRight]);
+        $geoBoundingBoxQuery = new GeoBoundingBoxQuery(
+            'geo_point',
+            $geoBoundsParameters->getNorthWestCoordinates(),
+            $geoBoundsParameters->getSouthEastCoordinates()
+        );
 
         $c = $this->getClone();
         $c->boolQuery->add($geoBoundingBoxQuery, BoolQuery::FILTER);
