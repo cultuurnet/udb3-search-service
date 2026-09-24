@@ -73,7 +73,6 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     ),
                     $searchService,
                     $this->parameter('elasticsearch.region.read_index'),
-                    $this->parameter('elasticsearch.region.document_type'),
                     $requestParser,
                     $luceneFactory,
                     new NodeAwareFacetTreeNormalizer(),

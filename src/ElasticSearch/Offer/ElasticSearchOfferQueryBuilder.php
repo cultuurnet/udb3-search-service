@@ -41,7 +41,7 @@ use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
 use ONGR\ElasticsearchDSL\Sort\FieldSort;
@@ -354,17 +354,13 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): self {
-        $geoShapeQuery = new GeoShapeQuery();
-
-        $geoShapeQuery->addPreIndexedShape(
-            'geo',
-            $regionId->toString(),
-            $regionDocumentType,
-            $regionIndexName,
-            'location'
+        $geoShapeQuery = new GeoShapeQuery(
+            field: 'geo',
+            id: $regionId->toString(),
+            index: $regionIndexName,
+            path: 'location'
         );
 
         $c = $this->getClone();

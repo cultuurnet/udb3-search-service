@@ -36,8 +36,6 @@ final class OfferSearchControllerFactory
 
     private string $regionIndex;
 
-    private string $documentType;
-
     private OfferSearchServiceFactory $offerSearchServiceFactory;
 
     private Consumer $consumer;
@@ -45,13 +43,11 @@ final class OfferSearchControllerFactory
     public function __construct(
         ?int $aggregationSize,
         string $regionIndex,
-        string $documentType,
         OfferSearchServiceFactory $offerSearchServiceFactory,
         Consumer $consumer,
     ) {
         $this->aggregationSize = $aggregationSize;
         $this->regionIndex = $regionIndex;
-        $this->documentType = $documentType;
         $this->offerSearchServiceFactory = $offerSearchServiceFactory;
         $this->consumer = $consumer;
     }
@@ -92,7 +88,6 @@ final class OfferSearchControllerFactory
                 $documentType
             ),
             $this->regionIndex,
-            $this->documentType,
             $luceneFactory,
             new NodeAwareFacetTreeNormalizer(),
             $this->consumer,

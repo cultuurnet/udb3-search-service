@@ -558,12 +558,10 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRegionFilter(
                 'geoshapes',
-                'regions',
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
                 'geoshapes',
-                'regions',
                 new RegionId('prv-limburg')
             );
 
@@ -584,7 +582,6 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                 'geo' => [
                                     'indexed_shape' => [
                                         'index' => 'geoshapes',
-                                        'type' => 'regions',
                                         'id' => 'gem-leuven',
                                         'path' => 'location',
                                     ],
@@ -597,7 +594,6 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
                                 'geo' => [
                                     'indexed_shape' => [
                                         'index' => 'geoshapes',
-                                        'type' => 'regions',
                                         'id' => 'prv-limburg',
                                         'path' => 'location',
                                     ],
