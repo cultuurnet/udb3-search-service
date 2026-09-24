@@ -17,7 +17,7 @@ use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchPhraseQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\QueryStringQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
