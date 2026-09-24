@@ -16,7 +16,7 @@ final class GeoShapeQueryParityTest extends TestCase
     {
         $ongr = new OngrGeoShapeQuery();
         $ongr->addPreIndexedShape('geo', 'region-1', 'regions', 'regions-index', 'location');
-        $custom = new GeoShapeQuery('geo', 'region-1', 'regions-index', 'location');
+        $custom = new GeoShapeQuery(field: 'geo', id: 'region-1', index: 'regions-index', path: 'location');
 
         // Elasticsearch 8 no longer supports mapping types, so the type ongr emits is intentionally dropped.
         $expected = $ongr->toArray();

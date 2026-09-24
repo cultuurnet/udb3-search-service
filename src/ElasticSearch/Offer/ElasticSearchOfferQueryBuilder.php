@@ -356,10 +356,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         RegionId $regionId
     ): self {
         $geoShapeQuery = new GeoShapeQuery(
-            'geo',
-            $regionId->toString(),
-            $regionIndexName,
-            'location'
+            field: 'geo',
+            id: $regionId->toString(),
+            index: $regionIndexName,
+            path: 'location'
         );
 
         $c = $this->getClone();

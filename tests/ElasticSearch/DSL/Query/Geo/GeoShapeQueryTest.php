@@ -13,7 +13,7 @@ final class GeoShapeQueryTest extends TestCase
      */
     public function it_produces_geo_shape_query_for_a_pre_indexed_shape(): void
     {
-        $query = new GeoShapeQuery('geo', 'region-1', 'regions-index', 'location');
+        $query = new GeoShapeQuery(field: 'geo', id: 'region-1', index: 'regions-index', path: 'location');
 
         $expected = [
             'geo_shape' => [
