@@ -44,7 +44,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\GeoDistanceSort;
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\NestedFieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -612,21 +612,14 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->value);
-
-        $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
-
-        $fieldSort->setParameters([
-            'nested' => [
-                'path' => 'metadata.recommendationFor',
-                'filter' => $nestedFilter,
-            ],
-        ]);
-
-        $c = $this->getClone();
-        $c->search->addSort($fieldSort);
-
-        return $c;
+        return $this->withSort(
+            new NestedFieldSort(
+                field: 'metadata.recommendationFor.score',
+                order: $sortOrder,
+                path: 'metadata.recommendationFor',
+                filter: new TermQuery('metadata.recommendationFor.event', $recommendationFor)
+            )
+        );
     }
 
     public function withGroupByProductionId(): self
