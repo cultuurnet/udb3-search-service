@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\Json;
 
 abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
 {
-    protected function updateMapping(string $indexName, string $documentType, string $mappingFilePath): void
+    protected function updateMapping(string $indexName, string $mappingFilePath): void
     {
         $params = [
             'index' => $indexName,
@@ -18,6 +18,6 @@ abstract class AbstractMappingOperation extends AbstractElasticSearchOperation
 
         $this->client->indices()->putMapping($params);
 
-        $this->logger->info("Mapping for type {$documentType} updated.");
+        $this->logger->info("Mapping for index {$indexName} updated.");
     }
 }

@@ -31,7 +31,6 @@ final class UpdateRegionMappingTest extends AbstractOperationTestCase
     public function it_updates_the_mapping_without_type(): void
     {
         $indexName = 'mock';
-        $documentType = 'region';
 
         $this->indices->expects($this->once())
             ->method('putMapping')
@@ -42,8 +41,8 @@ final class UpdateRegionMappingTest extends AbstractOperationTestCase
 
         $this->logger->expects($this->once())
             ->method('info')
-            ->with("Mapping for type {$documentType} updated.");
+            ->with("Mapping for index {$indexName} updated.");
 
-        $this->operation->run($indexName, $documentType);
+        $this->operation->run($indexName);
     }
 }

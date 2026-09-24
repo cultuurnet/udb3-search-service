@@ -99,8 +99,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             UpdateUdb3CoreMappingCommand::class,
             fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
                 $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                $this->parameter('elasticsearch.organizer.document_type')
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core()
             )
         );
 
@@ -154,8 +153,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdateRegionMappingCommand {
                 $command = new UpdateRegionMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
-                    $this->parameter('elasticsearch.region.document_type')
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes()
                 );
                 return $command;
             }
