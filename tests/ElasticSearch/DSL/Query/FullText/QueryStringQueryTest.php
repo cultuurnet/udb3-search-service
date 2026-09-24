@@ -21,12 +21,9 @@ final class QueryStringQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_spreads_extra_parameters_into_query_string(): void
+    public function it_adds_fields_and_default_operator_to_query_string(): void
     {
-        $query = new QueryStringQuery('foo bar', [
-            'fields' => ['title', 'description'],
-            'default_operator' => 'AND',
-        ]);
+        $query = new QueryStringQuery(query: 'foo bar', fields: ['title', 'description'], defaultOperator: 'AND');
 
         $expected = [
             'query_string' => [

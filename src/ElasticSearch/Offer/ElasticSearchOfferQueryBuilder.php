@@ -489,7 +489,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $uitpasQuery = "!({$uitpasQuery})";
         }
 
-        return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
+        return $this->withQueryStringQuery(queryString: $uitpasQuery, type: BoolQuery::FILTER);
     }
 
     public function withHasOvernightStayFilter(bool $hasOvernightStay): self

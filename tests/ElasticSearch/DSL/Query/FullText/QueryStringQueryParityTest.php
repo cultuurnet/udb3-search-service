@@ -29,10 +29,7 @@ final class QueryStringQueryParityTest extends TestCase
             'fields' => ['title', 'description'],
             'default_operator' => 'AND',
         ]);
-        $custom = new QueryStringQuery('foo bar', [
-            'fields' => ['title', 'description'],
-            'default_operator' => 'AND',
-        ]);
+        $custom = new QueryStringQuery(query: 'foo bar', fields: ['title', 'description'], defaultOperator: 'AND');
 
         $this->assertSame(json_encode($ongr->toArray()), json_encode($custom->toArray()));
     }

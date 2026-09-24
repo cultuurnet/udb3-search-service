@@ -9,20 +9,29 @@ use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
 final class QueryStringQuery implements BuilderInterface, OngrBuilderInterface
 {
+    /**
+     * @param string[] $fields
+     */
     public function __construct(
         private readonly string $query,
-        private readonly array $parameters = []
+        private readonly array $fields = [],
+        private readonly ?string $defaultOperator = null
     ) {
     }
 
     public function toArray(): array
     {
-        return [
-            'query_string' => array_merge(
-                ['query' => $this->query],
-                $this->parameters
-            ),
-        ];
+        $queryString = ['query' => $this->query];
+
+        if (!empty($this->fields)) {
+            $queryString['fields'] = $this->fields;
+        }
+
+        if ($this->defaultOperator !== null) {
+            $queryString['default_operator'] = $this->defaultOperator;
+        }
+
+        return ['query_string' => $queryString];
     }
 
     // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
