@@ -174,10 +174,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     }
 
     /**
-     * @param string|bool|int $term
      * @return static
      */
-    protected function withTermQuery(string $fieldName, $term)
+    protected function withTermQuery(string $fieldName, string|bool|int|float $term)
     {
         $termQuery = new TermQuery($fieldName, $term);
 
