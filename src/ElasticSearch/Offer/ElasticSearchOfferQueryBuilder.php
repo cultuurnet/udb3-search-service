@@ -353,7 +353,6 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): self {
         $geoShapeQuery = new GeoShapeQuery(

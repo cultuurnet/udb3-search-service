@@ -71,8 +71,6 @@ final class OfferSearchControllerTest extends TestCase
 
     private string $regionIndexName;
 
-    private string $regionDocumentType;
-
     private MockQueryStringFactory $queryStringFactory;
 
     private NodeAwareFacetTreeNormalizer $facetTreeNormalizer;
@@ -101,7 +99,6 @@ final class OfferSearchControllerTest extends TestCase
         $this->searchService = $this->createMock(OfferSearchServiceInterface::class);
 
         $this->regionIndexName = 'geoshapes';
-        $this->regionDocumentType = 'region';
 
         $this->queryStringFactory = new MockQueryStringFactory();
 
@@ -112,7 +109,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', true),
@@ -255,12 +251,10 @@ final class OfferSearchControllerTest extends TestCase
             )
             ->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 new RegionId('prv-limburg')
             )
             ->withPostalCodeFilter(new PostalCode('3000'))
@@ -1318,7 +1312,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
@@ -1365,7 +1358,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
@@ -1399,7 +1391,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
@@ -1434,7 +1425,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('test_client', '', false),
@@ -1555,7 +1545,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer(null, '', false),
@@ -1587,7 +1576,6 @@ final class OfferSearchControllerTest extends TestCase
             $this->requestParser,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
             new Consumer('id', '', false),

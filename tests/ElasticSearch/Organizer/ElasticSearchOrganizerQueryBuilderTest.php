@@ -558,12 +558,10 @@ final class ElasticSearchOrganizerQueryBuilderTest extends AbstractElasticSearch
             ->withStartAndLimit(new Start(30), new Limit(10))
             ->withRegionFilter(
                 'geoshapes',
-                'regions',
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
                 'geoshapes',
-                'regions',
                 new RegionId('prv-limburg')
             );
 
