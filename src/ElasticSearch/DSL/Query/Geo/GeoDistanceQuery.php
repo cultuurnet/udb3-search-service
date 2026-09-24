@@ -22,7 +22,7 @@ final class GeoDistanceQuery implements BuilderInterface, OngrBuilderInterface
         return [
             'geo_distance' => [
                 'distance' => $this->distance,
-                $this->field => (object) [
+                $this->field => [
                     'lat' => $this->location->getLatitude()->toDouble(),
                     'lon' => $this->location->getLongitude()->toDouble(),
                 ],

@@ -22,9 +22,13 @@ final class GeoDistanceQueryTest extends TestCase
             new Coordinates(new Latitude(50.85), new Longitude(4.35))
         );
 
-        $this->assertSame(
-            '{"geo_distance":{"distance":"10km","geo_point":{"lat":50.85,"lon":4.35}}}',
-            json_encode($query->toArray())
-        );
+        $expected = [
+            'geo_distance' => [
+                'distance' => '10km',
+                'geo_point' => ['lat' => 50.85, 'lon' => 4.35],
+            ],
+        ];
+
+        $this->assertSame($expected, $query->toArray());
     }
 }
