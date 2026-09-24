@@ -33,7 +33,6 @@ final class BulkIndexationStrategy implements IndexationStrategy
 
     public function indexDocument(
         string $indexName,
-        string $documentType,
         JsonDocument $jsonDocument
     ): void {
         $id = $jsonDocument->getId();

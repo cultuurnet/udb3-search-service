@@ -20,9 +20,6 @@ final class BulkIndexationStrategyTest extends TestCase
 
     private string $indexName;
 
-
-    private string $documentType;
-
     /**
      * @var LoggerInterface&MockObject
      */
@@ -41,7 +38,6 @@ final class BulkIndexationStrategyTest extends TestCase
             ->getMock();
 
         $this->indexName = 'udb3-core';
-        $this->documentType = 'event';
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -136,11 +132,11 @@ final class BulkIndexationStrategyTest extends TestCase
             ->method('bulk')
             ->with($expectedParameters);
 
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument1);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument2);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument3);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument4);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument5);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument1);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument2);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument3);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument4);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument5);
     }
 
     /**
@@ -201,9 +197,9 @@ final class BulkIndexationStrategyTest extends TestCase
             ->method('bulk')
             ->with($expectedParameters);
 
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument1);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument2);
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument3);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument1);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument2);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument3);
 
         $this->strategy->finish();
     }
