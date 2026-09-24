@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo;
 
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Longitude;
@@ -18,7 +19,7 @@ final class GeoDistanceQueryTest extends TestCase
     {
         $query = new GeoDistanceQuery(
             'geo_point',
-            '10km',
+            new ElasticSearchDistance('10km'),
             new Coordinates(new Latitude(50.85), new Longitude(4.35))
         );
 
