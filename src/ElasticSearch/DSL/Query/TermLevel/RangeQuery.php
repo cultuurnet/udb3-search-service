@@ -14,6 +14,9 @@ final class RangeQuery implements BuilderInterface, OngrBuilderInterface
     public const LT = 'lt';
     public const LTE = 'lte';
 
+    /**
+     * @param array<self::GT|self::GTE|self::LT|self::LTE, string|int|float> $parameters
+     */
     public function __construct(
         private readonly string $field,
         private readonly array $parameters
