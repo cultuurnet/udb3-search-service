@@ -10,7 +10,6 @@ interface IndexationStrategy
 {
     public function indexDocument(
         string $indexName,
-        string $documentType,
         JsonDocument $jsonDocument
     ): void;
 

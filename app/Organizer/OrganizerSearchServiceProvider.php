@@ -57,9 +57,6 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                         $this->parameter('facet_mapping_regions')
                     )
                 );
-                if ($this->usesElasticSearch5()) {
-                    $pagedResultSetFactory->enableElasticSearch5CompatibilityMode();
-                }
 
                 $searchService = new ElasticSearchOrganizerSearchService(
                     $this->get(Client::class),
@@ -68,14 +65,7 @@ final class OrganizerSearchServiceProvider extends BaseServiceProvider
                     $pagedResultSetFactory
                 );
 
-                if ($this->usesElasticSearch5()) {
-                    $searchService->enableElasticSearch5CompatibilityMode();
-                }
-
                 $luceneFactory = new LuceneQueryStringFactory();
-                if ($this->usesElasticSearch5()) {
-                    $luceneFactory->enableElasticSearch5CompatibilityMode();
-                }
 
                 return new OrganizerSearchController(
                     new ElasticSearchOrganizerQueryBuilder(

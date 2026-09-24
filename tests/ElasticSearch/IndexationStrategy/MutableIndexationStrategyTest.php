@@ -37,14 +37,13 @@ final class MutableIndexationStrategyTest extends TestCase
     public function it_delegates_the_indexing_of_documents_to_the_currently_injected_strategy(): void
     {
         $index = 'udb3_core';
-        $type = 'event';
         $document = new JsonDocument('ba2c3314-f50f-4f9f-b57a-1353eaaaf84c', '{"foo":"bar"}');
 
         $this->mockStrategy1->expects($this->once())
             ->method('indexDocument')
-            ->with($index, $type, $document);
+            ->with($index, $document);
 
-        $this->mutableStrategy->indexDocument($index, $type, $document);
+        $this->mutableStrategy->indexDocument($index, $document);
     }
 
     /**
@@ -55,7 +54,6 @@ final class MutableIndexationStrategyTest extends TestCase
         $this->mutableStrategy->setIndexationStrategy($this->mockStrategy2);
 
         $index = 'udb3_core';
-        $type = 'event';
         $document = new JsonDocument('ba2c3314-f50f-4f9f-b57a-1353eaaaf84c', '{"foo":"bar"}');
 
         $this->mockStrategy1->expects($this->never())
@@ -63,9 +61,9 @@ final class MutableIndexationStrategyTest extends TestCase
 
         $this->mockStrategy2->expects($this->once())
             ->method('indexDocument')
-            ->with($index, $type, $document);
+            ->with($index, $document);
 
-        $this->mutableStrategy->indexDocument($index, $type, $document);
+        $this->mutableStrategy->indexDocument($index, $document);
     }
 
     /**

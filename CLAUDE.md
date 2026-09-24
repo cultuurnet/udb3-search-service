@@ -69,9 +69,8 @@ Why:
   contents makes a mapping change and a new index name/reindex inseparable.
 
 How to apply:
-- `udb3Core()` hashes `mapping_udb3_core.json`, `mapping_event.json`,
-  `mapping_place.json` and `mapping_organizer.json` together, since the event,
-  place and organizer mappings are part of the core index.
+- `udb3Core()` hashes `mapping_udb3_core.json`, which holds the event, place and
+  organizer mappings for the core index.
 - `geoshapes()` hashes `mapping_region.json`.
 - Changing any of those files automatically changes the corresponding index
   name the next time it's read — no separate step required.

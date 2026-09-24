@@ -20,11 +20,8 @@ use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
 use CultuurNet\UDB3\SearchService\Console\MigrateElasticSearchCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexPermanentOffersCommand;
 use CultuurNet\UDB3\SearchService\Console\ReindexUDB3CoreCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdateEventMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateIndexAliasCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdateOrganizerMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
-use CultuurNet\UDB3\SearchService\Console\UpdatePlaceMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -55,9 +52,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'index:delete' => DeleteIndexCommand::class,
                     'index:update-alias' => UpdateIndexAliasCommand::class,
                     'udb3-core:core-mapping' => UpdateUdb3CoreMappingCommand::class,
-                    'udb3-core:organizer-mapping' => UpdateOrganizerMappingCommand::class,
-                    'udb3-core:event-mapping' => UpdateEventMappingCommand::class,
-                    'udb3-core:place-mapping' => UpdatePlaceMappingCommand::class,
                     'udb3-core:reindex' => ReindexUDB3CoreCommand::class,
                     'udb3-core:reindex-permanent' => ReindexPermanentOffersCommand::class,
                     'udb3-core:install' => InstallUDB3CoreCommand::class,
@@ -105,54 +99,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             UpdateUdb3CoreMappingCommand::class,
             fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
                 $this->get(Client::class),
-                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                $this->parameter('elasticsearch.organizer.document_type')
+                $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core()
             )
-        );
-
-        $this->add(
-            UpdateOrganizerMappingCommand::class,
-            function (): UpdateOrganizerMappingCommand {
-                $command = new UpdateOrganizerMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.organizer.document_type')
-                );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
-                return $command;
-            }
-        );
-
-        $this->add(
-            UpdateEventMappingCommand::class,
-            function (): UpdateEventMappingCommand {
-                $command = new UpdateEventMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.event.document_type')
-                );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
-                return $command;
-            }
-        );
-
-        $this->add(
-            UpdatePlaceMappingCommand::class,
-            function (): UpdatePlaceMappingCommand {
-                $command = new UpdatePlaceMappingCommand(
-                    $this->get(Client::class),
-                    $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
-                    $this->parameter('elasticsearch.place.document_type')
-                );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
-                return $command;
-            }
         );
 
         $this->add(
@@ -167,9 +115,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -186,9 +131,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.scroll_size'),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.bulk_threshold')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -202,9 +144,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                     $this->parameter('elasticsearch.udb3_core_index.read_alias')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -214,12 +153,8 @@ final class CommandServiceProvider extends BaseServiceProvider
             function (): UpdateRegionMappingCommand {
                 $command = new UpdateRegionMappingCommand(
                     $this->get(Client::class),
-                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
-                    $this->parameter('elasticsearch.region.document_type')
+                    $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes()
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );
@@ -234,9 +169,6 @@ final class CommandServiceProvider extends BaseServiceProvider
                     __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.fileName')
                 );
-                if ($this->usesElasticSearch5()) {
-                    $command->enableElasticSearch5CompatibilityMode();
-                }
                 return $command;
             }
         );

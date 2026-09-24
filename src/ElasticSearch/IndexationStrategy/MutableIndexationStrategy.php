@@ -26,10 +26,9 @@ final class MutableIndexationStrategy implements IndexationStrategy
 
     public function indexDocument(
         string $indexName,
-        string $documentType,
         JsonDocument $jsonDocument
     ): void {
-        $this->indexationStrategy->indexDocument($indexName, $documentType, $jsonDocument);
+        $this->indexationStrategy->indexDocument($indexName, $jsonDocument);
     }
 
     public function finish(): void

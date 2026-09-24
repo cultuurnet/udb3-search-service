@@ -24,11 +24,7 @@ final class UpdateRegionMappingCommand extends AbstractMappingCommand
             $this->getLogger($output)
         );
 
-        if ($this->usesCompatibilityMode()) {
-            $operation->enableElasticSearch5CompatibilityMode();
-        }
-
-        $operation->run($this->indexName, $this->documentType);
+        $operation->run($this->indexName);
 
         return 0;
     }

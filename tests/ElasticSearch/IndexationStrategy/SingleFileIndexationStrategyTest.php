@@ -22,9 +22,6 @@ final class SingleFileIndexationStrategyTest extends TestCase
 
     private string $indexName;
 
-
-    private string $documentType;
-
     /**
      * @var LoggerInterface&MockObject
      */
@@ -40,7 +37,6 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->getMock();
 
         $this->indexName = 'udb3-core';
-        $this->documentType = 'event';
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -71,7 +67,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
                 ]
             );
 
-        $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument);
+        $this->strategy->indexDocument($this->indexName, $jsonDocument);
     }
 
     /**
@@ -86,7 +82,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
             ->willThrowException(new RuntimeException('nested documents limit exceeded'));
 
         try {
-            $this->strategy->indexDocument($this->indexName, $this->documentType, $jsonDocument);
+            $this->strategy->indexDocument($this->indexName, $jsonDocument);
             $this->fail('Expected ' . ElasticSearchDocumentCouldNotBeIndexed::class . ' to be thrown.');
         } catch (ElasticSearchDocumentCouldNotBeIndexed $e) {
             $this->assertStringContainsString('cff29f09-5104-4f0d-85ca-8d6cdd28849b', $e->getMessage());

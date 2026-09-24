@@ -755,9 +755,7 @@ The adjusted opening hours are still structured per `dayOfWeek`. The indexer has
 
 ### Elasticsearch mappings
 
-- `mapping_udb3_core.json`: shared core mapping (ES8)
-- `mapping_event.json`: field mapping for events
-- `mapping_place.json`: field mapping for places
+- `mapping_udb3_core.json`: shared core mapping, covering events, places and organizers
 
 ### Query building
 

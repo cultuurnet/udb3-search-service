@@ -44,10 +44,6 @@ final class IndexRegions extends AbstractElasticSearchOperation
                 'body' => Json::decodeAssociatively($json),
             ];
 
-            if ($this->usesDocumentTypes()) {
-                $params['type'] = 'region';
-            }
-
             $this->client->index($params);
         }
     }

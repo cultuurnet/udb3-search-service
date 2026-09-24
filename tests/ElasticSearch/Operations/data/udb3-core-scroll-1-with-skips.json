@@ -8,12 +8,11 @@
         "failed": 0
     },
     "hits": {
-        "total": 11,
+        "total": {"value": 5, "relation": "eq"},
         "max_score": 1.0,
         "hits": [
             {
                 "_index": "udb3_core",
-                "_type": "place",
                 "_score": 1.0,
                 "_source": {
                     "@id": "http:\/\/udb-silex.dev\/place\/39e6d5ee-c3d6-453a-bcb5-4e6e0eaf7054",
@@ -29,7 +28,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "event",
                 "_id": "23017cb7-e515-47b4-87c4-780735acc942",
                 "_score": 1.0,
                 "_source": {
@@ -50,7 +48,6 @@
                 "_score": 1.0,
                 "_source": {
                     "@id": "http:\/\/udb-silex.dev\/place\/a1b3a9d8-ef08-46eb-8984-c7d3012bbb5a",
-                    "@type": "Place",
                     "geo": {
                         "type": "Point",
                         "coordinates": [
@@ -62,7 +59,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "place",
                 "_id": "fb43ae3d-d297-4c4a-8479-488fc028c8c8",
                 "_score": 1.0,
                 "_source": {
@@ -79,11 +75,11 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "organizer",
                 "_id": "5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83",
                 "_score": 1.0,
                 "_source": {
                     "@id": "http:\/\/udb-silex.dev\/organizers\/5e0b3f9c-5947-46a0-b8f2-a1a5a37f3b83",
+                    "@type": "Organizer",
                     "@context": "\/contexts\/organizer",
                     "url": "https:\/\/www.meetup.com\/PHP-Leuven-Web-Innovation-Group\/events\/234638670\/",
                     "name": "PHPLeuven",

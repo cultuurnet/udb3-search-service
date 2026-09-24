@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use Elasticsearch\Client;
@@ -13,8 +12,6 @@ use Throwable;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
-    use ElasticSearch5Compatibility;
-
     private Client $elasticSearchClient;
 
     private LoggerInterface $logger;
@@ -31,7 +28,6 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
 
     public function indexDocument(
         string $indexName,
-        string $documentType,
         JsonDocument $jsonDocument
     ): void {
         $id = $jsonDocument->getId();
@@ -42,10 +38,6 @@ final class SingleFileIndexationStrategy implements IndexationStrategy
             'id' => $id,
             'body' => (array) $jsonDocument->getBody(),
         ];
-
-        if ($this->usesDocumentTypes()) {
-            $params['type'] = $documentType;
-        }
 
         try {
             $this->elasticSearchClient->index($params);
