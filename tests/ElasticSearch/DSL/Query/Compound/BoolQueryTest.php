@@ -16,8 +16,8 @@ final class BoolQueryTest extends TestCase
     public function it_produces_bool_with_must_clause(): void
     {
         $query = new BoolQuery();
-        $query->add(new MatchAllQuery(), BoolQuery::MUST);
-        $query->add(new TermQuery('status', 'available'), BoolQuery::MUST);
+        $query->add(new MatchAllQuery(), BoolClause::Must);
+        $query->add(new TermQuery('status', 'available'), BoolClause::Must);
 
         $expected = [
             'bool' => [
@@ -37,7 +37,7 @@ final class BoolQueryTest extends TestCase
     public function it_collapses_single_must_with_no_other_clauses(): void
     {
         $query = new BoolQuery();
-        $query->add(new MatchAllQuery(), BoolQuery::MUST);
+        $query->add(new MatchAllQuery(), BoolClause::Must);
 
         $this->assertEquals(['match_all' => new \stdClass()], $query->toArray());
     }
@@ -48,8 +48,8 @@ final class BoolQueryTest extends TestCase
     public function it_only_emits_used_clause_types(): void
     {
         $query = new BoolQuery();
-        $query->add(new MatchAllQuery(), BoolQuery::MUST);
-        $query->add(new TermQuery('status', 'available'), BoolQuery::FILTER);
+        $query->add(new MatchAllQuery(), BoolClause::Must);
+        $query->add(new TermQuery('status', 'available'), BoolClause::Filter);
 
         $expected = [
             'bool' => [
@@ -71,10 +71,10 @@ final class BoolQueryTest extends TestCase
     public function it_supports_all_clause_types(): void
     {
         $query = new BoolQuery();
-        $query->add(new MatchAllQuery(), BoolQuery::MUST);
-        $query->add(new TermQuery('field1', 'value1'), BoolQuery::FILTER);
-        $query->add(new TermQuery('field2', 'value2'), BoolQuery::SHOULD);
-        $query->add(new TermQuery('field3', 'value3'), BoolQuery::MUST_NOT);
+        $query->add(new MatchAllQuery(), BoolClause::Must);
+        $query->add(new TermQuery('field1', 'value1'), BoolClause::Filter);
+        $query->add(new TermQuery('field2', 'value2'), BoolClause::Should);
+        $query->add(new TermQuery('field3', 'value3'), BoolClause::MustNot);
 
         $expected = [
             'bool' => [
@@ -112,8 +112,8 @@ final class BoolQueryTest extends TestCase
     public function it_collects_multiple_queries_under_same_clause(): void
     {
         $query = new BoolQuery();
-        $query->add(new TermQuery('field1', 'a'), BoolQuery::FILTER);
-        $query->add(new TermQuery('field2', 'b'), BoolQuery::FILTER);
+        $query->add(new TermQuery('field1', 'a'), BoolClause::Filter);
+        $query->add(new TermQuery('field2', 'b'), BoolClause::Filter);
 
         $expected = [
             'bool' => [
@@ -133,7 +133,7 @@ final class BoolQueryTest extends TestCase
     public function it_does_not_collapse_single_filter_clause(): void
     {
         $query = new BoolQuery();
-        $query->add(new TermQuery('status', 'available'), BoolQuery::FILTER);
+        $query->add(new TermQuery('status', 'available'), BoolClause::Filter);
 
         $expected = [
             'bool' => [
@@ -152,7 +152,7 @@ final class BoolQueryTest extends TestCase
     public function it_does_not_collapse_single_should_clause(): void
     {
         $query = new BoolQuery();
-        $query->add(new TermQuery('status', 'available'), BoolQuery::SHOULD);
+        $query->add(new TermQuery('status', 'available'), BoolClause::Should);
 
         $expected = [
             'bool' => [
@@ -171,8 +171,8 @@ final class BoolQueryTest extends TestCase
     public function it_does_not_collapse_single_must_when_combined_with_must_not(): void
     {
         $query = new BoolQuery();
-        $query->add(new TermQuery('type', 'event'), BoolQuery::MUST);
-        $query->add(new TermQuery('hidden', 'true'), BoolQuery::MUST_NOT);
+        $query->add(new TermQuery('type', 'event'), BoolClause::Must);
+        $query->add(new TermQuery('hidden', 'true'), BoolClause::MustNot);
 
         $expected = [
             'bool' => [
@@ -186,18 +186,5 @@ final class BoolQueryTest extends TestCase
         ];
 
         $this->assertEquals($expected, $query->toArray());
-    }
-
-    /**
-     * @test
-     */
-    public function it_rejects_an_unsupported_clause_type(): void
-    {
-        $query = new BoolQuery();
-
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The bool clause type "filters" is not supported.');
-
-        $query->add(new MatchAllQuery(), 'filters');
     }
 }

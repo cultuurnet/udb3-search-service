@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchPhraseQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
@@ -40,7 +41,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     public function __construct()
     {
         $this->boolQuery = new BoolQuery();
-        $this->boolQuery->add(new MatchAllQuery(), BoolQuery::MUST);
+        $this->boolQuery->add(new MatchAllQuery(), BoolClause::Must);
 
         $this->search = new Search();
         $this->search->addQuery($this->boolQuery);
@@ -170,7 +171,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $matchQuery = new MatchQuery($fieldName, $term);
 
         $c = $this->getClone();
-        $c->boolQuery->add($matchQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($matchQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -182,7 +183,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $termQuery = new TermQuery($fieldName, $term);
 
         $c = $this->getClone();
-        $c->boolQuery->add($termQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($termQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -205,7 +206,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $query = $this->createMultiValueMatchQuery($fieldName, $terms);
 
         $c = $this->getClone();
-        $c->boolQuery->add($query, BoolQuery::FILTER);
+        $c->boolQuery->add($query, BoolClause::Filter);
         return $c;
     }
 
@@ -222,7 +223,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
         $boolQuery = new BoolQuery();
         foreach ($terms as $term) {
-            $boolQuery->add(new MatchQuery($fieldName, $term), BoolQuery::SHOULD);
+            $boolQuery->add(new MatchQuery($fieldName, $term), BoolClause::Should);
         }
         return $boolQuery;
     }
@@ -237,11 +238,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
         foreach ($fieldNames as $fieldName) {
             $matchQuery = new MatchQuery($fieldName, $term);
-            $nestedBoolQuery->add($matchQuery, BoolQuery::SHOULD);
+            $nestedBoolQuery->add($matchQuery, BoolClause::Should);
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($nestedBoolQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($nestedBoolQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -253,8 +254,8 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $matchPhraseQuery = new MatchPhraseQuery($fieldName, $term);
 
         $c = $this->getClone();
-        $c->boolQuery->add($matchPhraseQuery, BoolQuery::FILTER);
-        $c->boolQuery->add($matchPhraseQuery, BoolQuery::SHOULD);
+        $c->boolQuery->add($matchPhraseQuery, BoolClause::Filter);
+        $c->boolQuery->add($matchPhraseQuery, BoolClause::Should);
         return $c;
     }
 
@@ -271,7 +272,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($rangeQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -337,17 +338,17 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 
         if (count($queries) === 1) {
             $c = $this->getClone();
-            $c->boolQuery->add($queries[0], BoolQuery::FILTER);
+            $c->boolQuery->add($queries[0], BoolClause::Filter);
             return $c;
         }
 
         $boolQuery = new BoolQuery();
         foreach ($queries as $query) {
-            $boolQuery->add($query, BoolQuery::SHOULD);
+            $boolQuery->add($query, BoolClause::Should);
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($boolQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($boolQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -370,7 +371,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     protected function withQueryStringQuery(
         string $queryString,
         array $fields = [],
-        string $type = BoolQuery::MUST,
+        BoolClause $type = BoolClause::Must,
         ?string $defaultOperator = null
     ) {
         $queryStringQuery = new QueryStringQuery(
@@ -391,11 +392,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     {
         $boolQuery = new BoolQuery();
         foreach ($queries as $individualQuery) {
-            $boolQuery->add($individualQuery, BoolQuery::FILTER);
+            $boolQuery->add($individualQuery, BoolClause::Filter);
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add(new NestedQuery($path, $boolQuery), BoolQuery::FILTER);
+        $c->boolQuery->add(new NestedQuery($path, $boolQuery), BoolClause::Filter);
         return $c;
     }
 

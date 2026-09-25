@@ -9,29 +9,20 @@ use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
 final class BoolQuery implements BuilderInterface, OngrBuilderInterface
 {
-    public const MUST = 'must';
-    public const FILTER = 'filter';
-    public const SHOULD = 'should';
-    public const MUST_NOT = 'must_not';
-
     /** @var array<string, BuilderInterface[]> */
     private array $clauses = [];
 
-    public function add(BuilderInterface $query, string $type): void
+    public function add(BuilderInterface $query, BoolClause $clause): void
     {
-        if (!in_array($type, [self::MUST, self::FILTER, self::SHOULD, self::MUST_NOT], true)) {
-            throw new \InvalidArgumentException(sprintf('The bool clause type "%s" is not supported.', $type));
-        }
-
-        $this->clauses[$type][] = $query;
+        $this->clauses[$clause->value][] = $query;
     }
 
     public function toArray(): array
     {
         // A lone must clause is emitted as the query itself, so a builder without any filters sends a plain
         // match_all instead of wrapping it in a bool.
-        if (count($this->clauses) === 1 && count($this->clauses[self::MUST] ?? []) === 1) {
-            return $this->clauses[self::MUST][0]->toArray();
+        if (count($this->clauses) === 1 && count($this->clauses[BoolClause::Must->value] ?? []) === 1) {
+            return $this->clauses[BoolClause::Must->value][0]->toArray();
         }
 
         $bool = array_map(
