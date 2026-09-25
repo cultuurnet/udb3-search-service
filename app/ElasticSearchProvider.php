@@ -15,7 +15,6 @@ use Elastic\Elasticsearch\ClientBuilder;
 final class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
-        Client::class,
         ElasticSearchClient::class,
         GeoShapeQueryRegionService::class,
         'elasticsearch_indexation_strategy',
@@ -23,11 +22,9 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
     public function register(): void
     {
-        $this->add(Client::class, fn (): Client => $this->buildElasticSearchClient());
-
         $this->add(
             ElasticSearchClient::class,
-            fn (): ElasticSearchClient => new ElasticsearchPhpClient($this->get(Client::class))
+            fn (): ElasticSearchClient => new ElasticsearchPhpClient($this->buildElasticSearchClient())
         );
 
         $this->addShared(
