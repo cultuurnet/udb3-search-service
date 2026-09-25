@@ -253,6 +253,85 @@ final class ElasticsearchPhpClientTest extends TestCase
         $this->assertRequest('PUT', '/_template/autocomplete_analyzer');
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_a_not_found_failure_with_the_reason_on_a_404(): void
+    {
+        $this->respondWith(404, $this->errorBody('no such index [udb3_core_read]'));
+
+        try {
+            $this->client->indices()->get(['index' => 'udb3_core_read']);
+            $this->fail('Expected ' . ElasticSearchRequestFailed::class);
+        } catch (ElasticSearchRequestFailed $exception) {
+            $this->assertSame(404, $exception->getCode());
+            $this->assertTrue($exception->isNotFound());
+            $this->assertSame('no such index [udb3_core_read]', $exception->getReason());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_a_failure_with_the_reason_on_a_client_error(): void
+    {
+        $this->respondWith(400, $this->errorBody('Failed to parse query [foo:]'));
+
+        try {
+            $this->client->search(['index' => 'udb3_core_read']);
+            $this->fail('Expected ' . ElasticSearchRequestFailed::class);
+        } catch (ElasticSearchRequestFailed $exception) {
+            $this->assertSame(400, $exception->getCode());
+            $this->assertFalse($exception->isNotFound());
+            $this->assertSame('Failed to parse query [foo:]', $exception->getReason());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_a_failure_on_a_server_error(): void
+    {
+        $this->respondWith(500, $this->errorBody('shard failure'));
+
+        try {
+            $this->client->index(['index' => 'udb3_core_write', 'id' => '1', 'body' => ['name' => 'foo']]);
+            $this->fail('Expected ' . ElasticSearchRequestFailed::class);
+        } catch (ElasticSearchRequestFailed $exception) {
+            $this->assertSame(500, $exception->getCode());
+            $this->assertSame('shard failure', $exception->getReason());
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_a_failure_without_a_reason_when_the_error_body_is_not_json(): void
+    {
+        $this->responses->append(
+            new Response(502, ['X-Elastic-Product' => 'Elasticsearch'], '<html>Bad Gateway</html>')
+        );
+
+        try {
+            $this->client->search(['index' => 'udb3_core_read']);
+            $this->fail('Expected ' . ElasticSearchRequestFailed::class);
+        } catch (ElasticSearchRequestFailed $exception) {
+            $this->assertSame(502, $exception->getCode());
+            $this->assertNull($exception->getReason());
+        }
+    }
+
+    private function errorBody(string $reason): array
+    {
+        return [
+            'error' => [
+                'root_cause' => [['type' => 'some_exception', 'reason' => $reason]],
+                'type' => 'some_exception',
+                'reason' => $reason,
+            ],
+        ];
+    }
+
     private function respondWith(int $status, ?array $body = null): void
     {
         $this->responses->append(
@@ -270,9 +349,7 @@ final class ElasticsearchPhpClientTest extends TestCase
 
     private function assertRequest(string $method, string $path): void
     {
-        $this->assertSame(
-            [$method, $path],
-            [$this->lastRequest?->getMethod(), $this->lastRequest?->getUri()->getPath()]
-        );
+        $this->assertSame($method, $this->lastRequest?->getMethod());
+        $this->assertSame($path, $this->lastRequest->getUri()->getPath());
     }
 }
