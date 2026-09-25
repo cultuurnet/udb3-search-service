@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elastic\Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use Psr\Log\LoggerInterface;
 
 final class GetAliasesTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): GetAliases
+    protected function createOperation(ElasticSearchClient $client, LoggerInterface $logger): GetAliases
     {
         return new GetAliases($client, $logger);
     }
