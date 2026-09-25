@@ -6,9 +6,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class GeoDistanceQuery implements BuilderInterface, OngrBuilderInterface
+final class GeoDistanceQuery implements BuilderInterface
 {
     public function __construct(
         private readonly string $field,
@@ -28,11 +27,5 @@ final class GeoDistanceQuery implements BuilderInterface, OngrBuilderInterface
                 ],
             ],
         ];
-    }
-
-    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
-    public function getType(): string
-    {
-        return 'geo_distance';
     }
 }

@@ -6,9 +6,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class GeoBoundingBoxQuery implements BuilderInterface, OngrBuilderInterface
+final class GeoBoundingBoxQuery implements BuilderInterface
 {
     public function __construct(
         private readonly string $field,
@@ -33,11 +32,5 @@ final class GeoBoundingBoxQuery implements BuilderInterface, OngrBuilderInterfac
                 ],
             ],
         ];
-    }
-
-    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
-    public function getType(): string
-    {
-        return 'geo_bounding_box';
     }
 }

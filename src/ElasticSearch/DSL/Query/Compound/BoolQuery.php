@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class BoolQuery implements BuilderInterface, OngrBuilderInterface
+final class BoolQuery implements BuilderInterface
 {
     /** @var array<string, BuilderInterface[]> */
     private array $clauses = [];
@@ -35,11 +34,5 @@ final class BoolQuery implements BuilderInterface, OngrBuilderInterface
 
         // An empty array would be encoded as [], which Elasticsearch rejects as the body of a bool query.
         return ['bool' => $bool === [] ? new \stdClass() : $bool];
-    }
-
-    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
-    public function getType(): string
-    {
-        return 'bool';
     }
 }
