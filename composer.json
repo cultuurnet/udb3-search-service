@@ -29,7 +29,6 @@
         "league/container": "^3.3",
         "league/route": "^5.1.2",
         "monolog/monolog": "~1.11",
-        "ongr/elasticsearch-dsl": "^7.2",
         "php-amqplib/php-amqplib": "^v3.1.0",
         "php-http/guzzle7-adapter": "^1.1",
         "predis/predis": "^3.2",
