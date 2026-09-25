@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticsearchPhpClient;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
@@ -14,6 +16,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
 {
     protected $provides = [
         Client::class,
+        ElasticSearchClient::class,
         GeoShapeQueryRegionService::class,
         'elasticsearch_indexation_strategy',
     ];
@@ -21,6 +24,11 @@ final class ElasticSearchProvider extends BaseServiceProvider
     public function register(): void
     {
         $this->add(Client::class, fn (): Client => $this->buildElasticSearchClient());
+
+        $this->add(
+            ElasticSearchClient::class,
+            fn (): ElasticSearchClient => new ElasticsearchPhpClient($this->get(Client::class))
+        );
 
         $this->addShared(
             'elasticsearch_indexation_strategy',
