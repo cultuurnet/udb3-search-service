@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound;
 
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Joining\NestedQuery;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery as OngrBoolQuery;
+use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery as OngrNestedQuery;
 use ONGR\ElasticsearchDSL\Query\MatchAllQuery as OngrMatchAllQuery;
 use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery as OngrTermQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
@@ -182,6 +184,91 @@ final class BoolQueryParityTest extends TestCase
 
         $innerCustom = new BoolQuery();
         $innerCustom->add(new TermQuery('status', 'available'), BoolQuery::FILTER);
+
+        $outerCustom = new BoolQuery();
+        $outerCustom->add(new MatchAllQuery(), BoolQuery::MUST);
+        $outerCustom->add($innerCustom, BoolQuery::FILTER);
+
+        $this->assertSame(json_encode($outerOngr->toArray()), json_encode($outerCustom->toArray()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_preserves_clause_insertion_order_identically_to_ongr(): void
+    {
+        $ongr = new OngrBoolQuery();
+        $ongr->add(new OngrTermQuery('field1', 'value1'), OngrBoolQuery::SHOULD);
+        $ongr->add(new OngrTermQuery('field2', 'value2'), OngrBoolQuery::MUST);
+        $ongr->add(new OngrTermQuery('field3', 'value3'), OngrBoolQuery::FILTER);
+        $ongr->add(new OngrTermQuery('field4', 'value4'), OngrBoolQuery::MUST_NOT);
+        $ongr->add(new OngrTermQuery('field5', 'value5'), OngrBoolQuery::SHOULD);
+
+        $custom = new BoolQuery();
+        $custom->add(new TermQuery('field1', 'value1'), BoolQuery::SHOULD);
+        $custom->add(new TermQuery('field2', 'value2'), BoolQuery::MUST);
+        $custom->add(new TermQuery('field3', 'value3'), BoolQuery::FILTER);
+        $custom->add(new TermQuery('field4', 'value4'), BoolQuery::MUST_NOT);
+        $custom->add(new TermQuery('field5', 'value5'), BoolQuery::SHOULD);
+
+        $this->assertSame(json_encode($ongr->toArray()), json_encode($custom->toArray()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_serializes_bool_inside_nested_query_identically_to_ongr(): void
+    {
+        $innerOngr = new OngrBoolQuery();
+        $innerOngr->add(new OngrTermQuery('subEvent.status', 'available'), OngrBoolQuery::FILTER);
+        $innerOngr->add(new OngrTermQuery('subEvent.bookingAvailability', 'available'), OngrBoolQuery::FILTER);
+
+        $outerOngr = new OngrBoolQuery();
+        $outerOngr->add(new OngrMatchAllQuery(), OngrBoolQuery::MUST);
+        $outerOngr->add(new OngrNestedQuery('subEvent', $innerOngr), OngrBoolQuery::FILTER);
+
+        $innerCustom = new BoolQuery();
+        $innerCustom->add(new TermQuery('subEvent.status', 'available'), BoolQuery::FILTER);
+        $innerCustom->add(new TermQuery('subEvent.bookingAvailability', 'available'), BoolQuery::FILTER);
+
+        $outerCustom = new BoolQuery();
+        $outerCustom->add(new MatchAllQuery(), BoolQuery::MUST);
+        $outerCustom->add(new NestedQuery('subEvent', $innerCustom), BoolQuery::FILTER);
+
+        $this->assertSame(json_encode($outerOngr->toArray()), json_encode($outerCustom->toArray()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_collapses_single_must_bool_inside_nested_query_identically_to_ongr(): void
+    {
+        $innerOngr = new OngrBoolQuery();
+        $innerOngr->add(new OngrTermQuery('subEvent.status', 'available'), OngrBoolQuery::MUST);
+
+        $innerCustom = new BoolQuery();
+        $innerCustom->add(new TermQuery('subEvent.status', 'available'), BoolQuery::MUST);
+
+        $this->assertSame(
+            json_encode((new OngrNestedQuery('subEvent', $innerOngr))->toArray()),
+            json_encode((new NestedQuery('subEvent', $innerCustom))->toArray())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_collapses_single_must_bool_inside_bool_identically_to_ongr(): void
+    {
+        $innerOngr = new OngrBoolQuery();
+        $innerOngr->add(new OngrTermQuery('status', 'available'), OngrBoolQuery::MUST);
+
+        $outerOngr = new OngrBoolQuery();
+        $outerOngr->add(new OngrMatchAllQuery(), OngrBoolQuery::MUST);
+        $outerOngr->add($innerOngr, OngrBoolQuery::FILTER);
+
+        $innerCustom = new BoolQuery();
+        $innerCustom->add(new TermQuery('status', 'available'), BoolQuery::MUST);
 
         $outerCustom = new BoolQuery();
         $outerCustom->add(new MatchAllQuery(), BoolQuery::MUST);
