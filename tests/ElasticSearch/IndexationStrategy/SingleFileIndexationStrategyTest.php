@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -15,7 +15,7 @@ use RuntimeException;
 final class SingleFileIndexationStrategyTest extends TestCase
 {
     /**
-     * @var Client&MockObject
+     * @var ElasticSearchClient&MockObject
      */
     private $client;
 
@@ -32,7 +32,7 @@ final class SingleFileIndexationStrategyTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
+        $this->client = $this->getMockBuilder(ElasticSearchClient::class)
             ->disableOriginalConstructor()
             ->getMock();
 

@@ -34,7 +34,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
             'elasticsearch_indexation_strategy',
             function (): MutableIndexationStrategy {
                 $strategy = new SingleFileIndexationStrategy(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->get('logger.amqp.udb3')
                 );
                 return new MutableIndexationStrategy($strategy);

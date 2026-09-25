@@ -6,19 +6,19 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
 final class SingleFileIndexationStrategy implements IndexationStrategy
 {
-    private Client $elasticSearchClient;
+    private ElasticSearchClient $elasticSearchClient;
 
     private LoggerInterface $logger;
 
 
     public function __construct(
-        Client $elasticSearchClient,
+        ElasticSearchClient $elasticSearchClient,
         LoggerInterface $logger
     ) {
         $this->elasticSearchClient = $elasticSearchClient;
