@@ -7,12 +7,13 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Client;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use RuntimeException;
+use Throwable;
 
 final class ElasticSearchRequestFailed extends RuntimeException
 {
     private array $error;
 
-    private function __construct(string $message, int $status, array $error, ClientResponseException|ServerResponseException $previous)
+    public function __construct(string $message, int $status, array $error, ?Throwable $previous = null)
     {
         parent::__construct($message, $status, $previous);
         $this->error = $error;

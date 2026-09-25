@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchRequestFailed;
 use Psr\Log\LoggerInterface;
 
 final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
@@ -76,7 +76,7 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_if_the_alias_does_not_exist_or_another_error_occurred(): void
+    public function it_returns_an_empty_list_if_the_alias_does_not_exist(): void
     {
         $aliasName = 'foo_bar';
 
@@ -85,10 +85,27 @@ final class GetIndexNamesFromAliasTest extends AbstractOperationTestCase
         $this->indices->expects($this->once())
             ->method('get')
             ->with(['index' => $aliasName])
-            ->willThrowException(new Missing404Exception());
+            ->willThrowException(new ElasticSearchRequestFailed('no such index [foo_bar]', 404, []));
 
         $actualNames = $this->operation->run($aliasName);
 
         $this->assertEquals($expectedNames, $actualNames);
+    }
+
+    /**
+     * @test
+     */
+    public function it_rethrows_any_other_failure(): void
+    {
+        $failure = new ElasticSearchRequestFailed('cluster unavailable', 503, []);
+
+        $this->indices->expects($this->once())
+            ->method('get')
+            ->with(['index' => 'foo_bar'])
+            ->willThrowException($failure);
+
+        $this->expectExceptionObject($failure);
+
+        $this->operation->run('foo_bar');
     }
 }

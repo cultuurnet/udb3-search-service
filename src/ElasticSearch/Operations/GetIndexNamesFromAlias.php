@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Common\Exceptions\Missing404Exception;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchRequestFailed;
 
 final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
 {
@@ -22,8 +22,11 @@ final class GetIndexNamesFromAlias extends AbstractElasticSearchOperation
             /* @var array $responseData */
             $responseData = $this->client->indices()->get(['index' => $aliasName]);
             return array_keys($responseData);
-        } catch (Missing404Exception $e) {
-            return [];
+        } catch (ElasticSearchRequestFailed $e) {
+            if ($e->isNotFound()) {
+                return [];
+            }
+            throw $e;
         }
     }
 }
