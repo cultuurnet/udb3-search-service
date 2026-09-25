@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
-use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
@@ -115,7 +115,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoShapeQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoShapeQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -128,7 +128,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoDistanceQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoDistanceQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -141,7 +141,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoBoundingBoxQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoBoundingBoxQuery, BoolClause::Filter);
         return $c;
     }
 
