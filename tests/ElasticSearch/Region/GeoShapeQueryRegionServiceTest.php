@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\FileReader;
 use RuntimeException;
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\Region\RegionId;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 

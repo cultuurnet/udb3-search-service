@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Elasticsearch\Common\Exceptions\Missing404Exception;
 use Psr\Log\LoggerInterface;
 

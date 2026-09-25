@@ -13,7 +13,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Search\Event\EventProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Search\Place\PlaceProjectedToJSONLD;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use Psr\Log\LoggerInterface;
 
 abstract class AbstractReindexUDB3CoreOperation extends AbstractElasticSearchOperation

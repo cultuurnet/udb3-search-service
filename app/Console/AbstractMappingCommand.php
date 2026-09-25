@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 abstract class AbstractMappingCommand extends AbstractElasticSearchCommand
 {

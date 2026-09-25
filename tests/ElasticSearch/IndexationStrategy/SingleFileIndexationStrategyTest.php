@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDocumentCouldNotBeIndexed;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

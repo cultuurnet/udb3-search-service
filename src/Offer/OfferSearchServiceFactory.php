@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\AggregationTransformerInterface;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferSearchService;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class OfferSearchServiceFactory
 {

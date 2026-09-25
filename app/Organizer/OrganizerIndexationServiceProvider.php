@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class OrganizerIndexationServiceProvider extends BaseServiceProvider
 {

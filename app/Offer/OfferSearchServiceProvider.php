@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\Search\Taxonomy\TaxonomyApiClient;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class OfferSearchServiceProvider extends BaseServiceProvider
 {

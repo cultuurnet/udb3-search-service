@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
-use Elasticsearch\Client;
+use Elastic\Elasticsearch\Client;
 
 final class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInterface
 {
