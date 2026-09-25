@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Search\SortOrder;
 use DateTimeImmutable;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
-use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;

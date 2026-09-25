@@ -14,16 +14,17 @@ use CultuurNet\UDB3\Search\QueryBuilder;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use ONGR\ElasticsearchDSL\BuilderInterface;
-use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchPhraseQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\QueryStringQuery;
-use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Joining\NestedQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\FieldSort;
+use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 use ONGR\ElasticsearchDSL\Search;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
@@ -422,7 +423,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     /**
      * @return static
      */
-    protected function withSort(BuilderInterface $sort)
+    protected function withSort(OngrBuilderInterface $sort)
     {
         $c = $this->getClone();
         $c->search->addSort($sort);
