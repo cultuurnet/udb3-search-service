@@ -40,14 +40,14 @@
             "status": "Available",
             "bookingAvailability": "Available",
             "hasChildcare": false,
-            "hasOvernightStay": false
+            "hasOvernightStay": null
         }
     ],
     "availableTo": "2017-01-03T23:00:00+01:00",
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernightStay": false,
+    "hasOvernightStay": null,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "creator": "Jane Doe",
