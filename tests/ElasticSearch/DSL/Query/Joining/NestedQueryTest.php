@@ -66,7 +66,7 @@ final class NestedQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $outer->toArray());
+        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
     }
 
     /**

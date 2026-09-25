@@ -28,7 +28,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
     }
 
     /**
@@ -39,7 +39,7 @@ final class BoolQueryTest extends TestCase
         $query = new BoolQuery();
         $query->add(new MatchAllQuery(), BoolClause::Must);
 
-        $this->assertEquals(['match_all' => new \stdClass()], $query->toArray());
+        $this->assertSame(json_encode(['match_all' => new \stdClass()]), json_encode($query->toArray()));
     }
 
     /**
@@ -62,7 +62,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
     }
 
     /**
@@ -93,7 +93,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
     }
 
     /**
@@ -103,7 +103,7 @@ final class BoolQueryTest extends TestCase
     {
         $query = new BoolQuery();
 
-        $this->assertEquals(['bool' => new \stdClass()], $query->toArray());
+        $this->assertSame(json_encode(['bool' => new \stdClass()]), json_encode($query->toArray()));
     }
 
     /**
@@ -124,7 +124,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame($expected, $query->toArray());
     }
 
     /**
@@ -143,7 +143,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame($expected, $query->toArray());
     }
 
     /**
@@ -162,7 +162,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame($expected, $query->toArray());
     }
 
     /**
@@ -185,7 +185,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame($expected, $query->toArray());
     }
 
     /**
@@ -204,7 +204,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $query->toArray());
+        $this->assertSame($expected, $query->toArray());
     }
 
     /**
@@ -237,7 +237,6 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        // assertEquals ignores key order, so compare the encoded JSON to also cover the clause order.
         $this->assertSame(json_encode($expected), json_encode($query->toArray()));
     }
 
@@ -270,7 +269,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $outer->toArray());
+        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
     }
 
     /**
@@ -296,6 +295,6 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertEquals($expected, $outer->toArray());
+        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
     }
 }

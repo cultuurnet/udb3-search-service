@@ -26,7 +26,7 @@ final class SearchTest extends TestCase
             'size' => 30,
         ];
 
-        $this->assertEquals($expected, $search->toArray());
+        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
     }
 
     /**
@@ -54,7 +54,7 @@ final class SearchTest extends TestCase
             'size' => 30,
         ];
 
-        $this->assertEquals($expected, $search->toArray());
+        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
     }
 
     /**
@@ -66,15 +66,14 @@ final class SearchTest extends TestCase
         $search->setFrom(20);
         $search->setSize(10);
 
+        $expected = [
+            'query' => ['match_all' => new \stdClass()],
+            'from' => 20,
+            'size' => 10,
+        ];
+
         $this->assertSame(20, $search->getFrom());
         $this->assertSame(10, $search->getSize());
-        $this->assertEquals(
-            [
-                'query' => ['match_all' => new \stdClass()],
-                'from' => 20,
-                'size' => 10,
-            ],
-            $search->toArray()
-        );
+        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
     }
 }
