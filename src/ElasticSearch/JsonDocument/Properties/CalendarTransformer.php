@@ -266,8 +266,6 @@ final class CalendarTransformer implements JsonTransformer
      */
     private function determineHasOvernightStay(array $from): ?bool
     {
-        $hasOvernightStay = null;
-
         foreach ($from['subEvent'] ?? [] as $subEvent) {
             $subEventHasOvernightStay = $this->determineSubEventHasOvernightStay($subEvent);
 
@@ -280,7 +278,7 @@ final class CalendarTransformer implements JsonTransformer
             }
         }
 
-        return $hasOvernightStay;
+        return $hasOvernightStay ?? null;
     }
 
     private function determineSubEventHasOvernightStay(array $subEvent): ?bool
