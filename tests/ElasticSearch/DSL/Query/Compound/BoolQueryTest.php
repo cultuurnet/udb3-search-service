@@ -45,7 +45,7 @@ final class BoolQueryTest extends TestCase
     /**
      * @test
      */
-    public function it_omits_empty_clause_arrays(): void
+    public function it_only_emits_used_clause_types(): void
     {
         $query = new BoolQuery();
         $query->add(new MatchAllQuery(), BoolQuery::MUST);
