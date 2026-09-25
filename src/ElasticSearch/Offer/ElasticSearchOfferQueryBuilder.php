@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\CardinalityAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -34,8 +36,6 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use DateTimeImmutable;
-use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
-use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
@@ -556,14 +556,11 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             FacetName::Labels => 'labels.keyword',
         };
 
-        $aggregation = new TermsAggregation($facetName->value, $facetField);
-
-        if (null !== $this->aggregationSize) {
-            $aggregation->addParameter('size', $this->aggregationSize);
-        }
-
         $c = $this->getClone();
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: $facetName->value,
+            aggregation: new TermsAggregation(field: $facetField, size: $this->aggregationSize)
+        );
         return $c;
     }
 
@@ -631,9 +628,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         // Add a "total" aggregation based on the number of results with a distinct value for productionCollapseValue
         // to calculate the correct number of total results. (The normal total number of hits is unaffected by a
         // collapse. See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-collapse.html)
-        $aggregation = new CardinalityAggregation('total');
-        $aggregation->setField('productionCollapseValue');
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: 'total',
+            aggregation: new CardinalityAggregation(field: 'productionCollapseValue')
+        );
 
         return $c;
     }
