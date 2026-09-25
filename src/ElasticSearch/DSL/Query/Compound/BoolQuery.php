@@ -19,6 +19,10 @@ final class BoolQuery implements BuilderInterface, OngrBuilderInterface
 
     public function add(BuilderInterface $query, string $type): void
     {
+        if (!in_array($type, [self::MUST, self::FILTER, self::SHOULD, self::MUST_NOT], true)) {
+            throw new \InvalidArgumentException(sprintf('The bool clause type "%s" is not supported.', $type));
+        }
+
         $this->clauses[$type][] = $query;
     }
 

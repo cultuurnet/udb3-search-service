@@ -187,4 +187,17 @@ final class BoolQueryTest extends TestCase
 
         $this->assertEquals($expected, $query->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_rejects_an_unsupported_clause_type(): void
+    {
+        $query = new BoolQuery();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The bool clause type "filters" is not supported.');
+
+        $query->add(new MatchAllQuery(), 'filters');
+    }
 }
