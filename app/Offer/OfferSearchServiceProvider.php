@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\Search\Taxonomy\TaxonomyApiClient;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elastic\Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 
 final class OfferSearchServiceProvider extends BaseServiceProvider
 {
@@ -85,7 +85,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 );
 
                 return new OfferSearchServiceFactory(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $transformer
                 );
             }

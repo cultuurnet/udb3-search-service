@@ -8,7 +8,7 @@ use stdClass;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elastic\Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -16,7 +16,7 @@ use Psr\Log\NullLogger;
 final class ElasticSearchDocumentRepositoryTest extends TestCase
 {
     /**
-     * @var Client&MockObject
+     * @var ElasticSearchClient&MockObject
      */
     private $client;
 
@@ -28,7 +28,7 @@ final class ElasticSearchDocumentRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->client = $this->getMockBuilder(Client::class)
+        $this->client = $this->getMockBuilder(ElasticSearchClient::class)
             ->disableOriginalConstructor()
             ->getMock();
 
