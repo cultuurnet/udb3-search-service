@@ -187,4 +187,115 @@ final class BoolQueryTest extends TestCase
 
         $this->assertEquals($expected, $query->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_preserves_a_single_must_not_clause(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new TermQuery('status', 'deleted'), BoolClause::MustNot);
+
+        $expected = [
+            'bool' => [
+                'must_not' => [
+                    ['term' => ['status' => 'deleted']],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expected, $query->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function it_emits_clauses_in_the_order_they_were_first_added(): void
+    {
+        $query = new BoolQuery();
+        $query->add(new TermQuery('field1', 'value1'), BoolClause::Should);
+        $query->add(new TermQuery('field2', 'value2'), BoolClause::Must);
+        $query->add(new TermQuery('field3', 'value3'), BoolClause::Filter);
+        $query->add(new TermQuery('field4', 'value4'), BoolClause::MustNot);
+        $query->add(new TermQuery('field5', 'value5'), BoolClause::Should);
+
+        $expected = [
+            'bool' => [
+                'should' => [
+                    ['term' => ['field1' => 'value1']],
+                    ['term' => ['field5' => 'value5']],
+                ],
+                'must' => [
+                    ['term' => ['field2' => 'value2']],
+                ],
+                'filter' => [
+                    ['term' => ['field3' => 'value3']],
+                ],
+                'must_not' => [
+                    ['term' => ['field4' => 'value4']],
+                ],
+            ],
+        ];
+
+        // assertEquals ignores key order, so compare the encoded JSON to also cover the clause order.
+        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_serializes_a_bool_inside_a_bool(): void
+    {
+        $inner = new BoolQuery();
+        $inner->add(new TermQuery('status', 'available'), BoolClause::Filter);
+
+        $outer = new BoolQuery();
+        $outer->add(new MatchAllQuery(), BoolClause::Must);
+        $outer->add($inner, BoolClause::Filter);
+
+        $expected = [
+            'bool' => [
+                'must' => [
+                    ['match_all' => new \stdClass()],
+                ],
+                'filter' => [
+                    [
+                        'bool' => [
+                            'filter' => [
+                                ['term' => ['status' => 'available']],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expected, $outer->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function it_collapses_a_single_must_bool_inside_a_bool(): void
+    {
+        $inner = new BoolQuery();
+        $inner->add(new TermQuery('status', 'available'), BoolClause::Must);
+
+        $outer = new BoolQuery();
+        $outer->add(new MatchAllQuery(), BoolClause::Must);
+        $outer->add($inner, BoolClause::Filter);
+
+        $expected = [
+            'bool' => [
+                'must' => [
+                    ['match_all' => new \stdClass()],
+                ],
+                'filter' => [
+                    ['term' => ['status' => 'available']],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expected, $outer->toArray());
+    }
 }
