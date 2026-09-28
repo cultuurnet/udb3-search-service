@@ -18,10 +18,13 @@ use Elasticsearch\Client;
 
 final class PlaceIndexationServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'place_search_projector',
-        'event_bus_subscribers',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'place_search_projector',
+            'event_bus_subscribers',
+        ], true);
+    }
 
     public function register(): void
     {
