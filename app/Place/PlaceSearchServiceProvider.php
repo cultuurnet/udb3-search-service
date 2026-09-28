@@ -10,9 +10,12 @@ use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 
 final class PlaceSearchServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'place_controller',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'place_controller',
+        ], true);
+    }
 
     public function register(): void
     {

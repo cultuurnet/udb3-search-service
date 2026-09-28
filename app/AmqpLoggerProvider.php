@@ -11,9 +11,12 @@ use Monolog\Handler\StreamHandler;
 
 final class AmqpLoggerProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'logger.amqp.udb3',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'logger.amqp.udb3',
+        ], true);
+    }
 
     public function register(): void
     {

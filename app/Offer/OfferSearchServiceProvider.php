@@ -17,11 +17,14 @@ use Elasticsearch\Client;
 
 final class OfferSearchServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'offer_controller',
-        OfferSearchControllerFactory::class,
-        OfferSearchServiceFactory::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'offer_controller',
+            OfferSearchControllerFactory::class,
+            OfferSearchServiceFactory::class,
+        ], true);
+    }
 
     public function register(): void
     {
@@ -53,7 +56,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
             OfferSearchServiceFactory::class,
             function (): OfferSearchServiceFactory {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
-                $taxonomyApiClient = $this->container->get(TaxonomyApiClient::class);
+                $taxonomyApiClient = $this->getContainer()->get(TaxonomyApiClient::class);
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
                     new NodeMapAggregationTransformer(

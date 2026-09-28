@@ -35,16 +35,19 @@ use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        Router::class,
-        Consumer::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            Router::class,
+            Consumer::class,
+        ], true);
+    }
 
     public function register(): void
     {
-        $this->leagueContainer->add(Consumer::class, new Consumer(null, null));
+        $this->getContainer()->add(Consumer::class, new Consumer(null, null));
 
-        $this->leagueContainer->add(
+        $this->getContainer()->add(
             Router::class,
             function (): Router {
                 $router = new Router();
@@ -71,13 +74,13 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $apiKeysMatchedToClientIds = new InMemoryApiKeysMatchedToClientIds(
                         file_exists(__DIR__ . '/../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../api_keys_matched_to_client_ids.php' : [],
                     );
-                    $logger = LoggerFactory::create($this->leagueContainer, LoggerName::forWeb());
+                    $logger = LoggerFactory::create($this->getContainer(), LoggerName::forWeb());
 
                     $authenticateRequest = new AuthenticateRequest(
-                        $this->getLeagueContainer(),
+                        $this->getContainer(),
                         new CachedConsumerResolver(
                             CacheFactory::create(
-                                $this->container->get(PredisClient::class),
+                                $this->getContainer()->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
@@ -85,7 +88,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                         ),
                         new CachedClientIdResolver(
                             CacheFactory::create(
-                                $this->container->get(PredisClient::class),
+                                $this->getContainer()->get(PredisClient::class),
                                 'permission',
                                 86400 // one day
                             ),
@@ -183,7 +186,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
             ),
             new CacheBasedManagementTokenRepository(
                 CacheFactory::create(
-                    $this->container->get(PredisClient::class),
+                    $this->getContainer()->get(PredisClient::class),
                     'management-token',
                     -1 // cache does not expire
                 )

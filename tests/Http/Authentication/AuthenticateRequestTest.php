@@ -901,6 +901,24 @@ final class AuthenticateRequestTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_requests_with_an_empty_bearer_token(): void
+    {
+        $response = $this->authenticateRequest->process(
+            (new ServerRequestFactory())
+                ->createServerRequest('GET', 'https://search.uitdatabank.be')
+                ->withHeader('authorization', self::BEARER),
+            $this->createMock(RequestHandlerInterface::class)
+        );
+
+        $this->assertProblemReport(
+            new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token'),
+            $response
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_invalid_token(): void
     {
         $invalidToken = JsonWebTokenFactory::createWithInvalidSignature();
