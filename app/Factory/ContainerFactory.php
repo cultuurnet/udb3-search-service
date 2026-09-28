@@ -32,30 +32,30 @@ final class ContainerFactory
     public static function forCli(Config $config): Container
     {
         $container = self::build($config);
-        $container->addServiceProvider(SentryCliServiceProvider::class);
-        $container->addServiceProvider(AmqpLoggerProvider::class);
-        $container->addServiceProvider(AmqpProvider::class);
-        $container->addServiceProvider(EventBusProvider::class);
-        $container->addServiceProvider(JsonDocumentFetcherProvider::class);
-        $container->addServiceProvider(OrganizerIndexationServiceProvider::class);
-        $container->addServiceProvider(EventIndexationServiceProvider::class);
-        $container->addServiceProvider(PlaceIndexationServiceProvider::class);
-        $container->addServiceProvider(CommandServiceProvider::class);
-        $container->addServiceProvider(CacheProvider::class);
+        $container->addServiceProvider(new SentryCliServiceProvider());
+        $container->addServiceProvider(new AmqpLoggerProvider());
+        $container->addServiceProvider(new AmqpProvider());
+        $container->addServiceProvider(new EventBusProvider());
+        $container->addServiceProvider(new JsonDocumentFetcherProvider());
+        $container->addServiceProvider(new OrganizerIndexationServiceProvider());
+        $container->addServiceProvider(new EventIndexationServiceProvider());
+        $container->addServiceProvider(new PlaceIndexationServiceProvider());
+        $container->addServiceProvider(new CommandServiceProvider());
+        $container->addServiceProvider(new CacheProvider());
         return $container;
     }
 
     public static function forWeb(Config $config): Container
     {
         $container = self::build($config);
-        $container->addServiceProvider(SentryWebServiceProvider::class);
-        $container->addServiceProvider(OrganizerSearchServiceProvider::class);
-        $container->addServiceProvider(OfferSearchServiceProvider::class);
-        $container->addServiceProvider(EventSearchServiceProvider::class);
-        $container->addServiceProvider(PlaceSearchServiceProvider::class);
-        $container->addServiceProvider(RoutingServiceProvider::class);
-        $container->addServiceProvider(TaxonomyServiceProvider::class);
-        $container->addServiceProvider(CacheProvider::class);
+        $container->addServiceProvider(new SentryWebServiceProvider());
+        $container->addServiceProvider(new OrganizerSearchServiceProvider());
+        $container->addServiceProvider(new OfferSearchServiceProvider());
+        $container->addServiceProvider(new EventSearchServiceProvider());
+        $container->addServiceProvider(new PlaceSearchServiceProvider());
+        $container->addServiceProvider(new RoutingServiceProvider());
+        $container->addServiceProvider(new TaxonomyServiceProvider());
+        $container->addServiceProvider(new CacheProvider());
         return $container;
     }
 
@@ -68,8 +68,8 @@ final class ContainerFactory
             $config
         );
 
-        $container->addServiceProvider(SentryHubServiceProvider::class);
-        $container->addServiceProvider(ElasticSearchProvider::class);
+        $container->addServiceProvider(new SentryHubServiceProvider());
+        $container->addServiceProvider(new ElasticSearchProvider());
 
         return $container;
     }

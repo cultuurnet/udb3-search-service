@@ -12,9 +12,12 @@ use GuzzleHttp\Client;
 
 final class JsonDocumentFetcherProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        JsonDocumentFetcher::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            JsonDocumentFetcher::class,
+        ], true);
+    }
 
     public function register(): void
     {
