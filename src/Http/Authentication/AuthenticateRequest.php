@@ -124,13 +124,15 @@ final class AuthenticateRequest implements MiddlewareInterface
         RequestHandlerInterface $handler,
         string $accessToken
     ): ResponseInterface {
-        if (!str_starts_with($accessToken, self::BEARER)) {
+        $tokenString = str_starts_with($accessToken, self::BEARER)
+            ? substr($accessToken, strlen(self::BEARER))
+            : '';
+
+        if ($tokenString === '') {
             return (
                 new InvalidToken('Authorization header must start with "' . self::BEARER . '", followed by your token')
             )->toResponse();
         }
-
-        $tokenString = substr($accessToken, strlen(self::BEARER));
 
         try {
             $token = new JsonWebToken($tokenString);
