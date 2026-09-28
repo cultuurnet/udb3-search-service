@@ -16,9 +16,12 @@ use Predis\Client as PredisClient;
 
 final class TaxonomyServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        TaxonomyApiClient::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            TaxonomyApiClient::class,
+        ], true);
+    }
 
     public function register(): void
     {

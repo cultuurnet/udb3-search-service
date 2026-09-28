@@ -17,11 +17,14 @@ use Elasticsearch\Client;
 
 final class OfferSearchServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'offer_controller',
-        OfferSearchControllerFactory::class,
-        OfferSearchServiceFactory::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'offer_controller',
+            OfferSearchControllerFactory::class,
+            OfferSearchServiceFactory::class,
+        ], true);
+    }
 
     public function register(): void
     {

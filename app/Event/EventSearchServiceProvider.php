@@ -10,9 +10,12 @@ use CultuurNet\UDB3\SearchService\Offer\OfferSearchControllerFactory;
 
 final class EventSearchServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'event_controller',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'event_controller',
+        ], true);
+    }
 
     public function register(): void
     {

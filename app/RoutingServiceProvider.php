@@ -35,10 +35,13 @@ use Tuupola\Middleware\CorsMiddleware;
 
 final class RoutingServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        Router::class,
-        Consumer::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            Router::class,
+            Consumer::class,
+        ], true);
+    }
 
     public function register(): void
     {

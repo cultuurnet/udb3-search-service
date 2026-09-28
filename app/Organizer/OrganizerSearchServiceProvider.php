@@ -28,11 +28,14 @@ use Elasticsearch\Client;
 
 final class OrganizerSearchServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        OrganizerSearchController::class,
-        'organizer_search_projector',
-        'event_bus_subscribers',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            OrganizerSearchController::class,
+            'organizer_search_projector',
+            'event_bus_subscribers',
+        ], true);
+    }
 
     public function register(): void
     {
