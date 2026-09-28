@@ -22,7 +22,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
     protected function addShared(string $serviceName, callable $function, ?string $tag = null): void
     {
         $definition = $this->getContainer()
-            ->share($serviceName, $function);
+            ->addShared($serviceName, $function);
 
         if ($tag !== null) {
             $definition->addTag($tag);
