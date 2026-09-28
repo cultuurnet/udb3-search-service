@@ -20,6 +20,9 @@ final class JsonWebToken
 {
     private UnencryptedToken $token;
 
+    /**
+     * @param non-empty-string $jwt
+     */
     public function __construct(string $jwt)
     {
         $token = (new Parser(new JoseEncoder()))->parse($jwt);
