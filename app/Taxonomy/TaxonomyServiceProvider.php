@@ -29,7 +29,7 @@ final class TaxonomyServiceProvider extends BaseServiceProvider
             TaxonomyApiClient::class,
             fn (): TaxonomyApiClient => new CachedTaxonomyApiClient(
                 CacheFactory::create(
-                    $this->container->get(PredisClient::class),
+                    $this->getContainer()->get(PredisClient::class),
                     'taxonomy',
                     86400 // one day
                 ),

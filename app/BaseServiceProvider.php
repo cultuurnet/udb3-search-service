@@ -11,7 +11,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 {
     protected function add(string $serviceName, callable $function, ?string $tag = null): void
     {
-        $definition = $this->getLeagueContainer()
+        $definition = $this->getContainer()
             ->add($serviceName, $function);
 
         if ($tag !== null) {
@@ -21,7 +21,7 @@ abstract class BaseServiceProvider extends AbstractServiceProvider
 
     protected function addShared(string $serviceName, callable $function, ?string $tag = null): void
     {
-        $definition = $this->getLeagueContainer()
+        $definition = $this->getContainer()
             ->share($serviceName, $function);
 
         if ($tag !== null) {

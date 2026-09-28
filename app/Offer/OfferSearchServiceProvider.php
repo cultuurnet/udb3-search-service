@@ -62,7 +62,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
             OfferSearchServiceFactory::class,
             function (): OfferSearchServiceFactory {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
-                $taxonomyApiClient = $this->container->get(TaxonomyApiClient::class);
+                $taxonomyApiClient = $this->getContainer()->get(TaxonomyApiClient::class);
                 $transformer = new CompositeAggregationTransformer();
                 $transformer->register(
                     new NodeMapAggregationTransformer(

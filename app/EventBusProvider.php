@@ -16,12 +16,6 @@ final class EventBusProvider extends BaseServiceProvider
         ], true);
     }
 
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     */
     public function register(): void
     {
         $this->addShared(
