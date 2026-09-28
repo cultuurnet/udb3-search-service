@@ -24,7 +24,7 @@ final class UpdateUdb3CoreMappingCommand extends AbstractMappingCommand
             $this->getLogger($output)
         );
 
-        $operation->run($this->indexName, $this->documentType);
+        $operation->run($this->indexName);
 
         return 0;
     }

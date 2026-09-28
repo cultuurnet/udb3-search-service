@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -49,8 +48,6 @@ use ONGR\ElasticsearchDSL\Sort\FieldSort;
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
-    use ElasticSearch5Compatibility;
-
     private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
@@ -639,21 +636,12 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
 
-        // ES6.1 deprecated the top-level nested_path/nested_filter sort parameters in favour of a
-        // nested object, and ES7 removed them. ES5 only understands the old syntax.
-        if ($this->usesLegacyNestedSortSyntax()) {
-            $fieldSort->setParameters([
-                'nested_path' => 'metadata.recommendationFor',
-                'nested_filter' => $nestedFilter,
-            ]);
-        } else {
-            $fieldSort->setParameters([
-                'nested' => [
-                    'path' => 'metadata.recommendationFor',
-                    'filter' => $nestedFilter,
-                ],
-            ]);
-        }
+        $fieldSort->setParameters([
+            'nested' => [
+                'path' => 'metadata.recommendationFor',
+                'filter' => $nestedFilter,
+            ],
+        ]);
 
         $c = $this->getClone();
         $c->search->addSort($fieldSort);
