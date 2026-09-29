@@ -51,7 +51,7 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
 
     public function save(JsonDocument $readModel): void
     {
-        $this->indexationStrategy->indexDocument($this->indexName, $this->documentType, $readModel);
+        $this->indexationStrategy->indexDocument($this->indexName, $readModel);
     }
 
     public function remove(string $id): void

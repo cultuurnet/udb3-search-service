@@ -55,10 +55,6 @@ final class IndexRegionsCommand extends AbstractElasticSearchCommand
             $this->finder
         );
 
-        if ($this->usesCompatibilityMode()) {
-            $operation->enableElasticSearch5CompatibilityMode();
-        }
-
         $operation->run($this->indexName, $this->pathToScan, $this->fileNameRegex);
 
         return 0;

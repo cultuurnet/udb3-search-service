@@ -85,13 +85,7 @@ final class InstallUDB3CoreCommand extends AbstractElasticSearchCommand
         $consoleApp->find('index:create')->run($createInput, $output);
 
         // Create the mapping on the latest index.
-        if ($this->usesSeparateMappingFiles()) {
-            $consoleApp->find('udb3-core:organizer-mapping')->run($emptyInput, $output);
-            $consoleApp->find('udb3-core:event-mapping')->run($emptyInput, $output);
-            $consoleApp->find('udb3-core:place-mapping')->run($emptyInput, $output);
-        } else {
-            $consoleApp->find('udb3-core:core-mapping')->run($emptyInput, $output);
-        }
+        $consoleApp->find('udb3-core:core-mapping')->run($emptyInput, $output);
 
         // Move the write alias to the newly created index.
         $writeAliasInput = new ArrayInput(['alias' => $this->writeAlias, 'target' => $this->latestIndexName]);

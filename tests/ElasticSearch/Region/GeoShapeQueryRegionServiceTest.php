@@ -98,8 +98,8 @@ final class GeoShapeQueryRegionServiceTest extends TestCase
                 ]
             )
             ->willReturnOnConsecutiveCalls(
-                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1_es8.json')),
-                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2_es8.json'))
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_1.json')),
+                Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/regions_2.json'))
             );
 
         $expectedRegionIds = [

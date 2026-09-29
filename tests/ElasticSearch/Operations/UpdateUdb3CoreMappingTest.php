@@ -22,7 +22,6 @@ final class UpdateUdb3CoreMappingTest extends AbstractOperationTestCase
     public function it_updates_the_mapping_without_type(): void
     {
         $indexName = 'mock';
-        $documentType = 'udb3_core';
         $mappingBody = Json::decodeAssociatively(
             FileReader::read(__DIR__ . '/../../../src/ElasticSearch/Operations/json/mapping_udb3_core.json')
         );
@@ -38,8 +37,8 @@ final class UpdateUdb3CoreMappingTest extends AbstractOperationTestCase
 
         $this->logger->expects($this->once())
             ->method('info')
-            ->with("Mapping for type {$documentType} updated.");
+            ->with("Mapping for index {$indexName} updated.");
 
-        $this->operation->run($indexName, $documentType);
+        $this->operation->run($indexName);
     }
 }

@@ -81,10 +81,7 @@ final class AmqpProvider extends BaseServiceProvider
 
     public static function getConsumers(BaseServiceProvider $serviceProvider): array
     {
-        $key = $serviceProvider->usesElasticSearch8()
-            ? 'amqp.consumers8'
-            : 'amqp.consumers';
-        $value = $serviceProvider->parameter($key);
+        $value = $serviceProvider->parameter('amqp.consumers');
         return is_array($value) ? $value : [];
     }
 }

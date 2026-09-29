@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Offer;
 
-use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearch5Compatibility;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistanceFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\LuceneQueryStringFactory;
 use CultuurNet\UDB3\Search\ElasticSearch\Offer\ElasticSearchOfferQueryBuilder;
@@ -33,8 +32,6 @@ use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 
 final class OfferSearchControllerFactory
 {
-    use ElasticSearch5Compatibility;
-
     private ?int $aggregationSize;
 
     private string $regionIndex;
@@ -86,10 +83,6 @@ final class OfferSearchControllerFactory
 
         $luceneFactory = new LuceneQueryStringFactory();
         $queryBuilder = new ElasticSearchOfferQueryBuilder($this->aggregationSize);
-        if ($this->usesCompatibilityMode()) {
-            $luceneFactory->enableElasticSearch5CompatibilityMode();
-            $queryBuilder->enableElasticSearch5CompatibilityMode();
-        }
 
         return new OfferSearchController(
             $queryBuilder,

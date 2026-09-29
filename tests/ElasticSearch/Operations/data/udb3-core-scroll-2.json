@@ -9,12 +9,11 @@
         "failed": 0
     },
     "hits": {
-        "total": 11,
+        "total": {"value": 11, "relation": "eq"},
         "max_score": 1.0,
         "hits": [
             {
                 "_index": "udb3_core",
-                "_type": "place",
                 "_id": "a6b0ab58-67a5-496a-8ef8-ac2da14828c2",
                 "_score": 1.0,
                 "_source": {
@@ -31,7 +30,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "place",
                 "_id": "8cc3b0d4-bc97-4c17-b3d4-072ccc58b242",
                 "_score": 1.0,
                 "_source": {
@@ -48,7 +46,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "event",
                 "_id": "02ca9526-f7d6-4338-80fe-88a346fdd118",
                 "_score": 1.0,
                 "_source": {
@@ -65,7 +62,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "place",
                 "_id": "179c89c5-dba4-417b-ae96-62e7a12c2405",
                 "_score": 1.0,
                 "_source": {
@@ -82,7 +78,6 @@
             },
             {
                 "_index": "udb3_core",
-                "_type": "event",
                 "_id": "441a5831-a65e-44fa-81ef-5c47e9c57a05",
                 "_score": 1.0,
                 "_source": {
