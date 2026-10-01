@@ -93,7 +93,6 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): OfferQueryBuilderInterface;
 
