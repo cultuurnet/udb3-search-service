@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
@@ -23,7 +24,6 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
-use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
@@ -186,14 +186,11 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             return $this;
         }
 
-        $aggregation = new TermsAggregation($facetName->value, 'regions.keyword');
-
-        if (null !== $this->aggregationSize) {
-            $aggregation->addParameter('size', $this->aggregationSize);
-        }
-
         $c = $this->getClone();
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: $facetName->value,
+            aggregation: new TermsAggregation(field: 'regions.keyword', size: $this->aggregationSize)
+        );
         return $c;
     }
 

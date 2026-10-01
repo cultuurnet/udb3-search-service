@@ -24,9 +24,8 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Joining\NestedQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Search;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\FieldSort;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
-use ONGR\ElasticsearchDSL\Search;
 
 abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
 {
@@ -43,11 +42,11 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         $this->boolQuery = new BoolQuery();
         $this->boolQuery->add(new MatchAllQuery(), BoolClause::Must);
 
-        $this->search = new Search();
-        $this->search->addQuery($this->boolQuery);
-
-        $this->search->setFrom(0);
-        $this->search->setSize(30);
+        $this->search = new Search(
+            query: $this->boolQuery,
+            from: 0,
+            size: 30
+        );
     }
 
     /**
@@ -424,7 +423,7 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
     /**
      * @return static
      */
-    protected function withSort(OngrBuilderInterface $sort)
+    protected function withSort(BuilderInterface $sort)
     {
         $c = $this->getClone();
         $c->search->addSort($sort);
