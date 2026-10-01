@@ -40,8 +40,8 @@ final class ApiProblemFactory
         }
 
         if ($throwable instanceof ElasticSearchRequestFailed) {
-            // Without a reason in the response body (e.g. a proxy error page), the full message is the best detail left.
-            $message = $throwable->getReason() ?? $throwable->getMessage();
+            // The raw response body can contain index names and other internals; it is logged in full, so the public detail only carries the status.
+            $message = $throwable->getReason() ?? sprintf('request failed with HTTP status %d', $throwable->getCode());
 
             if (str_contains($message, 'Failed to parse query') ||
                 str_contains($message, 'failed to create query') ||

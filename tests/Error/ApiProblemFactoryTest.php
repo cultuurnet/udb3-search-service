@@ -42,14 +42,14 @@ final class ApiProblemFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_falls_back_to_the_message_when_the_failure_has_no_reason(): void
+    public function it_falls_back_to_the_status_when_the_failure_has_no_reason(): void
     {
         $failure = new ElasticSearchRequestFailed('502 Bad Gateway: <html>Bad Gateway</html>', 502, []);
 
         $problem = ApiProblemFactory::createFromThrowable($failure);
 
         $this->assertSame(500, $problem->getStatus());
-        $this->assertSame('Elasticsearch error: 502 Bad Gateway: <html>Bad Gateway</html>', $problem->getDetail());
+        $this->assertSame('Elasticsearch error: request failed with HTTP status 502', $problem->getDetail());
     }
 
     private function failureWithReason(int $status, string $reason): ElasticSearchRequestFailed
