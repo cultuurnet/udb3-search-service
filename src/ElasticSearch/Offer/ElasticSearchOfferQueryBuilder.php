@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\CardinalityAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
 use CultuurNet\UDB3\Search\GeoDistanceParameters;
@@ -34,16 +37,16 @@ use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use DateTimeImmutable;
-use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
-use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
-use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\RangeQuery;
-use ONGR\ElasticsearchDSL\Query\TermLevel\TermQuery;
-use ONGR\ElasticsearchDSL\Sort\FieldSort;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\GeoDistanceSort;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\NestedFieldSort;
 
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
@@ -135,7 +138,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($rangeQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($rangeQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -353,21 +356,17 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): self {
-        $geoShapeQuery = new GeoShapeQuery();
-
-        $geoShapeQuery->addPreIndexedShape(
-            'geo',
-            $regionId->toString(),
-            $regionDocumentType,
-            $regionIndexName,
-            'location'
+        $geoShapeQuery = new GeoShapeQuery(
+            field: 'geo',
+            id: $regionId->toString(),
+            index: $regionIndexName,
+            path: 'location'
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoShapeQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoShapeQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -375,37 +374,25 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toString(),
-            (object) [
-                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
-                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
-            ]
+            ElasticSearchDistance::fromDistance($geoDistanceParameters->getMaximumDistance()),
+            $geoDistanceParameters->getCoordinates()
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoDistanceQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoDistanceQuery, BoolClause::Filter);
         return $c;
     }
 
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
     {
-        $northWest = $geoBoundsParameters->getNorthWestCoordinates();
-        $southEast = $geoBoundsParameters->getSouthEastCoordinates();
-
-        $topLeft = [
-            'lat' => $northWest->getLatitude()->toDouble(),
-            'lon' => $northWest->getLongitude()->toDouble(),
-        ];
-
-        $bottomRight = [
-            'lat' => $southEast->getLatitude()->toDouble(),
-            'lon' => $southEast->getLongitude()->toDouble(),
-        ];
-
-        $geoBoundingBoxQuery = new GeoBoundingBoxQuery('geo_point', [$topLeft, $bottomRight]);
+        $geoBoundingBoxQuery = new GeoBoundingBoxQuery(
+            'geo_point',
+            $geoBoundsParameters->getNorthWestCoordinates(),
+            $geoBoundsParameters->getSouthEastCoordinates()
+        );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoBoundingBoxQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoBoundingBoxQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -425,18 +412,18 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
 
         if ($creator !== null) {
             $innerBool = new BoolQuery();
-            $innerBool->add($childrenOnlyQuery, BoolQuery::MUST);
+            $innerBool->add($childrenOnlyQuery, BoolClause::Must);
             // The creator field is an analyzed string using lowercase_exact_match_analyzer
             // (keyword tokenizer + lowercase filter): the indexed value is a single, lowercased
             // token. A MatchQuery runs the search value through the same analyzer, giving an exact
             // but case-insensitive match. A TermQuery would NOT lowercase and therefore fails to
             // match creators that contain uppercase characters (e.g. mixed-case client ids).
-            $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolQuery::MUST_NOT);
+            $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolClause::MustNot);
             $childrenOnlyQuery = $innerBool;
         }
 
         $c = $this->getClone();
-        $c->boolQuery->add($childrenOnlyQuery, BoolQuery::MUST_NOT);
+        $c->boolQuery->add($childrenOnlyQuery, BoolClause::MustNot);
         return $c;
     }
 
@@ -489,7 +476,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $uitpasQuery = "!({$uitpasQuery})";
         }
 
-        return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
+        return $this->withQueryStringQuery(queryString: $uitpasQuery, type: BoolClause::Filter);
     }
 
     public function withHasOvernightStayFilter(bool $hasOvernightStay): self
@@ -570,40 +557,37 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             FacetName::Labels => 'labels.keyword',
         };
 
-        $aggregation = new TermsAggregation($facetName->value, $facetField);
-
-        if (null !== $this->aggregationSize) {
-            $aggregation->addParameter('size', $this->aggregationSize);
-        }
-
         $c = $this->getClone();
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: $facetName->value,
+            aggregation: new TermsAggregation(field: $facetField, size: $this->aggregationSize)
+        );
         return $c;
     }
 
     public function withSortByScore(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('_score', $sortOrder->value);
+        return $this->withFieldSort('_score', $sortOrder);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('completeness', $sortOrder->value);
+        return $this->withFieldSort('completeness', $sortOrder);
     }
 
     public function withSortByAvailableTo(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('availableTo', $sortOrder->value);
+        return $this->withFieldSort('availableTo', $sortOrder);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('created', $sortOrder->value);
+        return $this->withFieldSort('created', $sortOrder);
     }
 
     public function withSortByModified(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('modified', $sortOrder->value);
+        return $this->withFieldSort('modified', $sortOrder);
     }
 
     /**
@@ -611,42 +595,30 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
      */
     public function withSortByDistance(Coordinates $coordinates, SortOrder $sortOrder): self
     {
-        return $this->withFieldSort(
-            '_geo_distance',
-            $sortOrder->value,
-            [
-                'geo_point' => [
-                    'lat' => $coordinates->getLatitude()->toDouble(),
-                    'lon' => $coordinates->getLongitude()->toDouble(),
-                ],
-                'unit' => 'km',
-                'distance_type' => 'plane',
-            ]
+        return $this->withSort(
+            new GeoDistanceSort(
+                field: 'geo_point',
+                location: $coordinates,
+                order: $sortOrder
+            )
         );
     }
 
     public function withSortByPopularity(SortOrder $sortOrder): self
     {
-        return $this->withFieldSort('metadata.popularity', $sortOrder->value);
+        return $this->withFieldSort('metadata.popularity', $sortOrder);
     }
 
     public function withSortByRecommendationScore(string $recommendationFor, SortOrder $sortOrder): self
     {
-        $fieldSort = new FieldSort('metadata.recommendationFor.score', $sortOrder->value);
-
-        $nestedFilter = (new TermQuery('metadata.recommendationFor.event', $recommendationFor))->toArray();
-
-        $fieldSort->setParameters([
-            'nested' => [
-                'path' => 'metadata.recommendationFor',
-                'filter' => $nestedFilter,
-            ],
-        ]);
-
-        $c = $this->getClone();
-        $c->search->addSort($fieldSort);
-
-        return $c;
+        return $this->withSort(
+            new NestedFieldSort(
+                field: 'metadata.recommendationFor.score',
+                order: $sortOrder,
+                path: 'metadata.recommendationFor',
+                filter: new TermQuery('metadata.recommendationFor.event', $recommendationFor)
+            )
+        );
     }
 
     public function withGroupByProductionId(): self
@@ -657,9 +629,10 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
         // Add a "total" aggregation based on the number of results with a distinct value for productionCollapseValue
         // to calculate the correct number of total results. (The normal total number of hits is unaffected by a
         // collapse. See https://www.elastic.co/guide/en/elasticsearch/reference/6.8/search-request-collapse.html)
-        $aggregation = new CardinalityAggregation('total');
-        $aggregation->setField('productionCollapseValue');
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: 'total',
+            aggregation: new CardinalityAggregation(field: 'productionCollapseValue')
+        );
 
         return $c;
     }

@@ -31,8 +31,6 @@ final class OrganizerSearchController
 
     private string $regionIndexName;
 
-    private string $regionDocumentType;
-
     private OrganizerSupportedParameters $organizerParameterWhiteList;
 
     private QueryStringFactory $queryStringFactory;
@@ -47,7 +45,6 @@ final class OrganizerSearchController
         OrganizerQueryBuilderInterface $queryBuilder,
         OrganizerSearchServiceInterface $searchService,
         string $regionIndexName,
-        string $regionDocumentType,
         OrganizerRequestParser $organizerRequestParser,
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
@@ -56,7 +53,6 @@ final class OrganizerSearchController
         $this->queryBuilder = $queryBuilder;
         $this->searchService = $searchService;
         $this->regionIndexName = $regionIndexName;
-        $this->regionDocumentType = $regionDocumentType;
         $this->organizerRequestParser = $organizerRequestParser;
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
@@ -129,7 +125,6 @@ final class OrganizerSearchController
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 $regionId
             );
         }

@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
@@ -22,11 +24,10 @@ use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
-use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
-use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
-use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
 
 final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OrganizerQueryBuilderInterface
@@ -105,21 +106,17 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): self {
-        $geoShapeQuery = new GeoShapeQuery();
-
-        $geoShapeQuery->addPreIndexedShape(
-            'geo',
-            $regionId->toString(),
-            $regionDocumentType,
-            $regionIndexName,
-            'location'
+        $geoShapeQuery = new GeoShapeQuery(
+            field: 'geo',
+            id: $regionId->toString(),
+            index: $regionIndexName,
+            path: 'location'
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoShapeQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoShapeQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -127,37 +124,25 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toString(),
-            (object) [
-                'lat' => $geoDistanceParameters->getCoordinates()->getLatitude()->toDouble(),
-                'lon' => $geoDistanceParameters->getCoordinates()->getLongitude()->toDouble(),
-            ]
+            ElasticSearchDistance::fromDistance($geoDistanceParameters->getMaximumDistance()),
+            $geoDistanceParameters->getCoordinates()
         );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoDistanceQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoDistanceQuery, BoolClause::Filter);
         return $c;
     }
 
     public function withGeoBoundsFilter(GeoBoundsParameters $geoBoundsParameters): self
     {
-        $northWest = $geoBoundsParameters->getNorthWestCoordinates();
-        $southEast = $geoBoundsParameters->getSouthEastCoordinates();
-
-        $topLeft = [
-            'lat' => $northWest->getLatitude()->toDouble(),
-            'lon' => $northWest->getLongitude()->toDouble(),
-        ];
-
-        $bottomRight = [
-            'lat' => $southEast->getLatitude()->toDouble(),
-            'lon' => $southEast->getLongitude()->toDouble(),
-        ];
-
-        $geoBoundingBoxQuery = new GeoBoundingBoxQuery('geo_point', [$topLeft, $bottomRight]);
+        $geoBoundingBoxQuery = new GeoBoundingBoxQuery(
+            'geo_point',
+            $geoBoundsParameters->getNorthWestCoordinates(),
+            $geoBoundsParameters->getSouthEastCoordinates()
+        );
 
         $c = $this->getClone();
-        $c->boolQuery->add($geoBoundingBoxQuery, BoolQuery::FILTER);
+        $c->boolQuery->add($geoBoundingBoxQuery, BoolClause::Filter);
         return $c;
     }
 
@@ -201,35 +186,32 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
             return $this;
         }
 
-        $aggregation = new TermsAggregation($facetName->value, 'regions.keyword');
-
-        if (null !== $this->aggregationSize) {
-            $aggregation->addParameter('size', $this->aggregationSize);
-        }
-
         $c = $this->getClone();
-        $c->search->addAggregation($aggregation);
+        $c->search->addAggregation(
+            name: $facetName->value,
+            aggregation: new TermsAggregation(field: 'regions.keyword', size: $this->aggregationSize)
+        );
         return $c;
     }
 
     public function withSortByScore(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('_score', $sortOrder->value);
+        return $this->withFieldSort('_score', $sortOrder);
     }
 
     public function withSortByCompleteness(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('completeness', $sortOrder->value);
+        return $this->withFieldSort('completeness', $sortOrder);
     }
 
     public function withSortByCreated(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('created', $sortOrder->value);
+        return $this->withFieldSort('created', $sortOrder);
     }
 
     public function withSortByModified(SortOrder $sortOrder): ElasticSearchOrganizerQueryBuilder
     {
-        return $this->withFieldSort('modified', $sortOrder->value);
+        return $this->withFieldSort('modified', $sortOrder);
     }
 
     public function withSortBuilders(array $sorts, array $sortBuilders): OrganizerQueryBuilderInterface
