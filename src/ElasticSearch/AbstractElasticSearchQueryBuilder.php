@@ -15,9 +15,9 @@ use CultuurNet\UDB3\Search\Start;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use ONGR\ElasticsearchDSL\BuilderInterface;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\MatchPhraseQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\QueryStringQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchPhraseQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\QueryStringQuery;
 use ONGR\ElasticsearchDSL\Query\Joining\NestedQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
@@ -72,10 +72,9 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         }
 
         return $this->withQueryStringQuery(
-            str_replace(':', '\\:', $text),
-            $this->getPredefinedQueryStringFields(...$textLanguages),
-            BoolQuery::MUST,
-            'AND'
+            queryString: str_replace(':', '\\:', $text),
+            fields: $this->getPredefinedQueryStringFields(...$textLanguages),
+            defaultOperator: 'AND'
         );
     }
 
@@ -370,17 +369,13 @@ abstract class AbstractElasticSearchQueryBuilder implements QueryBuilder
         string $queryString,
         array $fields = [],
         string $type = BoolQuery::MUST,
-        string $defaultOperator = 'OR'
+        ?string $defaultOperator = null
     ) {
-        $parameters = [];
-        if (!empty($fields)) {
-            $parameters['fields'] = $fields;
-        }
-        if ('OR' !== \strtoupper($defaultOperator)) {
-            $parameters['default_operator'] = $defaultOperator;
-        }
-
-        $queryStringQuery = new QueryStringQuery($queryString, $parameters);
+        $queryStringQuery = new QueryStringQuery(
+            query: $queryString,
+            fields: $fields,
+            defaultOperator: $defaultOperator
+        );
 
         $c = $this->getClone();
         $c->boolQuery->add($queryStringQuery, $type);

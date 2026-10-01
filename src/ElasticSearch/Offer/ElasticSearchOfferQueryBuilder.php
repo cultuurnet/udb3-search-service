@@ -37,7 +37,7 @@ use DateTimeImmutable;
 use ONGR\ElasticsearchDSL\Aggregation\Bucketing\TermsAggregation;
 use ONGR\ElasticsearchDSL\Aggregation\Metric\CardinalityAggregation;
 use ONGR\ElasticsearchDSL\Query\Compound\BoolQuery;
-use ONGR\ElasticsearchDSL\Query\FullText\MatchQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoBoundingBoxQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoDistanceQuery;
 use ONGR\ElasticsearchDSL\Query\Geo\GeoShapeQuery;
@@ -489,7 +489,7 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
             $uitpasQuery = "!({$uitpasQuery})";
         }
 
-        return $this->withQueryStringQuery($uitpasQuery, [], BoolQuery::FILTER);
+        return $this->withQueryStringQuery(queryString: $uitpasQuery, type: BoolQuery::FILTER);
     }
 
     public function withHasOvernightStayFilter(bool $hasOvernightStay): self
