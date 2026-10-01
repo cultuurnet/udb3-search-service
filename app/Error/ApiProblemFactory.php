@@ -7,9 +7,8 @@ namespace CultuurNet\UDB3\SearchService\Error;
 use Throwable;
 use Crell\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Search\ConvertsToApiProblem;
-use CultuurNet\UDB3\Search\Json;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchRequestFailed;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
-use Elasticsearch\Common\Exceptions\ElasticsearchException;
 use Error;
 use Fig\Http\Message\StatusCodeInterface;
 use League\Route\Http\Exception\MethodNotAllowedException;
@@ -40,9 +39,9 @@ final class ApiProblemFactory
             return $problem;
         }
 
-        if ($throwable instanceof ElasticsearchException) {
-            $errorData = Json::decodeAssociatively($throwable->getMessage());
-            $message = $errorData['error']['root_cause'][0]['reason'];
+        if ($throwable instanceof ElasticSearchRequestFailed) {
+            // Without a reason in the response body (e.g. a proxy error page), the full message is the best detail left.
+            $message = $throwable->getReason() ?? $throwable->getMessage();
 
             if (str_contains($message, 'Failed to parse query') ||
                 str_contains($message, 'failed to create query') ||

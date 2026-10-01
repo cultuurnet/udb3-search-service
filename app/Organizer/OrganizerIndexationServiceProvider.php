@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 
 final class OrganizerIndexationServiceProvider extends BaseServiceProvider
 {
@@ -42,7 +42,7 @@ final class OrganizerIndexationServiceProvider extends BaseServiceProvider
                 );
 
                 $repository = new ElasticSearchDocumentRepository(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->parameter('elasticsearch.organizer.write_index'),
                     $this->parameter('elasticsearch.organizer.document_type'),
                     $this->get('elasticsearch_indexation_strategy')
