@@ -32,9 +32,12 @@ use Symfony\Component\Finder\Finder;
 
 final class CommandServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        Application::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            Application::class,
+        ], true);
+    }
 
     public function register(): void
     {

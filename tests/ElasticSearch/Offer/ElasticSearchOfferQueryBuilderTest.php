@@ -2045,7 +2045,7 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
                         [
                             'geo_distance' => [
                                 'distance' => '30km',
-                                'geo_point' => (object)[
+                                'geo_point' => [
                                     'lat' => -40.3456,
                                     'lon' => 78.3,
                                 ],

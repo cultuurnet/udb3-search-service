@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 
 final class GeoDistanceQuery implements BuilderInterface
 {
     public function __construct(
         private readonly string $field,
-        private readonly string $distance,
+        private readonly ElasticSearchDistance $distance,
         private readonly Coordinates $location
     ) {
     }
@@ -20,8 +21,8 @@ final class GeoDistanceQuery implements BuilderInterface
     {
         return [
             'geo_distance' => [
-                'distance' => $this->distance,
-                $this->field => (object) [
+                'distance' => $this->distance->toString(),
+                $this->field => [
                     'lat' => $this->location->getLatitude()->toDouble(),
                     'lon' => $this->location->getLongitude()->toDouble(),
                 ],

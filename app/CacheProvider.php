@@ -8,9 +8,12 @@ use Predis\Client;
 
 final class CacheProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        Client::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            Client::class,
+        ], true);
+    }
 
     public function register(): void
     {

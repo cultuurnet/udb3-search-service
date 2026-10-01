@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Search\Country;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\JsonDocument\Properties\Url;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\ElasticSearch\PredefinedQueryFieldsInterface;
@@ -123,7 +124,7 @@ final class ElasticSearchOrganizerQueryBuilder extends AbstractElasticSearchQuer
     {
         $geoDistanceQuery = new GeoDistanceQuery(
             'geo_point',
-            $geoDistanceParameters->getMaximumDistance()->toString(),
+            ElasticSearchDistance::fromDistance($geoDistanceParameters->getMaximumDistance()),
             $geoDistanceParameters->getCoordinates()
         );
 

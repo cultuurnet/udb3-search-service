@@ -14,11 +14,14 @@ use Elastic\Elasticsearch\ClientBuilder;
 
 final class ElasticSearchProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        ElasticSearchClient::class,
-        GeoShapeQueryRegionService::class,
-        'elasticsearch_indexation_strategy',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            ElasticSearchClient::class,
+            GeoShapeQueryRegionService::class,
+            'elasticsearch_indexation_strategy',
+        ], true);
+    }
 
     public function register(): void
     {
