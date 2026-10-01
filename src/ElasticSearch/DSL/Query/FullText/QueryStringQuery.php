@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class QueryStringQuery implements BuilderInterface, OngrBuilderInterface
+final class QueryStringQuery implements BuilderInterface
 {
     /**
      * @param string[] $fields
@@ -32,11 +31,5 @@ final class QueryStringQuery implements BuilderInterface, OngrBuilderInterface
         }
 
         return ['query_string' => $queryString];
-    }
-
-    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
-    public function getType(): string
-    {
-        return 'query_string';
     }
 }

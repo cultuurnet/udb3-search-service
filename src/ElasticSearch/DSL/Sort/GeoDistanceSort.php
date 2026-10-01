@@ -7,9 +7,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\BuilderInterface;
 use CultuurNet\UDB3\Search\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Search\SortOrder;
-use ONGR\ElasticsearchDSL\BuilderInterface as OngrBuilderInterface;
 
-final class GeoDistanceSort implements BuilderInterface, OngrBuilderInterface
+final class GeoDistanceSort implements BuilderInterface
 {
     public function __construct(
         private readonly string $field,
@@ -31,11 +30,5 @@ final class GeoDistanceSort implements BuilderInterface, OngrBuilderInterface
                 'distance_type' => 'plane',
             ],
         ];
-    }
-
-    // Lets ongr's containers accept this class until they are replaced; remove together with ongr.
-    public function getType(): string
-    {
-        return 'sort';
     }
 }

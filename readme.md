@@ -147,7 +147,7 @@ The ElasticSearch implementations of the query builder interfaces are located at
 - `src/ElasticSearch/Offer/ElasticSearchOfferQueryBuilder`
 - `src/ElasticSearch/Organizer/ElasticSearchOrganizerQueryBuilder`
 
-These classes use the `ongr/elasticsearch-dsl` package to build queries. 
+These classes build queries with the small in-house DSL in `src/ElasticSearch/DSL`, which only covers the queries, sorts and aggregations the builders need. 
 Note however that they both extend a `AbstractElasticSearchQueryBuilder` class which provides a lot of convenience methods for common queries like match, term, etc.
 
 **HTTP controllers**
