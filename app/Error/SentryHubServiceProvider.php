@@ -12,9 +12,12 @@ use function Sentry\init;
 
 final class SentryHubServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        HubInterface::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            HubInterface::class,
+        ], true);
+    }
 
     public function register(): void
     {

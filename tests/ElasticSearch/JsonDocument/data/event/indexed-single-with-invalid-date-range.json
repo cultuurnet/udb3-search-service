@@ -20,7 +20,7 @@
     "audienceType": "everyone",
     "hasChildcare": false,
     "childrenOnly": false,
-    "hasOvernightStay": false,
+    "hasOvernightStay": null,
     "mediaObjectsCount": 0,
     "videosCount": 0,
     "creator": "Jane Doe",
