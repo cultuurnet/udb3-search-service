@@ -35,28 +35,28 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_defaults_has_overnight_stay_to_false_without_a_calendar_type(): void
+    public function it_defaults_has_overnight_stay_to_null_without_a_calendar_type(): void
     {
         $result = $this->transformer->transform([]);
 
         $this->assertArrayHasKey('hasOvernightStay', $result);
-        $this->assertFalse($result['hasOvernightStay']);
+        $this->assertNull($result['hasOvernightStay']);
     }
 
     /**
      * @test
      */
-    public function it_indexes_has_overnight_stay_false_when_no_sub_event_is_overnight(): void
+    public function it_indexes_has_overnight_stay_null_when_every_sub_event_is_absent(): void
     {
         $result = $this->transformer->transform($this->multipleCalendar(withHasOvernightStay: false));
 
-        $this->assertFalse($result['hasOvernightStay']);
+        $this->assertNull($result['hasOvernightStay']);
     }
 
     /**
      * @test
      */
-    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_overnight(): void
+    public function it_indexes_has_overnight_stay_true_when_a_sub_event_is_true(): void
     {
         $result = $this->transformer->transform($this->singleCalendar(withHasOvernightStay: true));
 
@@ -64,12 +64,11 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
-     * A partial overnight event (one sub-event overnight, the rest not) couples on event level: a
-     * single overnight sub-event flags the whole offer.
+     * One sub-event that is true flags the whole offer, whatever the others are.
      *
      * @test
      */
-    public function it_indexes_has_overnight_stay_true_when_only_one_sub_event_is_overnight(): void
+    public function it_indexes_has_overnight_stay_true_when_only_one_sub_event_is_true(): void
     {
         $result = $this->transformer->transform($this->multipleCalendar(withHasOvernightStay: true));
 
@@ -79,7 +78,7 @@ final class CalendarTransformerTest extends TestCase
     /**
      * @test
      */
-    public function it_ignores_a_sub_event_that_is_explicitly_not_overnight(): void
+    public function it_indexes_has_overnight_stay_false_when_a_sub_event_is_false(): void
     {
         $calendar = $this->singleCalendar(withHasOvernightStay: false);
         $calendar['subEvent'][0]['hasOvernightStay'] = false;
@@ -90,16 +89,42 @@ final class CalendarTransformerTest extends TestCase
     }
 
     /**
-     * Overnight is a sub-event-only flag, so opening-hours-driven calendars never carry it.
+     * @test
+     */
+    public function it_indexes_has_overnight_stay_true_when_one_sub_event_is_true_and_another_is_false(): void
+    {
+        $calendar = $this->multipleCalendar(withHasOvernightStay: true);
+        $calendar['subEvent'][1]['hasOvernightStay'] = false;
+
+        $result = $this->transformer->transform($calendar);
+
+        $this->assertTrue($result['hasOvernightStay']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_indexes_has_overnight_stay_false_when_one_sub_event_is_false_and_the_rest_are_absent(): void
+    {
+        $calendar = $this->multipleCalendar(withHasOvernightStay: false);
+        $calendar['subEvent'][1]['hasOvernightStay'] = false;
+
+        $result = $this->transformer->transform($calendar);
+
+        $this->assertFalse($result['hasOvernightStay']);
+    }
+
+    /**
+     * hasOvernightStay only exists on sub-events, so opening-hours-driven calendars never have it.
      *
      * @test
      * @dataProvider openingHoursCalendarProvider
      */
-    public function it_indexes_has_overnight_stay_false_for_opening_hours_calendars(string $type): void
+    public function it_indexes_has_overnight_stay_null_for_opening_hours_calendars(string $type): void
     {
         $result = $this->transformer->transform($this->{$type . 'Calendar'}());
 
-        $this->assertFalse($result['hasOvernightStay']);
+        $this->assertNull($result['hasOvernightStay']);
     }
 
     /**
@@ -127,7 +152,7 @@ final class CalendarTransformerTest extends TestCase
         $withoutOvernight = $this->transformer->transform($this->{$type . 'Calendar'}(withHasOvernightStay: false));
 
         $this->assertTrue($withOvernight['hasOvernightStay']);
-        $this->assertFalse($withoutOvernight['hasOvernightStay']);
+        $this->assertNull($withoutOvernight['hasOvernightStay']);
 
         $this->assertEquals($withoutOvernight['dateRange'], $withOvernight['dateRange']);
         $this->assertEquals($withoutOvernight['localTimeRange'], $withOvernight['localTimeRange']);
@@ -148,7 +173,7 @@ final class CalendarTransformerTest extends TestCase
         $result = $this->transformer->transform($this->multipleCalendar(withHasOvernightStay: true));
 
         $this->assertTrue($result['subEvent'][0]['hasOvernightStay']);
-        $this->assertFalse($result['subEvent'][1]['hasOvernightStay']);
+        $this->assertNull($result['subEvent'][1]['hasOvernightStay']);
     }
 
     /**
@@ -440,7 +465,7 @@ final class CalendarTransformerTest extends TestCase
             [
                 'status' => 'Available',
                 'bookingAvailability' => 'Available',
-                'hasOvernightStay' => false,
+                'hasOvernightStay' => null,
                 'hasChildcare' => false,
                 'recurringOnDayOfWeek' => [],
                 'recurringOnLocalTimeRange' => (object) [],
@@ -884,8 +909,7 @@ final class CalendarTransformerTest extends TestCase
             'endDate' => '2024-06-03T12:00:00+02:00',
         ];
         if ($withHasOvernightStay) {
-            // Only the first sub-event is overnight on purpose: a single overnight sub-event is
-            // enough to flag the whole offer.
+            // Only the first sub-event is true on purpose: one is enough to flag the whole offer.
             $first['hasOvernightStay'] = true;
         }
         if ($withChildcare) {

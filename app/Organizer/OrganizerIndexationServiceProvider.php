@@ -18,10 +18,13 @@ use Elasticsearch\Client;
 
 final class OrganizerIndexationServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        'organizer_search_projector',
-        'event_bus_subscribers',
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            'organizer_search_projector',
+            'event_bus_subscribers',
+        ], true);
+    }
 
     public function register(): void
     {

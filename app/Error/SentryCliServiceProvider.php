@@ -11,9 +11,12 @@ use Sentry\State\HubInterface;
 
 final class SentryCliServiceProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        SentryHandlerScopeDecorator::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            SentryHandlerScopeDecorator::class,
+        ], true);
+    }
 
     public function register(): void
     {

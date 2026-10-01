@@ -69,7 +69,7 @@ final class PlaceTransformerTest extends TestCase
             'originalEncodedJsonLd' => '{}',
             'audienceType' => 'everyone',
             'childrenOnly' => false,
-            'hasOvernightStay' => false,
+            'hasOvernightStay' => null,
             'hasChildcare' => false,
             'mediaObjectsCount' => 0,
             'videosCount' => 0,

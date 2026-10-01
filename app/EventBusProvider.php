@@ -9,16 +9,13 @@ use CultuurNet\UDB3\Search\SimpleEventBus;
 
 final class EventBusProvider extends BaseServiceProvider
 {
-    protected $provides = [
-        EventBus::class,
-    ];
+    public function provides(string $id): bool
+    {
+        return in_array($id, [
+            EventBus::class,
+        ], true);
+    }
 
-    /**
-     * Use the register method to register items with the container via the
-     * protected $this->leagueContainer property or the `getLeagueContainer` method
-     * from the ContainerAwareTrait.
-     *
-     */
     public function register(): void
     {
         $this->addShared(

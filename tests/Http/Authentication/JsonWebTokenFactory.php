@@ -13,6 +13,9 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 final class JsonWebTokenFactory
 {
+    /**
+     * @param array<non-empty-string, mixed> $claims
+     */
     public static function createWithClaims(array $claims): string
     {
         $builder = new Builder(new JoseEncoder(), new ChainedFormatter());
