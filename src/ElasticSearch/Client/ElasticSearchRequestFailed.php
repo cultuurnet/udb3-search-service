@@ -11,12 +11,13 @@ use Throwable;
 
 final class ElasticSearchRequestFailed extends RuntimeException
 {
-    private array $error;
-
-    public function __construct(string $message, int $status, array $error, ?Throwable $previous = null)
-    {
+    public function __construct(
+        string $message,
+        int $status,
+        private readonly array $error,
+        ?Throwable $previous = null
+    ) {
         parent::__construct($message, $status, $previous);
-        $this->error = $error;
     }
 
     public static function fromResponseException(ClientResponseException|ServerResponseException $exception): self
