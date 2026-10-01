@@ -7,10 +7,10 @@ pipeline {
 
     environment {
         PIPELINE_VERSION = util.pipelineVersion()
-        REPOSITORY_NAME  = 'uitdatabank-search-api'
+        SOURCE_URL       = 'https://github.com/cultuurnet/udb3-search-service'
+        APT_REPOSITORY   = 'uitdatabank-search-api'
         ECR_REGISTRY     = '757200591793.dkr.ecr.eu-west-1.amazonaws.com'
         ECR_REPOSITORY   = 'uitdatabank/search-api'
-        AWS_REGION       = 'eu-west-1'
     }
 
     stages {
@@ -46,8 +46,7 @@ pipeline {
                     agent { label 'docker_build' }
                     environment {
                         GIT_SHORT_COMMIT = util.shortCommitRef()
-                        IMAGE_TAG        = "${env.PIPELINE_VERSION}"
-                        IMAGE_URI        = "${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
+                        IMAGE_URI        = "${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:${env.PIPELINE_VERSION}"
                     }
                     steps {
                         sh label: 'Build image', script: """
@@ -57,22 +56,26 @@ pipeline {
                                 --tag ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest \\
                                 --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\
                                 --label org.opencontainers.image.version=${env.PIPELINE_VERSION} \\
-                                --label org.opencontainers.image.source=https://github.com/cultuurnet/udb3-search-service \\
+                                --label org.opencontainers.image.source=${env.SOURCE_URL} \\
                                 .
                         """
 
-                        sh label: 'Push image', script: """
-                            docker push ${env.IMAGE_URI}
-                            docker push ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest
-                        """
+                        sh label: 'Push image', script: "docker push ${env.IMAGE_URI}"
+                        sh label: 'Push image', script: "docker push ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest"
 
                         echo "Pushed: ${env.IMAGE_URI}"
                     }
                     post {
                         cleanup {
-                            sh "docker rmi ${env.IMAGE_URI} || true"
-                            sh "docker rmi ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest || true"
-                            cleanWs()
+                            catchError(
+                                buildResult: 'SUCCESS',
+                                stageResult: 'UNSTABLE',
+                                message: 'Cleanup failed'
+                            ) {
+                                sh "docker rmi ${env.IMAGE_URI}"
+                                sh "docker rmi ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest"
+                                cleanWs()
+                            }
                         }
                     }
                 }
@@ -84,8 +87,8 @@ pipeline {
             options { skipDefaultCheckout() }
             steps {
                 copyArtifacts filter: 'pkg/*.deb', projectName: env.JOB_NAME, flatten: true, selector: specific(env.BUILD_NUMBER)
-                uploadAptlyArtifacts artifacts: '*.deb', repository: env.REPOSITORY_NAME
-                createAptlySnapshot name: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", repository: env.REPOSITORY_NAME
+                uploadAptlyArtifacts artifacts: '*.deb', repository: env.APT_REPOSITORY
+                createAptlySnapshot name: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", repository: env.APT_REPOSITORY
             }
             post {
                 cleanup {
@@ -101,7 +104,7 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'development'
             }
             steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
             }
         }
 
@@ -116,12 +119,12 @@ pipeline {
                     parallel {
                         stage('Publish snapshot') {
                             steps {
-                                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                                publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                             }
                         }
                         stage('Promote docker image') {
                             steps {
-                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: env.APPLICATION_ENVIRONMENT
                             }
                         }
                     }
@@ -170,12 +173,12 @@ pipeline {
                     parallel {
                         stage('Publish snapshot') {
                             steps {
-                                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                                publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                             }
                         }
                         stage('Promote docker image') {
                             steps {
-                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: env.APPLICATION_ENVIRONMENT
                             }
                         }
                     }
@@ -212,7 +215,7 @@ pipeline {
             stages {
                 stage('Publish snapshot') {
                     steps {
-                        publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                        publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                     }
                 }
                 stage('Deploy') {
@@ -235,7 +238,7 @@ pipeline {
                     sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${util.getJobDisplayName()} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
                 }
                 cleanup {
-                    cleanupAptlySnapshots repository: env.REPOSITORY_NAME
+                    cleanupAptlySnapshots repository: env.APT_REPOSITORY
                 }
             }
         }
