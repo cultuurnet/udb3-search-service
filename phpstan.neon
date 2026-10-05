@@ -11,3 +11,8 @@ parameters:
 	ignoreErrors:
 		-
 			identifier: missingType.iterableValue
+		# The wrapper passes its generic `array $params` straight through, which can't satisfy the
+		# required keys in the array shapes the elasticsearch-php 8 client declares for its parameters.
+		-
+			identifier: argument.type
+			path: src/ElasticSearch/Client/*

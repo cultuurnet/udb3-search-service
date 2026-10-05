@@ -25,7 +25,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateUdb3CoreMappingCommand;
 use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;
@@ -84,7 +84,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             GetAliasesCommand::class,
             fn (): GetAliasesCommand => new GetAliasesCommand(
-                $this->get(Client::class),
+                $this->get(ElasticSearchClient::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forCli())
             )
         );
@@ -92,7 +92,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             CreateIndexCommand::class,
             fn (): CreateIndexCommand => new CreateIndexCommand(
-                $this->get(Client::class),
+                $this->get(ElasticSearchClient::class),
                 $this->parameter('elasticsearch.number_of_shards'),
                 $this->parameter('elasticsearch.number_of_replicas')
             )
@@ -101,7 +101,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             UpdateUdb3CoreMappingCommand::class,
             fn (): UpdateUdb3CoreMappingCommand => new UpdateUdb3CoreMappingCommand(
-                $this->get(Client::class),
+                $this->get(ElasticSearchClient::class),
                 $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core()
             )
         );
@@ -110,7 +110,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             ReindexUDB3CoreCommand::class,
             function (): ReindexUDB3CoreCommand {
                 $command = new ReindexUDB3CoreCommand(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                     $this->get(EventBus::class),
                     $this->get('elasticsearch_indexation_strategy'),
@@ -126,7 +126,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             ReindexPermanentOffersCommand::class,
             function (): ReindexPermanentOffersCommand {
                 $command = new ReindexPermanentOffersCommand(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->parameter('elasticsearch.udb3_core_index.reindexation.from'),
                     $this->get(EventBus::class),
                     $this->get('elasticsearch_indexation_strategy'),
@@ -142,7 +142,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             InstallUDB3CoreCommand::class,
             function (): InstallUDB3CoreCommand {
                 $command = new InstallUDB3CoreCommand(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->parameter('elasticsearch.udb3_core_index.prefix') . SchemaVersions::udb3Core(),
                     $this->parameter('elasticsearch.udb3_core_index.write_alias'),
                     $this->parameter('elasticsearch.udb3_core_index.read_alias')
@@ -155,7 +155,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             UpdateRegionMappingCommand::class,
             function (): UpdateRegionMappingCommand {
                 $command = new UpdateRegionMappingCommand(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes()
                 );
                 return $command;
@@ -166,7 +166,7 @@ final class CommandServiceProvider extends BaseServiceProvider
             IndexRegionsCommand::class,
             function (): IndexRegionsCommand {
                 $command = new IndexRegionsCommand(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->get(Finder::class),
                     $this->parameter('elasticsearch.geoshapes_index.indexation.to'),
                     __DIR__ . '/../' . $this->parameter('elasticsearch.geoshapes_index.indexation.path'),
@@ -179,7 +179,7 @@ final class CommandServiceProvider extends BaseServiceProvider
         $this->add(
             InstallGeoShapesCommand::class,
             fn (): InstallGeoShapesCommand => new InstallGeoShapesCommand(
-                $this->get(Client::class),
+                $this->get(ElasticSearchClient::class),
                 $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
                 $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                 $this->parameter('elasticsearch.geoshapes_index.read_alias')
