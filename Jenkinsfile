@@ -126,11 +126,9 @@ pipeline {
                         }
                     }
                 }
-                stage('Deploy') {
-                    stage('Deploy to ElasticSearch 8 node (docker)') {
-                        steps {
-                            triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
-                        }
+                stage('Deploy to ElasticSearch 8 node (docker)') {
+                    steps {
+                        triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
                     }
                 }
             }
