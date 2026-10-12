@@ -127,16 +127,9 @@ pipeline {
                     }
                 }
                 stage('Deploy') {
-                    parallel {
-                        stage('Deploy to ElasticSearch 8 node (instance)') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-acc02'
-                            }
-                        }
-                        stage('Deploy to ElasticSearch 8 node (docker)') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
-                            }
+                    stage('Deploy to ElasticSearch 8 node (docker)') {
+                        steps {
+                            triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
                         }
                     }
                 }
