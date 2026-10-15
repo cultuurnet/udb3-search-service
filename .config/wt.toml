@@ -1,8 +1,29 @@
 # Worktrunk project config — https://worktrunk.dev
+# Every worktree gets its own docker stack, joined to the udb3-backend worktree on the same branch.
+# The primary checkout keeps the defaults from docker-compose.yml.
+
+# Steps run in order: .env must be copied before it is extended.
 
 # Reflinked on APFS, so vendor/ costs no extra disk.
-[pre-start]
+[[pre-start]]
 copy = "wt step copy-ignored"
+
+# UDB3_STACK must be derived exactly as in udb3-backend's .config/wt.toml: it names the backend's
+# network, which this stack joins. Port keys differ from the backend's so both can run together.
+# geojson-data is a sibling of the primary checkout, which a worktree elsewhere can't reach via ../
+[[pre-start]]
+docker-env = """
+touch .env
+sed -i.bak '/^# worktrunk/,$d' .env && rm .env.bak
+cat >> .env <<'EOF'
+# worktrunk: isolated docker stack for this worktree, everything below is regenerated
+COMPOSE_PROJECT_NAME=udb3-search-service-{{ branch | sanitize | lower }}
+UDB3_STACK=uitdatabank-{{ branch | sanitize | lower }}
+GEOJSON_DATA_PATH={{ primary_worktree_path }}/../geojson-data
+FORWARD_HTTP_PORT={{ (branch ~ "-search-http") | hash_port }}
+FORWARD_ES_PORT={{ (branch ~ "-search-es") | hash_port }}
+EOF
+"""
 
 [step.copy-ignored]
 exclude = ["log/", ".idea/", ".DS_Store", ".php-cs-fixer.cache", ".phpunit.result.cache"]
