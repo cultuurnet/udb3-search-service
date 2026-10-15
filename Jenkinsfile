@@ -24,20 +24,46 @@ pipeline {
         stage('Build') {
             parallel {
                 stage('Build deb package') {
-                    agent { label 'ubuntu && 20.04 && php8.1' }
-                    environment {
-                        GIT_SHORT_COMMIT = util.shortCommitRef()
-                        ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
-                    }
-                    steps {
-                        sh label: 'Install rubygems', script: 'bundle install --deployment'
-                        sh label: 'Build binaries', script: 'bundle exec rake build'
-                        sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
-                        archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
-                    }
-                    post {
-                        cleanup {
-                            cleanWs()
+                    stages {
+                        stage('Build project') {
+                            agent {
+                                docker {
+                                    image 'build_images/php:8.3'
+                                    label 'docker'
+                                    alwaysPull true
+                                }
+                            }
+                            steps {
+                                sh label: 'Install composer packages', script: 'composer install --no-dev --ignore-platform-reqs --optimize-autoloader --prefer-dist --no-interaction'
+                                sh label: 'Create log directory', script: 'mkdir log'
+                                sh label: 'Archive build', script: 'tar czf build.tgz vendor log'
+                                stash name: 'build', includes: 'build.tgz'
+                            }
+                            post {
+                                cleanup {
+                                    cleanWs()
+                                }
+                            }
+                        }
+
+                        stage('Build artifact') {
+                            agent any
+                            environment {
+                                GIT_SHORT_COMMIT = util.shortCommitRef()
+                                ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
+                            }
+                            steps {
+                                unstash 'build'
+                                sh label: 'Extract build', script: 'tar xzf build.tgz && rm build.tgz'
+                                sh label: 'Install rubygems', script: 'bundle install --deployment'
+                                sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
+                                archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
+                            }
+                            post {
+                                cleanup {
+                                    cleanWs()
+                                }
+                            }
                         }
                     }
                 }
@@ -126,18 +152,9 @@ pipeline {
                         }
                     }
                 }
-                stage('Deploy') {
-                    parallel {
-                        stage('Deploy to ElasticSearch 8 node (instance)') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-acc02'
-                            }
-                        }
-                        stage('Deploy to ElasticSearch 8 node (docker)') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
-                            }
-                        }
+                stage('Deploy to ElasticSearch 8 node (docker)') {
+                    steps {
+                        triggerDeployment nodeName: 'uitdatabank-search-docker-acc01', timeout: 600
                     }
                 }
             }
@@ -159,7 +176,7 @@ pipeline {
         }
 
         stage('Deploy to testing') {
-            agent { label 'ubuntu && 20.04' }
+            agent any
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'testing'
@@ -203,7 +220,7 @@ pipeline {
         }
 
         stage('Deploy to production') {
-            agent { label 'ubuntu && 20.04' }
+            agent any
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'production'
