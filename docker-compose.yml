@@ -21,7 +21,7 @@ x-search-service: &search-service
     - ./api_keys_matched_to_client_ids.php:/var/www/html/api_keys_matched_to_client_ids.php:ro
     - ./default_queries.php:/var/www/html/default_queries.php:ro
     - ./facet_mapping_regions.php:/var/www/html/facet_mapping_regions.php:ro
-    - ../geojson-data:/var/www/geojson-data:ro
+    - ${GEOJSON_DATA_PATH:-../geojson-data}:/var/www/geojson-data:ro
   networks:
     - uitdatabank-search
   depends_on:

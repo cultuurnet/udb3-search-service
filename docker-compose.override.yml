@@ -15,7 +15,7 @@ x-dev-app: &dev-app
   user: root
   volumes:
     - .:/var/www/html:cached
-    - ../geojson-data:/var/www/geojson-data:cached
+    - ${GEOJSON_DATA_PATH:-../geojson-data}:/var/www/geojson-data:cached
 
 services:
   search:
