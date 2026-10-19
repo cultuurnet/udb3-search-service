@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy;
 
 use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use Psr\Log\LoggerInterface;
 
 final class BulkIndexationStrategy implements IndexationStrategy
 {
-    private Client $elasticSearchClient;
+    private ElasticSearchClient $elasticSearchClient;
 
     private LoggerInterface $logger;
 
@@ -20,7 +20,7 @@ final class BulkIndexationStrategy implements IndexationStrategy
     private array $queuedDocuments;
 
     public function __construct(
-        Client $elasticSearchClient,
+        ElasticSearchClient $elasticSearchClient,
         LoggerInterface $logger,
         int $autoFlushThreshold
     ) {
