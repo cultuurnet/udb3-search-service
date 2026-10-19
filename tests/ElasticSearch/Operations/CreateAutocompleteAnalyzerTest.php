@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use Psr\Log\LoggerInterface;
 
 final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
 {
-    protected function createOperation(Client $client, LoggerInterface $logger): CreateAutocompleteAnalyzer
+    protected function createOperation(ElasticSearchClient $client, LoggerInterface $logger): CreateAutocompleteAnalyzer
     {
         return new CreateAutocompleteAnalyzer($client, $logger);
     }
@@ -25,7 +25,7 @@ final class CreateAutocompleteAnalyzerTest extends AbstractOperationTestCase
                 [
                     'name' => 'autocomplete_analyzer',
                     'body' => [
-                        'template' => '*',
+                        'index_patterns' => ['*'],
                         'settings' => [
                             'analysis' => [
                                 'filter' => [
