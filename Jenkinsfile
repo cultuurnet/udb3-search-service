@@ -24,46 +24,43 @@ pipeline {
         stage('Build') {
             parallel {
                 stage('Build deb package') {
+                    agent { label 'docker' }
                     stages {
                         stage('Build project') {
                             agent {
                                 docker {
                                     image 'build_images/php:8.3'
-                                    label 'docker'
                                     alwaysPull true
+                                    reuseNode true
                                 }
                             }
                             steps {
                                 sh label: 'Install composer packages', script: 'composer install --no-dev --ignore-platform-reqs --optimize-autoloader --prefer-dist --no-interaction'
                                 sh label: 'Create log directory', script: 'mkdir log'
-                                sh label: 'Archive build', script: 'tar czf build.tgz vendor log'
-                                stash name: 'build', includes: 'build.tgz'
-                            }
-                            post {
-                                cleanup {
-                                    cleanWs()
-                                }
                             }
                         }
 
                         stage('Build artifact') {
-                            agent any
+                            agent {
+                                docker {
+                                    image 'base_images/ruby:2.7'
+                                    reuseNode true
+                                }
+                            }
                             environment {
                                 GIT_SHORT_COMMIT = util.shortCommitRef()
                                 ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
                             }
                             steps {
-                                unstash 'build'
-                                sh label: 'Extract build', script: 'tar xzf build.tgz && rm build.tgz'
                                 sh label: 'Install rubygems', script: 'bundle install --deployment'
                                 sh label: 'Build artifact', script: "bundle exec rake build_artifact ARTIFACT_VERSION=${env.ARTIFACT_VERSION}"
                                 archiveArtifacts artifacts: "pkg/*${env.ARTIFACT_VERSION}*.deb", onlyIfSuccessful: true
                             }
-                            post {
-                                cleanup {
-                                    cleanWs()
-                                }
-                            }
+                        }
+                    }
+                    post {
+                        cleanup {
+                            cleanWs()
                         }
                     }
                 }
@@ -172,7 +169,7 @@ pipeline {
             when {
                 expression { params.RUN_ACCEPTANCE_TESTS }
             }
-            agent { label 'ubuntu && 20.04 && docker' }
+            agent { label 'docker' }
             steps {
                 build job: 'uitdatabank-acceptance-tests', wait: true
             }
