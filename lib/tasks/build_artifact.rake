@@ -11,7 +11,7 @@ task :build_artifact do |task|
   maintainer     = 'Infra publiq <infra@publiq.be>'
   license        = 'Apache-2.0'
   description    = 'UiTdatabank search API'
-  source         = 'https://github.com/cultuurnet/udb3-search-service'
+  source         = ENV['SOURCE_URL'].nil? ? "" : ENV['SOURCE_URL']
   build_url      = ENV['JOB_DISPLAY_URL'].nil? ? "" : ENV['JOB_DISPLAY_URL']
 
   FileUtils.mkdir_p('pkg')
