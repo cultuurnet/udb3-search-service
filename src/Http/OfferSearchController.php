@@ -44,8 +44,6 @@ final class OfferSearchController
 
     private string $regionIndexName;
 
-    private string $regionDocumentType;
-
     private QueryStringFactory $queryStringFactory;
 
     private FacetTreeNormalizerInterface $facetTreeNormalizer;
@@ -59,7 +57,6 @@ final class OfferSearchController
         OfferRequestParserInterface $offerRequestParser,
         OfferSearchServiceInterface $searchService,
         string $regionIndexName,
-        string $regionDocumentType,
         QueryStringFactory $queryStringFactory,
         FacetTreeNormalizerInterface $facetTreeNormalizer,
         Consumer $consumer,
@@ -68,7 +65,6 @@ final class OfferSearchController
         $this->requestParser = $offerRequestParser;
         $this->searchService = $searchService;
         $this->regionIndexName = $regionIndexName;
-        $this->regionDocumentType = $regionDocumentType;
         $this->queryStringFactory = $queryStringFactory;
         $this->facetTreeNormalizer = $facetTreeNormalizer;
         $this->offerParameterWhiteList = new OfferSupportedParameters();
@@ -155,7 +151,6 @@ final class OfferSearchController
         foreach ($regionIds as $regionId) {
             $queryBuilder = $queryBuilder->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 $regionId
             );
         }

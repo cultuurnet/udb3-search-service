@@ -54,4 +54,9 @@ final class ElasticSearchDistance extends AbstractDistance
         // Concatenate the distance and unit without spaces to make sure we get a valid ElasticSearch distance string.
         parent::__construct($distance . $unit);
     }
+
+    public static function fromDistance(AbstractDistance $distance): self
+    {
+        return new self($distance->toString());
+    }
 }

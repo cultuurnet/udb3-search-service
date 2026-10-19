@@ -31,7 +31,6 @@ interface OrganizerQueryBuilderInterface extends QueryBuilder
 
     public function withRegionFilter(
         string $regionIndexName,
-        string $regionDocumentType,
         RegionId $regionId
     ): OrganizerQueryBuilderInterface;
 

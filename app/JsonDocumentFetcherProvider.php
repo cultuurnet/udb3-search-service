@@ -24,16 +24,25 @@ final class JsonDocumentFetcherProvider extends BaseServiceProvider
         $this->add(
             JsonDocumentFetcher::class,
             fn (): GuzzleJsonDocumentFetcher => new GuzzleJsonDocumentFetcher(
-                new Client([
-                    'http_errors' => false,
-                    'headers' => [
-                        'Connection' => 'close',
-                    ],
-                ]),
+                new Client($this->httpClientConfig()),
                 $this->get('logger.amqp.udb3'),
                 $this->getTokenGenerator()
             )
         );
+    }
+    private function httpClientConfig(): array
+    {
+        $config = [
+            'http_errors' => false,
+        ];
+
+        if ($this->parameter('toggles.close_http_connections') ?? true) {
+            $config['headers'] = [
+                'Connection' => 'close',
+            ];
+        }
+
+        return $config;
     }
 
     private function getTokenGenerator(): TokenGenerator

@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceFactory;
 use CultuurNet\UDB3\Search\Taxonomy\TaxonomyApiClient;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 
 final class OfferSearchServiceProvider extends BaseServiceProvider
 {
@@ -46,7 +46,6 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
             fn (): OfferSearchControllerFactory => new OfferSearchControllerFactory(
                 $this->parameter('elasticsearch.aggregation_size'),
                 $this->parameter('elasticsearch.region.read_index'),
-                $this->parameter('elasticsearch.region.document_type'),
                 $this->get(OfferSearchServiceFactory::class),
                 $this->get(Consumer::class),
             )
@@ -89,7 +88,7 @@ final class OfferSearchServiceProvider extends BaseServiceProvider
                 );
 
                 return new OfferSearchServiceFactory(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $transformer
                 );
             }

@@ -51,8 +51,6 @@ final class OrganizerSearchControllerTest extends TestCase
 
     private string $regionIndexName;
 
-    private string $regionDocumentType;
-
     private OrganizerSearchController $controller;
 
     protected function setUp(): void
@@ -61,13 +59,11 @@ final class OrganizerSearchControllerTest extends TestCase
         $this->searchService = $this->createMock(OrganizerSearchServiceInterface::class);
 
         $this->regionIndexName = 'geoshapes';
-        $this->regionDocumentType = 'region';
 
         $this->controller = new OrganizerSearchController(
             $this->queryBuilder,
             $this->searchService,
             $this->regionIndexName,
-            $this->regionDocumentType,
             (new CompositeOrganizerRequestParser())
                 ->withParser(new DistanceOrganizerRequestParser(
                     new GeoDistanceParametersFactory(new MockDistanceFactory())
@@ -129,12 +125,10 @@ final class OrganizerSearchControllerTest extends TestCase
             ->withAddressCountryFilter(new Country('NL'))
             ->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 new RegionId('gem-leuven')
             )
             ->withRegionFilter(
                 $this->regionIndexName,
-                $this->regionDocumentType,
                 new RegionId('prv-limburg')
             )
             ->withGeoDistanceFilter(
