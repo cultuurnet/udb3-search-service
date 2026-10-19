@@ -157,7 +157,7 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
-    public function withLocalTimeRangeFilter(int $localTimeFrom, int $localTimeTo): self
+    public function withLocalTimeRangeFilter(?int $localTimeFrom, ?int $localTimeTo): self
     {
         $c = clone $this;
         $c->mockQuery['localTimeRange']['from'] = $localTimeFrom;
