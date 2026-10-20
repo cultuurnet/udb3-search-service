@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             parallel {
                 stage('Build deb package') {
-                    agent { label 'docker' }
+                    agent { label 'eks-agent' }
                     stages {
                         stage('Build project') {
                             agent {
