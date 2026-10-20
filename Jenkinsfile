@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             parallel {
                 stage('Build deb package') {
-                    agent { label 'eks-agent' }
+                    agent { label 'eks-agent-12g' }
                     stages {
                         stage('Build project') {
                             agent {
@@ -66,7 +66,7 @@ pipeline {
                 }
 
                 stage('Build & push docker image') {
-                    agent { label 'docker_build' }
+                    agent { label 'eks-agent-12g' }
                     environment {
                         GIT_SHORT_COMMIT = util.shortCommitRef()
                         IMAGE_TAG        = "${env.PIPELINE_VERSION}"
