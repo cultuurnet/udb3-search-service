@@ -100,3 +100,25 @@ These run inside the `search` container, and need `make install` to have put the
 ```
 $ make test
 ```
+
+## Working in parallel with worktrees
+
+This is optional: without the variables below, the setup above is unchanged.
+
+Several stacks can run side by side, for example one per git worktree. Each search stack joins the udb3-backend stack with the same `UDB3_STACK`, whose network it uses. Each stack needs its own values in `.env`:
+
+| Variable | Default |
+| --- | --- |
+| `UDB3_STACK` (container name suffix and the udb3-backend network to join) | `uitdatabank` |
+| `COMPOSE_PROJECT_NAME` (prefix of the Elasticsearch volume) | folder name |
+| `GEOJSON_DATA_PATH` | `../geojson-data` |
+| `FORWARD_HTTP_PORT` / `FORWARD_ES_PORT` | `8080` / `9200` |
+
+With [worktrunk](https://worktrunk.dev) this is automated by `.config/wt.toml`. `wt switch --create <branch>`:
+- copies the config files, the `.pem` keys and `vendor/` from the main checkout,
+- appends a block to `.env` with a stack name, ports and the main checkout's `geojson-data`, derived from the branch name the same way udb3-backend does,
+- runs `make up` and the Elasticsearch migrations in the background.
+
+Create the udb3-backend worktree on the same branch first: its stack creates the network this one joins.
+
+`wt remove` stops the stack and deletes its volumes. Worktrunk asks once to approve these commands.
