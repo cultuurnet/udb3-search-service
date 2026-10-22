@@ -1258,6 +1258,37 @@ final class OfferSearchControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider openLocalTimeRangeProvider
+     */
+    public function it_uses_a_time_filter_with_only_one_local_time(
+        array $parameters,
+        ?int $localTimeFrom,
+        ?int $localTimeTo
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            ['disableDefaultFilters' => true] + $parameters
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    public function openLocalTimeRangeProvider(): array
+    {
+        return [
+            'only local time from' => [['localTimeFrom' => '1800'], 1800, null],
+            'only local time to' => [['localTimeTo' => '1000'], null, 1000],
+        ];
+    }
+
+    /**
+     * @test
      * @dataProvider unknownParameterProvider
      */
     public function it_rejects_queries_with_unknown_parameters(

@@ -471,6 +471,52 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
 
     /**
      * @test
+     * @dataProvider openLocalTimeRangeProvider
+     */
+    public function it_should_build_a_query_with_an_open_local_time_range_filter(
+        ?int $localTimeFrom,
+        ?int $localTimeTo,
+        array $expectedRange
+    ): void {
+        $builder = (new ElasticSearchOfferQueryBuilder())
+            ->withStartAndLimit(new Start(30), new Limit(10))
+            ->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 30,
+            'size' => 10,
+            'query' => [
+                'bool' => [
+                    'must' => [
+                        [
+                            'match_all' => (object)[],
+                        ],
+                    ],
+                    'filter' => [
+                        [
+                            'range' => [
+                                'localTimeRange' => $expectedRange,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
+
+    public function openLocalTimeRangeProvider(): array
+    {
+        return [
+            'without upper bound' => [1800, null, ['gte' => 1800]],
+            'without lower bound' => [null, 1000, ['lte' => 1000]],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_should_build_a_query_with_a_date_range_filter_without_lower_bound(): void
     {
