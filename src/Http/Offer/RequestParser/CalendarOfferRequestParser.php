@@ -66,7 +66,8 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
             );
         }
 
-        // Every other combination is filtered on the properties that are aggregated over all subEvents.
+        // Every other combination uses the top-level fields: the top-level status describes the whole event, and a date
+        // or time alone matches the same events there without a nested subEvent query.
         if ($hasDates) {
             $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
         }
