@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\HasElasticSearchClient;
 use CultuurNet\UDB3\Search\Organizer\OrganizerQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Organizer\OrganizerSearchServiceInterface;
 use CultuurNet\UDB3\Search\PagedResultSet;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 
 final class ElasticSearchOrganizerSearchService implements OrganizerSearchServiceInterface
 {
@@ -19,7 +19,7 @@ final class ElasticSearchOrganizerSearchService implements OrganizerSearchServic
     private ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory;
 
     public function __construct(
-        Client $elasticSearchClient,
+        ElasticSearchClient $elasticSearchClient,
         string $indexName,
         string $documentType,
         ElasticSearchPagedResultSetFactoryInterface $pagedResultSetFactory

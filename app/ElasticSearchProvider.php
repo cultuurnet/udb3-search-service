@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService;
 
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticsearchPhpClient;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\MutableIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\SingleFileIndexationStrategy;
 use CultuurNet\UDB3\Search\ElasticSearch\Region\GeoShapeQueryRegionService;
-use Elasticsearch\Client;
-use Elasticsearch\ClientBuilder;
+use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\ClientBuilder;
 
 final class ElasticSearchProvider extends BaseServiceProvider
 {
     public function provides(string $id): bool
     {
         return in_array($id, [
-            Client::class,
+            ElasticSearchClient::class,
             GeoShapeQueryRegionService::class,
             'elasticsearch_indexation_strategy',
         ], true);
@@ -23,13 +25,16 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
     public function register(): void
     {
-        $this->add(Client::class, fn (): Client => $this->buildElasticSearchClient());
+        $this->add(
+            ElasticSearchClient::class,
+            fn (): ElasticSearchClient => new ElasticsearchPhpClient($this->buildElasticSearchClient())
+        );
 
         $this->addShared(
             'elasticsearch_indexation_strategy',
             function (): MutableIndexationStrategy {
                 $strategy = new SingleFileIndexationStrategy(
-                    $this->get(Client::class),
+                    $this->get(ElasticSearchClient::class),
                     $this->get('logger.amqp.udb3')
                 );
                 return new MutableIndexationStrategy($strategy);
@@ -39,7 +44,7 @@ final class ElasticSearchProvider extends BaseServiceProvider
         $this->add(
             GeoShapeQueryRegionService::class,
             fn (): GeoShapeQueryRegionService => new GeoShapeQueryRegionService(
-                $this->get(Client::class),
+                $this->get(ElasticSearchClient::class),
                 $this->parameter('elasticsearch.region.read_index')
             )
         );
@@ -47,20 +52,8 @@ final class ElasticSearchProvider extends BaseServiceProvider
 
     private function buildElasticSearchClient(): Client
     {
-        $builder = ClientBuilder::create()->setHosts([$this->parameter('elasticsearch.host')]);
-
-        // The ES7 PHP client requires these headers when connecting to ES8 so that ES8 activates its
-        // REST API compatibility layer and accepts v7-shaped requests/responses. This can be removed
-        // once the service is fully migrated to the ES8 PHP client (elastic/elasticsearch ^8).
-        $builder->setConnectionParams([
-            'client' => [
-                'headers' => [
-                    'Content-Type' => ['application/vnd.elasticsearch+json;compatible-with=7'],
-                    'Accept'       => ['application/vnd.elasticsearch+json;compatible-with=7'],
-                ],
-            ],
-        ]);
-
-        return $builder->build();
+        return ClientBuilder::create()
+            ->setHosts([$this->parameter('elasticsearch.host')])
+            ->build();
     }
 }

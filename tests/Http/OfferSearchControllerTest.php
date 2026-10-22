@@ -1258,6 +1258,96 @@ final class OfferSearchControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider openLocalTimeRangeProvider
+     */
+    public function it_uses_a_time_filter_with_only_one_local_time(
+        array $parameters,
+        ?int $localTimeFrom,
+        ?int $localTimeTo
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            ['disableDefaultFilters' => true] + $parameters
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    public function openLocalTimeRangeProvider(): array
+    {
+        return [
+            'only local time from' => [['localTimeFrom' => '1800'], 1800, null],
+            'only local time to' => [['localTimeTo' => '1000'], null, 1000],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_applies_every_calendar_filter_when_no_date_or_time_is_given(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'status' => 'Available',
+                'bookingAvailability' => 'Available',
+                'hasChildcare' => 'true',
+                'hasOvernightStay' => 'true',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withStatusFilter(Status::Available)
+            ->withBookingAvailabilityFilter('Available')
+            ->withHasChildcareFilter(true)
+            ->withHasOvernightStayFilter(true);
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     */
+    public function it_scopes_a_date_and_time_filter_to_the_same_sub_event(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'dateFrom' => '2017-05-01T00:00:00+01:00',
+                'dateTo' => '2017-05-01T23:59:59+01:00',
+                'localTimeFrom' => '0800',
+                'localTimeTo' => '1600',
+            ]
+        );
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom(DateTimeFactory::fromAtom('2017-05-01T00:00:00+01:00'))
+                    ->withDateTo(DateTimeFactory::fromAtom('2017-05-01T23:59:59+01:00'))
+                    ->withLocalTimeFrom(800)
+                    ->withLocalTimeTo(1600)
+            );
+
+        $expectedResultSet = new PagedResultSet(30, 0, []);
+
+        $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
      * @dataProvider unknownParameterProvider
      */
     public function it_rejects_queries_with_unknown_parameters(

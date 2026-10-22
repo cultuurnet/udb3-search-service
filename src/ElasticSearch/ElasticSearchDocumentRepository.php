@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\IndexationStrategy\IndexationStrategy;
 use CultuurNet\UDB3\Search\ReadModel\DocumentGone;
 use CultuurNet\UDB3\Search\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
-use Elasticsearch\Client;
+use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 
 final class ElasticSearchDocumentRepository implements DocumentRepository
 {
@@ -17,7 +17,7 @@ final class ElasticSearchDocumentRepository implements DocumentRepository
     private IndexationStrategy $indexationStrategy;
 
     public function __construct(
-        Client $elasticSearchClient,
+        ElasticSearchClient $elasticSearchClient,
         string $indexName,
         string $documentType,
         IndexationStrategy $indexationStrategy

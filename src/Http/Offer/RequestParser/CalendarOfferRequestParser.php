@@ -41,46 +41,50 @@ final class CalendarOfferRequestParser implements OfferRequestParserInterface
         $hasDates = !is_null($dateFrom) || !is_null($dateTo);
         $hasLocalTimes =  !is_null($localTimeFrom) || !is_null($localTimeTo);
 
-        $requiresSubEventQueryParameters = ($hasStatuses || $hasBookingAvailability || $hasChildcareFilter || $hasOvernightStayFilter) && ($hasDates || $hasLocalTimes);
+        $filterCount = count(array_filter([
+            $hasDates,
+            $hasLocalTimes,
+            $hasStatuses,
+            $hasBookingAvailability,
+            $hasChildcareFilter,
+            $hasOvernightStayFilter,
+        ]));
 
-        // If the URL has parameters to filter on date AND status, filter by subEvent because otherwise we can get false
-        // positives (for example an event with a subEvent that has the right date but the wrong status and also a
-        // subEvent with the wrong date but right status -> matches if not filtering by subEvent)
-        // On the other hand if the URL only filters by status but not by date, the filtering should happen on the top
-        // level status because an event can have multiple statuses when filtering by subEvent.
-        // For dateRange and localTimeRange it's just more performant to filter on the aggregated properties index on
-        // the top level if they are not combined with status or each other.
-        switch (true) {
-            case $requiresSubEventQueryParameters:
-                return $offerQueryBuilder->withSubEventFilter(
-                    (new SubEventQueryParameters())
-                        ->withDateFrom($dateFrom)
-                        ->withDateTo($dateTo)
-                        ->withLocalTimeFrom($localTimeFrom)
-                        ->withLocalTimeTo($localTimeTo)
-                        ->withStatuses($statuses)
-                        ->withBookingAvailability($bookingAvailability)
-                        ->withHasChildcare($hasChildcare)
-                        ->withHasOvernightStay($hasOvernightStay)
-                );
+        // A date or time combined with any other calendar filter has to match within one subEvent. Otherwise an event
+        // with one subEvent on the right date and another one with the right status would match.
+        if (($hasDates || $hasLocalTimes) && $filterCount > 1) {
+            return $offerQueryBuilder->withSubEventFilter(
+                (new SubEventQueryParameters())
+                    ->withDateFrom($dateFrom)
+                    ->withDateTo($dateTo)
+                    ->withLocalTimeFrom($localTimeFrom)
+                    ->withLocalTimeTo($localTimeTo)
+                    ->withStatuses($statuses)
+                    ->withBookingAvailability($bookingAvailability)
+                    ->withHasChildcare($hasChildcare)
+                    ->withHasOvernightStay($hasOvernightStay)
+            );
+        }
 
-            case $hasDates:
-                return $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
-
-            case $hasStatuses:
-                return $offerQueryBuilder->withStatusFilter(...$statuses);
-
-            case $hasBookingAvailability:
-                return $offerQueryBuilder->withBookingAvailabilityFilter($bookingAvailability);
-
-            case $hasLocalTimes:
-                return $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
-
-            case $hasChildcareFilter:
-                return $offerQueryBuilder->withHasChildcareFilter($hasChildcare);
-
-            case $hasOvernightStayFilter:
-                return $offerQueryBuilder->withHasOvernightStayFilter($hasOvernightStay);
+        // Every other combination uses the top-level fields: the top-level status describes the whole event, and a date
+        // or time alone matches the same events there without a nested subEvent query.
+        if ($hasDates) {
+            $offerQueryBuilder = $offerQueryBuilder->withDateRangeFilter($dateFrom, $dateTo);
+        }
+        if ($hasLocalTimes) {
+            $offerQueryBuilder = $offerQueryBuilder->withLocalTimeRangeFilter($localTimeFrom, $localTimeTo);
+        }
+        if ($hasStatuses) {
+            $offerQueryBuilder = $offerQueryBuilder->withStatusFilter(...$statuses);
+        }
+        if ($hasBookingAvailability) {
+            $offerQueryBuilder = $offerQueryBuilder->withBookingAvailabilityFilter($bookingAvailability);
+        }
+        if ($hasChildcareFilter) {
+            $offerQueryBuilder = $offerQueryBuilder->withHasChildcareFilter($hasChildcare);
+        }
+        if ($hasOvernightStayFilter) {
+            $offerQueryBuilder = $offerQueryBuilder->withHasOvernightStayFilter($hasOvernightStay);
         }
 
         return $offerQueryBuilder;
