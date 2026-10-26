@@ -25,10 +25,9 @@ FORWARD_ES_PORT={{ (branch ~ "-search-es") | hash_port }}
 EOF
 """
 
-# The Makefile targets use exec -it, which fails without a terminal in a background hook.
 # The backend worktree on the same branch must be up first: it creates the network.
 [post-start]
-docker = "make up && docker compose exec -T search ./bin/app.php elasticsearch:migrate"
+docker = "make up && make migrate"
 
 # Guarded on the worktrunk block so the default stack's volumes are never touched.
 # Never blocks removing the worktree.

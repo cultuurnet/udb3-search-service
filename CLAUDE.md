@@ -14,8 +14,8 @@ version differs and PHPStan/PHPUnit can fail or behave differently there).
 - `make cs` / `make cs-fix` — check / autofix code style.
 - `make ci` — run the full CI pipeline (PHPStan + code style + tests); run this before pushing.
 
-Each target shells into the container (`docker compose exec -it search ...`). Use
-`docker compose exec -T search composer <script>` when invoking non-interactively.
+Each target shells into the container (`docker compose exec search ...`), so they also
+work without a terminal.
 Note: this project does not install the `phpstan-phpunit` extension, so PHPUnit
 assertions (`assertNotNull`, `assertInstanceOf`, ...) do **not** narrow types for
 PHPStan — avoid dereferencing a nullable return in tests (e.g. assert against a value
