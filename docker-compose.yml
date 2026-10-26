@@ -21,7 +21,7 @@ x-search-service: &search-service
     - ./api_keys_matched_to_client_ids.php:/var/www/html/api_keys_matched_to_client_ids.php:ro
     - ./default_queries.php:/var/www/html/default_queries.php:ro
     - ./facet_mapping_regions.php:/var/www/html/facet_mapping_regions.php:ro
-    - ../geojson-data:/var/www/geojson-data:ro
+    - ${GEOJSON_DATA_PATH:-../geojson-data}:/var/www/geojson-data:ro
   networks:
     - uitdatabank-search
   depends_on:
@@ -31,7 +31,7 @@ x-search-service: &search-service
 services:
   search:
     <<: *search-service
-    container_name: search.uitdatabank
+    container_name: search.${UDB3_STACK:-uitdatabank}
     healthcheck:
       test: ["CMD-SHELL", "nc -z 127.0.0.1 9000 || exit 1"]
       start_period: 10s
@@ -41,7 +41,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: search-nginx.uitdatabank
+    container_name: search-nginx.${UDB3_STACK:-uitdatabank}
     restart: unless-stopped
     volumes:
       - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
@@ -69,7 +69,7 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.19.12
-    container_name: es8.uitdatabank
+    container_name: es8.${UDB3_STACK:-uitdatabank}
     hostname: 'udb3-es8'
     environment:
       - discovery.type=single-node
@@ -94,7 +94,8 @@ services:
 
 networks:
   uitdatabank-search:
-    name: uitdatabank
+    # Matches UDB3_STACK in udb3-backend, whose stack creates this network.
+    name: ${UDB3_STACK:-uitdatabank}
     external: true
 
 volumes:
