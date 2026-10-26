@@ -119,6 +119,6 @@ With [worktrunk](https://worktrunk.dev) this is automated by `.config/wt.toml`. 
 - appends a block to `.env` with a stack name, ports and the main checkout's `geojson-data`, derived from the branch name the same way udb3-backend does,
 - runs `make up` and the Elasticsearch migrations in the background.
 
-Create the udb3-backend worktree on the same branch first: its stack creates the network this one joins.
+Create the udb3-backend worktree on the same branch first: its stack creates the network this one joins. If you created this one first, its stack fails to start because the network doesn't exist yet: start the udb3-backend stack, then run `wt hook post-start` here.
 
 `wt remove` stops the stack and deletes its volumes. Worktrunk asks once to approve these commands.
