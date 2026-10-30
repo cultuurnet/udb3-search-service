@@ -27,7 +27,7 @@ EOF
 
 # The backend worktree on the same branch must be up first: it creates the network.
 [post-start]
-docker = "make up && make migrate"
+docker = "make up && make install && make migrate"
 
 # Guarded on the worktrunk block so the default stack's volumes are never touched.
 # Never blocks removing the worktree.
