@@ -807,12 +807,94 @@ final class AuthenticateRequestTest extends TestCase
             ->with($request)
             ->willReturn($expectedResponse);
 
+        $this->container->expects($this->never())
+            ->method('extend');
+
         $actualResponse = $this->authenticateRequest->process(
             $request,
             $requestHandler
         );
 
         $this->assertEquals($expectedResponse, $actualResponse);
+    }
+
+    /**
+     * @dataProvider tokenClientConsumerProvider
+     * @test
+     */
+    public function it_registers_the_client_of_a_token_as_consumer(
+        bool $hasBoaAccess,
+        array $defaultQueries,
+        Consumer $expectedConsumer
+    ): void {
+        $authenticateRequest = new AuthenticateRequest(
+            $this->container,
+            $this->consumerResolver,
+            $this->clientIdResolver,
+            new InMemoryDefaultQueryRepository($defaultQueries),
+            null,
+            $this->pemFile,
+            new NullLogger()
+        );
+
+        $token = JsonWebTokenFactory::createWithClaims([
+            'https://publiq.be/publiq-apis' => 'sapi',
+            'azp' => 'my_active_client_id',
+        ]);
+
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', 'https://search.uitdatabank.be')
+            ->withHeader('authorization', self::BEARER . $token);
+        $expectedResponse = (new ResponseFactory())->createResponse(200);
+
+        $requestHandler = $this->createMock(RequestHandlerInterface::class);
+        $requestHandler->expects($this->once())
+            ->method('handle')
+            ->with($request)
+            ->willReturn($expectedResponse);
+
+        $definitionInterface = $this->createMock(DefinitionInterface::class);
+        $definitionInterface->expects($this->once())
+            ->method('setConcrete')
+            ->with($expectedConsumer);
+
+        $this->container->expects($this->once())
+            ->method('extend')
+            ->with(Consumer::class)
+            ->willReturn($definitionInterface);
+
+        $this->clientIdResolver->expects($this->never())
+            ->method('hasSapiAccess');
+
+        $this->clientIdResolver->expects($this->once())
+            ->method('hasBoaAccess')
+            ->with('my_active_client_id')
+            ->willReturn($hasBoaAccess);
+
+        $actualResponse = $authenticateRequest->process($request, $requestHandler);
+
+        $this->assertEquals($expectedResponse, $actualResponse);
+    }
+
+    public function tokenClientConsumerProvider(): array
+    {
+        return [
+            'with boa access' => [
+                true,
+                [],
+                new Consumer('my_active_client_id', null, true),
+            ],
+            'without boa access' => [
+                false,
+                [],
+                new Consumer('my_active_client_id', null, false),
+            ],
+            'with default query' => [
+                false,
+                ['client_ids' => ['my_active_client_id' => 'my_default_search_query']],
+                new Consumer('my_active_client_id', 'my_default_search_query', false),
+            ],
+        ];
     }
 
     /**
