@@ -59,6 +59,12 @@ final class JsonWebToken
         return $this->hasSapiAccess($allowedApis) && !$this->isV2JwtProviderToken($jwtProviderDomain);
     }
 
+    public function getClientId(): ?string
+    {
+        $clientId = $this->token->claims()->get('azp');
+        return is_string($clientId) && $clientId !== '' ? $clientId : null;
+    }
+
     private function hasSapiAccess(string $allowedApis): bool
     {
         $apis = explode(' ', $allowedApis);
