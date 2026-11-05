@@ -26,8 +26,10 @@ EOF
 """
 
 # The backend worktree on the same branch must be up first: it creates the network.
+# vendor/ is copied from the primary checkout and may not match this branch's composer.lock.
+# The consumers booted on that copy during `make up`, so they need a restart to load the new vendor/.
 [post-start]
-docker = "make up && make install && make migrate"
+docker = "make up && make install && docker compose restart search-consume-udb3-api search-consume-udb3-cli search-consume-udb3-related && make migrate"
 
 # Guarded on the worktrunk block so the default stack's volumes are never touched.
 # Never blocks removing the worktree.
