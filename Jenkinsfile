@@ -197,18 +197,9 @@ pipeline {
                         }
                     }
                 }
-                stage('Deploy') {
-                    parallel {
-                        stage('Deploy to ElasticSearch 8 node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-test03'
-                            }
-                        }
-                        stage('Deploy to ElasticSearch 8 docker node') {
-                            steps {
-                                triggerDeployment nodeName: 'uitdatabank-search-docker-test01'
-                            }
-                        }
+                stage('Deploy to ElasticSearch 8 docker node') {
+                    steps {
+                        triggerDeployment nodeName: 'uitdatabank-search-docker-test01'
                     }
                 }
             }
