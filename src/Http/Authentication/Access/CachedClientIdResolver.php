@@ -10,15 +10,10 @@ final class CachedClientIdResolver implements ClientIdResolver
 {
     public const SAPI_ACCESS = 'sapi_access';
 
-    private CacheInterface $cache;
-    private ClientIdResolver $clientIdAccess;
-
     public function __construct(
-        CacheInterface $cache,
-        ClientIdResolver $clientIdAccess
+        private readonly CacheInterface $cache,
+        private readonly ClientIdResolver $clientIdAccess
     ) {
-        $this->cache = $cache;
-        $this->clientIdAccess = $clientIdAccess;
     }
 
     public function hasSapiAccess(string $clientId): bool

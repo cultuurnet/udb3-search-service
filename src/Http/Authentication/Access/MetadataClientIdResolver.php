@@ -13,16 +13,11 @@ use Psr\Log\NullLogger;
 final class MetadataClientIdResolver implements ClientIdResolver
 {
     use LoggerAwareTrait;
-    private ManagementTokenProvider $managementTokenProvider;
-
-    private MetadataGenerator $metadataGenerator;
 
     public function __construct(
-        ManagementTokenProvider $managementTokenProvider,
-        MetadataGenerator $metadataGenerator
+        private readonly ManagementTokenProvider $managementTokenProvider,
+        private readonly MetadataGenerator $metadataGenerator
     ) {
-        $this->managementTokenProvider = $managementTokenProvider;
-        $this->metadataGenerator = $metadataGenerator;
         $this->setLogger(new NullLogger());
     }
 
