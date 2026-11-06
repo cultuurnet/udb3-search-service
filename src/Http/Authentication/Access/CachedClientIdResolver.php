@@ -9,7 +9,6 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class CachedClientIdResolver implements ClientIdResolver
 {
     public const SAPI_ACCESS = 'sapi_access';
-    public const BOA_ACCESS = 'boa_access';
 
     private CacheInterface $cache;
     private ClientIdResolver $clientIdAccess;
@@ -28,16 +27,6 @@ final class CachedClientIdResolver implements ClientIdResolver
             $this->createCacheKey($clientId, self::SAPI_ACCESS),
             function () use ($clientId) {
                 return $this->clientIdAccess->hasSapiAccess($clientId);
-            }
-        );
-    }
-
-    public function hasBoaAccess(string $clientId): bool
-    {
-        return $this->cache->get(
-            $this->createCacheKey($clientId, self::BOA_ACCESS),
-            function () use ($clientId) {
-                return $this->clientIdAccess->hasBoaAccess($clientId);
             }
         );
     }
