@@ -66,8 +66,7 @@ final class RoutingServiceProvider extends BaseServiceProvider
                     $metadataGenerator = $this->getMetadataGenerator();
                     $clientIdResolver = new MetadataClientIdResolver(
                         $this->getManagementTokenProvider(),
-                        $metadataGenerator,
-                        $this->parameter('toggles.allow_all_boa_access') ?? false
+                        $metadataGenerator
                     );
 
                     $pemFile = $this->parameter('keycloak.pem_file');
