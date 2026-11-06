@@ -111,7 +111,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionIndexName,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('id', '', true),
+            new Consumer('id', ''),
         );
     }
 
@@ -1404,7 +1404,7 @@ final class OfferSearchControllerTest extends TestCase
             $this->regionIndexName,
             $this->queryStringFactory,
             $this->facetTreeNormalizer,
-            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo', true),
+            new Consumer('d568d2e9-3b53-4704-82a1-eaccf91a6337', 'labels:foo'),
         );
 
         $request = $this->getSearchRequestWithQueryParameters(
