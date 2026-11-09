@@ -218,9 +218,18 @@ pipeline {
             }
 
             stages {
-                stage('Publish snapshot') {
-                    steps {
-                        publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                stage('Publish snapshot / promote docker image'){
+                    parallel {
+                        stage('Publish snapshot') {
+                            steps {
+                                publishAptlySnapshot snapshotName: "${env.APT_REPOSITORY}-${env.PIPELINE_VERSION}", publishTarget: "${env.APT_REPOSITORY}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
+                            }
+                        }
+                        stage('Promote docker image') {
+                            steps {
+                                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: env.APPLICATION_ENVIRONMENT
+                            }
+                        }
                     }
                 }
                 stage('Deploy') {
@@ -233,6 +242,16 @@ pipeline {
                         stage('Deploy to second ElasticSearch 8 node') {
                             steps {
                                 triggerDeployment nodeName: 'uitdatabank-search-prod04'
+                            }
+                        }
+                        stage('Deploy to first ElasticSearch 8 node (docker)') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-docker-prod05'
+                            }
+                        }
+                        stage('Deploy to second ElasticSearch 8 node (docker)') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-search-docker-prod06'
                             }
                         }
                     }
