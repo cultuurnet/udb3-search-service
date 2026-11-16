@@ -44,7 +44,7 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^2.2",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^13.4",
         "publiq/php-cs-fixer-config": "^2.2",
         "rector/rector": "^2.0"
     },
