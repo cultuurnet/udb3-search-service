@@ -36,7 +36,7 @@
         "ramsey/uuid": "^4.9",
         "sentry/sentry": "^4.16",
         "slim/psr7": "^1.6",
-        "symfony/cache": "^5.4",
+        "symfony/cache": "^8.1",
         "symfony/console": "^5.4",
         "symfony/finder": "^5.4",
         "symfony/string": "^6.4",
