@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http\Authentication;
 
 use Crell\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Http\ApiKeysMatchedToClientIds\InMemoryApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\Search\Http\Authentication\Access\ConsumerResolver;
@@ -581,58 +580,6 @@ final class AuthenticateRequestTest extends TestCase
      * @dataProvider validClientIdRequestsProvider
      * @test
      */
-    public function it_resolves_the_creator_of_a_client_id_consumer_to_the_client_id_with_clients_suffix(
-        ServerRequestInterface $request
-    ): void {
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->consumerResolver,
-            $this->clientIdResolver,
-            new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile,
-            new NullLogger()
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->method('handle')->willReturn($response);
-
-        // Capture the Consumer that gets registered for the request and assert that the creator it
-        // produces is "{clientId}@clients" — not the bare client id and not an owner user UUID.
-        $registeredConsumer = null;
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with($this->callback(static function (Consumer $consumer) use (&$registeredConsumer): bool {
-                $registeredConsumer = $consumer;
-                return true;
-            }));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $this->clientIdResolver->expects($this->once())
-            ->method('hasSapiAccess')
-            ->with('my_active_client_id')
-            ->willReturn(true);
-
-        $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertInstanceOf(Consumer::class, $registeredConsumer);
-        $this->assertEquals(
-            new Creator('my_active_client_id@clients'),
-            $registeredConsumer->getCreator()
-        );
-    }
-
-    /**
-     * @dataProvider validClientIdRequestsProvider
-     * @test
-     */
     public function it_handles_valid_requests_with_client_id_and_default_query(ServerRequestInterface $request): void
     {
         $authenticateRequest = new AuthenticateRequest(
@@ -669,104 +616,6 @@ final class AuthenticateRequestTest extends TestCase
             ->method('hasSapiAccess')
             ->with('my_active_client_id')
             ->willReturn(true);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
-     * @dataProvider validClientIdRequestsProvider
-     * @test
-     */
-    public function it_sets_boa_access_on_consumer_for_client_id_with_boa(ServerRequestInterface $request): void
-    {
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->consumerResolver,
-            $this->clientIdResolver,
-            new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile,
-            new NullLogger()
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_client_id', null, true));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $this->clientIdResolver->expects($this->once())
-            ->method('hasSapiAccess')
-            ->with('my_active_client_id')
-            ->willReturn(true);
-
-        $this->clientIdResolver->expects($this->once())
-            ->method('hasBoaAccess')
-            ->with('my_active_client_id')
-            ->willReturn(true);
-
-        $actualResponse = $authenticateRequest->process($request, $requestHandler);
-
-        $this->assertEquals($response, $actualResponse);
-    }
-
-    /**
-     * @dataProvider validClientIdRequestsProvider
-     * @test
-     */
-    public function it_sets_no_boa_access_on_consumer_for_client_id_without_boa(ServerRequestInterface $request): void
-    {
-        $authenticateRequest = new AuthenticateRequest(
-            $this->container,
-            $this->consumerResolver,
-            $this->clientIdResolver,
-            new InMemoryDefaultQueryRepository([]),
-            new InMemoryApiKeysMatchedToClientIds([]),
-            $this->pemFile,
-            new NullLogger()
-        );
-
-        $response = (new ResponseFactory())->createResponse(200);
-
-        $requestHandler = $this->createMock(RequestHandlerInterface::class);
-        $requestHandler->expects($this->once())
-            ->method('handle')
-            ->with($request)
-            ->willReturn($response);
-
-        $definitionInterface = $this->createMock(DefinitionInterface::class);
-        $definitionInterface->expects($this->once())
-            ->method('setConcrete')
-            ->with(new Consumer('my_active_client_id', null, false));
-
-        $this->container->expects($this->once())
-            ->method('extend')
-            ->with(Consumer::class)
-            ->willReturn($definitionInterface);
-
-        $this->clientIdResolver->expects($this->once())
-            ->method('hasSapiAccess')
-            ->with('my_active_client_id')
-            ->willReturn(true);
-
-        $this->clientIdResolver->expects($this->once())
-            ->method('hasBoaAccess')
-            ->with('my_active_client_id')
-            ->willReturn(false);
 
         $actualResponse = $authenticateRequest->process($request, $requestHandler);
 

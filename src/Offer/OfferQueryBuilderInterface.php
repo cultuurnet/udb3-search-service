@@ -104,8 +104,6 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withChildrenOnlyFilter(bool $childrenOnly): OfferQueryBuilderInterface;
 
-    public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): OfferQueryBuilderInterface;
-
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): OfferQueryBuilderInterface;
 
     /**

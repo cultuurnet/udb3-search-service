@@ -15,19 +15,13 @@ use Psr\Log\NullLogger;
 
 final class KeycloakMetadataGenerator implements MetadataGenerator
 {
-    private Client $client;
-    private string $domain;
-    private string $realm;
     private LoggerInterface $logger;
 
     public function __construct(
-        Client $client,
-        string $domain,
-        string $realm
+        private readonly Client $client,
+        private readonly string $domain,
+        private readonly string $realm
     ) {
-        $this->domain = $domain;
-        $this->client = $client;
-        $this->realm = $realm;
         $this->logger = new NullLogger();
     }
 
@@ -81,7 +75,7 @@ final class KeycloakMetadataGenerator implements MetadataGenerator
 
     private function convertDefaultScopes(array $defaultScopes): array
     {
-        $knownScopes = ['sapi', 'entry', 'ups', 'boa'];
+        $knownScopes = ['sapi', 'entry', 'ups'];
 
         $scopes = [];
         foreach ($knownScopes as $knownScope) {

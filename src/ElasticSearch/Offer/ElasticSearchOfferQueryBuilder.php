@@ -38,7 +38,6 @@ use CultuurNet\UDB3\Search\SortBuilders;
 use CultuurNet\UDB3\Search\SortOrder;
 use DateTimeImmutable;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
-use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
@@ -408,27 +407,6 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
     public function withChildrenOnlyFilter(bool $childrenOnly): self
     {
         return $this->withTermQuery('childrenOnly', $childrenOnly);
-    }
-
-    public function withExcludeChildrenOnlyUnlessCreator(?Creator $creator = null): self
-    {
-        $childrenOnlyQuery = new TermQuery('childrenOnly', true);
-
-        if ($creator !== null) {
-            $innerBool = new BoolQuery();
-            $innerBool->add($childrenOnlyQuery, BoolClause::Must);
-            // The creator field is an analyzed string using lowercase_exact_match_analyzer
-            // (keyword tokenizer + lowercase filter): the indexed value is a single, lowercased
-            // token. A MatchQuery runs the search value through the same analyzer, giving an exact
-            // but case-insensitive match. A TermQuery would NOT lowercase and therefore fails to
-            // match creators that contain uppercase characters (e.g. mixed-case client ids).
-            $innerBool->add(new MatchQuery('creator', $creator->toString()), BoolClause::MustNot);
-            $childrenOnlyQuery = $innerBool;
-        }
-
-        $c = $this->getClone();
-        $c->boolQuery->add($childrenOnlyQuery, BoolClause::MustNot);
-        return $c;
     }
 
     public function withAgeRangeFilter(Age $minimum = null, Age $maximum = null): self

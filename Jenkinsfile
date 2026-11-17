@@ -80,6 +80,7 @@ pipeline {
                                 --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\
                                 --label org.opencontainers.image.version=${env.PIPELINE_VERSION} \\
                                 --label org.opencontainers.image.source=${env.SOURCE_URL} \\
+                                --label be.publiq.jenkins.run-url=${env.RUN_DISPLAY_URL} \\
                                 .
                         """
 
