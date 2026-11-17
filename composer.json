@@ -72,6 +72,9 @@
             "*": "dist"
         },
         "sort-packages": true,
+        "platform": {
+            "php": "8.3"
+        },
         "allow-plugins": {
             "php-http/discovery": false
         }
