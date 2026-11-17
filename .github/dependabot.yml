@@ -6,3 +6,7 @@ updates:
       interval: weekly
       day: monday
       time: "03:00"
+    ignore:
+      # Only move to the next Symfony LTS (8.4), not to the short-lived 8.0 to 8.3 releases.
+      - dependency-name: "symfony/*"
+        versions: [">=8.0 <8.4"]

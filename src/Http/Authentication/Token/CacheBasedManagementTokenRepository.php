@@ -20,6 +20,7 @@ final class CacheBasedManagementTokenRepository implements ManagementTokenReposi
 
     public function get(): ?Token
     {
+        /** @var string|null $cachedToken */
         $cachedToken = $this->cache->get(
             self::KEY,
             fn () => null,
