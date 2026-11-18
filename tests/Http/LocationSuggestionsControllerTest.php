@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use CultuurNet\UDB3\Search\Json;
-use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +29,7 @@ final class LocationSuggestionsControllerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_suggestions_for_the_typed_text(): void
+    public function it_returns_the_suggestions_for_the_search_text(): void
     {
         $this->client->expects($this->once())
             ->method('search')
@@ -39,7 +38,10 @@ final class LocationSuggestionsControllerTest extends TestCase
                 'body' => [
                     'size' => 10,
                     'query' => [
-                        'match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']],
+                        'bool' => [
+                            'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
+                            'filter' => [['terms' => ['type' => ['street']]]],
+                        ],
                     ],
                 ],
             ])
@@ -68,18 +70,41 @@ final class LocationSuggestionsControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider provideSearchTexts
+     * @param list<string> $expectedTypes
      */
-    public function it_requires_typed_text(): void
-    {
-        $this->expectException(MissingParameter::class);
+    public function it_matches_a_trailing_number_whole_and_only_suggests_addresses_when_a_number_is_typed(
+        string $searchText,
+        string $expectedMatchType,
+        array $expectedTypes
+    ): void {
+        $this->client->expects($this->once())
+            ->method('search')
+            ->with($this->callback(
+                fn (array $params): bool => $params['body']['query']['bool'] === [
+                    'must' => [[$expectedMatchType => ['search_text' => ['query' => $searchText, 'operator' => 'and']]]],
+                    'filter' => [['terms' => ['type' => $expectedTypes]]],
+                ]
+            ))
+            ->willReturn(['hits' => ['hits' => []]]);
 
-        ($this->controller)($this->request('  '));
+        ($this->controller)($this->request($searchText));
+    }
+
+    public function provideSearchTexts(): array
+    {
+        return [
+            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street']],
+            'house number at the end' => ['lentedreef 2', 'match', ['street', 'address']],
+            'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'address']],
+            'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'address']],
+        ];
     }
 
     /**
      * @test
      */
-    public function it_refuses_more_than_one_typed_text(): void
+    public function it_refuses_more_than_one_search_text(): void
     {
         $this->expectException(UnsupportedParameterValue::class);
 
@@ -90,22 +115,12 @@ final class LocationSuggestionsControllerTest extends TestCase
         ));
     }
 
-    /**
-     * @test
-     */
-    public function it_refuses_typed_text_longer_than_120_characters(): void
-    {
-        $this->expectException(UnsupportedParameterValue::class);
-
-        ($this->controller)($this->request(str_repeat('a', 121)));
-    }
-
-    private function request(string $typedText): ApiRequest
+    private function request(string $searchText): ApiRequest
     {
         return new ApiRequest(
             (new ServerRequestFactory())
                 ->createServerRequest('GET', '/location-suggestions')
-                ->withQueryParams(['q' => $typedText])
+                ->withQueryParams(['q' => $searchText])
         );
     }
 }
