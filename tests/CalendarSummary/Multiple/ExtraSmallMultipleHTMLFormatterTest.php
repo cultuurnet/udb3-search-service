@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
-use Carbon\CarbonImmutable;
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -28,7 +27,12 @@ final class ExtraSmallMultipleHTMLFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new ExtraSmallMultipleHTMLFormatter(new Translator('nl_NL'));
-        CalendarSummaryTester::setTestNow(2021, 5, 3);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatMultipleWithoutLeadingZeroes(): void
@@ -158,8 +162,8 @@ final class ExtraSmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-10-08 12:00'),
-            new CarbonImmutable('2021-10-08 14:00'),
+            new Chronos('2021-10-08 12:00'),
+            new Chronos('2021-10-08 14:00'),
             CalendarType::multiple()
         );
 

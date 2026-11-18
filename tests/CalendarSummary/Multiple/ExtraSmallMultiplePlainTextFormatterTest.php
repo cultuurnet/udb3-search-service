@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
-use Carbon\CarbonImmutable;
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
@@ -28,7 +27,12 @@ final class ExtraSmallMultiplePlainTextFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new ExtraSmallMultiplePlainTextFormatter(new Translator('nl_NL'));
-        CalendarSummaryTester::setTestNow(2021, 5, 3);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatMultipleWithoutLeadingZeroes(): void
@@ -122,8 +126,8 @@ final class ExtraSmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-03-25'),
-            new CarbonImmutable('2030-03-30'),
+            new Chronos('2021-03-25'),
+            new Chronos('2030-03-30'),
             CalendarType::multiple()
         );
 
@@ -139,8 +143,8 @@ final class ExtraSmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2020-03-25'),
-            new CarbonImmutable('2021-03-30'),
+            new Chronos('2020-03-25'),
+            new Chronos('2021-03-30'),
             CalendarType::multiple()
         );
 
@@ -190,8 +194,8 @@ final class ExtraSmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-03-08 11:00'),
-            new CarbonImmutable('2021-03-08 19:00'),
+            new Chronos('2021-03-08 11:00'),
+            new Chronos('2021-03-08 19:00'),
             CalendarType::multiple()
         );
 

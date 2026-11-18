@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Single;
 
-use Carbon\CarbonImmutable;
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
@@ -27,7 +26,12 @@ final class SmallSingleHTMLFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new SmallSingleHTMLFormatter(new Translator('nl_NL'));
-        CalendarSummaryTester::setTestNow(2021, 5, 3);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatHTMLSingleDateXsOneDay(): void
@@ -52,8 +56,8 @@ final class SmallSingleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-05-24'),
-            new CarbonImmutable('2021-05-24')
+            new Chronos('2021-05-24'),
+            new Chronos('2021-05-24')
         );
 
         $this->assertEquals(
@@ -69,8 +73,8 @@ final class SmallSingleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-05-03 11:30'),
-            new CarbonImmutable('2021-05-03 20:30')
+            new Chronos('2021-05-03 11:30'),
+            new Chronos('2021-05-03 20:30')
         );
 
         $this->assertEquals(
@@ -85,8 +89,8 @@ final class SmallSingleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-05-03 18:30'),
-            new CarbonImmutable('2021-05-03 21:30')
+            new Chronos('2021-05-03 18:30'),
+            new Chronos('2021-05-03 21:30')
         );
 
         $this->assertEquals(
@@ -101,8 +105,8 @@ final class SmallSingleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-05-04 18:30'),
-            new CarbonImmutable('2021-05-04 21:30')
+            new Chronos('2021-05-04 18:30'),
+            new Chronos('2021-05-04 21:30')
         );
 
         $this->assertEquals(
@@ -117,8 +121,8 @@ final class SmallSingleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            new CarbonImmutable('2021-05-09 18:30'),
-            new CarbonImmutable('2021-05-09 18:30')
+            new Chronos('2021-05-09 18:30'),
+            new Chronos('2021-05-09 18:30')
         );
 
         $this->assertEquals(

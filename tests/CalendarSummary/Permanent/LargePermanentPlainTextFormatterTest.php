@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Permanent;
 
-use Carbon\CarbonImmutable;
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\AdjustedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -32,13 +31,13 @@ final class LargePermanentPlainTextFormatterTest extends TestCase
     protected function setUp(): void
     {
         // Monday 10 August 2026, so the adjusted days in November 2026 are upcoming.
-        CalendarSummaryTester::setTestNow(2026, 8, 10);
+        Chronos::setTestNow(new Chronos('2026-08-10'));
         $this->formatter = new LargePermanentPlainTextFormatter(new Translator('nl_NL'));
     }
 
     protected function tearDown(): void
     {
-        CarbonImmutable::setTestNow();
+        Chronos::setTestNow();
     }
 
     public function testFormatASimplePermanent(): void
