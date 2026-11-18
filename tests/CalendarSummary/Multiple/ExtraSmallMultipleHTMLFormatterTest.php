@@ -158,8 +158,8 @@ final class ExtraSmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 10, 8)->setTime(12, 0),
-            CarbonImmutable::create(2021, 10, 8)->setTime(14, 0),
+            new CarbonImmutable('2021-10-08 12:00'),
+            new CarbonImmutable('2021-10-08 14:00'),
             CalendarType::multiple()
         );
 

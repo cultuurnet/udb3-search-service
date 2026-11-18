@@ -54,8 +54,8 @@ final class SmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(11, 30),
-            CarbonImmutable::create(2021, 5, 3)->setTime(20, 30),
+            new CarbonImmutable('2021-05-03 11:30'),
+            new CarbonImmutable('2021-05-03 20:30'),
             CalendarType::multiple()
         );
 
@@ -71,8 +71,8 @@ final class SmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(18, 0),
-            CarbonImmutable::create(2021, 5, 3)->setTime(21, 30),
+            new CarbonImmutable('2021-05-03 18:00'),
+            new CarbonImmutable('2021-05-03 21:30'),
             CalendarType::multiple()
         );
 
@@ -88,8 +88,8 @@ final class SmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 4)->setTime(18, 0),
-            CarbonImmutable::create(2021, 5, 4)->setTime(21, 30),
+            new CarbonImmutable('2021-05-04 18:00'),
+            new CarbonImmutable('2021-05-04 21:30'),
             CalendarType::multiple()
         );
 
@@ -105,8 +105,8 @@ final class SmallMultiplePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 9)->setTime(18, 0),
-            CarbonImmutable::create(2021, 5, 9)->setTime(21, 30),
+            new CarbonImmutable('2021-05-09 18:00'),
+            new CarbonImmutable('2021-05-09 21:30'),
             CalendarType::multiple()
         );
 

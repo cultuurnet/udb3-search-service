@@ -36,8 +36,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2018, 1, 25),
-            CarbonImmutable::create(2018, 1, 25)->setTime(21, 30)
+            new CarbonImmutable('2018-01-25'),
+            new CarbonImmutable('2018-01-25 21:30')
         );
 
         $this->assertEquals(
@@ -54,8 +54,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 4),
-            CarbonImmutable::create(2021, 5, 4)->setTime(21, 30)
+            new CarbonImmutable('2021-05-04'),
+            new CarbonImmutable('2021-05-04 21:30')
         );
 
         $this->assertEquals(
@@ -70,8 +70,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 8, 4),
-            CarbonImmutable::create(2021, 8, 4)
+            new CarbonImmutable('2021-08-04'),
+            new CarbonImmutable('2021-08-04')
         );
 
         $this->assertEquals(
@@ -86,8 +86,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(11, 30),
-            CarbonImmutable::create(2021, 5, 3)->setTime(20, 30)
+            new CarbonImmutable('2021-05-03 11:30'),
+            new CarbonImmutable('2021-05-03 20:30')
         );
 
         $this->assertEquals(
@@ -102,8 +102,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(18, 30),
-            CarbonImmutable::create(2021, 5, 3)->setTime(21, 30)
+            new CarbonImmutable('2021-05-03 18:30'),
+            new CarbonImmutable('2021-05-03 21:30')
         );
 
         $this->assertEquals(
@@ -118,8 +118,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 4)->setTime(18, 30),
-            CarbonImmutable::create(2021, 5, 4)->setTime(21, 30)
+            new CarbonImmutable('2021-05-04 18:30'),
+            new CarbonImmutable('2021-05-04 21:30')
         );
 
         $this->assertEquals(
@@ -134,8 +134,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 9)->setTime(18, 30),
-            CarbonImmutable::create(2021, 5, 9)->setTime(18, 30)
+            new CarbonImmutable('2021-05-09 18:30'),
+            new CarbonImmutable('2021-05-09 18:30')
         );
 
         $this->assertEquals(
@@ -150,8 +150,8 @@ final class SmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2018, 1, 8)->setTime(0, 0),
-            CarbonImmutable::create(2018, 1, 8)->setTime(21, 30)
+            new CarbonImmutable('2018-01-08 00:00'),
+            new CarbonImmutable('2018-01-08 21:30')
         );
 
         $this->assertEquals(

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
+use CultuurNet\UDB3\Search\FileReader;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +12,7 @@ final class OfferTest extends TestCase
 {
     public function testCanCreateFromJsonLd(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer.json');
         $expected = new Offer(
             OfferType::event(),
             new Status(
@@ -32,7 +33,7 @@ final class OfferTest extends TestCase
 
     public function testCanParsePermanentOffer(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/permanent.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/permanent.json');
         $expected = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -47,7 +48,7 @@ final class OfferTest extends TestCase
 
     public function testCanParseSubEvents(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-subevents.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-subevents.json');
         $expected = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -81,7 +82,7 @@ final class OfferTest extends TestCase
 
     public function testCanParseTheChildcareAndTheOvernightStayOfSubEvents(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-subevent-childcare.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-subevent-childcare.json');
 
         $subEvents = Offer::fromJsonLd($jsonLd)->getSubEvents();
 
@@ -101,7 +102,7 @@ final class OfferTest extends TestCase
      */
     public function testItTakesTheChildcareOfASingleEventFromItsOnlySubEvent(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/single-offer-with-subevent-childcare.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/single-offer-with-subevent-childcare.json');
 
         $offer = Offer::fromJsonLd($jsonLd);
 
@@ -115,7 +116,7 @@ final class OfferTest extends TestCase
      */
     public function testItDoesNotTakeTheChildcareOfASubEventForAMultipleEvent(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-subevent-childcare.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-subevent-childcare.json');
 
         $offer = Offer::fromJsonLd($jsonLd);
 
@@ -125,7 +126,7 @@ final class OfferTest extends TestCase
 
     public function testCanParseOpeningHours(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-opening-hours.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-opening-hours.json');
         $expected = new Offer(
             OfferType::place(),
             new Status('Available', []),
@@ -161,7 +162,7 @@ final class OfferTest extends TestCase
 
     public function testCanParseOpeningHoursAdjustedAndClosedDays(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-adjusted-days.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-adjusted-days.json');
 
         $expected = new Offer(
             OfferType::event(),
@@ -224,7 +225,7 @@ final class OfferTest extends TestCase
 
     public function testHasNoAdjustedOrClosedDaysWhenTheyAreAbsent(): void
     {
-        $jsonLd = file_get_contents(__DIR__ . '/data/offer-with-opening-hours.json');
+        $jsonLd = FileReader::read(__DIR__ . '/data/offer-with-opening-hours.json');
         $offer = Offer::fromJsonLd($jsonLd);
 
         $this->assertEquals([], $offer->getAdjustedDays());

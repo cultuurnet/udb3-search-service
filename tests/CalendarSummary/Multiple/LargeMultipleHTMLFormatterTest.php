@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OfferType;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
+use CultuurNet\UDB3\Search\FileReader;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +33,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateLargeOneDay(): void
     {
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
 
         $event = new Offer(
             OfferType::event(),
@@ -64,7 +65,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHtmlMultipleDaysFrench(): void
     {
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events-more-days.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'), true);
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -93,7 +94,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateLargeOneDayWithUnavailability(): void
     {
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -131,7 +132,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateLargeMoreDays(): void
     {
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events-more-days.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'), true);
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -163,7 +164,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
     public function testItWillShowEventHasConcludedWhenAllPastDatesAreHidden(): void
     {
         $formatter = new LargeMultipleHTMLFormatter(new Translator('nl_NL'), true);
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -196,7 +197,7 @@ final class LargeMultipleHTMLFormatterTest extends TestCase
      */
     public function testItNestsTheChildcareInsideTheSubEventItBelongsTo(): void
     {
-        $subEvents = json_decode(file_get_contents(__DIR__ . '/data/sub-events-with-childcare.json'), true);
+        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-with-childcare.json'), true);
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),

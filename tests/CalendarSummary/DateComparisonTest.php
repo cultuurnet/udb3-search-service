@@ -18,14 +18,14 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::onSameDay(
-                CarbonImmutable::create(2029, 9, 9)->setTime(0, 30),
-                CarbonImmutable::create(2029, 9, 9)->setTime(23, 30)
+                new CarbonImmutable('2029-09-09 00:30'),
+                new CarbonImmutable('2029-09-09 23:30')
             )
         );
         $this->assertFalse(
             DateComparison::onSameDay(
-                CarbonImmutable::create(2029, 9, 8)->setTime(23, 59),
-                CarbonImmutable::create(2029, 9, 9)->setTime(0, 01)
+                new CarbonImmutable('2029-09-08 23:59'),
+                new CarbonImmutable('2029-09-09 00:01')
             )
         );
     }
@@ -34,12 +34,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isThisEvening(
-                CarbonImmutable::create(2021, 5, 4)->setTime(18, 0)
+                new CarbonImmutable('2021-05-04 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isThisEvening(
-                CarbonImmutable::create(2021, 5, 4)->setTime(17, 59)
+                new CarbonImmutable('2021-05-04 17:59')
             )
         );
     }
@@ -48,12 +48,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isToday(
-                CarbonImmutable::create(2021, 5, 4)->setTime(18, 0)
+                new CarbonImmutable('2021-05-04 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isToday(
-                CarbonImmutable::create(2021, 5, 8)->setTime(17, 59)
+                new CarbonImmutable('2021-05-08 17:59')
             )
         );
     }
@@ -62,12 +62,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isTomorrow(
-                CarbonImmutable::create(2021, 5, 5)->setTime(18, 0)
+                new CarbonImmutable('2021-05-05 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isTomorrow(
-                CarbonImmutable::create(2021, 5, 4)->setTime(17, 59)
+                new CarbonImmutable('2021-05-04 17:59')
             )
         );
     }
@@ -76,12 +76,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isUpcomingDayInCurrentWeek(
-                CarbonImmutable::create(2021, 5, 7)->setTime(18, 0)
+                new CarbonImmutable('2021-05-07 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isUpcomingDayInCurrentWeek(
-                CarbonImmutable::create(2021, 5, 3)->setTime(17, 59)
+                new CarbonImmutable('2021-05-03 17:59')
             )
         );
     }
@@ -90,12 +90,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isCurrentYear(
-                CarbonImmutable::create(2021, 12, 31)->setTime(18, 0)
+                new CarbonImmutable('2021-12-31 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isCurrentYear(
-                CarbonImmutable::create(2020, 2, 3)->setTime(17, 59)
+                new CarbonImmutable('2020-02-03 17:59')
             )
         );
     }
@@ -104,12 +104,12 @@ final class DateComparisonTest extends TestCase
     {
         $this->assertTrue(
             DateComparison::isInTheFuture(
-                CarbonImmutable::create(2021, 12, 31)->setTime(18, 0)
+                new CarbonImmutable('2021-12-31 18:00')
             )
         );
         $this->assertFalse(
             DateComparison::isInTheFuture(
-                CarbonImmutable::create(2021, 2, 3)->setTime(17, 59)
+                new CarbonImmutable('2021-02-03 17:59')
             )
         );
     }

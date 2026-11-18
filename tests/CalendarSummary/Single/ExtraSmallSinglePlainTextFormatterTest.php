@@ -20,7 +20,7 @@ final class ExtraSmallSinglePlainTextFormatterTest extends TestCase
     use PlainTextFixture;
 
     /**
-     * @var SmallSinglePlainTextFormatter
+     * @var ExtraSmallSinglePlainTextFormatter
      */
     protected $formatter;
 
@@ -68,8 +68,8 @@ final class ExtraSmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 1, 8)->setTime(1, 0),
-            CarbonImmutable::create(2021, 1, 8)->setTime(21, 30)
+            new CarbonImmutable('2021-01-08 01:00'),
+            new CarbonImmutable('2021-01-08 21:30')
         );
 
         $this->assertEquals(
@@ -84,8 +84,8 @@ final class ExtraSmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 1, 23)->setTime(1, 0),
-            CarbonImmutable::create(2021, 1, 28)->setTime(21, 30)
+            new CarbonImmutable('2021-01-23 01:00'),
+            new CarbonImmutable('2021-01-28 21:30')
         );
 
         $this->assertEquals(
@@ -100,8 +100,8 @@ final class ExtraSmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 12, 23)->setTime(1, 0),
-            CarbonImmutable::create(2022, 1, 28)->setTime(21, 30)
+            new CarbonImmutable('2021-12-23 01:00'),
+            new CarbonImmutable('2022-01-28 21:30')
         );
 
         $this->assertEquals(
@@ -116,8 +116,8 @@ final class ExtraSmallSinglePlainTextFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2020, 12, 23)->setTime(1, 0),
-            CarbonImmutable::create(2021, 1, 28)->setTime(21, 30)
+            new CarbonImmutable('2020-12-23 01:00'),
+            new CarbonImmutable('2021-01-28 21:30')
         );
 
         $this->assertEquals(
