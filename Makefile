@@ -1,5 +1,6 @@
 .PHONY: up down pull build bash logs config install migrate migrate-force ci stan cs cs-fix test test-filter destroy \
-	acc-test-build acc-test-up acc-test-migrate acc-test-logs acc-test-down
+	acc-test-build acc-test-up acc-test-migrate acc-test-logs acc-test-down \
+	location-suggestions-index
 
 # The base file on its own, without docker-compose.override.yml
 ACC_TEST_COMPOSE = docker compose -f docker-compose.yml
@@ -42,6 +43,10 @@ migrate:
 
 migrate-force:
 	docker compose exec search ./bin/app.php elasticsearch:migrate --force
+
+location-suggestions-index:
+	./bin/download-openaddress.sh data
+	docker compose exec search ./bin/app.php location-suggestions:index-openaddress data/openaddress-bevlg.csv data/openaddress-bewal.csv data/openaddress-bebru.csv
 
 ci:
 	docker compose exec search composer ci
