@@ -13,6 +13,7 @@ use CultuurNet\UDB3\SearchService\Event\EventSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\EventBusProvider;
 use CultuurNet\UDB3\SearchService\JsonDocumentFetcherProvider;
 use CultuurNet\UDB3\SearchService\AmqpLoggerProvider;
+use CultuurNet\UDB3\SearchService\LocationSuggestions\LocationSuggestionsServiceProvider;
 use CultuurNet\UDB3\SearchService\Offer\OfferSearchServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerIndexationServiceProvider;
 use CultuurNet\UDB3\SearchService\Organizer\OrganizerSearchServiceProvider;
@@ -50,6 +51,7 @@ final class ContainerFactory
         $container = self::build($config);
         $container->addServiceProvider(new SentryWebServiceProvider());
         $container->addServiceProvider(new OrganizerSearchServiceProvider());
+        $container->addServiceProvider(new LocationSuggestionsServiceProvider());
         $container->addServiceProvider(new OfferSearchServiceProvider());
         $container->addServiceProvider(new EventSearchServiceProvider());
         $container->addServiceProvider(new PlaceSearchServiceProvider());
