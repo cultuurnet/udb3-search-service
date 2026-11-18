@@ -44,6 +44,11 @@ final class ElasticsearchPhpIndices implements ElasticSearchIndices
         $this->send(fn () => $this->indices->deleteAlias($params));
     }
 
+    public function updateAliases(array $params): void
+    {
+        $this->send(fn () => $this->indices->updateAliases($params));
+    }
+
     public function create(array $params): void
     {
         $this->send(fn () => $this->indices->create($params));
