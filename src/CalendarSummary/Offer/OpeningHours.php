@@ -241,6 +241,9 @@ final class OpeningHours implements IteratorAggregate, Countable
         return count($this->openingHours);
     }
 
+    /**
+     * @return ArrayIterator<int, OpeningHour>
+     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->openingHours);

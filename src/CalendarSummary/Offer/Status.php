@@ -24,10 +24,13 @@ final class Status
     private $type;
 
     /**
-     * @var string[][]
+     * @var array<string, string>
      */
     private $reason;
 
+    /**
+     * @param array<string, string> $reason
+     */
     public function __construct(string $type, array $reason)
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
@@ -52,7 +55,7 @@ final class Status
     }
 
     /**
-     * @param string[][] $data
+     * @param array{type: string, reason?: array<string, string>} $data
      */
     public static function fromArray(array $data): self
     {

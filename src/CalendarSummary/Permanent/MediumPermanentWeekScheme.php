@@ -9,6 +9,9 @@ use DateTimeImmutable;
 
 trait MediumPermanentWeekScheme
 {
+    /**
+     * @param array<int, string> $weekDaysOpen
+     */
     public function getWeekScheme(array $weekDaysOpen, DateFormatter $formatter, bool $abbreviated = true): array
     {
         $formatDayName = static function (string $dayName) use ($formatter, $abbreviated): string {
@@ -46,8 +49,13 @@ trait MediumPermanentWeekScheme
         return $translatedDayNamesWithOpeningHours;
     }
 
+    /**
+     * @param array<int, string> $weekDaysOpen
+     */
     public function isFirstPeriodASingleDay(array $weekDaysOpen): bool
     {
-        return !array_key_exists(array_key_first($weekDaysOpen) + 1, $weekDaysOpen);
+        $firstDay = array_key_first($weekDaysOpen);
+
+        return $firstDay === null || !array_key_exists($firstDay + 1, $weekDaysOpen);
     }
 }
