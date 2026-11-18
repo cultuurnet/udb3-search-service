@@ -1,6 +1,7 @@
 # Project coding guidelines
 
 See the  docs/calendar-indexing.md for the information about the calendar indexing.
+See docs/location-suggestions.md for the index behind `/location-suggestions`.
 
 ## Running tests and tooling
 
