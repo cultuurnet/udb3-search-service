@@ -22,6 +22,7 @@ final class SchemaVersionsTest extends TestCase
         return [
             'udb3Core' => ['udb3Core'],
             'geoshapes' => ['geoshapes'],
+            'locationSuggestions' => ['locationSuggestions'],
         ];
     }
 }
