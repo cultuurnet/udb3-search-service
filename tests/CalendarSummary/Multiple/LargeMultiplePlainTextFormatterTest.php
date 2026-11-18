@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
 use CultuurNet\UDB3\Search\CalendarSummary\PlainTextFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -33,7 +34,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
 
     public function testFormatPlainTextMultipleDateLargeOneDay(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -64,7 +65,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
 
     public function testFormatPlainTextMultipleDateLargeOneDayWithUnavailableStatus(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Unavailable', []),
@@ -95,7 +96,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
 
     public function testFormatPlainTextMultipleDateLargeMoreDays(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -126,7 +127,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
 
     public function testFormatPlainTextMultipleDaysFrench(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -157,7 +158,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
     {
         $formatter = new LargeMultiplePlainTextFormatter(new Translator('nl_NL'), true);
 
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -194,7 +195,7 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
      */
     public function testItGivesTheChildcareOfASubEventALineOfItsOwn(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-with-childcare.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events-with-childcare.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),

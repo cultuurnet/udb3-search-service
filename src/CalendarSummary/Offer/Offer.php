@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use DateTimeZone;
 use LogicException;
@@ -89,7 +90,7 @@ final class Offer
 
     public static function fromJsonLd(string $json): self
     {
-        $data = json_decode($json, true);
+        $data = Json::decodeAssociatively($json);
 
         $offer = new self(
             OfferType::fromContext(strtolower($data['@context'])),

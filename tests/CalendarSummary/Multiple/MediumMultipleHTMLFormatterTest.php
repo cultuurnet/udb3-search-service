@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\OfferType;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -31,7 +32,7 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateMediumOneDay(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -62,7 +63,7 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleOnSameDay(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-same-day.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events-same-day.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -94,7 +95,7 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateMediumOneDayWithUnavailableStatus(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -132,7 +133,7 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
 
     public function testFormatHTMLMultipleDateMediumMoreDays(): void
     {
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events-more-days.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
@@ -164,7 +165,7 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
     public function testItWillShowEventHasConcludedWhenAllPastDatesAreHidden(): void
     {
         $formatter = new MediumMultipleHTMLFormatter(new Translator('nl_NL'), true);
-        $subEvents = json_decode(FileReader::read(__DIR__ . '/data/sub-events.json'), true);
+        $subEvents = Json::decodeAssociatively(FileReader::read(__DIR__ . '/data/sub-events.json'));
         $event = new Offer(
             OfferType::event(),
             new Status('Available', []),
