@@ -11,7 +11,11 @@ final class ClosedDay implements Period
     /**
      * @param string[] $description
      */
-    public function __construct(private readonly DateTimeImmutable $startDate, private readonly DateTimeImmutable $endDate, private array $description = [])
+    public function __construct(
+        private readonly DateTimeImmutable $startDate,
+        private readonly DateTimeImmutable $endDate,
+        private readonly array $description = []
+    ) {
     {
     }
 
