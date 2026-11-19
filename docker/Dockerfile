@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         unzip \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/html
 
@@ -51,7 +51,7 @@ WORKDIR /var/www/html
 # --------------------------------------------------
 FROM runtime AS build
 
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/html
 
