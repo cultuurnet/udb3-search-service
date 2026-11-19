@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
+use InvalidArgumentException;
+
 final class Translator
 {
     private string $locale;
@@ -161,6 +163,11 @@ final class Translator
                 'adjusted_hours_notice' => 'Die Zeiten können in diesem Zeitraum abweichen.',
             ],
         ];
+
+        // Fail on construction rather than on the first label, which would surface as an undefined index.
+        if (!isset($this->messages[substr($locale, 0, 2)])) {
+            throw new InvalidArgumentException('Unsupported locale: ' . $locale);
+        }
 
         $this->locale = $locale;
     }
