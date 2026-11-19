@@ -30,7 +30,7 @@ final class CalendarHTMLFormatter implements CalendarFormatterInterface
      */
     private array $mapping;
 
-    private readonly NonAvailablePlaceHTMLFormatter $middleware;
+    private readonly FormatterMiddleware $middleware;
 
     public function __construct(
         string $langCode = 'nl_BE',
