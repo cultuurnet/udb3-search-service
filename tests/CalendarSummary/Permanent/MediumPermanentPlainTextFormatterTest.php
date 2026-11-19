@@ -450,4 +450,58 @@ final class MediumPermanentPlainTextFormatterTest extends TestCase
             $this->formatter->format($event)
         );
     }
+
+    /**
+     * @dataProvider providesWeekSchemes
+     */
+    public function testFormatAWeekScheme(array $openingHours, string $expected): void
+    {
+        $place = (new Offer(
+            OfferType::place(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            null,
+            null,
+            CalendarType::permanent()
+        ))->withOpeningHours($openingHours);
+
+        $this->assertSame($expected, $this->formatter->format($place));
+    }
+
+    public function providesWeekSchemes(): array
+    {
+        return [
+            'open seven days a week' => [
+                [
+                    new OpeningHour(['wednesday', 'thursday'], '18:00', '20:00'),
+                    new OpeningHour(['monday', 'tuesday', 'friday'], '21:00', '23:00'),
+                    new OpeningHour(['saturday', 'sunday'], '10:00', '15:00'),
+                ],
+                'Alle dagen open' . PHP_EOL,
+            ],
+            'open one day a week' => [
+                [
+                    new OpeningHour(['wednesday'], '09:00', '11:00'),
+                    new OpeningHour(['wednesday'], '18:00', '20:00'),
+                ],
+                'Elke woensdag open',
+            ],
+            'mixed sorting' => [
+                [
+                    new OpeningHour(['monday', 'tuesday'], '18:00', '20:00'),
+                    new OpeningHour(['friday', 'saturday'], '21:00', '23:00'),
+                    new OpeningHour(['wednesday'], '10:00', '15:00'),
+                ],
+                'Open van ma - wo & vr - za',
+            ],
+            'break the week' => [
+                [
+                    new OpeningHour(['monday', 'tuesday'], '18:00', '20:00'),
+                    new OpeningHour(['tuesday', 'saturday'], '21:00', '23:00'),
+                    new OpeningHour(['sunday', 'monday'], '10:00', '15:00'),
+                ],
+                'Open van ma - di & za - zo',
+            ],
+        ];
+    }
 }
