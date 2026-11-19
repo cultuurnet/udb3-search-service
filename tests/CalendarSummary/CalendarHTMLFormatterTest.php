@@ -320,6 +320,37 @@ final class CalendarHTMLFormatterTest extends TestCase
         }
     }
 
+    public function testItEscapesTheStatusReason(): void
+    {
+        $event = $this->single()->withAvailability(
+            new Status('Unavailable', ['nl' => 'Zaal "De Kring" <dicht> & weg']),
+            new BookingAvailability('Available')
+        );
+
+        $this->assertStringContainsString(
+            'title="Zaal &quot;De Kring&quot; &lt;dicht&gt; &amp; weg"',
+            $this->formatter->format($event, 'lg')
+        );
+    }
+
+    public function testItEscapesThePeriodDescription(): void
+    {
+        $place = $this->permanent()->withClosedDays(
+            [
+                new ClosedDay(
+                    new DateTimeImmutable('2030-12-25'),
+                    new DateTimeImmutable('2030-12-25'),
+                    ['nl' => 'Kerst & "Nieuwjaar" <b>']
+                ),
+            ]
+        );
+
+        $this->assertStringContainsString(
+            '<span class="cf-description">(Kerst &amp; "Nieuwjaar" &lt;b&gt;)</span>',
+            $this->formatter->format($place, 'xl')
+        );
+    }
+
     public function providesSizes(): array
     {
         return [['xs'], ['sm'], ['md'], ['lg'], ['xl']];

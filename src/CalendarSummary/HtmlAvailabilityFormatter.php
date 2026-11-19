@@ -144,6 +144,6 @@ final class HtmlAvailabilityFormatter
             return '';
         }
 
-        return 'title="' . $translatedReason . '" ';
+        return 'title="' . htmlspecialchars($translatedReason, ENT_QUOTES) . '" ';
     }
 }
