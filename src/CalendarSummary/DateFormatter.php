@@ -29,7 +29,7 @@ final readonly class DateFormatter
     private const string PATTERN_TIME = 'HH:mm'; // Example '01:05', '12:15'
 
     private const string PATTERN_SHORT_DATE = 'd/M/yy'; // Example '4/3/25'
-    private const string PATTERN_FULL_DATE = 'd MMMM yyyy';
+    private const string PATTERN_FULL_DATE = 'd MMMM yyyy'; // Example '1 january 2021'
 
     public function __construct(private string $langCode)
     {
