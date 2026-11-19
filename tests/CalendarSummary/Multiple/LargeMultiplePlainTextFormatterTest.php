@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
@@ -30,6 +31,12 @@ final class LargeMultiplePlainTextFormatterTest extends TestCase
     {
         date_default_timezone_set('Europe/Brussels');
         $this->formatter = new LargeMultiplePlainTextFormatter(new Translator('nl_NL'), false);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatPlainTextMultipleDateLargeOneDay(): void

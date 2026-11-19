@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\AdjustedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -27,6 +28,12 @@ final class CalendarPlainTextFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new CalendarPlainTextFormatter();
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testGeneralFormatMethod(): void
