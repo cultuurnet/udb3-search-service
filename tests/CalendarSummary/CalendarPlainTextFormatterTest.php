@@ -293,6 +293,47 @@ final class CalendarPlainTextFormatterTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider providesNightsAndClockChanges
+     */
+    public function testItKeepsTheLocalTimeAtNightAndWhenTheClocksChange(
+        string $startDate,
+        string $endDate,
+        string $expected
+    ): void {
+        $event = new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            new DateTimeImmutable($startDate),
+            new DateTimeImmutable($endDate),
+            CalendarType::single()
+        );
+
+        $this->assertSame($expected, $this->formatter->format($event, 'lg'));
+    }
+
+    public function providesNightsAndClockChanges(): array
+    {
+        return [
+            'past midnight' => [
+                '2030-03-08T22:00:00+01:00',
+                '2030-03-09T01:00:00+01:00',
+                'Van vrijdag 8 maart 2030 om 22:00 tot en met zaterdag 9 maart 2030 om 01:00',
+            ],
+            'clocks go forward' => [
+                '2030-03-31T01:30:00+01:00',
+                '2030-03-31T03:30:00+02:00',
+                'Zondag 31 maart 2030 van 01:30 tot 03:30',
+            ],
+            'clocks go back' => [
+                '2030-10-27T01:30:00+02:00',
+                '2030-10-27T02:30:00+01:00',
+                'Zondag 27 oktober 2030 van 01:30 tot 02:30',
+            ],
+        ];
+    }
+
     private function single(): Offer
     {
         return new Offer(

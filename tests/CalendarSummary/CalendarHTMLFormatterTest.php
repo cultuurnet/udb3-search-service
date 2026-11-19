@@ -351,6 +351,48 @@ final class CalendarHTMLFormatterTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider providesNightsAndClockChanges
+     */
+    public function testItKeepsTheLocalTimeAtNightAndWhenTheClocksChange(
+        string $startDate,
+        string $endDate,
+        string $expectedTimes
+    ): void {
+        $event = new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            new DateTimeImmutable($startDate),
+            new DateTimeImmutable($endDate),
+            CalendarType::single()
+        );
+
+        $html = $this->formatter->format($event, 'lg');
+
+        $this->assertStringContainsString('datetime="' . $startDate . '"', $html);
+        $this->assertStringContainsString('datetime="' . $endDate . '"', $html);
+        $this->assertSame($expectedTimes, implode(' ', $this->times($html)));
+    }
+
+    public function providesNightsAndClockChanges(): array
+    {
+        return [
+            'past midnight' => ['2030-03-08T22:00:00+01:00', '2030-03-09T01:00:00+01:00', '22:00 01:00'],
+            'clocks go forward' => ['2030-03-31T01:30:00+01:00', '2030-03-31T03:30:00+02:00', '01:30 03:30'],
+            'clocks go back' => ['2030-10-27T01:30:00+02:00', '2030-10-27T02:30:00+01:00', '01:30 02:30'],
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    private function times(string $html): array
+    {
+        preg_match_all('/<span class="cf-time">([^<]+)<\/span>/', $html, $matches);
+        return $matches[1];
+    }
+
     public function providesSizes(): array
     {
         return [['xs'], ['sm'], ['md'], ['lg'], ['xl']];
