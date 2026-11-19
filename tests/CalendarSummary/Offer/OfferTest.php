@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use CultuurNet\UDB3\Search\FileReader;
 use DateTimeImmutable;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class OfferTest extends TestCase
@@ -44,6 +45,39 @@ final class OfferTest extends TestCase
         );
 
         $this->assertEquals($expected, Offer::fromJsonLd($jsonLd));
+    }
+
+    public function testPermanentOfferHasNoStartDate(): void
+    {
+        $offer = Offer::fromJsonLd(FileReader::read(__DIR__ . '/data/permanent.json'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Offer has no start date');
+        $offer->getStartDate();
+    }
+
+    public function testPermanentOfferHasNoEndDate(): void
+    {
+        $offer = Offer::fromJsonLd(FileReader::read(__DIR__ . '/data/permanent.json'));
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Offer has no end date');
+        $offer->getEndDate();
+    }
+
+    public function testOfferWithoutCalendarTypeHasNoCalendarType(): void
+    {
+        $offer = new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            new DateTimeImmutable('2021-03-01T23:00:00+00:00'),
+            new DateTimeImmutable('2021-03-14T22:59:59+00:00')
+        );
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Offer has no calendar type');
+        $offer->getCalendarType();
     }
 
     public function testCanParseSubEvents(): void
