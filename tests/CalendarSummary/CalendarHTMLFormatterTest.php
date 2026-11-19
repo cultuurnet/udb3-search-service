@@ -295,6 +295,36 @@ final class CalendarHTMLFormatterTest extends TestCase
         }
     }
 
+    /**
+     * @dataProvider providesSizes
+     */
+    public function testAnOpenPlaceThatIsFullyBookedIsSoldOut(string $size): void
+    {
+        $periodic = (new Offer(
+            OfferType::place(),
+            new Status('Available', []),
+            new BookingAvailability('Unavailable'),
+            new DateTimeImmutable('2030-01-01T00:00:00+01:00'),
+            new DateTimeImmutable('2030-12-31T23:59:59+01:00'),
+            CalendarType::periodic()
+        ))->withOpeningHours([new OpeningHour(['monday', 'tuesday'], '10:00', '18:00')]);
+        $permanent = $this->permanent()->withAvailability(
+            new Status('Available', []),
+            new BookingAvailability('Unavailable')
+        );
+
+        foreach ([$periodic, $permanent] as $place) {
+            $html = $this->formatter->format($place, $size);
+            $this->assertStringContainsString('Volzet of uitverkocht', $html);
+            $this->assertStringNotContainsString('gesloten', $html);
+        }
+    }
+
+    public function providesSizes(): array
+    {
+        return [['xs'], ['sm'], ['md'], ['lg'], ['xl']];
+    }
+
     private function single(): Offer
     {
         return new Offer(
