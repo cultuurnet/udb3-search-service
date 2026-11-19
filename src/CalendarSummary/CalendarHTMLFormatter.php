@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
+use CultuurNet\UDB3\Search\CalendarSummary\Middleware\FormatterMiddleware;
 use CultuurNet\UDB3\Search\CalendarSummary\Middleware\NonAvailablePlaceHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\ExtraSmallMultipleHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\MediumMultipleHTMLFormatter;
