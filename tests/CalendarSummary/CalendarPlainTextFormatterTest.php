@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Multiple\SmallMultiplePlainTextFormat
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\AdjustedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
+use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\ClosedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OfferType;
@@ -402,6 +403,23 @@ final class CalendarPlainTextFormatterTest extends TestCase
             'de' => ['de', 'Geöffnet Mo. - Sa.', 'Jeden Sonntag geschlossen'],
             'en' => ['en', 'Open at Mon - Sat', 'Every Sunday closed'],
         ];
+    }
+
+    public function testItRepeatsTheWordingWhenTheKindOfChildcareChanges(): void
+    {
+        $place = $this->permanent()->withOpeningHours([
+            new OpeningHour(['friday'], '13:00', '17:00', new Childcare('12:30', null)),
+            new OpeningHour(['friday'], '18:00', '21:00', new Childcare(null, '21:45')),
+        ]);
+
+        $this->assertStringContainsString(
+            '(vooropvang vanaf 12:30 en naopvang tot 21:45)',
+            $this->formatter->format($place, 'lg')
+        );
+        $this->assertStringContainsString(
+            '(Vooropvang vanaf 12:30 en naopvang tot 21:45)',
+            strip_tags((new CalendarHTMLFormatter())->format($place, 'lg'))
+        );
     }
 
     private function single(): Offer
