@@ -24,7 +24,7 @@ final class BookingAvailability
     public function __construct(string $type)
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
-            throw new InvalidArgumentException('Invalid status type: ' . $type);
+            throw new InvalidArgumentException('Invalid booking availability type: ' . $type);
         }
         $this->type = $type;
     }

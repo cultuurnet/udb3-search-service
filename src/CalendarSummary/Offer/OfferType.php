@@ -24,7 +24,7 @@ final class OfferType
     public function __construct(string $value)
     {
         if (!in_array($value, self::ALLOWED_VALUES)) {
-            throw new InvalidArgumentException('Invalid CalendarType: ' . $value);
+            throw new InvalidArgumentException('Invalid OfferType: ' . $value);
         }
         $this->value = $value;
     }

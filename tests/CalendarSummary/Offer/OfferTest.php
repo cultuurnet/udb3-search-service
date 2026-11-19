@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use CultuurNet\UDB3\Search\FileReader;
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
+use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -264,5 +266,93 @@ final class OfferTest extends TestCase
 
         $this->assertEquals([], $offer->getAdjustedDays());
         $this->assertEquals([], $offer->getClosedDays());
+    }
+
+    public function testTheContextIsCaseInsensitive(): void
+    {
+        $offer = Offer::fromJsonLd($this->jsonLd(['@context' => '/Contexts/Place']));
+
+        $this->assertTrue($offer->isPlace());
+    }
+
+    public function testASingleEventWithoutSubEventsHasNoChildcare(): void
+    {
+        $offer = Offer::fromJsonLd($this->jsonLd(['calendarType' => 'single', 'subEvent' => []]));
+
+        $this->assertSame([], $offer->getSubEvents());
+        $this->assertNull($offer->getChildcare());
+    }
+
+    public function testEmptyOpeningHoursAreEmpty(): void
+    {
+        $offer = Offer::fromJsonLd($this->jsonLd(['openingHours' => []]));
+
+        $this->assertTrue($offer->getOpeningHours()->isEmpty());
+    }
+
+    public function testAdjustedAndClosedDaysNeedNoOpeningHoursOrDescription(): void
+    {
+        $offer = Offer::fromJsonLd($this->jsonLd([
+            'openingHoursAdjustedDays' => [['startDate' => '2026-11-02', 'endDate' => '2026-11-02']],
+            'openingHoursClosedDays' => [['startDate' => '2026-12-25', 'endDate' => '2026-12-25']],
+        ]));
+
+        $this->assertEquals(
+            [new AdjustedDay(new DateTimeImmutable('2026-11-02'), new DateTimeImmutable('2026-11-02'))],
+            $offer->getAdjustedDays()
+        );
+        $this->assertEquals(
+            [new ClosedDay(new DateTimeImmutable('2026-12-25'), new DateTimeImmutable('2026-12-25'))],
+            $offer->getClosedDays()
+        );
+    }
+
+    /**
+     * @dataProvider providesInvalidJsonLd
+     */
+    public function testItRejectsInvalidValues(array $overrides, string $message): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage($message);
+
+        Offer::fromJsonLd($this->jsonLd($overrides));
+    }
+
+    public function providesInvalidJsonLd(): array
+    {
+        return [
+            'unknown context' => [['@context' => '/contexts/organizer'], 'Unknown context: /contexts/organizer'],
+            'unknown calendar type' => [['calendarType' => 'weekly'], 'Invalid CalendarType: weekly'],
+            'unknown status' => [['status' => ['type' => 'Gone']], 'Invalid status type: Gone'],
+            'unknown booking availability' => [
+                ['bookingAvailability' => ['type' => 'Gone']],
+                'Invalid booking availability type: Gone',
+            ],
+            'unknown day of the week' => [
+                ['openingHours' => [['dayOfWeek' => ['funday'], 'opens' => '10:00', 'closes' => '18:00']]],
+                'Invalid day: funday',
+            ],
+        ];
+    }
+
+    public function testAnOfferTypeNamesItselfWhenInvalid(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid OfferType: organizer');
+
+        new OfferType('organizer');
+    }
+
+    private function jsonLd(array $overrides): string
+    {
+        return Json::encode(array_merge(
+            [
+                '@context' => '/contexts/event',
+                'status' => ['type' => 'Available'],
+                'bookingAvailability' => ['type' => 'Available'],
+                'calendarType' => 'permanent',
+            ],
+            $overrides
+        ));
     }
 }
