@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
-use Stringable;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
+use Stringable;
 
 final class PlainTextSummaryBuilder implements Stringable
 {

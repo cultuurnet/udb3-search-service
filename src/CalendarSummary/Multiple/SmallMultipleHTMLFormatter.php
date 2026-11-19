@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
-use DateTimeImmutable;
 use CultuurNet\UDB3\Search\CalendarSummary\DateComparison;
 use CultuurNet\UDB3\Search\CalendarSummary\DateFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\RelativeDateHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface

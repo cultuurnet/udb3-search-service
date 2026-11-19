@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Single;
 
-use DateTime;
 use CultuurNet\UDB3\Search\CalendarSummary\DateComparison;
 use CultuurNet\UDB3\Search\CalendarSummary\DateFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlChildcareFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
+use DateTime;
 use DateTimeInterface;
 
 final readonly class LargeSingleHTMLFormatter implements SingleFormatterInterface
