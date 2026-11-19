@@ -200,6 +200,6 @@ final class ChildcareFormatter
                 . ' ' . OpeningHourFormatter::format($end);
         }
 
-        throw new LogicException('Childcare without a start or an end can not be constructed');
+        throw new LogicException('Childcare needs at least a start or an end');
     }
 }
