@@ -12,44 +12,11 @@ use LogicException;
 final class Offer
 {
     /**
-     * @var OfferType
-     */
-    private $offerType;
-
-    /**
-     * @var Status
-     */
-    private $status;
-
-    /**
-     * @var BookingAvailability
-     */
-    private $bookingAvailability;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $startDate;
-
-    /**
-     * @var DateTimeImmutable|null
-     */
-    private $endDate;
-
-    /**
-     * @var CalendarType|null
-     */
-    private $calendarType;
-
-    /**
      * @var Offer[]
      */
     private $subEvents = [];
 
-    /**
-     * @var OpeningHours
-     */
-    private $openingHours;
+    private OpeningHours $openingHours;
 
     /**
      * @var AdjustedDay[]
@@ -72,19 +39,13 @@ final class Offer
     private $overnight = false;
 
     public function __construct(
-        OfferType $offerType,
-        Status $status,
-        BookingAvailability $bookingAvailability,
-        ?DateTimeImmutable $startDate = null,
-        ?DateTimeImmutable $endDate = null,
-        ?CalendarType $calendarType = null
+        private OfferType $offerType,
+        private Status $status,
+        private BookingAvailability $bookingAvailability,
+        private ?DateTimeImmutable $startDate = null,
+        private ?DateTimeImmutable $endDate = null,
+        private ?CalendarType $calendarType = null
     ) {
-        $this->offerType = $offerType;
-        $this->status = $status;
-        $this->bookingAvailability = $bookingAvailability;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->calendarType = $calendarType;
         $this->openingHours = new OpeningHours();
     }
 

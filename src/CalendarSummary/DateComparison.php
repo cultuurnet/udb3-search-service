@@ -67,8 +67,6 @@ final class DateComparison
      */
     public static function withoutPastPeriods(array $periods): array
     {
-        return array_filter($periods, static function (Period $period): bool {
-            return !self::isPastDay($period->getEndDate());
-        });
+        return array_filter($periods, static fn (Period $period): bool => !self::isPastDay($period->getEndDate()));
     }
 }

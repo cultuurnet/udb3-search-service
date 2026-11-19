@@ -9,36 +9,30 @@ use DateTimeInterface;
 use IntlDateFormatter;
 use RuntimeException;
 
-final class DateFormatter
+final readonly class DateFormatter
 {
     /**
      * @see https://unicode-org.github.io/icu/userguide/format_parse/datetime/
      */
-    private const PATTERN_DAY_NUMBER = 'd'; // Example '1', '31'
-    private const PATTERN_MONTH_NUMBER = 'M'; // Example '1', '12'
+    private const string PATTERN_DAY_NUMBER = 'd'; // Example '1', '31'
+    private const string PATTERN_MONTH_NUMBER = 'M'; // Example '1', '12'
 
-    private const PATTERN_DAY_OF_WEEK_NR = 'e'; // Example '1', '7'
-    private const PATTERN_DAY_OF_WEEK = 'EEEE'; // Example 'tuesday'
-    private const PATTERN_DAY_OF_WEEK_ABBREVIATED = 'EEE'; // Example 'tue'
+    private const string PATTERN_DAY_OF_WEEK_NR = 'e'; // Example '1', '7'
+    private const string PATTERN_DAY_OF_WEEK = 'EEEE'; // Example 'tuesday'
+    private const string PATTERN_DAY_OF_WEEK_ABBREVIATED = 'EEE'; // Example 'tue'
 
-    private const PATTERN_MONTH_NAME_ABBREVIATED = 'MMM'; // Example 'sep.'
+    private const string PATTERN_MONTH_NAME_ABBREVIATED = 'MMM'; // Example 'sep.'
 
-    private const PATTERN_SHORT_YEAR = 'yy'; // Example '21'
-    private const PATTERN_YEAR = 'yyyy'; // Example '2021'
+    private const string PATTERN_SHORT_YEAR = 'yy'; // Example '21'
+    private const string PATTERN_YEAR = 'yyyy'; // Example '2021'
 
-    private const PATTERN_TIME = 'HH:mm'; // Example '01:05', '12:15'
+    private const string PATTERN_TIME = 'HH:mm'; // Example '01:05', '12:15'
 
-    private const PATTERN_SHORT_DATE = 'd/M/yy'; // Example '4/3/25'
-    private const PATTERN_FULL_DATE = 'd MMMM yyyy'; // Example '1 january 2021'
+    private const string PATTERN_SHORT_DATE = 'd/M/yy'; // Example '4/3/25'
+    private const string PATTERN_FULL_DATE = 'd MMMM yyyy';
 
-    /**
-     * @var string
-     */
-    private $langCode;
-
-    public function __construct(string $langCode)
+    public function __construct(private string $langCode)
     {
-        $this->langCode = $langCode;
     }
 
     /**

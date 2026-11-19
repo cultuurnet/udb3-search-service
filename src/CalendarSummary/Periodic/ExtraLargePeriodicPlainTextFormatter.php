@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\PlainTextSummaryBuilder;
 use CultuurNet\UDB3\Search\CalendarSummary\PlainTextWeekSchemeFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 
-final class ExtraLargePeriodicPlainTextFormatter implements PeriodicFormatterInterface
+final readonly class ExtraLargePeriodicPlainTextFormatter implements PeriodicFormatterInterface
 {
     private DateFormatter $formatter;
 

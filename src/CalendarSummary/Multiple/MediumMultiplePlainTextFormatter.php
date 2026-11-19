@@ -9,22 +9,10 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Single\MediumSinglePlainTextFormatter;
 
-final class MediumMultiplePlainTextFormatter implements MultipleFormatterInterface
+final readonly class MediumMultiplePlainTextFormatter implements MultipleFormatterInterface
 {
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
-     * @var bool
-     */
-    private $hidePast;
-
-    public function __construct(Translator $translator, bool $hidePastDates)
+    public function __construct(private Translator $translator, private bool $hidePast)
     {
-        $this->translator = $translator;
-        $this->hidePast = $hidePastDates;
     }
 
     public function format(Offer $offer): string

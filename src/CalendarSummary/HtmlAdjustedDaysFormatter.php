@@ -41,11 +41,9 @@ final class HtmlAdjustedDaysFormatter
             $adjustedDays,
             'cf-adjusted-days',
             'except_during',
-            function (Period $adjustedDay): string {
-                return $adjustedDay instanceof AdjustedDay
-                    ? $this->generateOpeningHoursOfPeriod($adjustedDay->getOpeningHours())
-                    : '';
-            }
+            fn (Period $adjustedDay): string => $adjustedDay instanceof AdjustedDay
+                ? $this->generateOpeningHoursOfPeriod($adjustedDay->getOpeningHours())
+                : ''
         );
     }
 

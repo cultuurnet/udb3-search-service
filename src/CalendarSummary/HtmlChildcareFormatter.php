@@ -11,13 +11,10 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
  */
 final class HtmlChildcareFormatter
 {
-    private ChildcareFormatter $childcareFormatter;
-
     private bool $asNestedList = false;
 
-    private function __construct(ChildcareFormatter $childcareFormatter)
+    private function __construct(private ChildcareFormatter $childcareFormatter)
     {
-        $this->childcareFormatter = $childcareFormatter;
     }
 
     public static function forOffer(Offer $offer, Translator $translator): self

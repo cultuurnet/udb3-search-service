@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Period;
 /**
  * Renders a list of periods as a collapsible list.
  */
-final class HtmlPeriodListFormatter
+final readonly class HtmlPeriodListFormatter
 {
     private DateFormatter $formatter;
 

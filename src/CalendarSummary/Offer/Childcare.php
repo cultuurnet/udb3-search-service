@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use InvalidArgumentException;
 
-final class Childcare
+final readonly class Childcare
 {
     private ?string $start;
 

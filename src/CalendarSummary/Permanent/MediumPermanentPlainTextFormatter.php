@@ -15,15 +15,9 @@ final class MediumPermanentPlainTextFormatter implements PermanentFormatterInter
 {
     use MediumPermanentWeekScheme;
 
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {

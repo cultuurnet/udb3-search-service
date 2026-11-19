@@ -10,7 +10,7 @@ use DateTimeImmutable;
 /**
  * Renders the periods during which there is no opening at all as plain text.
  */
-final class PlainTextClosedDaysFormatter
+final readonly class PlainTextClosedDaysFormatter
 {
     private PlainTextPeriodListFormatter $periodListFormatter;
 
@@ -32,7 +32,7 @@ final class PlainTextClosedDaysFormatter
      */
     public function format(array $closedDays, array $closedDaysOfWeek = []): string
     {
-        $weeklyLines = array_map([$this, 'generateClosedDayOfWeek'], $closedDaysOfWeek);
+        $weeklyLines = array_map($this->generateClosedDayOfWeek(...), $closedDaysOfWeek);
 
         return $this->periodListFormatter->format($closedDays, 'closed', null, $weeklyLines);
     }

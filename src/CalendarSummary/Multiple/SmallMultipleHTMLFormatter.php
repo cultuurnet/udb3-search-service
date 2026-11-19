@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
+use DateTimeImmutable;
 use CultuurNet\UDB3\Search\CalendarSummary\DateComparison;
 use CultuurNet\UDB3\Search\CalendarSummary\DateFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
@@ -15,15 +16,9 @@ use DateTimeInterface;
 final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
 {
     use RelativeDateHTMLFormatter;
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {
@@ -70,7 +65,7 @@ final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
         );
     }
 
-    private function getIntlDate(\DateTimeImmutable $dateTime): string
+    private function getIntlDate(DateTimeImmutable $dateTime): string
     {
         $intlDate = $this->formatter->formatAsDayNumber($dateTime) .
             ' ' . $this->formatter->formatAsAbbreviatedMonthName($dateTime);

@@ -8,26 +8,11 @@ use DateTimeImmutable;
 
 final class ClosedDay implements Period
 {
-    private DateTimeImmutable $startDate;
-
-    private DateTimeImmutable $endDate;
-
-    /**
-     * @var string[]
-     */
-    private array $description;
-
     /**
      * @param string[] $description
      */
-    public function __construct(
-        DateTimeImmutable $startDate,
-        DateTimeImmutable $endDate,
-        array $description = []
-    ) {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->description = $description;
+    public function __construct(private readonly DateTimeImmutable $startDate, private readonly DateTimeImmutable $endDate, private array $description = [])
+    {
     }
 
     public static function fromArray(array $data): self

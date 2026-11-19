@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
-use CultuurNet\UDB3\Search\CalendarSummary\Middleware\FormatterMiddleware;
 use CultuurNet\UDB3\Search\CalendarSummary\Middleware\NonAvailablePlaceHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\ExtraSmallMultipleHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\MediumMultipleHTMLFormatter;
@@ -29,12 +28,9 @@ final class CalendarHTMLFormatter implements CalendarFormatterInterface
     /**
      * @var array[]
      */
-    private $mapping;
+    private array $mapping;
 
-    /**
-     * @var FormatterMiddleware
-     */
-    private $middleware;
+    private readonly NonAvailablePlaceHTMLFormatter $middleware;
 
     public function __construct(
         string $langCode = 'nl_BE',
@@ -98,9 +94,7 @@ final class CalendarHTMLFormatter implements CalendarFormatterInterface
 
         return $this->middleware->format(
             $offer,
-            function ($offer) use ($formatter) {
-                return $formatter->format($offer);
-            }
+            fn ($offer) => $formatter->format($offer)
         );
     }
 }

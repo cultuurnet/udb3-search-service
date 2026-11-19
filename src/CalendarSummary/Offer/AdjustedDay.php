@@ -8,30 +8,18 @@ use DateTimeImmutable;
 
 final class AdjustedDay implements Period
 {
-    private DateTimeImmutable $startDate;
-
-    private DateTimeImmutable $endDate;
-
-    private OpeningHours $openingHours;
-
-    /**
-     * @var string[]
-     */
-    private array $description;
+    private readonly OpeningHours $openingHours;
 
     /**
      * @param string[] $description
      */
     public function __construct(
-        DateTimeImmutable $startDate,
-        DateTimeImmutable $endDate,
+        private readonly DateTimeImmutable $startDate,
+        private readonly DateTimeImmutable $endDate,
         ?OpeningHours $openingHours = null,
-        array $description = []
+        private array $description = []
     ) {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->openingHours = $openingHours ?? new OpeningHours();
-        $this->description = $description;
     }
 
     public static function fromArray(array $data): self
