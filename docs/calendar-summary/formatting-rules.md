@@ -116,7 +116,7 @@ string in a formatter.
 
 | Meaning | nl | fr | de | en |
 | --- | --- | --- | --- | --- |
-| open at | open op | ouvert le | öffnen | open at |
+| open at | open op | ouvert le | geöffnet | open at |
 | except during | behalve tijdens | sauf pendant | außer während | except during |
 | closed | gesloten | fermé | geschlossen | closed |
 | childcare | opvang | garderie | Kinderbetreuung | childcare |

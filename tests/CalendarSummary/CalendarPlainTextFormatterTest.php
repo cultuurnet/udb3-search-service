@@ -334,6 +334,76 @@ final class CalendarPlainTextFormatterTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider providesRelativeDates
+     */
+    public function testItNamesNearbyDatesInEveryLanguage(string $locale, string $startDate, string $expected): void
+    {
+        Chronos::setTestNow(new Chronos('2021-05-03T12:00:00+02:00'));
+        $event = new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            new DateTimeImmutable($startDate),
+            new DateTimeImmutable(substr($startDate, 0, 11) . '23:00:00+02:00'),
+            CalendarType::single()
+        );
+
+        $this->assertSame($expected, (new CalendarPlainTextFormatter($locale))->format($event, 'sm'));
+        $this->assertSame($expected, strip_tags((new CalendarHTMLFormatter($locale))->format($event, 'sm')));
+    }
+
+    public function providesRelativeDates(): array
+    {
+        $dates = [
+            'tonight' => '2021-05-03T20:00:00+02:00',
+            'today' => '2021-05-03T14:00:00+02:00',
+            'tomorrow' => '2021-05-04T20:00:00+02:00',
+            'this week' => '2021-05-06T20:00:00+02:00',
+        ];
+        $expected = [
+            'nl_BE' => ['Vanavond', 'Vandaag', 'Morgen', 'Deze donderdag'],
+            'fr_BE' => ['Ce soir', 'Aujourd\'hui', 'Demain', 'Ce jeudi'],
+            'de' => ['Diesen Abend', 'Heute', 'Morgen', 'Diesen Donnerstag'],
+            'en' => ['Tonight', 'Today', 'Tomorrow', 'This Thursday'],
+        ];
+
+        $cases = [];
+        foreach ($expected as $locale => $summaries) {
+            foreach (array_keys($dates) as $i => $name) {
+                $cases[$locale . ' ' . $name] = [$locale, $dates[$name], $summaries[$i]];
+            }
+        }
+        return $cases;
+    }
+
+    /**
+     * @dataProvider providesWeekSchemesPerLanguage
+     */
+    public function testItSummarizesAWeekSchemeInEveryLanguage(
+        string $locale,
+        string $medium,
+        string $closedEverySunday
+    ): void {
+        $place = $this->permanent()->withOpeningHours([
+            new OpeningHour(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'], '10:00', '18:00'),
+        ]);
+        $formatter = new CalendarPlainTextFormatter($locale);
+
+        $this->assertSame($medium, $formatter->format($place, 'md'));
+        $this->assertStringContainsString(PHP_EOL . $closedEverySunday . PHP_EOL, $formatter->format($place, 'xl'));
+    }
+
+    public function providesWeekSchemesPerLanguage(): array
+    {
+        return [
+            'nl' => ['nl_BE', 'Open van ma - za', 'Elke zondag gesloten'],
+            'fr' => ['fr_BE', 'Ouvert le lun. - sam.', 'Chaque dimanche fermé'],
+            'de' => ['de', 'Geöffnet Mo. - Sa.', 'Jeden Sonntag geschlossen'],
+            'en' => ['en', 'Open at Mon - Sat', 'Every Sunday closed'],
+        ];
+    }
+
     private function single(): Offer
     {
         return new Offer(
