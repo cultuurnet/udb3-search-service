@@ -291,7 +291,8 @@ final class Offer
     }
 
     /**
-     * Only a permanent offer has no dates, and its formatters never ask for them.
+     * Only a permanent offer has no dates and its formatters never ask for them, so a missing
+     * date for any other calendar type is invalid source data rather than a state to format.
      */
     public function getStartDate(): DateTimeImmutable
     {
