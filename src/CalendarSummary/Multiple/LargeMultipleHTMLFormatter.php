@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Single\LargeSingleHTMLFormatter;
 
 final readonly class LargeMultipleHTMLFormatter implements MultipleFormatterInterface
 {
-    public function __construct(private Translator $translator, private bool $hidePast)
+    public function __construct(private Translator $translator, private bool $hidePastDates)
     {
     }
 
