@@ -19,7 +19,7 @@ final readonly class LargeMultipleHTMLFormatter implements MultipleFormatterInte
     {
         $subEvents = [];
         foreach ($offer->getSubEvents() as $subEvent) {
-            if (!$this->hidePast || DateComparison::isInTheFuture($subEvent->getEndDate())) {
+            if (!$this->hidePastDates || DateComparison::isInTheFuture($subEvent->getEndDate())) {
                 $subEvents[] = $subEvent;
             }
         }

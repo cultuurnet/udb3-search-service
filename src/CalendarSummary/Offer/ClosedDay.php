@@ -16,7 +16,6 @@ final class ClosedDay implements Period
         private readonly DateTimeImmutable $endDate,
         private readonly array $description = []
     ) {
-    {
     }
 
     public static function fromArray(array $data): self
