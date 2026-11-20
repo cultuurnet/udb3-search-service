@@ -14,7 +14,7 @@ final class OpenAddressCsvReaderTest extends TestCase
      */
     public function it_reads_only_current_addresses(): void
     {
-        $rows = iterator_to_array(OpenAddressCsvReader::rows(__DIR__ . '/data/openaddress.csv'), false);
+        $rows = iterator_to_array(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']), false);
 
         $this->assertCount(10, $rows);
         $this->assertSame(['current'], array_values(array_unique(array_column($rows, 'status'))));
@@ -32,7 +32,7 @@ final class OpenAddressCsvReaderTest extends TestCase
         $this->expectExceptionMessageMatches('/misses the columns EPSG:4326_lat/');
 
         try {
-            iterator_to_array(OpenAddressCsvReader::rows((string) $path));
+            iterator_to_array(new OpenAddressCsvReader([(string) $path]));
         } finally {
             unlink((string) $path);
         }

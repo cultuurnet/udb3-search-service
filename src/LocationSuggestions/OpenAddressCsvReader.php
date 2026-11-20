@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
 use Generator;
+use IteratorAggregate;
 use RuntimeException;
 
-final class OpenAddressCsvReader
+/**
+ * @implements IteratorAggregate<int, array<string, string>>
+ */
+final class OpenAddressCsvReader implements IteratorAggregate
 {
     // Only the columns we read are checked. BOSA renamed the projected coordinate
     // columns before, and a column we ignore should not stop the indexing.
@@ -30,9 +34,26 @@ final class OpenAddressCsvReader
     ];
 
     /**
-     * @return Generator<array<string, string>>
+     * @param list<string> $paths
      */
-    public static function rows(string $path): Generator
+    public function __construct(private readonly array $paths)
+    {
+    }
+
+    /**
+     * @return Generator<int, array<string, string>>
+     */
+    public function getIterator(): Generator
+    {
+        foreach ($this->paths as $path) {
+            yield from $this->rows($path);
+        }
+    }
+
+    /**
+     * @return Generator<int, array<string, string>>
+     */
+    private function rows(string $path): Generator
     {
         if (!is_readable($path)) {
             throw new RuntimeException('Could not open ' . $path);
@@ -44,7 +65,7 @@ final class OpenAddressCsvReader
         }
 
         try {
-            $header = self::readLine($handle);
+            $header = $this->readLine($handle);
             if ($header === null) {
                 throw new RuntimeException($path . ' is empty');
             }
@@ -54,13 +75,13 @@ final class OpenAddressCsvReader
                 throw new RuntimeException($path . ' misses the columns ' . implode(', ', $missingColumns));
             }
 
-            while (($values = self::readLine($handle)) !== null) {
+            while (($values = $this->readLine($handle)) !== null) {
                 if (count($values) !== count($header)) {
                     continue;
                 }
 
                 $row = array_combine($header, $values);
-                if (self::isUsable($row)) {
+                if ($this->isUsable($row)) {
                     yield $row;
                 }
             }
@@ -73,7 +94,7 @@ final class OpenAddressCsvReader
      * @param resource $handle
      * @return list<string>|null
      */
-    private static function readLine($handle): ?array
+    private function readLine($handle): ?array
     {
         $values = fgetcsv($handle, null, ',', '"', '');
         if ($values === false) {
@@ -86,7 +107,7 @@ final class OpenAddressCsvReader
     /**
      * @param array<string, string> $row
      */
-    private static function isUsable(array $row): bool
+    private function isUsable(array $row): bool
     {
         // Retired, proposed and rejected addresses do not exist on the street today.
         return $row['status'] === 'current'

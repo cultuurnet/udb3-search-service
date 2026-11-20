@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReplaceLocationSuggestionsIndex;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressCsvReader;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressDocuments;
-use Generator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,7 +51,7 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
             $indexName,
             $this->indexPrefix . '*',
             $this->alias,
-            OpenAddressDocuments::fromRows(self::rows($files)),
+            OpenAddressDocuments::fromRows(new OpenAddressCsvReader($files)),
             $this->numberOfShards,
             $this->numberOfReplicas
         );
@@ -62,16 +61,5 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
         $logger->info(sprintf('Peak memory: %d MB.', memory_get_peak_usage(true) / 1024 / 1024));
 
         return self::SUCCESS;
-    }
-
-    /**
-     * @param list<string> $files
-     * @return Generator<array<string, string>>
-     */
-    private static function rows(array $files): Generator
-    {
-        foreach ($files as $file) {
-            yield from OpenAddressCsvReader::rows($file);
-        }
     }
 }

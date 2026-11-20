@@ -16,7 +16,7 @@ final class OpenAddressDocumentsTest extends TestCase
     protected function setUp(): void
     {
         $this->documents = iterator_to_array(
-            OpenAddressDocuments::fromRows(OpenAddressCsvReader::rows(__DIR__ . '/data/openaddress.csv'))
+            OpenAddressDocuments::fromRows(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']))
         );
     }
 
