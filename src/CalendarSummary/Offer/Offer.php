@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
+use CultuurNet\UDB3\Search\Json;
 use DateTimeImmutable;
 use DateTimeZone;
+use LogicException;
 
 final class Offer
 {
@@ -88,7 +90,7 @@ final class Offer
 
     public static function fromJsonLd(string $json): self
     {
-        $data = json_decode($json, true);
+        $data = Json::decodeAssociatively($json);
 
         $offer = new self(
             OfferType::fromContext(strtolower($data['@context'])),
@@ -264,8 +266,12 @@ final class Offer
         return $clone;
     }
 
-    public function getCalendarType(): ?CalendarType
+    public function getCalendarType(): CalendarType
     {
+        if ($this->calendarType === null) {
+            throw new LogicException('Offer has no calendar type');
+        }
+
         return $this->calendarType;
     }
 
@@ -284,14 +290,26 @@ final class Offer
         return $this->status->getType() === 'Available' && $this->bookingAvailability->isAvailable();
     }
 
-    public function getStartDate(): ?DateTimeImmutable
+    /**
+     * Only a permanent offer has no dates and its formatters never ask for them, so a missing
+     * date for any other calendar type is invalid source data rather than a state to format.
+     */
+    public function getStartDate(): DateTimeImmutable
     {
-        return isset($this->startDate) ? $this->startDate->setTimezone(new DateTimeZone(date_default_timezone_get())) : null;
+        if ($this->startDate === null) {
+            throw new LogicException('Offer has no start date');
+        }
+
+        return $this->startDate->setTimezone(new DateTimeZone(date_default_timezone_get()));
     }
 
-    public function getEndDate(): ?DateTimeImmutable
+    public function getEndDate(): DateTimeImmutable
     {
-        return isset($this->endDate) ? $this->endDate->setTimezone(new DateTimeZone(date_default_timezone_get())) : null;
+        if ($this->endDate === null) {
+            throw new LogicException('Offer has no end date');
+        }
+
+        return $this->endDate->setTimezone(new DateTimeZone(date_default_timezone_get()));
     }
 
     public function isEvent(): bool

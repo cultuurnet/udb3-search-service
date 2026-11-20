@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
+use LogicException;
 
 final class ChildcareFormatter
 {
@@ -182,19 +183,23 @@ final class ChildcareFormatter
         $start = $childcare->getStart();
         $end = $childcare->getEnd();
 
-        if ($end === null) {
+        if ($start !== null && $end !== null) {
+            return $this->translator->translate('from_hour')
+                . ' ' . OpeningHourFormatter::format($start)
+                . ' ' . $this->translator->translate('till_hour')
+                . ' ' . OpeningHourFormatter::format($end);
+        }
+
+        if ($start !== null) {
             return $this->translator->translate('childcare_from')
                 . ' ' . OpeningHourFormatter::format($start);
         }
 
-        if ($start === null) {
+        if ($end !== null) {
             return $this->translator->translate('childcare_till')
                 . ' ' . OpeningHourFormatter::format($end);
         }
 
-        return $this->translator->translate('from_hour')
-            . ' ' . OpeningHourFormatter::format($start)
-            . ' ' . $this->translator->translate('till_hour')
-            . ' ' . OpeningHourFormatter::format($end);
+        throw new LogicException('Childcare needs at least a start or an end');
     }
 }

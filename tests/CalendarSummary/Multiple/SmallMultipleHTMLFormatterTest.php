@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
-use Carbon\CarbonImmutable;
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -28,7 +27,12 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new SmallMultipleHTMLFormatter(new Translator('nl_NL'));
-        CalendarSummaryTester::setTestNow(2021, 5, 3);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatMultipleOnSamedayToday(): void
@@ -37,8 +41,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(11, 30),
-            CarbonImmutable::create(2021, 5, 3)->setTime(20, 30),
+            new Chronos('2021-05-03 11:30'),
+            new Chronos('2021-05-03 20:30'),
             CalendarType::multiple()
         );
 
@@ -54,8 +58,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 3)->setTime(18, 30),
-            CarbonImmutable::create(2021, 5, 3)->setTime(20, 30),
+            new Chronos('2021-05-03 18:30'),
+            new Chronos('2021-05-03 20:30'),
             CalendarType::multiple()
         );
 
@@ -71,8 +75,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 4)->setTime(11, 30),
-            CarbonImmutable::create(2021, 5, 4)->setTime(20, 30),
+            new Chronos('2021-05-04 11:30'),
+            new Chronos('2021-05-04 20:30'),
             CalendarType::multiple()
         );
 
@@ -88,8 +92,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 5, 7)->setTime(11, 30),
-            CarbonImmutable::create(2021, 5, 7)->setTime(20, 30),
+            new Chronos('2021-05-07 11:30'),
+            new Chronos('2021-05-07 20:30'),
             CalendarType::multiple()
         );
 
@@ -122,8 +126,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 11, 25),
-            CarbonImmutable::create(2021, 11, 30),
+            new Chronos('2021-11-25'),
+            new Chronos('2021-11-30'),
             CalendarType::multiple()
         );
 
@@ -139,8 +143,8 @@ final class SmallMultipleHTMLFormatterTest extends TestCase
             OfferType::event(),
             new Status('Available', []),
             new BookingAvailability('Available'),
-            CarbonImmutable::create(2021, 11, 25),
-            CarbonImmutable::create(2030, 11, 30),
+            new Chronos('2021-11-25'),
+            new Chronos('2030-11-30'),
             CalendarType::multiple()
         );
 

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 use DateTimeImmutable;
 use DateTimeInterface;
 use IntlDateFormatter;
+use RuntimeException;
 
 final class DateFormatter
 {
@@ -143,6 +144,12 @@ final class DateFormatter
             IntlDateFormatter::GREGORIAN,
             $pattern
         );
-        return $formatter->format($dateTime);
+        $formatted = $formatter->format($dateTime);
+
+        if ($formatted === false) {
+            throw new RuntimeException('Failed to format date: ' . $formatter->getErrorMessage());
+        }
+
+        return $formatted;
     }
 }

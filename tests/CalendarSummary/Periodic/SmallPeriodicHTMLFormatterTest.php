@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Periodic;
 
-use CultuurNet\UDB3\Search\CalendarSummary\CalendarSummaryTester;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -27,7 +27,12 @@ final class SmallPeriodicHTMLFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new SmallPeriodicHTMLFormatter(new Translator('nl_NL'));
-        CalendarSummaryTester::setTestNow(2021, 5, 3);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatAPeriodWithoutLeadingZeroes(): void
@@ -185,7 +190,7 @@ final class SmallPeriodicHTMLFormatterTest extends TestCase
 
     public function testFormatAPeriodThatStartsLaterToday(): void
     {
-        CalendarSummaryTester::setTestNow(2021, 5, 3, 10, 0);
+        Chronos::setTestNow(new Chronos('2021-05-03 10:00'));
 
         $offer = new Offer(
             OfferType::event(),
