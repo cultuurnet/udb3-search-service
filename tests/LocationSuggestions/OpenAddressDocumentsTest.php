@@ -122,6 +122,18 @@ final class OpenAddressDocumentsTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_keeps_one_spelling_of_words_that_only_differ_in_accents_or_case(): void
+    {
+        $documents = iterator_to_array(new OpenAddressDocuments([
+            self::row(['streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIEGE', 'municipality_name_fr' => 'Liège']),
+        ]));
+
+        $this->assertSame('Rue Haute 4020 LIEGE', $documents['street:BE-WAL:1:4020']['search_text']);
+    }
+
+    /**
      * @param array<string, string> $values
      * @return array<string, string>
      */

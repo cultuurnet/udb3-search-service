@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Search\LocationSuggestions;
 use Generator;
 use IteratorAggregate;
 
+use function Symfony\Component\String\u;
+
 /**
  * @implements IteratorAggregate<string, array<string, mixed>>
  */
@@ -158,7 +160,8 @@ final class OpenAddressDocuments implements IteratorAggregate
         $unique = [];
         foreach ($words as $word) {
             if ($word !== '') {
-                $unique[mb_strtolower($word)] ??= $word;
+                // Folded like the location_analyzer does, so Liège and LIEGE end up as one word.
+                $unique[u($word)->ascii()->lower()->toString()] ??= $word;
             }
         }
 
