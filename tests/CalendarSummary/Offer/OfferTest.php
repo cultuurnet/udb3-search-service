@@ -332,6 +332,10 @@ final class OfferTest extends TestCase
                 ['openingHours' => [['dayOfWeek' => ['funday'], 'opens' => '10:00', 'closes' => '18:00']]],
                 'Invalid day: funday',
             ],
+            'day of the week that is not a string' => [
+                ['openingHours' => [['dayOfWeek' => [null], 'opens' => '10:00', 'closes' => '18:00']]],
+                'Invalid day: null',
+            ],
         ];
     }
 
