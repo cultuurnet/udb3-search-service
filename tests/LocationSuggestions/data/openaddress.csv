@@ -1,0 +1,12 @@
+EPSG:3812_x,EPSG:3812_y,EPSG:4326_lat,EPSG:4326_lon,address_id,box_number,house_number,municipality_id,municipality_name_de,municipality_name_fr,municipality_name_nl,postcode,postname_fr,postname_nl,street_id,streetname_de,streetname_fr,streetname_nl,region_code,status
+674728.31000,675531.16000,50.88958,4.72023,231197,,27,24062,Löwen,Louvain,Leuven,3010,,Kessel-Lo,35063,,,Lentedreef,BE-VLG,current
+674698.56000,675497.19000,50.88928,4.71980,297713,,17,24062,Löwen,Louvain,Leuven,3010,,Kessel-Lo,35063,,,Lentedreef,BE-VLG,current
+691529.10000,675395.50000,50.88738,4.95898,218577,,8,24137,,,Glabbeek,3381,,Kapellen,37670,,,Lentedreef,BE-VLG,current
+606942.62000,692921.47000,51.04491,3.75482,362795,,90,44021,Gent,Gand,Gent,9050,,Gentbrugge/Ledeberg,70662,,,Kerkstraat,BE-VLG,current
+607134.36000,692986.01000,51.04551,3.75755,20305771,,12,44021,Gent,Gand,Gent,9050,,Gentbrugge/Ledeberg,70662,,,Kerkstraat,BE-VLG,current
+604606.06000,693709.94000,51.05182,3.72141,229147,,74,44021,Gent,Gand,Gent,9000,,GENT,71854,,,Veldstraat,BE-VLG,current
+691948.03000,665560.31000,50.79894,4.96380,212149,,46,24107,Tienen,Tirlemont,Tienen,3300,,Bost/Goetsenhoven/Hakendover/Kumtich/Oorbeek/Oplinter/Sint-Margriete-Houtem/TIENEN/Vissenaken,36695,,,O.L.V. ten Steenstraat,BE-VLG,current
+675347.80000,674412.14000,50.87949,4.72895,201281,,17,24062,Löwen,Louvain,Leuven,3010,,Kessel-Lo,35250,,,Prins-Regentplein,BE-VLG,retired
+647920.53900,671264.26000,50.85178,4.33924,824772,0011,29,21012,,Molenbeek-Saint-Jean,Sint-Jans-Molenbeek,1080,,,3996,,Quai du Hainaut,Henegouwenkaai,BE-BRU,current
+647920.53900,671264.26000,50.85178,4.33924,132171,,29,21012,,Molenbeek-Saint-Jean,Sint-Jans-Molenbeek,1080,,,3996,,Quai du Hainaut,Henegouwenkaai,BE-BRU,current
+735739.68000,649230.30000,50.64731,5.58110,2022255,0011,16,62063,Lüttich,Liège,Luik,4000,Liège,,7730567,,Rue des Brasseurs,,BE-WAL,current
