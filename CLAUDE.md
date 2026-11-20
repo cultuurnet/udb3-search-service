@@ -3,8 +3,8 @@
 See the  docs/calendar-indexing.md for the information about the calendar indexing.
 
 The calendar summary (`src/CalendarSummary`, formerly the `calendar-summary-v3` library) is
-documented in `docs/calendar-summary/`. Follow its `formatting-rules.md` and
-`review-guidelines.md` when changing a summary.
+documented in `docs/calendar-summary/`. Follow its `formatting-rules.md` when
+changing a summary.
 
 ## Running tests and tooling
 
