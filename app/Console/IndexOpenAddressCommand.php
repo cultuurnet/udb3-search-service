@@ -56,6 +56,8 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
             $this->numberOfReplicas
         );
 
+        // The rows are streamed, so memory should stay flat however large the CSVs get.
+        // Logging the peak shows when a change starts loading everything at once.
         $logger->info(sprintf('Peak memory: %d MB.', memory_get_peak_usage(true) / 1024 / 1024));
 
         return self::SUCCESS;
