@@ -10,20 +10,15 @@ use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\RelativeDateHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
+use DateTimeImmutable;
 use DateTimeInterface;
 
 final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
 {
     use RelativeDateHTMLFormatter;
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {
@@ -70,7 +65,7 @@ final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
         );
     }
 
-    private function getIntlDate(\DateTimeImmutable $dateTime): string
+    private function getIntlDate(DateTimeImmutable $dateTime): string
     {
         $intlDate = $this->formatter->formatAsDayNumber($dateTime) .
             ' ' . $this->formatter->formatAsAbbreviatedMonthName($dateTime);

@@ -10,17 +10,11 @@ use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 
-final class ExtraSmallMultipleHTMLFormatter implements MultipleFormatterInterface
+final readonly class ExtraSmallMultipleHTMLFormatter implements MultipleFormatterInterface
 {
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {

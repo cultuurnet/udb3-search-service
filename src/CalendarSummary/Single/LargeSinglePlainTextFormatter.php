@@ -12,33 +12,21 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeInterface;
 
-final class LargeSinglePlainTextFormatter implements SingleFormatterInterface
+final readonly class LargeSinglePlainTextFormatter implements SingleFormatterInterface
 {
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
-     * @var bool
-     */
-    private $childcareOnItsOwnLine;
+    private Translator $translator;
 
     /**
      * @param bool $childcareOnItsOwnLine gives the childcare a line of its own instead of
      *                                    letting it follow the date, for the sub-events of
      *                                    a multiple calendar that already are a list
      */
-    public function __construct(Translator $translator, bool $childcareOnItsOwnLine = false)
+    public function __construct(Translator $translator, private bool $childcareOnItsOwnLine = false)
     {
         $this->formatter = new DateFormatter($translator->getLocale());
         $this->translator = $translator;
-        $this->childcareOnItsOwnLine = $childcareOnItsOwnLine;
     }
 
     public function format(Offer $offer): string

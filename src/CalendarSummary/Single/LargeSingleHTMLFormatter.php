@@ -10,34 +10,23 @@ use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlChildcareFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
+use DateTime;
 use DateTimeInterface;
 
-final class LargeSingleHTMLFormatter implements SingleFormatterInterface
+final readonly class LargeSingleHTMLFormatter implements SingleFormatterInterface
 {
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
-     * @var bool
-     */
-    private $childcareInNestedList;
+    private Translator $translator;
 
     /**
      * @param bool $childcareInNestedList renders the childcare as a nested list instead of
      *                                    inline, for the sub-events of a multiple calendar
      */
-    public function __construct(Translator $translator, bool $childcareInNestedList = false)
+    public function __construct(Translator $translator, private bool $childcareInNestedList = false)
     {
         $this->formatter = new DateFormatter($translator->getLocale());
         $this->translator = $translator;
-        $this->childcareInNestedList = $childcareInNestedList;
     }
 
     public function format(Offer $offer): string
@@ -85,7 +74,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
         $intlEndTimeEnd = $this->formatter->formatAsTime($dateEnd);
 
         if ($intlStartTimeFrom === '00:00' && $intlEndTimeEnd === '23:59') {
-            return '<time itemprop="startDate" datetime="' . $dateFrom->format(\DateTime::ATOM) . '">'
+            return '<time itemprop="startDate" datetime="' . $dateFrom->format(DateTime::ATOM) . '">'
                 . '<span class="cf-weekday cf-meta">' . ucfirst($intlWeekDayFrom) . '</span>'
                 . ' '
                 . '<span class="cf-date">' . $intlDateFrom . '</span>'
@@ -93,7 +82,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
         }
 
         if ($intlStartTimeFrom == $intlEndTimeEnd) {
-            return '<time itemprop="startDate" datetime="' . $dateFrom->format(\DateTime::ATOM) . '">'
+            return '<time itemprop="startDate" datetime="' . $dateFrom->format(DateTime::ATOM) . '">'
                 . '<span class="cf-weekday cf-meta">' . ucfirst($intlWeekDayFrom) . '</span>'
                 . ' '
                 . '<span class="cf-date">' . $intlDateFrom . '</span>'
@@ -104,7 +93,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
                 . '</time>';
         }
 
-        return '<time itemprop="startDate" datetime="' . $dateFrom->format(\DateTime::ATOM) . '">'
+        return '<time itemprop="startDate" datetime="' . $dateFrom->format(DateTime::ATOM) . '">'
             . '<span class="cf-weekday cf-meta">' . ucfirst($intlWeekDayFrom) . '</span>'
             . ' '
             . '<span class="cf-date">' . $intlDateFrom . '</span>'
@@ -116,7 +105,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
             . ' '
             . '<span class="cf-to cf-meta">' . $this->translator->translate('till_hour') . '</span>'
             . ' '
-            . '<time itemprop="endDate" datetime="' . $dateEnd->format(\DateTime::ATOM) . '">'
+            . '<time itemprop="endDate" datetime="' . $dateEnd->format(DateTime::ATOM) . '">'
             . '<span class="cf-time">' . $intlEndTimeEnd . '</span>'
             . '</time>';
     }
@@ -131,7 +120,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
         $intlWeekDayEnd = $this->formatter->formatAsDayOfWeek($dateEnd);
         $intlEndTimeEnd = $this->formatter->formatAsTime($dateEnd);
 
-        $output = '<time itemprop="startDate" datetime="' . $dateFrom->format(\DateTime::ATOM) . '">';
+        $output = '<time itemprop="startDate" datetime="' . $dateFrom->format(DateTime::ATOM) . '">';
         $output .= '<span class="cf-from cf-meta">' . ucfirst($this->translator->translate('from')) . '</span>';
         $output .= ' ';
         $output .= '<span class="cf-weekday cf-meta">' . $intlWeekDayFrom . '</span>';
@@ -145,7 +134,7 @@ final class LargeSingleHTMLFormatter implements SingleFormatterInterface
         $output .= ' ';
         $output .= '<span class="cf-to cf-meta">' . $this->translator->translate('till_included') . '</span>';
         $output .= ' ';
-        $output .= '<time itemprop="endDate" datetime="' . $dateEnd->format(\DateTime::ATOM) . '">';
+        $output .= '<time itemprop="endDate" datetime="' . $dateEnd->format(DateTime::ATOM) . '">';
         $output .= '<span class="cf-weekday cf-meta">' . $intlWeekDayEnd . '</span>';
         $output .= ' ';
         $output .= '<span class="cf-date">' . $intlDateEnd . '</span>';

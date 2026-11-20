@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 {
-    /**
-     * @var NonAvailablePlaceHTMLFormatter
-     */
-    private $formatter;
+    private NonAvailablePlaceHTMLFormatter $formatter;
 
     protected function setUp(): void
     {
@@ -34,9 +31,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $place,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('<span class="cf-status">Permanent gesloten</span>', $result);
@@ -52,9 +47,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $place,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('<span class="cf-status">Tijdelijk gesloten</span>', $result);
@@ -70,9 +63,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $place,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('foo', $result);
@@ -88,9 +79,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $event,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('foo', $result);
@@ -106,9 +95,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $event,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('foo', $result);
@@ -124,9 +111,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $event,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('foo', $result);
@@ -142,9 +127,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $place,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('<span title="Covid-19" class="cf-status">Permanent gesloten</span>', $result);
@@ -160,9 +143,7 @@ final class NonAvailablePlaceHTMLFormatterTest extends TestCase
 
         $result = $this->formatter->format(
             $place,
-            function () {
-                return 'foo';
-            }
+            fn (): string => 'foo'
         );
 
         $this->assertEquals('<span class="cf-status">Permanent gesloten</span>', $result);

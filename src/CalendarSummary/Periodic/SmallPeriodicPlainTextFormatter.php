@@ -11,17 +11,11 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeInterface;
 
-final class SmallPeriodicPlainTextFormatter implements PeriodicFormatterInterface
+final readonly class SmallPeriodicPlainTextFormatter implements PeriodicFormatterInterface
 {
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {

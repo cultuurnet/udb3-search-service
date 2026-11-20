@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\ClosedDay;
 /**
  * Renders the periods during which there is no opening at all as a collapsible list.
  */
-final class HtmlClosedDaysFormatter
+final readonly class HtmlClosedDaysFormatter
 {
     private HtmlPeriodListFormatter $periodListFormatter;
 
@@ -31,7 +31,7 @@ final class HtmlClosedDaysFormatter
      */
     public function format(array $closedDays, array $closedDaysOfWeek = []): string
     {
-        $weeklyItems = array_map([$this, 'generateClosedDayOfWeek'], $closedDaysOfWeek);
+        $weeklyItems = array_map($this->generateClosedDayOfWeek(...), $closedDaysOfWeek);
 
         return $this->periodListFormatter->format($closedDays, 'cf-closed-days', 'closed', null, $weeklyItems);
     }

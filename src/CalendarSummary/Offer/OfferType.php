@@ -6,20 +6,17 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use InvalidArgumentException;
 
-final class OfferType
+final readonly class OfferType
 {
-    private const EVENT = 'event';
-    private const PLACE = 'place';
+    private const string EVENT = 'event';
+    private const string PLACE = 'place';
 
-    private const ALLOWED_VALUES = [
+    private const array ALLOWED_VALUES = [
         self::EVENT,
         self::PLACE,
     ];
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {

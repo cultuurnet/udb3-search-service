@@ -8,10 +8,9 @@ use InvalidArgumentException;
 
 final class Translator
 {
-    private string $locale;
     private array $messages;
 
-    public function __construct(string $locale)
+    public function __construct(private readonly string $locale)
     {
         $this->messages = [
             'en' => [
@@ -168,8 +167,6 @@ final class Translator
         if (!isset($this->messages[substr($locale, 0, 2)])) {
             throw new InvalidArgumentException('Unsupported locale: ' . $locale);
         }
-
-        $this->locale = $locale;
     }
 
     public function translate(string $key): string

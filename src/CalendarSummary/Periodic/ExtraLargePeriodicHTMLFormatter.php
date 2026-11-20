@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeImmutable;
 
-final class ExtraLargePeriodicHTMLFormatter implements PeriodicFormatterInterface
+final readonly class ExtraLargePeriodicHTMLFormatter implements PeriodicFormatterInterface
 {
     private DateFormatter $formatter;
 
@@ -52,10 +52,7 @@ final class ExtraLargePeriodicHTMLFormatter implements PeriodicFormatterInterfac
         return trim(HtmlSummaryFormatter::format($output));
     }
 
-    /**
-     * @return string
-     */
-    private function generateDates(DateTimeImmutable $dateFrom, DateTimeImmutable $dateTo, string $optionalStatus)
+    private function generateDates(DateTimeImmutable $dateFrom, DateTimeImmutable $dateTo, string $optionalStatus): string
     {
         $intlDateFrom = $this->formatter->formatAsFullDate($dateFrom);
         $intlDateTo = $this->formatter->formatAsFullDate($dateTo);

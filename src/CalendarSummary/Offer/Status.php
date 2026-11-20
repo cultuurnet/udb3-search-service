@@ -8,36 +8,27 @@ use InvalidArgumentException;
 
 final class Status
 {
-    private const AVAILABLE = 'Available';
-    private const UNAVAILABLE = 'Unavailable';
-    private const TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
+    private const string AVAILABLE = 'Available';
+    private const string UNAVAILABLE = 'Unavailable';
+    private const string TEMPORARILY_UNAVAILABLE = 'TemporarilyUnavailable';
 
-    private const ALLOWED_TYPES = [
+    private const array ALLOWED_TYPES = [
         self::AVAILABLE,
         self::UNAVAILABLE,
         self::TEMPORARILY_UNAVAILABLE,
     ];
 
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var array<string, string>
-     */
-    private $reason;
+    private readonly string $type;
 
     /**
      * @param array<string, string> $reason
      */
-    public function __construct(string $type, array $reason)
+    public function __construct(string $type, private array $reason)
     {
         if (!in_array($type, self::ALLOWED_TYPES)) {
             throw new InvalidArgumentException('Invalid status type: ' . $type);
         }
         $this->type = $type;
-        $this->reason = $reason;
     }
 
     public function getType(): string

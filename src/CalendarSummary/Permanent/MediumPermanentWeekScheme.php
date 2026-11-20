@@ -14,11 +14,9 @@ trait MediumPermanentWeekScheme
      */
     public function getWeekScheme(array $weekDaysOpen, DateFormatter $formatter, bool $abbreviated = true): array
     {
-        $formatDayName = static function (string $dayName) use ($formatter, $abbreviated): string {
-            return $abbreviated
-                ? $formatter->formatAsAbbreviatedDayOfWeek(new DateTimeImmutable($dayName))
-                : $formatter->formatAsDayOfWeek(new DateTimeImmutable($dayName));
-        };
+        $formatDayName = static fn (string $dayName): string => $abbreviated
+            ? $formatter->formatAsAbbreviatedDayOfWeek(new DateTimeImmutable($dayName))
+            : $formatter->formatAsDayOfWeek(new DateTimeImmutable($dayName));
 
         // Do no assume people will order the days consecutive
         ksort($weekDaysOpen);

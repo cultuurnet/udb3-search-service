@@ -11,7 +11,7 @@ use IteratorAggregate;
 /**
  * @implements IteratorAggregate<int, OpeningHour>
  */
-final class OpeningHours implements IteratorAggregate, Countable
+final readonly class OpeningHours implements IteratorAggregate, Countable
 {
     /**
      * @var OpeningHour[]
@@ -50,7 +50,7 @@ final class OpeningHours implements IteratorAggregate, Countable
     {
         $sorted = $this->openingHours;
 
-        usort($sorted, static function (OpeningHour $a, OpeningHour $b) {
+        usort($sorted, static function (OpeningHour $a, OpeningHour $b): int {
             $weekdayA = array_search($a->getDaysOfWeek()[0], OpeningHour::ALLOWED_DAYS);
             $weekdayB = array_search($b->getDaysOfWeek()[0], OpeningHour::ALLOWED_DAYS);
             $fullHoursA = $weekdayA * 24 + (int) $a->getOpens();
@@ -86,14 +86,12 @@ final class OpeningHours implements IteratorAggregate, Countable
         foreach ($daysPerTimespans as $daysOfWeek) {
             $groups[] = new self(
                 array_map(
-                    static function (OpeningHour $timespan) use ($daysOfWeek): OpeningHour {
-                        return new OpeningHour(
-                            $daysOfWeek,
-                            $timespan->getOpens(),
-                            $timespan->getCloses(),
-                            $timespan->getChildcare()
-                        );
-                    },
+                    static fn (OpeningHour $timespan): OpeningHour => new OpeningHour(
+                        $daysOfWeek,
+                        $timespan->getOpens(),
+                        $timespan->getCloses(),
+                        $timespan->getChildcare()
+                    ),
                     $timespansPerDay[$daysOfWeek[0]]
                 )
             );
@@ -132,9 +130,7 @@ final class OpeningHours implements IteratorAggregate, Countable
         return new self(
             array_filter(
                 $this->openingHours,
-                static function (OpeningHour $openingHour) use ($dayOfWeek): bool {
-                    return in_array($dayOfWeek, $openingHour->getDaysOfWeek(), true);
-                }
+                static fn (OpeningHour $openingHour): bool => in_array($dayOfWeek, $openingHour->getDaysOfWeek(), true)
             )
         );
     }
@@ -257,9 +253,7 @@ final class OpeningHours implements IteratorAggregate, Countable
     {
         return array_filter(
             $this->openingHours,
-            static function (OpeningHour $openingHour) use ($daysOfWeek): bool {
-                return $daysOfWeek === $openingHour->getDaysOfWeek();
-            }
+            static fn (OpeningHour $openingHour): bool => $daysOfWeek === $openingHour->getDaysOfWeek()
         );
     }
 }

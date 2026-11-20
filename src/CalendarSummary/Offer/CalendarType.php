@@ -6,24 +6,21 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use InvalidArgumentException;
 
-final class CalendarType
+final readonly class CalendarType
 {
-    private const SINGLE = 'single';
-    private const MULTIPLE = 'multiple';
-    private const PERIODIC = 'periodic';
-    private const PERMANENT = 'permanent';
+    private const string SINGLE = 'single';
+    private const string MULTIPLE = 'multiple';
+    private const string PERIODIC = 'periodic';
+    private const string PERMANENT = 'permanent';
 
-    private const ALLOWED_VALUES = [
+    private const array ALLOWED_VALUES = [
         self::SINGLE,
         self::MULTIPLE,
         self::PERIODIC,
         self::PERMANENT,
     ];
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {

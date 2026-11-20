@@ -8,17 +8,10 @@ use Closure;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 
-final class NonAvailablePlacePlainTextFormatter implements FormatterMiddleware
+final readonly class NonAvailablePlacePlainTextFormatter implements FormatterMiddleware
 {
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    public function __construct(
-        Translator $translator
-    ) {
-        $this->translator = $translator;
+    public function __construct(private Translator $translator)
+    {
     }
 
     public function format(Offer $offer, Closure $next): string

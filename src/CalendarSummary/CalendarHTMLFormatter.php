@@ -29,12 +29,9 @@ final class CalendarHTMLFormatter implements CalendarFormatterInterface
     /**
      * @var array[]
      */
-    private $mapping;
+    private array $mapping;
 
-    /**
-     * @var FormatterMiddleware
-     */
-    private $middleware;
+    private readonly FormatterMiddleware $middleware;
 
     public function __construct(
         string $langCode = 'nl_BE',
@@ -98,9 +95,7 @@ final class CalendarHTMLFormatter implements CalendarFormatterInterface
 
         return $this->middleware->format(
             $offer,
-            function ($offer) use ($formatter) {
-                return $formatter->format($offer);
-            }
+            fn ($offer) => $formatter->format($offer)
         );
     }
 }
