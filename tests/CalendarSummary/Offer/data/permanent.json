@@ -1,0 +1,10 @@
+{
+  "@context": "/contexts/event",
+  "calendarType":"permanent",
+  "status": {
+    "type": "Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
+  }
+}

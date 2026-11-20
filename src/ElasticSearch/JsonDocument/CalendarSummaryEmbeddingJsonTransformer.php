@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 
-use CultuurNet\CalendarSummaryV3\CalendarFormatterInterface;
-use CultuurNet\CalendarSummaryV3\CalendarHTMLFormatter;
-use CultuurNet\CalendarSummaryV3\CalendarPlainTextFormatter;
-use CultuurNet\CalendarSummaryV3\Offer\Offer;
+use CultuurNet\UDB3\Search\CalendarSummary\CalendarFormatterInterface;
+use CultuurNet\UDB3\Search\CalendarSummary\CalendarHTMLFormatter;
+use CultuurNet\UDB3\Search\CalendarSummary\CalendarPlainTextFormatter;
+use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;

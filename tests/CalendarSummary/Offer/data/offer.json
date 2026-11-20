@@ -1,0 +1,16 @@
+{
+  "@context": "/contexts/event",
+  "calendarType":"single",
+  "startDate": "2021-03-01T23:00:00+00:00",
+  "endDate": "2021-03-28T22:59:59+00:00",
+  "status": {
+    "type": "TemporarilyUnavailable",
+    "reason": {
+      "nl": "Uitgesteld",
+      "en": "Postponed"
+    }
+  },
+  "bookingAvailability": {
+    "type": "Unavailable"
+  }
+}

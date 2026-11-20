@@ -1,3 +1,7 @@
+includes:
+	# Errors in the calendar summary code inherited from calendar-summary-v3, which ran on level 2.
+	- phpstan-baseline.neon
+
 parameters:
 	level: 8
 	parallel:
