@@ -58,7 +58,7 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
 
         $logger->info(sprintf('Peak memory: %d MB.', memory_get_peak_usage(true) / 1024 / 1024));
 
-        return 0;
+        return self::SUCCESS;
     }
 
     /**
