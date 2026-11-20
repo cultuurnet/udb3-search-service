@@ -14,30 +14,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
 {
-    private string $indexPrefix;
-
-    private string $schemaVersion;
-
-    private string $alias;
-
-    private int $numberOfShards;
-
-    private int $numberOfReplicas;
-
     public function __construct(
         ElasticSearchClient $client,
-        string $indexPrefix,
-        string $schemaVersion,
-        string $alias,
-        int $numberOfShards,
-        int $numberOfReplicas
+        private readonly string $indexPrefix,
+        private readonly string $schemaVersion,
+        private readonly string $alias,
+        private readonly int $numberOfShards,
+        private readonly int $numberOfReplicas
     ) {
         parent::__construct($client);
-        $this->indexPrefix = $indexPrefix;
-        $this->schemaVersion = $schemaVersion;
-        $this->alias = $alias;
-        $this->numberOfShards = $numberOfShards;
-        $this->numberOfReplicas = $numberOfReplicas;
     }
 
     protected function configure(): void
