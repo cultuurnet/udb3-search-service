@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 final class OpenAddressCsvReaderTest extends TestCase
 {
@@ -27,7 +28,7 @@ final class OpenAddressCsvReaderTest extends TestCase
         $path = tempnam(sys_get_temp_dir(), 'addresses');
         file_put_contents((string) $path, "address_id,house_number\n1,12\n");
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessageMatches('/misses the columns EPSG:4326_lat/');
 
         try {

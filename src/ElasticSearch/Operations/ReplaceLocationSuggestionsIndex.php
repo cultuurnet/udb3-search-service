@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Operations;
 
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
+use RuntimeException;
+use Throwable;
 
 final class ReplaceLocationSuggestionsIndex extends AbstractElasticSearchOperation
 {
@@ -27,7 +29,7 @@ final class ReplaceLocationSuggestionsIndex extends AbstractElasticSearchOperati
         try {
             $sent = $this->indexDocuments($indexName, $documents);
             $this->assertAllDocumentsAreIndexed($indexName, $sent);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->client->indices()->delete(['index' => $indexName]);
             $this->logger->error("Indexing failed, deleted index {$indexName}. The alias {$alias} is unchanged.");
             throw $e;
@@ -90,7 +92,7 @@ final class ReplaceLocationSuggestionsIndex extends AbstractElasticSearchOperati
         $indexed = $response['hits']['total']['value'];
 
         if ($indexed !== $sent) {
-            throw new \RuntimeException("Sent {$sent} documents but {$indexName} holds {$indexed}.");
+            throw new RuntimeException("Sent {$sent} documents but {$indexName} holds {$indexed}.");
         }
     }
 

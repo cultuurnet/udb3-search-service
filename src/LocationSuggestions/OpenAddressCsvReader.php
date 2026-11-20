@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
+use Generator;
+use RuntimeException;
+
 final class OpenAddressCsvReader
 {
     // Only the columns we read are checked. BOSA renamed the projected coordinate
@@ -27,28 +30,28 @@ final class OpenAddressCsvReader
     ];
 
     /**
-     * @return \Generator<array<string, string>>
+     * @return Generator<array<string, string>>
      */
-    public static function rows(string $path): \Generator
+    public static function rows(string $path): Generator
     {
         if (!is_readable($path)) {
-            throw new \RuntimeException('Could not open ' . $path);
+            throw new RuntimeException('Could not open ' . $path);
         }
 
         $handle = fopen($path, 'rb');
         if ($handle === false) {
-            throw new \RuntimeException('Could not open ' . $path);
+            throw new RuntimeException('Could not open ' . $path);
         }
 
         try {
             $header = self::readLine($handle);
             if ($header === null) {
-                throw new \RuntimeException($path . ' is empty');
+                throw new RuntimeException($path . ' is empty');
             }
 
             $missingColumns = array_diff(self::REQUIRED_COLUMNS, $header);
             if ($missingColumns !== []) {
-                throw new \RuntimeException($path . ' misses the columns ' . implode(', ', $missingColumns));
+                throw new RuntimeException($path . ' misses the columns ' . implode(', ', $missingColumns));
             }
 
             while (($values = self::readLine($handle)) !== null) {

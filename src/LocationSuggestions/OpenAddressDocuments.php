@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
+use Generator;
+
 final class OpenAddressDocuments
 {
     /**
      * @param iterable<array<string, string>> $rows
-     * @return \Generator<string, array<string, mixed>>
+     * @return Generator<string, array<string, mixed>>
      */
-    public static function fromRows(iterable $rows): \Generator
+    public static function fromRows(iterable $rows): Generator
     {
         $streets = [];
         $seenAddressIds = [];
