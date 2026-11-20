@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use InvalidArgumentException;
 
-final class Status
+final readonly class Status
 {
     private const string AVAILABLE = 'Available';
     private const string UNAVAILABLE = 'Unavailable';
@@ -18,7 +18,7 @@ final class Status
         self::TEMPORARILY_UNAVAILABLE,
     ];
 
-    private readonly string $type;
+    private string $type;
 
     /**
      * @param array<string, string> $reason

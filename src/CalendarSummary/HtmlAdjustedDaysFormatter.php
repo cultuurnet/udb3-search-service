@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\AdjustedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
-use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHour;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHours;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Period;
 use CultuurNet\UDB3\Search\CalendarSummary\Permanent\MediumPermanentWeekScheme;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 
 /**
  * Renders the periods during which the regular opening hours are replaced by
  * other opening hours as a collapsible list.
  */
-final class HtmlAdjustedDaysFormatter
+final readonly class HtmlAdjustedDaysFormatter
 {
     use MediumPermanentWeekScheme;
 
@@ -146,7 +146,7 @@ final class HtmlAdjustedDaysFormatter
         // because the first day of the week differs per locale.
         $weekDaysOpen = [];
         foreach ($daysOfWeek as $dayOfWeek) {
-            $weekDaysOpen[(int) array_search($dayOfWeek, OpeningHour::ALLOWED_DAYS, true)] = $dayOfWeek;
+            $weekDaysOpen[DayOfWeek::from($dayOfWeek)->position()] = $dayOfWeek;
         }
 
         return ucfirst(implode(', ', $this->getWeekScheme($weekDaysOpen, $this->formatter, false)));

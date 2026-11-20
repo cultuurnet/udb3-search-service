@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use DateTimeImmutable;
 
-final class AdjustedDay implements Period
+final readonly class AdjustedDay implements Period
 {
-    private readonly OpeningHours $openingHours;
+    private OpeningHours $openingHours;
 
     /**
      * @param string[] $description
      */
     public function __construct(
-        private readonly DateTimeImmutable $startDate,
-        private readonly DateTimeImmutable $endDate,
+        private DateTimeImmutable $startDate,
+        private DateTimeImmutable $endDate,
         ?OpeningHours $openingHours = null,
         private array $description = []
     ) {

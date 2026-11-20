@@ -24,14 +24,14 @@ use CultuurNet\UDB3\Search\CalendarSummary\Permanent\LargePermanentPlainTextForm
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\LargeMultiplePlainTextFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Multiple\MediumMultiplePlainTextFormatter;
 
-final class CalendarPlainTextFormatter implements CalendarFormatterInterface
+final readonly class CalendarPlainTextFormatter implements CalendarFormatterInterface
 {
     /**
      * @var array[]
      */
     private array $mapping;
 
-    private readonly NonAvailablePlacePlainTextFormatter $middleware;
+    private NonAvailablePlacePlainTextFormatter $middleware;
 
     public function __construct(
         string $langCode = 'nl_BE',

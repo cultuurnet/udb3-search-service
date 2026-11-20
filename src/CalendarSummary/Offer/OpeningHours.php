@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use ArrayIterator;
 use Countable;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use IteratorAggregate;
 
 /**
@@ -51,8 +52,8 @@ final readonly class OpeningHours implements IteratorAggregate, Countable
         $sorted = $this->openingHours;
 
         usort($sorted, static function (OpeningHour $a, OpeningHour $b): int {
-            $weekdayA = array_search($a->getDaysOfWeek()[0], OpeningHour::ALLOWED_DAYS);
-            $weekdayB = array_search($b->getDaysOfWeek()[0], OpeningHour::ALLOWED_DAYS);
+            $weekdayA = DayOfWeek::from($a->getDaysOfWeek()[0])->position();
+            $weekdayB = DayOfWeek::from($b->getDaysOfWeek()[0])->position();
             $fullHoursA = $weekdayA * 24 + (int) $a->getOpens();
             $fullHoursB = $weekdayB * 24 + (int) $b->getOpens();
 
@@ -148,9 +149,9 @@ final readonly class OpeningHours implements IteratorAggregate, Countable
         }
 
         $closedDaysOfWeek = [];
-        foreach (OpeningHour::ALLOWED_DAYS as $dayOfWeek) {
-            if ($this->onDayOfWeek($dayOfWeek)->isEmpty()) {
-                $closedDaysOfWeek[] = $dayOfWeek;
+        foreach (DayOfWeek::cases() as $dayOfWeek) {
+            if ($this->onDayOfWeek($dayOfWeek->value)->isEmpty()) {
+                $closedDaysOfWeek[] = $dayOfWeek->value;
             }
         }
 

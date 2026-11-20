@@ -6,15 +6,15 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use DateTimeImmutable;
 
-final class ClosedDay implements Period
+final readonly class ClosedDay implements Period
 {
     /**
      * @param string[] $description
      */
     public function __construct(
-        private readonly DateTimeImmutable $startDate,
-        private readonly DateTimeImmutable $endDate,
-        private readonly array $description = []
+        private DateTimeImmutable $startDate,
+        private DateTimeImmutable $endDate,
+        private array $description = []
     ) {
     }
 
