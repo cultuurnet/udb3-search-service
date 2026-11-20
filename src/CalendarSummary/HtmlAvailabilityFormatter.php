@@ -110,7 +110,8 @@ final class HtmlAvailabilityFormatter
 
     private function getAvailabilityText(): string
     {
-        if ($this->isPlace) {
+        // A place that is open but fully booked is not closed, so it reads like a sold out event.
+        if ($this->isPlace && $this->status->getType() !== 'Available') {
             return $this->status->getType() === 'Unavailable' ?
                 $this->translator->translate('permanently_closed') :
                 $this->translator->translate('temporarily_closed');
@@ -137,6 +138,6 @@ final class HtmlAvailabilityFormatter
             return '';
         }
 
-        return 'title="' . $translatedReason . '" ';
+        return 'title="' . htmlspecialchars($translatedReason, ENT_QUOTES) . '" ';
     }
 }

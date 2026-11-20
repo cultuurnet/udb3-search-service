@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
+use InvalidArgumentException;
+
 final readonly class Translator
 {
     private array $messages;
@@ -130,8 +132,8 @@ final readonly class Translator
                 'till_included' => 'bis',
                 'till_hour' => 'bis',
                 'closed' => 'geschlossen',
-                'open_at' => 'öffnen',
-                'open_at_consecutive_days' => 'öffnen',
+                'open_at' => 'geöffnet',
+                'open_at_consecutive_days' => 'geöffnet',
                 'at' => 'um',
                 'open_every_day' => 'Jeden Tag geöffnet',
                 'and' => 'und',
@@ -160,6 +162,11 @@ final readonly class Translator
                 'adjusted_hours_notice' => 'Die Zeiten können in diesem Zeitraum abweichen.',
             ],
         ];
+
+        // Fail on construction rather than on the first label, which would surface as an undefined index.
+        if (!isset($this->messages[substr($locale, 0, 2)])) {
+            throw new InvalidArgumentException('Unsupported locale: ' . $locale);
+        }
     }
 
     public function translate(string $key): string

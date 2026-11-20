@@ -35,7 +35,14 @@ final class CalendarSummaryFormat
 
     public static function fromCombinedParameter(string $parameter): self
     {
-        [$format, $type] = explode('-', $parameter);
+        $parts = explode('-', $parameter);
+        if (count($parts) !== 2) {
+            throw new UnsupportedParameterValue(
+                'Invalid calendar summary: ' . $parameter . '. Use the format {format}-{type}, e.g. md-text'
+            );
+        }
+
+        [$format, $type] = $parts;
         return new self($type, $format);
     }
 
