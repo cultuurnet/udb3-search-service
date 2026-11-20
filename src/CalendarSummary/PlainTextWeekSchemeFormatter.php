@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHour;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHours;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 
 /**
  * Renders the opening hours of a week as plain text.
@@ -140,7 +141,8 @@ final class PlainTextWeekSchemeFormatter
     {
         $lines = [];
 
-        foreach (OpeningHour::ALLOWED_DAYS as $dayOfWeek) {
+        foreach (DayOfWeek::cases() as $day) {
+            $dayOfWeek = $day->value;
             $timespans = $timespansPerDay[$dayOfWeek] ?? [];
 
             if (!$timespans && $this->withoutClosedDays) {
