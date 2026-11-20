@@ -86,6 +86,16 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_leaves_the_draft_untouched_without_formats(): void
+    {
+        $transformer = new CalendarSummaryEmbeddingJsonTransformer();
+
+        $this->assertSame(['foo' => 'bar'], $transformer->transform([], ['foo' => 'bar']));
+    }
+
+    /**
+     * @test
      * @dataProvider providesOffers
      */
     public function it_summarizes_every_kind_of_offer(array $jsonld, string $format, array $expected): void
