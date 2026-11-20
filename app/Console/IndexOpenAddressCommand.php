@@ -51,7 +51,7 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
             $indexName,
             $this->indexPrefix . '*',
             $this->alias,
-            OpenAddressDocuments::fromRows(new OpenAddressCsvReader($files)),
+            new OpenAddressDocuments(new OpenAddressCsvReader($files)),
             $this->numberOfShards,
             $this->numberOfReplicas
         );

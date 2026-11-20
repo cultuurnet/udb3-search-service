@@ -16,7 +16,7 @@ final class OpenAddressDocumentsTest extends TestCase
     protected function setUp(): void
     {
         $this->documents = iterator_to_array(
-            OpenAddressDocuments::fromRows(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']))
+            new OpenAddressDocuments(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']))
         );
     }
 
@@ -102,7 +102,7 @@ final class OpenAddressDocumentsTest extends TestCase
      */
     public function it_takes_the_postname_in_the_same_language_as_the_street_name(): void
     {
-        $documents = iterator_to_array(OpenAddressDocuments::fromRows([
+        $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'Jupille', 'postname_nl' => 'Jupille-aan-de-Maas']),
         ]));
 
@@ -114,7 +114,7 @@ final class OpenAddressDocumentsTest extends TestCase
      */
     public function it_shows_the_municipality_instead_of_a_postname_in_capitals_with_accents(): void
     {
-        $documents = iterator_to_array(OpenAddressDocuments::fromRows([
+        $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIÈGE', 'municipality_name_fr' => 'Liège']),
         ]));
 
