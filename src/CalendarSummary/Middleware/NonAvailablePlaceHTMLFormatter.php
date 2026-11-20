@@ -9,17 +9,10 @@ use CultuurNet\UDB3\Search\CalendarSummary\HtmlAvailabilityFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 
-final class NonAvailablePlaceHTMLFormatter implements FormatterMiddleware
+final readonly class NonAvailablePlaceHTMLFormatter implements FormatterMiddleware
 {
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    public function __construct(
-        Translator $translator
-    ) {
-        $this->translator = $translator;
+    public function __construct(private Translator $translator)
+    {
     }
 
 

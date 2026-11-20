@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\AdjustedDay;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
-use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHour;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHours;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Period;
 use CultuurNet\UDB3\Search\CalendarSummary\Permanent\MediumPermanentWeekScheme;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 
 /**
  * Renders the periods during which the regular opening hours are replaced by
  * other opening hours as plain text.
  */
-final class PlainTextAdjustedDaysFormatter
+final readonly class PlainTextAdjustedDaysFormatter
 {
     use MediumPermanentWeekScheme;
 
@@ -40,11 +40,9 @@ final class PlainTextAdjustedDaysFormatter
         return $this->periodListFormatter->format(
             $adjustedDays,
             'except_during',
-            function (Period $adjustedDay): string {
-                return $adjustedDay instanceof AdjustedDay
-                    ? $this->generateOpeningHoursOfPeriod($adjustedDay->getOpeningHours())
-                    : '';
-            }
+            fn (Period $adjustedDay): string => $adjustedDay instanceof AdjustedDay
+                ? $this->generateOpeningHoursOfPeriod($adjustedDay->getOpeningHours())
+                : ''
         );
     }
 
@@ -152,7 +150,7 @@ final class PlainTextAdjustedDaysFormatter
         // because the first day of the week differs per locale.
         $weekDaysOpen = [];
         foreach ($daysOfWeek as $dayOfWeek) {
-            $weekDaysOpen[(int) array_search($dayOfWeek, OpeningHour::ALLOWED_DAYS, true)] = $dayOfWeek;
+            $weekDaysOpen[DayOfWeek::from($dayOfWeek)->position()] = $dayOfWeek;
         }
 
         return implode(', ', $this->getWeekScheme($weekDaysOpen, $this->formatter, false));

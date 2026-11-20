@@ -10,8 +10,6 @@ use LogicException;
 
 final class ChildcareFormatter
 {
-    private Translator $translator;
-
     /**
      * @var Childcare[]
      */
@@ -25,9 +23,8 @@ final class ChildcareFormatter
 
     private bool $capitalize = false;
 
-    private function __construct(Translator $translator)
+    private function __construct(private Translator $translator)
     {
-        $this->translator = $translator;
     }
 
     public static function forChildcare(Childcare $childcare, Translator $translator): self

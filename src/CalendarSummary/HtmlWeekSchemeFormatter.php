@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Childcare;
-use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHour;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\OpeningHours;
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use DateTimeImmutable;
 
 /**
@@ -272,7 +272,8 @@ final class HtmlWeekSchemeFormatter
         }
 
         $sortedDays = [];
-        foreach (OpeningHour::ALLOWED_DAYS as $dayOfWeek) {
+        foreach (DayOfWeek::cases() as $day) {
+            $dayOfWeek = $day->value;
             if (isset($formattedDays[$dayOfWeek])) {
                 $sortedDays[$dayOfWeek] = $formattedDays[$dayOfWeek];
             } elseif ($this->withEveryDayOfTheWeek) {

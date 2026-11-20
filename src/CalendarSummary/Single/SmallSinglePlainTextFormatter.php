@@ -12,18 +12,12 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeInterface;
 
-final class SmallSinglePlainTextFormatter implements SingleFormatterInterface
+final readonly class SmallSinglePlainTextFormatter implements SingleFormatterInterface
 {
     use RelativeDatePlainTextFormatter;
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {

@@ -11,19 +11,13 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeImmutable;
 
-final class MediumPermanentPlainTextFormatter implements PermanentFormatterInterface
+final readonly class MediumPermanentPlainTextFormatter implements PermanentFormatterInterface
 {
     use MediumPermanentWeekScheme;
 
-    /**
-     * @var DateFormatter
-     */
-    private $formatter;
+    private DateFormatter $formatter;
 
-    /**
-     * @var Translator
-     */
-    private $translator;
+    private Translator $translator;
 
     public function __construct(Translator $translator)
     {

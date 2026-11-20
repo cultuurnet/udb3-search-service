@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Period;
 /**
  * Renders a list of periods as a heading followed by a line per period.
  */
-final class PlainTextPeriodListFormatter
+final readonly class PlainTextPeriodListFormatter
 {
     private DateFormatter $formatter;
 
@@ -55,9 +55,7 @@ final class PlainTextPeriodListFormatter
      */
     private function withoutPastPeriods(array $periods): array
     {
-        return array_filter($periods, static function (Period $period): bool {
-            return !DateComparison::isPastDay($period->getEndDate());
-        });
+        return array_filter($periods, static fn (Period $period): bool => !DateComparison::isPastDay($period->getEndDate()));
     }
 
     /**

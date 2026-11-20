@@ -6,20 +6,17 @@ namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
 use InvalidArgumentException;
 
-final class BookingAvailability
+final readonly class BookingAvailability
 {
-    private const AVAILABLE = 'Available';
-    private const UNAVAILABLE = 'Unavailable';
+    private const string AVAILABLE = 'Available';
+    private const string UNAVAILABLE = 'Unavailable';
 
-    private const ALLOWED_TYPES = [
+    private const array ALLOWED_TYPES = [
         self::AVAILABLE,
         self::UNAVAILABLE,
     ];
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     public function __construct(string $type)
     {

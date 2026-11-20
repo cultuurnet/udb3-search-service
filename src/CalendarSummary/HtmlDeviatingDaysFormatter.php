@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 /**
  * Renders the adjusted days followed by the closed days as HTML.
  */
-final class HtmlDeviatingDaysFormatter
+final readonly class HtmlDeviatingDaysFormatter
 {
     private HtmlAdjustedDaysFormatter $adjustedDaysFormatter;
 

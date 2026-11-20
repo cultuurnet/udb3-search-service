@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
-final class Translator
+final readonly class Translator
 {
-    private string $locale;
     private array $messages;
 
-    public function __construct(string $locale)
+    public function __construct(private string $locale)
     {
         $this->messages = [
             'en' => [
@@ -161,8 +160,6 @@ final class Translator
                 'adjusted_hours_notice' => 'Die Zeiten können in diesem Zeitraum abweichen.',
             ],
         ];
-
-        $this->locale = $locale;
     }
 
     public function translate(string $key): string

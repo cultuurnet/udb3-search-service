@@ -6,14 +6,10 @@ namespace CultuurNet\UDB3\Search\CalendarSummary;
 
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
+use Stringable;
 
-final class PlainTextSummaryBuilder
+final class PlainTextSummaryBuilder implements Stringable
 {
-    /**
-     * @var Translator
-     */
-    private $translator;
-
     /**
      * @var string[]
      */
@@ -24,14 +20,10 @@ final class PlainTextSummaryBuilder
      */
     private $workingLine;
 
-    /**
-     * @var bool
-     */
-    private $lowercaseNextFirstCharacter;
+    private bool $lowercaseNextFirstCharacter;
 
-    private function __construct(Translator $translator)
+    private function __construct(private Translator $translator)
     {
-        $this->translator = $translator;
         $this->lines = [];
         $this->workingLine = [];
         $this->lowercaseNextFirstCharacter = false;

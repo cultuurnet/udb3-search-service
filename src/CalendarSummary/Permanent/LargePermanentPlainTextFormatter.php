@@ -10,16 +10,10 @@ use CultuurNet\UDB3\Search\CalendarSummary\PlainTextSummaryBuilder;
 use CultuurNet\UDB3\Search\CalendarSummary\PlainTextWeekSchemeFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 
-final class LargePermanentPlainTextFormatter implements PermanentFormatterInterface
+final readonly class LargePermanentPlainTextFormatter implements PermanentFormatterInterface
 {
-    /**
-     * @var Translator
-     */
-    private $translator;
-
-    public function __construct(Translator $translator)
+    public function __construct(private Translator $translator)
     {
-        $this->translator = $translator;
     }
 
     public function format(Offer $offer): string

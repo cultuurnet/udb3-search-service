@@ -4,58 +4,31 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Offer;
 
+use CultuurNet\UDB3\Search\Offer\DayOfWeek;
 use InvalidArgumentException;
 
-final class OpeningHour
+final readonly class OpeningHour
 {
-    public const ALLOWED_DAYS = [
-        'monday',
-        'tuesday',
-        'wednesday',
-        'thursday',
-        'friday',
-        'saturday',
-        'sunday',
-    ];
-
     /**
      * @var string[]
      */
-    private $daysOfWeek;
-
-    /**
-     * @var string
-     */
-    private $opens;
-
-    /**
-     * @var string
-     */
-    private $closes;
-
-    /**
-     * @var Childcare|null
-     */
-    private $childcare;
+    private array $daysOfWeek;
 
     /**
      * @param string[] $daysOfWeek
      */
     public function __construct(
         array $daysOfWeek,
-        string $opens,
-        string $closes,
-        ?Childcare $childcare = null
+        private string $opens,
+        private string $closes,
+        private ?Childcare $childcare = null
     ) {
         foreach ($daysOfWeek as $day) {
-            if (!in_array($day, self::ALLOWED_DAYS)) {
+            if (DayOfWeek::tryFrom($day) === null) {
                 throw new InvalidArgumentException('Invalid day: ' . $day);
             }
         }
         $this->daysOfWeek = $daysOfWeek;
-        $this->opens = $opens;
-        $this->closes = $closes;
-        $this->childcare = $childcare;
     }
 
     public static function fromArray(array $data): self

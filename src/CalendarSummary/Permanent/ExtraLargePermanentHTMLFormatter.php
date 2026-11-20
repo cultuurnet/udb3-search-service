@@ -11,16 +11,13 @@ use CultuurNet\UDB3\Search\CalendarSummary\HtmlWeekSchemeFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 
-final class ExtraLargePermanentHTMLFormatter implements PermanentFormatterInterface
+final readonly class ExtraLargePermanentHTMLFormatter implements PermanentFormatterInterface
 {
-    private Translator $translator;
-
     private HtmlDeviatingDaysFormatter $deviatingDaysFormatter;
 
-    public function __construct(Translator $translator)
+    public function __construct(private Translator $translator)
     {
-        $this->translator = $translator;
-        $this->deviatingDaysFormatter = new HtmlDeviatingDaysFormatter($translator);
+        $this->deviatingDaysFormatter = new HtmlDeviatingDaysFormatter($this->translator);
     }
 
     public function format(Offer $offer): string

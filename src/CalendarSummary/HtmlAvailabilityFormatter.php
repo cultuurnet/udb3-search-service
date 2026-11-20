@@ -11,11 +11,6 @@ use CultuurNet\UDB3\Search\CalendarSummary\Offer\Status;
 final class HtmlAvailabilityFormatter
 {
     /**
-     * @var Translator
-     */
-    private $translator;
-
-    /**
      * @var bool
      */
     private $isAvailable;
@@ -50,9 +45,8 @@ final class HtmlAvailabilityFormatter
      */
     private $isPlace = false;
 
-    private function __construct(Translator $translator)
+    private function __construct(private Translator $translator)
     {
-        $this->translator = $translator;
     }
 
     public static function forOffer(Offer $offer, Translator $translator): self
