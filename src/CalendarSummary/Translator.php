@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary;
 
-final class Translator
+final readonly class Translator
 {
     private array $messages;
 
-    public function __construct(private readonly string $locale)
+    public function __construct(private string $locale)
     {
         $this->messages = [
             'en' => [

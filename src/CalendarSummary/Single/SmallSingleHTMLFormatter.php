@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeInterface;
 
-final class SmallSingleHTMLFormatter implements SingleFormatterInterface
+final readonly class SmallSingleHTMLFormatter implements SingleFormatterInterface
 {
     use RelativeDateHTMLFormatter;
     private DateFormatter $formatter;

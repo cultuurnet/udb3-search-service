@@ -24,14 +24,14 @@ use CultuurNet\UDB3\Search\CalendarSummary\Periodic\LargePeriodicHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Periodic\MediumPeriodicHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\Periodic\SmallPeriodicHTMLFormatter;
 
-final class CalendarHTMLFormatter implements CalendarFormatterInterface
+final readonly class CalendarHTMLFormatter implements CalendarFormatterInterface
 {
     /**
      * @var array[]
      */
     private array $mapping;
 
-    private readonly FormatterMiddleware $middleware;
+    private FormatterMiddleware $middleware;
 
     public function __construct(
         string $langCode = 'nl_BE',

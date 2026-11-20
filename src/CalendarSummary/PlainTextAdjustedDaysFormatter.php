@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Search\Offer\DayOfWeek;
  * Renders the periods during which the regular opening hours are replaced by
  * other opening hours as plain text.
  */
-final class PlainTextAdjustedDaysFormatter
+final readonly class PlainTextAdjustedDaysFormatter
 {
     use MediumPermanentWeekScheme;
 

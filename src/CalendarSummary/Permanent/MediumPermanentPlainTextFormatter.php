@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use DateTimeImmutable;
 
-final class MediumPermanentPlainTextFormatter implements PermanentFormatterInterface
+final readonly class MediumPermanentPlainTextFormatter implements PermanentFormatterInterface
 {
     use MediumPermanentWeekScheme;
 

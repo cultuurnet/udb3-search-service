@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Search\CalendarSummary\Translator;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-final class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
+final readonly class SmallMultipleHTMLFormatter implements MultipleFormatterInterface
 {
     use RelativeDateHTMLFormatter;
     private DateFormatter $formatter;
