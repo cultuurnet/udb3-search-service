@@ -1,0 +1,43 @@
+{
+    "settings": {
+        "analysis": {
+            "char_filter": {
+                "location_char_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "[^\\p{L}\\p{N}]+",
+                    "replacement": " "
+                }
+            },
+            "analyzer": {
+                "location_analyzer": {
+                    "type": "custom",
+                    "char_filter": ["location_char_filter"],
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "asciifolding"]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "type": {
+                "type": "keyword"
+            },
+            "label": {
+                "type": "keyword",
+                "index": false
+            },
+            "search_text": {
+                "type": "text",
+                "analyzer": "location_analyzer",
+                "index_prefixes": {
+                    "min_chars": 1,
+                    "max_chars": 19
+                }
+            },
+            "location": {
+                "type": "geo_point"
+            }
+        }
+    }
+}
