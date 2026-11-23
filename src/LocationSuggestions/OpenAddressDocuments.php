@@ -14,15 +14,15 @@ use function Symfony\Component\String\u;
 /**
  * @implements IteratorAggregate<string, array<string, mixed>>
  */
-final class OpenAddressDocuments implements IteratorAggregate
+final readonly class OpenAddressDocuments implements IteratorAggregate
 {
     /**
      * @param iterable<array<string, string>> $rows
      */
     public function __construct(
-        private readonly iterable $rows,
-        private readonly MunicipalityRegions $municipalityRegions,
-        private readonly LoggerInterface $logger = new NullLogger(),
+        private iterable $rows,
+        private MunicipalityRegions $municipalityRegions,
+        private LoggerInterface $logger = new NullLogger(),
     ) {
     }
 

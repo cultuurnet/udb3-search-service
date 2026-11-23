@@ -10,34 +10,40 @@ use function Symfony\Component\String\u;
  * Finds the Search API 3 region of a municipality in facet_mapping_regions.php (from cultuurnet/geojson-data),
  * so its regions filter matches the regions of events and places.
  */
-final class MunicipalityRegions
+final readonly class MunicipalityRegions
 {
     /**
      * @var array<string, true>
      */
-    private array $ids = [];
+    private array $ids;
 
     /**
      * @var array<string, string>
      */
-    private array $idsByName = [];
+    private array $idsByName;
 
     /**
      * @param array<string, array<string, mixed>> $facetMappingRegions
      */
     public function __construct(array $facetMappingRegions)
     {
+        $ids = [];
+        $idsByName = [];
+
         // The tree goes province, region, municipality, sub-municipality.
         foreach ($facetMappingRegions as $province) {
             foreach ($province['children'] ?? [] as $region) {
                 foreach ($region['children'] ?? [] as $id => $municipality) {
-                    $this->ids[$id] = true;
+                    $ids[$id] = true;
                     foreach ($municipality['name'] ?? [] as $name) {
-                        $this->idsByName[self::fold($name)] = $id;
+                        $idsByName[self::fold($name)] = $id;
                     }
                 }
             }
         }
+
+        $this->ids = $ids;
+        $this->idsByName = $idsByName;
     }
 
     /**

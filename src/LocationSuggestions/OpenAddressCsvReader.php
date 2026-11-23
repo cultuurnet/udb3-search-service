@@ -11,7 +11,7 @@ use RuntimeException;
 /**
  * @implements IteratorAggregate<int, array<string, string>>
  */
-final class OpenAddressCsvReader implements IteratorAggregate
+final readonly class OpenAddressCsvReader implements IteratorAggregate
 {
     // Only the columns we read are checked. BOSA renamed the projected coordinate
     // columns before, and a column we ignore should not stop the indexing.
@@ -37,7 +37,7 @@ final class OpenAddressCsvReader implements IteratorAggregate
     /**
      * @param list<string> $paths
      */
-    public function __construct(private readonly array $paths)
+    public function __construct(private array $paths)
     {
     }
 
