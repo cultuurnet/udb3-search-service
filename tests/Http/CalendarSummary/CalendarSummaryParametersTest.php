@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\Http\CalendarSummary;
 use CultuurNet\UDB3\Search\Http\ApiRequest;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
+use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
@@ -103,9 +104,19 @@ final class CalendarSummaryParametersTest extends TestCase
      */
     public function it_keeps_a_backwards_compatible_timezone(): void
     {
-        $parameters = new CalendarSummaryParameters($this->request(['timezone' => 'US/Eastern']));
+        // Which legacy names exist depends on the timezone database PHP uses: distributions that use the system
+        // tzdata can leave them out (Ubuntu moved them to tzdata-legacy), so take one this PHP actually knows.
+        $legacyTimezones = array_values(array_diff(
+            DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC),
+            DateTimeZone::listIdentifiers()
+        ));
+        if ($legacyTimezones === []) {
+            $this->markTestSkipped('This PHP knows no backwards compatible timezone names.');
+        }
 
-        $this->assertSame('US/Eastern', $parameters->timezone);
+        $parameters = new CalendarSummaryParameters($this->request(['timezone' => $legacyTimezones[0]]));
+
+        $this->assertSame($legacyTimezones[0], $parameters->timezone);
     }
 
     /**
