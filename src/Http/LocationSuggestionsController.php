@@ -5,47 +5,45 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
-use CultuurNet\UDB3\Search\MissingParameter;
+use CultuurNet\UDB3\Search\LocationSuggestions\SearchText;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
-final class LocationSuggestionsController
+final readonly class LocationSuggestionsController
 {
     private const NUMBER_OF_SUGGESTIONS = 10;
 
-    // Nobody types an address this long, and a longer text could exceed the Elasticsearch clause limit.
-    private const MAX_TYPED_TEXT_LENGTH = 120;
-
     public function __construct(
-        private readonly ElasticSearchClient $client,
-        private readonly string $indexName,
+        private ElasticSearchClient $client,
+        private string $indexName,
     ) {
     }
 
     public function __invoke(ApiRequestInterface $request): ResponseInterface
     {
-        $typedText = $request->getQueryParam('q', '');
-        if (!is_string($typedText)) {
+        $q = $request->getQueryParam('q', '');
+        if (!is_string($q)) {
             throw new UnsupportedParameterValue('The "q" parameter must be a single text value.');
         }
 
-        $typedText = trim($typedText);
-        if ($typedText === '') {
-            throw new MissingParameter('Required "q" parameter is missing.');
-        }
-        if (mb_strlen($typedText) > self::MAX_TYPED_TEXT_LENGTH) {
-            throw new UnsupportedParameterValue(
-                sprintf('The "q" parameter can be at most %d characters long.', self::MAX_TYPED_TEXT_LENGTH)
-            );
-        }
+        $searchText = new SearchText($q);
+
+        // Every typed word must match. The last one may be the beginning of a word, because the user is still typing it.
+        // A number at the end is the exception: as a beginning, "lentedreef 2" would also match 12, 20 and postcode 2360.
+        $matchType = $searchText->endsWithNumber() ? 'match' : 'match_bool_prefix';
+
+        // Without a number the user means the street, so the house numbers on it would only crowd it out.
+        $types = $searchText->containsNumber() ? ['street', 'address'] : ['street'];
 
         $response = $this->client->search([
             'index' => $this->indexName,
             'body' => [
                 'size' => self::NUMBER_OF_SUGGESTIONS,
                 'query' => [
-                    // Every typed word must match. The last one may be the beginning of a word, because the user is still typing it.
-                    'match_bool_prefix' => ['search_text' => ['query' => $typedText, 'operator' => 'and']],
+                    'bool' => [
+                        'must' => [[$matchType => ['search_text' => ['query' => $searchText->toString(), 'operator' => 'and']]]],
+                        'filter' => [['terms' => ['type' => $types]]],
+                    ],
                 ],
             ],
         ]);
