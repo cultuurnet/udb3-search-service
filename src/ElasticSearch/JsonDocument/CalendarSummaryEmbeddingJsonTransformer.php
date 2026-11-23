@@ -37,8 +37,13 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 
     public function transform(array $original, array $draft = []): array
     {
+        if ($this->calendarSummaryFormats === []) {
+            return $draft;
+        }
+
+        $offer = Offer::fromJsonLd($original['originalEncodedJsonLd']);
+
         foreach ($this->calendarSummaryFormats as $calendarSummaryFormat) {
-            $offer = Offer::fromJsonLd($original['originalEncodedJsonLd']);
             $calendarSummary = $this->getCalendarSummaryData($offer, $calendarSummaryFormat);
             $draft = array_merge_recursive(
                 $draft,
