@@ -4,18 +4,32 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
-final class OpenAddressDocuments
+use Generator;
+use IteratorAggregate;
+
+use function Symfony\Component\String\u;
+
+/**
+ * @implements IteratorAggregate<string, array<string, mixed>>
+ */
+final class OpenAddressDocuments implements IteratorAggregate
 {
     /**
      * @param iterable<array<string, string>> $rows
-     * @return \Generator<string, array<string, mixed>>
      */
-    public static function fromRows(iterable $rows): \Generator
+    public function __construct(private readonly iterable $rows)
+    {
+    }
+
+    /**
+     * @return Generator<string, array<string, mixed>>
+     */
+    public function getIterator(): Generator
     {
         $streets = [];
         $seenAddressIds = [];
 
-        foreach ($rows as $row) {
+        foreach ($this->rows as $row) {
             // Every box number of a house number is its own row. The building is one address,
             // and counting each flat would pull the street's coordinate towards large blocks.
             $addressId = implode(':', ['address', $row['region_code'], $row['street_id'], $row['postcode'], $row['house_number']]);
@@ -24,17 +38,17 @@ final class OpenAddressDocuments
             }
             $seenAddressIds[$addressId] = true;
 
-            $streetName = self::name($row, 'streetname');
+            $streetName = $this->name($row, 'streetname');
             $postcode = $row['postcode'];
-            $locality = self::locality($row);
-            $words = self::searchWords($row);
+            $locality = $this->locality($row);
+            $words = $this->searchWords($row);
             $lat = (float) $row['EPSG:4326_lat'];
             $lon = (float) $row['EPSG:4326_lon'];
 
             yield $addressId => [
                 'type' => 'address',
                 'label' => sprintf('%s %s, %s %s', $streetName, $row['house_number'], $postcode, $locality),
-                'search_text' => implode(' ', self::unique([...$words, $row['house_number']])),
+                'search_text' => implode(' ', $this->unique([...$words, $row['house_number']])),
                 'location' => ['lat' => $lat, 'lon' => $lon],
             ];
 
@@ -42,7 +56,7 @@ final class OpenAddressDocuments
             $streetId = implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]);
             $streets[$streetId] ??= [
                 'label' => sprintf('%s, %s %s', $streetName, $postcode, $locality),
-                'search_text' => implode(' ', self::unique($words)),
+                'search_text' => implode(' ', $this->unique($words)),
                 'lat_sum' => 0.0,
                 'lon_sum' => 0.0,
                 'count' => 0,
@@ -69,9 +83,9 @@ final class OpenAddressDocuments
     /**
      * @param array<string, string> $row
      */
-    private static function name(array $row, string $column): string
+    private function name(array $row, string $column): string
     {
-        foreach (self::languages($row) as $language) {
+        foreach ($this->languages($row) as $language) {
             // The CSV has no German postname column.
             $name = $row[$column . '_' . $language] ?? '';
             if ($name !== '') {
@@ -86,7 +100,7 @@ final class OpenAddressDocuments
      * @param array<string, string> $row
      * @return list<string>
      */
-    private static function languages(array $row): array
+    private function languages(array $row): array
     {
         // Wallonia has French names, often without a Dutch one. Elsewhere UiTinVlaanderen shows Dutch.
         return $row['region_code'] === 'BE-WAL' ? ['fr', 'de', 'nl'] : ['nl', 'fr', 'de'];
@@ -95,10 +109,10 @@ final class OpenAddressDocuments
     /**
      * @param array<string, string> $row
      */
-    private static function locality(array $row): string
+    private function locality(array $row): string
     {
-        $municipality = self::name($row, 'municipality_name');
-        $postnames = self::postnames($row);
+        $municipality = $this->name($row, 'municipality_name');
+        $postnames = $this->postnames($row);
 
         // A postcode can cover several sub-municipalities (Gentbrugge/Ledeberg), and the
         // CSV often repeats the municipality in capitals (GENT). The municipality reads better then.
@@ -113,16 +127,16 @@ final class OpenAddressDocuments
      * @param array<string, string> $row
      * @return list<string>
      */
-    private static function postnames(array $row): array
+    private function postnames(array $row): array
     {
-        return array_values(array_filter(explode('/', self::name($row, 'postname')), static fn (string $name): bool => $name !== ''));
+        return array_values(array_filter(explode('/', $this->name($row, 'postname')), static fn (string $name): bool => $name !== ''));
     }
 
     /**
      * @param array<string, string> $row
      * @return list<string>
      */
-    private static function searchWords(array $row): array
+    private function searchWords(array $row): array
     {
         return [
             $row['streetname_nl'],
@@ -141,12 +155,13 @@ final class OpenAddressDocuments
      * @param list<string> $words
      * @return list<string>
      */
-    private static function unique(array $words): array
+    private function unique(array $words): array
     {
         $unique = [];
         foreach ($words as $word) {
             if ($word !== '') {
-                $unique[mb_strtolower($word)] ??= $word;
+                // Folded like the location_analyzer does, so Liège and LIEGE end up as one word.
+                $unique[u($word)->ascii()->lower()->toString()] ??= $word;
             }
         }
 

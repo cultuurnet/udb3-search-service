@@ -89,19 +89,24 @@ jobs:
                - Verify adequate test coverage
                - Review test quality and edge cases
                - Check for missing test scenarios
-            
+               - Evaluate every change for whether it needs new or updated unit tests and/or feature (acceptance) tests
+               - New data files under a test's `data/` folder use kebab-case names, e.g. `period-with-closed-days.html`
+
             5. **Documentation**
                - Ensure code is properly documented
                - Verify README updates for new features
                - Check API documentation accuracy
             
+            Check changes against the project standards: use the `Read` tool on `CLAUDE.md` and the relevant files in `docs/`.
+            Changes under `src/CalendarSummary` must follow `docs/calendar-summary/formatting-rules.md`.
+
             Provide detailed feedback using inline comments for specific issues.
             Use suggestion blocks liberally to make it easy for developers to apply fixes.
-            Use top-level comments for general observations or praise.
+            Focus on actionable improvements only. Skip praise and positive feedback.
 
           # Tools for comprehensive PR review
           claude_args: |
-            --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
+            --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff,Read"
 
       # When track_progress is enabled:
       # - Creates a tracking comment with progress checkboxes

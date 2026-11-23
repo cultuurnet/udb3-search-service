@@ -44,6 +44,11 @@ final class OrganizerTransformerTest extends TestCase
         );
     }
 
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
+    }
+
     /**
      * @test
      */

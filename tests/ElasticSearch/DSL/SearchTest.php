@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\CardinalityAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\FieldSort;
+use CultuurNet\UDB3\Search\Json;
 use CultuurNet\UDB3\Search\SortOrder;
 use PHPUnit\Framework\TestCase;
 
@@ -26,7 +27,7 @@ final class SearchTest extends TestCase
             'size' => 30,
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($search->toArray()));
     }
 
     /**
@@ -54,7 +55,7 @@ final class SearchTest extends TestCase
             'size' => 30,
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($search->toArray()));
     }
 
     /**
@@ -74,6 +75,6 @@ final class SearchTest extends TestCase
 
         $this->assertSame(20, $search->getFrom());
         $this->assertSame(10, $search->getSize());
-        $this->assertSame(json_encode($expected), json_encode($search->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($search->toArray()));
     }
 }
