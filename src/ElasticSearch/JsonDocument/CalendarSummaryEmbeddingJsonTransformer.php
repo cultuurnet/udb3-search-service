@@ -20,6 +20,8 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
      */
     private array $calendarSummaryFormats = [];
 
+    private bool $hidePast = true;
+
     public function __construct(CalendarSummaryFormat ...$calendarSummaryFormats)
     {
         // A format requested twice would be merged recursively into a list instead of a string.
@@ -27,6 +29,13 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
             $key = $calendarSummaryFormat->getFormat() . '-' . $calendarSummaryFormat->getType();
             $this->calendarSummaryFormats[$key] = $calendarSummaryFormat;
         }
+    }
+
+    public function withHidePast(bool $hidePast): self
+    {
+        $clone = clone $this;
+        $clone->hidePast = $hidePast;
+        return $clone;
     }
 
     public function transform(array $original, array $draft = []): array
@@ -79,9 +88,9 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     {
         switch ($calendarSummaryType) {
             case 'text':
-                return new CalendarPlainTextFormatter($locale, true, 'Europe/Brussels');
+                return new CalendarPlainTextFormatter($locale, $this->hidePast, 'Europe/Brussels');
             case 'html':
-                return new CalendarHTMLFormatter($locale, true, 'Europe/Brussels');
+                return new CalendarHTMLFormatter($locale, $this->hidePast, 'Europe/Brussels');
             default:
                 throw new UnsupportedParameterValue(
                     $calendarSummaryType . ' is not a supported calendar summary type'

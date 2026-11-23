@@ -222,6 +222,42 @@ final class CalendarSummaryEmbeddingJsonTransformerTest extends TestCase
         $this->assertSame('Alle dagen open', $actual['calendarSummary']['nl']['text']['md']);
     }
 
+    /**
+     * @test
+     */
+    public function it_hides_past_dates_by_default(): void
+    {
+        $transformer = new CalendarSummaryEmbeddingJsonTransformer(
+            CalendarSummaryFormat::fromCombinedParameter('md-text')
+        );
+
+        $actual = $transformer->transform(['originalEncodedJsonLd' => Json::encode($this->pastMultipleEvent())]);
+
+        $this->assertSame('Evenement afgelopen', $actual['calendarSummary']['nl']['text']['md']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_include_past_dates(): void
+    {
+        $transformer = (new CalendarSummaryEmbeddingJsonTransformer(
+            CalendarSummaryFormat::fromCombinedParameter('md-text')
+        ))->withHidePast(false);
+
+        $actual = $transformer->transform(['originalEncodedJsonLd' => Json::encode($this->pastMultipleEvent())]);
+
+        $this->assertSame("Di 5 mei 2020\nDi 12 mei 2020", $actual['calendarSummary']['nl']['text']['md']);
+    }
+
+    private function pastMultipleEvent(): array
+    {
+        return $this->event('multiple', '2020-05-05T20:00:00+02:00', '2020-05-12T23:00:00+02:00', [
+            $this->subEvent('2020-05-05T20:00:00+02:00', '2020-05-05T23:00:00+02:00'),
+            $this->subEvent('2020-05-12T20:00:00+02:00', '2020-05-12T23:00:00+02:00'),
+        ]);
+    }
+
     private function event(
         string $calendarType,
         string $startDate,
