@@ -33,7 +33,8 @@ final readonly class OpeningHour
 
     public static function fromArray(array $data): self
     {
-        foreach ($data['dayOfWeek'] as $day) {
+        $daysOfWeek = $data['dayOfWeek'] ?? [];
+        foreach ($daysOfWeek as $day) {
             if (!is_string($day)) {
                 throw new InvalidArgumentException('Invalid day: ' . get_debug_type($day));
             }
