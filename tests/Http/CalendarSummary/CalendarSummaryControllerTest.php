@@ -114,9 +114,13 @@ final class CalendarSummaryControllerTest extends TestCase
      * @test
      * @dataProvider provideOtherTypes
      */
-    public function it_throws_not_found_when_the_id_belongs_to_another_type(string $requestedType, string $foundType): void
+    public function it_throws_not_found_when_the_id_belongs_to_another_type(string $requestedType, ?string $foundType): void
     {
-        $this->client->method('get')->willReturn($this->document($foundType));
+        $document = $this->document($foundType ?? 'event');
+        if ($foundType === null) {
+            unset($document['_source']['@type']);
+        }
+        $this->client->method('get')->willReturn($document);
 
         $this->expectException(OfferNotFound::class);
 
@@ -129,6 +133,7 @@ final class CalendarSummaryControllerTest extends TestCase
             'place requested as event' => ['events', 'place'],
             'event requested as place' => ['places', 'event'],
             'organizer requested as event' => ['events', 'organizer'],
+            'document without a type' => ['events', null],
         ];
     }
 

@@ -55,7 +55,7 @@ final readonly class CalendarSummaryController
             throw $exception;
         }
 
-        if (strtolower($response['_source']['@type']) . 's' !== $offerType) {
+        if (strtolower($response['_source']['@type'] ?? '') . 's' !== $offerType) {
             throw new OfferNotFound($offerType, $offerId);
         }
 
