@@ -76,8 +76,12 @@ acc-test-build:
 acc-test-up:
 	$(ACC_TEST_COMPOSE) up -d --wait --wait-timeout 300
 
+# The location suggestions are indexed from a small set of real OpenAddress rows, so the acceptance tests don't download 1 GB.
+# The file is copied in because the production image is meant to leave tests/ out.
 acc-test-migrate:
 	$(ACC_TEST_COMPOSE) exec -T search ./bin/app.php elasticsearch:migrate
+	$(ACC_TEST_COMPOSE) cp tests/acceptance/openaddress.csv search:/tmp/openaddress.csv
+	$(ACC_TEST_COMPOSE) exec -T search ./bin/app.php location-suggestions:index-openaddress /tmp/openaddress.csv
 
 acc-test-logs:
 	$(ACC_TEST_COMPOSE) logs --no-color --timestamps
