@@ -10,14 +10,16 @@ The mapping lives in `src/ElasticSearch/Operations/json/mapping_location_suggest
 
 ## The types
 
-| Type | Example label | Suggested when | Label from | `searchFilter` | `searchFilter` from | `address_count` from |
-|---|---|---|---|---|---|---|
-| `street` | Goorbaan, 2230 Herselt | always | CSV: `streetname_nl/fr/de`, `postcode`, `postname_nl/fr`, `municipality_name_nl/fr/de` | `coordinates: 51.04715,4.92321` | CSV: average `EPSG:4326_lat/lon` of its addresses | CSV: house numbers per `street_id` and `postcode` |
-| `address` | Goorbaan 59, 2230 Herselt | only when a house number is typed | CSV: as for a street, plus `house_number` | `coordinates: 51.04940,4.91743` | CSV: `EPSG:4326_lat/lon` | none |
-| `municipality` | Leuven | always | region list: the name of `nis-<municipality_id>`, plus CSV `municipality_name_nl/fr/de` | `regions: nis-24062` | CSV: `municipality_id` | CSV: addresses per `municipality_id` |
-| `submunicipality` | Kessel-Lo | always | region list: the name of a child of `nis-<municipality_id>` | `regions: nis-24062C` | region list: the id of that child | none |
-| `postcode` | 9050 Gentbrugge | always, a number on its own as the start of a postcode (`22` shows 2200, 2220, 2230) | CSV: `postcode`, `postname_nl/fr` | to be decided: `postalCode: 9050` or `regions` | CSV: `postcode` | CSV: addresses per `postcode` |
-| `place` | Yper Museum (Grote Markt 34, 8900 Ieper) | always | UiTdatabank place: `name`, `address` | `locationId: <uuid>` | UiTdatabank place: its id | none |
+| Type | Example label | Suggested when | Label from | `searchFilter` | `searchFilter` from | `geo` from | `address_count` from |
+|---|---|---|---|---|---|---|---|
+| `street` | Goorbaan, 2230 Herselt | always | CSV: `streetname_nl/fr/de`, `postcode`, `postname_nl/fr`, `municipality_name_nl/fr/de` | `{ "coordinates": "51.04715,4.92321" }` | CSV: average `EPSG:4326_lat/lon` of its addresses | CSV: average of its addresses | CSV: house numbers per `street_id` and `postcode` |
+| `address` | Goorbaan 59, 2230 Herselt | only when a house number is typed | CSV: as for a street, plus `house_number` | `{ "coordinates": "51.04940,4.91743" }` | CSV: `EPSG:4326_lat/lon` | CSV: `EPSG:4326_lat/lon` | none |
+| `municipality` | Leuven | always | CSV: `municipality_name_nl/fr/de` | `{ "regions": ["nis-24062"] }` | region list: `nis-<municipality_id>`, or the municipality with the same name | CSV: average of its addresses | CSV: addresses per `municipality_id` |
+| `submunicipality` | Kessel-Lo | always | region list: the name of a child of the municipality | `{ "regions": ["nis-24062C"] }` | region list: the id of that child | to be decided | none |
+| `postcode` | 9050 Gentbrugge | always, a number on its own as the start of a postcode (`22` shows 2200, 2220, 2230) | CSV: `postcode`, `postname_nl/fr` | to be decided: `{ "postalCode": "9050" }` or `{ "regions": [...] }` | CSV: `postcode` | CSV: average of its addresses | CSV: addresses per `postcode` |
+| `place` | Yper Museum (Grote Markt 34, 8900 Ieper) | always | UiTdatabank place: `name`, `address` | `{ "locationId": "<uuid>" }` | UiTdatabank place: its id | UiTdatabank place: `geo` | none |
+
+`regions` is an array, because the `regions` parameter of Search API 3 takes several regions.
 
 Every suggestion also has `type`, `label` and `geo`.
 
