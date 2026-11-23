@@ -1,0 +1,30 @@
+{
+  "@context": "/contexts/place",
+  "calendarType":"periodic",
+  "startDate": "2021-03-01T23:00:00+00:00",
+  "endDate": "2021-03-28T22:59:59+00:00",
+  "status": {
+    "type": "Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
+  },
+  "openingHours": [
+    {
+      "opens":"08:00",
+      "closes":"10:00",
+      "dayOfWeek": [
+        "monday",
+        "friday",
+        "saturday"
+      ]
+    },
+    {
+      "opens":"20:00",
+      "closes":"21:00",
+      "dayOfWeek": [
+        "wednesday"
+      ]
+    }
+  ]
+}

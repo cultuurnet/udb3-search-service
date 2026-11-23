@@ -88,4 +88,13 @@ final class DayOfWeekTest extends TestCase
 
         DayOfWeek::fromString('someday');
     }
+
+    /**
+     * @test
+     */
+    public function it_numbers_the_days_from_monday_to_sunday(): void
+    {
+        $this->assertSame(0, DayOfWeek::Monday->position());
+        $this->assertSame(6, DayOfWeek::Sunday->position());
+    }
 }

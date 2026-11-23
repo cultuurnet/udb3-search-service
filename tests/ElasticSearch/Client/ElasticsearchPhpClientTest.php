@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\Client;
 
+use CultuurNet\UDB3\Search\Json;
 use Elastic\Elasticsearch\ClientBuilder;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
@@ -342,7 +343,7 @@ final class ElasticsearchPhpClientTest extends TestCase
                     'X-Elastic-Product' => 'Elasticsearch',
                     'Content-Type' => 'application/json',
                 ],
-                $body === null ? '' : (string) json_encode($body)
+                $body === null ? '' : Json::encode($body)
             )
         );
     }

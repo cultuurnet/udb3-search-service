@@ -45,6 +45,11 @@ final class PlaceTransformerTest extends TestCase
         );
     }
 
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
+    }
+
     /**
      * @test
      */
