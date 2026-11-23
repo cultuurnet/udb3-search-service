@@ -16,7 +16,7 @@ final class OpenAddressDocumentsTest extends TestCase
     protected function setUp(): void
     {
         $this->documents = iterator_to_array(
-            new OpenAddressDocuments(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']))
+            new OpenAddressDocuments(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']), self::regions())
         );
     }
 
@@ -52,6 +52,41 @@ final class OpenAddressDocumentsTest extends TestCase
             ],
             $this->documents['street:BE-VLG:35063:3010']
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_municipality_document_with_its_region_and_the_addresses_of_all_its_streets(): void
+    {
+        $this->assertSame(
+            [
+                'type' => 'municipality',
+                'label' => 'Leuven',
+                'name' => ['Leuven', 'Louvain', 'Löwen'],
+                'search_text' => 'Leuven Louvain Löwen',
+                'regions' => ['nis-24062'],
+                'location' => ['lat' => 50.88943, 'lon' => 4.72002],
+                'address_count' => 2,
+            ],
+            $this->documents['municipality:24062']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_the_addresses_of_every_street_in_a_municipality(): void
+    {
+        $this->assertSame(3, $this->documents['municipality:44021']['address_count']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_a_municipality_without_a_region_because_its_filter_would_find_nothing(): void
+    {
+        $this->assertArrayNotHasKey('municipality:24137', $this->documents);
     }
 
     /**
@@ -114,7 +149,7 @@ final class OpenAddressDocumentsTest extends TestCase
     {
         $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'Jupille', 'postname_nl' => 'Jupille-aan-de-Maas']),
-        ]));
+        ], self::regions()));
 
         $this->assertSame('Rue Haute, 4020 Jupille', $documents['street:BE-WAL:1:4020']['label']);
     }
@@ -126,7 +161,7 @@ final class OpenAddressDocumentsTest extends TestCase
     {
         $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIÈGE', 'municipality_name_fr' => 'Liège']),
-        ]));
+        ], self::regions()));
 
         $this->assertSame('Rue Haute, 4020 Liège', $documents['street:BE-WAL:1:4020']['label']);
     }
@@ -138,7 +173,7 @@ final class OpenAddressDocumentsTest extends TestCase
     {
         $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIEGE', 'municipality_name_fr' => 'Liège']),
-        ]));
+        ], self::regions()));
 
         $this->assertSame('Rue Haute 4020 LIEGE', $documents['street:BE-WAL:1:4020']['search_text']);
     }
@@ -150,9 +185,25 @@ final class OpenAddressDocumentsTest extends TestCase
     {
         $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-BRU', 'streetname_nl' => 'Henegouwenkaai', 'streetname_fr' => 'Quai du Hainaut']),
-        ]));
+        ], self::regions()));
 
         $this->assertSame(['Henegouwenkaai', 'Quai du Hainaut'], $documents['street:BE-BRU:1:4020']['name']);
+    }
+
+    private static function regions(): MunicipalityRegions
+    {
+        return new MunicipalityRegions([
+            'nis-20001' => ['name' => ['nl' => 'Provincie Vlaams-Brabant'], 'children' => [
+                'reg-leuven' => ['name' => ['nl' => 'Regio Leuven'], 'children' => [
+                    'nis-24062' => ['name' => ['nl' => 'Leuven']],
+                ]],
+            ]],
+            'nis-40000' => ['name' => ['nl' => 'Provincie Oost-Vlaanderen'], 'children' => [
+                'reg-gent' => ['name' => ['nl' => 'Regio Gent'], 'children' => [
+                    'nis-44021' => ['name' => ['nl' => 'Gent']],
+                ]],
+            ]],
+        ]);
     }
 
     /**
@@ -168,6 +219,7 @@ final class OpenAddressDocumentsTest extends TestCase
             'municipality_name_nl' => '',
             'municipality_name_fr' => 'Liège',
             'municipality_name_de' => '',
+            'municipality_id' => '62063',
             'postcode' => '4020',
             'postname_nl' => '',
             'postname_fr' => '',

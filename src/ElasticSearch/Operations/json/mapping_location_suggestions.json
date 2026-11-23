@@ -51,6 +51,10 @@
             },
             "address_count": {
                 "type": "integer"
+            },
+            "regions": {
+                "type": "keyword",
+                "index": false
             }
         }
     }

@@ -25,12 +25,13 @@ The char filter matches letters with `\p{L}` and not `[a-z]`. It runs before the
 
 | Field | What it holds |
 |---|---|
-| `type` | `street`, `address` or `place` |
+| `type` | `street`, `address`, `municipality` or `place` |
 | `label` | The text the user sees, like `Lentedreef, 3010 Kessel-Lo`. Not searchable. |
 | `name` | The street name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. Not on addresses, only used for the exact match. |
 | `search_text` | Every word someone might type to find this document |
 | `location` | The coordinates |
-| `address_count` | The number of house numbers on the street. Only on streets. |
+| `address_count` | The number of house numbers on the street or in the municipality. Not on addresses. |
+| `regions` | The Search API 3 region of a municipality, like `nis-24062`. Not searchable. |
 
 ### search_text
 
@@ -63,6 +64,12 @@ The logarithm keeps that difference small, so a big city doesn't bury a small-to
 A box number doesn't count as an address, so a block of flats counts once.
 
 Addresses have no count. The query treats them as a street with one address, so they keep the order of their text score. Giving them the count of their street would need a second pass over the CSVs (about 1.5 minutes per import) and barely changed the order on real data.
+
+### regions
+
+A municipality is an area, so its `searchFilter` is its region and not a coordinate. The region comes from the same list Search API 3 uses for its region facets (`facet_mapping_regions.php` from https://github.com/cultuurnet/geojson-data), so it matches the regions of events and places.
+
+The address CSV has the municipality's NIS code, so Leuven (24062) gets `nis-24062`. In 2019 eleven municipalities in Hainaut got a new NIS code, and geojson-data still has the old one (Enghien: 51067 in the CSV, `nis-55010` in Search API 3). Those are found by name. A municipality the list doesn't have is left out with a warning, because its filter would find nothing.
 
 ## Acceptance test fixture
 

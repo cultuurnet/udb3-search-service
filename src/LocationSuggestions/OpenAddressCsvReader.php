@@ -19,6 +19,7 @@ final class OpenAddressCsvReader implements IteratorAggregate
         'EPSG:4326_lat',
         'EPSG:4326_lon',
         'house_number',
+        'municipality_id',
         'municipality_name_nl',
         'municipality_name_fr',
         'municipality_name_de',
