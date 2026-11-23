@@ -57,6 +57,9 @@ final readonly class LocationSuggestionsController
                     'latitude' => $hit['_source']['location']['lat'],
                     'longitude' => $hit['_source']['location']['lon'],
                 ],
+                'searchFilter' => [
+                    'coordinates' => $hit['_source']['location']['lat'] . ',' . $hit['_source']['location']['lon'],
+                ],
             ],
             $response['hits']['hits']
         );
