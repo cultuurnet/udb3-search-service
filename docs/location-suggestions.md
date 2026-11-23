@@ -76,3 +76,5 @@ The address CSV has the municipality's NIS code, so Leuven (24062) gets `nis-240
 `tests/acceptance/openaddress.csv` holds real OpenAddress rows for the streets in the udb3-backend feature `features/search/location-suggestions.feature`. `make acc-test-migrate` indexes it, so the acceptance tests don't download 1 GB.
 
 It keeps every row of those streets, competitors in other municipalities included, because the scenarios check which suggestion comes first. Add rows when a scenario needs a new street, and don't remove rows a scenario depends on. When the number of addresses doesn't matter for a scenario, one row per street is enough (the Bisschoppenhof streets). Bisschoppenhoflaan in Deurne has two, so it has more addresses than Bisschoppenhof in Haacht and only the exact name puts Haacht first.
+
+Groenplaats is there for the `ant` scenario: it gives Antwerpen three addresses against two for Bisschoppenhoflaan in Deurne. Prefix matches all score the same, so without it the two tie and the order isn't fixed.

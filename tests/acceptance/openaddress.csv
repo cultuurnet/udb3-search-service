@@ -995,3 +995,5 @@ EPSG:3812_x,EPSG:3812_y,EPSG:4326_lat,EPSG:4326_lon,address_id,box_number,house_
 692725.08000,685202.48000,50.97545,4.97714,306944,,3,24134,Scherpenheuvel-Zichem,Montaigu-Zichem,Scherpenheuvel-Zichem,3270,,Scherpenheuvel,37226,,,Bisschoppenhoflaan,BE-VLG,current
 655852.16000,719377.58000,51.28423,4.45273,483509,,9,11008,,,Brasschaat,2930,,BRASSCHAAT,3768,,,Bisschoppenhoflei,BE-VLG,current
 669357.37000,681716.15000,50.94539,4.64423,2493133,,3,24033,,,Haacht,3150,,HAACHT/Tildonk/Wespelaar,143052,,,Bisschoppenhof,BE-VLG,current
+652234.11000,712171.21000,51.21949,4.40082,220298,,9,11002,Antwerpen,Anvers,Antwerpen,2000,,ANTWERPEN,1053,,,Groenplaats,BE-VLG,current
+731050.79000,629811.48000,50.47342,5.51055,1997865,,9A,61079,Anthisnes,Anthisnes,Anthisnes,4160,Anthisnes,,7726594,,Rue de la Libération,,BE-WAL,current
