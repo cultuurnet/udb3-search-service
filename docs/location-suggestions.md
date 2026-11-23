@@ -30,6 +30,7 @@ The char filter matches letters with `\p{L}` and not `[a-z]`. It runs before the
 | `name` | The street name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. Not on addresses, only used for the exact match. |
 | `search_text` | Every word someone might type to find this document |
 | `location` | The coordinates |
+| `address_count` | The number of house numbers on the street. Only on streets. |
 
 ### search_text
 

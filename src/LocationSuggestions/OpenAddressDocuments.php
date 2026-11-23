@@ -79,6 +79,7 @@ final class OpenAddressDocuments implements IteratorAggregate
                     'lat' => round($street['lat_sum'] / $street['count'], 5),
                     'lon' => round($street['lon_sum'] / $street['count'], 5),
                 ],
+                'address_count' => $street['count'],
             ];
         }
     }
