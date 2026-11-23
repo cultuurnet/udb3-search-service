@@ -55,7 +55,31 @@ Using any other format will throw an exception.
 Childcare and the overnight stay only show when the offer really has them: an offer without
 childcare says nothing about childcare.
 
-## Parameters
+## Endpoint
+
+`GET /calendar-summary/{events|places}/{id}` returns the summary of one event or place, read from
+the original JSON-LD in the search index. It is meant to back Entry API's
+`/{events|places}/{id}/calendar-summary`. Like every Search API route it needs an API key or client id.
+
+| Parameter | Values | Default |
+| --- | --- | --- |
+| `language` | `nl`, `fr`, `de`, `en` | `nl` |
+| `size` | `xs`, `sm`, `md`, `lg`, `xl` | `lg` |
+| `style` | `text`, `html` | `text` |
+| `hidePast` | `true`, `false` | `false` |
+| `timezone` | any [PHP timezone](http://php.net/manual/en/timezones.php) | `Europe/Brussels` |
+
+The response is `text/plain` or `text/html`, depending on `style`. The languages use the same locales
+as the `calendarSummary` embedded in search results, so both render a language identically.
+
+An unknown `timezone` falls back to `Europe/Brussels` instead of being refused, because Entry API
+never validated it and existing integrations may still send one. An id that is not an event or
+place of the requested type returns a 404.
+
+Entry API's deprecated aliases (`langCode`, `format`, `timeZone` and the `Accept` header) are not
+supported here. Entry API is expected to map them when it calls this endpoint.
+
+## Formatter parameters
 
 There are 3 (optional) parameters which can be used on the initialisation of the formatters.
 
