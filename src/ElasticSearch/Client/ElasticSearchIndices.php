@@ -18,6 +18,8 @@ interface ElasticSearchIndices
 
     public function deleteAlias(array $params): void;
 
+    public function updateAliases(array $params): void;
+
     public function create(array $params): void;
 
     public function delete(array $params): void;
