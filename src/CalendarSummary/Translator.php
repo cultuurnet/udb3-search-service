@@ -164,7 +164,7 @@ final readonly class Translator
         ];
 
         // Fail on construction rather than on the first label, which would surface as an undefined index.
-        if (!isset($this->messages[substr($locale, 0, 2)])) {
+        if (!isset($this->messages[$this->getLanguageCode()])) {
             throw new InvalidArgumentException('Unsupported locale: ' . $locale);
         }
     }
