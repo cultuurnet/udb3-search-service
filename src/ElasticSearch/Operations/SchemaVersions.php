@@ -20,6 +20,11 @@ final class SchemaVersions
         return md5(self::readMappingFile('mapping_region.json'));
     }
 
+    public static function locationSuggestions(): string
+    {
+        return md5(self::readMappingFile('mapping_location_suggestions.json'));
+    }
+
     private static function readMappingFile(string $filename): string
     {
         $contents = file_get_contents(self::MAPPING_DIR . $filename);
