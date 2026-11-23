@@ -66,6 +66,14 @@ Within a summary:
 5. the closed days (`xl`): first the days of the week without opening hours (`Elke zondag gesloten`),
    then the closed periods. In `xl` permanent those days are left out of the week scheme.
 
+## Availability of a permanent offer
+
+A permanent offer has no date to close, so an unavailable one shows its availability instead of the
+whole summary, without braces and with a capital. This holds in every size and in both formats,
+including a place that is open but fully booked: `Volzet of uitverkocht`. A place that is closed reads
+`Permanent gesloten` or `Tijdelijk gesloten` instead of `geannuleerd` or `uitgesteld`.
+`AvailabilityParityTest` keeps the HTML and the plain text output in line.
+
 ## Empty is empty
 
 | Input | Output |
