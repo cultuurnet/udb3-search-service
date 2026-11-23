@@ -44,6 +44,8 @@ final readonly class LocationSuggestionsController
                     'bool' => [
                         'must' => [[$matchType => ['search_text' => ['query' => $searchText->toString(), 'operator' => 'and']]]],
                         // A street named exactly what was typed comes first, so bisschoppenhof shows the Bisschoppenhof above every Bisschoppenhoflaan.
+                        // Scored like any match, so the boost is multiplied by how rare the name is. Even Kerkstraat ends up far above
+                        // the prefix matches, which all score the same.
                         'should' => [['match' => ['name' => ['query' => $searchText->toString(), 'boost' => self::EXACT_NAME_BOOST]]]],
                         'filter' => [['terms' => ['type' => $types]]],
                     ],
