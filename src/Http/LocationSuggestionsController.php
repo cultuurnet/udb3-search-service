@@ -41,13 +41,21 @@ final readonly class LocationSuggestionsController
             'body' => [
                 'size' => self::NUMBER_OF_SUGGESTIONS,
                 'query' => [
-                    'bool' => [
-                        'must' => [[$matchType => ['search_text' => ['query' => $searchText->toString(), 'operator' => 'and']]]],
-                        // A street named exactly what was typed comes first, so bisschoppenhof shows the Bisschoppenhof above every Bisschoppenhoflaan.
-                        // Scored like any match, so the boost is multiplied by how rare the name is. Even Kerkstraat ends up far above
-                        // the prefix matches, which all score the same.
-                        'should' => [['match' => ['name' => ['query' => $searchText->toString(), 'boost' => self::EXACT_NAME_BOOST]]]],
-                        'filter' => [['terms' => ['type' => $types]]],
+                    'function_score' => [
+                        'query' => [
+                            'bool' => [
+                                'must' => [[$matchType => ['search_text' => ['query' => $searchText->toString(), 'operator' => 'and']]]],
+                                // A street named exactly what was typed comes first, so bisschoppenhof shows the Bisschoppenhof above every Bisschoppenhoflaan.
+                                // Scored like any match, so the boost is multiplied by how rare the name is. Even Kerkstraat ends up far above
+                                // the prefix matches, which all score the same.
+                                'should' => [['match' => ['name' => ['query' => $searchText->toString(), 'boost' => self::EXACT_NAME_BOOST]]]],
+                                'filter' => [['terms' => ['type' => $types]]],
+                            ],
+                        ],
+                        // A street with more addresses comes first. The logarithm keeps a big city from burying a small-town match.
+                        // Addresses have no count, so they all get the factor of a street with one address.
+                        'field_value_factor' => ['field' => 'address_count', 'modifier' => 'log1p', 'factor' => 0.5, 'missing' => 1],
+                        'boost_mode' => 'multiply',
                     ],
                 ],
             ],

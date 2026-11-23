@@ -54,8 +54,18 @@ When the whole typed text equals a name, the suggestion gets a boost. So `bissch
 
 `location_normalizer` folds the name like the analyzer does (punctuation, capitals, accents), but keeps it as one value, so `o l v ten steenstraat` equals `O.L.V. ten Steenstraat` and `bisschoppenhof` does not equal `Bisschoppenhoflaan`.
 
+### address_count
+
+The text score is multiplied by `log1p(0.5 × address_count)`, so of the streets with the same name the one with the most addresses comes first: `lentedreef` shows the Lentedreef in Menen (49 addresses) above the one in Oud-Turnhout (28).
+
+The logarithm keeps that difference small, so a big city doesn't bury a small-town match. Bisschoppenhof, 3150 Haacht (8 addresses) stays above Bisschoppenhoflaan, 2100 Deurne (487), because the exact name counts for more.
+
+A box number doesn't count as an address, so a block of flats counts once.
+
+Addresses have no count. The query treats them as a street with one address, so they keep the order of their text score. Giving them the count of their street would need a second pass over the CSVs (about 1.5 minutes per import) and barely changed the order on real data.
+
 ## Acceptance test fixture
 
 `tests/acceptance/openaddress.csv` holds real OpenAddress rows for the streets in the udb3-backend feature `features/search/location-suggestions.feature`. `make acc-test-migrate` indexes it, so the acceptance tests don't download 1 GB.
 
-It keeps every row of those streets, competitors in other municipalities included, because the scenarios check which suggestion comes first. Add rows when a scenario needs a new street, and don't remove rows a scenario depends on. When the number of addresses doesn't matter for a scenario, one row per street is enough (the Bisschoppenhof streets).
+It keeps every row of those streets, competitors in other municipalities included, because the scenarios check which suggestion comes first. Add rows when a scenario needs a new street, and don't remove rows a scenario depends on. When the number of addresses doesn't matter for a scenario, one row per street is enough (the Bisschoppenhof streets). Bisschoppenhoflaan in Deurne has two, so it has more addresses than Bisschoppenhof in Haacht and only the exact name puts Haacht first.

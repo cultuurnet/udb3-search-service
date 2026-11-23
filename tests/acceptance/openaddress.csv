@@ -991,6 +991,7 @@ EPSG:3812_x,EPSG:3812_y,EPSG:4326_lat,EPSG:4326_lon,address_id,box_number,house_
 647656.98800,671135.81500,50.85062,4.33550,991719,,69,21012,,Molenbeek-Saint-Jean,Sint-Jans-Molenbeek,1080,,,3996,,Quai du Hainaut,Henegouwenkaai,BE-BRU,current
 647954.59600,671313.73500,50.85222,4.33972,1008801,,21,21012,,Molenbeek-Saint-Jean,Sint-Jans-Molenbeek,1080,,,3996,,Quai du Hainaut,Henegouwenkaai,BE-BRU,current
 657524.32000,714044.21000,51.23627,4.47658,206792,,581,11002,Antwerpen,Anvers,Antwerpen,2100,,Deurne,353,,,Bisschoppenhoflaan,BE-VLG,current
+656734.46000,713736.50000,51.23352,4.46526,210541,,362,11002,Antwerpen,Anvers,Antwerpen,2100,,Deurne,353,,,Bisschoppenhoflaan,BE-VLG,current
 692725.08000,685202.48000,50.97545,4.97714,306944,,3,24134,Scherpenheuvel-Zichem,Montaigu-Zichem,Scherpenheuvel-Zichem,3270,,Scherpenheuvel,37226,,,Bisschoppenhoflaan,BE-VLG,current
 655852.16000,719377.58000,51.28423,4.45273,483509,,9,11008,,,Brasschaat,2930,,BRASSCHAAT,3768,,,Bisschoppenhoflei,BE-VLG,current
 669357.37000,681716.15000,50.94539,4.64423,2493133,,3,24033,,,Haacht,3150,,HAACHT/Tildonk/Wespelaar,143052,,,Bisschoppenhof,BE-VLG,current
