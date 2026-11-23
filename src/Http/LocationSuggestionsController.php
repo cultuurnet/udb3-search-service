@@ -9,13 +9,13 @@ use CultuurNet\UDB3\Search\LocationSuggestions\SearchText;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
-final class LocationSuggestionsController
+final readonly class LocationSuggestionsController
 {
     private const NUMBER_OF_SUGGESTIONS = 10;
 
     public function __construct(
-        private readonly ElasticSearchClient $client,
-        private readonly string $indexName,
+        private ElasticSearchClient $client,
+        private string $indexName,
     ) {
     }
 
