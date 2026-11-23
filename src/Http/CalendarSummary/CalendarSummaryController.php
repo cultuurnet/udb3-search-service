@@ -46,13 +46,17 @@ final readonly class CalendarSummaryController
             $response = $this->client->get([
                 'index' => $offerType === 'places' ? $this->placeIndexName : $this->eventIndexName,
                 'id' => $offerId,
-                '_source' => ['originalEncodedJsonLd'],
+                '_source' => ['@type', 'originalEncodedJsonLd'],
             ]);
         } catch (ElasticSearchRequestFailed $exception) {
             if ($exception->isNotFound()) {
                 throw new OfferNotFound($offerType, $offerId);
             }
             throw $exception;
+        }
+
+        if (strtolower($response['_source']['@type']) . 's' !== $offerType) {
+            throw new OfferNotFound($offerType, $offerId);
         }
 
         return $response['_source']['originalEncodedJsonLd'];

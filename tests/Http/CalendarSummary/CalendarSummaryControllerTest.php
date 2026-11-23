@@ -48,7 +48,7 @@ final class CalendarSummaryControllerTest extends TestCase
             ->with([
                 'index' => 'udb3_core_event_read',
                 'id' => self::OFFER_ID,
-                '_source' => ['originalEncodedJsonLd'],
+                '_source' => ['@type', 'originalEncodedJsonLd'],
             ])
             ->willReturn($this->document('event'));
 
@@ -112,6 +112,28 @@ final class CalendarSummaryControllerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider provideOtherTypes
+     */
+    public function it_throws_not_found_when_the_id_belongs_to_another_type(string $requestedType, string $foundType): void
+    {
+        $this->client->method('get')->willReturn($this->document($foundType));
+
+        $this->expectException(OfferNotFound::class);
+
+        ($this->controller)($this->request([]), ['offerType' => $requestedType, 'offerId' => self::OFFER_ID]);
+    }
+
+    public function provideOtherTypes(): array
+    {
+        return [
+            'place requested as event' => ['events', 'place'],
+            'event requested as place' => ['places', 'event'],
+            'organizer requested as event' => ['events', 'organizer'],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_lets_other_elasticsearch_failures_through(): void
     {
@@ -145,7 +167,10 @@ final class CalendarSummaryControllerTest extends TestCase
 
         return [
             'found' => true,
-            '_source' => ['originalEncodedJsonLd' => Json::encode($jsonLd)],
+            '_source' => [
+                '@type' => ucfirst($type),
+                'originalEncodedJsonLd' => Json::encode($jsonLd),
+            ],
         ];
     }
 
