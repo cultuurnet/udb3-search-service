@@ -29,6 +29,7 @@ final class OpenAddressDocumentsTest extends TestCase
             [
                 'type' => 'address',
                 'label' => 'Lentedreef 27, 3010 Kessel-Lo',
+                'name' => ['Lentedreef'],
                 'search_text' => 'Lentedreef 3010 Kessel-Lo Leuven Louvain Löwen 27',
                 'location' => ['lat' => 50.88958, 'lon' => 4.72023],
             ],
@@ -45,6 +46,7 @@ final class OpenAddressDocumentsTest extends TestCase
             [
                 'type' => 'street',
                 'label' => 'Lentedreef, 3010 Kessel-Lo',
+                'name' => ['Lentedreef'],
                 'search_text' => 'Lentedreef 3010 Kessel-Lo Leuven Louvain Löwen',
                 'location' => ['lat' => 50.88943, 'lon' => 4.72002],
             ],
@@ -131,6 +133,18 @@ final class OpenAddressDocumentsTest extends TestCase
         ]));
 
         $this->assertSame('Rue Haute 4020 LIEGE', $documents['street:BE-WAL:1:4020']['search_text']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_names_a_street_in_every_language_of_the_csv(): void
+    {
+        $documents = iterator_to_array(new OpenAddressDocuments([
+            self::row(['region_code' => 'BE-BRU', 'streetname_nl' => 'Henegouwenkaai', 'streetname_fr' => 'Quai du Hainaut']),
+        ]));
+
+        $this->assertSame(['Henegouwenkaai', 'Quai du Hainaut'], $documents['street:BE-BRU:1:4020']['name']);
     }
 
     /**
