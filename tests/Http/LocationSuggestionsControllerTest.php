@@ -40,6 +40,7 @@ final class LocationSuggestionsControllerTest extends TestCase
                     'query' => [
                         'bool' => [
                             'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
+                            'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
                             'filter' => [['terms' => ['type' => ['street']]]],
                         ],
                     ],
@@ -84,6 +85,7 @@ final class LocationSuggestionsControllerTest extends TestCase
             ->with($this->callback(
                 fn (array $params): bool => $params['body']['query']['bool'] === [
                     'must' => [[$expectedMatchType => ['search_text' => ['query' => $searchText, 'operator' => 'and']]]],
+                    'should' => [['match' => ['name' => ['query' => $searchText, 'boost' => 10]]]],
                     'filter' => [['terms' => ['type' => $expectedTypes]]],
                 ]
             ))

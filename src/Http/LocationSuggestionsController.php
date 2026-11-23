@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 final readonly class LocationSuggestionsController
 {
     private const NUMBER_OF_SUGGESTIONS = 10;
+    private const EXACT_NAME_BOOST = 10;
 
     public function __construct(
         private ElasticSearchClient $client,
@@ -42,6 +43,8 @@ final readonly class LocationSuggestionsController
                 'query' => [
                     'bool' => [
                         'must' => [[$matchType => ['search_text' => ['query' => $searchText->toString(), 'operator' => 'and']]]],
+                        // A street named exactly what was typed comes first, so bisschoppenhof shows the Bisschoppenhof above every Bisschoppenhoflaan.
+                        'should' => [['match' => ['name' => ['query' => $searchText->toString(), 'boost' => self::EXACT_NAME_BOOST]]]],
                         'filter' => [['terms' => ['type' => $types]]],
                     ],
                 ],
