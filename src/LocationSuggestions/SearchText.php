@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Search\LocationSuggestions;
 use CultuurNet\UDB3\Search\MissingParameter;
 use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
-final class SearchText
+final readonly class SearchText
 {
     // Nobody types an address this long, and a longer text could exceed the Elasticsearch clause limit.
     private const MAX_LENGTH = 120;
@@ -43,7 +43,7 @@ final class SearchText
     public function endsWithNumber(): bool
     {
         // House numbers can carry letters (12A, 3bis), so only the first character counts.
-        return preg_match('/^\p{N}/u', (string) end($this->words)) === 1;
+        return preg_match('/^\p{N}/u', $this->words[array_key_last($this->words)] ?? '') === 1;
     }
 
     public function toString(): string

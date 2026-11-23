@@ -3,6 +3,10 @@
 See the  docs/calendar-indexing.md for the information about the calendar indexing.
 See docs/location-suggestions.md for the index behind `/location-suggestions`.
 
+The calendar summary (`src/CalendarSummary`, formerly the `calendar-summary-v3` library) is
+documented in `docs/calendar-summary/`. Follow its `formatting-rules.md` when
+changing a summary.
+
 ## Running tests and tooling
 
 Always run tests, PHPStan and code style **inside the `search` Docker container** via

@@ -1,7 +1,7 @@
 # --------------------------------------------------
 # Runtime base: PHP-FPM + extensions
 # --------------------------------------------------
-FROM php:8.3.36-fpm AS runtime
+FROM php:8.3.37-fpm AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         netcat-openbsd \
@@ -42,7 +42,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         unzip \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/html
 
@@ -51,7 +51,7 @@ WORKDIR /var/www/html
 # --------------------------------------------------
 FROM runtime AS build
 
-COPY --from=composer:2.6.6 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 WORKDIR /var/www/html
 

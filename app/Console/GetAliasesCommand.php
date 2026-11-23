@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SearchService\Console;
 
-use CultuurNet\UDB3\Search\ElasticSearch\Operations\GetAliases;
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
+use CultuurNet\UDB3\Search\ElasticSearch\Operations\GetAliases;
+use CultuurNet\UDB3\Search\Json;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,7 +45,7 @@ final class GetAliasesCommand extends AbstractElasticSearchCommand
             return 1;
         }
 
-        $output->writeln((string) json_encode($aliases, JSON_THROW_ON_ERROR | JSON_FORCE_OBJECT));
+        $output->writeln(Json::encodeWithOptions($aliases, JSON_FORCE_OBJECT));
 
         return 0;
     }

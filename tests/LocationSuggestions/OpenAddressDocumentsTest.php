@@ -16,7 +16,7 @@ final class OpenAddressDocumentsTest extends TestCase
     protected function setUp(): void
     {
         $this->documents = iterator_to_array(
-            OpenAddressDocuments::fromRows(OpenAddressCsvReader::rows(__DIR__ . '/data/openaddress.csv'))
+            new OpenAddressDocuments(new OpenAddressCsvReader([__DIR__ . '/data/openaddress.csv']))
         );
     }
 
@@ -102,7 +102,7 @@ final class OpenAddressDocumentsTest extends TestCase
      */
     public function it_takes_the_postname_in_the_same_language_as_the_street_name(): void
     {
-        $documents = iterator_to_array(OpenAddressDocuments::fromRows([
+        $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'Jupille', 'postname_nl' => 'Jupille-aan-de-Maas']),
         ]));
 
@@ -114,11 +114,23 @@ final class OpenAddressDocumentsTest extends TestCase
      */
     public function it_shows_the_municipality_instead_of_a_postname_in_capitals_with_accents(): void
     {
-        $documents = iterator_to_array(OpenAddressDocuments::fromRows([
+        $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['region_code' => 'BE-WAL', 'streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIÈGE', 'municipality_name_fr' => 'Liège']),
         ]));
 
         $this->assertSame('Rue Haute, 4020 Liège', $documents['street:BE-WAL:1:4020']['label']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_one_spelling_of_words_that_only_differ_in_accents_or_case(): void
+    {
+        $documents = iterator_to_array(new OpenAddressDocuments([
+            self::row(['streetname_fr' => 'Rue Haute', 'postname_fr' => 'LIEGE', 'municipality_name_fr' => 'Liège']),
+        ]));
+
+        $this->assertSame('Rue Haute 4020 LIEGE', $documents['street:BE-WAL:1:4020']['search_text']);
     }
 
     /**
