@@ -26,44 +26,76 @@ final class AvailabilityParityTest extends TestCase
     }
 
     /**
-     * @dataProvider providesUnavailableEvents
+     * @dataProvider providesUnavailableOffers
      */
     public function testHtmlAndPlainTextBothMentionTheAvailability(
+        OfferType $offerType,
         string $calendarType,
         string $status,
         string $bookingAvailability,
         string $size,
         string $expected
     ): void {
-        $event = $this->event(new CalendarType($calendarType), $status, $bookingAvailability);
+        $offer = $this->offer($offerType, new CalendarType($calendarType), $status, $bookingAvailability);
 
-        $this->assertStringContainsString($expected, (new CalendarPlainTextFormatter())->format($event, $size));
-        $this->assertStringContainsString($expected, (new CalendarHTMLFormatter())->format($event, $size));
+        // A summary that consists of the availability alone starts with a capital, one that closes a date
+        // does not, so only the wording is compared.
+        $this->assertStringContainsStringIgnoringCase(
+            $expected,
+            (new CalendarPlainTextFormatter())->format($offer, $size)
+        );
+        $this->assertStringContainsStringIgnoringCase($expected, (new CalendarHTMLFormatter())->format($offer, $size));
     }
 
-    public function providesUnavailableEvents(): array
+    public function providesUnavailableOffers(): array
     {
-        $availabilities = [
+        $eventAvailabilities = [
             'cancelled' => ['Unavailable', 'Available', 'geannuleerd'],
             'postponed' => ['TemporarilyUnavailable', 'Available', 'uitgesteld'],
             'sold out' => ['Available', 'Unavailable', 'Volzet of uitverkocht'],
         ];
 
+        $placeAvailabilities = [
+            'permanently closed' => ['Unavailable', 'Available', 'Permanent gesloten'],
+            'temporarily closed' => ['TemporarilyUnavailable', 'Available', 'Tijdelijk gesloten'],
+            'sold out' => ['Available', 'Unavailable', 'Volzet of uitverkocht'],
+        ];
+
+        $offers = [
+            'single' => [OfferType::event(), $eventAvailabilities],
+            'multiple' => [OfferType::event(), $eventAvailabilities],
+            'periodic' => [OfferType::event(), $eventAvailabilities],
+            'permanent' => [OfferType::event(), $eventAvailabilities],
+            'permanent place' => [OfferType::place(), $placeAvailabilities],
+        ];
+
         $cases = [];
-        foreach (['single', 'multiple', 'periodic'] as $calendarType) {
+        foreach ($offers as $offerName => [$offerType, $availabilities]) {
+            $calendarType = explode(' ', $offerName)[0];
             foreach ($availabilities as $name => [$status, $bookingAvailability, $expected]) {
                 foreach (['xs', 'sm', 'md', 'lg', 'xl'] as $size) {
-                    $cases["$calendarType $name $size"] = [$calendarType, $status, $bookingAvailability, $size, $expected];
+                    $cases["$offerName $name $size"] = [
+                        $offerType,
+                        $calendarType,
+                        $status,
+                        $bookingAvailability,
+                        $size,
+                        $expected,
+                    ];
                 }
             }
         }
         return $cases;
     }
 
-    private function event(CalendarType $calendarType, string $status, string $bookingAvailability): Offer
-    {
+    private function offer(
+        OfferType $offerType,
+        CalendarType $calendarType,
+        string $status,
+        string $bookingAvailability
+    ): Offer {
         $event = new Offer(
-            OfferType::event(),
+            $offerType,
             new Status($status, []),
             new BookingAvailability($bookingAvailability),
             new DateTimeImmutable('2030-01-25T20:00:00+01:00'),
