@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\Middleware\PostRequestBodyMiddleware;
+use CultuurNet\UDB3\Search\Http\LocationSuggestionsController;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
@@ -167,6 +168,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $router->get('/place/', ['place_controller', '__invoke']);
                 $router->post('/place/', ['place_controller', '__invoke']);
                 $router->options('/place/', $optionsResponse);
+
+                $router->get('/location-suggestions', LocationSuggestionsController::class);
+                $router->options('/location-suggestions', $optionsResponse);
+                $router->get('/location-suggestions/', LocationSuggestionsController::class);
+                $router->options('/location-suggestions/', $optionsResponse);
 
                 return $router;
             }
