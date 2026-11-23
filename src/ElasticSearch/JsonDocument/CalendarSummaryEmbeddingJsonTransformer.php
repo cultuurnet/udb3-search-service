@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarFormatterInterface;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarPlainTextFormatter;
+use CultuurNet\UDB3\Search\CalendarSummary\Locales;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
@@ -14,13 +15,6 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
-    private const LOCALES = [
-        'nl_BE',
-        'fr_BE',
-        'de',
-        'en',
-    ];
-
     /**
      * @var CalendarSummaryFormat[]
      */
@@ -65,10 +59,10 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     {
         $calendarSummaries = [];
 
-        foreach (self::LOCALES as $locale) {
+        foreach (Locales::BY_LANGUAGE as $language => $locale) {
             $calendarFormatter = $this->getCalendarFormatterByTypeAndLocale($calendarSummaryFormat->getType(), $locale);
 
-            $calendarSummaries[substr($locale, 0, 2)][$calendarSummaryFormat->getType()] = [
+            $calendarSummaries[$language][$calendarSummaryFormat->getType()] = [
                 $calendarSummaryFormat->getFormat() => trim(
                     $calendarFormatter->format(
                         $offer,
