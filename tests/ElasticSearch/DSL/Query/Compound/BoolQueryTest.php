@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound;
 
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\Json;
 use PHPUnit\Framework\TestCase;
 
 final class BoolQueryTest extends TestCase
@@ -28,7 +29,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($query->toArray()));
     }
 
     /**
@@ -39,7 +40,7 @@ final class BoolQueryTest extends TestCase
         $query = new BoolQuery();
         $query->add(new MatchAllQuery(), BoolClause::Must);
 
-        $this->assertSame(json_encode(['match_all' => new \stdClass()]), json_encode($query->toArray()));
+        $this->assertSame(Json::encode(['match_all' => new \stdClass()]), Json::encode($query->toArray()));
     }
 
     /**
@@ -62,7 +63,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($query->toArray()));
     }
 
     /**
@@ -93,7 +94,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($query->toArray()));
     }
 
     /**
@@ -103,7 +104,7 @@ final class BoolQueryTest extends TestCase
     {
         $query = new BoolQuery();
 
-        $this->assertSame(json_encode(['bool' => new \stdClass()]), json_encode($query->toArray()));
+        $this->assertSame(Json::encode(['bool' => new \stdClass()]), Json::encode($query->toArray()));
     }
 
     /**
@@ -237,7 +238,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($query->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($query->toArray()));
     }
 
     /**
@@ -269,7 +270,7 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($outer->toArray()));
     }
 
     /**
@@ -295,6 +296,6 @@ final class BoolQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($outer->toArray()));
     }
 }

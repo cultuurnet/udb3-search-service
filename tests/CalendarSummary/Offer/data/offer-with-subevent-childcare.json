@@ -1,0 +1,51 @@
+{
+  "@context": "/contexts/event",
+  "calendarType": "multiple",
+  "startDate": "2026-08-13T06:00:00+00:00",
+  "endDate": "2026-10-11T15:00:00+00:00",
+  "status": {
+    "type": "Available"
+  },
+  "bookingAvailability": {
+    "type": "Available"
+  },
+  "subEvent": [
+    {
+      "startDate": "2026-08-13T06:00:00+00:00",
+      "endDate": "2026-08-21T15:00:00+00:00",
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      },
+      "childcare": {
+        "start": "07:00",
+        "end": "18:00"
+      }
+    },
+    {
+      "startDate": "2026-09-09T06:00:00+00:00",
+      "endDate": "2026-09-12T15:00:00+00:00",
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      },
+      "overnight": true
+    },
+    {
+      "startDate": "2026-10-09T06:00:00+00:00",
+      "endDate": "2026-10-11T15:00:00+00:00",
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      },
+      "childcare": {},
+      "overnight": false
+    }
+  ]
+}

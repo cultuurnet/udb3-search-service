@@ -14,30 +14,15 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
 {
-    private string $indexPrefix;
-
-    private string $schemaVersion;
-
-    private string $alias;
-
-    private int $numberOfShards;
-
-    private int $numberOfReplicas;
-
     public function __construct(
         ElasticSearchClient $client,
-        string $indexPrefix,
-        string $schemaVersion,
-        string $alias,
-        int $numberOfShards,
-        int $numberOfReplicas
+        private readonly string $indexPrefix,
+        private readonly string $schemaVersion,
+        private readonly string $alias,
+        private readonly int $numberOfShards,
+        private readonly int $numberOfReplicas
     ) {
         parent::__construct($client);
-        $this->indexPrefix = $indexPrefix;
-        $this->schemaVersion = $schemaVersion;
-        $this->alias = $alias;
-        $this->numberOfShards = $numberOfShards;
-        $this->numberOfReplicas = $numberOfReplicas;
     }
 
     protected function configure(): void
@@ -66,24 +51,15 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
             $indexName,
             $this->indexPrefix . '*',
             $this->alias,
-            OpenAddressDocuments::fromRows(self::rows($files)),
+            new OpenAddressDocuments(new OpenAddressCsvReader($files)),
             $this->numberOfShards,
             $this->numberOfReplicas
         );
 
+        // The rows are streamed, so memory should stay flat however large the CSVs get.
+        // Logging the peak shows when a change starts loading everything at once.
         $logger->info(sprintf('Peak memory: %d MB.', memory_get_peak_usage(true) / 1024 / 1024));
 
-        return 0;
-    }
-
-    /**
-     * @param list<string> $files
-     * @return \Generator<array<string, string>>
-     */
-    private static function rows(array $files): \Generator
-    {
-        foreach ($files as $file) {
-            yield from OpenAddressCsvReader::rows($file);
-        }
+        return self::SUCCESS;
     }
 }

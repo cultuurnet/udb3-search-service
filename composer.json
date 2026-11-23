@@ -11,13 +11,13 @@
     ],
     "require": {
         "php": ">=8.3",
+        "ext-intl": "*",
         "ext-json": "*",
         "ext-pcntl": "*",
         "ext-simplexml": "*",
         "broadway/broadway": "^2.4",
         "cakephp/chronos": "^3.3.1",
         "crell/api-problem": "^3.2",
-        "cultuurnet/calendar-summary-v3": "^4.1.2",
         "cultuurnet/culturefeed-php": "^2.2",
         "elasticsearch/elasticsearch": "^8.19",
         "filp/whoops": "^2.5",
@@ -40,6 +40,7 @@
         "symfony/console": "^7.4",
         "symfony/finder": "^7.4",
         "symfony/string": "^7.4",
+        "symfony/translation-contracts": "^3.0",
         "tuupola/cors-middleware": "^1.1"
     },
     "require-dev": {

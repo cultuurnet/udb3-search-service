@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolClause;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Compound\BoolQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\MatchAllQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
+use CultuurNet\UDB3\Search\Json;
 use PHPUnit\Framework\TestCase;
 
 final class NestedQueryTest extends TestCase
@@ -66,7 +67,7 @@ final class NestedQueryTest extends TestCase
             ],
         ];
 
-        $this->assertSame(json_encode($expected), json_encode($outer->toArray()));
+        $this->assertSame(Json::encode($expected), Json::encode($outer->toArray()));
     }
 
     /**
