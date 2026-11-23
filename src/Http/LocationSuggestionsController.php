@@ -34,7 +34,8 @@ final readonly class LocationSuggestionsController
         $matchType = $searchText->endsWithNumber() ? 'match' : 'match_bool_prefix';
 
         // Without a number the user means the street, so the house numbers on it would only crowd it out.
-        $types = $searchText->containsNumber() ? ['street', 'address'] : ['street'];
+        // A municipality has no number, so with one typed it can never match.
+        $types = $searchText->containsNumber() ? ['street', 'address'] : ['street', 'municipality'];
 
         $response = $this->client->search([
             'index' => $this->indexName,
@@ -70,13 +71,25 @@ final readonly class LocationSuggestionsController
                     'latitude' => $hit['_source']['location']['lat'],
                     'longitude' => $hit['_source']['location']['lon'],
                 ],
-                'searchFilter' => [
-                    'coordinates' => $hit['_source']['location']['lat'] . ',' . $hit['_source']['location']['lon'],
-                ],
+                'searchFilter' => self::searchFilter($hit['_source']),
             ],
             $response['hits']['hits']
         );
 
         return ResponseFactory::jsonLd(['member' => $suggestions]);
+    }
+
+    /**
+     * @param array<string, mixed> $source
+     * @return array<string, mixed>
+     */
+    private static function searchFilter(array $source): array
+    {
+        // A municipality is an area, so Search API 3 filters on its region. Everything else is a point.
+        if ($source['type'] === 'municipality') {
+            return ['regions' => $source['regions']];
+        }
+
+        return ['coordinates' => $source['location']['lat'] . ',' . $source['location']['lon']];
     }
 }
