@@ -22,6 +22,16 @@ final class ResponseFactory
         return self::jsonWithCustomContentType('application/ld+json', $data, $code);
     }
 
+    public static function text(string $text): ResponseInterface
+    {
+        return self::withCustomContentType('text/plain; charset=utf-8', $text);
+    }
+
+    public static function html(string $html): ResponseInterface
+    {
+        return self::withCustomContentType('text/html; charset=utf-8', $html);
+    }
+
     /**
      * @param array|object $data
      */
@@ -38,13 +48,16 @@ final class ResponseFactory
         $data,
         int $code = StatusCodeInterface::STATUS_OK
     ): ResponseInterface {
-        $response = new Response($code);
+        return self::withCustomContentType($contentType, Json::encodeWithOptions($data, self::JSON_OPTIONS), $code);
+    }
 
-        $response = $response->withAddedHeader('Content-Type', $contentType);
-
-        $body = $response->getBody();
-        $body->write(Json::encodeWithOptions($data, self::JSON_OPTIONS));
-
-        return $response->withBody($body);
+    private static function withCustomContentType(
+        string $contentType,
+        string $body,
+        int $code = StatusCodeInterface::STATUS_OK
+    ): ResponseInterface {
+        $response = (new Response($code))->withAddedHeader('Content-Type', $contentType);
+        $response->getBody()->write($body);
+        return $response;
     }
 }
