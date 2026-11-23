@@ -41,6 +41,7 @@ final class OpenAddressDocuments implements IteratorAggregate
             $streetName = $this->name($row, 'streetname');
             $postcode = $row['postcode'];
             $locality = $this->locality($row);
+            $names = $this->streetNames($row);
             $words = $this->searchWords($row);
             $lat = (float) $row['EPSG:4326_lat'];
             $lon = (float) $row['EPSG:4326_lon'];
@@ -48,6 +49,7 @@ final class OpenAddressDocuments implements IteratorAggregate
             yield $addressId => [
                 'type' => 'address',
                 'label' => sprintf('%s %s, %s %s', $streetName, $row['house_number'], $postcode, $locality),
+                'name' => $names,
                 'search_text' => implode(' ', $this->unique([...$words, $row['house_number']])),
                 'location' => ['lat' => $lat, 'lon' => $lon],
             ];
@@ -56,6 +58,7 @@ final class OpenAddressDocuments implements IteratorAggregate
             $streetId = implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]);
             $streets[$streetId] ??= [
                 'label' => sprintf('%s, %s %s', $streetName, $postcode, $locality),
+                'name' => $names,
                 'search_text' => implode(' ', $this->unique($words)),
                 'lat_sum' => 0.0,
                 'lon_sum' => 0.0,
@@ -71,6 +74,7 @@ final class OpenAddressDocuments implements IteratorAggregate
             yield $streetId => [
                 'type' => 'street',
                 'label' => $street['label'],
+                'name' => $street['name'],
                 'search_text' => $street['search_text'],
                 'location' => [
                     'lat' => round($street['lat_sum'] / $street['count'], 5),
@@ -130,6 +134,16 @@ final class OpenAddressDocuments implements IteratorAggregate
     private function postnames(array $row): array
     {
         return array_values(array_filter(explode('/', $this->name($row, 'postname')), static fn (string $name): bool => $name !== ''));
+    }
+
+    /**
+     * @param array<string, string> $row
+     * @return list<string>
+     */
+    private function streetNames(array $row): array
+    {
+        // Brussels streets have a Dutch and a French name, and typing either one is an exact match.
+        return $this->unique(array_map(static fn (string $language): string => $row['streetname_' . $language], $this->languages($row)));
     }
 
     /**

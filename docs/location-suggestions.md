@@ -50,6 +50,7 @@ The char filter matches letters with `\p{L}` and not `[a-z]`. It runs before the
 |---|---|
 | `type` | `street`, `address` or `place` |
 | `label` | The text the user sees, like `Lentedreef, 3010 Kessel-Lo`. Not searchable. |
+| `name` | The street name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. Only used for the exact match. |
 | `search_text` | Every word someone might type to find this document |
 | `location` | The coordinates |
 
@@ -69,8 +70,14 @@ The municipality is in `search_text` even when the label shows a sub-municipalit
 
 Only the last typed word may match the beginning of a word. A number at the end must match whole, otherwise `kerkstraat 90` would also match postcode 9000.
 
+### name
+
+When the whole typed text equals a name, the suggestion gets a boost. So `bisschoppenhof` shows Bisschoppenhof, 3150 Haacht above the Bisschoppenhoflaan streets, which also start with what was typed.
+
+`location_normalizer` folds the name like the analyzer does (punctuation, capitals, accents), but keeps it as one value, so `o l v ten steenstraat` equals `O.L.V. ten Steenstraat` and `bisschoppenhof` does not equal `Bisschoppenhoflaan`.
+
 ## Acceptance test fixture
 
 `tests/acceptance/openaddress.csv` holds real OpenAddress rows for the streets in the udb3-backend feature `features/search/location-suggestions.feature`. `make acc-test-migrate` indexes it, so the acceptance tests don't download 1 GB.
 
-It keeps every row of those streets, competitors in other municipalities included, because the scenarios check which suggestion comes first. Add rows when a scenario needs a new street, and don't remove rows a scenario depends on.
+It keeps every row of those streets, competitors in other municipalities included, because the scenarios check which suggestion comes first. Add rows when a scenario needs a new street, and don't remove rows a scenario depends on. When the number of addresses doesn't matter for a scenario, one row per street is enough (the Bisschoppenhof streets).
