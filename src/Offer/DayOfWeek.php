@@ -45,4 +45,9 @@ enum DayOfWeek: string
 
         return $dayOfWeek;
     }
+
+    public function position(): int
+    {
+        return (int) array_search($this, self::cases(), true);
+    }
 }

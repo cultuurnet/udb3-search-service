@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\ElasticSearch\DSL\Query;
 
+use CultuurNet\UDB3\Search\Json;
 use PHPUnit\Framework\TestCase;
 
 final class MatchAllQueryTest extends TestCase
@@ -15,6 +16,6 @@ final class MatchAllQueryTest extends TestCase
     {
         $query = new MatchAllQuery();
 
-        $this->assertSame('{"match_all":{}}', json_encode($query->toArray()));
+        $this->assertSame('{"match_all":{}}', Json::encode($query->toArray()));
     }
 }
