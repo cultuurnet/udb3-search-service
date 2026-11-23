@@ -35,6 +35,9 @@ public.pem
 # Dependencies — built inside image
 vendor/
 
+# Downloaded OpenAddress CSVs, about 1 GB
+data/
+
 # Git
 .git/
 .gitignore

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseExactMatchAnalyzerComma
 use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand;
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\GetAliasesCommand;
+use CultuurNet\UDB3\SearchService\Console\IndexOpenAddressCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
@@ -61,6 +62,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'geoshapes:region-mapping' => UpdateRegionMappingCommand::class,
                     'geoshapes:index-regions' => IndexRegionsCommand::class,
                     'geoshapes:install' => InstallGeoShapesCommand::class,
+                    'location-suggestions:index-openaddress' => IndexOpenAddressCommand::class,
                 ];
 
                 foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
@@ -183,6 +185,18 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $this->parameter('elasticsearch.geoshapes_index.prefix') . SchemaVersions::geoshapes(),
                 $this->parameter('elasticsearch.geoshapes_index.write_alias'),
                 $this->parameter('elasticsearch.geoshapes_index.read_alias')
+            )
+        );
+
+        $this->add(
+            IndexOpenAddressCommand::class,
+            fn (): IndexOpenAddressCommand => new IndexOpenAddressCommand(
+                $this->get(ElasticSearchClient::class),
+                $this->parameter('elasticsearch.location_suggestions_index.prefix'),
+                SchemaVersions::locationSuggestions(),
+                $this->parameter('elasticsearch.location_suggestions_index.read_alias'),
+                $this->parameter('elasticsearch.number_of_shards'),
+                $this->parameter('elasticsearch.number_of_replicas')
             )
         );
 

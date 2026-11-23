@@ -1,5 +1,6 @@
 .PHONY: up down pull build bash logs config install migrate migrate-force ci stan cs cs-fix test test-filter destroy \
-	acc-test-build acc-test-up acc-test-migrate acc-test-logs acc-test-down
+	acc-test-build acc-test-up acc-test-migrate acc-test-logs acc-test-down \
+	location-suggestions-index
 
 # The base file on its own, without docker-compose.override.yml
 ACC_TEST_COMPOSE = docker compose -f docker-compose.yml
@@ -43,6 +44,10 @@ migrate:
 migrate-force:
 	docker compose exec search ./bin/app.php elasticsearch:migrate --force
 
+location-suggestions-index:
+	./bin/download-openaddress.sh data
+	docker compose exec search ./bin/app.php location-suggestions:index-openaddress data/openaddress-bevlg.csv data/openaddress-bewal.csv data/openaddress-bebru.csv
+
 ci:
 	docker compose exec search composer ci
 
@@ -71,8 +76,12 @@ acc-test-build:
 acc-test-up:
 	$(ACC_TEST_COMPOSE) up -d --wait --wait-timeout 300
 
+# The location suggestions are indexed from a small set of real OpenAddress rows, so the acceptance tests don't download 1 GB.
+# The file is copied in because the production image is meant to leave tests/ out.
 acc-test-migrate:
 	$(ACC_TEST_COMPOSE) exec -T search ./bin/app.php elasticsearch:migrate
+	$(ACC_TEST_COMPOSE) cp tests/acceptance/openaddress.csv search:/tmp/openaddress.csv
+	$(ACC_TEST_COMPOSE) exec -T search ./bin/app.php location-suggestions:index-openaddress /tmp/openaddress.csv
 
 acc-test-logs:
 	$(ACC_TEST_COMPOSE) logs --no-color --timestamps
