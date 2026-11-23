@@ -79,6 +79,12 @@ place of the requested type returns a 404.
 Entry API's deprecated aliases (`langCode`, `format`, `timeZone` and the `Accept` header) are not
 supported here. Entry API is expected to map them when it calls this endpoint.
 
+## Embedded in search results
+
+`embedCalendarSummaries[]` on `/offers`, `/events` and `/places` embeds summaries in each result, for
+example `embedCalendarSummaries[]=md-text`. They use `Europe/Brussels` and hide past dates. Add
+`embedCalendarSummariesHidePast=false` to include past dates, like Entry API's event exports do.
+
 ## Formatter parameters
 
 There are 3 (optional) parameters which can be used on the initialisation of the formatters.

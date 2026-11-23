@@ -112,6 +112,7 @@ final class ResultTransformerFactoryTest extends TestCase
         $result = ResultTransformerFactory::create(
             $embedded,
             false,
+            true,
             CalendarSummaryFormat::fromCombinedParameter('md-text'),
             CalendarSummaryFormat::fromCombinedParameter('xs-html')
         )->transform($this->permanentOffer(), []);

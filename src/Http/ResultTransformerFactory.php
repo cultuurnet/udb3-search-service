@@ -20,6 +20,7 @@ final class ResultTransformerFactory
     public static function create(
         bool $embedded,
         bool $embedUiTPASPrices,
+        bool $calendarSummariesHidePast = true,
         CalendarSummaryFormat ...$calendarSummaryFormats
     ): JsonTransformer {
         $transformerStack = new CompositeJsonTransformer();
@@ -38,7 +39,8 @@ final class ResultTransformerFactory
 
         if (!empty($calendarSummaryFormats)) {
             $transformerStack = $transformerStack->addTransformer(
-                new CalendarSummaryEmbeddingJsonTransformer(...$calendarSummaryFormats)
+                (new CalendarSummaryEmbeddingJsonTransformer(...$calendarSummaryFormats))
+                    ->withHidePast($calendarSummariesHidePast)
             );
         }
 

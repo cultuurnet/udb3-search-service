@@ -10,6 +10,7 @@ final class OfferSupportedParameters extends AbstractSupportedParameters
     {
         return [
             'embedCalendarSummaries',
+            'embedCalendarSummariesHidePast',
             'q',
             'id',
             'text',
