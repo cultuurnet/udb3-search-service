@@ -29,7 +29,6 @@ final class OpenAddressDocumentsTest extends TestCase
             [
                 'type' => 'address',
                 'label' => 'Lentedreef 27, 3010 Kessel-Lo',
-                'name' => ['Lentedreef'],
                 'search_text' => 'Lentedreef 3010 Kessel-Lo Leuven Louvain Löwen 27',
                 'location' => ['lat' => 50.88958, 'lon' => 4.72023],
             ],

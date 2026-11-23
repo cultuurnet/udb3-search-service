@@ -27,7 +27,7 @@ The char filter matches letters with `\p{L}` and not `[a-z]`. It runs before the
 |---|---|
 | `type` | `street`, `address` or `place` |
 | `label` | The text the user sees, like `Lentedreef, 3010 Kessel-Lo`. Not searchable. |
-| `name` | The street name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. Only used for the exact match. |
+| `name` | The street name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. Not on addresses, only used for the exact match. |
 | `search_text` | Every word someone might type to find this document |
 | `location` | The coordinates |
 
