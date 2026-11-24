@@ -35,6 +35,10 @@ final readonly class MediumPermanentPlainTextFormatter implements PermanentForma
             return ucfirst($this->translator->translate('postponed'));
         }
 
+        if (!$offer->getBookingAvailability()->isAvailable()) {
+            return ucfirst($this->translator->translate('sold_out'));
+        }
+
         if (!$offer->getOpeningHours()->isEmpty()) {
             return $this->generateWeekScheme($offer->getOpeningHours());
         }

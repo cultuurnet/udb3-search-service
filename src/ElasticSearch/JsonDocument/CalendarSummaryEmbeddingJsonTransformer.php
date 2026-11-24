@@ -24,17 +24,26 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     /**
      * @var CalendarSummaryFormat[]
      */
-    private array $calendarSummaryFormats;
+    private array $calendarSummaryFormats = [];
 
     public function __construct(CalendarSummaryFormat ...$calendarSummaryFormats)
     {
-        $this->calendarSummaryFormats = $calendarSummaryFormats;
+        // A format requested twice would be merged recursively into a list instead of a string.
+        foreach ($calendarSummaryFormats as $calendarSummaryFormat) {
+            $key = $calendarSummaryFormat->getFormat() . '-' . $calendarSummaryFormat->getType();
+            $this->calendarSummaryFormats[$key] = $calendarSummaryFormat;
+        }
     }
 
     public function transform(array $original, array $draft = []): array
     {
+        if ($this->calendarSummaryFormats === []) {
+            return $draft;
+        }
+
+        $offer = Offer::fromJsonLd($original['originalEncodedJsonLd']);
+
         foreach ($this->calendarSummaryFormats as $calendarSummaryFormat) {
-            $offer = Offer::fromJsonLd($original['originalEncodedJsonLd']);
             $calendarSummary = $this->getCalendarSummaryData($offer, $calendarSummaryFormat);
             $draft = array_merge_recursive(
                 $draft,
