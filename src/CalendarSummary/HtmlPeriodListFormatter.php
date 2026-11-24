@@ -80,7 +80,7 @@ final readonly class HtmlPeriodListFormatter
 
         $description = $period->getDescriptionForLanguage($this->translator->getLanguageCode());
         if ($description !== '') {
-            $output .= '<span class="cf-description">(' . $description . ')</span>';
+            $output .= '<span class="cf-description">(' . htmlspecialchars($description, ENT_NOQUOTES) . ')</span>';
         }
 
         if ($formatContent !== null) {

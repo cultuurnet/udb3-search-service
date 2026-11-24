@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search\CalendarSummary\Multiple;
 
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Search\CalendarSummary\HtmlFixture;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\BookingAvailability;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\CalendarType;
@@ -28,6 +29,12 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
     protected function setUp(): void
     {
         $this->formatter = new MediumMultipleHTMLFormatter(new Translator('nl_NL'), false);
+        Chronos::setTestNow(new Chronos('2021-05-03'));
+    }
+
+    protected function tearDown(): void
+    {
+        Chronos::setTestNow();
     }
 
     public function testFormatHTMLMultipleDateMediumOneDay(): void
@@ -190,6 +197,59 @@ final class MediumMultipleHTMLFormatterTest extends TestCase
         $this->assertEquals(
             '<span>Evenement afgelopen</span>',
             $formatter->format($event)
+        );
+    }
+
+    public function testItHidesOnlyTheDatesThatHaveEnded(): void
+    {
+        Chronos::setTestNow(new Chronos('2021-05-03T12:00:00+02:00'));
+        $past = $this->subEvent('2021-04-01T10:00:00+02:00', '2021-04-01T11:00:00+02:00');
+        $endsThisAfternoon = $this->subEvent('2021-05-03T13:00:00+02:00', '2021-05-03T14:00:00+02:00');
+        $future = $this->subEvent('2021-06-01T10:00:00+02:00', '2021-06-01T11:00:00+02:00');
+
+        $this->assertSame(
+            $this->formatter->format($this->multiple($endsThisAfternoon, $future)),
+            (new MediumMultipleHTMLFormatter(new Translator('nl_NL'), true))->format(
+                $this->multiple($past, $endsThisAfternoon, $future)
+            )
+        );
+    }
+
+    public function testItShowsADayWithMoreThanOneDateOnce(): void
+    {
+        $event = $this->multiple(
+            $this->subEvent('2021-06-01T10:00:00+02:00', '2021-06-01T11:00:00+02:00'),
+            $this->subEvent('2021-06-01T20:00:00+02:00', '2021-06-01T22:00:00+02:00')
+        );
+
+        $this->assertSame(
+            $this->formatter->format($this->multiple(
+                $this->subEvent('2021-06-01T10:00:00+02:00', '2021-06-01T11:00:00+02:00')
+            )),
+            $this->formatter->format($event)
+        );
+    }
+
+    private function multiple(Offer ...$subEvents): Offer
+    {
+        return (new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            null,
+            null,
+            CalendarType::multiple()
+        ))->withSubEvents($subEvents);
+    }
+
+    private function subEvent(string $startDate, string $endDate): Offer
+    {
+        return new Offer(
+            OfferType::event(),
+            new Status('Available', []),
+            new BookingAvailability('Available'),
+            new DateTimeImmutable($startDate),
+            new DateTimeImmutable($endDate)
         );
     }
 }
