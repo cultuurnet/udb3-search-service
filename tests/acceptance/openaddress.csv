@@ -997,3 +997,80 @@ EPSG:3812_x,EPSG:3812_y,EPSG:4326_lat,EPSG:4326_lon,address_id,box_number,house_
 669357.37000,681716.15000,50.94539,4.64423,2493133,,3,24033,,,Haacht,3150,,HAACHT/Tildonk/Wespelaar,143052,,,Bisschoppenhof,BE-VLG,current
 652234.11000,712171.21000,51.21949,4.40082,220298,,9,11002,Antwerpen,Anvers,Antwerpen,2000,,ANTWERPEN,1053,,,Groenplaats,BE-VLG,current
 731050.79000,629811.48000,50.47342,5.51055,1997865,,9A,61079,Anthisnes,Anthisnes,Anthisnes,4160,Anthisnes,,7726594,,Rue de la Libération,,BE-WAL,current
+635661.15000,708350.71000,51.18499,4.16376,200030,,13,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77962,,,Uilenstraat,BE-VLG,current
+631957.67000,704056.21000,51.14629,4.11099,200114,,126,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77836,,,Nieuwe Baan,BE-VLG,current
+635469.41000,707333.75000,51.17585,4.16105,200211,,36,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77617,,,Eduard Prissestraat,BE-VLG,current
+629968.23000,703924.44000,51.14504,4.08257,200324,,173,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77549,,,Belseledorp,BE-VLG,current
+635510.35000,706158.23000,51.16528,4.16168,200328,,8,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77593,,,Daliaweg,BE-VLG,current
+626598.47000,705219.43000,51.15656,4.03434,200400,,15,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,78006,,,Zakstraat,BE-VLG,current
+633896.60000,705630.47000,51.16050,4.13863,200488,,76,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77699,,,Hoveniersstraat,BE-VLG,current
+635161.75000,705033.80000,51.15516,4.15674,200520,,24,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77762,,,Koningin Fabiolapark,BE-VLG,current
+636875.27000,709016.45000,51.19100,4.18110,200619,,19B,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77976,,,Vlasbloemstraat,BE-VLG,current
+637494.48000,707978.26000,51.18168,4.18999,200641,,149,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77668,,,Heihoekstraat,BE-VLG,current
+636987.89000,709808.48000,51.19812,4.18268,200702,,28,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77756,,,Kolkstraat,BE-VLG,current
+637251.52000,708458.39000,51.18599,4.18650,200731,,270,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77838,,,Nieuwkerkenstraat,BE-VLG,current
+634647.70000,705149.89000,51.15620,4.14939,200857,,234,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77912,,,Schoolstraat,BE-VLG,current
+635131.54000,706258.96000,51.16618,4.15626,200866,,104,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77796,,,Lindenstraat,BE-VLG,current
+635566.82000,705574.87000,51.16004,4.16251,200884,,30,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77880,,,Prins Boudewijnlaan,BE-VLG,current
+635161.75000,705033.80000,51.15516,4.15674,200951,,59,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77762,,,Koningin Fabiolapark,BE-VLG,current
+635218.73000,704951.49000,51.15443,4.15756,201027,,231,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77762,,,Koningin Fabiolapark,BE-VLG,current
+631973.10000,707486.94000,51.17713,4.11105,201108,,22,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77864,,,Patershoek,BE-VLG,current
+634592.02000,705866.42000,51.16263,4.14857,201121,,49,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,78011,,,Zeildoekstraat,BE-VLG,current
+636457.31000,709260.32000,51.19319,4.17511,201272,,40,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77861,,,Pastorijstraat,BE-VLG,current
+633387.74000,706497.97000,51.16828,4.13132,201471,,116,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77870,,,Plezantstraat,BE-VLG,current
+633225.56000,706547.39000,51.16872,4.12900,201474,,35,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77852,,,Paddeschootdreef,BE-VLG,current
+630158.57000,704088.00000,51.14652,4.08528,201483,,3,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77621,,,Eindestraat,BE-VLG,current
+633751.77000,705695.00000,51.16107,4.13656,201539,,38,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77541,,,Baron Dhanisstraat,BE-VLG,current
+635560.84000,705861.88000,51.16262,4.16242,201566,,10,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77917,,,Seringenstraat,BE-VLG,current
+626726.02000,704234.90000,51.14772,4.03622,201686,,148,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,77702,,,Hulstbaan,BE-VLG,current
+633541.52000,707555.90000,51.17779,4.13347,201764,,30,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77632,,,Fazantenstraat,BE-VLG,current
+633727.67000,706188.79000,51.16551,4.13620,202223,,10,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77594,,,Dalstraat,BE-VLG,current
+636995.30000,707438.39000,51.17682,4.18287,202284,,12,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,78014,,,Zonneken,BE-VLG,current
+634433.69000,704826.16000,51.15328,4.14634,202320,,20,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77883,,,Prinses Jos.-Charlottelaan,BE-VLG,current
+631072.27000,706671.46000,51.16977,4.09821,202369,,85,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77643,,,Gentstraat,BE-VLG,current
+637572.98000,707588.82000,51.17818,4.19112,202393,,50,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77947,,,Ster,BE-VLG,current
+629673.66000,703636.67000,51.14245,4.07838,202401,,3,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77800,,,Lokerse Baan,BE-VLG,current
+634976.97000,705272.40000,51.15730,4.15409,202407,,2,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77536,,,August De Boeckstraat,BE-VLG,current
+636303.25000,709496.78000,51.19531,4.17290,202520,,55,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77866,,,Peperstraat,BE-VLG,current
+628693.25000,703803.94000,51.14392,4.06436,202592,,272,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,78003,,,Wijnveld,BE-VLG,current
+634085.05000,704650.82000,51.15169,4.14137,202674,,23,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77716,,,Kaarsenmakerstraat,BE-VLG,current
+636761.33000,708908.76000,51.19003,4.17947,202726,,81,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77838,,,Nieuwkerkenstraat,BE-VLG,current
+635365.47000,704969.82000,51.15459,4.15966,202810,,136,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77980,,,Voskenslaan,BE-VLG,current
+634908.07000,707013.51000,51.17295,4.15304,202953,,42,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77850,,,Oude Molenstraat,BE-VLG,current
+634041.63000,707239.77000,51.17496,4.14064,202983,,161,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77667,,,Heidebloemstraat,BE-VLG,current
+624701.91000,704863.39000,51.15328,4.00725,202987,,37,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,77787,,,Leebrugstraat,BE-VLG,current
+634587.08000,705210.15000,51.15674,4.14852,203161,,118,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77970,,,Verbindingsstraat,BE-VLG,current
+637083.94000,707469.18000,51.17710,4.18413,203167,,30,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,78014,,,Zonneken,BE-VLG,current
+633724.92000,705769.41000,51.16174,4.13617,203218,,88,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77839,,,Nieuwstraat,BE-VLG,current
+634851.37000,706068.91000,51.16446,4.15227,203256,,12,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77872,,,Polderstraat,BE-VLG,current
+625026.98000,703685.40000,51.14271,4.01198,203573,,27,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,77788,,,Leestraat,BE-VLG,current
+631984.49000,707704.29000,51.17908,4.11120,203616,,57,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77864,,,Patershoek,BE-VLG,current
+637827.43000,707498.80000,51.17738,4.19477,203640,,13,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77981,,,Vossekotstraat,BE-VLG,current
+636321.32000,704489.54000,51.15030,4.17334,203717,,74,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77698,,,Houten Schoen,BE-VLG,current
+632232.47000,705501.59000,51.15929,4.11485,203754,,18,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77686,,,Hoge Bokstraat,BE-VLG,current
+633576.14000,705172.47000,51.15637,4.13407,203774,,35,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77863,,,Pater Segersstraat,BE-VLG,current
+635455.43000,706820.42000,51.17123,4.16087,204169,,32,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77888,,,Raapstraat,BE-VLG,current
+634970.27000,707732.34000,51.17942,4.15390,204245,,82,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77704,,,Iepenstraat,BE-VLG,current
+636728.42000,705908.82000,51.16307,4.17911,204343,,346,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77857,,,Passtraat,BE-VLG,current
+637169.58000,709328.86000,51.19382,4.18530,204479,,77,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77976,,,Vlasbloemstraat,BE-VLG,current
+628220.81000,704008.45000,51.14574,4.05759,204611,,107,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,77677,,,Hemelsbreedte,BE-VLG,current
+633090.25000,706552.43000,51.16876,4.12707,204869,,50,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77991,,,Watermolendreef,BE-VLG,current
+634386.31000,707348.09000,51.17595,4.14556,204873,,63,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77708,,,Jacob Van Arteveldestraat,BE-VLG,current
+634935.47000,704811.66000,51.15316,4.15352,204885,,100,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77722,,,Kapelstraat,BE-VLG,current
+630541.95000,704296.27000,51.14840,4.09075,204902,,64,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9111,,Belsele,77828,,,Molenwijk,BE-VLG,current
+634037.79000,705774.67000,51.16180,4.14065,204999,,176,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77679,,,Hendrik Heymanplein,BE-VLG,current
+635454.04000,705309.16000,51.15765,4.16091,205024,,31,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77683,,,Hertjen,BE-VLG,current
+634632.30000,705803.87000,51.16207,4.14914,205067,,17,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77696,,,Hospitaalstraat,BE-VLG,current
+634617.82000,703447.25000,51.14089,4.14903,205124,,215,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77601,,,Dendermondse Steenweg,BE-VLG,current
+627537.69000,705674.67000,51.16069,4.04773,205194,,67,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9112,,Sinaai-Waas,77978,,,Vleeshouwersstraat,BE-VLG,current
+634260.20000,705295.22000,51.15749,4.14385,205403,,55,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77527,,,Abingdonstraat,BE-VLG,current
+634805.52000,707387.86000,51.17632,4.15156,205615,,192,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77544,,,Begijnenstraat,BE-VLG,current
+634826.77000,706478.26000,51.16814,4.15190,205663,,189,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77815,,,Mercatorstraat,BE-VLG,current
+634368.88000,706197.80000,51.16561,4.14536,205665,,51,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77531,,,Ankerstraat,BE-VLG,current
+634755.38000,706669.80000,51.16986,4.15087,205758,,25,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77968,,,Van Naemenstraat,BE-VLG,current
+632864.98000,706389.14000,51.16729,4.12385,205762,,156,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77991,,,Watermolendreef,BE-VLG,current
+637013.79000,707513.62000,51.17750,4.18313,205849,,7,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77934,,,Slagmolenstraat,BE-VLG,current
+636879.46000,709071.49000,51.19150,4.18116,206041,,24,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77976,,,Vlasbloemstraat,BE-VLG,current
+636690.49000,708643.01000,51.18764,4.17847,206121,,48,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77812,,,Meesterstraat,BE-VLG,current
+649048.41500,668355.70200,50.82563,4.35526,21,,2,21013,,Saint-Gilles,Sint-Gillis,1060,,,1920,,Rue de l'Aqueduc,Aquaductstraat,BE-BRU,current
+649050.60600,668505.66200,50.82698,4.35529,48,,136,21013,,Saint-Gilles,Sint-Gillis,1060,,,3882,,Chaussée de Charleroi,Charleroise Steenweg,BE-BRU,current
