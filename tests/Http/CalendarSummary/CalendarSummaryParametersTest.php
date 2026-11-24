@@ -132,7 +132,7 @@ final class CalendarSummaryParametersTest extends TestCase
     {
         return new ApiRequest(
             (new ServerRequestFactory())
-                ->createServerRequest('GET', '/calendar-summary/events/1')
+                ->createServerRequest('GET', '/events/1/calendar-summary')
                 ->withQueryParams($queryParameters)
         );
     }

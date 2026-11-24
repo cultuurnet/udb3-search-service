@@ -175,10 +175,10 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $router->get('/location-suggestions/', LocationSuggestionsController::class);
                 $router->options('/location-suggestions/', $optionsResponse);
 
-                $router->get('/calendar-summary/{offerType:events|places}/{offerId}', CalendarSummaryController::class);
-                $router->options('/calendar-summary/{offerType:events|places}/{offerId}', $optionsResponse);
-                $router->get('/calendar-summary/{offerType:events|places}/{offerId}/', CalendarSummaryController::class);
-                $router->options('/calendar-summary/{offerType:events|places}/{offerId}/', $optionsResponse);
+                $router->get('/{offerType:events|places}/{offerId}/calendar-summary', CalendarSummaryController::class);
+                $router->options('/{offerType:events|places}/{offerId}/calendar-summary', $optionsResponse);
+                $router->get('/{offerType:events|places}/{offerId}/calendar-summary/', CalendarSummaryController::class);
+                $router->options('/{offerType:events|places}/{offerId}/calendar-summary/', $optionsResponse);
 
                 return $router;
             }

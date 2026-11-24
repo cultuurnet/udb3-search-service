@@ -183,7 +183,7 @@ final class CalendarSummaryControllerTest extends TestCase
     {
         return new ApiRequest(
             (new ServerRequestFactory())
-                ->createServerRequest('GET', '/calendar-summary/events/' . self::OFFER_ID)
+                ->createServerRequest('GET', '/events/' . self::OFFER_ID . '/calendar-summary')
                 ->withQueryParams($queryParameters)
         );
     }
