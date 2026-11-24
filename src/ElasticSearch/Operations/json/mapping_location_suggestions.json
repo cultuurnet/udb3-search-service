@@ -48,6 +48,9 @@
             },
             "location": {
                 "type": "geo_point"
+            },
+            "address_count": {
+                "type": "integer"
             }
         }
     }
