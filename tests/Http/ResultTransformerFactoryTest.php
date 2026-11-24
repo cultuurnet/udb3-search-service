@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search\Http;
 
 use CultuurNet\UDB3\Search\FileReader;
 use CultuurNet\UDB3\Search\Json;
+use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
 use PHPUnit\Framework\TestCase;
 
 final class ResultTransformerFactoryTest extends TestCase
@@ -92,9 +93,64 @@ final class ResultTransformerFactoryTest extends TestCase
         $this->assertSame(['base', 'uitpas'], array_column($result['priceInfo'], 'category'));
     }
 
+    /**
+     * @test
+     */
+    public function it_embeds_no_calendar_summary_when_none_is_requested(): void
+    {
+        $result = $this->transform($this->permanentOffer());
+
+        $this->assertArrayNotHasKey('calendarSummary', $result);
+    }
+
+    /**
+     * @test
+     * @dataProvider providesEmbedToggles
+     */
+    public function it_embeds_the_requested_calendar_summaries(bool $embedded): void
+    {
+        $result = ResultTransformerFactory::create(
+            $embedded,
+            false,
+            CalendarSummaryFormat::fromCombinedParameter('md-text'),
+            CalendarSummaryFormat::fromCombinedParameter('xs-html')
+        )->transform($this->permanentOffer(), []);
+
+        $this->assertSame('Alle dagen open', $result['calendarSummary']['nl']['text']['md']);
+        $this->assertSame(
+            '<p class="cf-openinghours">Alle dagen open</p>',
+            $result['calendarSummary']['nl']['html']['xs']
+        );
+        $this->assertSame(['nl', 'fr', 'de', 'en'], array_keys($result['calendarSummary']));
+    }
+
+    public function providesEmbedToggles(): array
+    {
+        return [
+            'embedded' => [true],
+            'minimal' => [false],
+        ];
+    }
+
     private function transform(array $source, bool $embedded = true, bool $embedUitpasPrices = false): array
     {
         return ResultTransformerFactory::create($embedded, $embedUitpasPrices)->transform($source, []);
+    }
+
+    private function permanentOffer(): array
+    {
+        return [
+            '@id' => 'events/1',
+            '@type' => 'Event',
+            'originalEncodedJsonLd' => Json::encode([
+                '@id' => 'events/1',
+                '@type' => 'Event',
+                '@context' => '/contexts/event',
+                'status' => ['type' => 'Available'],
+                'bookingAvailability' => ['type' => 'Available'],
+                'calendarType' => 'permanent',
+            ]),
+        ];
     }
 
     private function fixture(string $name): array

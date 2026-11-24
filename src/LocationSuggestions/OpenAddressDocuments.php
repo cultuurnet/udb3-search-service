@@ -41,7 +41,6 @@ final class OpenAddressDocuments implements IteratorAggregate
             $streetName = $this->name($row, 'streetname');
             $postcode = $row['postcode'];
             $locality = $this->locality($row);
-            $names = $this->streetNames($row);
             $words = $this->searchWords($row);
             $lat = (float) $row['EPSG:4326_lat'];
             $lon = (float) $row['EPSG:4326_lon'];
@@ -49,7 +48,6 @@ final class OpenAddressDocuments implements IteratorAggregate
             yield $addressId => [
                 'type' => 'address',
                 'label' => sprintf('%s %s, %s %s', $streetName, $row['house_number'], $postcode, $locality),
-                'name' => $names,
                 'search_text' => implode(' ', $this->unique([...$words, $row['house_number']])),
                 'location' => ['lat' => $lat, 'lon' => $lon],
             ];
@@ -58,7 +56,8 @@ final class OpenAddressDocuments implements IteratorAggregate
             $streetId = implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]);
             $streets[$streetId] ??= [
                 'label' => sprintf('%s, %s %s', $streetName, $postcode, $locality),
-                'name' => $names,
+                // Not on addresses: with a house number typed, the text is never just a name.
+                'name' => $this->streetNames($row),
                 'search_text' => implode(' ', $this->unique($words)),
                 'lat_sum' => 0.0,
                 'lon_sum' => 0.0,
@@ -80,6 +79,7 @@ final class OpenAddressDocuments implements IteratorAggregate
                     'lat' => round($street['lat_sum'] / $street['count'], 5),
                     'lon' => round($street['lon_sum'] / $street['count'], 5),
                 ],
+                'address_count' => $street['count'],
             ];
         }
     }

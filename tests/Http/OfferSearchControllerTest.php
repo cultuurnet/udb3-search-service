@@ -53,6 +53,7 @@ use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\SortOrder;
 use CultuurNet\UDB3\Search\Start;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -1520,6 +1521,110 @@ final class OfferSearchControllerTest extends TestCase
         $this->expectQueryBuilderWillReturnResultSet($expectedQueryBuilder, $expectedResultSet);
 
         $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    /**
+     * @test
+     * @dataProvider providesEmbedToggles
+     */
+    public function it_embeds_the_requested_calendar_summaries(bool $embed): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'embed' => $embed,
+                'embedCalendarSummaries' => ['md-text', 'xs-html'],
+            ]
+        );
+
+        $this->expectQueryBuilderWillReturnResultSet(
+            $this->queryBuilder,
+            new PagedResultSet(1, 30, [$this->permanentEventDocument()])
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $calendarSummary = $response['member'][0]['calendarSummary'];
+        $this->assertSame(['nl', 'fr', 'de', 'en'], array_keys($calendarSummary));
+        $this->assertSame('Alle dagen open', $calendarSummary['nl']['text']['md']);
+        $this->assertSame('<p class="cf-openinghours">Open every day</p>', $calendarSummary['en']['html']['xs']);
+    }
+
+    public function providesEmbedToggles(): array
+    {
+        return [
+            'embedded' => [true],
+            'minimal' => [false],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_embeds_no_calendar_summary_when_none_is_requested(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(['disableDefaultFilters' => true]);
+
+        $this->expectQueryBuilderWillReturnResultSet(
+            $this->queryBuilder,
+            new PagedResultSet(1, 30, [$this->permanentEventDocument()])
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $this->assertArrayNotHasKey('calendarSummary', $response['member'][0]);
+    }
+
+    /**
+     * @test
+     * @dataProvider providesInvalidCalendarSummaries
+     */
+    public function it_throws_on_an_invalid_calendar_summary(string $calendarSummary): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'embedCalendarSummaries' => [$calendarSummary],
+            ]
+        );
+
+        $this->searchService->method('search')->willReturn(new PagedResultSet(0, 30, []));
+
+        $this->expectException(UnsupportedParameterValue::class);
+
+        $this->controller->__invoke(new ApiRequest($request));
+    }
+
+    public function providesInvalidCalendarSummaries(): array
+    {
+        return [
+            'unknown type' => ['md-pdf'],
+            'unknown format' => ['xxl-text'],
+            'missing type' => ['md'],
+        ];
+    }
+
+    private function permanentEventDocument(): JsonDocument
+    {
+        return new JsonDocument(
+            '3f2ba18c-59a9-4f65-a242-462ad467c72b',
+            Json::encode([
+                '@id' => 'events/1',
+                '@type' => 'Event',
+                'originalEncodedJsonLd' => Json::encode([
+                    '@id' => 'events/1',
+                    '@type' => 'Event',
+                    '@context' => '/contexts/event',
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => ['type' => 'Available'],
+                    'calendarType' => 'permanent',
+                ]),
+            ])
+        );
     }
 
     private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface

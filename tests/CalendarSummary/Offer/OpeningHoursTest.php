@@ -180,4 +180,17 @@ final class OpeningHoursTest extends TestCase
 
         $this->assertEquals([$openingHour], (new OpeningHours([$openingHour]))->toArray());
     }
+
+    public function testSortingPutsAnOpeningHourWithoutDaysFirst(): void
+    {
+        $withoutDays = new OpeningHour([], '09:00', '17:00');
+        $openingHours = new OpeningHours(
+            [
+                new OpeningHour(['tuesday'], '09:00', '17:00'),
+                $withoutDays,
+            ]
+        );
+
+        $this->assertSame($withoutDays, $openingHours->sortedByDayAndOpeningTime()->toArray()[0]);
+    }
 }
