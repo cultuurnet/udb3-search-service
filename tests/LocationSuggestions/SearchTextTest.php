@@ -36,6 +36,27 @@ final class SearchTextTest extends TestCase
 
     /**
      * @test
+     * @dataProvider provideOnlyNumbers
+     */
+    public function it_knows_when_only_numbers_are_typed(string $text, bool $isOnlyNumbers): void
+    {
+        $this->assertSame($isOnlyNumbers, (new SearchText($text))->isOnlyNumbers());
+    }
+
+    public function provideOnlyNumbers(): array
+    {
+        return [
+            'postcode' => ['3010', true],
+            'postcode being typed' => ['30', true],
+            'two numbers' => ['3010 12', true],
+            'house number with a letter' => ['12a', false],
+            'street and house number' => ['lentedreef 2', false],
+            'street' => ['lentedreef', false],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_requires_text(): void
     {

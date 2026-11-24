@@ -107,6 +107,8 @@ final class LocationSuggestionsControllerTest extends TestCase
             'house number at the end' => ['lentedreef 2', 'match', ['street', 'submunicipality', 'address']],
             'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'submunicipality', 'address']],
             'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'submunicipality', 'address']],
+            'postcode' => ['3010', 'match_bool_prefix', ['submunicipality']],
+            'postcode being typed' => ['30', 'match_bool_prefix', ['submunicipality']],
         ];
     }
 
