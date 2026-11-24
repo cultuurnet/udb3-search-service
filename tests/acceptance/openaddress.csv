@@ -1074,3 +1074,5 @@ EPSG:3812_x,EPSG:3812_y,EPSG:4326_lat,EPSG:4326_lon,address_id,box_number,house_
 636690.49000,708643.01000,51.18764,4.17847,206121,,48,46021,Sint-Niklaas,Saint-Nicolas,Sint-Niklaas,9100,,Nieuwkerken-Waas/SINT-NIKLAAS,77812,,,Meesterstraat,BE-VLG,current
 649048.41500,668355.70200,50.82563,4.35526,21,,2,21013,,Saint-Gilles,Sint-Gillis,1060,,,1920,,Rue de l'Aqueduc,Aquaductstraat,BE-BRU,current
 649050.60600,668505.66200,50.82698,4.35529,48,,136,21013,,Saint-Gilles,Sint-Gillis,1060,,,3882,,Chaussée de Charleroi,Charleroise Steenweg,BE-BRU,current
+691033.84000,690813.15000,51.02601,4.95370,206472,,49,24134,Scherpenheuvel-Zichem,Montaigu-Zichem,Scherpenheuvel-Zichem,3271,,Averbode/Zichem,37371,,,Nieuwstraat,BE-VLG,current
+691630.93000,690315.21000,51.02149,4.96215,233688,,7,24134,Scherpenheuvel-Zichem,Montaigu-Zichem,Scherpenheuvel-Zichem,3271,,Averbode/Zichem,37371,,,Nieuwstraat,BE-VLG,current
