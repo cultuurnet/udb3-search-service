@@ -8,6 +8,13 @@
                     "replacement": " "
                 }
             },
+            "normalizer": {
+                "location_normalizer": {
+                    "type": "custom",
+                    "char_filter": ["location_char_filter"],
+                    "filter": ["lowercase", "asciifolding", "trim"]
+                }
+            },
             "analyzer": {
                 "location_analyzer": {
                     "type": "custom",
@@ -26,6 +33,10 @@
             "label": {
                 "type": "keyword",
                 "index": false
+            },
+            "name": {
+                "type": "keyword",
+                "normalizer": "location_normalizer"
             },
             "search_text": {
                 "type": "text",
