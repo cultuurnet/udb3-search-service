@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\JsonDocument;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarFormatterInterface;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarHTMLFormatter;
 use CultuurNet\UDB3\Search\CalendarSummary\CalendarPlainTextFormatter;
+use CultuurNet\UDB3\Search\CalendarSummary\Locales;
 use CultuurNet\UDB3\Search\CalendarSummary\Offer\Offer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformer;
 use CultuurNet\UDB3\Search\Offer\CalendarSummaryFormat;
@@ -14,17 +15,12 @@ use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 
 final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
 {
-    private const LOCALES = [
-        'nl_BE',
-        'fr_BE',
-        'de',
-        'en',
-    ];
-
     /**
      * @var CalendarSummaryFormat[]
      */
     private array $calendarSummaryFormats = [];
+
+    private bool $hidePast = true;
 
     public function __construct(CalendarSummaryFormat ...$calendarSummaryFormats)
     {
@@ -33,6 +29,13 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
             $key = $calendarSummaryFormat->getFormat() . '-' . $calendarSummaryFormat->getType();
             $this->calendarSummaryFormats[$key] = $calendarSummaryFormat;
         }
+    }
+
+    public function withHidePast(bool $hidePast): self
+    {
+        $clone = clone $this;
+        $clone->hidePast = $hidePast;
+        return $clone;
     }
 
     public function transform(array $original, array $draft = []): array
@@ -65,10 +68,10 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     {
         $calendarSummaries = [];
 
-        foreach (self::LOCALES as $locale) {
+        foreach (Locales::BY_LANGUAGE as $language => $locale) {
             $calendarFormatter = $this->getCalendarFormatterByTypeAndLocale($calendarSummaryFormat->getType(), $locale);
 
-            $calendarSummaries[substr($locale, 0, 2)][$calendarSummaryFormat->getType()] = [
+            $calendarSummaries[$language][$calendarSummaryFormat->getType()] = [
                 $calendarSummaryFormat->getFormat() => trim(
                     $calendarFormatter->format(
                         $offer,
@@ -85,9 +88,9 @@ final class CalendarSummaryEmbeddingJsonTransformer implements JsonTransformer
     {
         switch ($calendarSummaryType) {
             case 'text':
-                return new CalendarPlainTextFormatter($locale, true, 'Europe/Brussels');
+                return new CalendarPlainTextFormatter($locale, $this->hidePast, 'Europe/Brussels');
             case 'html':
-                return new CalendarHTMLFormatter($locale, true, 'Europe/Brussels');
+                return new CalendarHTMLFormatter($locale, $this->hidePast, 'Europe/Brussels');
             default:
                 throw new UnsupportedParameterValue(
                     $calendarSummaryType . ' is not a supported calendar summary type'

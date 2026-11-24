@@ -1552,6 +1552,42 @@ final class OfferSearchControllerTest extends TestCase
         $this->assertSame('<p class="cf-openinghours">Open every day</p>', $calendarSummary['en']['html']['xs']);
     }
 
+    /**
+     * @test
+     * @dataProvider providesHidePastValues
+     */
+    public function it_hides_past_dates_in_embedded_calendar_summaries_unless_asked_not_to(
+        array $hidePastParameter,
+        string $expectedSummary
+    ): void {
+        $request = $this->getSearchRequestWithQueryParameters(
+            [
+                'disableDefaultFilters' => true,
+                'embedCalendarSummaries' => ['md-text'],
+            ] + $hidePastParameter
+        );
+
+        $this->expectQueryBuilderWillReturnResultSet(
+            $this->queryBuilder,
+            new PagedResultSet(1, 30, [$this->pastMultipleEventDocument()])
+        );
+
+        $response = Json::decodeAssociatively(
+            (string) $this->controller->__invoke(new ApiRequest($request))->getBody()
+        );
+
+        $this->assertSame($expectedSummary, $response['member'][0]['calendarSummary']['nl']['text']['md']);
+    }
+
+    public function providesHidePastValues(): array
+    {
+        return [
+            'default' => [[], 'Evenement afgelopen'],
+            'hidden' => [['embedCalendarSummariesHidePast' => 'true'], 'Evenement afgelopen'],
+            'included' => [['embedCalendarSummariesHidePast' => 'false'], "Di 5 mei 2020\nDi 12 mei 2020"],
+        ];
+    }
+
     public function providesEmbedToggles(): array
     {
         return [
@@ -1622,6 +1658,38 @@ final class OfferSearchControllerTest extends TestCase
                     'status' => ['type' => 'Available'],
                     'bookingAvailability' => ['type' => 'Available'],
                     'calendarType' => 'permanent',
+                ]),
+            ])
+        );
+    }
+
+    private function pastMultipleEventDocument(): JsonDocument
+    {
+        $subEvent = fn (string $startDate, string $endDate): array => [
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'status' => ['type' => 'Available'],
+            'bookingAvailability' => ['type' => 'Available'],
+        ];
+
+        return new JsonDocument(
+            'e7c6a2b8-0a5c-4f0e-9a07-7d1f2c3b4a5d',
+            Json::encode([
+                '@id' => 'events/2',
+                '@type' => 'Event',
+                'originalEncodedJsonLd' => Json::encode([
+                    '@id' => 'events/2',
+                    '@type' => 'Event',
+                    '@context' => '/contexts/event',
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => ['type' => 'Available'],
+                    'calendarType' => 'multiple',
+                    'startDate' => '2020-05-05T20:00:00+02:00',
+                    'endDate' => '2020-05-12T23:00:00+02:00',
+                    'subEvent' => [
+                        $subEvent('2020-05-05T20:00:00+02:00', '2020-05-05T23:00:00+02:00'),
+                        $subEvent('2020-05-12T20:00:00+02:00', '2020-05-12T23:00:00+02:00'),
+                    ],
                 ]),
             ])
         );

@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Search\Http\Authentication\Token\ManagementTokenProvider;
 use CultuurNet\UDB3\Search\Http\Authentication\MetadataGenerator;
 use CultuurNet\UDB3\Search\Http\DefaultQuery\InMemoryDefaultQueryRepository;
 use CultuurNet\UDB3\Search\Http\Middleware\PostRequestBodyMiddleware;
+use CultuurNet\UDB3\Search\Http\CalendarSummary\CalendarSummaryController;
 use CultuurNet\UDB3\Search\Http\LocationSuggestionsController;
 use CultuurNet\UDB3\Search\Http\OrganizerSearchController;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
@@ -173,6 +174,11 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $router->options('/location-suggestions', $optionsResponse);
                 $router->get('/location-suggestions/', LocationSuggestionsController::class);
                 $router->options('/location-suggestions/', $optionsResponse);
+
+                $router->get('/{offerType:events|places}/{offerId}/calendar-summary', CalendarSummaryController::class);
+                $router->options('/{offerType:events|places}/{offerId}/calendar-summary', $optionsResponse);
+                $router->get('/{offerType:events|places}/{offerId}/calendar-summary/', CalendarSummaryController::class);
+                $router->options('/{offerType:events|places}/{offerId}/calendar-summary/', $optionsResponse);
 
                 return $router;
             }

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService\Factory;
 
 use CultuurNet\UDB3\SearchService\AmqpProvider;
 use CultuurNet\UDB3\SearchService\CacheProvider;
+use CultuurNet\UDB3\SearchService\CalendarSummary\CalendarSummaryServiceProvider;
 use CultuurNet\UDB3\SearchService\CommandServiceProvider;
 use CultuurNet\UDB3\SearchService\ElasticSearchProvider;
 use CultuurNet\UDB3\SearchService\Event\EventIndexationServiceProvider;
@@ -52,6 +53,7 @@ final class ContainerFactory
         $container->addServiceProvider(new SentryWebServiceProvider());
         $container->addServiceProvider(new OrganizerSearchServiceProvider());
         $container->addServiceProvider(new LocationSuggestionsServiceProvider());
+        $container->addServiceProvider(new CalendarSummaryServiceProvider());
         $container->addServiceProvider(new OfferSearchServiceProvider());
         $container->addServiceProvider(new EventSearchServiceProvider());
         $container->addServiceProvider(new PlaceSearchServiceProvider());
