@@ -38,10 +38,16 @@ final class LocationSuggestionsControllerTest extends TestCase
                 'body' => [
                     'size' => 10,
                     'query' => [
-                        'bool' => [
-                            'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
-                            'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
-                            'filter' => [['terms' => ['type' => ['street']]]],
+                        'function_score' => [
+                            'query' => [
+                                'bool' => [
+                                    'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
+                                    'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
+                                    'filter' => [['terms' => ['type' => ['street']]]],
+                                ],
+                            ],
+                            'field_value_factor' => ['field' => 'address_count', 'modifier' => 'log1p', 'factor' => 0.5, 'missing' => 1],
+                            'boost_mode' => 'multiply',
                         ],
                     ],
                 ],
@@ -83,7 +89,7 @@ final class LocationSuggestionsControllerTest extends TestCase
         $this->client->expects($this->once())
             ->method('search')
             ->with($this->callback(
-                fn (array $params): bool => $params['body']['query']['bool'] === [
+                fn (array $params): bool => $params['body']['query']['function_score']['query']['bool'] === [
                     'must' => [[$expectedMatchType => ['search_text' => ['query' => $searchText, 'operator' => 'and']]]],
                     'should' => [['match' => ['name' => ['query' => $searchText, 'boost' => 10]]]],
                     'filter' => [['terms' => ['type' => $expectedTypes]]],

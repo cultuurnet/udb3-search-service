@@ -29,7 +29,6 @@ final class OpenAddressDocumentsTest extends TestCase
             [
                 'type' => 'address',
                 'label' => 'Lentedreef 27, 3010 Kessel-Lo',
-                'name' => ['Lentedreef'],
                 'search_text' => 'Lentedreef 3010 Kessel-Lo Leuven Louvain Löwen 27',
                 'location' => ['lat' => 50.88958, 'lon' => 4.72023],
             ],
@@ -49,6 +48,7 @@ final class OpenAddressDocumentsTest extends TestCase
                 'name' => ['Lentedreef'],
                 'search_text' => 'Lentedreef 3010 Kessel-Lo Leuven Louvain Löwen',
                 'location' => ['lat' => 50.88943, 'lon' => 4.72002],
+                'address_count' => 2,
             ],
             $this->documents['street:BE-VLG:35063:3010']
         );
@@ -89,6 +89,14 @@ final class OpenAddressDocumentsTest extends TestCase
         );
 
         $this->assertCount(1, $henegouwenkaai);
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_a_house_number_with_box_numbers_once(): void
+    {
+        $this->assertSame(1, $this->documents['street:BE-BRU:3996:1080']['address_count']);
     }
 
     /**
