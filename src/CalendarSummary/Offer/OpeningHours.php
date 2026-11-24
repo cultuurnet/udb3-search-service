@@ -52,8 +52,8 @@ final readonly class OpeningHours implements IteratorAggregate, Countable
         $sorted = $this->openingHours;
 
         usort($sorted, static function (OpeningHour $a, OpeningHour $b): int {
-            $weekdayA = DayOfWeek::from($a->getDaysOfWeek()[0])->position();
-            $weekdayB = DayOfWeek::from($b->getDaysOfWeek()[0])->position();
+            $weekdayA = self::firstWeekdayPosition($a);
+            $weekdayB = self::firstWeekdayPosition($b);
             $fullHoursA = $weekdayA * 24 + (int) $a->getOpens();
             $fullHoursB = $weekdayB * 24 + (int) $b->getOpens();
 
@@ -61,6 +61,17 @@ final readonly class OpeningHours implements IteratorAggregate, Countable
         });
 
         return new self($sorted);
+    }
+
+    /**
+     * An opening hour without days of the week is accepted from the JSON-LD, so it sorts first
+     * instead of breaking the whole summary.
+     */
+    private static function firstWeekdayPosition(OpeningHour $openingHour): int
+    {
+        $firstDay = $openingHour->getDaysOfWeek()[0] ?? null;
+
+        return $firstDay === null ? 0 : DayOfWeek::from($firstDay)->position();
     }
 
     /**

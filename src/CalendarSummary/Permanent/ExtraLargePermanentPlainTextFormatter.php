@@ -29,6 +29,10 @@ final readonly class ExtraLargePermanentPlainTextFormatter implements PermanentF
             return ucfirst($this->translator->translate('postponed'));
         }
 
+        if (!$offer->getBookingAvailability()->isAvailable()) {
+            return ucfirst($this->translator->translate('sold_out'));
+        }
+
         if (!$offer->getOpeningHours()->isEmpty()) {
             $output = PlainTextWeekSchemeFormatter::forOpeningHours($offer->getOpeningHours(), $this->translator)
                 ->withChildcare()
