@@ -43,7 +43,7 @@ final class LocationSuggestionsControllerTest extends TestCase
                                 'bool' => [
                                     'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
                                     'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
-                                    'filter' => [['terms' => ['type' => ['street', 'municipality']]]],
+                                    'filter' => [['terms' => ['type' => ['street', 'municipality', 'submunicipality']]]],
                                 ],
                             ],
                             'field_value_factor' => ['field' => 'address_count', 'modifier' => 'log1p', 'factor' => 0.5, 'missing' => 1],
@@ -103,10 +103,10 @@ final class LocationSuggestionsControllerTest extends TestCase
     public function provideSearchTexts(): array
     {
         return [
-            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street', 'municipality']],
-            'house number at the end' => ['lentedreef 2', 'match', ['street', 'address']],
-            'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'address']],
-            'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'address']],
+            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street', 'municipality', 'submunicipality']],
+            'house number at the end' => ['lentedreef 2', 'match', ['street', 'submunicipality', 'address']],
+            'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'submunicipality', 'address']],
+            'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'submunicipality', 'address']],
         ];
     }
 
@@ -133,6 +133,35 @@ final class LocationSuggestionsControllerTest extends TestCase
                     'label' => 'Leuven',
                     'geo' => ['latitude' => 50.87959, 'longitude' => 4.70093],
                     'searchFilter' => ['regions' => ['nis-24062']],
+                ],
+            ]],
+            Json::decodeAssociatively((string) $response->getBody())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_shows_a_sub_municipality_as_a_municipality_with_its_region_as_search_filter(): void
+    {
+        $this->client->method('search')->willReturn(['hits' => ['hits' => [
+            ['_source' => [
+                'type' => 'submunicipality',
+                'label' => 'Kessel-Lo (3010)',
+                'regions' => ['nis-24062C'],
+                'location' => ['lat' => 50.88943, 'lon' => 4.72002],
+            ]],
+        ]]]);
+
+        $response = ($this->controller)($this->request('3010'));
+
+        $this->assertSame(
+            ['member' => [
+                [
+                    'type' => 'municipality',
+                    'label' => 'Kessel-Lo (3010)',
+                    'geo' => ['latitude' => 50.88943, 'longitude' => 4.72002],
+                    'searchFilter' => ['regions' => ['nis-24062C']],
                 ],
             ]],
             Json::decodeAssociatively((string) $response->getBody())

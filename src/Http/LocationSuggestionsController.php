@@ -34,8 +34,8 @@ final readonly class LocationSuggestionsController
         $matchType = $searchText->endsWithNumber() ? 'match' : 'match_bool_prefix';
 
         // Without a number the user means the street, so the house numbers on it would only crowd it out.
-        // A municipality has no number, so with one typed it can never match.
-        $types = $searchText->containsNumber() ? ['street', 'address'] : ['street', 'municipality'];
+        // A municipality has no number, so with one typed it can never match. A sub-municipality has its postcode.
+        $types = $searchText->containsNumber() ? ['street', 'submunicipality', 'address'] : ['street', 'municipality', 'submunicipality'];
 
         $response = $this->client->search([
             'index' => $this->indexName,
@@ -64,7 +64,8 @@ final readonly class LocationSuggestionsController
 
         $suggestions = array_map(
             static fn (array $hit): array => [
-                'type' => $hit['_source']['type'],
+                // Both are an area with a region, so clients don't need to tell them apart. The label does: Leuven and Leuven (3000).
+                'type' => $hit['_source']['type'] === 'submunicipality' ? 'municipality' : $hit['_source']['type'],
                 'label' => $hit['_source']['label'],
                 // Named like the geo of places and events elsewhere in the API.
                 'geo' => [
@@ -86,7 +87,7 @@ final readonly class LocationSuggestionsController
     private static function searchFilter(array $source): array
     {
         // A municipality is an area, so Search API 3 filters on its region. Everything else is a point.
-        if ($source['type'] === 'municipality') {
+        if (in_array($source['type'], ['municipality', 'submunicipality'], true)) {
             return ['regions' => $source['regions']];
         }
 
