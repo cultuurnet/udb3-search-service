@@ -27,6 +27,7 @@ use CultuurNet\UDB3\SearchService\Console\UpdateRegionMappingCommand;
 use CultuurNet\UDB3\SearchService\Error\LoggerFactory;
 use CultuurNet\UDB3\SearchService\Error\LoggerName;
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
+use CultuurNet\UDB3\Search\LocationSuggestions\MunicipalityRegions;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\CommandLoader\ContainerCommandLoader;
 use Symfony\Component\Finder\Finder;
@@ -196,7 +197,8 @@ final class CommandServiceProvider extends BaseServiceProvider
                 SchemaVersions::locationSuggestions(),
                 $this->parameter('elasticsearch.location_suggestions_index.read_alias'),
                 $this->parameter('elasticsearch.number_of_shards'),
-                $this->parameter('elasticsearch.number_of_replicas')
+                $this->parameter('elasticsearch.number_of_replicas'),
+                new MunicipalityRegions($this->parameter('facet_mapping_regions'))
             )
         );
 

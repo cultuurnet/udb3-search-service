@@ -6,19 +6,24 @@ namespace CultuurNet\UDB3\Search\LocationSuggestions;
 
 use Generator;
 use IteratorAggregate;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 use function Symfony\Component\String\u;
 
 /**
  * @implements IteratorAggregate<string, array<string, mixed>>
  */
-final class OpenAddressDocuments implements IteratorAggregate
+final readonly class OpenAddressDocuments implements IteratorAggregate
 {
     /**
      * @param iterable<array<string, string>> $rows
      */
-    public function __construct(private readonly iterable $rows)
-    {
+    public function __construct(
+        private iterable $rows,
+        private MunicipalityRegions $municipalityRegions,
+        private LoggerInterface $logger = new NullLogger(),
+    ) {
     }
 
     /**
@@ -26,8 +31,9 @@ final class OpenAddressDocuments implements IteratorAggregate
      */
     public function getIterator(): Generator
     {
-        $streets = [];
+        $groups = [];
         $seenAddressIds = [];
+        $municipalityRegions = [];
 
         foreach ($this->rows as $row) {
             // Every box number of a house number is its own row. The building is one address,
@@ -53,35 +59,67 @@ final class OpenAddressDocuments implements IteratorAggregate
             ];
 
             // A street that crosses a postcode border gets one document per postcode.
-            $streetId = implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]);
-            $streets[$streetId] ??= [
+            $this->addToGroup($groups, implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]), $lat, $lon, fn (): array => [
+                'type' => 'street',
                 'label' => sprintf('%s, %s %s', $streetName, $postcode, $locality),
                 // Not on addresses: with a house number typed, the text is never just a name.
-                'name' => $this->streetNames($row),
+                'name' => $this->names($row, 'streetname'),
                 'search_text' => implode(' ', $this->unique($words)),
-                'lat_sum' => 0.0,
-                'lon_sum' => 0.0,
-                'count' => 0,
-            ];
-            $streets[$streetId]['lat_sum'] += $lat;
-            $streets[$streetId]['lon_sum'] += $lon;
-            $streets[$streetId]['count']++;
+            ]);
+
+            $municipalityId = $row['municipality_id'];
+            if (!array_key_exists($municipalityId, $municipalityRegions)) {
+                $municipalityRegions[$municipalityId] = $this->municipalityRegion($row);
+            }
+            // Without a region its filter would find nothing in Search API 3, so it isn't suggested.
+            if ($municipalityRegions[$municipalityId] !== null) {
+                $this->addToGroup($groups, 'municipality:' . $municipalityId, $lat, $lon, fn (): array => [
+                    'type' => 'municipality',
+                    'label' => $this->name($row, 'municipality_name'),
+                    'name' => $this->names($row, 'municipality_name'),
+                    'search_text' => implode(' ', $this->names($row, 'municipality_name')),
+                    'regions' => [$municipalityRegions[$municipalityId]],
+                ]);
+            }
         }
 
-        // A street's coordinate is the average of all its addresses, so streets can only follow the last row.
-        foreach ($streets as $streetId => $street) {
-            yield $streetId => [
-                'type' => 'street',
-                'label' => $street['label'],
-                'name' => $street['name'],
-                'search_text' => $street['search_text'],
+        // A street's or municipality's coordinate is the average of all its addresses, so they can only follow the last row.
+        foreach ($groups as $id => $group) {
+            yield $id => [
+                ...$group['document'],
                 'location' => [
-                    'lat' => round($street['lat_sum'] / $street['count'], 5),
-                    'lon' => round($street['lon_sum'] / $street['count'], 5),
+                    'lat' => round($group['lat_sum'] / $group['count'], 5),
+                    'lon' => round($group['lon_sum'] / $group['count'], 5),
                 ],
-                'address_count' => $street['count'],
+                'address_count' => $group['count'],
             ];
         }
+    }
+
+    /**
+     * @param array<string, array{document: array<string, mixed>, lat_sum: float, lon_sum: float, count: int}> $groups
+     * @param callable(): array<string, mixed> $document Only called for the first address of the group.
+     */
+    private function addToGroup(array &$groups, string $id, float $lat, float $lon, callable $document): void
+    {
+        $groups[$id] ??= ['document' => $document(), 'lat_sum' => 0.0, 'lon_sum' => 0.0, 'count' => 0];
+        $groups[$id]['lat_sum'] += $lat;
+        $groups[$id]['lon_sum'] += $lon;
+        $groups[$id]['count']++;
+    }
+
+    /**
+     * @param array<string, string> $row
+     */
+    private function municipalityRegion(array $row): ?string
+    {
+        $names = $this->names($row, 'municipality_name');
+        $region = $this->municipalityRegions->find($row['municipality_id'], $names);
+        if ($region === null) {
+            $this->logger->warning(sprintf('No region for municipality %s (%s), left out.', $row['municipality_id'], implode(', ', $names)));
+        }
+
+        return $region;
     }
 
     /**
@@ -140,10 +178,10 @@ final class OpenAddressDocuments implements IteratorAggregate
      * @param array<string, string> $row
      * @return list<string>
      */
-    private function streetNames(array $row): array
+    private function names(array $row, string $column): array
     {
-        // Brussels streets have a Dutch and a French name, and typing either one is an exact match.
-        return $this->unique(array_map(static fn (string $language): string => $row['streetname_' . $language], $this->languages($row)));
+        // Brussels streets and many municipalities have a name in several languages, and typing any of them is an exact match.
+        return $this->unique(array_map(static fn (string $language): string => $row[$column . '_' . $language] ?? '', $this->languages($row)));
     }
 
     /**

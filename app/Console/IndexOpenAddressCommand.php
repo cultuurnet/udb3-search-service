@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReplaceLocationSuggestionsIndex;
+use CultuurNet\UDB3\Search\LocationSuggestions\MunicipalityRegions;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressCsvReader;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressDocuments;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,7 +21,8 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
         private readonly string $schemaVersion,
         private readonly string $alias,
         private readonly int $numberOfShards,
-        private readonly int $numberOfReplicas
+        private readonly int $numberOfReplicas,
+        private readonly MunicipalityRegions $municipalityRegions
     ) {
         parent::__construct($client);
     }
@@ -51,7 +53,7 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
             $indexName,
             $this->indexPrefix . '*',
             $this->alias,
-            new OpenAddressDocuments(new OpenAddressCsvReader($files)),
+            new OpenAddressDocuments(new OpenAddressCsvReader($files), $this->municipalityRegions, $logger),
             $this->numberOfShards,
             $this->numberOfReplicas
         );

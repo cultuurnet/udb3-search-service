@@ -43,7 +43,7 @@ final class LocationSuggestionsControllerTest extends TestCase
                                 'bool' => [
                                     'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
                                     'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
-                                    'filter' => [['terms' => ['type' => ['street']]]],
+                                    'filter' => [['terms' => ['type' => ['street', 'municipality']]]],
                                 ],
                             ],
                             'field_value_factor' => ['field' => 'address_count', 'modifier' => 'log1p', 'factor' => 0.5, 'missing' => 1],
@@ -103,11 +103,40 @@ final class LocationSuggestionsControllerTest extends TestCase
     public function provideSearchTexts(): array
     {
         return [
-            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street']],
+            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street', 'municipality']],
             'house number at the end' => ['lentedreef 2', 'match', ['street', 'address']],
             'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'address']],
             'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'address']],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_gives_a_municipality_its_region_as_search_filter(): void
+    {
+        $this->client->method('search')->willReturn(['hits' => ['hits' => [
+            ['_source' => [
+                'type' => 'municipality',
+                'label' => 'Leuven',
+                'regions' => ['nis-24062'],
+                'location' => ['lat' => 50.87959, 'lon' => 4.70093],
+            ]],
+        ]]]);
+
+        $response = ($this->controller)($this->request('leuven'));
+
+        $this->assertSame(
+            ['member' => [
+                [
+                    'type' => 'municipality',
+                    'label' => 'Leuven',
+                    'geo' => ['latitude' => 50.87959, 'longitude' => 4.70093],
+                    'searchFilter' => ['regions' => ['nis-24062']],
+                ],
+            ]],
+            Json::decodeAssociatively((string) $response->getBody())
+        );
     }
 
     /**
