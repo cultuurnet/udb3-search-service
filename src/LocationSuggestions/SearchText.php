@@ -40,6 +40,11 @@ final readonly class SearchText
         return preg_grep('/^\p{N}/u', $this->words) !== [];
     }
 
+    public function isOnlyNumbers(): bool
+    {
+        return preg_grep('/^\p{N}+$/u', $this->words, PREG_GREP_INVERT) === [];
+    }
+
     public function endsWithNumber(): bool
     {
         // House numbers can carry letters (12A, 3bis), so only the first character counts.
