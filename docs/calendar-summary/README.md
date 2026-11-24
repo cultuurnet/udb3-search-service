@@ -57,27 +57,28 @@ childcare says nothing about childcare.
 
 ## Endpoint
 
-`GET /calendar-summary/{events|places}/{id}` returns the summary of one event or place, read from
-the original JSON-LD in the search index. It is meant to back Entry API's
-`/{events|places}/{id}/calendar-summary`. Like every Search API route it needs an API key or client id.
+`GET /{events|places}/{id}/calendar-summary` returns the summary of one event or place, read from
+the original JSON-LD in the search index. It mirrors Entry API's endpoint with the same path, so it can
+back it. Like every Search API route it needs an API key or client id.
 
 | Parameter | Values | Default |
 | --- | --- | --- |
 | `language` | `nl`, `fr`, `de`, `en` | `nl` |
 | `size` | `xs`, `sm`, `md`, `lg`, `xl` | `lg` |
-| `style` | `text`, `html` | `text` |
 | `hidePast` | `true`, `false` | `false` |
 | `timezone` | any [PHP timezone](http://php.net/manual/en/timezones.php) | `Europe/Brussels` |
 
-The response is `text/plain` or `text/html`, depending on `style`. The languages use the same locales
+The `Accept` header picks the response type: `text/html` returns HTML, anything else plain text.
+Like Entry API, only the media type before the first `;` counts, so
+`Accept: text/plain; q=0.2, text/html` returns plain text. The languages use the same locales
 as the `calendarSummary` embedded in search results, so both render a language identically.
 
 An unknown `timezone` falls back to `Europe/Brussels` instead of being refused, because Entry API
 never validated it and existing integrations may still send one. An id that is not an event or
 place of the requested type returns a 404.
 
-Entry API's deprecated aliases (`langCode`, `format`, `timeZone` and the `Accept` header) are not
-supported here. Entry API is expected to map them when it calls this endpoint.
+Entry API's deprecated aliases (`style`, `langCode`, `format` and `timeZone`) are not supported here,
+and `style` is ignored. Entry API is expected to map them when it calls this endpoint.
 
 ## Embedded in search results
 

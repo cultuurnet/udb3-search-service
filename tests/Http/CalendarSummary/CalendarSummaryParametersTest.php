@@ -34,10 +34,9 @@ final class CalendarSummaryParametersTest extends TestCase
         $parameters = new CalendarSummaryParameters($this->request([
             'language' => 'fr',
             'size' => 'xs',
-            'style' => 'html',
             'hidePast' => 'true',
             'timezone' => 'America/New_York',
-        ]));
+        ], 'text/html'));
 
         $this->assertSame('fr_BE', $parameters->locale);
         $this->assertEquals(new CalendarSummaryFormat('html', 'xs'), $parameters->format);
@@ -83,7 +82,6 @@ final class CalendarSummaryParametersTest extends TestCase
             'unknown language' => [['language' => 'es']],
             'locale instead of language' => [['language' => 'nl_BE']],
             'unknown size' => [['size' => 'xxl']],
-            'unknown style' => [['style' => 'json']],
             'multiple languages' => [['language' => ['nl', 'fr']]],
             'multiple timezones' => [['timezone' => ['Europe/Brussels', 'UTC']]],
         ];
@@ -128,12 +126,46 @@ final class CalendarSummaryParametersTest extends TestCase
         $this->assertTrue((new CalendarSummaryParameters($this->request(['hidePast' => '1'])))->hidePast);
     }
 
-    private function request(array $queryParameters): ApiRequest
+    /**
+     * @test
+     * @dataProvider provideAcceptHeaders
+     */
+    public function it_derives_the_type_from_the_accept_header(string $accept, string $expectedType): void
     {
-        return new ApiRequest(
-            (new ServerRequestFactory())
-                ->createServerRequest('GET', '/events/1/calendar-summary')
-                ->withQueryParams($queryParameters)
-        );
+        $parameters = new CalendarSummaryParameters($this->request([], $accept));
+
+        $this->assertSame($expectedType, $parameters->format->getType());
+    }
+
+    public function provideAcceptHeaders(): array
+    {
+        return [
+            'html' => ['text/html', 'html'],
+            'plain text' => ['text/plain', 'text'],
+            'html with parameters' => ['text/html; charset=utf-8', 'html'],
+            'only the first media type counts' => ['text/plain; q=0.2, text/html', 'text'],
+            'browser default' => ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'text'],
+            'unsupported media type' => ['application/json', 'text'],
+            'wildcard' => ['*/*', 'text'],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_style_parameter_that_entry_api_only_supports_for_backward_compatibility(): void
+    {
+        $parameters = new CalendarSummaryParameters($this->request(['style' => 'html']));
+
+        $this->assertSame('text', $parameters->format->getType());
+    }
+
+    private function request(array $queryParameters, ?string $accept = null): ApiRequest
+    {
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', '/events/1/calendar-summary')
+            ->withQueryParams($queryParameters);
+
+        return new ApiRequest($accept === null ? $request : $request->withHeader('Accept', $accept));
     }
 }

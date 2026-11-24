@@ -33,7 +33,7 @@ final readonly class CalendarSummaryParameters
         $this->locale = Locales::BY_LANGUAGE[$language];
 
         $this->format = new CalendarSummaryFormat(
-            self::singleValue($request, 'style', 'text'),
+            self::typeFromAcceptHeader($request),
             self::singleValue($request, 'size', 'lg')
         );
 
@@ -45,6 +45,16 @@ final readonly class CalendarSummaryParameters
         $this->timezone = in_array($timezone, DateTimeZone::listIdentifiers(DateTimeZone::ALL_WITH_BC), true)
             ? $timezone
             : self::DEFAULT_TIMEZONE;
+    }
+
+    /**
+     * Mirrors Entry API: only the media type before the first ";" counts, so q-weighted content negotiation is
+     * ignored and anything other than exactly text/html falls back to plain text instead of failing.
+     */
+    private static function typeFromAcceptHeader(ApiRequestInterface $request): string
+    {
+        $mediaType = trim(explode(';', $request->getHeaderLine('Accept'))[0]);
+        return $mediaType === 'text/html' ? 'html' : 'text';
     }
 
     private static function singleValue(ApiRequestInterface $request, string $name, string $default): string

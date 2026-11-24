@@ -70,7 +70,7 @@ final class CalendarSummaryControllerTest extends TestCase
             ->willReturn($this->document('place'));
 
         $response = ($this->controller)(
-            $this->request(['style' => 'html', 'language' => 'fr', 'size' => 'xs']),
+            $this->request(['language' => 'fr', 'size' => 'xs'], 'text/html'),
             ['offerType' => 'places', 'offerId' => self::OFFER_ID]
         );
 
@@ -179,12 +179,12 @@ final class CalendarSummaryControllerTest extends TestCase
         ];
     }
 
-    private function request(array $queryParameters): ApiRequest
+    private function request(array $queryParameters, ?string $accept = null): ApiRequest
     {
-        return new ApiRequest(
-            (new ServerRequestFactory())
-                ->createServerRequest('GET', '/events/' . self::OFFER_ID . '/calendar-summary')
-                ->withQueryParams($queryParameters)
-        );
+        $request = (new ServerRequestFactory())
+            ->createServerRequest('GET', '/events/' . self::OFFER_ID . '/calendar-summary')
+            ->withQueryParams($queryParameters);
+
+        return new ApiRequest($accept === null ? $request : $request->withHeader('Accept', $accept));
     }
 }
