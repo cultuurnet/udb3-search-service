@@ -73,11 +73,7 @@ final readonly class LocationSuggestionsController
                 // Both are an area with a region, so clients don't need to tell them apart. The label does: Leuven and Leuven (3000).
                 'type' => $hit['_source']['type'] === 'submunicipality' ? 'municipality' : $hit['_source']['type'],
                 'label' => $hit['_source']['label'],
-                // Named like the geo of places and events elsewhere in the API.
-                'geo' => [
-                    'latitude' => $hit['_source']['location']['lat'],
-                    'longitude' => $hit['_source']['location']['lon'],
-                ],
+                // No coordinates of their own: a client searches with the searchFilter, and for an area an average point would be the wrong filter.
                 'searchFilter' => self::searchFilter($hit['_source']),
             ],
             $response['hits']['hits']

@@ -10,7 +10,7 @@ The mapping lives in `src/ElasticSearch/Operations/json/mapping_location_suggest
 
 ## The types
 
-| Type | Example label | Suggested when | Label from | `searchFilter` | `searchFilter` from | `geo` from | `address_count` from |
+| Type | Example label | Suggested when | Label from | `searchFilter` | `searchFilter` from | `location` from | `address_count` from |
 |---|---|---|---|---|---|---|---|
 | `street` | Goorbaan, 2230 Herselt | always | CSV: `streetname_nl/fr/de`, `postcode`, `postname_nl/fr`, `municipality_name_nl/fr/de` | `{ "coordinates": "51.04715,4.92321" }` | CSV: average `EPSG:4326_lat/lon` of its addresses | CSV: average of its addresses | CSV: house numbers per `street_id` and `postcode` |
 | `address` | Goorbaan 59, 2230 Herselt | only when a house number is typed | CSV: as for a street, plus `house_number` | `{ "coordinates": "51.04940,4.91743" }` | CSV: `EPSG:4326_lat/lon` | CSV: `EPSG:4326_lat/lon` | none |
@@ -21,7 +21,7 @@ The mapping lives in `src/ElasticSearch/Operations/json/mapping_location_suggest
 
 `regions` is an array, because the `regions` parameter of Search API 3 takes several regions.
 
-Every suggestion also has `type`, `label` and `geo`.
+Every suggestion has `type`, `label` and `searchFilter`. It has no coordinates of its own: a client searches with the `searchFilter`, and for an area the average point in `location` would be the wrong filter. `location` is used for the `coordinates` filter of a point and later to order by distance.
 
 A sub-municipality is returned with the type `municipality`. Both are an area with a `regions` filter, so a client doesn't need to tell them apart, and leaving out `municipality` leaves out both. The label does tell them apart: `Leuven` is the whole municipality, `Leuven (3000)` its centre.
 
@@ -33,7 +33,7 @@ A sub-municipality is returned with the type `municipality`. Both are an area wi
 
 ### From addresses to municipalities and sub-municipalities
 
-The CSV only has addresses. Streets, municipalities and sub-municipalities are groups of those addresses: their `address_count` is the number of addresses in the group, their `geo` the average coordinate. The region list has no addresses. It only says which municipalities and sub-municipalities exist and what their region is.
+The CSV only has addresses. Streets, municipalities and sub-municipalities are groups of those addresses: their `address_count` is the number of addresses in the group, their `location` the average coordinate. The region list has no addresses. It only says which municipalities and sub-municipalities exist and what their region is.
 
 The CSV has no sub-municipality id, only the `postname` of the postcode. The import links an address to a sub-municipality through it: the child of the municipality in the region list with the same name. Leuven with five addresses:
 

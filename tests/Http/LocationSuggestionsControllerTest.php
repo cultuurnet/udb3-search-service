@@ -68,7 +68,6 @@ final class LocationSuggestionsControllerTest extends TestCase
                 [
                     'type' => 'street',
                     'label' => 'Lentedreef, 3010 Kessel-Lo',
-                    'geo' => ['latitude' => 50.88943, 'longitude' => 4.72002],
                     'searchFilter' => ['coordinates' => '50.88943,4.72002'],
                 ],
             ]],
@@ -133,7 +132,6 @@ final class LocationSuggestionsControllerTest extends TestCase
                 [
                     'type' => 'municipality',
                     'label' => 'Leuven',
-                    'geo' => ['latitude' => 50.87959, 'longitude' => 4.70093],
                     'searchFilter' => ['regions' => ['nis-24062']],
                 ],
             ]],
@@ -162,7 +160,6 @@ final class LocationSuggestionsControllerTest extends TestCase
                 [
                     'type' => 'municipality',
                     'label' => 'Kessel-Lo (3010)',
-                    'geo' => ['latitude' => 50.88943, 'longitude' => 4.72002],
                     'searchFilter' => ['regions' => ['nis-24062C']],
                 ],
             ]],
