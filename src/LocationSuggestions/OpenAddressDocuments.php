@@ -13,7 +13,7 @@ use function Symfony\Component\String\u;
 
 /**
  * Every row of the address CSV is one address. It becomes an address document, and it counts towards:
- * - its street (street + postcode),
+ * - its street (street + postal code),
  * - its municipality (municipality_id, with the region from the region list),
  * - its sub-municipalities (the postname, matched to a sub-municipality of the municipality in the region list).
  * Streets, municipalities and sub-municipalities get the number of their addresses and the average coordinate.
@@ -41,7 +41,7 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
         $seenAddressIds = [];
         $municipalityRegions = [];
         $subMunicipalities = [];
-        $postcodes = [];
+        $postalCodes = [];
 
         foreach ($this->rows as $row) {
             // Every box number of a house number is its own row. The building is one address,
@@ -53,7 +53,7 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
             $seenAddressIds[$addressId] = true;
 
             $streetName = $this->name($row, 'streetname');
-            $postcode = $row['postcode'];
+            $postalCode = $row['postcode'];
             $locality = $this->locality($row);
             $words = $this->searchWords($row);
             $lat = (float) $row['EPSG:4326_lat'];
@@ -61,15 +61,15 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
 
             yield $addressId => [
                 'type' => 'address',
-                'label' => sprintf('%s %s, %s %s', $streetName, $row['house_number'], $postcode, $locality),
+                'label' => sprintf('%s %s, %s %s', $streetName, $row['house_number'], $postalCode, $locality),
                 'search_text' => implode(' ', $this->unique([...$words, $row['house_number']])),
                 'location' => ['lat' => $lat, 'lon' => $lon],
             ];
 
-            // A street that crosses a postcode border gets one document per postcode.
-            $this->addToGroup($groups, implode(':', ['street', $row['region_code'], $row['street_id'], $postcode]), $lat, $lon, fn (): array => [
+            // A street that crosses a postal code border gets one document per postal code.
+            $this->addToGroup($groups, implode(':', ['street', $row['region_code'], $row['street_id'], $postalCode]), $lat, $lon, fn (): array => [
                 'type' => 'street',
-                'label' => sprintf('%s, %s %s', $streetName, $postcode, $locality),
+                'label' => sprintf('%s, %s %s', $streetName, $postalCode, $locality),
                 // Not on addresses: with a house number typed, the text is never just a name.
                 'name' => $this->names($row, 'streetname'),
                 'search_text' => implode(' ', $this->unique($words)),
@@ -94,7 +94,7 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
                 foreach ($subMunicipalities[$postnameKey] as $region => $names) {
                     // A postname shared by several sub-municipalities (Averbode/Zichem) doesn't say which one an address is in,
                     // so each of them counts its share. That also keeps a sub-municipality below its municipality.
-                    // The label and search text need every postcode, so withPostcodes() fills them in after the last row.
+                    // The label and search text need every postal code, so withPostalCodes() fills them in after the last row.
                     $this->addToGroup($groups, 'submunicipality:' . $region, $lat, $lon, fn (): array => [
                         'type' => 'submunicipality',
                         'label' => '',
@@ -102,14 +102,14 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
                         'search_text' => '',
                         'regions' => [$region],
                     ], 1 / count($subMunicipalities[$postnameKey]));
-                    $postcodes['submunicipality:' . $region][$row['postcode']] = true;
+                    $postalCodes['submunicipality:' . $region][$row['postcode']] = true;
                 }
             }
         }
 
         // A street's or municipality's coordinate is the average of all its addresses, so they can only follow the last row.
         foreach ($groups as $id => $group) {
-            $document = isset($postcodes[$id]) ? $this->withPostcodes($group['document'], array_keys($postcodes[$id])) : $group['document'];
+            $document = isset($postalCodes[$id]) ? $this->withPostalCodes($group['document'], array_keys($postalCodes[$id])) : $group['document'];
 
             yield $id => [
                 ...$document,
@@ -141,20 +141,20 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
 
     /**
      * @param array<string, mixed> $document
-     * @param list<int|string> $postcodes
+     * @param list<int|string> $postalCodes
      * @return array<string, mixed>
      */
-    private function withPostcodes(array $document, array $postcodes): array
+    private function withPostalCodes(array $document, array $postalCodes): array
     {
-        // Array keys turn postcodes into integers.
-        $postcodes = array_map('strval', $postcodes);
-        sort($postcodes);
-        $names = [...$document['name'], ...$postcodes];
+        // Array keys turn postal codes into integers.
+        $postalCodes = array_map('strval', $postalCodes);
+        sort($postalCodes);
+        $names = [...$document['name'], ...$postalCodes];
 
-        // Typing the postcode finds the sub-municipality. Antwerpen has seven, the label shows the first.
+        // Typing the postal code finds the sub-municipality. Antwerpen has seven, the label shows the first.
         return [
             ...$document,
-            'label' => sprintf('%s (%s)', $document['name'][0], $postcodes[0]),
+            'label' => sprintf('%s (%s)', $document['name'][0], $postalCodes[0]),
             'name' => $names,
             'search_text' => implode(' ', $names),
         ];
@@ -222,7 +222,7 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
         $municipality = $this->name($row, 'municipality_name');
         $postnames = $this->postnames($row);
 
-        // A postcode can cover several sub-municipalities (Gentbrugge/Ledeberg), and the
+        // A postal code can cover several sub-municipalities (Gentbrugge/Ledeberg), and the
         // CSV often repeats the municipality in capitals (GENT). The municipality reads better then.
         if (count($postnames) === 1 && mb_strtolower($postnames[0]) !== mb_strtolower($municipality)) {
             return $postnames[0];

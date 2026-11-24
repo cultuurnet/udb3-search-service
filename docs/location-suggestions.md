@@ -1,6 +1,6 @@
 # Location Suggestions Indexing
 
-This document describes the index behind `GET /location-suggestions`. While a user types, the endpoint suggests streets, addresses, municipalities, sub-municipalities, postcodes and UiTdatabank places. Each suggestion has a `searchFilter`, the filter a client passes to Search API 3 when the user picks it.
+This document describes the index behind `GET /location-suggestions`. While a user types, the endpoint suggests streets, addresses, municipalities, sub-municipalities, postal codes and UiTdatabank places. Each suggestion has a `searchFilter`, the filter a client passes to Search API 3 when the user picks it.
 
 "Location" means any kind of location here, not only a UiTdatabank place.
 
@@ -16,7 +16,7 @@ The mapping lives in `src/ElasticSearch/Operations/json/mapping_location_suggest
 | `address` | Goorbaan 59, 2230 Herselt | only when a house number is typed | CSV: as for a street, plus `house_number` | `{ "coordinates": "51.04940,4.91743" }` | CSV: `EPSG:4326_lat/lon` | CSV: `EPSG:4326_lat/lon` | none |
 | `municipality` | Leuven | always | CSV: `municipality_name_nl/fr/de` | `{ "regions": ["nis-24062"] }` | region list: `nis-<municipality_id>`, or the municipality with the same name | CSV: average of its addresses | CSV: addresses per `municipality_id` |
 | `submunicipality`, returned as `municipality` | Kessel-Lo (3010) | always, and only these when only numbers are typed (`30` shows Leuven (3000) and Kessel-Lo (3010)) | region list: the name of a child of the municipality, CSV: the first `postcode` of its addresses | `{ "regions": ["nis-24062C"] }` | region list: the child whose name is the CSV `postname_nl/fr` | CSV: average of its addresses | CSV: addresses whose `postname_nl/fr` is the sub-municipality |
-| `postalCode` | 9050 Gentbrugge/Ledeberg | not built: a postcode now suggests its sub-municipalities (`9050` shows Gentbrugge (9050) and Ledeberg (9050)) | CSV: `postcode`, `postname_nl/fr` | `{ "regions": ["nis-44021F", "nis-44021G"] }` | region list: the sub-municipalities named in the CSV `postname_nl/fr` | CSV: average of its addresses | CSV: addresses per `postcode` |
+| `postalCode` | 9050 Gentbrugge/Ledeberg | not built: a postal code now suggests its sub-municipalities (`9050` shows Gentbrugge (9050) and Ledeberg (9050)) | CSV: `postcode`, `postname_nl/fr` | `{ "regions": ["nis-44021F", "nis-44021G"] }` | region list: the sub-municipalities named in the CSV `postname_nl/fr` | CSV: average of its addresses | CSV: addresses per `postcode` |
 | `place` | Yper Museum (Grote Markt 34, 8900 Ieper) | always | UiTdatabank place: `name`, `address` | `{ "locationId": "<uuid>" }` | UiTdatabank place: its id | UiTdatabank place: `geo` | none |
 
 `regions` is an array, because the `regions` parameter of Search API 3 takes several regions.
@@ -27,7 +27,7 @@ A sub-municipality is returned with the type `municipality`. Both are an area wi
 
 ### Sources
 
-- CSV: the BOSA BeST address register, OpenAddress export, one file per region (`openaddress-bevlg.csv`, `openaddress-bewal.csv`, `openaddress-bebru.csv`) from https://data.gov.be/nl/datasets/fpsbosa-dis-best-csv-deriv, downloaded with `bin/download-openaddress.sh`. Only rows with `status` `current` are used. It has one row per address, so streets, municipalities and postcodes are grouped from those rows.
+- CSV: the BOSA BeST address register, OpenAddress export, one file per region (`openaddress-bevlg.csv`, `openaddress-bewal.csv`, `openaddress-bebru.csv`) from https://data.gov.be/nl/datasets/fpsbosa-dis-best-csv-deriv, downloaded with `bin/download-openaddress.sh`. Only rows with `status` `current` are used. Its column `postcode` is the postal code. It has one row per address, so streets, municipalities and postal codes are grouped from those rows.
 - Region list: `output/facet_mapping_regions.php` from https://github.com/cultuurnet/geojson-data, the same list that names the region facets of Search API 3. A tree of province, region, municipality and sub-municipality, with names in nl, fr and de. The `geoshapes` index behind the `regions` filter is built from the same repository.
 - UiTdatabank place: the place in UiTdatabank.
 
@@ -35,7 +35,7 @@ A sub-municipality is returned with the type `municipality`. Both are an area wi
 
 The CSV only has addresses. Streets, municipalities and sub-municipalities are groups of those addresses: their `address_count` is the number of addresses in the group, their `location` the average coordinate. The region list has no addresses. It only says which municipalities and sub-municipalities exist and what their region is.
 
-The CSV has no sub-municipality id, only the `postname` of the postcode. The import links an address to a sub-municipality through it: the child of the municipality in the region list with the same name. Leuven with five addresses:
+The CSV has no sub-municipality id, only the `postname` of the postal code. The import links an address to a sub-municipality through it: the child of the municipality in the region list with the same name. Leuven with five addresses:
 
 | Address | `postcode` | `postname_nl` |
 |---|---|---|
@@ -57,7 +57,7 @@ Where it doesn't line up:
 
 - A postname can name several sub-municipalities: 3271 is `Averbode/Zichem`, and a row doesn't say which of the two the address is in. Each of them counts its share, half an address here, and both get the average coordinate of all of 3271. That also keeps a sub-municipality below its municipality.
 - Some postnames have no sub-municipality (Wijgmaal, Zeebrugge), and some sub-municipalities match no postname (Berendrecht-Zandvliet-Lillo, Jupille-sur-Meuse against the postname Jupille). On all of Belgium 2,561 of the 2,664 sub-municipalities match. The others are not suggested, but their streets are still found by their postname.
-- Antwerpen (`nis-11002-Z`) has seven postcodes. All of them are in its `name` and `search_text`, the label shows the first: `Antwerpen (2000)`.
+- Antwerpen (`nis-11002-Z`) has seven postal codes. All of them are in its `name` and `search_text`, the label shows the first: `Antwerpen (2000)`.
 
 ---
 
@@ -80,7 +80,7 @@ The char filter matches letters with `\p{L}` and not `[a-z]`. It runs before the
 |---|---|
 | `type` | `street`, `address`, `municipality`, `submunicipality` or `place` |
 | `label` | The text the user sees, like `Lentedreef, 3010 Kessel-Lo`. Not searchable. |
-| `name` | The street or municipality name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. A sub-municipality also has its postcodes, like `Kessel-Lo` and `3010`. Not on addresses, only used for the exact match. |
+| `name` | The street or municipality name, like `Bisschoppenhof`. In Brussels both names, like `Henegouwenkaai` and `Quai du Hainaut`. A sub-municipality also has its postal codes, like `Kessel-Lo` and `3010`. Not on addresses, only used for the exact match. |
 | `search_text` | Every word someone might type to find this document |
 | `location` | The coordinates |
 | `address_count` | The number of house numbers on the street, in the municipality or in the sub-municipality. Not on addresses. |
@@ -102,9 +102,9 @@ The municipality is in `search_text` even when the label shows a sub-municipalit
 
 `index_prefixes` also stores the first 1 to 19 letters of every word. So `lented` already finds `lentedreef` while the user is still typing. It was chosen after comparing five methods in the POC (see [CONCLUSIONS.md](https://github.com/cultuurnet/poc-autocomplete-boa/blob/main/CONCLUSIONS.md)).
 
-Only the last typed word may match the beginning of a word. A number at the end must match whole, otherwise `kerkstraat 90` would also match postcode 9000.
+Only the last typed word may match the beginning of a word. A number at the end must match whole, otherwise `kerkstraat 90` would also match postal code 9000.
 
-Only numbers is the exception to the exception: that is a postcode being typed, so it matches the beginning again, and only sub-municipalities are suggested. `30` shows Leuven (3000) and Kessel-Lo (3010), `3010` only Kessel-Lo (3010). Someone who types only a postcode means the area, not its streets, and a house number on its own means nothing.
+Only numbers is the exception to the exception: that is a postal code being typed, so it matches the beginning again, and only sub-municipalities are suggested. `30` shows Leuven (3000) and Kessel-Lo (3010), `3010` only Kessel-Lo (3010). Someone who types only a postal code means the area, not its streets, and a house number on its own means nothing.
 
 ### name
 

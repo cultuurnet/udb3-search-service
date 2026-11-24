@@ -29,7 +29,7 @@ final class SearchTextTest extends TestCase
             'house number at the end' => ['lentedreef 2', true, true],
             'house number with a letter' => ['kerkstraat 12a', true, true],
             'city after the house number' => ['kerkstraat 12 gent', true, false],
-            'postcode first' => ['3010 lentedreef', true, false],
+            'postal code first' => ['3010 lentedreef', true, false],
             'trailing spaces' => ['lentedreef 2  ', true, true],
         ];
     }
@@ -46,8 +46,8 @@ final class SearchTextTest extends TestCase
     public function provideOnlyNumbers(): array
     {
         return [
-            'postcode' => ['3010', true],
-            'postcode being typed' => ['30', true],
+            'postal code' => ['3010', true],
+            'postal code being typed' => ['30', true],
             'two numbers' => ['3010 12', true],
             'house number with a letter' => ['12a', false],
             'street and house number' => ['lentedreef 2', false],

@@ -30,13 +30,13 @@ final readonly class LocationSuggestionsController
         $searchText = new SearchText($q);
 
         // Every typed word must match. The last one may be the beginning of a word, because the user is still typing it.
-        // A number at the end is the exception: as a beginning, "lentedreef 2" would also match 12, 20 and postcode 2360.
-        // Only numbers is a postcode being typed, so there it is a beginning again: 30 finds 3000 Leuven and 3010 Kessel-Lo.
+        // A number at the end is the exception: as a beginning, "lentedreef 2" would also match 12, 20 and postal code 2360.
+        // Only numbers is a postal code being typed, so there it is a beginning again: 30 finds 3000 Leuven and 3010 Kessel-Lo.
         $matchType = $searchText->endsWithNumber() && !$searchText->isOnlyNumbers() ? 'match' : 'match_bool_prefix';
 
         // Without a number the user means the street, so the house numbers on it would only crowd it out.
-        // A municipality has no number, so with one typed it can never match. A sub-municipality has its postcode.
-        // Only numbers is a postcode, and the user means the area: not its streets, and a house number on its own means nothing.
+        // A municipality has no number, so with one typed it can never match. A sub-municipality has its postal code.
+        // Only numbers is a postal code, and the user means the area: not its streets, and a house number on its own means nothing.
         $types = match (true) {
             !$searchText->containsNumber() => ['street', 'municipality', 'submunicipality'],
             $searchText->isOnlyNumbers() => ['submunicipality'],

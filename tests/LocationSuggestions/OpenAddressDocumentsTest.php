@@ -76,7 +76,7 @@ final class OpenAddressDocumentsTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_sub_municipality_document_with_its_region_and_postcode(): void
+    public function it_creates_a_sub_municipality_document_with_its_region_and_postal_code(): void
     {
         $this->assertSame(
             [
@@ -105,7 +105,7 @@ final class OpenAddressDocumentsTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_a_sub_municipality_on_all_its_postcodes_and_labels_it_with_the_first(): void
+    public function it_finds_a_sub_municipality_on_all_its_postal_codes_and_labels_it_with_the_first(): void
     {
         $documents = iterator_to_array(new OpenAddressDocuments([
             self::row(['municipality_id' => '24062', 'municipality_name_nl' => 'Leuven', 'postcode' => '3011', 'postname_nl' => 'Kessel-Lo']),
@@ -148,7 +148,7 @@ final class OpenAddressDocumentsTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_the_municipality_when_the_postcode_covers_several_sub_municipalities(): void
+    public function it_shows_the_municipality_when_the_postal_code_covers_several_sub_municipalities(): void
     {
         $this->assertSame('Kerkstraat, 9050 Gent', $this->documents['street:BE-VLG:70662:9050']['label']);
     }

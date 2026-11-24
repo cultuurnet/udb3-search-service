@@ -23,6 +23,7 @@ final readonly class OpenAddressCsvReader implements IteratorAggregate
         'municipality_name_nl',
         'municipality_name_fr',
         'municipality_name_de',
+        // BOSA's name for the postal code.
         'postcode',
         'postname_nl',
         'postname_fr',

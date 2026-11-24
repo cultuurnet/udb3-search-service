@@ -80,7 +80,7 @@ final readonly class MunicipalityRegions
     }
 
     /**
-     * The address CSV has no sub-municipality, only the postname of the postcode, which is the name of a sub-municipality
+     * The address CSV has no sub-municipality, only the postname of the postal code, which is the name of a sub-municipality
      * in most cases (3010 Kessel-Lo). Wijgmaal is a postname without its own region, and the region list also has
      * combined names like Berendrecht-Zandvliet-Lillo, so not every postname or sub-municipality finds the other.
      *
