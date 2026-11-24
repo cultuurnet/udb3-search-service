@@ -23,6 +23,7 @@ final class MunicipalityRegionsTest extends TestCase
                             'nis-24062' => [
                                 'name' => ['nl' => 'Leuven'],
                                 'children' => [
+                                    'nis-24062A' => ['name' => ['nl' => 'Leuven']],
                                     'nis-24062C' => ['name' => ['nl' => 'Kessel-Lo']],
                                 ],
                             ],
@@ -82,5 +83,43 @@ final class MunicipalityRegionsTest extends TestCase
     public function it_finds_nothing_for_an_unknown_municipality(): void
     {
         $this->assertNull($this->regions->find('99999', ['Nergensdorp']));
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_a_sub_municipality_by_its_postname(): void
+    {
+        $this->assertSame(
+            ['id' => 'nis-24062C', 'names' => ['Kessel-Lo']],
+            $this->regions->findSubMunicipalityByPostname('nis-24062', 'KESSEL-LO')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_the_sub_municipality_named_like_its_municipality(): void
+    {
+        $this->assertSame(
+            ['id' => 'nis-24062A', 'names' => ['Leuven']],
+            $this->regions->findSubMunicipalityByPostname('nis-24062', 'Leuven')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_finds_a_sub_municipality_in_its_own_municipality(): void
+    {
+        $this->assertNull($this->regions->findSubMunicipalityByPostname('nis-55010', 'Kessel-Lo'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_no_sub_municipality_for_a_postname_without_a_region(): void
+    {
+        $this->assertNull($this->regions->findSubMunicipalityByPostname('nis-24062', 'Wijgmaal'));
     }
 }

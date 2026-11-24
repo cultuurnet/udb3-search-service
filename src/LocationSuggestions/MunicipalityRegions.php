@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Search\LocationSuggestions;
 use function Symfony\Component\String\u;
 
 /**
- * Finds the Search API 3 region of a municipality in facet_mapping_regions.php (from cultuurnet/geojson-data),
- * so its regions filter matches the regions of events and places.
+ * Finds the Search API 3 region of a municipality and its sub-municipalities in facet_mapping_regions.php
+ * (from cultuurnet/geojson-data), so their regions filter matches the regions of events and places.
  */
 final readonly class MunicipalityRegions
 {
@@ -23,12 +23,18 @@ final readonly class MunicipalityRegions
     private array $idsByName;
 
     /**
+     * @var array<string, array<string, array{id: string, names: list<string>}>>
+     */
+    private array $subMunicipalitiesByName;
+
+    /**
      * @param array<string, array<string, mixed>> $facetMappingRegions
      */
     public function __construct(array $facetMappingRegions)
     {
         $ids = [];
         $idsByName = [];
+        $subMunicipalitiesByName = [];
 
         // The tree goes province, region, municipality, sub-municipality.
         foreach ($facetMappingRegions as $province) {
@@ -38,12 +44,19 @@ final readonly class MunicipalityRegions
                     foreach ($municipality['name'] ?? [] as $name) {
                         $idsByName[self::fold($name)] = $id;
                     }
+                    foreach ($municipality['children'] ?? [] as $subId => $subMunicipality) {
+                        $names = array_values($subMunicipality['name'] ?? []);
+                        foreach ($names as $name) {
+                            $subMunicipalitiesByName[$id][self::fold($name)] = ['id' => $subId, 'names' => $names];
+                        }
+                    }
                 }
             }
         }
 
         $this->ids = $ids;
         $this->idsByName = $idsByName;
+        $this->subMunicipalitiesByName = $subMunicipalitiesByName;
     }
 
     /**
@@ -64,6 +77,18 @@ final readonly class MunicipalityRegions
         }
 
         return null;
+    }
+
+    /**
+     * The address CSV has no sub-municipality, only the postname of the postcode, which is the name of a sub-municipality
+     * in most cases (3010 Kessel-Lo). Wijgmaal is a postname without its own region, and the region list also has
+     * combined names like Berendrecht-Zandvliet-Lillo, so not every postname or sub-municipality finds the other.
+     *
+     * @return array{id: string, names: list<string>}|null
+     */
+    public function findSubMunicipalityByPostname(string $municipalityRegion, string $postname): ?array
+    {
+        return $this->subMunicipalitiesByName[$municipalityRegion][self::fold($postname)] ?? null;
     }
 
     private static function fold(string $name): string
