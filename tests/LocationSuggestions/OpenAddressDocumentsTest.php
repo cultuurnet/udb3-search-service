@@ -76,6 +76,62 @@ final class OpenAddressDocumentsTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_a_sub_municipality_document_with_its_region_and_postcode(): void
+    {
+        $this->assertSame(
+            [
+                'type' => 'submunicipality',
+                'label' => 'Kessel-Lo (3010)',
+                'name' => ['Kessel-Lo', '3010'],
+                'search_text' => 'Kessel-Lo 3010',
+                'regions' => ['nis-24062C'],
+                'location' => ['lat' => 50.88943, 'lon' => 4.72002],
+                'address_count' => 2,
+            ],
+            $this->documents['submunicipality:nis-24062C']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_gives_every_sub_municipality_of_a_shared_postname_its_share_of_the_addresses(): void
+    {
+        $this->assertSame(1, $this->documents['submunicipality:nis-44021F']['address_count']);
+        $this->assertSame(1, $this->documents['submunicipality:nis-44021G']['address_count']);
+        $this->assertSame('Ledeberg (9050)', $this->documents['submunicipality:nis-44021G']['label']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_finds_a_sub_municipality_on_all_its_postcodes_and_labels_it_with_the_first(): void
+    {
+        $documents = iterator_to_array(new OpenAddressDocuments([
+            self::row(['municipality_id' => '24062', 'municipality_name_nl' => 'Leuven', 'postcode' => '3011', 'postname_nl' => 'Kessel-Lo']),
+            self::row(['municipality_id' => '24062', 'municipality_name_nl' => 'Leuven', 'postcode' => '3010', 'postname_nl' => 'Kessel-Lo']),
+        ], self::regions()));
+
+        $this->assertSame('Kessel-Lo (3010)', $documents['submunicipality:nis-24062C']['label']);
+        $this->assertSame(['Kessel-Lo', '3010', '3011'], $documents['submunicipality:nis-24062C']['name']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_no_sub_municipality_for_a_postname_without_a_region(): void
+    {
+        $documents = iterator_to_array(new OpenAddressDocuments([
+            self::row(['municipality_id' => '24062', 'municipality_name_nl' => 'Leuven', 'postcode' => '3018', 'postname_nl' => 'Wijgmaal']),
+        ], self::regions()));
+
+        $this->assertArrayHasKey('municipality:24062', $documents);
+        $this->assertSame([], preg_grep('/^submunicipality:/', array_keys($documents)));
+    }
+
+    /**
+     * @test
+     */
     public function it_counts_the_addresses_of_every_street_in_a_municipality(): void
     {
         $this->assertSame(3, $this->documents['municipality:44021']['address_count']);
@@ -195,12 +251,17 @@ final class OpenAddressDocumentsTest extends TestCase
         return new MunicipalityRegions([
             'nis-20001' => ['name' => ['nl' => 'Provincie Vlaams-Brabant'], 'children' => [
                 'reg-leuven' => ['name' => ['nl' => 'Regio Leuven'], 'children' => [
-                    'nis-24062' => ['name' => ['nl' => 'Leuven']],
+                    'nis-24062' => ['name' => ['nl' => 'Leuven'], 'children' => [
+                        'nis-24062C' => ['name' => ['nl' => 'Kessel-Lo']],
+                    ]],
                 ]],
             ]],
             'nis-40000' => ['name' => ['nl' => 'Provincie Oost-Vlaanderen'], 'children' => [
                 'reg-gent' => ['name' => ['nl' => 'Regio Gent'], 'children' => [
-                    'nis-44021' => ['name' => ['nl' => 'Gent']],
+                    'nis-44021' => ['name' => ['nl' => 'Gent'], 'children' => [
+                        'nis-44021F' => ['name' => ['nl' => 'Gentbrugge']],
+                        'nis-44021G' => ['name' => ['nl' => 'Ledeberg']],
+                    ]],
                 ]],
             ]],
         ]);

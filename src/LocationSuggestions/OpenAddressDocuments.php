@@ -12,6 +12,12 @@ use Psr\Log\NullLogger;
 use function Symfony\Component\String\u;
 
 /**
+ * Every row of the address CSV is one address. It becomes an address document, and it counts towards:
+ * - its street (street + postcode),
+ * - its municipality (municipality_id, with the region from the region list),
+ * - its sub-municipalities (the postname, matched to a sub-municipality of the municipality in the region list).
+ * Streets, municipalities and sub-municipalities get the number of their addresses and the average coordinate.
+ *
  * @implements IteratorAggregate<string, array<string, mixed>>
  */
 final readonly class OpenAddressDocuments implements IteratorAggregate
@@ -34,6 +40,8 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
         $groups = [];
         $seenAddressIds = [];
         $municipalityRegions = [];
+        $subMunicipalities = [];
+        $postcodes = [];
 
         foreach ($this->rows as $row) {
             // Every box number of a house number is its own row. The building is one address,
@@ -80,32 +88,90 @@ final readonly class OpenAddressDocuments implements IteratorAggregate
                     'search_text' => implode(' ', $this->names($row, 'municipality_name')),
                     'regions' => [$municipalityRegions[$municipalityId]],
                 ]);
+
+                $postnameKey = implode('|', [$municipalityId, $row['postname_nl'], $row['postname_fr']]);
+                $subMunicipalities[$postnameKey] ??= $this->subMunicipalities($row, $municipalityRegions[$municipalityId]);
+                foreach ($subMunicipalities[$postnameKey] as $region => $names) {
+                    // A postname shared by several sub-municipalities (Averbode/Zichem) doesn't say which one an address is in,
+                    // so each of them counts its share. That also keeps a sub-municipality below its municipality.
+                    // The label and search text need every postcode, so withPostcodes() fills them in after the last row.
+                    $this->addToGroup($groups, 'submunicipality:' . $region, $lat, $lon, fn (): array => [
+                        'type' => 'submunicipality',
+                        'label' => '',
+                        'name' => $names,
+                        'search_text' => '',
+                        'regions' => [$region],
+                    ], 1 / count($subMunicipalities[$postnameKey]));
+                    $postcodes['submunicipality:' . $region][$row['postcode']] = true;
+                }
             }
         }
 
         // A street's or municipality's coordinate is the average of all its addresses, so they can only follow the last row.
         foreach ($groups as $id => $group) {
+            $document = isset($postcodes[$id]) ? $this->withPostcodes($group['document'], array_keys($postcodes[$id])) : $group['document'];
+
             yield $id => [
-                ...$group['document'],
+                ...$document,
                 'location' => [
                     'lat' => round($group['lat_sum'] / $group['count'], 5),
                     'lon' => round($group['lon_sum'] / $group['count'], 5),
                 ],
-                'address_count' => $group['count'],
+                'address_count' => max(1, (int) round($group['address_count'])),
             ];
         }
     }
 
     /**
-     * @param array<string, array{document: array<string, mixed>, lat_sum: float, lon_sum: float, count: int}> $groups
-     * @param callable(): array<string, mixed> $document Only called for the first address of the group.
+     * @param array<string, string> $row
+     * @return array<string, list<string>> The names of the sub-municipalities in the postname of the row, by region.
      */
-    private function addToGroup(array &$groups, string $id, float $lat, float $lon, callable $document): void
+    private function subMunicipalities(array $row, string $municipalityRegion): array
     {
-        $groups[$id] ??= ['document' => $document(), 'lat_sum' => 0.0, 'lon_sum' => 0.0, 'count' => 0];
+        $subMunicipalities = [];
+        foreach ([...explode('/', $row['postname_nl']), ...explode('/', $row['postname_fr'])] as $postname) {
+            $subMunicipality = $postname !== '' ? $this->municipalityRegions->findSubMunicipalityByPostname($municipalityRegion, $postname) : null;
+            if ($subMunicipality !== null) {
+                $subMunicipalities[$subMunicipality['id']] = $subMunicipality['names'];
+            }
+        }
+
+        return $subMunicipalities;
+    }
+
+    /**
+     * @param array<string, mixed> $document
+     * @param list<int|string> $postcodes
+     * @return array<string, mixed>
+     */
+    private function withPostcodes(array $document, array $postcodes): array
+    {
+        // Array keys turn postcodes into integers.
+        $postcodes = array_map('strval', $postcodes);
+        sort($postcodes);
+        $names = [...$document['name'], ...$postcodes];
+
+        // Typing the postcode finds the sub-municipality. Antwerpen has seven, the label shows the first.
+        return [
+            ...$document,
+            'label' => sprintf('%s (%s)', $document['name'][0], $postcodes[0]),
+            'name' => $names,
+            'search_text' => implode(' ', $names),
+        ];
+    }
+
+    /**
+     * @param array<string, array{document: array<string, mixed>, lat_sum: float, lon_sum: float, count: int, address_count: float}> $groups
+     * @param callable(): array<string, mixed> $document Only called for the first address of the group.
+     * @param float $share How much of the address belongs to the group.
+     */
+    private function addToGroup(array &$groups, string $id, float $lat, float $lon, callable $document, float $share = 1.0): void
+    {
+        $groups[$id] ??= ['document' => $document(), 'lat_sum' => 0.0, 'lon_sum' => 0.0, 'count' => 0, 'address_count' => 0.0];
         $groups[$id]['lat_sum'] += $lat;
         $groups[$id]['lon_sum'] += $lon;
         $groups[$id]['count']++;
+        $groups[$id]['address_count'] += $share;
     }
 
     /**
