@@ -37,7 +37,7 @@ final class ReplaceLocationSuggestionsIndex extends AbstractElasticSearchOperati
 
         $this->logger->info("Indexed {$sent} documents in {$indexName}.");
 
-        $this->moveAlias($alias, $indexName);
+        $this->moveAlias($alias, $indexName, $indexPattern);
         $this->deleteOtherIndices($indexPattern, $indexName);
     }
 
@@ -96,11 +96,14 @@ final class ReplaceLocationSuggestionsIndex extends AbstractElasticSearchOperati
         }
     }
 
-    private function moveAlias(string $alias, string $indexName): void
+    private function moveAlias(string $alias, string $indexName, string $indexPattern): void
     {
         $actions = [];
         foreach ((new GetIndexNamesFromAlias($this->client, $this->logger))->run($alias) as $previousIndexName) {
-            $actions[] = ['remove' => ['index' => $previousIndexName, 'alias' => $alias]];
+            // The alias also holds indices this import doesn't own, like the places. Those stay.
+            if (fnmatch($indexPattern, $previousIndexName)) {
+                $actions[] = ['remove' => ['index' => $previousIndexName, 'alias' => $alias]];
+            }
         }
         $actions[] = ['add' => ['index' => $indexName, 'alias' => $alias]];
 

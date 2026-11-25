@@ -17,12 +17,12 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
     /**
      * @test
      */
-    public function it_moves_the_alias_in_one_request_and_deletes_the_other_indices(): void
+    public function it_replaces_its_own_index_in_the_alias_in_one_request_and_deletes_its_other_indices(): void
     {
         $this->indices->expects($this->once())
             ->method('create')
             ->with($this->callback(
-                fn (array $params): bool => $params['index'] === 'new_index'
+                fn (array $params): bool => $params['index'] === 'addresses_new'
                     && isset($params['body']['settings']['analysis'], $params['body']['mappings']['properties'])
             ));
 
@@ -30,7 +30,7 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
             ->method('bulk')
             ->with([
                 'body' => [
-                    ['index' => ['_index' => 'new_index', '_id' => 'street:1']],
+                    ['index' => ['_index' => 'addresses_new', '_id' => 'street:1']],
                     ['type' => 'street'],
                 ],
                 'refresh' => true,
@@ -39,15 +39,15 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
         $this->client->method('search')->willReturn(['hits' => ['total' => ['value' => 1]]]);
 
         $this->indices->method('get')->willReturnMap([
-            [['index' => 'alias'], ['live_index' => []]],
-            [['index' => 'location_*'], ['live_index' => [], 'left_behind_index' => [], 'new_index' => []]],
+            [['index' => 'alias'], ['addresses_live' => [], 'places' => []]],
+            [['index' => 'addresses_*'], ['addresses_live' => [], 'addresses_left_behind' => [], 'addresses_new' => []]],
         ]);
 
         $this->indices->expects($this->once())
             ->method('updateAliases')
             ->with(['body' => ['actions' => [
-                ['remove' => ['index' => 'live_index', 'alias' => 'alias']],
-                ['add' => ['index' => 'new_index', 'alias' => 'alias']],
+                ['remove' => ['index' => 'addresses_live', 'alias' => 'alias']],
+                ['add' => ['index' => 'addresses_new', 'alias' => 'alias']],
             ]]]);
 
         $deleted = [];
@@ -57,9 +57,9 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
             }
         );
 
-        $this->operation->run('new_index', 'location_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
+        $this->operation->run('addresses_new', 'addresses_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
 
-        $this->assertSame(['live_index', 'left_behind_index'], $deleted);
+        $this->assertSame(['addresses_live', 'addresses_left_behind'], $deleted);
     }
 
     /**
@@ -77,7 +77,7 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
 
         $this->expectException(\RuntimeException::class);
 
-        $this->operation->run('new_index', 'location_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
+        $this->operation->run('new_index', 'addresses_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
     }
 
     /**
@@ -95,6 +95,6 @@ final class ReplaceLocationSuggestionsIndexTest extends AbstractOperationTestCas
 
         $this->expectExceptionMessage('Sent 1 documents but new_index holds 0.');
 
-        $this->operation->run('new_index', 'location_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
+        $this->operation->run('new_index', 'addresses_*', 'alias', ['street:1' => ['type' => 'street']], 1, 0);
     }
 }

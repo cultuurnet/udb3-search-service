@@ -45,6 +45,9 @@ final readonly class LocationSuggestionsController
 
         $response = $this->client->search([
             'index' => $this->indexName,
+            // The alias can span more than one index. Elasticsearch scores how rare a word is per index,
+            // so without this the same word would score differently depending on the index it is in.
+            'search_type' => 'dfs_query_then_fetch',
             'body' => [
                 'size' => self::NUMBER_OF_SUGGESTIONS,
                 'query' => [

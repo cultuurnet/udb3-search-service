@@ -6,6 +6,19 @@ This document describes the index behind `GET /location-suggestions`. While a us
 
 The mapping lives in `src/ElasticSearch/Operations/json/mapping_location_suggestions.json`.
 
+## The indices
+
+The endpoint searches the alias `location_suggestions_read`. It spans two indices with the same mapping:
+
+| Index | Holds | Filled by |
+|---|---|---|
+| `location_suggestions_addresses_v<version>_<date>` | streets, addresses, municipalities and sub-municipalities | `location-suggestions:index-openaddress`, a new index on every run |
+| `location_suggestions_places_v<version>` | UiTdatabank places | not built yet |
+
+`<version>` is a hash of the mapping. The address import builds a new index, replaces only the previous address index in the alias, in one request, and deletes the older `location_suggestions_addresses_*` indices. Other indices in the alias, like the places, stay.
+
+Elasticsearch scores how rare a word is per index. The endpoint searches with `dfs_query_then_fetch`, which first collects those numbers over both indices, so the same word scores the same for a street and for a place.
+
 ---
 
 ## The types
