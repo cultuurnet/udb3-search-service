@@ -15,6 +15,7 @@ use CultuurNet\UDB3\SearchService\Console\CreateLowerCaseStandardAnalyzerCommand
 use CultuurNet\UDB3\SearchService\Console\DeleteIndexCommand;
 use CultuurNet\UDB3\SearchService\Console\GetAliasesCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexOpenAddressCommand;
+use CultuurNet\UDB3\SearchService\Console\IndexPlacesCommand;
 use CultuurNet\UDB3\SearchService\Console\IndexRegionsCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallGeoShapesCommand;
 use CultuurNet\UDB3\SearchService\Console\InstallUDB3CoreCommand;
@@ -64,6 +65,7 @@ final class CommandServiceProvider extends BaseServiceProvider
                     'geoshapes:index-regions' => IndexRegionsCommand::class,
                     'geoshapes:install' => InstallGeoShapesCommand::class,
                     'location-suggestions:index-openaddress' => IndexOpenAddressCommand::class,
+                    'location-suggestions:index-places' => IndexPlacesCommand::class,
                 ];
 
                 foreach (AmqpProvider::getConsumers($this) as $consumerKey => $consumerConfig) {
@@ -195,6 +197,19 @@ final class CommandServiceProvider extends BaseServiceProvider
                 $this->get(ElasticSearchClient::class),
                 SchemaVersions::locationSuggestions(),
                 $this->parameter('elasticsearch.location_suggestions_index.read_alias'),
+                $this->parameter('elasticsearch.number_of_shards'),
+                $this->parameter('elasticsearch.number_of_replicas'),
+                new MunicipalityRegions($this->parameter('facet_mapping_regions'))
+            )
+        );
+
+        $this->add(
+            IndexPlacesCommand::class,
+            fn (): IndexPlacesCommand => new IndexPlacesCommand(
+                $this->get(ElasticSearchClient::class),
+                SchemaVersions::locationSuggestions(),
+                $this->parameter('elasticsearch.location_suggestions_index.read_alias'),
+                $this->parameter('elasticsearch.place.read_index'),
                 $this->parameter('elasticsearch.number_of_shards'),
                 $this->parameter('elasticsearch.number_of_replicas'),
                 new MunicipalityRegions($this->parameter('facet_mapping_regions'))

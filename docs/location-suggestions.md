@@ -13,7 +13,7 @@ The endpoint searches the alias `location_suggestions_read`. It spans two indice
 | Index | Holds | Filled by |
 |---|---|---|
 | `location_suggestions_addresses_v<version>_<date>` | streets, addresses, municipalities and sub-municipalities | `location-suggestions:index-openaddress`, a new index on every run |
-| `location_suggestions_places_v<version>` | UiTdatabank places | not built yet |
+| `location_suggestions_places_v<version>_<date>` | UiTdatabank places | `location-suggestions:index-places`, once, see [From UiTdatabank places](#from-uitdatabank-places) |
 
 `<version>` is a hash of the mapping. The address import builds a new index, replaces only the previous address index in the alias, in one request, and deletes the older `location_suggestions_addresses_*` indices. Other indices in the alias, like the places, stay.
 
@@ -30,7 +30,7 @@ Elasticsearch scores how rare a word is per index. The endpoint searches with `d
 | `municipality` | Leuven | always | CSV: `municipality_name_nl/fr/de` | `{ "regions": ["nis-24062"] }` | region list: `nis-<municipality_id>`, or the municipality with the same name | CSV: average of its addresses | CSV: addresses per `municipality_id` |
 | `submunicipality`, returned as `municipality` | Kessel-Lo (3010) | always, and only these when only numbers are typed (`30` shows Leuven (3000) and Kessel-Lo (3010)) | region list: the name of a child of the municipality, CSV: the first `postcode` of its addresses | `{ "regions": ["nis-24062C"] }` | region list: the child whose name is the CSV `postname_nl/fr` | CSV: average of its addresses | CSV: addresses whose `postname_nl/fr` is the sub-municipality |
 | `postalCode` | 9050 Gentbrugge/Ledeberg | not built: a postal code now suggests its sub-municipalities (`9050` shows Gentbrugge (9050) and Ledeberg (9050)) | CSV: `postcode`, `postname_nl/fr` | `{ "regions": ["nis-44021F", "nis-44021G"] }` | region list: the sub-municipalities named in the CSV `postname_nl/fr` | CSV: average of its addresses | CSV: addresses per `postcode` |
-| `place` | Yper Museum (Grote Markt 34, 8900 Ieper) | always | UiTdatabank place: `name`, `address` | `{ "locationId": "<uuid>" }` | UiTdatabank place: its id | UiTdatabank place: `geo` | none |
+| `place` | Het Depot (Martelarenplein 12, 3000 Leuven) | always | UiTdatabank place: `name` in its main language, `address` | `{ "coordinates": "50.8814,4.7155" }` | UiTdatabank place: `geo` | UiTdatabank place: `geo` | none |
 
 `regions` is an array, because the `regions` parameter of Search API 3 takes several regions.
 
@@ -42,7 +42,7 @@ A sub-municipality is returned with the type `municipality`. Both are an area wi
 
 - CSV: the BOSA BeST address register, OpenAddress export, one file per region (`openaddress-bevlg.csv`, `openaddress-bewal.csv`, `openaddress-bebru.csv`) from https://data.gov.be/nl/datasets/fpsbosa-dis-best-csv-deriv, downloaded with `bin/download-openaddress.sh`. Only rows with `status` `current` are used. Its column `postcode` is the postal code. It has one row per address, so streets, municipalities and postal codes are grouped from those rows.
 - Region list: `output/facet_mapping_regions.php` from https://github.com/cultuurnet/geojson-data, the same list that names the region facets of Search API 3. A tree of province, region, municipality and sub-municipality, with names in nl, fr and de. The `geoshapes` index behind the `regions` filter is built from the same repository.
-- UiTdatabank place: the place in UiTdatabank.
+- UiTdatabank place: the JSON-LD of the place, as UiTdatabank sent it to the search index.
 
 ### From addresses to municipalities and sub-municipalities
 
@@ -71,6 +71,22 @@ Where it doesn't line up:
 - A postname can name several sub-municipalities: 3271 is `Averbode/Zichem`, and a row doesn't say which of the two the address is in. Each of them counts its share, half an address here, and both get the average coordinate of all of 3271. That also keeps a sub-municipality below its municipality.
 - Some postnames have no sub-municipality (Wijgmaal, Zeebrugge), and some sub-municipalities match no postname (Berendrecht-Zandvliet-Lillo, Jupille-sur-Meuse against the postname Jupille). On all of Belgium 2,561 of the 2,664 sub-municipalities match. The others are not suggested, but their streets are still found by their postname.
 - Antwerpen (`nis-11002-Z`) has seven postal codes. All of them are in its `name` and `search_text`, the label shows the first: `Antwerpen (2000)`.
+
+### From UiTdatabank places
+
+Only places Search API 3 returns by default are suggested: `workflowStatus` `APPROVED` or `READY_FOR_VALIDATION`, with coordinates, and with an address in Belgium. The document id is `place:<uuid>`.
+
+| Field | From |
+|---|---|
+| `name` | the name in every language, the main language first |
+| `search_text` | the names, and per address language the street, postal code and locality |
+| `location` | `geo` |
+
+A place only has the locality that was typed, often a sub-municipality. When the region list knows that name as a sub-municipality of exactly one municipality, its municipality is added to `search_text`, so a café in Kessel-Lo is also found on "café leuven", like the streets of Kessel-Lo. Nothing is added when the locality is a municipality itself, or a name several municipalities have (Deurne is in Antwerpen and in Diest).
+
+`location-suggestions:index-places` fills the places index from the places in the search index (`udb3_core`). It reuses the current places index of this mapping version and only adds the places that are missing. `--recreate` builds a new index instead, for example after a change to how a place becomes a suggestion; the old index stays searchable until the new one is full. A mapping change gives a new version, so the command builds a new index then too.
+
+The command first moves the write alias `location_suggestions_places_write` to the index it fills, then the read alias, and then deletes the older `location_suggestions_places_*` indices. It adds places with `create`, so a place that is already in the index is never overwritten by the older copy the fill reads.
 
 ---
 

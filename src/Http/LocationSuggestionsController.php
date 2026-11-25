@@ -38,9 +38,9 @@ final readonly class LocationSuggestionsController
         // A municipality has no number, so with one typed it can never match. A sub-municipality has its postal code.
         // Only numbers is a postal code, and the user means the area: not its streets, and a house number on its own means nothing.
         $types = match (true) {
-            !$searchText->containsNumber() => ['street', 'municipality', 'submunicipality'],
+            !$searchText->containsNumber() => ['street', 'municipality', 'submunicipality', 'place'],
             $searchText->isOnlyNumbers() => ['submunicipality'],
-            default => ['street', 'submunicipality', 'address'],
+            default => ['street', 'submunicipality', 'address', 'place'],
         };
 
         $response = $this->client->search([

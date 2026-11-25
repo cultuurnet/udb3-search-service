@@ -68,4 +68,9 @@ final class ElasticsearchPhpIndices implements ElasticSearchIndices
     {
         $this->send(fn () => $this->indices->putTemplate($params));
     }
+
+    public function refresh(array $params): void
+    {
+        $this->send(fn () => $this->indices->refresh($params));
+    }
 }

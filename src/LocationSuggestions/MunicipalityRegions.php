@@ -28,6 +28,11 @@ final readonly class MunicipalityRegions
     private array $subMunicipalitiesByName;
 
     /**
+     * @var array<string, array<string, list<string>>> Per sub-municipality name, the names of every municipality that has one by that name.
+     */
+    private array $municipalityNamesBySubMunicipalityName;
+
+    /**
      * @param array<string, array<string, mixed>> $facetMappingRegions
      */
     public function __construct(array $facetMappingRegions)
@@ -35,6 +40,7 @@ final readonly class MunicipalityRegions
         $ids = [];
         $idsByName = [];
         $subMunicipalitiesByName = [];
+        $municipalityNamesBySubMunicipalityName = [];
 
         // The tree goes province, region, municipality, sub-municipality.
         foreach ($facetMappingRegions as $province) {
@@ -48,6 +54,7 @@ final readonly class MunicipalityRegions
                         $names = array_values($subMunicipality['name'] ?? []);
                         foreach ($names as $name) {
                             $subMunicipalitiesByName[$id][self::fold($name)] = ['id' => $subId, 'names' => $names];
+                            $municipalityNamesBySubMunicipalityName[self::fold($name)][$id] = array_values($municipality['name'] ?? []);
                         }
                     }
                 }
@@ -57,6 +64,7 @@ final readonly class MunicipalityRegions
         $this->ids = $ids;
         $this->idsByName = $idsByName;
         $this->subMunicipalitiesByName = $subMunicipalitiesByName;
+        $this->municipalityNamesBySubMunicipalityName = $municipalityNamesBySubMunicipalityName;
     }
 
     /**
@@ -89,6 +97,25 @@ final readonly class MunicipalityRegions
     public function findSubMunicipalityByPostname(string $municipalityRegion, string $postname): ?array
     {
         return $this->subMunicipalitiesByName[$municipalityRegion][self::fold($postname)] ?? null;
+    }
+
+    /**
+     * A UiTdatabank place only has the locality its organizer typed, often a sub-municipality (Kessel-Lo).
+     * This gives the municipality it belongs to (Leuven), so the place is also found on the municipality, like a street.
+     * Nothing when the locality is a municipality itself, or a name several municipalities have (Deurne: Antwerpen and Diest).
+     *
+     * @return list<string>
+     */
+    public function findMunicipalityNamesOfSubMunicipality(string $locality): array
+    {
+        $locality = self::fold($locality);
+        if (isset($this->idsByName[$locality])) {
+            return [];
+        }
+
+        $municipalities = $this->municipalityNamesBySubMunicipalityName[$locality] ?? [];
+
+        return count($municipalities) === 1 ? array_values($municipalities)[0] : [];
     }
 
     private static function fold(string $name): string

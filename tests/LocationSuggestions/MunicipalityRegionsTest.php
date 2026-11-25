@@ -88,6 +88,35 @@ final class MunicipalityRegionsTest extends TestCase
     /**
      * @test
      */
+    public function it_finds_the_municipality_of_a_sub_municipality(): void
+    {
+        $this->assertSame(['Leuven'], $this->regions->findMunicipalityNamesOfSubMunicipality('KESSEL-LO'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_no_municipality_to_a_locality_that_is_a_municipality_itself(): void
+    {
+        $this->assertSame([], $this->regions->findMunicipalityNamesOfSubMunicipality('Leuven'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_no_municipality_to_a_sub_municipality_name_that_several_municipalities_have(): void
+    {
+        $regions = new MunicipalityRegions(['p' => ['children' => ['r' => ['children' => [
+            'nis-11002' => ['name' => ['nl' => 'Antwerpen'], 'children' => ['nis-11002R' => ['name' => ['nl' => 'Deurne']]]],
+            'nis-24020' => ['name' => ['nl' => 'Diest'], 'children' => ['nis-24020B' => ['name' => ['nl' => 'Deurne']]]],
+        ]]]]]);
+
+        $this->assertSame([], $regions->findMunicipalityNamesOfSubMunicipality('Deurne'));
+    }
+
+    /**
+     * @test
+     */
     public function it_finds_a_sub_municipality_by_its_postname(): void
     {
         $this->assertSame(

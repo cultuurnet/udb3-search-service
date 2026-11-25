@@ -27,4 +27,6 @@ interface ElasticSearchIndices
     public function putMapping(array $params): void;
 
     public function putTemplate(array $params): void;
+
+    public function refresh(array $params): void;
 }
