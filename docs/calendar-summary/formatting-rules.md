@@ -64,7 +64,8 @@ Within a summary:
 3. a childcare that every day shares
 4. the adjusted days (`xl`) or the warning that they exist (`lg`)
 5. the closed days (`xl`): first the days of the week without opening hours (`Elke zondag gesloten`),
-   then the closed periods. In `xl` permanent those days are left out of the week scheme.
+   then the closed periods. In `xl` those days are left out of the week scheme, which lists the
+   open days in week order, one per line in plain text.
 
 ## Availability of a permanent offer
 

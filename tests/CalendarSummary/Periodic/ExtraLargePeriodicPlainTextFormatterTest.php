@@ -158,6 +158,21 @@ final class ExtraLargePeriodicPlainTextFormatterTest extends TestCase
         );
     }
 
+    public function testItListsTheDaysInWeekOrderAndTheDaysWithoutOpeningHoursAsClosedEveryWeek(): void
+    {
+        $place = $this->availablePlace()->withOpeningHours(
+            [
+                new OpeningHour(['saturday'], '10:00', '18:00'),
+                new OpeningHour(['monday', 'tuesday', 'wednesday', 'thursday', 'friday'], '09:00', '17:00'),
+            ]
+        );
+
+        $this->assertEquals(
+            $this->expectedText('days-in-week-order-and-days-without-opening-hours-closed-every-week'),
+            $this->formatter->format($place)
+        );
+    }
+
     public function testItSkipsClosedDaysThatHavePassed(): void
     {
         $place = $this->availablePlace()->withClosedDays(

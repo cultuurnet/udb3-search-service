@@ -39,21 +39,29 @@ final readonly class ExtraLargePeriodicPlainTextFormatter implements PeriodicFor
             ->to(
                 $this->formatter->formatAsDayOfWeek($endDate),
                 $this->formatter->formatAsFullDate($endDate)
-            );
+            )
+            // The availability closes the period, so it stays on that line instead of
+            // trailing the week scheme, which spans several lines in this format.
+            ->appendAvailability($offer->getStatus(), $offer->getBookingAvailability());
 
         if (!$offer->getOpeningHours()->isEmpty()) {
             $summary = $summary
                 ->startNewLine()
                 ->append(
                     PlainTextWeekSchemeFormatter::forOpeningHours($offer->getOpeningHours(), $this->translator)
-                        ->asSingleLine()
                         ->withChildcare()
+                        ->withoutClosedDays()
                         ->toString()
                 );
         }
 
-        $summary = $summary->appendAvailability($offer->getStatus(), $offer->getBookingAvailability());
+        // The days without opening hours are listed among the closed days instead of in
+        // the week scheme.
+        $deviatingDays = $this->deviatingDaysFormatter->format(
+            $offer,
+            $offer->getOpeningHours()->closedDaysOfWeek()
+        );
 
-        return $summary->toString() . $this->deviatingDaysFormatter->format($offer);
+        return $summary->toString() . $deviatingDays;
     }
 }

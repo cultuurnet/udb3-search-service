@@ -307,7 +307,17 @@ final class CalendarHTMLFormatterTest extends TestCase
             new DateTimeImmutable('2030-01-01T00:00:00+01:00'),
             new DateTimeImmutable('2030-12-31T23:59:59+01:00'),
             CalendarType::periodic()
-        ))->withOpeningHours([new OpeningHour(['monday', 'tuesday'], '10:00', '18:00')]);
+        ))->withOpeningHours(
+            [
+                // Open every day, so the closed weekdays of the xl summary cannot be
+                // mistaken for a closed place.
+                new OpeningHour(
+                    ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+                    '10:00',
+                    '18:00'
+                ),
+            ]
+        );
         $permanent = $this->permanent()->withAvailability(
             new Status('Available', []),
             new BookingAvailability('Unavailable')
