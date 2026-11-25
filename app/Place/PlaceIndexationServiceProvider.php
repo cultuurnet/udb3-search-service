@@ -12,6 +12,9 @@ use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentFetcher;
 use CultuurNet\UDB3\Search\JsonDocument\JsonDocumentTransformer;
 use CultuurNet\UDB3\Search\JsonDocument\JsonTransformerPsrLogger;
 use CultuurNet\UDB3\Search\JsonDocument\TransformingJsonDocumentIndexService;
+use CultuurNet\UDB3\Search\LocationSuggestions\MunicipalityRegions;
+use CultuurNet\UDB3\Search\LocationSuggestions\PlaceDocuments;
+use CultuurNet\UDB3\Search\LocationSuggestions\PlaceLocationSuggestionProjector;
 use CultuurNet\UDB3\Search\Place\PlaceSearchProjector;
 use CultuurNet\UDB3\SearchService\BaseServiceProvider;
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
@@ -22,6 +25,7 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
     {
         return in_array($id, [
             'place_search_projector',
+            'place_location_suggestion_projector',
             'event_bus_subscribers',
         ], true);
     }
@@ -57,6 +61,17 @@ final class PlaceIndexationServiceProvider extends BaseServiceProvider
 
                 return new PlaceSearchProjector($service);
             },
+            'event_bus_subscribers'
+        );
+
+        $this->add(
+            'place_location_suggestion_projector',
+            fn (): PlaceLocationSuggestionProjector => new PlaceLocationSuggestionProjector(
+                $this->get(JsonDocumentFetcher::class),
+                new PlaceDocuments(new MunicipalityRegions($this->parameter('facet_mapping_regions'))),
+                $this->get(ElasticSearchClient::class),
+                $this->get('logger.amqp.udb3')
+            ),
             'event_bus_subscribers'
         );
     }

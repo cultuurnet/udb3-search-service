@@ -13,7 +13,7 @@ The endpoint searches the alias `location_suggestions_read`. It spans two indice
 | Index | Holds | Filled by |
 |---|---|---|
 | `location_suggestions_addresses_v<version>_<date>` | streets, addresses, municipalities and sub-municipalities | `location-suggestions:index-openaddress`, a new index on every run |
-| `location_suggestions_places_v<version>_<date>` | UiTdatabank places | `location-suggestions:index-places`, once, see [From UiTdatabank places](#from-uitdatabank-places) |
+| `location_suggestions_places_v<version>_<date>` | UiTdatabank places | `location-suggestions:index-places` once, then every place change, see [From UiTdatabank places](#from-uitdatabank-places) |
 
 `<version>` is a hash of the mapping. The address import builds a new index, replaces only the previous address index in the alias, in one request, and deletes the older `location_suggestions_addresses_*` indices. Other indices in the alias, like the places, stay.
 
@@ -87,6 +87,8 @@ A place only has the locality that was typed, often a sub-municipality. When the
 `location-suggestions:index-places` fills the places index from the places in the search index (`udb3_core`). It reuses the current places index of this mapping version and only adds the places that are missing. `--recreate` builds a new index instead, for example after a change to how a place becomes a suggestion; the old index stays searchable until the new one is full. A mapping change gives a new version, so the command builds a new index then too.
 
 The command first moves the write alias `location_suggestions_places_write` to the index it fills, then the read alias, and then deletes the older `location_suggestions_places_*` indices. It adds places with `create`, so a place that is already in the index is never overwritten by the older copy the fill reads.
+
+After that, every `PlaceProjectedToJSONLD` message updates the place through the write alias, next to the place in the search index. A place that is deleted, no longer public or without coordinates is removed. When the places index doesn't exist yet, the update is skipped with a warning that names the command, and `require_alias` keeps Elasticsearch from creating an index with the wrong mapping.
 
 ---
 
