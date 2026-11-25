@@ -148,6 +148,10 @@ final class RoutingServiceProvider extends BaseServiceProvider
                 $router->post('/events/', ['event_controller', '__invoke']);
                 $router->options('/events/', $optionsResponse);
 
+                $router->get('/events/places', ['event_controller', 'placeEventCounts']);
+                $router->post('/events/places', ['event_controller', 'placeEventCounts']);
+                $router->options('/events/places', $optionsResponse);
+
                 $router->get('/places', ['place_controller', '__invoke']);
                 $router->post('/places', ['place_controller', '__invoke']);
                 $router->options('/places', $optionsResponse);

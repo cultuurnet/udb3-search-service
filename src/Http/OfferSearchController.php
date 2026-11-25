@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Search\PriceInfo\Price;
 use CultuurNet\UDB3\Search\QueryStringFactory;
 use CultuurNet\UDB3\Search\Region\RegionId;
 use CultuurNet\UDB3\Search\Start;
+use CultuurNet\UDB3\Search\UnsupportedParameterValue;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -36,6 +37,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class OfferSearchController
 {
+    private const NUMBER_OF_PLACES = 50;
+
     private OfferQueryBuilderInterface $queryBuilder;
 
     private OfferRequestParserInterface $requestParser;
@@ -80,7 +83,67 @@ final class OfferSearchController
         $start = new Start((int) $request->getQueryParam('start', 0));
         $limit = new Limit((int) $request->getQueryParam('limit', 30));
 
-        $queryBuilder = $this->queryBuilder->withStartAndLimit($start, $limit);
+        $queryBuilder = $this->createQueryBuilder($request)->withStartAndLimit($start, $limit);
+
+        $parameterBag = $request->getQueryParameterBag();
+
+        $facets = $this->getFacetsFromQuery($parameterBag, 'facets');
+        foreach ($facets as $facet) {
+            $queryBuilder = $queryBuilder->withFacet($facet);
+        }
+        $resultSet = $this->searchService->search($queryBuilder);
+
+        $calendarSummaries = array_map(
+            static fn (string $parameter): CalendarSummaryFormat => CalendarSummaryFormat::fromCombinedParameter($parameter),
+            $parameterBag->getArrayFromParameter('embedCalendarSummaries')
+        );
+
+        $resultTransformer = ResultTransformerFactory::create(
+            (bool) $parameterBag->getBooleanFromParameter('embed'),
+            (bool) $parameterBag->getBooleanFromParameter('embedUitpasPrices'),
+            ...$calendarSummaries
+        );
+
+        $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
+            $resultTransformer,
+            $resultSet,
+            $start->toInteger(),
+            $limit->toInteger()
+        );
+
+        $jsonArray = $pagedCollection->jsonSerialize();
+
+        foreach ($resultSet->getFacets() as $facetFilter) {
+            // Singular "facet" to be consistent with "member" in Hydra
+            // PagedCollection.
+            $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
+        }
+
+        return ResponseFactory::jsonLd($jsonArray);
+    }
+
+    public function placeEventCounts(ApiRequest $request): ResponseInterface
+    {
+        $this->offerParameterWhiteList->guardAgainstUnsupportedParameters(
+            $request->getQueryParamsKeys()
+        );
+
+        // Collapsing on production only changes the hits, not the aggregation, so the counts per place would still
+        // count every event while the caller expects productions.
+        if ($request->hasQueryParam('groupBy')) {
+            throw new UnsupportedParameterValue('The "groupBy" parameter is not supported when counting events per place.');
+        }
+
+        $queryBuilder = $this->createQueryBuilder($request)->withPlaceEventCounts(self::NUMBER_OF_PLACES);
+
+        return ResponseFactory::jsonLd(
+            $this->searchService->countEventsPerPlace($queryBuilder)->jsonSerialize()
+        );
+    }
+
+    private function createQueryBuilder(ApiRequest $request): OfferQueryBuilderInterface
+    {
+        $queryBuilder = $this->queryBuilder;
 
         if ($this->consumer->getId() && $queryBuilder instanceof ElasticSearchOfferQueryBuilder) {
             $queryBuilder = $queryBuilder->withShardPreference('consumer_' . $this->consumer->getId());
@@ -263,39 +326,7 @@ final class OfferSearchController
             $queryBuilder = $queryBuilder->withOrganizerLabelFilter($organizerLabel);
         }
 
-        $facets = $this->getFacetsFromQuery($parameterBag, 'facets');
-        foreach ($facets as $facet) {
-            $queryBuilder = $queryBuilder->withFacet($facet);
-        }
-        $resultSet = $this->searchService->search($queryBuilder);
-
-        $calendarSummaries = array_map(
-            static fn (string $parameter): CalendarSummaryFormat => CalendarSummaryFormat::fromCombinedParameter($parameter),
-            $parameterBag->getArrayFromParameter('embedCalendarSummaries')
-        );
-
-        $resultTransformer = ResultTransformerFactory::create(
-            (bool) $parameterBag->getBooleanFromParameter('embed'),
-            (bool) $parameterBag->getBooleanFromParameter('embedUitpasPrices'),
-            ...$calendarSummaries
-        );
-
-        $pagedCollection = PagedCollectionFactory::fromPagedResultSet(
-            $resultTransformer,
-            $resultSet,
-            $start->toInteger(),
-            $limit->toInteger()
-        );
-
-        $jsonArray = $pagedCollection->jsonSerialize();
-
-        foreach ($resultSet->getFacets() as $facetFilter) {
-            // Singular "facet" to be consistent with "member" in Hydra
-            // PagedCollection.
-            $jsonArray['facet'][$facetFilter->getKey()] = $this->facetTreeNormalizer->normalize($facetFilter);
-        }
-
-        return ResponseFactory::jsonLd($jsonArray);
+        return $queryBuilder;
     }
 
     /**
