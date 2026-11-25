@@ -35,6 +35,7 @@ final class LocationSuggestionsControllerTest extends TestCase
             ->method('search')
             ->with([
                 'index' => 'location_suggestions_read',
+                'search_type' => 'dfs_query_then_fetch',
                 'body' => [
                     'size' => 10,
                     'query' => [
