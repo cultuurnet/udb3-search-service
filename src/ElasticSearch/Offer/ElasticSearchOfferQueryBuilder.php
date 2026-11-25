@@ -11,7 +11,9 @@ use CultuurNet\UDB3\Search\Address\PostalCode;
 use CultuurNet\UDB3\Search\Creator;
 use CultuurNet\UDB3\Search\ElasticSearch\AbstractElasticSearchQueryBuilder;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\CardinalityAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\FilterAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TermsAggregation;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Aggregation\TopHitsAggregation;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchDistance;
 use CultuurNet\UDB3\Search\ElasticSearch\KnownLanguages;
 use CultuurNet\UDB3\Search\GeoBoundsParameters;
@@ -42,6 +44,7 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\FullText\MatchQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoBoundingBoxQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoDistanceQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\Geo\GeoShapeQuery;
+use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\ExistsQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\RangeQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Query\TermLevel\TermQuery;
 use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\GeoDistanceSort;
@@ -50,6 +53,11 @@ use CultuurNet\UDB3\Search\ElasticSearch\DSL\Sort\NestedFieldSort;
 final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBuilder implements
     OfferQueryBuilderInterface
 {
+    public const PLACE_EVENT_COUNTS = 'placeEventCounts';
+
+    // Online events are linked to this nil place, which has no address.
+    private const NIL_LOCATION_ID = '00000000-0000-0000-0000-000000000000';
+
     private PredefinedQueryFieldsInterface $predefinedQueryStringFields;
 
     /**
@@ -601,6 +609,39 @@ final class ElasticSearchOfferQueryBuilder extends AbstractElasticSearchQueryBui
                 filter: new TermQuery('metadata.recommendationFor.event', $recommendationFor)
             )
         );
+    }
+
+    public function withPlaceEventCounts(int $numberOfPlaces): self
+    {
+        $c = $this->getClone();
+
+        // The response only lists places, so fetching the matching events would be wasted work.
+        $c->search->setSize(0);
+
+        $c->search->addAggregation(
+            name: self::PLACE_EVENT_COUNTS,
+            // A place without coordinates can't be shown on the map, so it must not take one of the places.
+            aggregation: new FilterAggregation(
+                filter: new ExistsQuery('geo_point'),
+                aggregations: [
+                    // location.id also holds the ids of duplicate places, which would count one event for several
+                    // places. mainId only holds the id of the place itself.
+                    'places' => new TermsAggregation(
+                        field: 'location.mainId.keyword',
+                        size: $numberOfPlaces,
+                        exclude: [self::NIL_LOCATION_ID],
+                        aggregations: [
+                            'place' => new TopHitsAggregation(
+                                size: 1,
+                                source: ['location.@id', 'location.name', 'geo_point']
+                            ),
+                        ]
+                    ),
+                ]
+            )
+        );
+
+        return $c;
     }
 
     public function withGroupByProductionId(): self

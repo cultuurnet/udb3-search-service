@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Search\ElasticSearch\Offer;
 use CultuurNet\UDB3\Search\ElasticSearch\Aggregation\NullAggregationTransformer;
 use CultuurNet\UDB3\Search\ElasticSearch\ElasticSearchPagedResultSetFactory;
 use CultuurNet\UDB3\Search\Limit;
+use CultuurNet\UDB3\Search\Offer\PlaceEventCount;
+use CultuurNet\UDB3\Search\Offer\PlaceEventCounts;
 use CultuurNet\UDB3\Search\PagedResultSet;
 use CultuurNet\UDB3\Search\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Start;
@@ -210,5 +212,59 @@ final class ElasticSearchOfferSearchServiceTest extends TestCase
             ),
             $actual
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_events_per_place(): void
+    {
+        $queryBuilder = (new ElasticSearchOfferQueryBuilder())->withPlaceEventCounts(50);
+
+        $this->client->method('search')->willReturn([
+            'hits' => [
+                'total' => ['value' => 12, 'relation' => 'eq'],
+                'hits' => [],
+            ],
+            'aggregations' => [
+                'placeEventCounts' => [
+                    'doc_count' => 12,
+                    'places' => [
+                        'buckets' => [
+                            $this->placeBucket('a', ['nl' => 'Het Depot'], 8),
+                            $this->placeBucket('b', null, 4),
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $expected = new PlaceEventCounts(
+            12,
+            new PlaceEventCount('https://io.uitdatabank.be/place/a', ['nl' => 'Het Depot'], 50.88, 4.7, 8),
+            new PlaceEventCount('https://io.uitdatabank.be/place/b', [], 50.88, 4.7, 4)
+        );
+
+        $this->assertEquals($expected, $this->singleTypeService->countEventsPerPlace($queryBuilder));
+    }
+
+    private function placeBucket(string $placeId, ?array $name, int $eventCount): array
+    {
+        $location = ['@id' => 'https://io.uitdatabank.be/place/' . $placeId];
+        if ($name !== null) {
+            $location['name'] = $name;
+        }
+
+        return [
+            'key' => $placeId,
+            'doc_count' => $eventCount,
+            'place' => [
+                'hits' => [
+                    'hits' => [
+                        ['_source' => ['location' => $location, 'geo_point' => ['lat' => 50.88, 'lon' => 4.7]]],
+                    ],
+                ],
+            ],
+        ];
     }
 }

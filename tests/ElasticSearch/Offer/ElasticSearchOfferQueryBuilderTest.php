@@ -4457,4 +4457,47 @@ final class ElasticSearchOfferQueryBuilderTest extends AbstractElasticSearchQuer
         (new ElasticSearchOfferQueryBuilder())
             ->withStartAndLimit(new Start(9980), new Limit(30));
     }
+
+    /**
+     * @test
+     */
+    public function it_should_build_a_query_that_counts_events_per_place(): void
+    {
+        $builder = (new ElasticSearchOfferQueryBuilder())->withPlaceEventCounts(50);
+
+        $expectedQueryArray = [
+            '_source' => ['@id', '@type', 'originalEncodedJsonLd', 'regions', 'typicalAgeRange', 'birthdateRange'],
+            'from' => 0,
+            'size' => 0,
+            'query' => [
+                'match_all' => (object)[],
+            ],
+            'aggregations' => [
+                'placeEventCounts' => [
+                    'filter' => [
+                        'exists' => ['field' => 'geo_point'],
+                    ],
+                    'aggregations' => [
+                        'places' => [
+                            'terms' => [
+                                'field' => 'location.mainId.keyword',
+                                'size' => 50,
+                                'exclude' => ['00000000-0000-0000-0000-000000000000'],
+                            ],
+                            'aggregations' => [
+                                'place' => [
+                                    'top_hits' => [
+                                        'size' => 1,
+                                        '_source' => ['location.@id', 'location.name', 'geo_point'],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->assertEquals($expectedQueryArray, $builder->build());
+    }
 }
