@@ -39,6 +39,8 @@ use CultuurNet\UDB3\Search\Offer\Age;
 use CultuurNet\UDB3\Search\Offer\AudienceType;
 use CultuurNet\UDB3\Search\Offer\CalendarType;
 use CultuurNet\UDB3\Search\Offer\Cdbid;
+use CultuurNet\UDB3\Search\Offer\PlaceEventCount;
+use CultuurNet\UDB3\Search\Offer\PlaceEventCounts;
 use CultuurNet\UDB3\Search\Offer\FacetName;
 use CultuurNet\UDB3\Search\Offer\OfferQueryBuilderInterface;
 use CultuurNet\UDB3\Search\Offer\OfferSearchServiceInterface;
@@ -1625,6 +1627,68 @@ final class OfferSearchControllerTest extends TestCase
                 ]),
             ])
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_counts_events_per_place_with_the_search_filters(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters([
+            'locationId' => '652ab95e-fdff-41ce-8894-1b29dce0d230',
+            'disableDefaultFilters' => true,
+        ]);
+
+        $expectedQueryBuilder = $this->queryBuilder
+            ->withLocationCdbIdFilter(new Cdbid('652ab95e-fdff-41ce-8894-1b29dce0d230'))
+            ->withPlaceEventCounts(50);
+
+        $this->searchService->expects($this->once())
+            ->method('countEventsPerPlace')
+            ->with(
+                $this->callback(
+                    function (OfferQueryBuilderInterface $actualQueryBuilder) use ($expectedQueryBuilder): bool {
+                        $this->assertEquals($expectedQueryBuilder->build(), $actualQueryBuilder->build());
+                        return true;
+                    }
+                )
+            )
+            ->willReturn(
+                new PlaceEventCounts(
+                    12,
+                    new PlaceEventCount('https://io.uitdatabank.be/place/a', [], 50.88, 4.7, 8)
+                )
+            );
+
+        $response = $this->controller->placeEventCounts(new ApiRequest($request));
+
+        $this->assertEquals(
+            [
+                'totalEvents' => 12,
+                'places' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/place/a',
+                        'name' => [],
+                        'geo' => ['latitude' => 50.88, 'longitude' => 4.7],
+                        'eventCount' => 8,
+                    ],
+                ],
+            ],
+            Json::decodeAssociatively((string) $response->getBody())
+        );
+        $this->assertStringContainsString('"name":{}', (string) $response->getBody());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_grouping_by_production_when_counting_events_per_place(): void
+    {
+        $request = $this->getSearchRequestWithQueryParameters(['groupBy' => 'productionId']);
+
+        $this->expectException(UnsupportedParameterValue::class);
+
+        $this->controller->placeEventCounts(new ApiRequest($request));
     }
 
     private function getSearchRequestWithQueryParameters(array $queryParameters): ServerRequestInterface

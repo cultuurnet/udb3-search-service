@@ -541,6 +541,13 @@ final class MockOfferQueryBuilder implements OfferQueryBuilderInterface
         return $c;
     }
 
+    public function withPlaceEventCounts(int $numberOfPlaces): self
+    {
+        $c = clone $this;
+        $c->mockQuery['placeEventCounts'] = $numberOfPlaces;
+        return $c;
+    }
+
     public function withAdvancedQuery(AbstractQueryString $queryString, Language ...$textLanguages): self
     {
         $c = clone $this;

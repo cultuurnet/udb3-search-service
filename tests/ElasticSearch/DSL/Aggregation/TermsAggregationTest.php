@@ -27,4 +27,27 @@ final class TermsAggregationTest extends TestCase
 
         $this->assertSame(['terms' => ['field' => 'regions.keyword', 'size' => 50]], $aggregation->toArray());
     }
+
+    /**
+     * @test
+     */
+    public function it_produces_a_terms_aggregation_with_an_exclude_and_sub_aggregations(): void
+    {
+        $aggregation = new TermsAggregation(
+            field: 'location.mainId.keyword',
+            size: 50,
+            exclude: ['nil'],
+            aggregations: ['place' => new TopHitsAggregation(size: 1, source: ['location.name'])]
+        );
+
+        $this->assertSame(
+            [
+                'terms' => ['field' => 'location.mainId.keyword', 'size' => 50, 'exclude' => ['nil']],
+                'aggregations' => [
+                    'place' => ['top_hits' => ['size' => 1, '_source' => ['location.name']]],
+                ],
+            ],
+            $aggregation->toArray()
+        );
+    }
 }

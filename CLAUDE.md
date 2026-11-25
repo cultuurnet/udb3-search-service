@@ -2,6 +2,7 @@
 
 See the  docs/calendar-indexing.md for the information about the calendar indexing.
 See docs/location-suggestions.md for the index behind `/location-suggestions`.
+See docs/place-event-counts.md for how `/events/places` counts the events per place.
 
 The calendar summary (`src/CalendarSummary`, formerly the `calendar-summary-v3` library) is
 documented in `docs/calendar-summary/`. Follow its `formatting-rules.md` when

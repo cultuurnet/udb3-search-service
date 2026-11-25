@@ -9,4 +9,6 @@ use CultuurNet\UDB3\Search\PagedResultSet;
 interface OfferSearchServiceInterface
 {
     public function search(OfferQueryBuilderInterface $queryBuilder): PagedResultSet;
+
+    public function countEventsPerPlace(OfferQueryBuilderInterface $queryBuilder): PlaceEventCounts;
 }

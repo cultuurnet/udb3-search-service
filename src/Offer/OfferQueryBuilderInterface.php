@@ -191,5 +191,7 @@ interface OfferQueryBuilderInterface extends QueryBuilder
 
     public function withGroupByProductionId(): OfferQueryBuilderInterface;
 
+    public function withPlaceEventCounts(int $numberOfPlaces): OfferQueryBuilderInterface;
+
     public function withSortBuilders(array $sorts, array $sortBuilders): OfferQueryBuilderInterface;
 }
