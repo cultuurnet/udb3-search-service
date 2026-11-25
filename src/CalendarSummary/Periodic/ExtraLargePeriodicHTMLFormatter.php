@@ -43,11 +43,17 @@ final readonly class ExtraLargePeriodicHTMLFormatter implements PeriodicFormatte
         if (!$offer->getOpeningHours()->isEmpty()) {
             $output .= HtmlWeekSchemeFormatter::forOpeningHours($offer->getOpeningHours(), $this->translator)
                 ->withHeading()
+                ->inWeekOrder()
                 ->withChildcare()
                 ->toString();
         }
 
-        $output .= $this->deviatingDaysFormatter->format($offer);
+        // The days without opening hours are listed among the closed days instead of in
+        // the week scheme.
+        $output .= $this->deviatingDaysFormatter->format(
+            $offer,
+            $offer->getOpeningHours()->closedDaysOfWeek()
+        );
 
         return trim(HtmlSummaryFormatter::format($output));
     }
