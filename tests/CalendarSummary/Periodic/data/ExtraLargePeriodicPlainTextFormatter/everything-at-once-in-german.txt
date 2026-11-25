@@ -1,8 +1,11 @@
 Von Dienstag 25 November 2025 bis Samstag 30 November 2030
-(Montag von 9:00 bis 12:00 und von 17:00 bis 19:00, Dienstag von 10:00 bis 16:00, Mittwoch von 10:00 bis 16:00, Samstag von 10:00 bis 18:00)
- (Montag Kinderbetreuung von 8:00 bis 13:00 und von 16:00 bis 20:00)
- (Dienstag Frühbetreuung ab 9:00)
- (Mittwoch Frühbetreuung ab 9:00)
+Montag von 9:00 bis 12:00 und von 17:00 bis 19:00
+ (Kinderbetreuung von 8:00 bis 13:00 und von 16:00 bis 20:00)
+Dienstag von 10:00 bis 16:00
+ (Frühbetreuung ab 9:00)
+Mittwoch von 10:00 bis 16:00
+ (Frühbetreuung ab 9:00)
+Samstag von 10:00 bis 18:00
 
 Außer während
 Montag 2 November 2026 bis Samstag 7 November 2026 (Herbstferien)
@@ -10,4 +13,7 @@ Montag - Dienstag von 10:00 bis 15:00
  (jeden Tag Spätbetreuung bis 16:00)
 
 Geschlossen
+Jeden Donnerstag geschlossen
+Jeden Freitag geschlossen
+Jeden Sonntag geschlossen
 Donnerstag 24 Dezember 2026 bis Sonntag 3 Januar 2027 (Weihnachtsferien)
