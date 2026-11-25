@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\SearchService\Console;
 
 use CultuurNet\UDB3\Search\ElasticSearch\Client\ElasticSearchClient;
 use CultuurNet\UDB3\Search\ElasticSearch\Operations\ReplaceLocationSuggestionsIndex;
+use CultuurNet\UDB3\Search\LocationSuggestions\LocationSuggestionsIndices;
 use CultuurNet\UDB3\Search\LocationSuggestions\MunicipalityRegions;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressCsvReader;
 use CultuurNet\UDB3\Search\LocationSuggestions\OpenAddressDocuments;
@@ -17,7 +18,6 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
 {
     public function __construct(
         ElasticSearchClient $client,
-        private readonly string $indexPrefix,
         private readonly string $schemaVersion,
         private readonly string $alias,
         private readonly int $numberOfShards,
@@ -31,7 +31,7 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
     {
         $this
             ->setName('location-suggestions:index-openaddress')
-            ->setDescription('Indexes the BeST OpenAddress CSV files into a new location suggestions index and moves the alias to it.')
+            ->setDescription('Indexes the BeST OpenAddress CSV files into a new location suggestions address index and replaces the previous address index in the alias with it.')
             ->addArgument(
                 'files',
                 InputArgument::REQUIRED | InputArgument::IS_ARRAY,
@@ -45,13 +45,13 @@ final class IndexOpenAddressCommand extends AbstractElasticSearchCommand
         $files = $input->getArgument('files');
 
         // The date keeps a re-index with an unchanged mapping apart from the live index.
-        $indexName = $this->indexPrefix . $this->schemaVersion . '_' . date('YmdHis');
+        $indexName = LocationSuggestionsIndices::ADDRESSES_PREFIX . $this->schemaVersion . '_' . date('YmdHis');
 
         $logger = $this->getLogger($output);
         $operation = new ReplaceLocationSuggestionsIndex($this->getElasticSearchClient(), $logger);
         $operation->run(
             $indexName,
-            $this->indexPrefix . '*',
+            LocationSuggestionsIndices::ADDRESSES_PREFIX . '*',
             $this->alias,
             new OpenAddressDocuments(new OpenAddressCsvReader($files), $this->municipalityRegions, $logger),
             $this->numberOfShards,

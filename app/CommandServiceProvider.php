@@ -193,7 +193,6 @@ final class CommandServiceProvider extends BaseServiceProvider
             IndexOpenAddressCommand::class,
             fn (): IndexOpenAddressCommand => new IndexOpenAddressCommand(
                 $this->get(ElasticSearchClient::class),
-                $this->parameter('elasticsearch.location_suggestions_index.prefix'),
                 SchemaVersions::locationSuggestions(),
                 $this->parameter('elasticsearch.location_suggestions_index.read_alias'),
                 $this->parameter('elasticsearch.number_of_shards'),
