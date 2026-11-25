@@ -44,7 +44,7 @@ final class LocationSuggestionsControllerTest extends TestCase
                                 'bool' => [
                                     'must' => [['match_bool_prefix' => ['search_text' => ['query' => 'lentedreef leuv', 'operator' => 'and']]]],
                                     'should' => [['match' => ['name' => ['query' => 'lentedreef leuv', 'boost' => 10]]]],
-                                    'filter' => [['terms' => ['type' => ['street', 'municipality', 'submunicipality']]]],
+                                    'filter' => [['terms' => ['type' => ['street', 'municipality', 'submunicipality', 'place']]]],
                                 ],
                             ],
                             'field_value_factor' => ['field' => 'address_count', 'modifier' => 'log1p', 'factor' => 0.5, 'missing' => 1],
@@ -103,10 +103,10 @@ final class LocationSuggestionsControllerTest extends TestCase
     public function provideSearchTexts(): array
     {
         return [
-            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street', 'municipality', 'submunicipality']],
-            'house number at the end' => ['lentedreef 2', 'match', ['street', 'submunicipality', 'address']],
-            'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'submunicipality', 'address']],
-            'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'submunicipality', 'address']],
+            'street being typed' => ['lentedreef', 'match_bool_prefix', ['street', 'municipality', 'submunicipality', 'place']],
+            'house number at the end' => ['lentedreef 2', 'match', ['street', 'submunicipality', 'address', 'place']],
+            'house number with a letter' => ['kerkstraat 12a', 'match', ['street', 'submunicipality', 'address', 'place']],
+            'city after the house number' => ['kerkstraat 12 gen', 'match_bool_prefix', ['street', 'submunicipality', 'address', 'place']],
             'postal code' => ['3010', 'match_bool_prefix', ['submunicipality']],
             'postal code being typed' => ['30', 'match_bool_prefix', ['submunicipality']],
         ];
